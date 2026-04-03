@@ -41,7 +41,7 @@ input {
 
 <body>
 
-<h2>📊 KPI Dashboard</h2>
+<h2>📊 KPI CĐBR</h2>
 
 <div id="alert"></div>
 
@@ -49,7 +49,7 @@ input {
 🏢 Huyện <input id="huyen" onkeyup="filter()">
 <label><input type="checkbox" onchange="onlyBad(this.checked)"> Không đạt</label>
 
-<h3>🏆 Top kém</h3>
+<h3>🏆 Top KPI tốt</h3>
 <div id="top"></div>
 
 <h3>📋 Danh sách</h3>
@@ -146,8 +146,8 @@ function render(data){
       ${kpi("HOT",r.sc_hot,r.target_sc_hot)}
       ${kpi("VIP",r.sc_vip,r.target_sc_vip)}
       ${kpi("HT 24h",r.sc_ht_24h,r.target_sc_ht_24h)}
-      ${kpi("SOC 24h",r.sc_soc24,r.target_sc_soc24)}
-      ${kpi("SOC 72h",r.sc_soc72,r.target_sc_soc72)}
+      ${kpi("SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h)}
+      ${kpi("SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h)}
       ${kpi("Hẹn",r.sc_hen,r.target_sc_hen)}
       ${kpi("Lặp",r.sc_lap,r.target_sc_lap,"down")}
     </div>`;
