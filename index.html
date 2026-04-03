@@ -29,7 +29,6 @@ input {
   padding: 4px;
   margin-right: 6px;
 }
-
 .reload-btn {
   position: fixed;
   bottom: calc(15px + env(safe-area-inset-bottom));
@@ -42,15 +41,34 @@ input {
   font-size: 10px;
   z-index: 9999;
 }
-
-.menu select {
-  padding: 6px;
-  border-radius: 6px;
-}
-
+  /* ===== MOBILE ===== */
 @media (max-width: 600px) {
-  body { font-size: 13px; }
-  .card { font-size: 13px; }
+
+  body {
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  .card {
+    padding: 6px;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+
+  input {
+    padding: 3px;
+    font-size: 12px;
+  }
+
+  .reload-btn {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
 }
 </style>
 </head>
@@ -58,19 +76,7 @@ input {
 <body>
 
 <h2>📊 KPI CĐBR</h2>
-
-<div class="menu">
-  <select onchange="changePage(this.value)">
-    <option value="kpi">📊 KPI</option>
-    <option value="form">📋 Nhập liệu</option>
-  </select>
-</div>
-
 <button onclick="reloadPage()" class="reload-btn">🔄 Reload</button>
-
-<!-- KPI -->
-<div id="page-kpi">
-
 🔍 Nhân viên <input id="nv" onkeyup="filter()">
 🏢 Huyện <input id="huyen" onkeyup="filter()">
 <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
@@ -84,26 +90,6 @@ input {
 <h3>📋 Danh sách</h3>
 <div id="data"></div>
 
-</div>
-
-<!-- FORM -->
-<div id="page-form" style="display:none;">
-
-<h3>📋 Nhập dữ liệu</h3>
-
-<input id="ten" placeholder="Tên nhân viên">
-<textarea id="noidung" placeholder="Nội dung"></textarea>
-
-<button onclick="getLocation()">📍 Lấy tọa độ</button>
-<div id="gps"></div>
-
-<input type="file" accept="image/*" capture="environment" onchange="preview(this)">
-<img id="preview" style="width:100%;margin-top:5px;">
-
-<button onclick="submitData()">🚀 Gửi</button>
-
-</div>
-
 <script>
 
 const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
@@ -111,7 +97,7 @@ const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G
 let allData = [];
 let showBadOnly = false;
 
-/* ===== KPI ===== */
+// ===== FIX DATA =====
 function safe(v){ return v ?? 0; }
 
 function toNumber(v){
@@ -130,8 +116,10 @@ function check(v,t,type="up"){
   return v >= t;
 }
 
+// ===== KPI SCORE =====
 function calcScore(r){
   let total = 0, ok = 0;
+
   function add(v,t,type="up"){
     if(toNumber(t) === 0) return;
     total++;
@@ -165,6 +153,7 @@ function calcScore(r){
   return total ? ok/total : 0;
 }
 
+// ===== KPI BAD =====
 function getBadKPI(r){
   let badList = [];
   function add(label,v,t,type="up"){
@@ -176,9 +165,29 @@ function getBadKPI(r){
   add("TK mới 16h",r.tk_16h_moi,r.target_16h_moi);
   add("TK mới 24h",r.tk_24h_moi,r.target_24h_moi);
 
+  add("TK có sẵn 3h",r.tk_3h_co_san,r.target_3h_co_san);
+  add("TK có sẵn 10h",r.tk_10h_co_san,r.target_10h_co_san);
+  add("TK có sẵn 16h",r.tk_16h_co_san,r.target_16h_co_san);
+  add("TK có sẵn 24h",r.tk_24h_co_san,r.target_24h_co_san);
+
+  add("Tích hẹn",r.tich_hen,r.target_tich_hen);
+
+  add("SC 3h",r.sc_3h,r.target_sc_3h);
+  add("SC 10h",r.sc_10h,r.target_sc_10h);
+  add("SC 16h",r.sc_16h,r.target_sc_16h);
+  add("SC 24h",r.sc_24h,r.target_sc_24h);
+  add("SC HOT",r.sc_hot,r.target_sc_hot);
+  add("SC VIP",r.sc_vip,r.target_sc_vip);
+  add("SC HT 24h",r.sc_ht_24h,r.target_sc_ht_24h);
+  add("SC SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h);
+  add("SC SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h);
+  add("SC Hẹn",r.sc_hen,r.target_sc_hen);
+  add("SC Lặp",r.sc_lap,r.target_sc_lap,"down");
+
   return badList;
 }
 
+// ===== KPI RENDER =====
 function kpi(label,v,t,type="up"){
   let ok = check(v,t,type);
   if(showBadOnly && ok) return "";
@@ -187,52 +196,106 @@ function kpi(label,v,t,type="up"){
   </div>`;
 }
 
-/* ===== LOAD ===== */
+// ===== LOAD =====
 function load(){
   fetch(API)
   .then(r=>r.json())
   .then(res=>{
     allData = res.data;
+
     allData.forEach(r=> r.score = calcScore(r));
     allData.sort((a,b)=> b.score - a.score);
+
     render(allData);
     top5();
     topWorst();
   });
 }
 
-/* ===== RENDER ===== */
+// ===== RENDER =====
 function render(data){
   let html = "";
+
   data.forEach((r,i)=>{
-    html += `<div class="card">
-      <b>${r.nhan_vien} - ${r.huyen}</b><br>
-      Rank: ${i+1}
-    </div>`;
+
+    let badList = getBadKPI(r);
+    if(showBadOnly && badList.length === 0) return;
+
+    let htmlCard = `
+    <div class="card">
+      <b>👤 ${safe(r.nhan_vien)} - ${safe(r.huyen)}</b><br>
+      📦 TK mới: ${safe(r.tong_tk_moi)} |
+      📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
+      🚨 SC: ${safe(r.tong_sc)} |
+      🏆 Rank: ${i+1} |
+      ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
+      <br><br>
+    `;
+
+    let sec1 = `<b>🔵 Triển khai mới</b>
+    ${kpi("3h",r.tk_3h_moi,r.target_3h_moi)}
+    ${kpi("10h",r.tk_10h_moi,r.target_10h_moi)}
+    ${kpi("16h",r.tk_16h_moi,r.target_16h_moi)}
+    ${kpi("24h",r.tk_24h_moi,r.target_24h_moi)}`;
+    if(!showBadOnly || sec1.includes("fail")) htmlCard += sec1;
+
+    let sec2 = `<b>🟢 Triển khai có sẵn</b>
+    ${kpi("3h",r.tk_3h_co_san,r.target_3h_co_san)}
+    ${kpi("10h",r.tk_10h_co_san,r.target_10h_co_san)}
+    ${kpi("16h",r.tk_16h_co_san,r.target_16h_co_san)}
+    ${kpi("24h",r.tk_24h_co_san,r.target_24h_co_san)}`;
+    if(!showBadOnly || sec2.includes("fail")) htmlCard += sec2;
+
+    let sec3 = `<b>🟡 Triển khai hẹn</b>
+    ${kpi("Tích hẹn",r.tich_hen,r.target_tich_hen)}`;
+    if(!showBadOnly || sec3.includes("fail")) htmlCard += sec3;
+
+    let sec4 = `<b>🔴 Sự cố</b>
+    ${kpi("3h",r.sc_3h,r.target_sc_3h)}
+    ${kpi("10h",r.sc_10h,r.target_sc_10h)}
+    ${kpi("16h",r.sc_16h,r.target_sc_16h)}
+    ${kpi("24h",r.sc_24h,r.target_sc_24h)}
+    ${kpi("HOT",r.sc_hot,r.target_sc_hot)}
+    ${kpi("VIP",r.sc_vip,r.target_sc_vip)}
+    ${kpi("HT 24h",r.sc_ht_24h,r.target_sc_ht_24h)}
+    ${kpi("SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h)}
+    ${kpi("SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h)}
+    ${kpi("Hẹn",r.sc_hen,r.target_sc_hen)}
+    ${kpi("Lặp",r.sc_lap,r.target_sc_lap,"down")}`;
+    if(!showBadOnly || sec4.includes("fail")) htmlCard += sec4;
+
+    htmlCard += `</div>`;
+    html += htmlCard;
   });
+
   document.getElementById("data").innerHTML = html;
 }
 
+// ===== FILTER =====
 function filter(){
   let nv = document.getElementById("nv").value.toLowerCase();
   let h = document.getElementById("huyen").value.toLowerCase();
+
   let f = allData.filter(r =>
     (r.nhan_vien||"").toLowerCase().includes(nv) &&
     (r.huyen||"").toLowerCase().includes(h)
   );
+
   render(f);
 }
 
+// ===== CHECKBOX =====
 function onlyBad(v){
   showBadOnly = v;
   render(allData);
 }
 
+// ===== TOP =====
 function top5(){
   let s = [...allData].slice(0,5);
   let html="";
   s.forEach((r,i)=>{
-    html += `<div class="card top">TOP ${i+1} - ${r.nhan_vien}</div>`;
+    html += `<div class="card top">🏆 TOP ${i+1} - ${r.nhan_vien} - ${r.huyen}</div>`;
   });
   document.getElementById("top").innerHTML = html;
 }
@@ -241,91 +304,20 @@ function topWorst(){
   let s = [...allData].slice(-10).reverse();
   let html="";
   s.forEach((r,i)=>{
-    html += `<div class="card worst">TOP KÉM ${i+1} - ${r.nhan_vien}</div>`;
+    html += `<div class="card worst">❌ TOP KÉM ${i+1} - ${r.nhan_vien} - ${r.huyen}</div>`;
   });
   document.getElementById("worst").innerHTML = html;
 }
-
-/* ===== DROPDOWN ===== */
-function changePage(p){
-  localStorage.setItem("page", p);
-  document.getElementById("page-kpi").style.display = p==="kpi"?"block":"none";
-  document.getElementById("page-form").style.display = p==="form"?"block":"none";
-}
-
-let saved = localStorage.getItem("page") || "kpi";
-changePage(saved);
-
-setTimeout(()=>{
-  document.querySelector("select").value = saved;
-},100);
-
-/* ===== FORM FIX MOBILE ===== */
-let lat="", lng="", imgBase64="";
-
-function getLocation(){
-
-  if(!navigator.geolocation){
-    alert("❌ Máy không hỗ trợ GPS");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    pos=>{
-      lat = pos.coords.latitude;
-      lng = pos.coords.longitude;
-      document.getElementById("gps").innerText = lat + ", " + lng;
-    },
-    ()=>{
-      alert("❌ Chưa cấp quyền GPS");
-    }
-  );
-}
-
-function preview(input){
-  let file = input.files[0];
-  let reader = new FileReader();
-  reader.onload = e=>{
-    imgBase64 = e.target.result;
-    document.getElementById("preview").src = imgBase64;
-  };
-  reader.readAsDataURL(file);
-}
-
-function submitData(){
-
-  alert("Đang gửi...");
-
-  let data = {
-    ten: document.getElementById("ten").value,
-    noidung: document.getElementById("noidung").value,
-    lat: lat,
-    lng: lng,
-    img: imgBase64
-  };
-
-  fetch("https://script.google.com/macros/s/AKfycbwYXifzXHPM4mQHb7eSkdYCjrsvXjwyo1ryEeZW0TY34tOvHh34ChYn1Iuu1YMfKIpf/exec?sheet=Nhap lieu",{
-    method:"POST",
-    headers:{
-      "Content-Type":"text/plain"
-    },
-    body: JSON.stringify(data)
-  })
-  .then(r=>r.text())
-  .then(()=>{
-    alert("✅ Đã gửi thành công");
-  })
-  .catch(()=>{
-    alert("❌ Lỗi gửi (mobile)");
-  });
-}
-
-/* ===== RELOAD ===== */
 function reloadPage(){
+  // làm mờ màn hình
   document.body.style.opacity = 0.5;
-  setTimeout(()=> location.reload(),800);
-}
 
+  // delay nhẹ rồi reload
+  setTimeout(()=>{
+    location.reload();
+  }, 800);
+}
+// START
 load();
 setInterval(load,30000);
 
