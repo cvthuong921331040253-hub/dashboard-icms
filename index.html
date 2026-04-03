@@ -2,26 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>KPI FINAL++</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>KPI FINAL</title>
 
 <style>
 body {
   font-family: Arial;
-  margin: 0;
+  padding: 15px;
   background: #f5f7fb;
-}
-
-.header {
-  padding: 10px;
-  background: #1976d2;
-  color: white;
-  font-weight: bold;
-}
-
-.container {
-  padding: 10px;
 }
 
 .card {
@@ -35,136 +22,113 @@ body {
 .ok { color: green; }
 .fail { color: red; font-weight: bold; }
 
-.top {
-  background: #fff3cd;
-}
-
-.gold { border-left: 6px solid gold; }
-.silver { border-left: 6px solid silver; }
-.bronze { border-left: 6px solid #cd7f32; }
+.top { background: #e8f5e9; }
+.worst { background: #ffeaea; }
 
 input {
   padding: 6px;
-  margin: 5px 0;
-  width: 48%;
+  margin-right: 8px;
 }
 
-.flex {
-  display: flex;
-  gap: 4%;
-}
-
-canvas {
-  background: white;
-  border-radius: 10px;
-  padding: 10px;
-}
 </style>
 </head>
 
 <body>
 
-<div class="header">📊 GLI KPI CĐBR 2026++</div>
+<h2>📊 KPI CĐBR</h2>
 
-<div class="container">
+🔍 Nhân viên <input id="nv" onkeyup="filter()">
+🏢 Huyện <input id="huyen" onkeyup="filter()">
+<label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
 
-<div class="flex">
-<input id="nv" placeholder="🔍 Nhân viên" onkeyup="filter()">
-<input id="huyen" placeholder="🏢 Huyện" onkeyup="filter()">
-</div>
-
-<h3>🏆 TOP xuất sắc</h3>
+<h3>🏆 Top tốt</h3>
 <div id="top"></div>
 
-<h3>📊 KPI lỗi</h3>
-<canvas id="chart"></canvas>
+<h3>⚠️ Top 10 nhân viên kém</h3>
+<div id="worst"></div>
 
 <h3>📋 Danh sách</h3>
 <div id="data"></div>
-
-</div>
 
 <script>
 
 const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
 
 let allData = [];
+let showBadOnly = false;
 
-// ===== UTIL =====
+// ===== FIX DATA =====
+function safe(v){ return v ?? 0; }
+
 function toNumber(v){
   if(!v) return 0;
   if(typeof v === "string" && v.includes("T")) return 0;
-  if(typeof v === "string") return parseFloat(v.replace("%","")) || 0;
+  if(typeof v === "string"){
+    return parseFloat(v.replace("%","")) || 0;
+  }
   return v;
 }
 
 function check(v,t,type="up"){
   v = toNumber(v);
   t = toNumber(t);
+
   if(type==="down") return v <= t;
   return v >= t;
 }
 
+// ===== KPI =====
 function kpi(label,v,t,type="up"){
   let ok = check(v,t,type);
   return `<div class="${ok?'ok':'fail'}">
-    - ${label}: ${toNumber(v)}% (target ${t}%) ${ok?'✅':'❌'}
+    - ${label}: ${toNumber(v)}% (target ${toNumber(t)}%) ${ok?'✅':'❌'}
   </div>`;
 }
 
-// ===== SCORE =====
-function calcScore(r){
-  let score=0,total=0;
+// ===== LOAD =====
+function load(){
+  fetch(API)
+  .then(r=>r.json())
+  .then(res=>{
+    allData = res.data;
 
-  function add(v,t,type="up"){
-    total++;
-    if(check(v,t,type)) score++;
-  }
-
-  add(r.tk_24h_moi,r.target_24h_moi);
-  add(r.tk_24h_co_san,r.target_24h_co_san);
-  add(r.sc_24h,r.target_sc_24h);
-  add(r.sc_lap,r.target_sc_lap,"down");
-
-  return Math.round((score/total)*100);
-}
-
-// ===== TOP theo vi_tri =====
-function top5(){
-
-  let s = [...allData]
-    .sort((a,b)=> toNumber(a.vi_tri) - toNumber(b.vi_tri))
-    .slice(0,5);
-
-  let html="";
-
-  s.forEach((r,i)=>{
-    let icon = ["🥇","🥈","🥉","🏅","🏅"][i];
-    html += `<div class="card top">
-      ${icon} TOP ${i+1} - <b>${r.nhan_vien}</b> (${r.huyen})
-    </div>`;
+    render(allData);
+    top5();
+    topWorst();
   });
-
-  document.getElementById("top").innerHTML = html;
 }
 
 // ===== RENDER =====
 function render(data){
 
-  let html="";
+  let html = "";
 
   data.forEach(r=>{
 
+    // lọc KPI kém (dựa 24h)
+    let bad = !check(r.tk_24h_moi,r.target_24h_moi);
+
+    if(showBadOnly && !bad) return;
+
     html += `
     <div class="card">
-      <b>${r.nhan_vien} - ${r.huyen}</b><br>
-      📦 ${r.tong_tk_moi} | 🚨 ${r.tong_sc}
+      <b>👤 ${safe(r.nhan_vien)} - ${safe(r.huyen)}</b><br>
+      📦 TK mới: ${safe(r.tong_tk_moi)} |
+      📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
+      🚨 SC: ${safe(r.tong_sc)} |
+      🏆 Rank: ${safe(r.vi_tri)}
 
-      ${kpi("TK 24h",r.tk_24h_moi,r.target_24h_moi)}
-      ${kpi("SC 24h",r.sc_24h,r.target_sc_24h)}
-      ${kpi("SC Lặp",r.sc_lap,r.target_sc_lap,"down")}
+      <br><br>
 
-      🤖 Dự đoán: <b>${predict(r)}</b>
+      <b>🔵 Triển khai mới</b>
+      ${kpi("24h",r.tk_24h_moi,r.target_24h_moi)}
+
+      <b>🟢 Có sẵn</b>
+      ${kpi("24h",r.tk_24h_co_san,r.target_24h_co_san)}
+
+      <b>🔴 Sự cố</b>
+      ${kpi("24h",r.sc_24h,r.target_sc_24h)}
+      ${kpi("Lặp",r.sc_lap,r.target_sc_lap,"down")}
     </div>`;
   });
 
@@ -184,59 +148,52 @@ function filter(){
   render(f);
 }
 
-// ===== AI DỰ ĐOÁN =====
-function predict(r){
-  let fail = 0;
-
-  if(!check(r.tk_24h_moi,r.target_24h_moi)) fail++;
-  if(!check(r.sc_24h,r.target_sc_24h)) fail++;
-
-  if(fail===0) return "🔥 Xuất sắc";
-  if(fail===1) return "⚠️ Nguy cơ";
-  return "❌ Không đạt";
+// ===== CHECKBOX =====
+function onlyBad(v){
+  showBadOnly = v;
+  render(allData);
 }
 
-// ===== CHART =====
-function buildChart(){
+// ===== TOP TỐT =====
+function top5(){
 
-  let failCount = {
-    tk:0, sc:0, lap:0
-  };
+  let s = [...allData]
+    .sort((a,b)=> toNumber(a.vi_tri) - toNumber(b.vi_tri))
+    .slice(0,5);
 
-  allData.forEach(r=>{
-    if(!check(r.tk_24h_moi,r.target_24h_moi)) failCount.tk++;
-    if(!check(r.sc_24h,r.target_sc_24h)) failCount.sc++;
-    if(!check(r.sc_lap,r.target_sc_lap,"down")) failCount.lap++;
+  let html="";
+
+  s.forEach((r,i)=>{
+    html += `<div class="card top">
+      🏆 TOP ${i+1} - ${r.nhan_vien} - ${r.huyen}
+    </div>`;
   });
 
-  new Chart(document.getElementById("chart"),{
-    type:'bar',
-    data:{
-      labels:["Triển khai","Sự cố","Lặp"],
-      datasets:[{
-        label:"Không đạt",
-        data:[failCount.tk,failCount.sc,failCount.lap]
-      }]
-    }
-  });
+  document.getElementById("top").innerHTML = html;
 }
 
-// ===== LOAD =====
-function load(){
-  fetch(API)
-  .then(r=>r.json())
-  .then(res=>{
-    allData = res.data;
-    render(allData);
-    top5();
-    buildChart();
+// ===== TOP KÉM =====
+function topWorst(){
+
+  let s = [...allData]
+    .sort((a,b)=> toNumber(b.vi_tri) - toNumber(a.vi_tri))
+    .slice(0,10);
+
+  let html="";
+
+  s.forEach((r,i)=>{
+    html += `<div class="card worst">
+      ❌ TOP KÉM ${i+1} - ${r.nhan_vien} - ${r.huyen} (Rank: ${r.vi_tri})
+    </div>`;
   });
+
+  document.getElementById("worst").innerHTML = html;
 }
 
-// ===== AUTO RELOAD =====
+// ===== AUTO =====
 setInterval(load,30000);
 
-// ===== PULL TO REFRESH (mobile) =====
+// ===== PULL DOWN MOBILE =====
 let startY = 0;
 
 document.addEventListener("touchstart", e=>{
@@ -245,6 +202,7 @@ document.addEventListener("touchstart", e=>{
 
 document.addEventListener("touchend", e=>{
   let endY = e.changedTouches[0].clientY;
+
   if(endY - startY > 100){
     load();
   }
