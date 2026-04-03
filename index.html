@@ -166,21 +166,34 @@ function render(data){
       ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
       <br><br>
 
+      let sec1 = `
       <b>🔵 Triển khai mới</b>
       ${kpi("3h",r.tk_3h_moi,r.target_3h_moi)}
       ${kpi("10h",r.tk_10h_moi,r.target_10h_moi)}
       ${kpi("16h",r.tk_16h_moi,r.target_16h_moi)}
       ${kpi("24h",r.tk_24h_moi,r.target_24h_moi)}
+      `;
+      
+      if(!showBadOnly || sec1.includes("fail")) html += sec1;
 
+       let sec2 = `
       <b>🟢 Triển khai có sẵn</b>
       ${kpi("3h",r.tk_3h_co_san,r.target_3h_co_san)}
       ${kpi("10h",r.tk_10h_co_san,r.target_10h_co_san)}
       ${kpi("16h",r.tk_16h_co_san,r.target_16h_co_san)}
       ${kpi("24h",r.tk_24h_co_san,r.target_24h_co_san)}
+      `;
+      
+      if(!showBadOnly || sec2.includes("fail")) html += sec2;
 
+      let sec3 = `
       <b>🟡 Triển khai hẹn</b>
       ${kpi("Tích hẹn",r.tich_hen,r.target_tich_hen)}
+      `;
+      
+      if(!showBadOnly || sec3.includes("fail")) html += sec3;
 
+      let sec4 = `
       <b>🔴 Sự cố</b>
       ${kpi("3h",r.sc_3h,r.target_sc_3h)}
       ${kpi("10h",r.sc_10h,r.target_sc_10h)}
@@ -193,6 +206,9 @@ function render(data){
       ${kpi("SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h)}
       ${kpi("Hẹn",r.sc_hen,r.target_sc_hen)}
       ${kpi("Lặp",r.sc_lap,r.target_sc_lap,"down")}
+      `;
+      
+      if(!showBadOnly || sec4.includes("fail")) html += sec4;
     </div>`;
   });
 
