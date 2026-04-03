@@ -77,6 +77,48 @@ function check(v,t,type="up"){
   return v >= t;
 }
 
+// ===== Check KPI kém
+function getBadKPI(r){
+
+  let badList = [];
+
+  function add(label,v,t,type="up"){
+    if(!check(v,t,type)){
+      badList.push(label);
+    }
+  }
+
+  // triển khai mới
+  add("TK mới 3h",r.tk_3h_moi,r.target_3h_moi);
+  add("TK mới 10h",r.tk_10h_moi,r.target_10h_moi);
+  add("TK mới 16h",r.tk_16h_moi,r.target_16h_moi);
+  add("TK mới 24h",r.tk_24h_moi,r.target_24h_moi);
+
+  // có sẵn
+  add("TK có sẵn 3h",r.tk_3h_co_san,r.target_3h_co_san);
+  add("TK có sẵn 10h",r.tk_10h_co_san,r.target_10h_co_san);
+  add("TK có sẵn 16h",r.tk_16h_co_san,r.target_16h_co_san);
+  add("TK có sẵn 24h",r.tk_24h_co_san,r.target_24h_co_san);
+
+  // hẹn
+  add("Tích hẹn",r.tich_hen,r.target_tich_hen);
+
+  // sự cố
+  add("SC 3h",r.sc_3h,r.target_sc_3h);
+  add("SC 10h",r.sc_10h,r.target_sc_10h);
+  add("SC 16h",r.sc_16h,r.target_sc_16h);
+  add("SC 24h",r.sc_24h,r.target_sc_24h);
+  add("SC HOT",r.sc_hot,r.target_sc_hot);
+  add("SC VIP",r.sc_vip,r.target_sc_vip);
+  add("SC HT 24h",r.sc_ht_24h,r.target_sc_ht_24h);
+  add("SC SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h);
+  add("SC SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h);
+  add("SC Hẹn",r.sc_hen,r.target_sc_hen);
+  add("SC Lặp",r.sc_lap,r.target_sc_lap,"down");
+
+  return badList;
+}
+
 // ===== KPI =====
 function kpi(label,v,t,type="up"){
   let ok = check(v,t,type);
@@ -105,10 +147,10 @@ function render(data){
 
   data.forEach(r=>{
 
-    // lọc KPI kém (dựa 24h)
-    let bad = !check(r.tk_24h_moi,r.target_24h_moi);
+    // lọc KPI kém
+    let badList = getBadKPI(r);
 
-    if(showBadOnly && !bad) return;
+    if(showBadOnly && badList.length === 0) return;
 
         html += `
     <div class="card">
@@ -117,7 +159,7 @@ function render(data){
       📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
       🚨 SC: ${safe(r.tong_sc)} |
       🏆 Rank: ${safe(r.vi_tri)} |
-
+      ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
       <br><br>
 
       <b>🔵 Triển khai mới</b>
