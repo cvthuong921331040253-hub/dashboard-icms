@@ -151,66 +151,68 @@ function render(data){
 
   data.forEach(r=>{
 
-    // lọc KPI kém
-    let badList = getBadKPI(r);
+  let badList = getBadKPI(r);
+  if(showBadOnly && badList.length === 0) return;
 
-    if(showBadOnly && badList.length === 0) return;
+  let htmlCard = `
+  <div class="card">
+    <b>👤 ${safe(r.nhan_vien)} - ${safe(r.huyen)}</b><br>
+    📦 TK mới: ${safe(r.tong_tk_moi)} |
+    📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
+    🚨 SC: ${safe(r.tong_sc)} |
+    🏆 Rank: ${safe(r.vi_tri)} |
+    ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
+    <br><br>
+  `;
 
-        html += `
-    <div class="card">
-      <b>👤 ${safe(r.nhan_vien)} - ${safe(r.huyen)}</b><br>
-      📦 TK mới: ${safe(r.tong_tk_moi)} |
-      📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
-      🚨 SC: ${safe(r.tong_sc)} |
-      🏆 Rank: ${safe(r.vi_tri)} |
-      ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
-      <br><br>
+  // ===== SECTION 1
+  let sec1 = `
+  <b>🔵 Triển khai mới</b>
+  ${kpi("3h",r.tk_3h_moi,r.target_3h_moi)}
+  ${kpi("10h",r.tk_10h_moi,r.target_10h_moi)}
+  ${kpi("16h",r.tk_16h_moi,r.target_16h_moi)}
+  ${kpi("24h",r.tk_24h_moi,r.target_24h_moi)}
+  `;
+  if(!showBadOnly || sec1.includes("fail")) htmlCard += sec1;
 
-      let sec1 = `
-      <b>🔵 Triển khai mới</b>
-      ${kpi("3h",r.tk_3h_moi,r.target_3h_moi)}
-      ${kpi("10h",r.tk_10h_moi,r.target_10h_moi)}
-      ${kpi("16h",r.tk_16h_moi,r.target_16h_moi)}
-      ${kpi("24h",r.tk_24h_moi,r.target_24h_moi)}
-      `;
-      
-      if(!showBadOnly || sec1.includes("fail")) html += sec1;
+  // ===== SECTION 2
+  let sec2 = `
+  <b>🟢 Triển khai có sẵn</b>
+  ${kpi("3h",r.tk_3h_co_san,r.target_3h_co_san)}
+  ${kpi("10h",r.tk_10h_co_san,r.target_10h_co_san)}
+  ${kpi("16h",r.tk_16h_co_san,r.target_16h_co_san)}
+  ${kpi("24h",r.tk_24h_co_san,r.target_24h_co_san)}
+  `;
+  if(!showBadOnly || sec2.includes("fail")) htmlCard += sec2;
 
-       let sec2 = `
-      <b>🟢 Triển khai có sẵn</b>
-      ${kpi("3h",r.tk_3h_co_san,r.target_3h_co_san)}
-      ${kpi("10h",r.tk_10h_co_san,r.target_10h_co_san)}
-      ${kpi("16h",r.tk_16h_co_san,r.target_16h_co_san)}
-      ${kpi("24h",r.tk_24h_co_san,r.target_24h_co_san)}
-      `;
-      
-      if(!showBadOnly || sec2.includes("fail")) html += sec2;
+  // ===== SECTION 3
+  let sec3 = `
+  <b>🟡 Triển khai hẹn</b>
+  ${kpi("Tích hẹn",r.tich_hen,r.target_tich_hen)}
+  `;
+  if(!showBadOnly || sec3.includes("fail")) htmlCard += sec3;
 
-      let sec3 = `
-      <b>🟡 Triển khai hẹn</b>
-      ${kpi("Tích hẹn",r.tich_hen,r.target_tich_hen)}
-      `;
-      
-      if(!showBadOnly || sec3.includes("fail")) html += sec3;
+  // ===== SECTION 4
+  let sec4 = `
+  <b>🔴 Sự cố</b>
+  ${kpi("3h",r.sc_3h,r.target_sc_3h)}
+  ${kpi("10h",r.sc_10h,r.target_sc_10h)}
+  ${kpi("16h",r.sc_16h,r.target_sc_16h)}
+  ${kpi("24h",r.sc_24h,r.target_sc_24h)}
+  ${kpi("HOT",r.sc_hot,r.target_sc_hot)}
+  ${kpi("VIP",r.sc_vip,r.target_sc_vip)}
+  ${kpi("HT 24h",r.sc_ht_24h,r.target_sc_ht_24h)}
+  ${kpi("SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h)}
+  ${kpi("SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h)}
+  ${kpi("Hẹn",r.sc_hen,r.target_sc_hen)}
+  ${kpi("Lặp",r.sc_lap,r.target_sc_lap,"down")}
+  `;
+  if(!showBadOnly || sec4.includes("fail")) htmlCard += sec4;
 
-      let sec4 = `
-      <b>🔴 Sự cố</b>
-      ${kpi("3h",r.sc_3h,r.target_sc_3h)}
-      ${kpi("10h",r.sc_10h,r.target_sc_10h)}
-      ${kpi("16h",r.sc_16h,r.target_sc_16h)}
-      ${kpi("24h",r.sc_24h,r.target_sc_24h)}
-      ${kpi("HOT",r.sc_hot,r.target_sc_hot)}
-      ${kpi("VIP",r.sc_vip,r.target_sc_vip)}
-      ${kpi("HT 24h",r.sc_ht_24h,r.target_sc_ht_24h)}
-      ${kpi("SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h)}
-      ${kpi("SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h)}
-      ${kpi("Hẹn",r.sc_hen,r.target_sc_hen)}
-      ${kpi("Lặp",r.sc_lap,r.target_sc_lap,"down")}
-      `;
-      
-      if(!showBadOnly || sec4.includes("fail")) html += sec4;
-    </div>`;
-  });
+  htmlCard += `</div>`;
+
+  html += htmlCard;
+});
 
   document.getElementById("data").innerHTML = html;
 }
