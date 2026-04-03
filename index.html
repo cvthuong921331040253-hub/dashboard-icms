@@ -29,13 +29,29 @@ input {
   padding: 4px;
   margin-right: 6px;
 }
+.reload-btn {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 50px;
+  background: #2196f3;
+  color: white;
+  font-size: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.reload-btn:active {
+  opacity: 0.8;
+}
 </style>
 </head>
 
 <body>
 
 <h2>📊 KPI CĐBR</h2>
-
+<button onclick="load()" class="reload-btn">🔄 Reload</button>
 🔍 Nhân viên <input id="nv" onkeyup="filter()">
 🏢 Huyện <input id="huyen" onkeyup="filter()">
 <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
