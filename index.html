@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard ICMS</title>
+<meta charset="UTF-8">
+<title>Dashboard ICMS</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      padding: 20px;
-    }
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    h2 {
-      margin-top: 10px;
-    }
+<style>
+body {
+  font-family: Arial;
+  padding: 20px;
+  background: #f0f2f5;
+}
 
-    input {
-      padding: 5px;
-      margin-right: 10px;
-    }
+h2 {
+  margin-top: 10px;
+}
 
-    .card {
-      border: 1px solid #ccc;
-      padding: 12px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      background: #f9f9f9;
-    }
+input {
+  padding: 6px;
+  margin-right: 10px;
+}
 
-    .bad {
-      color: red;
-      font-weight: bold;
-    }
+.card {
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 
-    .good {
-      color: green;
-    }
-  </style>
+.bad { color: red; font-weight: bold; }
+.good { color: green; }
+
+.top {
+  background: #ffe5e5;
+}
+
+</style>
 </head>
 
 <body>
@@ -43,6 +45,8 @@
 <h2>📊 Dashboard</h2>
 
 <div id="dashboard"></div>
+
+<canvas id="chart" height="100"></canvas>
 
 <br>
 
@@ -52,22 +56,26 @@
 🏢 Huyện:
 <input id="huyen" onkeyup="applyFilter()">
 
+<label>
+  <input type="checkbox" onchange="onlyBad(this.checked)">
+  Chỉ xem không đạt
+</label>
+
 <br><br>
 
-<h2>📋 Chi tiết nhân viên</h2>
+<h2>🏆 Top nhân viên kém nhất</h2>
+<div id="top"></div>
 
+<h2>📋 Chi tiết</h2>
 <div id="detail"></div>
 
 <script>
 
-// =======================
-// BIẾN LƯU DỮ LIỆU
-// =======================
 let currentData = [];
+let showOnlyBad = false;
 
-// =======================
-// LOAD DATA TỪ GOOGLE SHEET
-// =======================
+
+// ================= LOAD =================
 function loadData(sheet) {
 
   const api = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=" + sheet;
@@ -76,94 +84,112 @@ function loadData(sheet) {
     .then(res => res.json())
     .then(res => {
 
-      // lưu data để filter
       currentData = res.data;
 
-      // hiển thị dashboard tổng
-      renderDashboard(res.data);
-
-      // hiển thị chi tiết
-      showDetail(res.data);
+      renderDashboard(currentData);
+      renderChart(currentData);
+      showTop(currentData);
+      showDetail(currentData);
+      checkAlert(currentData);
     });
 }
 
 
-// =======================
-// DASHBOARD TỔNG
-// =======================
+// ================= DASHBOARD =================
 function renderDashboard(data) {
 
   let total = data.length;
-
-  // ví dụ: đếm nhân viên không đạt (TK 24h < 85%)
   let bad = data.filter(r => parseFloat(r["TK 24h"]) < 85).length;
 
-  let percent = ((bad / total) * 100).toFixed(1);
-
   document.getElementById("dashboard").innerHTML = `
-    Tổng: ${total} <br>
-    Không đạt: <span style="color:red">${bad}</span> <br>
-    Tỷ lệ: ${percent}%
+    Tổng: ${total} |
+    Không đạt: <span style="color:red">${bad}</span>
   `;
 }
 
 
-// =======================
-// HIỂN THỊ CHI TIẾT NHÂN VIÊN
-// =======================
+// ================= BIỂU ĐỒ =================
+function renderChart(data) {
+
+  let bad = data.filter(r => parseFloat(r["TK 24h"]) < 85).length;
+  let good = data.length - bad;
+
+  new Chart(document.getElementById("chart"), {
+    type: 'pie',
+    data: {
+      labels: ["Đạt", "Không đạt"],
+      datasets: [{
+        data: [good, bad]
+      }]
+    }
+  });
+}
+
+
+// ================= ALERT =================
+function checkAlert(data) {
+
+  let badList = data.filter(r => parseFloat(r["TK 24h"]) < 85);
+
+  if (badList.length > 0) {
+    console.log("⚠️ Có nhân viên không đạt!");
+  }
+}
+
+
+// ================= TOP NHÂN VIÊN KÉM =================
+function showTop(data) {
+
+  let sorted = [...data].sort((a,b) =>
+    parseFloat(a["TK 24h"]) - parseFloat(b["TK 24h"])
+  );
+
+  let top5 = sorted.slice(0,5);
+
+  let html = "";
+
+  top5.forEach(r => {
+    html += `
+      <div class="card top">
+        ${r["Nhân viên"]} - ${r["TTH"]} (${r["TK 24h"]}%)
+      </div>
+    `;
+  });
+
+  document.getElementById("top").innerHTML = html;
+}
+
+
+// ================= DETAIL =================
 function showDetail(data) {
 
   let html = "";
 
   data.forEach(r => {
 
-    // ===== THÔNG TIN CHUNG =====
-    let ten = r["Nhân viên"] || "";
-    let huyen = r["TTH"] || "";
+    let v24 = parseFloat(r["TK 24h"]) || 0;
 
-    let tongTB = r["Tổng TB TKM"] || 0;
-    let suCo = r["SC"] || 0;
-    let rank = r["Vị thứ"] || "-";
+    if (showOnlyBad && v24 >= 85) return;
 
     html += `
       <div class="card">
-        <b>👤 ${ten} - ${huyen}</b><br>
-        📦 Tổng thuê bao: ${tongTB}<br>
-        🚨 Tổng sự cố: ${suCo}<br>
-        🏆 Xếp hạng: ${rank}<br><br>
-    `;
+        <b>${r["Nhân viên"]} - ${r["TTH"]}</b><br>
+        📦 ${r["Tổng TB TKM"] || 0} |
+        🚨 ${r["SC"] || 0} |
+        🏆 ${r["Vị thứ"] || "-"}<br><br>
 
-    // ===== KPI (CÓ THỂ CHỈNH) =====
-    let kpis = [
-      {name: "TK 3h", key: "TK 3h", target: 45},
-      {name: "TK 10h", key: "TK 10h", target: 75},
-      {name: "TK 24h", key: "TK 24h", target: 85}
-    ];
-
-    kpis.forEach(k => {
-
-      let v = parseFloat(r[k.key]) || 0;
-
-      // kiểm tra đạt hay không
-      let isBad = v < k.target;
-
-      html += `
-        <div class="${isBad ? "bad" : "good"}">
-          ${k.name}: ${v}% (Target ${k.target}%)
+        <div class="${v24 < 85 ? "bad" : "good"}">
+          TK 24h: ${v24}% (Target 85%)
         </div>
-      `;
-    });
-
-    html += "</div>";
+      </div>
+    `;
   });
 
   document.getElementById("detail").innerHTML = html;
 }
 
 
-// =======================
-// FILTER NHÂN VIÊN / HUYỆN
-// =======================
+// ================= FILTER =================
 function applyFilter() {
 
   let nv = document.getElementById("nhanvien").value.toLowerCase();
@@ -178,17 +204,20 @@ function applyFilter() {
 }
 
 
-// =======================
-// AUTO LOAD 30 GIÂY
-// =======================
+// ================= TOGGLE =================
+function onlyBad(val) {
+  showOnlyBad = val;
+  showDetail(currentData);
+}
+
+
+// ================= AUTO REFRESH =================
 setInterval(() => {
   loadData("Taget CDBR");
 }, 30000);
 
 
-// =======================
-// LOAD LẦN ĐẦU
-// =======================
+// ================= START =================
 loadData("Taget CDBR");
 
 </script>
