@@ -1,150 +1,194 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Dashboard Target</title>
+  <meta charset="UTF-8">
+  <title>Dashboard ICMS</title>
 
-<style>
-body { font-family: Arial; padding: 20px; }
-table { border-collapse: collapse; width: 100%; font-size: 12px; }
-th, td { border: 1px solid #ccc; padding: 5px; }
-th { background: #f2f2f2; }
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
 
-.red { background-color: #ffcccc; }
+    h2 {
+      margin-top: 10px;
+    }
 
-.box {
-  padding: 10px;
-  background: #f5f5f5;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
-</style>
+    input {
+      padding: 5px;
+      margin-right: 10px;
+    }
+
+    .card {
+      border: 1px solid #ccc;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      background: #f9f9f9;
+    }
+
+    .bad {
+      color: red;
+      font-weight: bold;
+    }
+
+    .good {
+      color: green;
+    }
+  </style>
 </head>
 
 <body>
 
 <h2>📊 Dashboard</h2>
-<div class="box" id="dashboard"></div>
+
+<div id="dashboard"></div>
 
 <br>
 
 🔍 Nhân viên:
-<input type="text" id="filterName" onkeyup="applyFilter()">
+<input id="nhanvien" onkeyup="applyFilter()">
 
 🏢 Huyện:
-<input type="text" id="filterHuyen" onkeyup="applyFilter()">
+<input id="huyen" onkeyup="applyFilter()">
 
 <br><br>
 
-<select onchange="loadData(this.value)">
-  <option value="ICMS">ICMS</option>
-  <option value="Taget CDBR">Taget CDBR</option>
-</select>
+<h2>📋 Chi tiết nhân viên</h2>
 
-<br><br>
-
-<div id="data"></div>
+<div id="detail"></div>
 
 <script>
 
+// =======================
+// BIẾN LƯU DỮ LIỆU
+// =======================
 let currentData = [];
-let currentHeaders = [];
 
+// =======================
+// LOAD DATA TỪ GOOGLE SHEET
+// =======================
 function loadData(sheet) {
+
   const api = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=" + sheet;
 
   fetch(api)
     .then(res => res.json())
     .then(res => {
 
+      // lưu data để filter
       currentData = res.data;
-      currentHeaders = res.headers;
 
-      renderTable(currentData);
+      // hiển thị dashboard tổng
+      renderDashboard(res.data);
 
-      updateDashboard(currentData);
+      // hiển thị chi tiết
+      showDetail(res.data);
     });
 }
 
-function applyFilter() {
-  let name = document.getElementById("filterName").value.toLowerCase();
-  let huyen = document.getElementById("filterHuyen").value.toLowerCase();
 
-  let filtered = currentData.filter(r =>
-    (r["Nhân viên"] || "").toLowerCase().includes(name) &&
-    (r["TTH"] || "").toLowerCase().includes(huyen)
-  );
+// =======================
+// DASHBOARD TỔNG
+// =======================
+function renderDashboard(data) {
 
-  renderTable(filtered);
-  updateDashboard(filtered);
-}
-
-function updateDashboard(data) {
   let total = data.length;
 
-  let khongDat = 0;
+  // ví dụ: đếm nhân viên không đạt (TK 24h < 85%)
+  let bad = data.filter(r => parseFloat(r["TK 24h"]) < 85).length;
 
-  data.forEach(row => {
-    for (let key in row) {
-      if (key.toLowerCase().includes("target")) {
-        let val = parseFloat(row[key]);
-        if (!isNaN(val) && val < 100) {
-          khongDat++;
-          break;
-        }
-      }
-    }
-  });
-
-  let percent = total ? ((khongDat / total) * 100).toFixed(1) : 0;
+  let percent = ((bad / total) * 100).toFixed(1);
 
   document.getElementById("dashboard").innerHTML = `
     Tổng: ${total} <br>
-    Không đạt: <span style="color:red">${khongDat}</span><br>
-    Tỷ lệ: <span style="color:red">${percent}%</span>
+    Không đạt: <span style="color:red">${bad}</span> <br>
+    Tỷ lệ: ${percent}%
   `;
 }
 
-function renderTable(data) {
-  let html = "<table><tr>";
 
-  currentHeaders.forEach(h => {
-    html += `<th>${h}</th>`;
-  });
+// =======================
+// HIỂN THỊ CHI TIẾT NHÂN VIÊN
+// =======================
+function showDetail(data) {
 
-  html += "</tr>";
+  let html = "";
 
-  data.forEach(row => {
+  data.forEach(r => {
 
-    let isBad = false;
+    // ===== THÔNG TIN CHUNG =====
+    let ten = r["Nhân viên"] || "";
+    let huyen = r["TTH"] || "";
 
-    for (let key in row) {
-      if (key.toLowerCase().includes("target")) {
-        let val = parseFloat(row[key]);
-        if (!isNaN(val) && val < 100) {
-          isBad = true;
-          break;
-        }
-      }
-    }
+    let tongTB = r["Tổng TB TKM"] || 0;
+    let suCo = r["SC"] || 0;
+    let rank = r["Vị thứ"] || "-";
 
-    let color = isBad ? "class='red'" : "";
+    html += `
+      <div class="card">
+        <b>👤 ${ten} - ${huyen}</b><br>
+        📦 Tổng thuê bao: ${tongTB}<br>
+        🚨 Tổng sự cố: ${suCo}<br>
+        🏆 Xếp hạng: ${rank}<br><br>
+    `;
 
-    html += `<tr ${color}>`;
+    // ===== KPI (CÓ THỂ CHỈNH) =====
+    let kpis = [
+      {name: "TK 3h", key: "TK 3h", target: 45},
+      {name: "TK 10h", key: "TK 10h", target: 75},
+      {name: "TK 24h", key: "TK 24h", target: 85}
+    ];
 
-    currentHeaders.forEach(h => {
-      html += `<td>${row[h] || ""}</td>`;
+    kpis.forEach(k => {
+
+      let v = parseFloat(r[k.key]) || 0;
+
+      // kiểm tra đạt hay không
+      let isBad = v < k.target;
+
+      html += `
+        <div class="${isBad ? "bad" : "good"}">
+          ${k.name}: ${v}% (Target ${k.target}%)
+        </div>
+      `;
     });
 
-    html += "</tr>";
+    html += "</div>";
   });
 
-  html += "</table>";
-
-  document.getElementById("data").innerHTML = html;
+  document.getElementById("detail").innerHTML = html;
 }
 
-// load mặc định
+
+// =======================
+// FILTER NHÂN VIÊN / HUYỆN
+// =======================
+function applyFilter() {
+
+  let nv = document.getElementById("nhanvien").value.toLowerCase();
+  let huyen = document.getElementById("huyen").value.toLowerCase();
+
+  let filtered = currentData.filter(r =>
+    (r["Nhân viên"] || "").toLowerCase().includes(nv) &&
+    (r["TTH"] || "").toLowerCase().includes(huyen)
+  );
+
+  showDetail(filtered);
+}
+
+
+// =======================
+// AUTO LOAD 30 GIÂY
+// =======================
+setInterval(() => {
+  loadData("Taget CDBR");
+}, 30000);
+
+
+// =======================
+// LOAD LẦN ĐẦU
+// =======================
 loadData("Taget CDBR");
 
 </script>
