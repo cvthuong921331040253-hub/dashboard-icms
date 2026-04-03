@@ -2,287 +2,140 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ICMS PRO Dashboard</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Dashboard KPI</title>
 
 <style>
 body {
   font-family: Arial;
-  background: #f5f7fb;
   padding: 20px;
 }
 
-/* HEADER */
-.header {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-/* BOX */
-.box {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-/* CARD */
 .card {
-  background: white;
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
-
-/* STATUS */
-.bad { color: red; font-weight: bold; }
-.good { color: green; }
-
-.top { background: #ffecec; }
-
-/* INPUT */
-input, select {
-  padding: 6px;
-  margin-right: 10px;
-}
-
-.alert {
-  background: red;
-  color: white;
-  padding: 10px;
-  margin-bottom: 10px;
+  border: 1px solid #ddd;
   border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
 }
+
+.ok { color: green; }
+.fail { color: red; }
+
+h3 { margin: 5px 0; }
+
 </style>
 </head>
 
 <body>
 
-<div class="header">🚀 ICMS PRO DASHBOARD</div>
+<h2>📊 Dashboard KPI</h2>
 
-<div id="alertBox"></div>
-
-<div class="grid">
-  <div class="box" id="totalBox"></div>
-  <div class="box" id="chartBox">
-    <canvas id="chart"></canvas>
-  </div>
-  <div class="box" id="huyenChartBox">
-    <canvas id="chartHuyen"></canvas>
-  </div>
-</div>
-
-<div class="box">
-  🔍 Nhân viên <input id="nv" onkeyup="applyFilter()">
-  🏢 Huyện <input id="huyen" onkeyup="applyFilter()">
-
-  <select onchange="filterStatus(this.value)">
-    <option value="all">Tất cả</option>
-    <option value="bad">Không đạt</option>
-    <option value="good">Đạt</option>
-  </select>
-</div>
-
-<div class="box">
-  <h3>🏆 Top 5 nhân viên kém nhất</h3>
-  <div id="top"></div>
-</div>
-
-<div class="box">
-  <h3>📋 Danh sách</h3>
-  <div id="list"></div>
-</div>
+<div id="data"></div>
 
 <script>
 
-let currentData = [];
-let statusFilter = "all";
+// 👉 API của bạn
+const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
 
+// =======================
+// CHECK KPI
+// =======================
+function check(value, target, type="normal") {
+  value = parseFloat(value) || 0;
+  target = parseFloat(target) || 0;
 
-// ================= LOAD =================
-function loadData() {
-
-  const api = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
-
-  fetch(api)
-    .then(r => r.json())
-    .then(res => {
-
-      currentData = res.data;
-
-      renderTotal();
-      renderChart();
-      renderHuyenChart();
-      renderTop();
-      renderList();
-      showAlert();
-    });
+  if (type === "reverse") {
+    return value <= target;
+  }
+  return value >= target;
 }
 
+// =======================
+// RENDER 1 KPI
+// =======================
+function renderKPI(label, value, target, type="normal") {
+  const ok = check(value, target, type);
 
-// ================= TOTAL =================
-function renderTotal() {
-
-  let total = currentData.length;
-  let bad = currentData.filter(r => parseFloat(r["TK 24h"]) < 85).length;
-
-  document.getElementById("totalBox").innerHTML = `
-    Tổng NV: ${total}<br>
-    Không đạt: <span style="color:red">${bad}</span>
+  return `
+    <div class="${ok ? 'ok' : 'fail'}">
+      - ${label}: ${value}% (target ${target}%) ${ok ? '✅' : '❌'}
+    </div>
   `;
 }
 
+// =======================
+// LOAD DATA
+// =======================
+function loadData() {
 
-// ================= PIE =================
-function renderChart() {
+  fetch(API)
+  .then(res => res.json())
+  .then(res => {
 
-  let bad = currentData.filter(r => parseFloat(r["TK 24h"]) < 85).length;
-  let good = currentData.length - bad;
+    let html = "";
 
-  new Chart(chart, {
-    type: 'pie',
-    data: {
-      labels: ["Đạt", "Không đạt"],
-      datasets: [{ data: [good, bad] }]
-    }
-  });
-}
+    res.data.forEach(row => {
 
-
-// ================= HUYEN CHART =================
-function renderHuyenChart() {
-
-  let map = {};
-
-  currentData.forEach(r => {
-    let h = r["TTH"] || "Khác";
-    let v = parseFloat(r["TK 24h"]) || 0;
-
-    if (!map[h]) map[h] = [];
-    map[h].push(v);
-  });
-
-  let labels = [];
-  let values = [];
-
-  for (let h in map) {
-    let avg = map[h].reduce((a,b)=>a+b,0)/map[h].length;
-    labels.push(h);
-    values.push(avg.toFixed(1));
-  }
-
-  new Chart(chartHuyen, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{ label: "% TB", data: values }]
-    }
-  });
-}
-
-
-// ================= ALERT =================
-function showAlert() {
-
-  let bad = currentData.filter(r => parseFloat(r["TK 24h"]) < 85);
-
-  if (bad.length > 0) {
-    document.getElementById("alertBox").innerHTML =
-      `<div class="alert">⚠️ Có ${bad.length} nhân viên không đạt!</div>`;
-  }
-}
-
-
-// ================= TOP =================
-function renderTop() {
-
-  let sorted = [...currentData].sort((a,b)=>
-    parseFloat(a["TK 24h"]) - parseFloat(b["TK 24h"])
-  );
-
-  let top = sorted.slice(0,5);
-
-  let html = "";
-
-  top.forEach(r => {
-    html += `<div class="card top">
-      ${r["Nhân viên"]} - ${r["TTH"]} (${r["TK 24h"]}%)
-    </div>`;
-  });
-
-  document.getElementById("top").innerHTML = html;
-}
-
-
-// ================= LIST =================
-function renderList(data = currentData) {
-
-  let html = "";
-
-  data.forEach(r => {
-
-    let v = parseFloat(r["TK 24h"]) || 0;
-
-    if (statusFilter === "bad" && v >= 85) return;
-    if (statusFilter === "good" && v < 85) return;
-
-    html += `
+      html += `
       <div class="card">
-        <b>${r["Nhân viên"]}</b> - ${r["TTH"]}<br>
-        📦 ${r["Tổng TB TKM"] || 0}
-        | 🚨 ${r["SC"] || 0}
-        | 🏆 ${r["Vị thứ"] || "-"}<br>
 
-        <div class="${v < 85 ? "bad" : "good"}">
-          TK 24h: ${v}% (Target 85%)
-        </div>
+        <h3>👤 ${row.nhan_vien} - ${row.huyen}</h3>
+
+        <div>📦 Triển khai mới: ${row.tong_tk_moi}</div>
+        <div>📦 Đường dây có sẵn: ${row.tong_tk_co_san}</div>
+        <div>🚨 Tổng sự cố: ${row.tong_sc}</div>
+        <div>🏆 Xếp hạng: ${row.vi_tri}</div>
+
+        <br>
+
+        <b>🔵 Triển khai mới</b>
+        ${renderKPI("3h", row.tk_3h_moi, row.target_3h_moi)}
+        ${renderKPI("10h", row.tk_10h_moi, row.target_10h_moi)}
+        ${renderKPI("16h", row.tk_16h_moi, row.target_16h_moi)}
+        ${renderKPI("24h", row.tk_24h_moi, row.target_24h_moi)}
+
+        <br>
+
+        <b>🟢 Triển khai có sẵn</b>
+        ${renderKPI("3h", row.tk_3h_co_san, row.target_3h_co_san)}
+        ${renderKPI("10h", row.tk_10h_co_san, row.target_10h_co_san)}
+        ${renderKPI("16h", row.tk_16h_co_san, row.target_16h_co_san)}
+        ${renderKPI("24h", row.tk_24h_co_san, row.target_24h_co_san)}
+
+        <br>
+
+        <b>🟡 Triển khai hẹn</b>
+        ${renderKPI("Tích hẹn", row.tich_hen, row.target_tich_hen)}
+
+        <br>
+
+        <b>🔴 Sự cố</b>
+        ${renderKPI("3h", row.sc_3h, row.target_sc_3h)}
+        ${renderKPI("10h", row.sc_10h, row.target_sc_10h)}
+        ${renderKPI("16h", row.sc_16h, row.target_sc_16h)}
+        ${renderKPI("24h", row.sc_24h, row.target_sc_24h)}
+        ${renderKPI("HOT", row.sc_hot, row.target_sc_hot)}
+        ${renderKPI("VIP", row.sc_vip, row.target_sc_vip)}
+        ${renderKPI("SOC 24h", row.sc_soc24, row.target_sc_soc24)}
+        ${renderKPI("SOC 72h", row.sc_soc72, row.target_sc_soc72)}
+        ${renderKPI("Hẹn", row.sc_hen, row.target_sc_hen)}
+
+        ${renderKPI("Sự cố lặp", row.sc_lap, row.target_sc_lap, "reverse")}
+
       </div>
-    `;
+      `;
+
+    });
+
+    document.getElementById("data").innerHTML = html;
+
   });
-
-  document.getElementById("list").innerHTML = html;
 }
 
-
-// ================= FILTER =================
-function applyFilter() {
-
-  let nv = document.getElementById("nv").value.toLowerCase();
-  let huyen = document.getElementById("huyen").value.toLowerCase();
-
-  let filtered = currentData.filter(r =>
-    (r["Nhân viên"]||"").toLowerCase().includes(nv) &&
-    (r["TTH"]||"").toLowerCase().includes(huyen)
-  );
-
-  renderList(filtered);
-}
-
-
-// ================= STATUS =================
-function filterStatus(val) {
-  statusFilter = val;
-  renderList();
-}
-
-
-// ================= AUTO =================
-setInterval(loadData, 30000);
-
-
-// ================= START =================
+// load lần đầu
 loadData();
+
+// auto reload 30s
+setInterval(loadData, 30000);
 
 </script>
 
