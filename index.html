@@ -15,9 +15,9 @@ body {
 .menu {
   margin-bottom: 10px;
 }
-.menu button {
-  padding: 6px 10px;
-  margin-right: 5px;
+.menu select {
+  padding: 6px;
+  border-radius: 6px;
 }
 
 /* ===== CARD ===== */
@@ -59,7 +59,6 @@ input, textarea {
   body { font-size: 13px; }
   .card { font-size: 13px; }
 }
-
 </style>
 </head>
 
@@ -67,15 +66,17 @@ input, textarea {
 
 <h2>📊 KPI CĐBR</h2>
 
-<!-- ===== MENU CHUYỂN TAB ===== -->
+<!-- ===== DROPDOWN ===== -->
 <div class="menu">
-  <button onclick="showPage('kpi')">📊 KPI</button>
-  <button onclick="showPage('form')">📋 Nhập liệu</button>
+  <select onchange="changePage(this.value)">
+    <option value="kpi">📊 KPI</option>
+    <option value="form">📋 Nhập liệu</option>
+  </select>
 </div>
 
 <button onclick="reloadPage()" class="reload-btn">🔄</button>
 
-<!-- ================= KPI PAGE ================= -->
+<!-- ================= KPI ================= -->
 <div id="page-kpi">
 
 🔍 Nhân viên <input id="nv" onkeyup="filter()">
@@ -93,7 +94,7 @@ input, textarea {
 
 </div>
 
-<!-- ================= FORM PAGE ================= -->
+<!-- ================= FORM ================= -->
 <div id="page-form" style="display:none;">
 
 <h3>📋 Nhập dữ liệu hiện trường</h3>
@@ -104,7 +105,6 @@ input, textarea {
 <button onclick="getLocation()">📍 Lấy tọa độ</button>
 <div id="gps"></div>
 
-<!-- CHỤP ẢNH -->
 <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
 <img id="preview" style="width:100%;margin-top:5px;">
 
@@ -116,19 +116,31 @@ input, textarea {
 
 const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
 
-/* ===== API FORM (BẠN THAY LINK NÀY) ===== */
-const API_FORM = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Nhap lieu";
+/* 🔴 THAY API FORM */
+const API_FORM = "YOUR_API_FORM";
 
 let allData = [];
 let showBadOnly = false;
 
-/* ===== CHUYỂN TAB ===== */
+/* ===== DROPDOWN ===== */
+function changePage(p){
+  localStorage.setItem("page", p);
+  showPage(p);
+}
+
 function showPage(p){
   document.getElementById("page-kpi").style.display = p==="kpi"?"block":"none";
   document.getElementById("page-form").style.display = p==="form"?"block":"none";
 }
 
-/* ===== KPI LOGIC (GIỮ NGUYÊN) ===== */
+/* LOAD LẠI TRANG ĐÃ CHỌN */
+let savedPage = localStorage.getItem("page") || "kpi";
+showPage(savedPage);
+setTimeout(()=>{
+  document.querySelector(".menu select").value = savedPage;
+},100);
+
+/* ===== KPI ===== */
 function safe(v){ return v ?? 0; }
 function toNumber(v){
   if(!v) return 0;
@@ -141,7 +153,6 @@ function check(v,t,type="up"){
   return v>=t;
 }
 
-/* ===== KPI SCORE ===== */
 function calcScore(r){
   let total=0, ok=0;
   function add(v,t,type="up"){
@@ -149,16 +160,13 @@ function calcScore(r){
     total++;
     if(check(v,t,type)) ok++;
   }
-
   add(r.tk_3h_moi,r.target_3h_moi);
   add(r.tk_10h_moi,r.target_10h_moi);
   add(r.tk_16h_moi,r.target_16h_moi);
   add(r.tk_24h_moi,r.target_24h_moi);
-
   return total?ok/total:0;
 }
 
-/* ===== LOAD KPI ===== */
 function load(){
   fetch(API)
   .then(r=>r.json())
@@ -172,7 +180,6 @@ function load(){
   });
 }
 
-/* ===== RENDER KPI ===== */
 function render(data){
   let html="";
   data.forEach((r,i)=>{
@@ -182,6 +189,21 @@ function render(data){
     </div>`;
   });
   document.getElementById("data").innerHTML=html;
+}
+
+function filter(){
+  let nv=document.getElementById("nv").value.toLowerCase();
+  let h=document.getElementById("huyen").value.toLowerCase();
+  let f=allData.filter(r=>
+    (r.nhan_vien||"").toLowerCase().includes(nv) &&
+    (r.huyen||"").toLowerCase().includes(h)
+  );
+  render(f);
+}
+
+function onlyBad(v){
+  showBadOnly=v;
+  render(allData);
 }
 
 function top5(){
@@ -202,11 +224,9 @@ function topWorst(){
   document.getElementById("worst").innerHTML=html;
 }
 
-/* ===== FORM LOGIC ===== */
-
+/* ===== FORM ===== */
 let lat="", lng="", imgBase64="";
 
-/* GPS */
 function getLocation(){
   navigator.geolocation.getCurrentPosition(pos=>{
     lat=pos.coords.latitude;
@@ -215,7 +235,6 @@ function getLocation(){
   });
 }
 
-/* ẢNH */
 function preview(input){
   let file=input.files[0];
   let reader=new FileReader();
@@ -226,9 +245,7 @@ function preview(input){
   reader.readAsDataURL(file);
 }
 
-/* GỬI DATA */
 function submitData(){
-
   let data={
     ten:document.getElementById("ten").value,
     noidung:document.getElementById("noidung").value,
@@ -241,7 +258,7 @@ function submitData(){
     method:"POST",
     body:JSON.stringify(data)
   })
-  .then(()=> alert("✅ Đã gửi thành công"));
+  .then(()=> alert("✅ Đã gửi"));
 }
 
 /* ===== RELOAD ===== */
