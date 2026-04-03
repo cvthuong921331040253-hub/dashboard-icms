@@ -356,7 +356,23 @@ function preview(input){
 }
 
 function submitData(){
-  alert("Gửi thành công!");
+
+  let data = {
+    ten: document.getElementById("ten").value,
+    noidung: document.getElementById("noidung").value,
+    lat: lat,
+    lng: lng,
+    img: imgBase64
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbwYXifzXHPM4mQHb7eSkdYCjrsvXjwyo1ryEeZW0TY34tOvHh34ChYn1Iuu1YMfKIpf/exec?sheet=Nhap lieu",{
+    method:"POST",
+    body: JSON.stringify(data)
+  })
+  .then(r=>r.text())
+  .then(()=>{
+    alert("✅ Đã gửi thành công");
+  });
 }
 
 /* ===== RELOAD ===== */
