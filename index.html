@@ -59,7 +59,7 @@ input {
 
 <h2>📊 KPI CĐBR</h2>
 
-<!-- 🔴 DROPDOWN -->
+<!-- DROPDOWN -->
 <div class="menu">
   <select onchange="changePage(this.value)">
     <option value="kpi">📊 KPI</option>
@@ -112,7 +112,7 @@ const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G
 let allData = [];
 let showBadOnly = false;
 
-/* ===== KPI GỐC (GIỮ NGUYÊN) ===== */
+/* ===== KPI ===== */
 
 function safe(v){ return v ?? 0; }
 
@@ -134,6 +134,7 @@ function check(v,t,type="up"){
 
 function calcScore(r){
   let total = 0, ok = 0;
+
   function add(v,t,type="up"){
     if(toNumber(t) === 0) return;
     total++;
@@ -145,9 +146,70 @@ function calcScore(r){
   add(r.tk_16h_moi,r.target_16h_moi);
   add(r.tk_24h_moi,r.target_24h_moi);
 
+  add(r.tk_3h_co_san,r.target_3h_co_san);
+  add(r.tk_10h_co_san,r.target_10h_co_san);
+  add(r.tk_16h_co_san,r.target_16h_co_san);
+  add(r.tk_24h_co_san,r.target_24h_co_san);
+
+  add(r.tich_hen,r.target_tich_hen);
+
+  add(r.sc_3h,r.target_sc_3h);
+  add(r.sc_10h,r.target_sc_10h);
+  add(r.sc_16h,r.target_sc_16h);
+  add(r.sc_24h,r.target_sc_24h);
+  add(r.sc_hot,r.target_sc_hot);
+  add(r.sc_vip,r.target_sc_vip);
+  add(r.sc_ht_24h,r.target_sc_ht_24h);
+  add(r.sc_soc_24h,r.target_sc_soc_24h);
+  add(r.sc_soc_72h,r.target_sc_soc_72h);
+  add(r.sc_hen,r.target_sc_hen);
+  add(r.sc_lap,r.target_sc_lap,"down");
+
   return total ? ok/total : 0;
 }
 
+function getBadKPI(r){
+  let badList = [];
+  function add(label,v,t,type="up"){
+    if(!check(v,t,type)) badList.push(label);
+  }
+
+  add("TK mới 3h",r.tk_3h_moi,r.target_3h_moi);
+  add("TK mới 10h",r.tk_10h_moi,r.target_10h_moi);
+  add("TK mới 16h",r.tk_16h_moi,r.target_16h_moi);
+  add("TK mới 24h",r.tk_24h_moi,r.target_24h_moi);
+
+  add("TK có sẵn 3h",r.tk_3h_co_san,r.target_3h_co_san);
+  add("TK có sẵn 10h",r.tk_10h_co_san,r.target_10h_co_san);
+  add("TK có sẵn 16h",r.tk_16h_co_san,r.target_16h_co_san);
+  add("TK có sẵn 24h",r.tk_24h_co_san,r.target_24h_co_san);
+
+  add("Tích hẹn",r.tich_hen,r.target_tich_hen);
+
+  add("SC 3h",r.sc_3h,r.target_sc_3h);
+  add("SC 10h",r.sc_10h,r.target_sc_10h);
+  add("SC 16h",r.sc_16h,r.target_sc_16h);
+  add("SC 24h",r.sc_24h,r.target_sc_24h);
+  add("SC HOT",r.sc_hot,r.target_sc_hot);
+  add("SC VIP",r.sc_vip,r.target_sc_vip);
+  add("SC HT 24h",r.sc_ht_24h,r.target_sc_ht_24h);
+  add("SC SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h);
+  add("SC SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h);
+  add("SC Hẹn",r.sc_hen,r.target_sc_hen);
+  add("SC Lặp",r.sc_lap,r.target_sc_lap,"down");
+
+  return badList;
+}
+
+function kpi(label,v,t,type="up"){
+  let ok = check(v,t,type);
+  if(showBadOnly && ok) return "";
+  return `<div class="${ok?'ok':'fail'}">
+    - ${label}: ${toNumber(v)}% (target ${toNumber(t)}%) ${ok?'✅':'❌'}
+  </div>`;
+}
+
+/* ===== LOAD ===== */
 function load(){
   fetch(API)
   .then(r=>r.json())
@@ -161,19 +223,66 @@ function load(){
   });
 }
 
-/* ===== KPI RENDER (ĐẦY ĐỦ) ===== */
-
+/* ===== RENDER FULL ===== */
 function render(data){
   let html = "";
+
   data.forEach((r,i)=>{
-    html += `<div class="card">
-      <b>${r.nhan_vien} - ${r.huyen}</b><br>
-      Rank: ${i+1}
-    </div>`;
+
+    let badList = getBadKPI(r);
+    if(showBadOnly && badList.length === 0) return;
+
+    let htmlCard = `
+    <div class="card">
+      <b>👤 ${safe(r.nhan_vien)} - ${safe(r.huyen)}</b><br>
+      📦 TK mới: ${safe(r.tong_tk_moi)} |
+      📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
+      🚨 SC: ${safe(r.tong_sc)} |
+      🏆 Rank: ${i+1} |
+      ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
+      <br><br>
+    `;
+
+    let sec1 = `<b>🔵 Triển khai mới</b>
+    ${kpi("3h",r.tk_3h_moi,r.target_3h_moi)}
+    ${kpi("10h",r.tk_10h_moi,r.target_10h_moi)}
+    ${kpi("16h",r.tk_16h_moi,r.target_16h_moi)}
+    ${kpi("24h",r.tk_24h_moi,r.target_24h_moi)}`;
+    if(!showBadOnly || sec1.includes("fail")) htmlCard += sec1;
+
+    let sec2 = `<b>🟢 Triển khai có sẵn</b>
+    ${kpi("3h",r.tk_3h_co_san,r.target_3h_co_san)}
+    ${kpi("10h",r.tk_10h_co_san,r.target_10h_co_san)}
+    ${kpi("16h",r.tk_16h_co_san,r.target_16h_co_san)}
+    ${kpi("24h",r.tk_24h_co_san,r.target_24h_co_san)}`;
+    if(!showBadOnly || sec2.includes("fail")) htmlCard += sec2;
+
+    let sec3 = `<b>🟡 Triển khai hẹn</b>
+    ${kpi("Tích hẹn",r.tich_hen,r.target_tich_hen)}`;
+    if(!showBadOnly || sec3.includes("fail")) htmlCard += sec3;
+
+    let sec4 = `<b>🔴 Sự cố</b>
+    ${kpi("3h",r.sc_3h,r.target_sc_3h)}
+    ${kpi("10h",r.sc_10h,r.target_sc_10h)}
+    ${kpi("16h",r.sc_16h,r.target_sc_16h)}
+    ${kpi("24h",r.sc_24h,r.target_sc_24h)}
+    ${kpi("HOT",r.sc_hot,r.target_sc_hot)}
+    ${kpi("VIP",r.sc_vip,r.target_sc_vip)}
+    ${kpi("HT 24h",r.sc_ht_24h,r.target_sc_ht_24h)}
+    ${kpi("SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h)}
+    ${kpi("SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h)}
+    ${kpi("Hẹn",r.sc_hen,r.target_sc_hen)}
+    ${kpi("Lặp",r.sc_lap,r.target_sc_lap,"down")}`;
+    if(!showBadOnly || sec4.includes("fail")) htmlCard += sec4;
+
+    htmlCard += `</div>`;
+    html += htmlCard;
   });
+
   document.getElementById("data").innerHTML = html;
 }
 
+/* ===== FILTER ===== */
 function filter(){
   let nv = document.getElementById("nv").value.toLowerCase();
   let h = document.getElementById("huyen").value.toLowerCase();
@@ -186,16 +295,18 @@ function filter(){
   render(f);
 }
 
+/* ===== CHECKBOX ===== */
 function onlyBad(v){
   showBadOnly = v;
   render(allData);
 }
 
+/* ===== TOP ===== */
 function top5(){
   let s = [...allData].slice(0,5);
   let html="";
   s.forEach((r,i)=>{
-    html += `<div class="card top">TOP ${i+1} - ${r.nhan_vien}</div>`;
+    html += `<div class="card top">🏆 TOP ${i+1} - ${r.nhan_vien} - ${r.huyen}</div>`;
   });
   document.getElementById("top").innerHTML = html;
 }
@@ -204,13 +315,12 @@ function topWorst(){
   let s = [...allData].slice(-10).reverse();
   let html="";
   s.forEach((r,i)=>{
-    html += `<div class="card worst">TOP KÉM ${i+1} - ${r.nhan_vien}</div>`;
+    html += `<div class="card worst">❌ TOP KÉM ${i+1} - ${r.nhan_vien} - ${r.huyen}</div>`;
   });
   document.getElementById("worst").innerHTML = html;
 }
 
-/* ===== FORM ===== */
-
+/* ===== DROPDOWN ===== */
 function changePage(p){
   localStorage.setItem("page", p);
   document.getElementById("page-kpi").style.display = p==="kpi"?"block":"none";
@@ -220,10 +330,18 @@ function changePage(p){
 let saved = localStorage.getItem("page") || "kpi";
 changePage(saved);
 
+setTimeout(()=>{
+  document.querySelector("select").value = saved;
+},100);
+
+/* ===== FORM ===== */
+let lat="", lng="", imgBase64="";
+
 function getLocation(){
   navigator.geolocation.getCurrentPosition(pos=>{
-    document.getElementById("gps").innerText =
-      pos.coords.latitude + ", " + pos.coords.longitude;
+    lat = pos.coords.latitude;
+    lng = pos.coords.longitude;
+    document.getElementById("gps").innerText = lat + ", " + lng;
   });
 }
 
@@ -231,7 +349,8 @@ function preview(input){
   let file = input.files[0];
   let reader = new FileReader();
   reader.onload = e=>{
-    document.getElementById("preview").src = e.target.result;
+    imgBase64 = e.target.result;
+    document.getElementById("preview").src = imgBase64;
   };
   reader.readAsDataURL(file);
 }
