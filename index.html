@@ -11,16 +11,6 @@ body {
   background: #f5f7fb;
 }
 
-/* ===== MENU ===== */
-.menu {
-  margin-bottom: 10px;
-}
-.menu select {
-  padding: 6px;
-  border-radius: 6px;
-}
-
-/* ===== CARD ===== */
 .card {
   background: white;
   border-radius: 8px;
@@ -35,10 +25,9 @@ body {
 .top { background: #e8f5e9; }
 .worst { background: #ffeaea; }
 
-input, textarea {
-  padding: 6px;
-  margin: 4px 0;
-  width: 100%;
+input {
+  padding: 4px;
+  margin-right: 6px;
 }
 
 .reload-btn {
@@ -50,14 +39,21 @@ input, textarea {
   border-radius: 40px;
   background: #2196f3;
   color: white;
-  font-size: 12px;
+  font-size: 10px;
   z-index: 9999;
 }
 
 /* ===== MOBILE ===== */
 @media (max-width: 600px) {
   body { font-size: 13px; }
+  h2 { font-size: 16px; }
   .card { font-size: 13px; }
+}
+
+/* ===== DROPDOWN ===== */
+.menu select {
+  padding: 6px;
+  border-radius: 6px;
 }
 </style>
 </head>
@@ -66,7 +62,7 @@ input, textarea {
 
 <h2>📊 KPI CĐBR</h2>
 
-<!-- ===== DROPDOWN ===== -->
+<!-- 🔴 DROPDOWN -->
 <div class="menu">
   <select onchange="changePage(this.value)">
     <option value="kpi">📊 KPI</option>
@@ -74,9 +70,9 @@ input, textarea {
   </select>
 </div>
 
-<button onclick="reloadPage()" class="reload-btn">🔄</button>
+<button onclick="reloadPage()" class="reload-btn">🔄 Reload</button>
 
-<!-- ================= KPI ================= -->
+<!-- 🔴 KPI (GIỮ NGUYÊN) -->
 <div id="page-kpi">
 
 🔍 Nhân viên <input id="nv" onkeyup="filter()">
@@ -94,10 +90,10 @@ input, textarea {
 
 </div>
 
-<!-- ================= FORM ================= -->
+<!-- 🔴 FORM -->
 <div id="page-form" style="display:none;">
 
-<h3>📋 Nhập dữ liệu hiện trường</h3>
+<h3>📋 Nhập dữ liệu</h3>
 
 <input id="ten" placeholder="Tên nhân viên">
 <textarea id="noidung" placeholder="Nội dung"></textarea>
@@ -108,7 +104,7 @@ input, textarea {
 <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
 <img id="preview" style="width:100%;margin-top:5px;">
 
-<button onclick="submitData()">🚀 Gửi dữ liệu</button>
+<button onclick="submitData()">🚀 Gửi</button>
 
 </div>
 
@@ -116,13 +112,123 @@ input, textarea {
 
 const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
 
-/* 🔴 THAY API FORM */
-const API_FORM = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Nhap lieu";
-
 let allData = [];
 let showBadOnly = false;
 
-/* ===== DROPDOWN ===== */
+/* ================= KPI (GIỮ NGUYÊN) ================= */
+
+function safe(v){ return v ?? 0; }
+
+function toNumber(v){
+  if(!v) return 0;
+  if(typeof v === "string" && v.includes("T")) return 0;
+  if(typeof v === "string"){
+    return parseFloat(v.replace("%","")) || 0;
+  }
+  return v;
+}
+
+function check(v,t,type="up"){
+  v = toNumber(v);
+  t = toNumber(t);
+  if(type==="down") return v <= t;
+  return v >= t;
+}
+
+function calcScore(r){
+  let total = 0, ok = 0;
+
+  function add(v,t,type="up"){
+    if(toNumber(t) === 0) return;
+    total++;
+    if(check(v,t,type)) ok++;
+  }
+
+  add(r.tk_3h_moi,r.target_3h_moi);
+  add(r.tk_10h_moi,r.target_10h_moi);
+  add(r.tk_16h_moi,r.target_16h_moi);
+  add(r.tk_24h_moi,r.target_24h_moi);
+
+  add(r.tk_3h_co_san,r.target_3h_co_san);
+  add(r.tk_10h_co_san,r.target_10h_co_san);
+  add(r.tk_16h_co_san,r.target_16h_co_san);
+  add(r.tk_24h_co_san,r.target_24h_co_san);
+
+  add(r.tich_hen,r.target_tich_hen);
+
+  add(r.sc_3h,r.target_sc_3h);
+  add(r.sc_10h,r.target_sc_10h);
+  add(r.sc_16h,r.target_sc_16h);
+  add(r.sc_24h,r.target_sc_24h);
+  add(r.sc_hot,r.target_sc_hot);
+  add(r.sc_vip,r.target_sc_vip);
+  add(r.sc_ht_24h,r.target_sc_ht_24h);
+  add(r.sc_soc_24h,r.target_sc_soc_24h);
+  add(r.sc_soc_72h,r.target_sc_soc_72h);
+  add(r.sc_hen,r.target_sc_hen);
+  add(r.sc_lap,r.target_sc_lap,"down");
+
+  return total ? ok/total : 0;
+}
+
+function getBadKPI(r){
+  let badList = [];
+  function add(label,v,t,type="up"){
+    if(!check(v,t,type)) badList.push(label);
+  }
+
+  add("TK mới 3h",r.tk_3h_moi,r.target_3h_moi);
+  add("TK mới 10h",r.tk_10h_moi,r.target_10h_moi);
+  add("TK mới 16h",r.tk_16h_moi,r.target_16h_moi);
+  add("TK mới 24h",r.tk_24h_moi,r.target_24h_moi);
+
+  add("TK có sẵn 3h",r.tk_3h_co_san,r.target_3h_co_san);
+  add("TK có sẵn 10h",r.tk_10h_co_san,r.target_10h_co_san);
+  add("TK có sẵn 16h",r.tk_16h_co_san,r.target_16h_co_san);
+  add("TK có sẵn 24h",r.tk_24h_co_san,r.target_24h_co_san);
+
+  add("Tích hẹn",r.tich_hen,r.target_tich_hen);
+
+  add("SC 3h",r.sc_3h,r.target_sc_3h);
+  add("SC 10h",r.sc_10h,r.target_sc_10h);
+  add("SC 16h",r.sc_16h,r.target_sc_16h);
+  add("SC 24h",r.sc_24h,r.target_sc_24h);
+  add("SC HOT",r.sc_hot,r.target_sc_hot);
+  add("SC VIP",r.sc_vip,r.target_sc_vip);
+  add("SC HT 24h",r.sc_ht_24h,r.target_sc_ht_24h);
+  add("SC SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h);
+  add("SC SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h);
+  add("SC Hẹn",r.sc_hen,r.target_sc_hen);
+  add("SC Lặp",r.sc_lap,r.target_sc_lap,"down");
+
+  return badList;
+}
+
+function kpi(label,v,t,type="up"){
+  let ok = check(v,t,type);
+  if(showBadOnly && ok) return "";
+  return `<div class="${ok?'ok':'fail'}">
+    - ${label}: ${toNumber(v)}% (target ${toNumber(t)}%) ${ok?'✅':'❌'}
+  </div>`;
+}
+
+function load(){
+  fetch(API)
+  .then(r=>r.json())
+  .then(res=>{
+    allData = res.data;
+
+    allData.forEach(r=> r.score = calcScore(r));
+    allData.sort((a,b)=> b.score - a.score);
+
+    render(allData);
+    top5();
+    topWorst();
+  });
+}
+
+/* ===== FORM + DROPDOWN (THÊM MỚI) ===== */
+
 function changePage(p){
   localStorage.setItem("page", p);
   showPage(p);
@@ -133,137 +239,40 @@ function showPage(p){
   document.getElementById("page-form").style.display = p==="form"?"block":"none";
 }
 
-/* LOAD LẠI TRANG ĐÃ CHỌN */
 let savedPage = localStorage.getItem("page") || "kpi";
 showPage(savedPage);
+
 setTimeout(()=>{
-  document.querySelector(".menu select").value = savedPage;
+  document.querySelector("select").value = savedPage;
 },100);
 
-/* ===== KPI ===== */
-function safe(v){ return v ?? 0; }
-function toNumber(v){
-  if(!v) return 0;
-  if(typeof v==="string") return parseFloat(v.replace("%",""))||0;
-  return v;
-}
-function check(v,t,type="up"){
-  v=toNumber(v); t=toNumber(t);
-  if(type==="down") return v<=t;
-  return v>=t;
-}
-
-function calcScore(r){
-  let total=0, ok=0;
-  function add(v,t,type="up"){
-    if(toNumber(t)===0) return;
-    total++;
-    if(check(v,t,type)) ok++;
-  }
-  add(r.tk_3h_moi,r.target_3h_moi);
-  add(r.tk_10h_moi,r.target_10h_moi);
-  add(r.tk_16h_moi,r.target_16h_moi);
-  add(r.tk_24h_moi,r.target_24h_moi);
-  return total?ok/total:0;
-}
-
-function load(){
-  fetch(API)
-  .then(r=>r.json())
-  .then(res=>{
-    allData = res.data;
-    allData.forEach(r=> r.score=calcScore(r));
-    allData.sort((a,b)=> b.score-a.score);
-    render(allData);
-    top5();
-    topWorst();
-  });
-}
-
-function render(data){
-  let html="";
-  data.forEach((r,i)=>{
-    html += `<div class="card">
-      <b>${r.nhan_vien} - ${r.huyen}</b><br>
-      Rank: ${i+1}
-    </div>`;
-  });
-  document.getElementById("data").innerHTML=html;
-}
-
-function filter(){
-  let nv=document.getElementById("nv").value.toLowerCase();
-  let h=document.getElementById("huyen").value.toLowerCase();
-  let f=allData.filter(r=>
-    (r.nhan_vien||"").toLowerCase().includes(nv) &&
-    (r.huyen||"").toLowerCase().includes(h)
-  );
-  render(f);
-}
-
-function onlyBad(v){
-  showBadOnly=v;
-  render(allData);
-}
-
-function top5(){
-  let s=[...allData].slice(0,5);
-  let html="";
-  s.forEach((r,i)=>{
-    html+=`<div class="card top">TOP ${i+1} - ${r.nhan_vien}</div>`;
-  });
-  document.getElementById("top").innerHTML=html;
-}
-
-function topWorst(){
-  let s=[...allData].slice(-10).reverse();
-  let html="";
-  s.forEach((r,i)=>{
-    html+=`<div class="card worst">TOP KÉM ${i+1} - ${r.nhan_vien}</div>`;
-  });
-  document.getElementById("worst").innerHTML=html;
-}
-
-/* ===== FORM ===== */
 let lat="", lng="", imgBase64="";
 
 function getLocation(){
   navigator.geolocation.getCurrentPosition(pos=>{
-    lat=pos.coords.latitude;
-    lng=pos.coords.longitude;
+    lat = pos.coords.latitude;
+    lng = pos.coords.longitude;
     document.getElementById("gps").innerText = lat + ", " + lng;
   });
 }
 
 function preview(input){
-  let file=input.files[0];
-  let reader=new FileReader();
-  reader.onload=e=>{
-    imgBase64=e.target.result;
-    document.getElementById("preview").src=imgBase64;
+  let file = input.files[0];
+  let reader = new FileReader();
+  reader.onload = e=>{
+    imgBase64 = e.target.result;
+    document.getElementById("preview").src = imgBase64;
   };
   reader.readAsDataURL(file);
 }
 
 function submitData(){
-  let data={
-    ten:document.getElementById("ten").value,
-    noidung:document.getElementById("noidung").value,
-    lat:lat,
-    lng:lng,
-    img:imgBase64
-  };
-
-  fetch(API_FORM,{
-    method:"POST",
-    body:JSON.stringify(data)
-  })
-  .then(()=> alert("✅ Đã gửi"));
+  fetch("API_FORM_CUA_BAN",{method:"POST"});
 }
 
 /* ===== RELOAD ===== */
 function reloadPage(){
-  document.body.style.opacity=0.5;
+  document.body.style.opacity = 0.5;
   setTimeout(()=> location.reload(),800);
 }
 
