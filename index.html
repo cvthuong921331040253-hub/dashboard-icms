@@ -54,7 +54,6 @@ input {
 
 🔍 Nhân viên <input id="nv" onkeyup="filter()">
 🏢 Huyện <input id="huyen" onkeyup="filter()">
-<label><input type="checkbox" onchange="onlyBad(this.checked)"> Không đạt</label>
 
 <h3>🏆 TOP KPI xuất sắc</h3>
 <div id="top"></div>
@@ -255,21 +254,10 @@ function top5(){
 
     html += `<div class="${cls}">
       ${icon} TOP ${i+1} - <b>${r.nhan_vien}</b> - ${r.huyen}
-      <br>🎯 Score: ${r.score}%
     </div>`;
   });
 
   document.getElementById("top").innerHTML = html;
-}
-
-// ===== ALERT =====
-function alertBox(){
-  let bad = allData.filter(r => calcScore(r) < 100);
-
-  if(bad.length>0){
-    document.getElementById("alert").innerHTML =
-      `<div class="alert">⚠️ ${bad.length} nhân viên chưa đạt KPI</div>`;
-  }
 }
 
 // ===== AUTO =====
