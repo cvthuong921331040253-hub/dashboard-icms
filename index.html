@@ -122,6 +122,10 @@ function getBadKPI(r){
 // ===== KPI =====
 function kpi(label,v,t,type="up"){
   let ok = check(v,t,type);
+
+  // nếu đang bật lọc KPI kém → ẩn KPI đạt
+  if(showBadOnly && ok) return "";
+
   return `<div class="${ok?'ok':'fail'}">
     - ${label}: ${toNumber(v)}% (target ${toNumber(t)}%) ${ok?'✅':'❌'}
   </div>`;
