@@ -47,7 +47,7 @@ input {
 <body>
 
 <h2>📊 KPI CĐBR</h2>
-<button onclick="location.reload()" class="reload-btn">🔄 Reload</button>
+<button onclick="reloadPage()" class="reload-btn">🔄 Reload</button>
 🔍 Nhân viên <input id="nv" onkeyup="filter()">
 🏢 Huyện <input id="huyen" onkeyup="filter()">
 <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
@@ -279,7 +279,15 @@ function topWorst(){
   });
   document.getElementById("worst").innerHTML = html;
 }
+function reloadPage(){
+  // làm mờ màn hình
+  document.body.style.opacity = 0.5;
 
+  // delay nhẹ rồi reload
+  setTimeout(()=>{
+    location.reload();
+  }, 300);
+}
 // START
 load();
 setInterval(load,30000);
