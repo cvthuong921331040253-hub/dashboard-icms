@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>KPI PRO FINAL</title>
+<title>KPI PRO MAX</title>
 
 <style>
 body {
@@ -22,7 +22,14 @@ body {
 .ok { color: green; }
 .fail { color: red; font-weight: bold; }
 
-.top { background: #ffeaea; }
+.top {
+  background: #fff3cd;
+  border-left: 5px solid gold;
+}
+
+.gold { border-left: 6px solid gold; }
+.silver { border-left: 6px solid silver; }
+.bronze { border-left: 6px solid #cd7f32; }
 
 input {
   padding: 6px;
@@ -41,7 +48,7 @@ input {
 
 <body>
 
-<h2>📊 KPI CĐBR</h2>
+<h2>📊 KPI CĐBR PRO MAX</h2>
 
 <div id="alert"></div>
 
@@ -49,11 +56,12 @@ input {
 🏢 Huyện <input id="huyen" onkeyup="filter()">
 <label><input type="checkbox" onchange="onlyBad(this.checked)"> Không đạt</label>
 
-<h3>🏆 Top KPI tốt</h3>
+<h3>🏆 TOP KPI xuất sắc</h3>
 <div id="top"></div>
 
 <h3>📋 Danh sách</h3>
 <div id="data"></div>
+
 <script>
 
 const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
@@ -66,9 +74,14 @@ function safe(v){ return v ?? 0; }
 
 function toNumber(v){
   if(!v) return 0;
+
+  // fix lỗi date
+  if(typeof v === "string" && v.includes("T")) return 0;
+
   if(typeof v === "string"){
     return parseFloat(v.replace("%","")) || 0;
   }
+
   return v;
 }
 
@@ -80,12 +93,58 @@ function check(v,t,type="up"){
   return v >= t;
 }
 
-// ===== RENDER KPI =====
+// ===== KPI HTML =====
 function kpi(label,v,t,type="up"){
+  v = toNumber(v);
+  t = toNumber(t);
+
   let ok = check(v,t,type);
+
   return `<div class="${ok?'ok':'fail'}">
-    - ${label}: ${toNumber(v)}% (target ${t}%) ${ok?'✅':'❌'}
+    - ${label}: ${v}% (target ${t}%) ${ok?'✅':'❌'}
   </div>`;
+}
+
+// ===== TÍNH ĐIỂM KPI =====
+function calcScore(r){
+
+  let score = 0;
+  let total = 0;
+
+  function add(v,t,type="up"){
+    total++;
+    if(check(v,t,type)) score++;
+  }
+
+  // triển khai mới
+  add(r.tk_3h_moi,r.target_3h_moi);
+  add(r.tk_10h_moi,r.target_10h_moi);
+  add(r.tk_16h_moi,r.target_16h_moi);
+  add(r.tk_24h_moi,r.target_24h_moi);
+
+  // có sẵn
+  add(r.tk_3h_co_san,r.target_3h_co_san);
+  add(r.tk_10h_co_san,r.target_10h_co_san);
+  add(r.tk_16h_co_san,r.target_16h_co_san);
+  add(r.tk_24h_co_san,r.target_24h_co_san);
+
+  // hẹn
+  add(r.tich_hen,r.target_tich_hen);
+
+  // sự cố
+  add(r.sc_3h,r.target_sc_3h);
+  add(r.sc_10h,r.target_sc_10h);
+  add(r.sc_16h,r.target_sc_16h);
+  add(r.sc_24h,r.target_sc_24h);
+  add(r.sc_hot,r.target_sc_hot);
+  add(r.sc_vip,r.target_sc_vip);
+  add(r.sc_ht_24h,r.target_sc_ht_24h);
+  add(r.sc_soc24,r.target_sc_soc_24h);
+  add(r.sc_soc72,r.target_sc_soc_72h);
+  add(r.sc_hen,r.target_sc_hen);
+  add(r.sc_lap,r.target_sc_lap,"down");
+
+  return Math.round((score/total)*100);
 }
 
 // ===== LOAD =====
@@ -108,9 +167,9 @@ function render(data){
 
   data.forEach(r=>{
 
-    let v24 = toNumber(r.tk_24h_moi);
+    let score = calcScore(r);
 
-    if(showBadOnly && v24 >= toNumber(r.target_24h_moi)) return;
+    if(showBadOnly && score >= 100) return;
 
     html += `
     <div class="card">
@@ -118,7 +177,8 @@ function render(data){
       📦 TK mới: ${safe(r.tong_tk_moi)} |
       📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
       🚨 SC: ${safe(r.tong_sc)} |
-      🏆 Xếp hạng: ${safe(r.vi_tri)}
+      🏆 Rank: ${safe(r.vi_tri)} |
+      🎯 Score: <b>${score}%</b>
 
       <br><br>
 
@@ -128,7 +188,7 @@ function render(data){
       ${kpi("16h",r.tk_16h_moi,r.target_16h_moi)}
       ${kpi("24h",r.tk_24h_moi,r.target_24h_moi)}
 
-      <b>🟢 Tiển khai có sẵn</b>
+      <b>🟢 Triển khai có sẵn</b>
       ${kpi("3h",r.tk_3h_co_san,r.target_3h_co_san)}
       ${kpi("10h",r.tk_10h_co_san,r.target_10h_co_san)}
       ${kpi("16h",r.tk_16h_co_san,r.target_16h_co_san)}
@@ -145,8 +205,8 @@ function render(data){
       ${kpi("HOT",r.sc_hot,r.target_sc_hot)}
       ${kpi("VIP",r.sc_vip,r.target_sc_vip)}
       ${kpi("HT 24h",r.sc_ht_24h,r.target_sc_ht_24h)}
-      ${kpi("SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h)}
-      ${kpi("SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h)}
+      ${kpi("SOC 24h",r.sc_soc24,r.target_sc_soc_24h)}
+      ${kpi("SOC 72h",r.sc_soc72,r.target_sc_soc_72h)}
       ${kpi("Hẹn",r.sc_hen,r.target_sc_hen)}
       ${kpi("Lặp",r.sc_lap,r.target_sc_lap,"down")}
     </div>`;
@@ -174,16 +234,28 @@ function onlyBad(v){
   render(allData);
 }
 
-// ===== TOP =====
+// ===== TOP PRO =====
 function top5(){
-  let s = [...allData].sort((a,b)=>
-    toNumber(a.tk_24h_moi) - toNumber(b.tk_24h_moi)
-  ).slice(0,5);
+
+  let s = [...allData]
+    .map(r => ({...r, score: calcScore(r)}))
+    .sort((a,b)=> b.score - a.score)
+    .slice(0,5);
 
   let html="";
-  s.forEach(r=>{
-    html += `<div class="card top">
-      ${r.nhan_vien} - ${r.huyen} (${r.tk_24h_moi}%)
+
+  s.forEach((r,i)=>{
+
+    let icon = "🏅";
+    let cls = "top";
+
+    if(i===0){ icon="🥇"; cls="card top gold"; }
+    else if(i===1){ icon="🥈"; cls="card top silver"; }
+    else if(i===2){ icon="🥉"; cls="card top bronze"; }
+
+    html += `<div class="${cls}">
+      ${icon} TOP ${i+1} - <b>${r.nhan_vien}</b> - ${r.huyen}
+      <br>🎯 Score: ${r.score}%
     </div>`;
   });
 
@@ -192,13 +264,11 @@ function top5(){
 
 // ===== ALERT =====
 function alertBox(){
-  let bad = allData.filter(r =>
-    !check(r.tk_24h_moi,r.target_24h_moi)
-  );
+  let bad = allData.filter(r => calcScore(r) < 100);
 
   if(bad.length>0){
     document.getElementById("alert").innerHTML =
-      `<div class="alert">⚠️ ${bad.length} nhân viên không đạt</div>`;
+      `<div class="alert">⚠️ ${bad.length} nhân viên chưa đạt KPI</div>`;
   }
 }
 
