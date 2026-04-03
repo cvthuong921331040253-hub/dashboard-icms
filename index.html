@@ -1,64 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard Taget CDBR</title>
+<meta charset="UTF-8">
+<title>Dashboard Target</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      padding: 20px;
-    }
+<style>
+body { font-family: Arial; padding: 20px; }
+table { border-collapse: collapse; width: 100%; font-size: 12px; }
+th, td { border: 1px solid #ccc; padding: 5px; }
+th { background: #f2f2f2; }
 
-    h2 {
-      margin-top: 10px;
-    }
+.red { background-color: #ffcccc; }
 
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      font-size: 13px;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 6px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f2f2f2;
-    }
-
-    .red {
-      background-color: #ffcccc;
-    }
-
-    .box {
-      padding: 10px;
-      background: #f5f5f5;
-      margin-bottom: 10px;
-      border-radius: 5px;
-    }
-  </style>
+.box {
+  padding: 10px;
+  background: #f5f5f5;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+</style>
 </head>
 
 <body>
 
 <h2>📊 Dashboard</h2>
-
 <div class="box" id="dashboard"></div>
 
-<label>
-  <input type="checkbox" onchange="onlyOpen(this.checked)">
-  Chỉ hiện chưa đóng
-</label>
+<br>
+
+🔍 Nhân viên:
+<input type="text" id="filterName" onkeyup="applyFilter()">
+
+🏢 Huyện:
+<input type="text" id="filterHuyen" onkeyup="applyFilter()">
 
 <br><br>
 
-<h2>📋 Dữ liệu</h2>
-
 <select onchange="loadData(this.value)">
+  <option value="ICMS">ICMS</option>
   <option value="Taget CDBR">Taget CDBR</option>
 </select>
 
@@ -67,7 +46,9 @@
 <div id="data"></div>
 
 <script>
+
 let currentData = [];
+let currentHeaders = [];
 
 function loadData(sheet) {
   const api = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=" + sheet;
@@ -77,28 +58,57 @@ function loadData(sheet) {
     .then(res => {
 
       currentData = res.data;
+      currentHeaders = res.headers;
 
-      renderTable(currentData, res.headers);
+      renderTable(currentData);
 
-      // dashboard
-      let total = res.data.length;
-
-      let chuaDong = res.data.filter(r => r["Trạng thái wo"] == "Chưa đóng").length;
-
-      let percent = ((chuaDong / total) * 100).toFixed(1);
-
-      document.getElementById("dashboard").innerHTML = `
-        <b>Tổng:</b> ${total} <br>
-        <b>Chưa đóng:</b> <span style="color:red">${chuaDong}</span> <br>
-        <b>Tỷ lệ:</b> <span style="color:red">${percent}%</span>
-      `;
+      updateDashboard(currentData);
     });
 }
 
-function renderTable(data, headers) {
+function applyFilter() {
+  let name = document.getElementById("filterName").value.toLowerCase();
+  let huyen = document.getElementById("filterHuyen").value.toLowerCase();
+
+  let filtered = currentData.filter(r =>
+    (r["Nhân viên"] || "").toLowerCase().includes(name) &&
+    (r["TTH"] || "").toLowerCase().includes(huyen)
+  );
+
+  renderTable(filtered);
+  updateDashboard(filtered);
+}
+
+function updateDashboard(data) {
+  let total = data.length;
+
+  let khongDat = 0;
+
+  data.forEach(row => {
+    for (let key in row) {
+      if (key.toLowerCase().includes("target")) {
+        let val = parseFloat(row[key]);
+        if (!isNaN(val) && val < 100) {
+          khongDat++;
+          break;
+        }
+      }
+    }
+  });
+
+  let percent = total ? ((khongDat / total) * 100).toFixed(1) : 0;
+
+  document.getElementById("dashboard").innerHTML = `
+    Tổng: ${total} <br>
+    Không đạt: <span style="color:red">${khongDat}</span><br>
+    Tỷ lệ: <span style="color:red">${percent}%</span>
+  `;
+}
+
+function renderTable(data) {
   let html = "<table><tr>";
 
-  headers.forEach(h => {
+  currentHeaders.forEach(h => {
     html += `<th>${h}</th>`;
   });
 
@@ -106,11 +116,23 @@ function renderTable(data, headers) {
 
   data.forEach(row => {
 
-    let color = row["Trạng thái wo"] == "Chưa đóng" ? "class='red'" : "";
+    let isBad = false;
+
+    for (let key in row) {
+      if (key.toLowerCase().includes("target")) {
+        let val = parseFloat(row[key]);
+        if (!isNaN(val) && val < 100) {
+          isBad = true;
+          break;
+        }
+      }
+    }
+
+    let color = isBad ? "class='red'" : "";
 
     html += `<tr ${color}>`;
 
-    headers.forEach(h => {
+    currentHeaders.forEach(h => {
       html += `<td>${row[h] || ""}</td>`;
     });
 
@@ -122,24 +144,9 @@ function renderTable(data, headers) {
   document.getElementById("data").innerHTML = html;
 }
 
-function onlyOpen(checked) {
-  let filtered = checked 
-    ? currentData.filter(r => r["Trạng thái wo"] == "Chưa đóng")
-    : currentData;
-
-  // cần lấy lại headers từ lần load trước
-  fetchHeaders(filtered);
-}
-
-function fetchHeaders(data) {
-  if (data.length === 0) return;
-
-  let headers = Object.keys(data[0]);
-  renderTable(data, headers);
-}
-
 // load mặc định
 loadData("Taget CDBR");
+
 </script>
 
 </body>
