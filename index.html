@@ -155,17 +155,24 @@ input {
   width: 100%;
   table-layout: fixed; /* 👉 chia đều cột */
 }
+  /* căn chữ log time */
+  .logtime {
+  font-size: 12px;
+  color: #666;
+  margin-top: 2px;
+}
 </style>
 </head>
 
 <body>
 <div class="header-fixed">
-
   <div class="header-title">
+  <div>
     <h2>📊 KPI CĐBR</h2>
-    <button onclick="reloadPage()" class="reload-btn">🔄</button>
+    <div id="logtime" class="logtime"></div>
   </div>
-
+  <button onclick="reloadPage()" class="reload-btn">🔄</button>
+</div>
   <div class="header-filter">
     🔍 Nhân viên <input id="nv" onkeyup="filter()">
     🏢 Huyện <input id="huyen" onkeyup="filter()">
@@ -300,6 +307,12 @@ function load(){
   .then(res=>{
 
     let rawData = res.data || [];
+    
+// 👉 lấy TG update dòng 2 (index 1)
+let log = rawData[1]?.["TG update"] || "";
+// 👉 hiển thị
+document.getElementById("logtime").innerText =
+  log ? "🕒Logtime: " + log : "";
 
     // 👉 dòng 1–15 (bảng Excel)
     let tableData = rawData.slice(0,15);
