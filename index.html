@@ -323,7 +323,7 @@ document.getElementById("logtime").innerText =
     allData.forEach(r=> r.score = calcScore(r));
     allData.sort((a,b)=> b.score - a.score);
 
-    render(allData);
+    applyFilter();
     renderTableExcel(tableData); // ✅ bảng đúng 1–15
     top5();
     topWorst();
@@ -392,6 +392,9 @@ function render(data){
 
 // ===== FILTER =====
 function filter(){
+  applyFilter();
+}
+function applyFilter(){
   let nv = document.getElementById("nv").value.toLowerCase();
   let h = document.getElementById("huyen").value.toLowerCase();
 
@@ -400,9 +403,8 @@ function filter(){
     (r.huyen||"").toLowerCase().includes(h)
   );
 
-render(f);
+  render(f);
 }
-
 // ===== CHECKBOX =====
 function onlyBad(v){
   showBadOnly = v;
