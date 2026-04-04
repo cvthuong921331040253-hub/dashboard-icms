@@ -72,7 +72,7 @@ input {
 }
   /* ===== TABLE KPI ===== */
 #tableKPI table {
-  background: #ffffff;
+  background: #fff;
 }
 
 #tableKPI th {
@@ -100,12 +100,13 @@ input {
 </head>
 
 <body>
-
+<div class="header-fixed">
 <h2>📊 KPI CĐBR</h2>
 <button onclick="reloadPage()" class="reload-btn">🔄 Reload</button>
 🔍 Nhân viên <input id="nv" onkeyup="filter()">
 🏢 Huyện <input id="huyen" onkeyup="filter()">
 <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
+</div>
   <h3>📊 Bảng KPI tổng hợp</h3>
   <div id="tableKPI"></div>
   
