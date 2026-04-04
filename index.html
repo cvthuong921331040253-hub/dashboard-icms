@@ -346,7 +346,7 @@ function render(data){
       📦 TK mới: ${safe(r.tong_tk_moi)} |
       📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
       🚨 SC: ${safe(r.tong_sc)} |
-      🏆 Rank: ${i+1} |
+      🏆 Rank: ${allData.findIndex(x => x === r) + 1} |
       ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
       <br><br>
     `;
