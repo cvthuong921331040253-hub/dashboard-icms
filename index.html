@@ -96,12 +96,6 @@ input {
   background: #fff;
   padding-bottom: 5px;
 }
-
-/* ===== SCROLL PHẦN DƯỚI ===== */
-.content-scroll {
-  max-height: calc(100vh - 100px); /* chỉnh theo màn hình */
-  overflow-y: auto;
-}
 </style>
 </head>
 
@@ -114,7 +108,7 @@ input {
 <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
   <h3>📊 Bảng KPI tổng hợp</h3>
   <div id="tableKPI"></div>
-<div class="content-scroll">
+  
   <h3>🏆 Top 5 NV tốt</h3>
   <div id="top"></div>
 
@@ -123,8 +117,6 @@ input {
 
   <h3>📋 Danh sách</h3>
   <div id="data"></div>
-
-</div>
 
 <script>
 
