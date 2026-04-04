@@ -363,7 +363,7 @@ function renderTableExcel(data){
     return `<td style="background:${ok?'':'#ffcccc'}">${toNumber(v)}</td>`;
   }
 
-  data.slice(0,15).forEach(r=>{
+  data.slice(0,14).forEach(r=>{
     html += `<tr>
       <td>${r.nhan_vien||""}</td>
       <td>${r.huyen||""}</td>
