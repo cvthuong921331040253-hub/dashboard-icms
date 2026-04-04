@@ -309,7 +309,7 @@ function load(){
     let rawData = res.data || [];
     
 // 👉 lấy TG update dòng 2 (index 1)
-let log = rawData[1]?.["TG update"] || "";
+let log = rawData[1]?.["Tg update"] || "";
 // 👉 hiển thị
 document.getElementById("logtime").innerText =
   log ? "🕒Logtime: " + log : "";
