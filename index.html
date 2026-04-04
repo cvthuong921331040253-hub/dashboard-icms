@@ -116,19 +116,29 @@ input {
 #tableKPI table {
   min-width: 1200px;
 }
-  /* freeze cột đầu trong bảng KPI */
+ /* ===== CỐ ĐỊNH CỘT HUYỆN bảng KPI ===== */
 #tableKPI th:first-child,
 #tableKPI td:first-child {
   position: sticky;
   left: 0;
-  background: #fff;
+
+  /* nền nổi */
+  background: #ffffff;
+
+  /* đổ bóng bên phải */
+  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
+
+  /* viền phân cách */
+  border-right: 2px solid #ddd;
+
   z-index: 3;
 }
 
-/* riêng header đè lên */
+/* header nổi hơn */
 #tableKPI th:first-child {
+  background: #d0e7ff;
+  font-weight: bold;
   z-index: 4;
-  background: #e3f2fd;
 }
 </style>
 </head>
