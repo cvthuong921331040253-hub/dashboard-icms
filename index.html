@@ -116,27 +116,30 @@ input {
 #tableKPI table {
   min-width: 1200px;
 }
- /* ===== CỐ ĐỊNH CỘT HUYỆN bảng KPI ===== */
+ /* ===== CỘT HUYỆN MÀU XANH ===== */
 #tableKPI th:first-child,
 #tableKPI td:first-child {
   position: sticky;
   left: 0;
 
-  /* nền nổi */
-  background: #ffffff;
+  /* nền xanh */
+  background: #d0e7ff;
 
-  /* đổ bóng bên phải */
-  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
+  /* chữ đậm */
+  font-weight: 500;
 
   /* viền phân cách */
-  border-right: 2px solid #ddd;
+  border-right: 2px solid #90caf9;
+
+  /* đổ bóng nhẹ */
+  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
 
   z-index: 3;
 }
 
-/* header nổi hơn */
+/* header xanh đậm hơn */
 #tableKPI th:first-child {
-  background: #d0e7ff;
+  background: #90caf9;
   font-weight: bold;
   z-index: 4;
 }
