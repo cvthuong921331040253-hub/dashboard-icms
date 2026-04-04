@@ -202,16 +202,23 @@ function load(){
   fetch(API)
   .then(r=>r.json())
   .then(res=>{
-let rawData = res.data || [];   // 👉 dữ liệu gốc (đúng dòng Excel)
-allData = [...rawData];         // 👉 dùng cho code cũ
 
-allData.forEach(r=> r.score = calcScore(r));
-allData.sort((a,b)=> b.score - a.score);
+    let rawData = res.data || [];
 
-render(allData);
-renderTableExcel(rawData); // 👉 QUAN TRỌNG: dùng rawData
-top5();
-topWorst();
+    // 👉 dòng 1–15 (bảng Excel)
+    let tableData = rawData.slice(0,15);
+
+    // 👉 dòng 16+ (tính KPI)
+    allData = rawData.slice(15);
+
+    allData.forEach(r=> r.score = calcScore(r));
+    allData.sort((a,b)=> b.score - a.score);
+
+    render(allData);
+    renderTableExcel(tableData); // ✅ bảng đúng 1–15
+    top5();
+    topWorst();
+
   });
 }
 
@@ -285,7 +292,6 @@ function filter(){
   );
 
 render(f);
-renderTableExcel(allData); // hoặc rawData nếu muốn cố định
 }
 
 // ===== CHECKBOX =====
@@ -362,7 +368,7 @@ function renderTableExcel(data){
     return `<td style="background:${ok?'':'#ffcccc'}">${toNumber(v)}</td>`;
   }
 
-  data.slice(0,14).forEach(r=>{
+  data.slice(0,15).forEach(r=>{
     html += `<tr>
       <td>${r.huyen||""}</td>
 
