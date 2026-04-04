@@ -365,7 +365,6 @@ function renderTableExcel(data){
 
   data.slice(0,14).forEach(r=>{
     html += `<tr>
-      <td>${r.nhan_vien||""}</td>
       <td>${r.huyen||""}</td>
 
       ${cell(r.tk_3h_moi,r.target_3h_moi)}
