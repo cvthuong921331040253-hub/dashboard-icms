@@ -40,10 +40,9 @@ input {
   background: #2196f3;
   color: white;
   font-size: 10px;
-  z-index: 9999;
 }
 
-/* TABLE KPI */
+/* TABLE */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -54,14 +53,8 @@ th, td {
   padding: 4px;
   text-align: center;
 }
-th {
-  background: #eee;
-}
+th { background: #eee; }
 
-@media (max-width: 600px) {
-  body { font-size: 13px; }
-  table { font-size: 11px; }
-}
 </style>
 </head>
 
@@ -93,11 +86,11 @@ const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G
 let allData = [];
 let showBadOnly = false;
 
+// ===== FIX DATA
 function safe(v){ return v ?? 0; }
 
 function toNumber(v){
   if(!v) return 0;
-  if(typeof v === "string" && v.includes("T")) return 0;
   if(typeof v === "string"){
     return parseFloat(v.replace("%","")) || 0;
   }
@@ -114,6 +107,7 @@ function check(v,t,type="up"){
 // ===== KPI SCORE (GIỮ NGUYÊN)
 function calcScore(r){
   let total = 0, ok = 0;
+
   function add(v,t,type="up"){
     if(toNumber(t) === 0) return;
     total++;
@@ -147,17 +141,70 @@ function calcScore(r){
   return total ? ok/total : 0;
 }
 
+// ===== KPI BAD (GIỮ NGUYÊN)
+function getBadKPI(r){
+  let badList = [];
+  function add(label,v,t,type="up"){
+    if(!check(v,t,type)) badList.push(label);
+  }
+
+  add("TK mới 3h",r.tk_3h_moi,r.target_3h_moi);
+  add("TK mới 10h",r.tk_10h_moi,r.target_10h_moi);
+  add("TK mới 16h",r.tk_16h_moi,r.target_16h_moi);
+  add("TK mới 24h",r.tk_24h_moi,r.target_24h_moi);
+
+  add("TK có sẵn 3h",r.tk_3h_co_san,r.target_3h_co_san);
+  add("TK có sẵn 10h",r.tk_10h_co_san,r.target_10h_co_san);
+  add("TK có sẵn 16h",r.tk_16h_co_san,r.target_16h_co_san);
+  add("TK có sẵn 24h",r.tk_24h_co_san,r.target_24h_co_san);
+
+  add("Tích hẹn",r.tich_hen,r.target_tich_hen);
+
+  add("SC 3h",r.sc_3h,r.target_sc_3h);
+  add("SC 10h",r.sc_10h,r.target_sc_10h);
+  add("SC 16h",r.sc_16h,r.target_sc_16h);
+  add("SC 24h",r.sc_24h,r.target_sc_24h);
+  add("SC HOT",r.sc_hot,r.target_sc_hot);
+  add("SC VIP",r.sc_vip,r.target_sc_vip);
+  add("SC HT 24h",r.sc_ht_24h,r.target_sc_ht_24h);
+  add("SC SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h);
+  add("SC SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h);
+  add("SC Hẹn",r.sc_hen,r.target_sc_hen);
+  add("SC Lặp",r.sc_lap,r.target_sc_lap,"down");
+
+  return badList;
+}
+
+// ===== RENDER (QUAN TRỌNG - KHÔNG ĐƯỢC MẤT)
+function render(data){
+  let html = "";
+
+  data.forEach((r,i)=>{
+    let badList = getBadKPI(r);
+    if(showBadOnly && badList.length === 0) return;
+
+    html += `
+    <div class="card">
+      <b>👤 ${safe(r.nhan_vien)} - ${safe(r.huyen)}</b><br>
+      📦 TK mới: ${safe(r.tong_tk_moi)} |
+      📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
+      🚨 SC: ${safe(r.tong_sc)} |
+      🏆 Rank: ${i+1}
+      ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
+    </div>`;
+  });
+
+  document.getElementById("data").innerHTML = html;
+}
+
 // ===== TABLE KPI (THÊM MỚI)
 function renderTable(data){
-  let html = `<table>
-    <tr>
-      <th>NV</th><th>Huyện</th>
-      <th>3h</th><th>10h</th><th>16h</th><th>24h</th>
-      <th>3h CS</th><th>10h CS</th><th>16h CS</th><th>24h CS</th>
-      <th>Tích hẹn</th>
-      <th>SC3</th><th>SC10</th><th>SC16</th><th>SC24</th>
-      <th>HOT</th><th>VIP</th><th>HT24</th><th>SOC24</th><th>SOC72</th><th>Hẹn</th><th>Lặp</th>
-    </tr>`;
+  let html = "<table><tr><th>NV</th><th>Huyện</th>";
+
+  let cols = ["3h","10h","16h","24h"];
+  cols.forEach(c=> html+=`<th>${c}</th>`);
+
+  html += "</tr>";
 
   function cell(v,t,type="up"){
     let ok = check(v,t,type);
@@ -168,32 +215,10 @@ function renderTable(data){
     html += `<tr>
       <td>${r.nhan_vien||""}</td>
       <td>${r.huyen||""}</td>
-
       ${cell(r.tk_3h_moi,r.target_3h_moi)}
       ${cell(r.tk_10h_moi,r.target_10h_moi)}
       ${cell(r.tk_16h_moi,r.target_16h_moi)}
       ${cell(r.tk_24h_moi,r.target_24h_moi)}
-
-      ${cell(r.tk_3h_co_san,r.target_3h_co_san)}
-      ${cell(r.tk_10h_co_san,r.target_10h_co_san)}
-      ${cell(r.tk_16h_co_san,r.target_16h_co_san)}
-      ${cell(r.tk_24h_co_san,r.target_24h_co_san)}
-
-      ${cell(r.tich_hen,r.target_tich_hen)}
-
-      ${cell(r.sc_3h,r.target_sc_3h)}
-      ${cell(r.sc_10h,r.target_sc_10h)}
-      ${cell(r.sc_16h,r.target_sc_16h)}
-      ${cell(r.sc_24h,r.target_sc_24h)}
-
-      ${cell(r.sc_hot,r.target_sc_hot)}
-      ${cell(r.sc_vip,r.target_sc_vip)}
-      ${cell(r.sc_ht_24h,r.target_sc_ht_24h)}
-      ${cell(r.sc_soc_24h,r.target_sc_soc_24h)}
-      ${cell(r.sc_soc_72h,r.target_sc_soc_72h)}
-      ${cell(r.sc_hen,r.target_sc_hen)}
-
-      ${cell(r.sc_lap,r.target_sc_lap,"down")}
     </tr>`;
   });
 
@@ -201,7 +226,7 @@ function renderTable(data){
   document.getElementById("tableKPI").innerHTML = html;
 }
 
-// ===== LOAD (CHỈ THÊM 1 DÒNG)
+// ===== LOAD
 function load(){
   fetch(API)
   .then(r=>r.json())
@@ -212,13 +237,18 @@ function load(){
     allData.sort((a,b)=> b.score - a.score);
 
     render(allData);
-    renderTable(allData); // 👈 thêm duy nhất dòng này
+    renderTable(allData);
     top5();
     topWorst();
+  })
+  .catch(err=>{
+    document.getElementById("data").innerHTML =
+      "<div style='color:red'>❌ Lỗi load API</div>";
+    console.error(err);
   });
 }
 
-// ===== FILTER (THÊM TABLE)
+// ===== FILTER
 function filter(){
   let nv = document.getElementById("nv").value.toLowerCase();
   let h = document.getElementById("huyen").value.toLowerCase();
@@ -229,10 +259,10 @@ function filter(){
   );
 
   render(f);
-  renderTable(f); // 👈 thêm
+  renderTable(f);
 }
 
-// ===== GIỮ NGUYÊN PHẦN CÒN LẠI
+// ===== KHÁC
 function onlyBad(v){
   showBadOnly = v;
   render(allData);
