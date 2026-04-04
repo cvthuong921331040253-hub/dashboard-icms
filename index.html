@@ -93,9 +93,6 @@ input {
 }
   /* ===== FIX KPI TABLE ===== */
 #tableKPI {
-  position: sticky;
-  top: 0;
-  z-index: 10;
   background: #fff;
   padding-bottom: 5px;
 }
@@ -115,11 +112,9 @@ input {
 🔍 Nhân viên <input id="nv" onkeyup="filter()">
 🏢 Huyện <input id="huyen" onkeyup="filter()">
 <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
-
-<div class="content-scroll">
   <h3>📊 Bảng KPI tổng hợp</h3>
   <div id="tableKPI"></div>
-  
+<div class="content-scroll">
   <h3>🏆 Top 5 NV tốt</h3>
   <div id="top"></div>
 
