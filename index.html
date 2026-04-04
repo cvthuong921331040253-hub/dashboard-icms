@@ -143,6 +143,17 @@ input {
   font-weight: bold;
   z-index: 4;
 }
+  /* cột Huyện rộng hơn */
+#tableKPI th:first-child,
+#tableKPI td:first-child {
+  min-width: 140px;
+  width: 160px;
+}
+  /* bảng full width */
+#tableKPI table {
+  width: 100%;
+  table-layout: fixed; /* 👉 chia đều cột */
+}
 </style>
 </head>
 
