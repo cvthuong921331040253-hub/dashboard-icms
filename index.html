@@ -70,6 +70,27 @@ input {
   }
 
 }
+  /* ===== TABLE KPI ===== */
+#tableKPI table {
+  background: #ffffff;
+}
+
+#tableKPI th {
+  background: #e3f2fd; /* xanh nhẹ */
+  text-align: center;
+  font-weight: bold;
+}
+
+#tableKPI td {
+  text-align: center;       /* 👉 số nằm giữa */
+  vertical-align: middle;
+  background: #f9fbff;      /* nền nhẹ */
+}
+
+/* dòng xen kẽ cho đẹp */
+#tableKPI tr:nth-child(even) td {
+  background: #f1f6ff;
+}
 </style>
 </head>
 
@@ -329,7 +350,7 @@ function reloadPage(){
 }
 // START
 load();
-setInterval(load,30000);
+setInterval(load,10000);
 function renderTableExcel(data){
 
   let html = `
@@ -363,10 +384,10 @@ function renderTableExcel(data){
     </tr>
   `;
 
-  function cell(v,t,type="up"){
-    let ok = check(v,t,type);
-    return `<td style="background:${ok?'':'#ffcccc'}">${toNumber(v)}</td>`;
-  }
+    function cell(v,t,type="up"){
+      let ok = check(v,t,type);
+      return `<td style="background:${ok?'':'#ffcccc'}; text-align:center">${toNumber(v)}</td>`;
+    }
 
   data.slice(0,15).forEach(r=>{
     html += `<tr>
