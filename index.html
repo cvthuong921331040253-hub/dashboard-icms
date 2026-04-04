@@ -115,14 +115,15 @@ input {
 🔍 Nhân viên <input id="nv" onkeyup="filter()">
 🏢 Huyện <input id="huyen" onkeyup="filter()">
 <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
-<h3>📊 Bảng KPI tổng hợp</h3>
-<div id="tableKPI"></div>
-<div class="content-scroll">
 
-  <h3>🏆 Top tốt</h3>
+<div class="content-scroll">
+  <h3>📊 Bảng KPI tổng hợp</h3>
+  <div id="tableKPI"></div>
+  
+  <h3>🏆 Top 5 NV tốt</h3>
   <div id="top"></div>
 
-  <h3>⚠️ Top 10 nhân viên kém</h3>
+  <h3>⚠️ Top 10 NV kém</h3>
   <div id="worst"></div>
 
   <h3>📋 Danh sách</h3>
