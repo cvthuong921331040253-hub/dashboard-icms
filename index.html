@@ -42,8 +42,11 @@ input {
   position: sticky;
   top: 0;
   background: #f5f7fb;
-  z-index: 100;
-  padding-bottom: 5px;
+  z-index: 1000;   /* 👈 tăng lên cho chắc */
+  padding-bottom: 6px;
+}
+  .header-filter {
+  margin-top: 5px;
 }
   .header-title {
   display: flex;
@@ -117,13 +120,20 @@ input {
 </head>
 
 <body>
-<div class="header-fixed header-title">
-  <h2>📊 KPI CĐBR</h2>
-  <button onclick="reloadPage()" class="reload-btn">🔄</button>
+<div class="header-fixed">
+
+  <div class="header-title">
+    <h2>📊 KPI CĐBR</h2>
+    <button onclick="reloadPage()" class="reload-btn">🔄</button>
+  </div>
+
+  <div class="header-filter">
+    🔍 Nhân viên <input id="nv" onkeyup="filter()">
+    🏢 Huyện <input id="huyen" onkeyup="filter()">
+    <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
+  </div>
+
 </div>
-🔍 Nhân viên <input id="nv" onkeyup="filter()">
-🏢 Huyện <input id="huyen" onkeyup="filter()">
-<label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
 <h3>📊 Bảng KPI tổng hợp</h3>
 <div class="kpi-wrapper">
   <div id="tableKPI"></div>
