@@ -116,6 +116,20 @@ input {
 #tableKPI table {
   min-width: 1200px;
 }
+  /* freeze cột đầu trong bảng KPI */
+#tableKPI th:first-child,
+#tableKPI td:first-child {
+  position: sticky;
+  left: 0;
+  background: #fff;
+  z-index: 3;
+}
+
+/* riêng header đè lên */
+#tableKPI th:first-child {
+  z-index: 4;
+  background: #e3f2fd;
+}
 </style>
 </head>
 
