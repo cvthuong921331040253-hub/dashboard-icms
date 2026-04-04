@@ -117,14 +117,13 @@ input {
 </head>
 
 <body>
-<div class="header-title">
+<div class="header-fixed header-title">
   <h2>📊 KPI CĐBR</h2>
   <button onclick="reloadPage()" class="reload-btn">🔄</button>
 </div>
 🔍 Nhân viên <input id="nv" onkeyup="filter()">
 🏢 Huyện <input id="huyen" onkeyup="filter()">
 <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
-</div>
 <h3>📊 Bảng KPI tổng hợp</h3>
 <div class="kpi-wrapper">
   <div id="tableKPI"></div>
