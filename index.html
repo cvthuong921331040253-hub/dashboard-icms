@@ -91,6 +91,20 @@ input {
 #tableKPI tr:nth-child(even) td {
   background: #f1f6ff;
 }
+  /* ===== FIX KPI TABLE ===== */
+#tableKPI {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  padding-bottom: 5px;
+}
+
+/* ===== SCROLL PHẦN DƯỚI ===== */
+.content-scroll {
+  max-height: calc(100vh - 300px); /* chỉnh theo màn hình */
+  overflow-y: auto;
+}
 </style>
 </head>
 
@@ -103,14 +117,18 @@ input {
 <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
 <h3>📊 Bảng KPI tổng hợp</h3>
 <div id="tableKPI"></div>
-<h3>🏆 Top tốt</h3>
-<div id="top"></div>
+<div class="content-scroll">
 
-<h3>⚠️ Top 10 nhân viên kém</h3>
-<div id="worst"></div>
+  <h3>🏆 Top tốt</h3>
+  <div id="top"></div>
 
-<h3>📋 Danh sách</h3>
-<div id="data"></div>
+  <h3>⚠️ Top 10 nhân viên kém</h3>
+  <div id="worst"></div>
+
+  <h3>📋 Danh sách</h3>
+  <div id="data"></div>
+
+</div>
 
 <script>
 
