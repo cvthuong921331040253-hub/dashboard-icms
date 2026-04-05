@@ -753,8 +753,10 @@ function filterTH(){
 <!-- ===== THU HOI UI ===== -->
 <div id="thuhoiUI" style="display:none">
 
+  <div style="display:flex; justify-content:space-between; align-items:center;">
   <h2>📥 THU HỒI</h2>
-
+  <button onclick="loadThuHoi()" class="reload-btn">🔄</button>
+</div>
   <div class="card">
     🔍 Nhân viên <input id="nv_th" onkeyup="filterTH()">
     🏢 Huyện <input id="huyen_th" onkeyup="filterTH()">
