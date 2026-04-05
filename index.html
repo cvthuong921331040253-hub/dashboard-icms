@@ -711,22 +711,6 @@ function loadThuHoi(){
   });
 }
 
-function renderTH(data){
-  let html = "";
-
-  data.forEach(r=>{
-    html += `
-      <div class="card">
-        👤 <b>${r.nhan_vien}</b> - ${r.huyen}<br>
-        📥 Thu hồi: <b>${r.thu_hoi}</b><br>
-        📦 Tồn: <b>${r.ton}</b>
-      </div>
-    `;
-  });
-
-  document.getElementById("dataTH").innerHTML = html;
-}
-
 function filterTH(){
   let nv = document.getElementById("nv_th").value.toLowerCase();
   let h = document.getElementById("huyen_th").value.toLowerCase();
@@ -749,10 +733,15 @@ function filterTH(){
     🔍 Nhân viên <input id="nv_th" onkeyup="filterTH()">
     🏢 Huyện <input id="huyen_th" onkeyup="filterTH()">
   </div>
-  <div id="dataTH"></div>
+
+  <!-- loading -->
+  <div id="loadingTH">⏳ Đang tải dữ liệu...</div>
+
+  <!-- bảng huyện -->
   <h3>📊 Thu hồi theo Huyện</h3>
   <div id="tableHuyen"></div>
   
+  <!-- danh sách nhân viên -->
   <h3>👤 Danh sách nhân viên</h3>
   <div id="dataTH"></div>
 </div>
