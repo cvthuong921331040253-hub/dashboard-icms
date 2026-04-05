@@ -301,16 +301,18 @@ function renderBadHuyen(data){
   let html = "";
 
   data.forEach(r => {
-    let bad = getBadKPI(r);
+let bad = getBadKPI(r);
 
-    if(bad.length > 0){
-      html += `
-        <div class="card worst">
-          ❌ <b>${r.huyen}</b><br>
-          ${bad.join(", ")}
-        </div>
-      `;
-    }
+if(bad.length > 0){
+  html += `
+    <div class="card worst">
+      ❌ <b>${r.huyen}</b>: Tồi ${bad.length} KPI<br>
+      <div style="margin-top:5px">
+        ${bad.join("<br>")}
+      </div>
+    </div>
+  `;
+}
   });
 
   document.getElementById("badHuyen").innerHTML = html;
