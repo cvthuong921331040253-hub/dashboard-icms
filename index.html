@@ -485,7 +485,9 @@ function renderTableExcel(data){
   data.slice(0,15).forEach(r=>{
     html += `<tr>
       <td>${r.huyen||""}</td>
-      
+      <td>${r.tong_tk_moi||""}</td>
+      <td>${r.tong_tk_co_san||""}</td>
+      <td>${r.tong_sc||""}</td>
       ${cell(r.tk_3h_moi,r.target_3h_moi)}
       ${cell(r.tk_10h_moi,r.target_10h_moi)}
       ${cell(r.tk_16h_moi,r.target_16h_moi)}
