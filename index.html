@@ -447,6 +447,9 @@ function renderTableExcel(data){
   <table border="1" style="border-collapse:collapse; font-size:12px; width:100%">
     <tr style="background:#eee">
       <th>Huyện</th>
+      <th>TK mới</th>
+      <th>TK có sẵn</th>
+      <th>Sự cố</th>
       <th>TK mới 3h (40%)</th>
       <th>TK mới 10h (50%)</th>
       <th>TK mới 16h (100%)</th>
@@ -482,7 +485,7 @@ function renderTableExcel(data){
   data.slice(0,15).forEach(r=>{
     html += `<tr>
       <td>${r.huyen||""}</td>
-
+      
       ${cell(r.tk_3h_moi,r.target_3h_moi)}
       ${cell(r.tk_10h_moi,r.target_10h_moi)}
       ${cell(r.tk_16h_moi,r.target_16h_moi)}
