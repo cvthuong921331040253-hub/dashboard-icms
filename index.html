@@ -616,7 +616,7 @@ ${acc.phat > 0 ? ` - 💸 ${acc.phat.toLocaleString()}` : ''}
     html += `
       <div class="card ${ty_le<1?'worst':'top'}">
         👤 <b>${r.nhan_vien}</b> - ${r.huyen}<br>
-        💰 ${r.tong_da}/${r.tong_can} 
+        💰Cần thu: ${r.tong_da}/${r.tong_can} 
         (${(ty_le*100).toFixed(0)}%)<br>
         💸 Phạt: ${r.tong_phat.toLocaleString()}<br>
         ${listHTML}
