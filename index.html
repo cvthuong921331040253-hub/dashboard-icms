@@ -719,14 +719,17 @@ if(loading) loading.style.display = "none";
 
 renderHuyen(dataHuyen);
 renderTH(dataTH);
-  .catch(err=>{
-    console.log("❌ Lỗi API THU HỒI:", err);
 
-    if(loading) loading.style.display = "none";
+}) // 👈 THÊM DÒNG NÀY (đóng .then)
 
-    document.getElementById("dataTH").innerHTML =
-      `<div class="card worst">❌ Lỗi tải dữ liệu</div>`;
-  });
+.catch(err=>{
+  console.log("❌ Lỗi API THU HỒI:", err);
+
+  if(loading) loading.style.display = "none";
+
+  document.getElementById("dataTH").innerHTML =
+    `<div class="card worst">❌ Lỗi tải dữ liệu</div>`;
+});
 }
 
 function filterTH(){
