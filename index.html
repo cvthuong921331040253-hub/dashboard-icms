@@ -185,6 +185,9 @@ input {
   <div id="tableKPI"></div>
 </div>
   
+  <h3>⚠️ Huyện KPI tồi hôm nay</h3>
+  <div id="badHuyen"></div>
+  
   <h3>🏆 Top 5 NV tốt</h3>
   <div id="top"></div>
 
@@ -257,7 +260,7 @@ function calcScore(r){
   return total ? ok/total : 0;
 }
 
-// ===== KPI BAD =====
+// ===== KPI NHÂN VIÊN TỒI =====
 function getBadKPI(r){
   let badList = [];
   function add(label,v,t,type="up"){
@@ -290,7 +293,26 @@ function getBadKPI(r){
 
   return badList;
 }
+// ===== KPI HUYỆN TỒI =====
+function renderBadHuyen(data){
 
+  let html = "";
+
+  data.forEach(r => {
+    let bad = getBadKPI(r);
+
+    if(bad.length > 0){
+      html += `
+        <div class="card worst">
+          ❌ <b>${r.huyen}</b><br>
+          KPI tồi: ${bad.join(", ")}
+        </div>
+      `;
+    }
+  });
+
+  document.getElementById("badHuyen").innerHTML = html;
+}
 // ===== KPI RENDER =====
 function kpi(label,v,t,type="up"){
   let ok = check(v,t,type);
@@ -327,7 +349,7 @@ function load(){
     renderTableExcel(tableData); // ✅ bảng đúng 1–15
     top5();
     topWorst();
-
+    renderBadHuyen(tableData);
   });
 }
 
