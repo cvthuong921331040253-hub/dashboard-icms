@@ -642,72 +642,83 @@ function loadThuHoi(){
     let nhanvienMap = {};
     let huyenMap = {};
 
-    raw.forEach(r=>{
+raw.forEach(r=>{
 
-      let nv = r.nhan_vien || "Không tên";
-      let h = r.huyen || "Không rõ";
+  let nv = r.nhan_vien || "Không tên";
+  let h = r.huyen || "Không rõ";
 
-      let can = Number(r.can_thu || 0);
-      let da = Number(r.da_thu_hoi || 0);
-      let phat = Number(r.tien_phat || 0);
+  let can = Number(r.can_thu || 0);
+  let da = Number(r.da_thu_hoi || 0);
+  let phat = Number(r.tien_phat || 0);
 
-      let ty_le = 0;
-      if(can === 0 && da === 0){
-        ty_le = 1;
-      } else if(can > 0){
-        ty_le = da / can;
-      }
+  let ty_le = 0;
+  if(can === 0 && da === 0){
+    ty_le = 1;
+  } else if(can > 0){
+    ty_le = da / can;
+  }
 
-      if(!nhanvienMap[nv]){
-        nhanvienMap[nv] = {
-          nhan_vien: nv,
-          huyen: h,
-          tong_can: 0,
-          tong_da: 0,
-          tong_phat: 0,
-          list: []
-        };
-      }
+  if(!nhanvienMap[nv]){
+    nhanvienMap[nv] = {
+      nhan_vien: nv,
+      huyen: h,
+      tong_can: 0,
+      tong_da: 0,
+      tong_phat: 0,
+      list: []
+    };
+  }
 
-      nhanvienMap[nv].tong_can += can;
-      nhanvienMap[nv].tong_da += da;
-      if(ty_le < 1){
-      nhanvienMap[nv].tong_phat += phat;}
+  nhanvienMap[nv].tong_can += can;
+  nhanvienMap[nv].tong_da += da;
 
-      nhanvienMap[nv].list.push({
-        account: r.account,
-        uu_tien: r.uu_tien || 0,
-        can,
-        da,
-        ty_le,
-        phat: (ty_le === 1 ? 0 : Number(r.tien_phat || 0)) // 🔥 không tính nếu 100%
-      });
+  if(ty_le < 1){
+    nhanvienMap[nv].tong_phat += phat;
+  }
 
-      if(!huyenMap[h]){
-        huyenMap[h] = {
-          huyen: h,
-          tong_can: 0,
-          tong_da: 0,
-          tong_phat: 0
-        };
-      }
+  nhanvienMap[nv].list.push({
+    account: r.account,
+    uu_tien: r.uu_tien || 0,
+    can,
+    da,
+    ty_le,
+    phat: (ty_le === 1 ? 0 : phat)
+  });
 
-      huyenMap[h].tong_can += can;
-      huyenMap[h].tong_da += da;
-      if(ty_le < 1){huyenMap[h].tong_phat += phat;}
+  if(!huyenMap[h]){
+    huyenMap[h] = {
+      huyen: h,
+      tong_can: 0,
+      tong_da: 0,
+      tong_phat: 0
+    };
+  }
 
-    dataTH = Object.values(nhanvienMap);
-    let dataHuyen = Object.values(huyenMap);
+  huyenMap[h].tong_can += can;
+  huyenMap[h].tong_da += da;
 
-    dataTH.sort((a,b)=> b.tong_phat - a.tong_phat);
-    dataHuyen.sort((a,b)=> b.tong_phat - a.tong_phat);
+  if(ty_le < 1){
+    huyenMap[h].tong_phat += phat;
+  }
 
-    if(loading) loading.style.display = "none";
+}); // 👉 KẾT THÚC forEach
 
-    renderHuyen(dataHuyen);
-    renderTH(dataTH);
+// 👉 ĐƯA RA NGOÀI
+dataTH = Object.values(nhanvienMap);
+let dataHuyen = Object.values(huyenMap);
 
-  })
+dataTH.sort((a,b)=> b.tong_phat - a.tong_phat);
+dataHuyen.sort((a,b)=> b.tong_phat - a.tong_phat);
+
+// 👉 sort ưu tiên trong từng nhân viên
+dataTH.forEach(nv=>{
+  nv.list.sort((a,b)=> a.uu_tien - b.uu_tien);
+});
+
+if(loading) loading.style.display = "none";
+
+renderHuyen(dataHuyen);
+renderTH(dataTH);
   .catch(err=>{
     console.log("❌ Lỗi API THU HỒI:", err);
 
