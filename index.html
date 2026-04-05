@@ -315,7 +315,7 @@ function load(){
   log ? "🕒Logtime: " + log : "";
 
 // 👉 dòng 1–15 (bảng Excel)
-  let tableData = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,15);
+  let tableData = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,14);
 
 // 👉 dòng 16+ (tính KPI)
     allData = rawData.slice(15);
