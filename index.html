@@ -606,8 +606,10 @@ function renderTH(data){
 
     let listHTML = r.list.map(acc=>`
       <div style="font-size:12px; margin-left:10px">
-        • ${acc.account} | ${acc.da}/${acc.can} 
-        (${(acc.ty_le*100).toFixed(0)}%)
+      • [ƯT ${acc.uu_tien}] ${acc.account} 
+      | ${acc.da}/${acc.can} 
+      (${(acc.ty_le*100).toFixed(0)}%)
+${acc.phat > 0 ? ` - 💸 ${acc.phat.toLocaleString()}` : ''}
       </div>
     `).join("");
 
@@ -669,13 +671,16 @@ function loadThuHoi(){
 
       nhanvienMap[nv].tong_can += can;
       nhanvienMap[nv].tong_da += da;
-      nhanvienMap[nv].tong_phat += phat;
+      if(ty_le < 1){
+      nhanvienMap[nv].tong_phat += phat;}
 
       nhanvienMap[nv].list.push({
         account: r.account,
+        uu_tien: r.uu_tien || 0,
         can,
         da,
-        ty_le
+        ty_le,
+        phat: (ty_le === 1 ? 0 : Number(r.tien_phat || 0)) // 🔥 không tính nếu 100%
       });
 
       if(!huyenMap[h]){
@@ -689,8 +694,7 @@ function loadThuHoi(){
 
       huyenMap[h].tong_can += can;
       huyenMap[h].tong_da += da;
-      huyenMap[h].tong_phat += phat;
-    });
+      if(ty_le < 1){huyenMap[h].tong_phat += phat;}
 
     dataTH = Object.values(nhanvienMap);
     let dataHuyen = Object.values(huyenMap);
