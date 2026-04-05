@@ -165,6 +165,12 @@ input {
 </head>
 
 <body>
+<!-- ===== TAB BUTTON ===== -->
+<div style="display:flex; gap:6px; margin-bottom:6px;">
+  <button onclick="showTab('kpi')" class="reload-btn">📊 KPI CĐBR</button>
+  <button onclick="showTab('thuhoi')" class="reload-btn">📥 THU HỒI</button>
+</div>
+  <div id="kpiUI">
 <div class="header-fixed">
   <div class="header-title">
   <div>
@@ -198,9 +204,15 @@ input {
   <div id="data"></div>
 
 <script>
+function showTab(tab){
+  document.getElementById("kpiUI").style.display =
+    tab === "kpi" ? "block" : "none";
 
+  document.getElementById("thuhoiUI").style.display =
+    tab === "thuhoi" ? "block" : "none";
+}
 const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
-
+const API_TH = "https://script.google.com/macros/s/AKfycbwkbDqJwUcOdYsxphJC8Vx7pyQXmMzigEPRjlMSQn6CjAF5v9Koivs8b8O8bfda7Woc/exec?sheet=Thu hoi";
 let allData = [];
 let showBadOnly = false;
 
@@ -354,6 +366,7 @@ function load(){
     top5();
     topWorst();
     renderBadHuyen(tableData);
+    loadThuHoi();
   });
 }
 
@@ -546,7 +559,62 @@ function renderTableExcel(data){
 
   document.getElementById("tableKPI").innerHTML = html;
 }
-</script>
+  // ===== THU HOI =====
+let dataTH = [];
+function loadThuHoi(){
 
+  fetch(API_TH)
+  .then(r=>r.json())
+  .then(res=>{
+
+    dataTH = res.data || [];
+
+    renderTH(dataTH);
+
+  });
+}
+
+function renderTH(data){
+  let html = "";
+
+  data.forEach(r=>{
+    html += `
+      <div class="card">
+        👤 <b>${r.nhan_vien}</b> - ${r.huyen}<br>
+        📥 Thu hồi: <b>${r.thu_hoi}</b><br>
+        📦 Tồn: <b>${r.ton}</b>
+      </div>
+    `;
+  });
+
+  document.getElementById("dataTH").innerHTML = html;
+}
+
+function filterTH(){
+  let nv = document.getElementById("nv_th").value.toLowerCase();
+  let h = document.getElementById("huyen_th").value.toLowerCase();
+
+  let f = dataTH.filter(r =>
+    (r.nhan_vien||"").toLowerCase().includes(nv) &&
+    (r.huyen||"").toLowerCase().includes(h)
+  );
+
+  renderTH(f);
+}
+</script>
+</div>
+<!-- ===== THU HOI UI ===== -->
+<div id="thuhoiUI" style="display:none">
+
+  <h2>📥 THU HỒI</h2>
+
+  <div class="card">
+    🔍 Nhân viên <input id="nv_th" onkeyup="filterTH()">
+    🏢 Huyện <input id="huyen_th" onkeyup="filterTH()">
+  </div>
+
+  <div id="dataTH"></div>
+
+</div>
 </body>
 </html>
