@@ -264,8 +264,10 @@ function calcScore(r){
 function getBadKPI(r){
   let badList = [];
   function add(label,v,t,type="up"){
-    if(!check(v,t,type)) badList.push(label);
+  if(!check(v,t,type)){
+    badList.push(`${label}: (${toNumber(v)}%/${toNumber(t)}%)`);
   }
+}
 
   add("TK mới 3h",r.tk_3h_moi,r.target_3h_moi);
   add("TK mới 10h",r.tk_10h_moi,r.target_10h_moi);
