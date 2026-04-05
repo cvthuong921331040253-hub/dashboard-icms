@@ -161,6 +161,11 @@ input {
   color: #666;
   margin-top: 2px;
 }
+  /* Căn giữa cột % */
+.table-kpi th:nth-child(4),
+.table-kpi td:nth-child(4) {
+  text-align: center;
+}
 </style>
 </head>
 
@@ -568,7 +573,7 @@ function renderHuyen(data){
       <th>Huyện</th>
       <th>Cần thu</th>
       <th>Đã thu</th>
-      <th>%</th>
+      <th>Tỷ lệ hoàn thành</th>
       <th>Phạt</th>
     </tr>
   `;
