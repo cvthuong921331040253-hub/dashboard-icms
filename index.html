@@ -265,7 +265,7 @@ function getBadKPI(r){
   let badList = [];
   function add(label,v,t,type="up"){
   if(!check(v,t,type)){
-    badList.push(`${label}: (${toNumber(v)}%/${toNumber(t)}%)`);
+    badList.push(`<b>${label}:</b> (${toNumber(v)}%/${toNumber(t)}%)`);
   }
 }
 
@@ -307,7 +307,7 @@ function renderBadHuyen(data){
       html += `
         <div class="card worst">
           ❌ <b>${r.huyen}</b><br>
-          KPI tồi: ${bad.join(", ")}
+          ${bad.join(", ")}
         </div>
       `;
     }
