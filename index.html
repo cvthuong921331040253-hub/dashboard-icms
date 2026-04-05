@@ -788,14 +788,23 @@ function filterTH(){
 <!-- ===== THU HOI UI ===== -->
 <div id="thuhoiUI" style="display:none">
 
-  <h2>📥 THU HỒI</h2>
-  <div id="logtimeTH" class="logtime"></div>
-  <button onclick="loadThuHoi()" class="reload-btn">🔄</button>
-</div>
-<div class="header-filter">
-  🔍 Nhân viên <input id="nv_th" onkeyup="filterTH()">
-  🏢 Huyện <input id="huyen_th" onkeyup="filterTH()">
-</div>
+  <div class="header-fixed">
+
+    <div class="header-title">
+      <div>
+        <h2>📥 THU HỒI</h2>
+        <div id="logtimeTH" class="logtime"></div>
+      </div>
+
+      <button onclick="loadThuHoi()" class="reload-btn">🔄</button>
+    </div>
+
+    <div class="header-filter">
+      🔍 Nhân viên <input id="nv_th" onkeyup="filterTH()">
+      🏢 Huyện <input id="huyen_th" onkeyup="filterTH()">
+    </div>
+
+  </div>
 
   <!-- loading -->
   <div id="loadingTH">⏳ Đang tải dữ liệu...</div>
@@ -807,6 +816,8 @@ function filterTH(){
   <!-- danh sách nhân viên -->
   <h3>👤 Danh sách nhân viên</h3>
   <div id="dataTH"></div>
+
+</div>
 </div>
 </body>
 </html>
