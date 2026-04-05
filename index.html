@@ -628,7 +628,8 @@ function renderTH(data){
 let dataTH = [];
 function loadThuHoi(){
 
-  document.getElementById("loadingTH").style.display = "block";
+  let loading = document.getElementById("loadingTH");
+  if(loading) loading.style.display = "block";
 
   fetch(API_TH)
   .then(r=>r.json())
@@ -648,7 +649,6 @@ function loadThuHoi(){
       let da = Number(r.da_thu_hoi || 0);
       let phat = Number(r.tien_phat || 0);
 
-      // ===== % =====
       let ty_le = 0;
       if(can === 0 && da === 0){
         ty_le = 1;
@@ -656,7 +656,6 @@ function loadThuHoi(){
         ty_le = da / can;
       }
 
-      // ===== NHÂN VIÊN =====
       if(!nhanvienMap[nv]){
         nhanvienMap[nv] = {
           nhan_vien: nv,
@@ -679,7 +678,6 @@ function loadThuHoi(){
         ty_le
       });
 
-      // ===== HUYỆN =====
       if(!huyenMap[h]){
         huyenMap[h] = {
           huyen: h,
@@ -692,22 +690,27 @@ function loadThuHoi(){
       huyenMap[h].tong_can += can;
       huyenMap[h].tong_da += da;
       huyenMap[h].tong_phat += phat;
-
     });
 
-    // convert
     dataTH = Object.values(nhanvienMap);
-    dataHuyen = Object.values(huyenMap);
+    let dataHuyen = Object.values(huyenMap);
 
-    // sort
     dataTH.sort((a,b)=> b.tong_phat - a.tong_phat);
     dataHuyen.sort((a,b)=> b.tong_phat - a.tong_phat);
 
-    document.getElementById("loadingTH").style.display = "none";
+    if(loading) loading.style.display = "none";
 
     renderHuyen(dataHuyen);
     renderTH(dataTH);
 
+  })
+  .catch(err=>{
+    console.log("❌ Lỗi API THU HỒI:", err);
+
+    if(loading) loading.style.display = "none";
+
+    document.getElementById("dataTH").innerHTML =
+      `<div class="card worst">❌ Lỗi tải dữ liệu</div>`;
   });
 }
 
