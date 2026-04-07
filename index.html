@@ -213,7 +213,7 @@ input {
   <div id="tableKPI"></div>
 </div>
   
-  <h3>⚠️KPI tồi Huyện hôm nay</h3>
+  <h3>⚠️KPI huyện đang tồi</h3>
   <div id="badHuyen"></div>
   
   <h3>🏆 Top 5 NV tốt</h3>
@@ -441,7 +441,7 @@ function render(data){
       📦 TK mới: ${safe(r.tong_tk_moi)} |
       📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
       🚨 SC: ${safe(r.tong_sc)} |
-      🏆 Rank: ${allData.findIndex(x => x === r) + 1} | 🎯 ${r.score.toFixed(0)} điểm |
+      🏆 Xếp hạng: ${allData.findIndex(x => x === r) + 1} | 🎯 ${r.score.toFixed(0)} điểm |
       ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
       <br><br>
     `;
