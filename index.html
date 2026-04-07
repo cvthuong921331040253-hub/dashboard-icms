@@ -404,12 +404,12 @@ function load(){
     
 // 👉 lấy TG update dòng 2 (index 1)
   let log = rawData[1]?.["Tg update"] || "";
+// 👉 dòng 1–15 (bảng Excel)
+let tableData = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,14);
 // 👉 hiển thị
   document.getElementById("logtime").innerText =
   log ? "🕒Logtime: " + log : "";
 
-// 👉 dòng 1–15 (bảng Excel)
-  ➜ Tồi ${bad.length}/20 KPI
 // 👉 TÍNH RANK HUYỆN (ít KPI tồi = rank cao)
 let huyenRank = [...tableData]
   .map(r => ({
