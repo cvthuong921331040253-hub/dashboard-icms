@@ -267,9 +267,21 @@ function calcScore(r){
 
     max += weight;
 
-    if(check(v,t,type)){
-      total += weight;
-    }
+  let value = toNumber(v);
+  let target = toNumber(t);
+  
+  let ratio = 0;
+  
+  if(type === "down"){
+    ratio = target === 0 ? 1 : (target / (value || 1));
+  }else{
+    ratio = target === 0 ? 1 : (value / target);
+  }
+  
+  // giới hạn max = 1 (100%)
+  ratio = Math.min(ratio, 1);
+  
+  total += ratio * weight;
   }
 
   // ===== THẤP =====
