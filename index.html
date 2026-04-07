@@ -259,39 +259,52 @@ function check(v,t,type="up"){
 
 // ===== KPI SCORE =====
 function calcScore(r){
-  let total = 0, ok = 0;
+  let total = 0;
+  let max = 0;
 
-  function add(v,t,type="up"){
+  function add(v,t,weight,type="up"){
     if(toNumber(t) === 0) return;
-    total++;
-    if(check(v,t,type)) ok++;
+
+    max += weight;
+
+    if(check(v,t,type)){
+      total += weight;
+    }
   }
 
-  add(r.tk_3h_moi,r.target_3h_moi);
-  add(r.tk_10h_moi,r.target_10h_moi);
-  add(r.tk_16h_moi,r.target_16h_moi);
-  add(r.tk_24h_moi,r.target_24h_moi);
+  // ===== THẤP =====
+  add(r.tk_3h_moi,r.target_3h_moi,1);
+  add(r.tk_10h_moi,r.target_10h_moi,1);
 
-  add(r.tk_3h_co_san,r.target_3h_co_san);
-  add(r.tk_10h_co_san,r.target_10h_co_san);
-  add(r.tk_16h_co_san,r.target_16h_co_san);
-  add(r.tk_24h_co_san,r.target_24h_co_san);
+  add(r.tk_3h_co_san,r.target_3h_co_san,1);
+  add(r.tk_10h_co_san,r.target_10h_co_san,1);
 
-  add(r.tich_hen,r.target_tich_hen);
+  add(r.sc_3h,r.target_sc_3h,3);
+  add(r.sc_10h,r.target_sc_10h,3);
 
-  add(r.sc_3h,r.target_sc_3h);
-  add(r.sc_10h,r.target_sc_10h);
-  add(r.sc_16h,r.target_sc_16h);
-  add(r.sc_24h,r.target_sc_24h);
-  add(r.sc_hot,r.target_sc_hot);
-  add(r.sc_vip,r.target_sc_vip);
-  add(r.sc_ht_24h,r.target_sc_ht_24h);
-  add(r.sc_soc_24h,r.target_sc_soc_24h);
-  add(r.sc_soc_72h,r.target_sc_soc_72h);
-  add(r.sc_hen,r.target_sc_hen);
-  add(r.sc_lap,r.target_sc_lap,"down");
+  add(r.sc_soc_24h,r.target_sc_soc_24h,6);
+  add(r.tich_hen,r.target_tich_hen,5);
 
-  return total ? ok/total : 0;
+  // ===== TRUNG =====
+  add(r.tk_16h_moi,r.target_16h_moi,4);
+  add(r.tk_16h_co_san,r.target_16h_co_san,4);
+
+  add(r.sc_16h,r.target_sc_16h,4);
+  add(r.sc_ht_24h,r.target_sc_ht_24h,8);
+  add(r.sc_soc_72h,r.target_sc_soc_72h,6);
+  add(r.sc_hen,r.target_sc_hen,6);
+
+  // ===== CAO =====
+  add(r.tk_24h_moi,r.target_24h_moi,8);
+  add(r.tk_24h_co_san,r.target_24h_co_san,8);
+
+  add(r.sc_24h,r.target_sc_24h,10);
+  add(r.sc_hot,r.target_sc_hot,8);
+  add(r.sc_vip,r.target_sc_vip,8);
+
+  add(r.sc_lap,r.target_sc_lap,5,"down");
+
+  return max ? (total/max)*100 : 0;
 }
 
 // ===== KPI NHÂN VIÊN TỒI =====
@@ -407,7 +420,7 @@ function render(data){
       📦 TK mới: ${safe(r.tong_tk_moi)} |
       📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
       🚨 SC: ${safe(r.tong_sc)} |
-      🏆 Rank: ${allData.findIndex(x => x === r) + 1} |
+      🏆 Rank: ${allData.findIndex(x => x === r) + 1} | 🎯 ${r.score.toFixed(0)} điểm |
       ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
       <br><br>
     `;
