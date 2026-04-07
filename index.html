@@ -374,7 +374,7 @@ let bad = getBadKPI(r);
 if(bad.length > 0){
   html += `
     <div class="card worst">
-      ❌ <b>${r.huyen}</b>: ➜ Tồi ${bad.length}/20 KPI<br>
+      ❌ <b>${r.huyen}</b>: ➜ Tồi ${bad.length}/20 KPI | 🏆 Xếp hạng: ${r.rank || "-"}
       <div style="margin-top:5px">
         ${bad.join(", ")}
       </div>
@@ -409,7 +409,25 @@ function load(){
   log ? "🕒Logtime: " + log : "";
 
 // 👉 dòng 1–15 (bảng Excel)
-  let tableData = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,14);
+  ➜ Tồi ${bad.length}/20 KPI
+// 👉 TÍNH RANK HUYỆN (ít KPI tồi = rank cao)
+let huyenRank = [...tableData]
+  .map(r => ({
+    ...r,
+    bad: getBadKPI(r).length
+  }))
+  .sort((a,b)=> a.bad - b.bad);
+
+// gán rank
+huyenRank.forEach((r,i)=>{
+  r.rank = i + 1;
+});
+
+// map lại vào tableData
+tableData.forEach(r=>{
+  let f = huyenRank.find(x => x.huyen === r.huyen);
+  r.rank = f ? f.rank : "";
+});
 
 // 👉 dòng 16+ (tính KPI)
     allData = rawData.slice(15);
