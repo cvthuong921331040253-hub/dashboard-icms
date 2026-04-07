@@ -273,20 +273,26 @@ function calcScore(r){
   let ratio = 0;
 
   if(type === "down"){
-    if(value === 0){
-      ratio = 1;
+    // KPI càng thấp càng tốt
+    if(value <= target){
+      ratio = 1; // đạt → full điểm
     }else{
-      ratio = target / value;
+      ratio = 0; // fail → mất sạch
     }
   }else{
-    ratio = value / target;
+    // KPI bình thường
+    if(value < target){
+      ratio = 0; // dưới target → mất sạch
+    }else{
+      ratio = value / 100; // lấy % thực tế
+    }
   }
 
+  // cap max = weight
   ratio = Math.min(ratio, 1);
 
   total += ratio * weight;
 }
-
   // ===== THẤP =====
   add(r.tk_3h_moi,r.target_3h_moi,1);
   add(r.tk_10h_moi,r.target_10h_moi,1);
