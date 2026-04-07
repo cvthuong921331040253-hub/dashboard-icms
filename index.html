@@ -262,27 +262,30 @@ function calcScore(r){
   let total = 0;
   let max = 0;
 
-  function add(v,t,weight,type="up"){
-    if(toNumber(t) === 0) return;
-
-    max += weight;
-
+ function add(v,t,weight,type="up"){
   let value = toNumber(v);
   let target = toNumber(t);
-  
+
+  if(target === 0) return;
+
+  max += weight;
+
   let ratio = 0;
-  
+
   if(type === "down"){
-    ratio = target === 0 ? 1 : (target / (value || 1));
+    if(value === 0){
+      ratio = 1;
+    }else{
+      ratio = target / value;
+    }
   }else{
-    ratio = target === 0 ? 1 : (value / target);
+    ratio = value / target;
   }
-  
-  // giới hạn max = 1 (100%)
+
   ratio = Math.min(ratio, 1);
-  
+
   total += ratio * weight;
-  }
+}
 
   // ===== THẤP =====
   add(r.tk_3h_moi,r.target_3h_moi,1);
