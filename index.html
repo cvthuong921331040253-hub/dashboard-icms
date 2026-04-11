@@ -190,7 +190,7 @@ input {
   <h3>⚠️KPI huyện đang tồi</h3>
   <div id="badHuyen"></div>
   
-  <h3>🏆 Top 5 NV tốt</h3>
+  <h3>🏆 Top 10 NV tốt</h3>
   <div id="top"></div>
 
   <h3>⚠️ Top 10 NV kém</h3>
@@ -499,7 +499,7 @@ function onlyBad(v){
 
 // ===== TOP =====
 function top5(){
-  let s = [...allData].slice(0,5);
+  let s = [...allData].slice(0,10);
   let html="";
   s.forEach((r,i)=>{
     html += `<div class="card top">🏆 TOP ${i+1} - ${r.nhan_vien} - ${r.huyen}</div>`;
