@@ -208,7 +208,7 @@ input {
   <div id="tableKPI"></div>
 </div>
   
-  <h3>⚠️KPI tồi Huyện hôm nay</h3>
+  <h3>⚠️KPI huyện đang tồi</h3>
   <div id="badHuyen"></div>
   
   <h3>🏆 Top 5 NV tốt</h3>
@@ -224,6 +224,9 @@ input {
 function load(tab){
   document.getElementById("kpiUI").style.display =
     tab === "kpi" ? "block" : "none";
+
+  document.getElementById("thuhoiUI").style.display =
+    tab === "thuhoi" ? "block" : "none";
 }
 const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
 let allData = [];
@@ -250,39 +253,73 @@ function check(v,t,type="up"){
 
 // ===== KPI SCORE =====
 function calcScore(r){
-  let total = 0, ok = 0;
+  let total = 0;
+  let max = 0;
 
-  function add(v,t,type="up"){
-    if(toNumber(t) === 0) return;
-    total++;
-    if(check(v,t,type)) ok++;
+ function add(v,t,weight,type="up"){
+  let value = toNumber(v);
+  let target = toNumber(t);
+
+  if(target === 0) return;
+
+  max += weight;
+
+  let ratio = 0;
+
+  if(type === "down"){
+    // KPI càng thấp càng tốt
+    if(value <= target){
+      ratio = 1; // đạt → full điểm
+    }else{
+      ratio = 0; // fail → mất sạch
+    }
+  }else{
+    // KPI bình thường
+    if(value < target){
+      ratio = 0; // dưới target → mất sạch
+    }else{
+      ratio = value / 100; // lấy % thực tế
+    }
   }
 
-  add(r.tk_3h_moi,r.target_3h_moi);
-  add(r.tk_10h_moi,r.target_10h_moi);
-  add(r.tk_16h_moi,r.target_16h_moi);
-  add(r.tk_24h_moi,r.target_24h_moi);
+  // cap max = weight
+  ratio = Math.min(ratio, 1);
 
-  add(r.tk_3h_co_san,r.target_3h_co_san);
-  add(r.tk_10h_co_san,r.target_10h_co_san);
-  add(r.tk_16h_co_san,r.target_16h_co_san);
-  add(r.tk_24h_co_san,r.target_24h_co_san);
+  total += ratio * weight;
+}
+  // ===== THẤP =====
+  add(r.tk_3h_moi,r.target_3h_moi,1);
+  add(r.tk_10h_moi,r.target_10h_moi,1);
 
-  add(r.tich_hen,r.target_tich_hen);
+  add(r.tk_3h_co_san,r.target_3h_co_san,1);
+  add(r.tk_10h_co_san,r.target_10h_co_san,1);
 
-  add(r.sc_3h,r.target_sc_3h);
-  add(r.sc_10h,r.target_sc_10h);
-  add(r.sc_16h,r.target_sc_16h);
-  add(r.sc_24h,r.target_sc_24h);
-  add(r.sc_hot,r.target_sc_hot);
-  add(r.sc_vip,r.target_sc_vip);
-  add(r.sc_ht_24h,r.target_sc_ht_24h);
-  add(r.sc_soc_24h,r.target_sc_soc_24h);
-  add(r.sc_soc_72h,r.target_sc_soc_72h);
-  add(r.sc_hen,r.target_sc_hen);
-  add(r.sc_lap,r.target_sc_lap,"down");
+  add(r.sc_3h,r.target_sc_3h,3);
+  add(r.sc_10h,r.target_sc_10h,3);
 
-  return total ? ok/total : 0;
+  add(r.sc_soc_24h,r.target_sc_soc_24h,6);
+  add(r.tich_hen,r.target_tich_hen,5);
+
+  // ===== TRUNG =====
+  add(r.tk_16h_moi,r.target_16h_moi,4);
+  add(r.tk_16h_co_san,r.target_16h_co_san,4);
+
+  add(r.sc_16h,r.target_sc_16h,4);
+  add(r.sc_ht_24h,r.target_sc_ht_24h,8);
+  add(r.sc_soc_72h,r.target_sc_soc_72h,6);
+  add(r.sc_hen,r.target_sc_hen,6);
+
+  // ===== CAO =====
+  add(r.tk_24h_moi,r.target_24h_moi,8);
+  add(r.tk_24h_co_san,r.target_24h_co_san,8);
+
+  add(r.sc_24h,r.target_sc_24h,10);
+  add(r.sc_hot,r.target_sc_hot,8);
+  add(r.sc_vip,r.target_sc_vip,8);
+
+  add(r.sc_lap,r.target_sc_lap,5,"down");
+
+  return max ? (total/max)*100 : 0;
 }
 
 // ===== KPI NHÂN VIÊN TỒI =====
@@ -331,9 +368,9 @@ let bad = getBadKPI(r);
 if(bad.length > 0){
   html += `
     <div class="card worst">
-      ❌ <b>${r.huyen}</b>: ➜ Tồi ${bad.length}/20 KPI<br>
+      ❌ <b>${r.huyen}</b>: ➜ Tồi ${bad.length}/20 KPI | 🏆 Xếp hạng: ${r.rank || "-"}
       <div style="margin-top:5px">
-        ${bad.join("<br>")}
+        ${bad.join(", ")}
       </div>
     </div>
   `;
@@ -361,12 +398,30 @@ function load(){
     
 // 👉 lấy TG update dòng 2 (index 1)
   let log = rawData[1]?.["Tg update"] || "";
+// 👉 dòng 1–15 (bảng Excel)
+let tableData = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,14);
 // 👉 hiển thị
   document.getElementById("logtime").innerText =
   log ? "🕒Logtime: " + log : "";
 
-// 👉 dòng 1–15 (bảng Excel)
-  let tableData = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,14);
+// 👉 TÍNH RANK HUYỆN (ít KPI tồi = rank cao)
+let huyenRank = [...tableData]
+  .map(r => ({
+    ...r,
+    bad: getBadKPI(r).length
+  }))
+  .sort((a,b)=> a.bad - b.bad);
+
+// gán rank
+huyenRank.forEach((r,i)=>{
+  r.rank = i + 1;
+});
+
+// map lại vào tableData
+tableData.forEach(r=>{
+  let f = huyenRank.find(x => x.huyen === r.huyen);
+  r.rank = f ? f.rank : "";
+});
 
 // 👉 dòng 16+ (tính KPI)
     allData = rawData.slice(15);
@@ -398,7 +453,7 @@ function render(data){
       📦 TK mới: ${safe(r.tong_tk_moi)} |
       📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
       🚨 SC: ${safe(r.tong_sc)} |
-      🏆 Rank: ${allData.findIndex(x => x === r) + 1} |
+      🏆 Xếp hạng: ${allData.findIndex(x => x === r) + 1} | 🎯 ${r.score.toFixed(0)} điểm |
       ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
       <br><br>
     `;
@@ -572,197 +627,7 @@ function renderTableExcel(data){
 
   document.getElementById("tableKPI").innerHTML = html;
 }
-  // ===== THU HOI - HUYỆN =====
-function renderHuyen(data){
-
-  let html = `
-  <table border="1" style="width:100%; font-size:12px">
-    <tr>
-      <th>Huyện</th>
-      <th>Cần thu</th>
-      <th>Đã thu</th>
-      <th>Tỷ lệ hoàn thành</th>
-      <th>Phạt</th>
-    </tr>
-  `;
-
-  data.forEach(r=>{
-    let ty_le = r.tong_can === 0 ? 1 : r.tong_da / r.tong_can;
-
-    html += `
-      <tr>
-        <td>${r.huyen}</td>
-        <td>${r.tong_can}</td>
-        <td>${r.tong_da}</td>
-        <td style="color:${ty_le<1?'red':'green'}">
-          ${(ty_le*100).toFixed(0)}%
-        </td>
-        <td>${r.tong_phat.toLocaleString()}</td>
-      </tr>
-    `;
-  });
-
-  html += "</table>";
-
-  document.getElementById("tableHuyen").innerHTML = html;
-}
-
-
-// ===== THU HOI - NHÂN VIÊN =====
-function renderTH(data){
-
-  let html = "";
-
-  data.forEach(r=>{
-
-    let ty_le = r.tong_can === 0 ? 1 : r.tong_da / r.tong_can;
-
-    let listHTML = r.list.map(acc=>`
-      <div style="font-size:12px; margin-left:10px">
-      • [ƯT ${acc.uu_tien}] ${acc.account} 
-      | ${acc.da}/${acc.can} 
-      (${(acc.ty_le*100).toFixed(0)}%)
-${acc.phat > 0 ? ` - 💸 ${acc.phat.toLocaleString()}` : ''}
-      </div>
-    `).join("");
-
-    html += `
-      <div class="card ${ty_le<1?'worst':'top'}">
-        👤 <b>${r.nhan_vien}</b> - ${r.huyen}<br>
-        💰Cần thu: ${r.tong_da}/${r.tong_can} 
-        (${(ty_le*100).toFixed(0)}%)<br>
-        💸 Phạt: ${r.tong_phat.toLocaleString()}<br>
-        ${listHTML}
-      </div>
-    `;
-  });
-
-  document.getElementById("dataTH").innerHTML = html;
-}
-  // ===== THU HOI =====
-let dataTH = [];
-function loadThuHoi(){
-
-  let loading = document.getElementById("loadingTH");
-  if(loading) loading.style.display = "block";
-
-  fetch(API_TH)
-  .then(r=>r.json())
-  .then(res=>{
-
-    let raw = res.data || [];
-    // ===== LOGTIME giống KPI =====
-if(raw.length > 0){
-
-  let tg = raw[0].tg_update; // 👉 giống KPI (lấy dòng đầu)
-
-  if(tg){
-    let d = new Date(tg);
-
-    let text =
-      d.getDate().toString().padStart(2,'0') + "/" +
-      (d.getMonth()+1).toString().padStart(2,'0') + " " +
-      d.getHours().toString().padStart(2,'0') + ":" +
-      d.getMinutes().toString().padStart(2,'0');
-
-    let el = document.getElementById("logtimeTH");
-    if(el) el.innerText = "⏰ Logtime: " + text;
-  }
-}
-
-    let nhanvienMap = {};
-    let huyenMap = {};
-
-raw.forEach(r=>{
-
-  let nv = r.nhan_vien || "Không tên";
-  let h = r.huyen || "Không rõ";
-
-  let can = Number(r.can_thu || 0);
-  let da = Number(r.da_thu_hoi || 0);
-  let phat = Number(r.tien_phat || 0);
-
-  let ty_le = 0;
-  if(can === 0 && da === 0){
-    ty_le = 1;
-  } else if(can > 0){
-    ty_le = da / can;
-  }
-
-  if(!nhanvienMap[nv]){
-    nhanvienMap[nv] = {
-      nhan_vien: nv,
-      huyen: h,
-      tong_can: 0,
-      tong_da: 0,
-      tong_phat: 0,
-      list: []
-    };
-  }
-
-  nhanvienMap[nv].tong_can += can;
-  nhanvienMap[nv].tong_da += da;
-
-  if(ty_le < 1){
-    nhanvienMap[nv].tong_phat += phat;
-  }
-
-  nhanvienMap[nv].list.push({
-    account: r.account,
-    uu_tien: r.uu_tien || 0,
-    can,
-    da,
-    ty_le,
-    phat: (ty_le === 1 ? 0 : phat)
-  });
-
-  if(!huyenMap[h]){
-    huyenMap[h] = {
-      huyen: h,
-      tong_can: 0,
-      tong_da: 0,
-      tong_phat: 0
-    };
-  }
-
-  huyenMap[h].tong_can += can;
-  huyenMap[h].tong_da += da;
-
-  if(ty_le < 1){
-    huyenMap[h].tong_phat += phat;
-  }
-
-}); // 👉 KẾT THÚC forEach
-
-// 👉 ĐƯA RA NGOÀI
-dataTH = Object.values(nhanvienMap);
-let dataHuyen = Object.values(huyenMap);
-
-dataTH.sort((a,b)=> b.tong_phat - a.tong_phat);
-dataHuyen.sort((a,b)=> b.tong_phat - a.tong_phat);
-
-// 👉 sort ưu tiên trong từng nhân viên
-dataTH.forEach(nv=>{
-  nv.list.sort((a,b)=> a.uu_tien - b.uu_tien);
-});
-
-if(loading) loading.style.display = "none";
-
-renderHuyen(dataHuyen);
-renderTH(dataTH);
-
-}) // 👈 THÊM DÒNG NÀY (đóng .then)
-
-.catch(err=>{
-  console.log("❌ Lỗi API THU HỒI:", err);
-
-  if(loading) loading.style.display = "none";
-
-  document.getElementById("dataTH").innerHTML =
-    `<div class="card worst">❌ Lỗi tải dữ liệu</div>`;
-});
-}
-
+  
 function filterTH(){
   let nv = document.getElementById("nv_th").value.toLowerCase();
   let h = document.getElementById("huyen_th").value.toLowerCase();
