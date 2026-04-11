@@ -187,11 +187,6 @@ input {
 </head>
 
 <body>
-<!-- ===== TAB BUTTON ===== -->
-<div style="display:flex; gap:6px; margin-bottom:6px;">
-  <button onclick="showTab('kpi')" class="reload-btn">📊 KPI CĐBR</button>
-  <button onclick="showTab('thuhoi')" class="reload-btn">📥 THU HỒI</button>
-</div>
   <div id="kpiUI">
 <div class="header-fixed">
   <div class="header-title">
@@ -226,7 +221,7 @@ input {
   <div id="data"></div>
 
 <script>
-function showTab(tab){
+function load(tab){
   document.getElementById("kpiUI").style.display =
     tab === "kpi" ? "block" : "none";
 
@@ -234,7 +229,6 @@ function showTab(tab){
     tab === "thuhoi" ? "block" : "none";
 }
 const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
-const API_TH = "https://script.google.com/macros/s/AKfycbzqj0IEDtejqhkPeJ9RHSczMz-K2_IqBdZB62VCtGL9l9rE4hyZa8tF8hx2vXupFa66/exec?sheet=Thu hoi";
 let allData = [];
 let showBadOnly = false;
 
@@ -633,197 +627,7 @@ function renderTableExcel(data){
 
   document.getElementById("tableKPI").innerHTML = html;
 }
-  // ===== THU HOI - HUYỆN =====
-function renderHuyen(data){
-
-  let html = `
-  <table border="1" style="width:100%; font-size:12px">
-    <tr>
-      <th>Huyện</th>
-      <th>Cần thu</th>
-      <th>Đã thu</th>
-      <th>Tỷ lệ hoàn thành</th>
-      <th>Phạt</th>
-    </tr>
-  `;
-
-  data.forEach(r=>{
-    let ty_le = r.tong_can === 0 ? 1 : r.tong_da / r.tong_can;
-
-    html += `
-      <tr>
-        <td>${r.huyen}</td>
-        <td>${r.tong_can}</td>
-        <td>${r.tong_da}</td>
-        <td style="color:${ty_le<1?'red':'green'}">
-          ${(ty_le*100).toFixed(0)}%
-        </td>
-        <td>${r.tong_phat.toLocaleString()}</td>
-      </tr>
-    `;
-  });
-
-  html += "</table>";
-
-  document.getElementById("tableHuyen").innerHTML = html;
-}
-
-
-// ===== THU HOI - NHÂN VIÊN =====
-function renderTH(data){
-
-  let html = "";
-
-  data.forEach(r=>{
-
-    let ty_le = r.tong_can === 0 ? 1 : r.tong_da / r.tong_can;
-
-    let listHTML = r.list.map(acc=>`
-      <div style="font-size:12px; margin-left:10px">
-      • [ƯT ${acc.uu_tien}] ${acc.account} 
-      | ${acc.da}/${acc.can} 
-      (${(acc.ty_le*100).toFixed(0)}%)
-${acc.phat > 0 ? ` - 💸 ${acc.phat.toLocaleString()}` : ''}
-      </div>
-    `).join("");
-
-    html += `
-      <div class="card ${ty_le<1?'worst':'top'}">
-        👤 <b>${r.nhan_vien}</b> - ${r.huyen}<br>
-        💰Cần thu: ${r.tong_da}/${r.tong_can} 
-        (${(ty_le*100).toFixed(0)}%)<br>
-        💸 Phạt: ${r.tong_phat.toLocaleString()}<br>
-        ${listHTML}
-      </div>
-    `;
-  });
-
-  document.getElementById("dataTH").innerHTML = html;
-}
-  // ===== THU HOI =====
-let dataTH = [];
-function loadThuHoi(){
-
-  let loading = document.getElementById("loadingTH");
-  if(loading) loading.style.display = "block";
-
-  fetch(API_TH)
-  .then(r=>r.json())
-  .then(res=>{
-
-    let raw = res.data || [];
-    // ===== LOGTIME giống KPI =====
-if(raw.length > 0){
-
-  let tg = raw[0].tg_update; // 👉 giống KPI (lấy dòng đầu)
-
-  if(tg){
-    let d = new Date(tg);
-
-    let text =
-      d.getDate().toString().padStart(2,'0') + "/" +
-      (d.getMonth()+1).toString().padStart(2,'0') + " " +
-      d.getHours().toString().padStart(2,'0') + ":" +
-      d.getMinutes().toString().padStart(2,'0');
-
-    let el = document.getElementById("logtimeTH");
-    if(el) el.innerText = "⏰ Logtime: " + text;
-  }
-}
-
-    let nhanvienMap = {};
-    let huyenMap = {};
-
-raw.forEach(r=>{
-
-  let nv = r.nhan_vien || "Không tên";
-  let h = r.huyen || "Không rõ";
-
-  let can = Number(r.can_thu || 0);
-  let da = Number(r.da_thu_hoi || 0);
-  let phat = Number(r.tien_phat || 0);
-
-  let ty_le = 0;
-  if(can === 0 && da === 0){
-    ty_le = 1;
-  } else if(can > 0){
-    ty_le = da / can;
-  }
-
-  if(!nhanvienMap[nv]){
-    nhanvienMap[nv] = {
-      nhan_vien: nv,
-      huyen: h,
-      tong_can: 0,
-      tong_da: 0,
-      tong_phat: 0,
-      list: []
-    };
-  }
-
-  nhanvienMap[nv].tong_can += can;
-  nhanvienMap[nv].tong_da += da;
-
-  if(ty_le < 1){
-    nhanvienMap[nv].tong_phat += phat;
-  }
-
-  nhanvienMap[nv].list.push({
-    account: r.account,
-    uu_tien: r.uu_tien || 0,
-    can,
-    da,
-    ty_le,
-    phat: (ty_le === 1 ? 0 : phat)
-  });
-
-  if(!huyenMap[h]){
-    huyenMap[h] = {
-      huyen: h,
-      tong_can: 0,
-      tong_da: 0,
-      tong_phat: 0
-    };
-  }
-
-  huyenMap[h].tong_can += can;
-  huyenMap[h].tong_da += da;
-
-  if(ty_le < 1){
-    huyenMap[h].tong_phat += phat;
-  }
-
-}); // 👉 KẾT THÚC forEach
-
-// 👉 ĐƯA RA NGOÀI
-dataTH = Object.values(nhanvienMap);
-let dataHuyen = Object.values(huyenMap);
-
-dataTH.sort((a,b)=> b.tong_phat - a.tong_phat);
-dataHuyen.sort((a,b)=> b.tong_phat - a.tong_phat);
-
-// 👉 sort ưu tiên trong từng nhân viên
-dataTH.forEach(nv=>{
-  nv.list.sort((a,b)=> a.uu_tien - b.uu_tien);
-});
-
-if(loading) loading.style.display = "none";
-
-renderHuyen(dataHuyen);
-renderTH(dataTH);
-
-}) // 👈 THÊM DÒNG NÀY (đóng .then)
-
-.catch(err=>{
-  console.log("❌ Lỗi API THU HỒI:", err);
-
-  if(loading) loading.style.display = "none";
-
-  document.getElementById("dataTH").innerHTML =
-    `<div class="card worst">❌ Lỗi tải dữ liệu</div>`;
-});
-}
-
+  
 function filterTH(){
   let nv = document.getElementById("nv_th").value.toLowerCase();
   let h = document.getElementById("huyen_th").value.toLowerCase();
@@ -836,39 +640,6 @@ function filterTH(){
   renderTH(f);
 }
 </script>
-</div>
-<!-- ===== THU HOI UI ===== -->
-<div id="thuhoiUI" style="display:none">
-
-  <div class="header-fixed">
-
-    <div class="header-title">
-      <div>
-        <h2>📥 THU HỒI</h2>
-        <div id="logtimeTH" class="logtime"></div>
-      </div>
-
-      <button onclick="loadThuHoi()" class="reload-btn">🔄</button>
-    </div>
-
-    <div class="header-filter">
-      🔍 Nhân viên <input id="nv_th" onkeyup="filterTH()"><br><br>
-      🔍 Huyện <input id="huyen_th" onkeyup="filterTH()">
-    </div>
-
-  </div>
-
-  <!-- loading -->
-  <div id="loadingTH">⏳ Đang tải dữ liệu...</div>
-
-  <!-- bảng huyện -->
-  <h3>📊 Thu hồi theo Huyện</h3>
-  <div id="tableHuyen"></div>
-  
-  <!-- danh sách nhân viên -->
-  <h3>👤 Danh sách nhân viên</h3>
-  <div id="dataTH"></div>
-
 </div>
 </div>
 </body>
