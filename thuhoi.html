@@ -24,11 +24,9 @@ body {
 .worst { background: #ffeaea; }
 
 .reload-btn {
-  padding: 5px 5px;
-  border: none;
-  border-radius: 5px;
-  background: #2196f3;
-  color: white;
+  padding: 4px 6px;      /* 🔥 nhỏ lại */
+  font-size: 13px;       /* 🔥 giảm chữ */
+  border-radius: 6px;
 }
 
 .header-fixed {
@@ -151,14 +149,18 @@ function loadThuHoi(){
     let raw = res.data || [];
 
     // logtime
-    if(raw.length > 0){
-      let tg = raw[0].tg_update;
-      if(tg){
-        let d = new Date(tg);
-        document.getElementById("logtimeTH").innerText =
-          d.getDate()+"/"+(d.getMonth()+1)+" "+d.getHours()+":"+d.getMinutes();
-      }
+  if(raw.length > 0){
+  
+    let tg = raw[0].tg_update || raw[0]["Tg update"];
+  
+    if(tg){
+      let d = new Date(tg);
+  
+      document.getElementById("logtimeTH").innerText =
+        "🕒 " + d.getDate()+"/"+(d.getMonth()+1)+" "
+        + d.getHours()+":"+String(d.getMinutes()).padStart(2,"0");
     }
+  }
 
     let nhanvienMap = {};
     let huyenMap = {};
