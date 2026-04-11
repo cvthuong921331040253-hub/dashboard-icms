@@ -26,24 +26,21 @@ body {
 .top { background: #e8f5e9; }
 .worst { background: #ffeaea; }
 
-.reload-btn {
-  padding: 0px 6px;      /* 🔥 giảm mạnh padding */
-  font-size: 12px;
-  height: 26px;          /* 🔥 fix chiều cao */
-  line-height: 26px;
-}
-  .reload-btn {
-  display: inline-flex;
+.header-title {
+  display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
-.header-fixed {
-  position: sticky;
-  top: 0;
-  background: #f5f7fb;
-  z-index: 1000;
-  padding-bottom: 6px;
+.header-filter {
+  margin-top: 5px;
+}
+
+.reload-btn {
+  position: static;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
 .logtime {
@@ -55,9 +52,10 @@ body {
 
 <body>
 
+<!-- HEADER -->
 <div class="header-fixed">
 
-  <div style="display:flex; justify-content:space-between;">
+  <div class="header-title">
     <div>
       <h2>📥 THU HỒI</h2>
       <div id="logtimeTH" class="logtime"></div>
@@ -66,8 +64,10 @@ body {
     <button onclick="loadThuHoi()" class="reload-btn">🔄</button>
   </div>
 
-  🔍 Nhân viên <input id="nv_th" onkeyup="filterTH()"><br><br>
-  🔍 Huyện <input id="huyen_th" onkeyup="filterTH()">
+  <div class="header-filter">
+    🔍 Nhân viên <input id="nv_th" onkeyup="filterTH()"><br>
+    🔍 Huyện <input id="huyen_th" onkeyup="filterTH()">
+  </div>
 
 </div>
 
@@ -160,7 +160,6 @@ function loadThuHoi(){
 
     // logtime
   if(raw.length > 0){
-  
     let tg = raw[0].tg_update || raw[0]["Tg update"];
   
     if(tg){
