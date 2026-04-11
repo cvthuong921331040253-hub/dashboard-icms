@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Taget CDBR</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-top: 10px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 13px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .red {
+      background-color: #ffcccc;
+    }
+
+    .box {
+      padding: 10px;
+      background: #f5f5f5;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>📊 Dashboard</h2>
+
+<div class="box" id="dashboard"></div>
+
+<label>
+  <input type="checkbox" onchange="onlyOpen(this.checked)">
+  Chỉ hiện chưa đóng
+</label>
+
+<br><br>
+
+<h2>📋 Dữ liệu</h2>
+
+<select onchange="loadData(this.value)">
+  <option value="Taget CDBR">Taget CDBR</option>
+</select>
+
+<br><br>
+
+<div id="data"></div>
+
+<script>
+let currentData = [];
+
+function loadData(sheet) {
+  const api = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=" + sheet;
+
+  fetch(api)
+    .then(res => res.json())
+    .then(res => {
+
+      currentData = res.data;
+
+      renderTable(currentData, res.headers);
+
+      // dashboard
+      let total = res.data.length;
+
+      let chuaDong = res.data.filter(r => r["Trạng thái wo"] == "Chưa đóng").length;
+
+      let percent = ((chuaDong / total) * 100).toFixed(1);
+
+      document.getElementById("dashboard").innerHTML = `
+        <b>Tổng:</b> ${total} <br>
+        <b>Chưa đóng:</b> <span style="color:red">${chuaDong}</span> <br>
+        <b>Tỷ lệ:</b> <span style="color:red">${percent}%</span>
+      `;
+    });
+}
+
+function renderTable(data, headers) {
+  let html = "<table><tr>";
+
+  headers.forEach(h => {
+    html += `<th>${h}</th>`;
+  });
+
+  html += "</tr>";
+
+  data.forEach(row => {
+
+    let color = row["Trạng thái wo"] == "Chưa đóng" ? "class='red'" : "";
+
+    html += `<tr ${color}>`;
+
+    headers.forEach(h => {
+      html += `<td>${row[h] || ""}</td>`;
+    });
+
+    html += "</tr>";
+  });
+
+  html += "</table>";
+
+  document.getElementById("data").innerHTML = html;
+}
+
+function onlyOpen(checked) {
+  let filtered = checked 
+    ? currentData.filter(r => r["Trạng thái wo"] == "Chưa đóng")
+    : currentData;
+
+  // cần lấy lại headers từ lần load trước
+  fetchHeaders(filtered);
+}
+
+function fetchHeaders(data) {
+  if (data.length === 0) return;
+
+  let headers = Object.keys(data[0]);
+  renderTable(data, headers);
+}
+
+// load mặc định
+loadData("Taget CDBR");
+</script>
+
+</body>
+</html>
