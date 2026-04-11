@@ -22,13 +22,6 @@ body {
 .ok { color: green; }
 .fail { color: red; font-weight: bold; }
 
-.header-fixed {
-  position: sticky;
-  top: 0;
-  background: #f5f7fb;
-  z-index: 1000;
-}
-
 .reload-btn {
   padding: 6px 10px;
   border: none;
@@ -37,16 +30,17 @@ body {
   color: white;
 }
 
+.header-fixed {
+  position: sticky;
+  top: 0;
+  background: #f5f7fb;
+  z-index: 1000;
+}
+
 #tableKPI table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
-}
-#tableKPI th {
-  background: #e3f2fd;
-}
-#tableKPI td {
-  text-align: center;
 }
 </style>
 </head>
@@ -54,26 +48,33 @@ body {
 <body>
 
 <div class="header-fixed">
+
   <h2>📊 KPI CĐBR</h2>
   <div id="logtime"></div>
 
   🔍 Nhân viên <input id="nv" onkeyup="filter()"><br>
   🔍 Huyện <input id="huyen" onkeyup="filter()">
-  <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
+
+  <label>
+    <input type="checkbox" onchange="onlyBad(this.checked)">
+    KPI kém
+  </label>
+
   <br><br>
   <button onclick="reloadPage()" class="reload-btn">🔄 Reload</button>
+
 </div>
 
-<h3>📊 Bảng KPI</h3>
+<h3>📊 Bảng KPI tổng hợp</h3>
 <div id="tableKPI"></div>
 
 <h3>⚠️ KPI huyện tồi</h3>
 <div id="badHuyen"></div>
 
-<h3>🏆 Top 5</h3>
+<h3>🏆 Top 5 NV tốt</h3>
 <div id="top"></div>
 
-<h3>❌ Top kém</h3>
+<h3>❌ Top 10 NV kém</h3>
 <div id="worst"></div>
 
 <h3>📋 Danh sách</h3>
@@ -81,11 +82,13 @@ body {
 
 <script>
 
+// ===== API =====
 const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
 
 let allData = [];
 let showBadOnly = false;
 
+// ===== UTILS =====
 function toNumber(v){
   if(!v) return 0;
   return parseFloat(String(v).replace("%","")) || 0;
@@ -95,6 +98,7 @@ function check(v,t){
   return toNumber(v) >= toNumber(t);
 }
 
+// ===== KPI SCORE =====
 function calcScore(r){
   let total = 0;
   let max = 0;
@@ -102,7 +106,7 @@ function calcScore(r){
   function add(v,t,w){
     if(!t) return;
     max += w;
-    total += check(v,t) ? w : 0;
+    if(check(v,t)) total += w;
   }
 
   add(r.tk_3h_moi,r.target_3h_moi,1);
@@ -113,6 +117,7 @@ function calcScore(r){
   return max ? total/max*100 : 0;
 }
 
+// ===== LOAD =====
 function load(){
   fetch(API)
   .then(r=>r.json())
@@ -123,23 +128,28 @@ function load(){
     document.getElementById("logtime").innerText =
       raw[1]?.["Tg update"] || "";
 
+    let tableData = raw.slice(0,14);
+
     allData = raw.slice(15);
 
     allData.forEach(r=> r.score = calcScore(r));
 
     allData.sort((a,b)=> b.score - a.score);
 
-    applyFilter();
+    render(allData);
+    renderTableExcel(tableData);
     top5();
     topWorst();
 
   });
 }
 
+// ===== RENDER =====
 function render(data){
   let html = "";
 
   data.forEach(r=>{
+
     html += `
       <div class="card">
         👤 ${r.nhan_vien} - ${r.huyen}<br>
@@ -151,7 +161,8 @@ function render(data){
   document.getElementById("data").innerHTML = html;
 }
 
-function applyFilter(){
+// ===== FILTER =====
+function filter(){
   let nv = document.getElementById("nv").value.toLowerCase();
   let h = document.getElementById("huyen").value.toLowerCase();
 
@@ -163,37 +174,55 @@ function applyFilter(){
   render(f);
 }
 
-function filter(){
-  applyFilter();
-}
-
 function onlyBad(v){
   showBadOnly = v;
   render(allData);
 }
 
+// ===== TOP =====
 function top5(){
   let s = allData.slice(0,5);
   let html="";
-  s.forEach(r=>{
-    html += `<div class="card">🏆 ${r.nhan_vien}</div>`;
+  s.forEach((r,i)=>{
+    html += `<div class="card">🏆 TOP ${i+1} - ${r.nhan_vien}</div>`;
   });
   document.getElementById("top").innerHTML = html;
 }
 
 function topWorst(){
-  let s = allData.slice(-5);
+  let s = allData.slice(-10).reverse();
   let html="";
-  s.forEach(r=>{
-    html += `<div class="card fail">❌ ${r.nhan_vien}</div>`;
+  s.forEach((r,i)=>{
+    html += `<div class="card fail">❌ TOP ${i+1} - ${r.nhan_vien}</div>`;
   });
   document.getElementById("worst").innerHTML = html;
 }
 
+// ===== TABLE =====
+function renderTableExcel(data){
+
+  let html = `<table border="1">`;
+
+  data.forEach(r=>{
+    html += `<tr>
+      <td>${r.huyen||""}</td>
+      <td>${r.tong_tk_moi||""}</td>
+      <td>${r.tong_tk_co_san||""}</td>
+      <td>${r.tong_sc||""}</td>
+    </tr>`;
+  });
+
+  html += "</table>";
+
+  document.getElementById("tableKPI").innerHTML = html;
+}
+
+// ===== RELOAD =====
 function reloadPage(){
   location.reload();
 }
 
+// START
 load();
 
 </script>
