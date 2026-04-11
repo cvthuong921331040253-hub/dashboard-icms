@@ -410,7 +410,7 @@ tableData.forEach(r=>{
 
     applyFilter();
     renderTableExcel(tableData); // ✅ bảng đúng 1–15
-    top5();
+    top10();
     topWorst();
     renderBadHuyen(tableData);
     loadThuHoi();
@@ -498,7 +498,7 @@ function onlyBad(v){
 }
 
 // ===== TOP =====
-function top5(){
+function top10(){
   let s = [...allData].slice(0,10);
   let html="";
   s.forEach((r,i)=>{
