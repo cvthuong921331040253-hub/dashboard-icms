@@ -11,6 +11,9 @@ body {
   padding: 8px;
   background: #f5f7fb;
 }
+body {
+  padding-top: 70px;   /* 🔥 đẩy xuống */
+}
 
 .card {
   background: white;
@@ -24,9 +27,15 @@ body {
 .worst { background: #ffeaea; }
 
 .reload-btn {
-  padding: 4px 6px;      /* 🔥 nhỏ lại */
-  font-size: 13px;       /* 🔥 giảm chữ */
-  border-radius: 6px;
+  padding: 0px 6px;      /* 🔥 giảm mạnh padding */
+  font-size: 12px;
+  height: 26px;          /* 🔥 fix chiều cao */
+  line-height: 26px;
+}
+  .reload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .header-fixed {
@@ -34,6 +43,7 @@ body {
   top: 0;
   background: #f5f7fb;
   z-index: 1000;
+  padding-bottom: 6px;
 }
 
 .logtime {
