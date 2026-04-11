@@ -10,7 +10,9 @@ body {
   font-family: Arial;
   padding: 8px;
   background: #f5f7fb;
+  margin: 0;
 }
+
 
 .card {
   background: white;
@@ -32,12 +34,24 @@ body {
 .header-filter {
   margin-top: 5px;
 }
+.header-fixed {
+  position: sticky;
+  top: 0;
+
+  background: #f5f7fb;   /* 🔥 bắt buộc */
+  z-index: 9999;         /* 🔥 luôn nổi */
+
+  padding-bottom: 6px;
+  border-bottom: 1px solid #ddd;
+}
 
 .reload-btn {
-  position: static;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 4px 8px;
+  font-size: 13px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logtime {
