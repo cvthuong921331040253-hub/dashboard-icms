@@ -7,19 +7,9 @@
 <style>
 body { font-family: Arial; background:#f5f7fb; padding:8px; }
 
-/* ===== HEADER ===== */
-.header {
-  position: sticky;
-  top: 0;
-  background: #f5f7fb;
-  z-index: 1000;
-}
-
-.header-top {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
+/* HEADER */
+.header { position: sticky; top:0; background:#f5f7fb; z-index:1000; }
+.header-top { display:flex; justify-content:space-between; align-items:center; }
 
 .reload-btn {
   padding:6px 10px;
@@ -29,7 +19,7 @@ body { font-family: Arial; background:#f5f7fb; padding:8px; }
   border-radius:6px;
 }
 
-/* ===== TABLE ===== */
+/* TABLE */
 .table-wrap {
   overflow:auto;
   max-height:400px;
@@ -47,62 +37,57 @@ table {
 th, td {
   border:1px solid #999;
   padding:6px 8px;
-  font-size:13px;
+  font-size:12px;
   white-space:nowrap;
 }
 
 th { background:#e3f2fd; }
 
-/* ===== STICKY FIX CHUẨN ===== */
-
-/* Ô Huyện */
+/* STICKY */
 thead th[rowspan]{
-  position: sticky;
+  position:sticky;
   top:0;
   left:0;
   z-index:20;
   background:#d0e7ff;
-  font-weight:bold;
 }
 
-/* header dòng 1 */
 thead tr:first-child th{
-  position: sticky;
+  position:sticky;
   top:0;
   z-index:10;
 }
 
-/* header dòng 2 */
 thead tr:nth-child(2) th{
-  position: sticky;
-  top:32px;
+  position:sticky;
+  top:30px;
   z-index:9;
 }
 
-/* cột huyện body */
 tbody td:first-child{
-  position: sticky;
+  position:sticky;
   left:0;
-  background:#d0e7ff;
   z-index:5;
+  background:#d0e7ff;
   font-weight:bold;
 }
 
-/* ===== CARD ===== */
+/* CARD */
 .card {
   background:#fff;
   padding:8px;
   margin:6px 0;
   border-radius:6px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
 }
 
-.top { background:#e8f5e9; }
-.worst { background:#ffeaea; }
+.top { border-left:4px solid #4caf50; }
+.worst { border-left:4px solid #e53935; }
 
-.ok { color:green; }
-.fail { color:red; font-weight:bold; }
+.ok { color:#2e7d32; font-weight:bold; }
+.fail { color:#c62828; font-weight:bold; }
 
-/* ===== MOBILE ===== */
+/* MOBILE */
 @media(max-width:768px){
   th,td{ font-size:11px; padding:4px }
   h2{ font-size:18px }
@@ -133,10 +118,8 @@ tbody td:first-child{
 </div>
 
 <div id="topSection">
-  <h3>🏆 Top 10 NV tốt</h3>
+  <h3>🏆 Top KPI</h3>
   <div id="top"></div>
-
-  <h3>⚠️ Top 10 NV kém</h3>
   <div id="worst"></div>
 </div>
 
@@ -145,7 +128,7 @@ tbody td:first-child{
 
 <script>
 
-const API = "https://script.google.com/macros/s/AKfycby2YYZVK6r1QXP_TgnB0i99prYJmEG8cJwGDQILU1tph0i38b80BhN6Oa9bT5IMuQft0A/exec?sheet=Khoan vt";
+const API="https://script.google.com/macros/s/AKfycby2YYZVK6r1QXP_TgnB0i99prYJmEG8cJwGDQILU1tph0i38b80BhN6Oa9bT5IMuQft0A/exec?sheet=Khoan vt";
 
 let tableData=[], nvData=[];
 
@@ -160,29 +143,41 @@ let tg=raw[0]?.tg_update||"";
 if(tg){ tg=new Date(tg).toLocaleString("vi-VN"); }
 document.getElementById("logtime").innerText="🕒 "+tg;
 
-// bảng
+// bảng huyện
 tableData=raw.slice(0,30);
-nvData=raw.slice(30);
+
+// nhân viên
+nvData=raw.slice(30).map(r=>({
+  nhan_vien:r["nhan vien"]||r.nhan_vien,
+  huyen:r.huyen,
+
+  t_p:Number(r.t_p||0),
+  tl:Number(r.tl||0),
+  cl:Number(r.cl||0),
+
+  t_p_tkm:Number(r.t_p_tkm||0),
+  t_p_sc:Number(r.t_p_sc||0)
+}));
 
 applyFilter();
 });
 }
 
+function filter(){applyFilter();}
+
 function applyFilter(){
+
 let nv=document.getElementById("nv").value.toLowerCase();
 let h=document.getElementById("huyen").value.toLowerCase();
 
 let isSearch=nv||h;
 
-// ẩn top khi search
 document.getElementById("topSection").style.display=
 isSearch?"none":"block";
 
-// ẩn bảng khi search NV
 document.getElementById("tableSection").style.display=
 nv?"none":"block";
 
-// filter
 let tableF=tableData.filter(r=>
 (r.huyen||"").toLowerCase().includes(h)
 );
@@ -198,17 +193,15 @@ renderWorst(nvData);
 renderList(nvF);
 }
 
-function filter(){applyFilter();}
-
-// ===== TABLE =====
+/* TABLE */
 function renderTable(data){
 
 let html=`
 <thead>
 <tr>
 <th rowspan="2">Huyện</th>
-<th colspan="5">📦 Triển khai mới</th>
-<th colspan="5">🔧 Sự cố</th>
+<th colspan="5">📦 TKM</th>
+<th colspan="5">🔧 SC</th>
 </tr>
 <tr>
 <th>ĐM</th><th>TH</th><th>CL</th><th>%</th><th>T/P</th>
@@ -239,36 +232,51 @@ html+="</tbody>";
 document.getElementById("table").innerHTML=html;
 }
 
-// ===== TOP =====
+/* TOP TKM */
 function renderTop(data){
-let s=[...data].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
+let s=[...data].sort((a,b)=>b.t_p_tkm-a.t_p_tkm).slice(0,5);
+
 document.getElementById("top").innerHTML=
-s.map((r,i)=>`<div class="card top">🏆 ${i+1}. ${r.nhan_vien} (${num(r.t_p)})</div>`).join("");
+"<h4>📦 Top TKM</h4>"+
+s.map((r,i)=>`
+<div class="card top">
+🏆 ${i+1}. ${r.nhan_vien}<br>
+💰 ${num(r.t_p_tkm)}
+</div>`).join("");
 }
 
-// ===== WORST =====
+/* TOP SC */
 function renderWorst(data){
-let s=[...data].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
+let s=[...data].sort((a,b)=>b.t_p_sc-a.t_p_sc).slice(0,5);
+
 document.getElementById("worst").innerHTML=
-s.map((r,i)=>`<div class="card worst">❌ ${i+1}. ${r.nhan_vien} (${num(r.t_p)})</div>`).join("");
+"<h4>🔧 Top SC</h4>"+
+s.map((r,i)=>`
+<div class="card worst">
+🏆 ${i+1}. ${r.nhan_vien}<br>
+💰 ${num(r.t_p_sc)}
+</div>`).join("");
 }
 
-// ===== LIST =====
+/* LIST */
 function renderList(data){
+
 let html="";
 data.forEach(r=>{
 html+=`
 <div class="card">
 <b>${r.nhan_vien} - ${r.huyen}</b><br>
-Tỉ lệ: <span class="${r.tl>=0?'ok':'fail'}">${r.tl}%</span><br>
-Thưởng/Phạt: ${num(r.t_p)}
+🎯 Tỉ lệ: <span class="${r.tl>=0?'ok':'fail'}">${r.tl}%</span><br>
+💰 Thưởng/Phạt: <span class="${r.t_p>=0?'ok':'fail'}">${num(r.t_p)}</span>
 </div>`;
 });
+
 document.getElementById("list").innerHTML=html;
 }
 
 load();
 
 </script>
+
 </body>
 </html>
