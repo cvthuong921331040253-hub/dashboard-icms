@@ -1,370 +1,108 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>KPI FINAL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khoán Vật Tư Dashboard</title>
 
 <style>
 body {
   font-family: Arial;
-  padding: 8px;
   background: #f5f7fb;
+  padding: 10px;
 }
 
 .card {
-  background: white;
-  border-radius: 8px;
+  background: #fff;
   padding: 8px;
   margin-bottom: 8px;
+  border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.ok { color: green; }
-.fail { color: red; font-weight: bold; }
-
-.top { background: #e8f5e9; }
-.worst { background: #ffeaea; }
+.header {
+  position: sticky;
+  top: 0;
+  background: #f5f7fb;
+  z-index: 1000;
+  padding-bottom: 8px;
+}
 
 input {
   padding: 4px;
   margin-right: 6px;
 }
+
 .reload-btn {
-  position: static; /* 👈 đổi dòng này */
   padding: 6px 10px;
   border: none;
-  border-radius: 6px;
   background: #2196f3;
   color: white;
-  font-size: 14px;
-}
-  .header-fixed {
-  position: sticky;
-  top: 0;
-  background: #f5f7fb;
-  z-index: 1000;   /* 👈 tăng lên cho chắc */
-  padding-bottom: 6px;
-}
-  .header-filter {
-  margin-top: 5px;
-}
-  .header-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-  /* ===== MOBILE ===== */
-@media (max-width: 600px) {
-
-  body {
-    font-size: 13px;
-    padding: 6px;
-  }
-
-  h2 {
-    font-size: 16px;
-  }
-
-  .card {
-    padding: 6px;
-    margin-bottom: 6px;
-    font-size: 13px;
-  }
-
-  input {
-    padding: 3px;
-    font-size: 12px;
-  }
-
-  .reload-btn {
-    padding: 8px 10px;
-    font-size: 14px;
-  }
-
-}
-  /* ===== TABLE KPI ===== */
-#tableKPI table {
-  background: #fff;
+  border-radius: 6px;
 }
 
-#tableKPI th {
-  background: #e3f2fd; /* xanh nhẹ */
-  text-align: center;
-  font-weight: bold;
-}
+.ok { color: green; }
+.bad { color: red; font-weight: bold; }
 
-#tableKPI td {
-  text-align: center;       /* 👉 số nằm giữa */
-  vertical-align: middle;
-  background: #f9fbff;      /* nền nhẹ */
-}
-
-/* dòng xen kẽ cho đẹp */
-#tableKPI tr:nth-child(even) td {
-  background: #f1f6ff;
-}
-  /* ===== FIX KPI TABLE ===== */
-#tableKPI {
-  background: #fff;
-  padding-bottom: 5px;
-}
-  .kpi-wrapper {
+.table-wrap {
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
-#tableKPI table {
-  min-width: 1200px;
-}
- /* ===== CỘT HUYỆN MÀU XANH ===== */
-#tableKPI th:first-child,
-#tableKPI td:first-child {
-  position: sticky;
-  left: 0;
-
-  /* nền xanh */
-  background: #d0e7ff;
-
-  /* chữ đậm */
-  font-weight: 500;
-
-  /* viền phân cách */
-  border-right: 2px solid #90caf9;
-
-  /* đổ bóng nhẹ */
-  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
-
-  z-index: 3;
-}
-
-/* header cột đầu xanh đậm hơn */
-#tableKPI th:first-child {
-  background: #90caf9;
-  font-weight: bold;
-  z-index: 4;
-}
-/* cột huyện vừa với chữ */
-#tableKPI th:first-child,
-#tableKPI td:first-child {
-  width: 80px;        /* 👈 chỉnh ở đây */
-  min-width: 60px;
-  white-space: nowrap;
-}
-  /* bảng full width */
-#tableKPI table {
+table {
+  border-collapse: collapse;
   width: 100%;
-  table-layout: fixed; /* 👉 chia đều cột */
+  min-width: 900px;
+  background: #fff;
 }
-  /* căn chữ log time */
-  .logtime {
-  font-size: 12px;
-  color: #666;
-  margin-top: 2px;
+
+th {
+  background: #e3f2fd;
+  padding: 6px;
+}
+
+td {
+  text-align: center;
+  padding: 6px;
+}
+
+tr:nth-child(even) {
+  background: #f1f6ff;
 }
 </style>
 </head>
 
 <body>
-  <div id="kpiUI">
-<div class="header-fixed">
-  <div class="header-title">
-  <div>
-    <h2>📊 KPI CĐBR</h2>
-    <div id="logtime" class="logtime"></div>
-  </div>
-  <button onclick="reloadPage()" class="reload-btn">🔄</button>
-</div>
-  <div class="header-filter">
-    🔍 Nhân viên <input id="nv" onkeyup="filter()"><br>
-    🔍 Huyện <input id="huyen" onkeyup="filter()">
-    <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
-  </div>
 
-</div>
-<h3>📊 Bảng KPI tổng hợp</h3>
-<div class="kpi-wrapper">
-  <div id="tableKPI"></div>
-</div>
-  
-  <h3>⚠️KPI huyện đang tồi</h3>
-  <div id="badHuyen"></div>
-  
-  <h3>🏆 Top 10 NV tốt</h3>
-  <div id="top"></div>
+<div class="header">
+  <h2>📊 Khoán Vật Tư</h2>
 
-  <h3>⚠️ Top 10 NV kém</h3>
-  <div id="worst"></div>
+  🔍 Nhân viên <input id="nv" onkeyup="filter()">
+  🔍 Huyện <input id="huyen" onkeyup="filter()">
+  <button onclick="reload()" class="reload-btn">🔄</button>
 
-  <h3>📋 Danh sách</h3>
-  <div id="data"></div>
+  <div id="logtime" style="font-size:12px;color:#666;margin-top:4px"></div>
+</div>
+
+<h3>📊 Bảng tổng hợp</h3>
+<div class="table-wrap">
+  <div id="table"></div>
+</div>
+
+<h3>🏆 Top thưởng</h3>
+<div id="top"></div>
+
+<h3>⚠️ Top phạt</h3>
+<div id="worst"></div>
 
 <script>
-function load(tab){
-  document.getElementById("kpiUI").style.display =
-    tab === "kpi" ? "block" : "none";
 
-  document.getElementById("thuhoiUI").style.display =
-    tab === "thuhoi" ? "block" : "none";
-}
-const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
+const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Khoan vt";
+
 let allData = [];
-let showBadOnly = false;
 
-// ===== FIX DATA =====
-function safe(v){ return v ?? 0; }
-
-function toNumber(v){
-  if(!v) return 0;
-  if(typeof v === "string" && v.includes("T")) return 0;
-  if(typeof v === "string"){
-    return parseFloat(v.replace("%","")) || 0;
-  }
-  return v;
-}
-
-function check(v,t,type="up"){
-  v = toNumber(v);
-  t = toNumber(t);
-  if(type==="down") return v <= t;
-  return v >= t;
-}
-
-// ===== KPI SCORE =====
-function calcScore(r){
-  let total = 0;
-  let max = 0;
-
- function add(v,t,weight,type="up"){
-  let value = toNumber(v);
-  let target = toNumber(t);
-
-  if(target === 0) return;
-
-  max += weight;
-
-  let ratio = 0;
-
-  if(type === "down"){
-    // KPI càng thấp càng tốt
-    if(value <= target){
-      ratio = 1; // đạt → full điểm
-    }else{
-      ratio = 0; // fail → mất sạch
-    }
-  }else{
-    // KPI bình thường
-    if(value < target){
-      ratio = 0; // dưới target → mất sạch
-    }else{
-      ratio = value / 100; // lấy % thực tế
-    }
-  }
-
-  // cap max = weight
-  ratio = Math.min(ratio, 1);
-
-  total += ratio * weight;
-}
-  // ===== THẤP =====
-  add(r.tk_3h_moi,r.target_3h_moi,1);
-  add(r.tk_10h_moi,r.target_10h_moi,1);
-
-  add(r.tk_3h_co_san,r.target_3h_co_san,1);
-  add(r.tk_10h_co_san,r.target_10h_co_san,1);
-
-  add(r.sc_3h,r.target_sc_3h,3);
-  add(r.sc_10h,r.target_sc_10h,3);
-
-  add(r.sc_soc_24h,r.target_sc_soc_24h,6);
-  add(r.tich_hen,r.target_tich_hen,5);
-
-  // ===== TRUNG =====
-  add(r.tk_16h_moi,r.target_16h_moi,4);
-  add(r.tk_16h_co_san,r.target_16h_co_san,4);
-
-  add(r.sc_16h,r.target_sc_16h,4);
-  add(r.sc_ht_24h,r.target_sc_ht_24h,8);
-  add(r.sc_soc_72h,r.target_sc_soc_72h,6);
-  add(r.sc_hen,r.target_sc_hen,6);
-
-  // ===== CAO =====
-  add(r.tk_24h_moi,r.target_24h_moi,8);
-  add(r.tk_24h_co_san,r.target_24h_co_san,8);
-
-  add(r.sc_24h,r.target_sc_24h,10);
-  add(r.sc_hot,r.target_sc_hot,8);
-  add(r.sc_vip,r.target_sc_vip,8);
-
-  add(r.sc_lap,r.target_sc_lap,5,"down");
-
-  return max ? (total/max)*100 : 0;
-}
-
-// ===== KPI NHÂN VIÊN TỒI =====
-function getBadKPI(r){
-  let badList = [];
-  function add(label,v,t,type="up"){
-  if(!check(v,t,type)){
-    badList.push(`<b>${label}:</b> (${toNumber(v)}%/${toNumber(t)}%)`);
-  }
-}
-
-  add("TK mới 3h",r.tk_3h_moi,r.target_3h_moi);
-  add("TK mới 10h",r.tk_10h_moi,r.target_10h_moi);
-  add("TK mới 16h",r.tk_16h_moi,r.target_16h_moi);
-  add("TK mới 24h",r.tk_24h_moi,r.target_24h_moi);
-
-  add("TK có sẵn 3h",r.tk_3h_co_san,r.target_3h_co_san);
-  add("TK có sẵn 10h",r.tk_10h_co_san,r.target_10h_co_san);
-  add("TK có sẵn 16h",r.tk_16h_co_san,r.target_16h_co_san);
-  add("TK có sẵn 24h",r.tk_24h_co_san,r.target_24h_co_san);
-
-  add("TK tích hẹn",r.tich_hen,r.target_tich_hen);
-
-  add("SC 3h",r.sc_3h,r.target_sc_3h);
-  add("SC 10h",r.sc_10h,r.target_sc_10h);
-  add("SC 16h",r.sc_16h,r.target_sc_16h);
-  add("SC 24h",r.sc_24h,r.target_sc_24h);
-  add("SC HOT",r.sc_hot,r.target_sc_hot);
-  add("SC VIP",r.sc_vip,r.target_sc_vip);
-  add("SC HT 24h",r.sc_ht_24h,r.target_sc_ht_24h);
-  add("SC SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h);
-  add("SC SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h);
-  add("SC Hẹn",r.sc_hen,r.target_sc_hen);
-  add("SC Lặp",r.sc_lap,r.target_sc_lap,"down");
-
-  return badList;
-}
-// ===== KPI HUYỆN TỒI =====
-function renderBadHuyen(data){
-
-  let html = "";
-
-  data.forEach(r => {
-let bad = getBadKPI(r);
-
-if(bad.length > 0){
-  html += `
-    <div class="card worst">
-      ❌ <b>${r.huyen}</b>: ➜ Tồi ${bad.length}/20 KPI | 🏆 Xếp hạng: ${r.rank || "-"}
-      <div style="margin-top:5px">
-        ${bad.join(", ")}
-      </div>
-    </div>
-  `;
-}
-  });
-
-  document.getElementById("badHuyen").innerHTML = html;
-}
-// ===== KPI RENDER =====
-function kpi(label,v,t,type="up"){
-  let ok = check(v,t,type);
-  if(showBadOnly && ok) return "";
-  return `<div class="${ok?'ok':'fail'}">
-    - ${label}: ${toNumber(v)}% (target ${toNumber(t)}%) ${ok?'✅':'❌'}
-  </div>`;
+// ===== FORMAT =====
+function num(v){
+  return Number(v || 0).toLocaleString("vi-VN");
 }
 
 // ===== LOAD =====
@@ -373,253 +111,144 @@ function load(){
   .then(r=>r.json())
   .then(res=>{
 
-    let rawData = res.data || [];
-    
-// 👉 lấy TG update dòng 2 (index 1)
-  let log = rawData[1]?.["Tg update"] || "";
-// 👉 dòng 1–15 (bảng Excel)
-let tableData = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,14);
-// 👉 hiển thị
-  document.getElementById("logtime").innerText =
-  log ? "🕒Logtime: " + log : "";
+    let raw = res.data || [];
 
-// 👉 TÍNH RANK HUYỆN (ít KPI tồi = rank cao)
-let huyenRank = [...tableData]
-  .map(r => ({
-    ...r,
-    bad: getBadKPI(r).length
-  }))
-  .sort((a,b)=> a.bad - b.bad);
+    document.getElementById("logtime").innerText =
+      raw[1]?.["Tg update"] ? "🕒 " + raw[1]["Tg update"] : "";
 
-// gán rank
-huyenRank.forEach((r,i)=>{
-  r.rank = i + 1;
-});
+    // bỏ header
+    allData = raw.slice(2);
 
-// map lại vào tableData
-tableData.forEach(r=>{
-  let f = huyenRank.find(x => x.huyen === r.huyen);
-  r.rank = f ? f.rank : "";
-});
+    // ===== TÍNH TOÁN =====
+    allData.forEach(r=>{
 
-// 👉 dòng 16+ (tính KPI)
-    allData = rawData.slice(15);
+      r.t_dm = (r.dm_tkm || 0) + (r.dm_xlsc || 0);
+      r.t_th = (r.th_tkm || 0) + (r.th_sc || 0);
 
-    allData.forEach(r=> r.score = calcScore(r));
-    allData.sort((a,b)=> b.score - a.score);
+      r.cl = r.t_th - r.t_dm;
+
+      r.tl = r.t_dm ? Math.round(r.t_th / r.t_dm * 100) : 0;
+
+      // thưởng/phạt
+      r.t_p = r.cl;
+    });
+
+    // sort theo thưởng
+    allData.sort((a,b)=> b.t_p - a.t_p);
 
     applyFilter();
-    renderTableExcel(tableData); // ✅ bảng đúng 1–15
-    top10();
-    topWorst();
-    renderBadHuyen(tableData);
-    loadThuHoi();
+    renderTop();
+    renderWorst();
   });
 }
 
-// ===== RENDER =====
+// ===== TABLE =====
 function render(data){
-  let html = "";
 
-  data.forEach((r,i)=>{
+  let html = `
+  <table border="1">
+    <tr>
+      <th>Nhân viên</th>
+      <th>Huyện</th>
+      <th>ĐM TKM</th>
+      <th>ĐM XLSC</th>
+      <th>TH TKM</th>
+      <th>TH XLSC</th>
+      <th>Tổng ĐM</th>
+      <th>Tổng TH</th>
+      <th>CL</th>
+      <th>Tỉ lệ</th>
+      <th>Thưởng/Phạt</th>
+    </tr>
+  `;
 
-    let badList = getBadKPI(r);
-    if(showBadOnly && badList.length === 0) return;
+  data.forEach(r=>{
 
-    let htmlCard = `
-    <div class="card">
-      <b>👤 ${safe(r.nhan_vien)} - ${safe(r.huyen)}</b><br>
-      📦 TK mới: ${safe(r.tong_tk_moi)} |
-      📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
-      🚨 SC: ${safe(r.tong_sc)} |
-      🏆 Xếp hạng: ${allData.findIndex(x => x === r) + 1} | 🎯 ${r.score.toFixed(0)} điểm |
-      ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
-      <br><br>
-    `;
+    let colorCL = r.cl >= 0 ? "#e8f5e9" : "#ffebee";
 
-    let sec1 = `<b>🔵 Triển khai mới</b>
-    ${kpi("3h",r.tk_3h_moi,r.target_3h_moi)}
-    ${kpi("10h",r.tk_10h_moi,r.target_10h_moi)}
-    ${kpi("16h",r.tk_16h_moi,r.target_16h_moi)}
-    ${kpi("24h",r.tk_24h_moi,r.target_24h_moi)}`;
-    if(!showBadOnly || sec1.includes("fail")) htmlCard += sec1;
+    html += `<tr>
+      <td>${r.nhan_vien || ""}</td>
+      <td>${r.huyen || ""}</td>
 
-    let sec2 = `<b>🟢 Triển khai có sẵn</b>
-    ${kpi("3h",r.tk_3h_co_san,r.target_3h_co_san)}
-    ${kpi("10h",r.tk_10h_co_san,r.target_10h_co_san)}
-    ${kpi("16h",r.tk_16h_co_san,r.target_16h_co_san)}
-    ${kpi("24h",r.tk_24h_co_san,r.target_24h_co_san)}`;
-    if(!showBadOnly || sec2.includes("fail")) htmlCard += sec2;
+      <td>${num(r.dm_tkm)}</td>
+      <td>${num(r.dm_xlsc)}</td>
 
-    let sec3 = `<b>🟡 Triển khai hẹn</b>
-    ${kpi("Tích hẹn",r.tich_hen,r.target_tich_hen)}`;
-    if(!showBadOnly || sec3.includes("fail")) htmlCard += sec3;
+      <td>${num(r.th_tkm)}</td>
+      <td>${num(r.th_sc)}</td>
 
-    let sec4 = `<b>🔴 Sự cố</b>
-    ${kpi("3h",r.sc_3h,r.target_sc_3h)}
-    ${kpi("10h",r.sc_10h,r.target_sc_10h)}
-    ${kpi("16h",r.sc_16h,r.target_sc_16h)}
-    ${kpi("24h",r.sc_24h,r.target_sc_24h)}
-    ${kpi("HOT",r.sc_hot,r.target_sc_hot)}
-    ${kpi("VIP",r.sc_vip,r.target_sc_vip)}
-    ${kpi("HT 24h",r.sc_ht_24h,r.target_sc_ht_24h)}
-    ${kpi("SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h)}
-    ${kpi("SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h)}
-    ${kpi("Hẹn",r.sc_hen,r.target_sc_hen)}
-    ${kpi("Lặp",r.sc_lap,r.target_sc_lap,"down")}`;
-    if(!showBadOnly || sec4.includes("fail")) htmlCard += sec4;
+      <td>${num(r.t_dm)}</td>
+      <td>${num(r.t_th)}</td>
 
-    htmlCard += `</div>`;
-    html += htmlCard;
+      <td style="background:${colorCL}">${num(r.cl)}</td>
+
+      <td class="${r.tl>=100?'ok':'bad'}">${r.tl}%</td>
+
+      <td style="background:${colorCL}; font-weight:bold">
+        ${num(r.t_p)}
+      </td>
+    </tr>`;
   });
 
-  document.getElementById("data").innerHTML = html;
+  html += "</table>";
+
+  document.getElementById("table").innerHTML = html;
 }
 
 // ===== FILTER =====
 function filter(){
   applyFilter();
 }
+
 function applyFilter(){
   let nv = document.getElementById("nv").value.toLowerCase();
   let h = document.getElementById("huyen").value.toLowerCase();
 
   let f = allData.filter(r =>
-    (r.nhan_vien||"").toLowerCase().includes(nv) &&
-    (r.huyen||"").toLowerCase().includes(h)
+    (r.nhan_vien || "").toLowerCase().includes(nv) &&
+    (r.huyen || "").toLowerCase().includes(h)
   );
 
   render(f);
 }
-// ===== CHECKBOX =====
-function onlyBad(v){
-  showBadOnly = v;
-  render(allData);
-}
 
 // ===== TOP =====
-function top10(){
-  let s = [...allData].slice(0,10);
-  let html="";
-  s.forEach((r,i)=>{
-    html += `<div class="card top">🏆 TOP ${i+1} - ${r.nhan_vien} - ${r.huyen}</div>`;
+function renderTop(){
+  let top = allData.slice(0,5);
+
+  let html = "";
+  top.forEach((r,i)=>{
+    html += `<div class="card ok">
+      🏆 TOP ${i+1} - ${r.nhan_vien} (${num(r.t_p)})
+    </div>`;
   });
+
   document.getElementById("top").innerHTML = html;
 }
 
-function topWorst(){
-  let s = [...allData].slice(-10).reverse();
-  let html="";
-  s.forEach((r,i)=>{
-    html += `<div class="card worst">❌ TOP KÉM ${i+1} - ${r.nhan_vien} - ${r.huyen}</div>`;
+// ===== WORST =====
+function renderWorst(){
+  let worst = [...allData].slice(-5).reverse();
+
+  let html = "";
+  worst.forEach((r,i)=>{
+    html += `<div class="card bad">
+      ❌ TOP PHẠT ${i+1} - ${r.nhan_vien} (${num(r.t_p)})
+    </div>`;
   });
+
   document.getElementById("worst").innerHTML = html;
 }
-function reloadPage(){
-  // làm mờ màn hình
-  document.body.style.opacity = 0.5;
 
-  // delay nhẹ rồi reload
-  setTimeout(()=>{
-    location.reload();
-  }, 800);
+// ===== RELOAD =====
+function reload(){
+  location.reload();
 }
+
 // START
 load();
-setInterval(load,50000);
-function renderTableExcel(data){
+setInterval(load,60000);
 
-  let html = `
-  <table border="1" style="border-collapse:collapse; font-size:12px; width:100%">
-    <tr style="background:#eee">
-      <th>Huyện</th>
-      <th>TK mới</th>
-      <th>TK có sẵn</th>
-      <th>Sự cố</th>
-      <th>TK mới 3h (40%)</th>
-      <th>TK mới 10h (50%)</th>
-      <th>TK mới 16h (100%)</th>
-      <th>TK mới 24h (100%)</th>
-
-      <th>TK có sẵn 3h (50%)</th>
-      <th>TK có sẵn 10h (50%)</th>
-      <th>TK có sẵn 16h (100%)</th>
-      <th>TK có sẵn 24h (100%)</th>
-
-      <th>Tích hẹn (100%)</th>
-
-      <th>SC 3h (62%)</th>
-      <th>SC 10h (80%)</th>
-      <th>SC 16h (100%)</th>
-      <th>SC 24h (100%)</th>
-
-      <th>SC HOT (85%)</th>
-      <th>SC VIP (100%)</th>
-      <th>SC HT 24h (100%)</th>
-      <th>SC SOC 24h (85%)</th>
-      <th>SC SOC 72h (100%)</th>
-      <th>SC Hẹn (100%)</th>
-      <th>SC Lặp (8%)</th>
-    </tr>
-  `;
-
-    function cell(v,t,type="up"){
-      let ok = check(v,t,type);
-      return `<td style="background:${ok?'':'#ffcccc'}; text-align:center">${toNumber(v)}</td>`;
-    }
-
-  data.forEach(r=>{
-    html += `<tr>
-      <td>${r.huyen||""}</td>
-      <td>${r.tong_tk_moi||""}</td>
-      <td>${r.tong_tk_co_san||""}</td>
-      <td>${r.tong_sc||""}</td>
-      ${cell(r.tk_3h_moi,r.target_3h_moi)}
-      ${cell(r.tk_10h_moi,r.target_10h_moi)}
-      ${cell(r.tk_16h_moi,r.target_16h_moi)}
-      ${cell(r.tk_24h_moi,r.target_24h_moi)}
-
-      ${cell(r.tk_3h_co_san,r.target_3h_co_san)}
-      ${cell(r.tk_10h_co_san,r.target_10h_co_san)}
-      ${cell(r.tk_16h_co_san,r.target_16h_co_san)}
-      ${cell(r.tk_24h_co_san,r.target_24h_co_san)}
-
-      ${cell(r.tich_hen,r.target_tich_hen)}
-
-      ${cell(r.sc_3h,r.target_sc_3h)}
-      ${cell(r.sc_10h,r.target_sc_10h)}
-      ${cell(r.sc_16h,r.target_sc_16h)}
-      ${cell(r.sc_24h,r.target_sc_24h)}
-
-      ${cell(r.sc_hot,r.target_sc_hot)}
-      ${cell(r.sc_vip,r.target_sc_vip)}
-      ${cell(r.sc_ht_24h,r.target_sc_ht_24h)}
-      ${cell(r.sc_soc_24h,r.target_sc_soc_24h)}
-      ${cell(r.sc_soc_72h,r.target_sc_soc_72h)}
-      ${cell(r.sc_hen,r.target_sc_hen)}
-
-      ${cell(r.sc_lap,r.target_sc_lap,"down")}
-    </tr>`;
-  });
-  
-  html += "</table>";
-
-  document.getElementById("tableKPI").innerHTML = html;
-}
-  
-function filterTH(){
-  let nv = document.getElementById("nv_th").value.toLowerCase();
-  let h = document.getElementById("huyen_th").value.toLowerCase();
-
-  let f = dataTH.filter(r =>
-    (r.nhan_vien||"").toLowerCase().includes(nv) &&
-    (r.huyen||"").toLowerCase().includes(h)
-  );
-
-  renderTH(f);
-}
 </script>
-</div>
-</div>
+
 </body>
 </html>
