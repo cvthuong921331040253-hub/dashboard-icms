@@ -390,7 +390,9 @@ function onlyBad(v){
   showBadOnly = v;
   applyFilter();
 }
-
+function reloadPage(){
+  load(); // 🔥 gọi lại API
+}
 load();
 
 </script>
