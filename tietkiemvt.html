@@ -132,14 +132,33 @@ th:first-child {
     padding: 3px;
   }
 }
+.header-top {
+  display: flex;
+  justify-content: space-between; /* 🔥 đẩy về 2 bên nút button load */
+  align-items: center;
+}
+.reload-btn {
+  padding: 6px 10px;
+  border: none;
+  background: #2196f3;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.reload-btn:hover {
+  background: #1976d2;
+}
 
 </style>
 </head>
 
 <body>
 
-<div class="header">
-<h2>📊 KPI Khoán Vật Tư</h2>
+<div class="header-top">
+  <h2>📊 KPI Khoán Vật Tư</h2>
+  <button onclick="reloadPage()" class="reload-btn">🔄</button>
+</div>
 
 🔍 Nhân viên <input id="nv" onkeyup="filter()"><br>
 🔍 Huyện <input id="huyen" onkeyup="filter()">
