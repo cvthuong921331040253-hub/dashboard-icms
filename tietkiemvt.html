@@ -26,7 +26,7 @@ tr:nth-child(even){ background:#f1f6ff; }
 
 <h2>📊 Khoán Vật Tư</h2>
 
-<h3>📊 Bảng tổng hợp (30 dòng)</h3>
+<h3>📊 Bảng tổng hợp</h3>
 <div id="table"></div>
 
 <h3>🏆 Top 10 thưởng</h3>
@@ -42,42 +42,11 @@ tr:nth-child(even){ background:#f1f6ff; }
 
 const API = "https://script.google.com/macros/s/AKfycby2YYZVK6r1QXP_TgnB0i99prYJmEG8cJwGDQILU1tph0i38b80BhN6Oa9bT5IMuQft0A/exec?sheet=Khoan vt";
 
-let allData = [];   // 🔥 toàn bộ
-let tableData = []; // 🔥 30 dòng
+let tableData = []; // dòng 1-30
+let nvData = [];    // dòng 31+
 
 function num(v){
   return Number(v||0).toLocaleString("vi-VN");
-}
-
-function load(){
-  fetch(API)
-  .then(r=>r.json())
-  .then(res=>{
-
-    let raw = res.data || [];
-
-    // ===== DATA FULL =====
-    allData = raw.map(r=>({
-      nhan_vien: r["nhan vien"] || r.nhan_vien,
-      huyen: r.huyen,
-      dm_tkm: r.dm_tkm,
-      dm_xlsc: r.dm_xlsc,
-      th_tkm: r.th_tkm,
-      th_sc: r.th_sc
-    }));
-
-    // ===== DATA TABLE (30 dòng) =====
-    tableData = allData.slice(0,30);
-
-    // ===== TÍNH TOÁN =====
-    allData.forEach(calc);
-    tableData.forEach(calc);
-
-    renderTable();
-    renderTop();
-    renderWorst();
-    renderList();
-  });
 }
 
 function calc(r){
@@ -88,28 +57,69 @@ function calc(r){
   r.t_p = r.cl;
 }
 
-// ===== TABLE (KHÔNG NHÂN VIÊN) =====
+function load(){
+  fetch(API)
+  .then(r=>r.json())
+  .then(res=>{
+
+    let raw = res.data || [];
+
+    // ===== TABLE: 1-30 =====
+    tableData = raw.slice(0,30);
+
+    // ===== NHÂN VIÊN: 31+ =====
+    nvData = raw.slice(30).map(r=>({
+      nhan_vien: r["nhan vien"] || r.nhan_vien,
+      huyen: r.huyen,
+      dm_tkm: r.dm_tkm,
+      dm_xlsc: r.dm_xlsc,
+      th_tkm: r.th_tkm,
+      th_sc: r.th_sc
+    }));
+
+    // tính toán
+    tableData.forEach(calc);
+    nvData.forEach(calc);
+
+    renderTable();
+    renderTop();
+    renderWorst();
+    renderList();
+  });
+}
+
+// ===== TABLE FULL (BỎ NHÂN VIÊN) =====
 function renderTable(){
+
   let html = `<table>
     <tr>
       <th>Huyện</th>
-      <th>ĐM</th>
-      <th>TH</th>
+      <th>ĐM TKM</th>
+      <th>ĐM XLSC</th>
+      <th>TH TKM</th>
+      <th>TH XLSC</th>
+      <th>Tổng ĐM</th>
+      <th>Tổng TH</th>
       <th>CL</th>
       <th>%</th>
-      <th>Thưởng</th>
+      <th>Thưởng/Phạt</th>
     </tr>`;
 
   tableData.forEach(r=>{
-    let color = r.t_p>=0 ? "#e8f5e9":"#ffebee";
+
+    let color = r.cl>=0 ? "#e8f5e9":"#ffebee";
 
     html += `<tr>
       <td>${r.huyen}</td>
+      <td>${num(r.dm_tkm)}</td>
+      <td>${num(r.dm_xlsc)}</td>
+      <td>${num(r.th_tkm)}</td>
+      <td>${num(r.th_sc)}</td>
       <td>${num(r.t_dm)}</td>
       <td>${num(r.t_th)}</td>
       <td>${num(r.cl)}</td>
       <td class="${r.tl>=100?'ok':'bad'}">${r.tl}%</td>
-      <td style="background:${color}">${num(r.t_p)}</td>
+      <td style="background:${color}">${num(r.cl)}</td>
     </tr>`;
   });
 
@@ -119,7 +129,7 @@ function renderTable(){
 
 // ===== TOP =====
 function renderTop(){
-  let top = [...allData].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
+  let top = [...nvData].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
 
   let html="";
   top.forEach((r,i)=>{
@@ -133,7 +143,7 @@ function renderTop(){
 
 // ===== WORST =====
 function renderWorst(){
-  let worst = [...allData].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
+  let worst = [...nvData].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
 
   let html="";
   worst.forEach((r,i)=>{
@@ -145,11 +155,12 @@ function renderWorst(){
   document.getElementById("worst").innerHTML = html;
 }
 
-// ===== LIST GIỐNG KPI =====
+// ===== LIST KPI STYLE =====
 function renderList(){
+
   let html="";
 
-  allData.forEach(r=>{
+  nvData.forEach(r=>{
 
     let cls = r.t_p >= 0 ? "ok" : "bad";
 
