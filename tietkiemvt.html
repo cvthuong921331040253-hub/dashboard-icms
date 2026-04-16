@@ -275,18 +275,27 @@ function load(){
     }));
 
     // ===== NHÂN VIÊN (31+) =====
-    nvData = raw.slice(30).map(r => ({
+    nvData = raw.slice(30).map(r=>({
       nhan_vien: r["nhan vien"] || r.nhan_vien,
       huyen: r.huyen,
     
-      // TKM
-      t_p_tkm: Number(r.t_p_tkm || 0),
+      dm_tkm: Number(r.dm_tkm||0),
+      dm_xlsc: Number(r.dm_xlsc||0),
+      th_tkm: Number(r.th_tkm||0),
+      th_sc: Number(r.th_sc||0),
     
-      // SC
-      t_p_sc: Number(r.t_p_sc || 0),
+      t_dm: Number(r.t_dm||0),
+      t_th: Number(r.t_th||0),
+    
+      cl: Number(r.cl||0),
+      tl: Number(r.tl||0),
+    
+      // 🔥 TÁCH
+      t_p_tkm: Number(r.t_p_tkm||0),
+      t_p_sc: Number(r.t_p_sc||0),
     
       // 🔥 GỘP TOP
-      t_p: Number(r.t_p_tkm || 0) + Number(r.t_p_sc || 0)
+      t_p: Number(r.t_p_tkm||0) + Number(r.t_p_sc||0)
     }));
 
     applyFilter();
