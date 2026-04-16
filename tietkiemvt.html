@@ -71,6 +71,13 @@ tr:hover {
   overflow-y: auto;     /* 🔥 cần cho sticky header */
   max-height: 400px;    /* 🔥 chiều cao vùng bảng */
 }
+thead th[rowspan] {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 11;   /* 🔥 CAO NHẤT */
+  background: #d0e7ff;
+}
 
 
 /* CỐ ĐỊNH CỘT HUYỆN */
@@ -106,19 +113,18 @@ td:first-child {
 
 /* HEADER */
 /* ===== HEADER 2 DÒNG ===== */
-
-/* Dòng 1: 📦 TKM + 🔧 SC */
-table tr:nth-child(1) th {
+/* dòng 1 */
+thead tr:first-child th {
   position: sticky;
   top: 0;
   z-index: 6;
   background: #e3f2fd;
 }
 
-/* Dòng 2: Định mức, TH... */
-table tr:nth-child(2) th {
+/* dòng 2 */
+thead tr:nth-child(2) th {
   position: sticky;
-  top: 24px; /* 🔥 chỉnh nếu lệch */
+  top: 28px;
   z-index: 5;
   background: #e3f2fd;
 }
@@ -344,7 +350,8 @@ function renderTable(data){
 
   let html = "";
 
-  html += `<tr>
+  html += `<thead>
+  <tr>
     <th rowspan="2">Huyện</th>
     <th colspan="5">📦 Triển khai mới (TKM)</th>
     <th colspan="5">🔧 Sự cố (SC)</th>
@@ -362,7 +369,8 @@ function renderTable(data){
     <th>Chênh lệch</th>
     <th>Tỉ lệ</th>
     <th>Thưởng/Phạt</th>
-  </tr>`;
+  </tr>
+  </thead><tbody>`;
 
   data.forEach(r=>{
     let color = r.cl>=0 ? "#e8f5e9":"#ffebee";
@@ -385,7 +393,7 @@ function renderTable(data){
       <td>${num(r.t_p_sc)}</td>
     </tr>`;
   });
-
+  html += "</tbody>";
   document.getElementById("myTable").innerHTML = html;
 }
 
