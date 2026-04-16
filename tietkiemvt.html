@@ -122,10 +122,12 @@ function load(){
 }
 
 // ===== KPI FAIL =====
-function getBad(r){
+function getStatus(r){
   let bad = [];
-  if(r.tl < 100) bad.push(`Tỉ lệ <100% (${r.tl}%)`);
+
+  if(r.tl < 0) bad.push(`Tỉ lệ âm (${r.tl}%)`);
   if(r.cl < 0) bad.push(`Chênh lệch âm (${num(r.cl)})`);
+
   return bad;
 }
 
@@ -226,7 +228,7 @@ function renderList(data){
 
   data.forEach(r=>{
 
-    let bad = getBad(r);
+    let bad = getStatus(r);
     if(showBadOnly && bad.length===0) return;
 
     html += `
@@ -234,7 +236,7 @@ function renderList(data){
 
       <b>👤 ${r.nhan_vien} - ${r.huyen}</b><br>
 
-      🎯 <b>Tỉ lệ:</b> <span class="${r.tl>=100?'ok':'fail'}">${r.tl}%</span><br>
+      🎯 <b>Tỉ lệ:</b> <span class="${r.tl>=0?'ok':'fail'}">${r.tl}%</span><br>
       💰 <b>Thưởng/Phạt:</b> <span class="${r.cl>=0?'ok':'fail'}">${num(r.t_p)}</span><br><br>
 
       📦 <b>TKM:</b><br>
@@ -253,10 +255,10 @@ function renderList(data){
         ? `<div class="fail">❌ Chênh lệch: ${num(r.cl)}</div>` 
         : `<div class="ok">✅ Chênh lệch: ${num(r.cl)}</div>`}
 
-      ${bad.length ? `
-        <div class="fail" style="margin-top:6px">
-          ❌ KPI kém: ${bad.join(", ")}
-        </div>` : ""}
+       ${bad.length 
+        ? `<div class="fail">❌ Thực hiện kém: ${bad.join(", ")}</div>`
+        : `<div class="ok">✅ Thực hiện tốt</div>`
+      }
 
     </div>`;
   });
