@@ -62,8 +62,6 @@ tr:hover {
 }
 .table-wrap {
   overflow-x: auto;
-  border: 1px solid #ddd;
-  border-radius: 6px;
 }
 
 .header {
@@ -86,37 +84,30 @@ td:first-child {
 th:first-child {
   box-shadow: 2px 0 6px rgba(0,0,0,0.2);
 }
-/* CỘT HUYỆN BODY */
-td:first-child {
-  position: sticky;
-  left: 0;
-  background: #d0e7ff;
-  z-index: 5;
-  font-weight: bold;
-}
-/* HEADER HUYỆN */
-th:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 10;
-  background: #b3d7ff;
-}
+
 th, td {
   text-align: center;        /* 🔥 căn giữa */
   vertical-align: middle;
 }
+/* ===== FIX CỘT HUYỆN CHUẨN ===== */
 
-/* Ô Huyện (rowspan) */
-th[rowspan] {
+/* HEADER HUYỆN */
+thead th:first-child {
   position: sticky;
   left: 0;
-  top: 0;
-  z-index: 50;
-  background: #d0e7ff;
+  z-index: 100;
+  background: #b3d7ff;
   font-weight: bold;
-  text-align: left;
 }
 
+/* BODY HUYỆN */
+tbody td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 90;
+  background: #d0e7ff;
+  font-weight: bold;
+}
 /* Header dòng 1 */
 thead tr:first-child th {
   position: sticky;
@@ -135,13 +126,6 @@ thead tr:nth-child(2) th {
 thead {
   position: relative;
   z-index: 1;
-}
-/* Cột huyện body */
-tbody td:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 5;
-  background: #d0e7ff;
 }
 .card {
   font-size: 13px;
