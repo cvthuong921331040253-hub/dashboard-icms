@@ -238,15 +238,20 @@ function load(){
     // ===== TABLE (1-30) =====
     tableData = raw.slice(0,30).map(r=>({
       huyen: r.huyen,
+    
+      // ===== TKM =====
       dm_tkm: Number(r.dm_tkm||0),
-      dm_xlsc: Number(r.dm_xlsc||0),
       th_tkm: Number(r.th_tkm||0),
+      cl_tkm: Number(r.cl_tkm||0),
+      tl_tkm: Number(r.tl_tkm||0),
+      t_p_tkm: Number(r.t_p_tkm||0),
+    
+      // ===== SC =====
+      dm_sc: Number(r.dm_xlsc||0),
       th_sc: Number(r.th_sc||0),
-      t_dm: Number(r.t_dm||0),
-      t_th: Number(r.t_th||0),
-      cl: Number(r.cl||0),
-      tl: Number(r.tl||0),
-      t_p: Number(r.t_p||0)
+      cl_sc: Number(r.cl_sc||0),
+      tl_sc: Number(r.tl_sc||0),
+      t_p_sc: Number(r.t_p_sc||0)
     }));
 
     // ===== NHÂN VIÊN (31+) =====
@@ -317,33 +322,36 @@ function renderTable(data){
 
   let html = "";
 
-  html += `<tr>
-    <th>Huyện</th>
-    <th>${LABEL.dm_tkm}</th>
-    <th>${LABEL.dm_xlsc}</th>
-    <th>${LABEL.th_tkm}</th>
-    <th>${LABEL.th_sc}</th>
-    <th>${LABEL.t_dm}</th>
-    <th>${LABEL.t_th}</th>
-    <th>${LABEL.cl}</th>
-    <th>${LABEL.tl}</th>
-    <th>${LABEL.t_p}</th>
-  </tr>`;
+    html += `<tr>
+      <th rowspan="2">Huyện</th>
+      <th colspan="5">📦 Triển khai mới (TKM)</th>
+      <th colspan="5">🔧 Sự cố (SC)</th>
+    </tr>
+    
+    <tr>
+      <th>ĐM</th><th>TH</th><th>CL</th><th>%</th><th>Thưởng</th>
+      <th>ĐM</th><th>TH</th><th>CL</th><th>%</th><th>Thưởng</th>
+    </tr>`;
 
   data.forEach(r=>{
     let color = r.cl>=0 ? "#e8f5e9":"#ffebee";
 
     html += `<tr>
       <td>${r.huyen}</td>
+    
+      <!-- TKM -->
       <td>${num(r.dm_tkm)}</td>
-      <td>${num(r.dm_xlsc)}</td>
       <td>${num(r.th_tkm)}</td>
+      <td>${num(r.cl_tkm)}</td>
+      <td>${r.tl_tkm}%</td>
+      <td>${num(r.t_p_tkm)}</td>
+    
+      <!-- SC -->
+      <td>${num(r.dm_sc)}</td>
       <td>${num(r.th_sc)}</td>
-      <td>${num(r.t_dm)}</td>
-      <td>${num(r.t_th)}</td>
-      <td>${num(r.cl)}</td>
-      <td>${r.tl}%</td>
-      <td style="background:${color}">${num(r.t_p)}</td>
+      <td>${num(r.cl_sc)}</td>
+      <td>${r.tl_sc}%</td>
+      <td>${num(r.t_p_sc)}</td>
     </tr>`;
   });
 
