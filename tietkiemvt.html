@@ -90,11 +90,22 @@ td:first-child {
 }
 
 /* HEADER */
-th {
+/* ===== HEADER 2 DÒNG ===== */
+
+/* Dòng 1: 📦 TKM + 🔧 SC */
+table tr:nth-child(1) th {
   position: sticky;
   top: 0;
+  z-index: 6;
   background: #e3f2fd;
+}
+
+/* Dòng 2: Định mức, TH... */
+table tr:nth-child(2) th {
+  position: sticky;
+  top: 32px; /* 🔥 chỉnh nếu lệch */
   z-index: 5;
+  background: #e3f2fd;
 }
 
 /* GÓC TRÊN TRÁI */
