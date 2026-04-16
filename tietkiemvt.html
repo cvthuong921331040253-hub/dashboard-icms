@@ -7,119 +7,220 @@
 <style>
 body { font-family: Arial; background:#f5f7fb; padding:8px; }
 
-/* HEADER */
-.header { position: sticky; top:0; background:#f5f7fb; z-index:1000; }
-.header-top { display:flex; justify-content:space-between; align-items:center; }
-
-.reload-btn {
-  padding:6px 10px;
-  background:#2196f3;
-  color:#fff;
-  border:none;
-  border-radius:6px;
+.card {
+  background:#fff;
+  border-radius:8px;
+  padding:8px;
+  margin-bottom:8px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
 }
 
-/* TABLE */
-.table-wrap {
-  overflow:auto;
-  max-height:400px;
-  border:1px solid #ddd;
-  border-radius:6px;
-}
+.ok { color:green; }
+.fail { color:red; font-weight:bold; }
 
+.top { background:#e8f5e9; }
+.worst { background:#ffeaea; }
+
+input { padding:4px; margin-right:6px; }
+table {
+  border: 2px solid #666;   /* 🔥 khung ngoài đậm */
+}
 table {
   border-collapse: collapse;
-  width:max-content;
-  min-width:100%;
-  border:2px solid #666;
+  width: max-content;   /* 🔥 co theo nội dung */
+  min-width: 100%;
 }
 
 th, td {
-  border:1px solid #999;
-  padding:6px 8px;
-  font-size:12px;
-  white-space:nowrap;
+  border: 1.5px solid #999;
+  padding: 6px 8px;
+  font-size: 13px;
+  white-space: nowrap;
 }
 
-th { background:#e3f2fd; }
-
-/* STICKY */
-thead th[rowspan]{
-  position:sticky;
-  top:0;
-  left:0;
-  z-index:20;
-  background:#d0e7ff;
+/* header đẹp */
+th {
+  background: #e3f2fd;
+  font-weight: 600;
 }
 
-thead tr:first-child th{
-  position:sticky;
-  top:0;
-  z-index:10;
+/* zebra giống Excel */
+tr:nth-child(even) {
+  background: #f9fbff;
 }
 
-thead tr:nth-child(2) th{
-  position:sticky;
-  top:30px;
-  z-index:9;
+/* hover */
+tr:hover {
+  background: #fff3cd;
+}
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
 }
 
-tbody td:first-child{
-  position:sticky;
-  left:0;
-  z-index:5;
-  background:#d0e7ff;
-  font-weight:bold;
+.header {
+  position: sticky;
+  top: 0;
+  background: #f5f7fb;
+  z-index: 1000;
+  padding-bottom: 6px;
+}
+.table-wrap {
+  overflow-x: auto;
+  overflow-y: auto;     /* 🔥 cần cho sticky header */
+  max-height: 400px;    /* 🔥 chiều cao vùng bảng */
 }
 
-/* CARD */
+
+/* CỐ ĐỊNH CỘT HUYỆN */
+/* CỘT HUYỆN BODY */
+td:first-child {
+  position: sticky;
+  left: 0;
+  background: #d0e7ff;
+  z-index: 4;   /* 🔥 tăng lên */
+}
+/* Ô góc trên trái (Huyện) */
+th[rowspan] {
+  position: sticky;
+  left: 0;
+  top: 0;           /* 🔥 cực kỳ quan trọng */
+  z-index: 10;      /* 🔥 cao nhất */
+  background: #d0e7ff;
+}
+
+/* CỘT HUYỆN HEADER */
+th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 7;   /* 🔥 cao nhất */
+  background: #d0e7ff;
+}
+
+  font-weight: bold;
+  text-align: left;   /* 🔥 THÊM DÒNG NÀY */
+}
+th:first-child,
+td:first-child {
+  font-weight: bold;   /* 🔥 BÔI ĐẬM */
+}
+
+/* HEADER */
+/* ===== HEADER 2 DÒNG ===== */
+
+/* Dòng 1: 📦 TKM + 🔧 SC */
+table tr:nth-child(1) th {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  background: #e3f2fd;
+}
+
+/* Dòng 2: Định mức, TH... */
+table tr:nth-child(2) th {
+  position: sticky;
+  top: 24px; /* 🔥 chỉnh nếu lệch */
+  z-index: 5;
+  background: #e3f2fd;
+}
+
+/* GÓC TRÊN TRÁI */
+th:first-child {
+  z-index: 6; /* cao hơn header thường */
+}
 .card {
-  background:#fff;
-  padding:8px;
-  margin:6px 0;
-  border-radius:6px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.card br {
+  line-height: 0.8;
+}
+@media (max-width: 768px) {
+  .card {
+    font-size: 12px;
+    padding: 6px;
+    line-height: 1.3;
+  }
+
+  .card b {
+    font-size: 12px;
+  }
+}
+@media (max-width: 768px) {
+  body {
+    font-size: 13px;
+  }
+}
+@media (max-width: 768px) {
+  h2 {
+    font-size: 18px;
+  }
+
+  h3 {
+    font-size: 14px;
+  }
+}
+@media (max-width: 768px) {
+  input {
+    font-size: 12px;
+    padding: 3px;
+  }
+}
+@media (max-width: 768px) {
+  th, td {
+    font-size: 11px;   /* 🔥 chỉnh nhỏ bảng huyện tại đây */
+    padding: 4px 5px;  /* 🔥 giảm padding bảng huyện cho gọn */
+  }
+}
+.header-top {
+  display: flex;
+  justify-content: space-between; /* 🔥 đẩy về 2 bên nút button load */
+  align-items: center;
+}
+.reload-btn {
+  padding: 6px 10px;
+  border: none;
+  background: #2196f3;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.top { border-left:4px solid #4caf50; }
-.worst { border-left:4px solid #e53935; }
-
-.ok { color:#2e7d32; font-weight:bold; }
-.fail { color:#c62828; font-weight:bold; }
-
-/* MOBILE */
-@media(max-width:768px){
-  th,td{ font-size:11px; padding:4px }
-  h2{ font-size:18px }
-  h3{ font-size:14px }
+.reload-btn:hover {
+  background: #1976d2;
 }
+
 </style>
 </head>
 
 <body>
 
 <div class="header">
+
   <div class="header-top">
     <h2>📊 KPI Khoán Vật Tư</h2>
-    <button onclick="location.reload()" class="reload-btn">🔄</button>
+    <button onclick="reloadPage()" class="reload-btn">🔄</button>
   </div>
-
-  <div id="logtime" style="font-size:12px"></div>
-
-  🔍 NV <input id="nv" onkeyup="filter()">
+  <div id="logtime" style="font-size:12px;color:#666;margin-top:4px"></div>
+  🔍 Nhân viên <input id="nv" onkeyup="filter()"><br>
   🔍 Huyện <input id="huyen" onkeyup="filter()">
+  <label><input type="checkbox" onchange="onlyBad(this.checked)"> NV kém</label>
+
 </div>
 
 <div id="tableSection">
   <h3>📊 Bảng huyện</h3>
   <div class="table-wrap">
-    <table id="table"></table>
+    <table id="myTable"></table>
   </div>
 </div>
 
 <div id="topSection">
-  <h3>🏆 Top KPI</h3>
+  <h3>🏆 Top 10 NV tốt</h3>
   <div id="top"></div>
+
+  <h3>⚠️ Top 10 NV kém</h3>
   <div id="worst"></div>
 </div>
 
@@ -128,152 +229,259 @@ tbody td:first-child{
 
 <script>
 
-const API="https://script.google.com/macros/s/AKfycby2YYZVK6r1QXP_TgnB0i99prYJmEG8cJwGDQILU1tph0i38b80BhN6Oa9bT5IMuQft0A/exec?sheet=Khoan vt";
+const API = "https://script.google.com/macros/s/AKfycby2YYZVK6r1QXP_TgnB0i99prYJmEG8cJwGDQILU1tph0i38b80BhN6Oa9bT5IMuQft0A/exec?sheet=Khoan vt";
 
-let tableData=[], nvData=[];
+const LABEL = {
+  dm_tkm: "Định mức TKM",
+  dm_xlsc: "Định mức XLSC",
+  th_tkm: "Thực hiện TKM",
+  th_sc: "Thực hiện XLSC",
+  t_dm: "Tổng định mức",
+  t_th: "Tổng thực hiện",
+  cl: "Chênh lệch",
+  tl: "Tỉ lệ",
+  t_p: "Thưởng/Phạt"
+};
 
-function num(v){return Number(v||0).toLocaleString("vi-VN");}
+let tableData = [];
+let nvData = [];
+let showBadOnly = false;
 
+function num(v){ return Number(v||0).toLocaleString("vi-VN"); }
+
+// ===== LOAD =====
 function load(){
-fetch(API).then(r=>r.json()).then(res=>{
-let raw=res.data||[];
+  fetch(API)
+  .then(r=>r.json())
+  .then(res=>{
 
-// logtime
-let tg=raw[0]?.tg_update||"";
-if(tg){ tg=new Date(tg).toLocaleString("vi-VN"); }
-document.getElementById("logtime").innerText="🕒 "+tg;
+    let raw = res.data || [];
+    let tg = raw[0]?.tg_update || raw[1]?.tg_update || "";
+    if(tg){
+      let d = new Date(tg);
+      tg = d.toLocaleString("vi-VN");
+    }
+    document.getElementById("logtime").innerText =
+    tg ? "🕒 Logtime: " + tg : "";
+    // ===== TABLE (1-30) =====
+    tableData = raw.slice(0,30).map(r=>({
+      huyen: r.huyen,
+    
+      // ===== TKM =====
+      dm_tkm: Number(r.dm_tkm||0),
+      th_tkm: Number(r.th_tkm||0),
+      cl_tkm: Number(r.cl_tkm||0),
+      tl_tkm: Number(r.tl_tkm||0),
+      t_p_tkm: Number(r.t_p_tkm||0),
+    
+      // ===== SC =====
+      dm_sc: Number(r.dm_xlsc||0),
+      th_sc: Number(r.th_sc||0),
+      cl_sc: Number(r.cl_sc||0),
+      tl_sc: Number(r.tl_sc||0),
+      t_p_sc: Number(r.t_p_sc||0)
+    }));
 
-// bảng huyện
-tableData=raw.slice(0,30);
+    // ===== NHÂN VIÊN (31+) =====
+    nvData = raw.slice(30).map(r=>({
+      nhan_vien: r["nhan vien"] || r.nhan_vien,
+      huyen: r.huyen,
+      dm_tkm: Number(r.dm_tkm||0),
+      dm_xlsc: Number(r.dm_xlsc||0),
+      th_tkm: Number(r.th_tkm||0),
+      th_sc: Number(r.th_sc||0),
+      t_dm: Number(r.t_dm||0),
+      t_th: Number(r.t_th||0),
+      cl: Number(r.cl||0),
+      tl: Number(r.tl||0),
+      t_p: Number(r.t_p||0)
+    }));
 
-// nhân viên
-nvData=raw.slice(30).map(r=>({
-  nhan_vien:r["nhan vien"]||r.nhan_vien,
-  huyen:r.huyen,
-
-  t_p:Number(r.t_p||0),
-  tl:Number(r.tl||0),
-  cl:Number(r.cl||0),
-
-  t_p_tkm:Number(r.t_p_tkm||0),
-  t_p_sc:Number(r.t_p_sc||0)
-}));
-
-applyFilter();
-});
+    applyFilter();
+  });
 }
 
-function filter(){applyFilter();}
+// ===== KPI FAIL =====
+function getStatus(r){
+  let bad = [];
+
+  if(r.tl < 0) bad.push(`Tỉ lệ âm (${r.tl}%)`);
+  if(r.cl < 0) bad.push(`Chênh lệch âm (${num(r.cl)})`);
+
+  return bad;
+}
+
+// ===== FILTER =====
+function filter(){ applyFilter(); }
 
 function applyFilter(){
 
-let nv=document.getElementById("nv").value.toLowerCase();
-let h=document.getElementById("huyen").value.toLowerCase();
+  let nv = document.getElementById("nv").value.toLowerCase();
+  let h = document.getElementById("huyen").value.toLowerCase();
 
-let isSearch=nv||h;
+  let isSearching = nv !== "" || h !== "";
 
-document.getElementById("topSection").style.display=
-isSearch?"none":"block";
+  // 🔥 Ẩn/hiện TOP
+  document.getElementById("topSection").style.display =
+    isSearching ? "none" : "block";
+  let isSearchNV = nv !== "";
 
-document.getElementById("tableSection").style.display=
-nv?"none":"block";
+  // 🔥 Ẩn bảng huyện khi tìm nhân viên
+  document.getElementById("tableSection").style.display =
+    isSearchNV ? "none" : "block";
 
-let tableF=tableData.filter(r=>
-(r.huyen||"").toLowerCase().includes(h)
-);
+  let tableF = tableData.filter(r =>
+    (r.huyen||"").toLowerCase().includes(h)
+  );
 
-let nvF=nvData.filter(r=>
-(r.nhan_vien||"").toLowerCase().includes(nv)&&
-(r.huyen||"").toLowerCase().includes(h)
-);
+  let nvF = nvData.filter(r =>
+    (r.nhan_vien||"").toLowerCase().includes(nv) &&
+    (r.huyen||"").toLowerCase().includes(h)
+  );
 
-renderTable(tableF);
-renderTop(nvData);
-renderWorst(nvData);
-renderList(nvF);
+  renderTable(tableF);
+  renderTop(nvData);     // 🔥 luôn dùng full data
+  renderWorst(nvData);   // 🔥 luôn dùng full data
+  renderList(nvF);
 }
 
-/* TABLE */
+// ===== TABLE =====
 function renderTable(data){
 
-let html=`
-<thead>
-<tr>
-<th rowspan="2">Huyện</th>
-<th colspan="5">📦 TKM</th>
-<th colspan="5">🔧 SC</th>
-</tr>
-<tr>
-<th>ĐM</th><th>TH</th><th>CL</th><th>%</th><th>T/P</th>
-<th>ĐM</th><th>TH</th><th>CL</th><th>%</th><th>T/P</th>
-</tr>
-</thead><tbody>`;
+  let html = "";
 
-data.forEach(r=>{
-html+=`
-<tr>
-<td>${r.huyen}</td>
+  html += `<tr>
+    <th rowspan="2">Huyện</th>
+    <th colspan="5">📦 Triển khai mới (TKM)</th>
+    <th colspan="5">🔧 Sự cố (SC)</th>
+  </tr>
+  
+  <tr>
+    <th>Định mức</th>
+    <th>Thực hiện</th>
+    <th>Chênh lệch</th>
+    <th>Tỉ lệ</th>
+    <th>Thưởng/Phạt</th>
+  
+    <th>Định mức</th>
+    <th>Thực hiện</th>
+    <th>Chênh lệch</th>
+    <th>Tỉ lệ</th>
+    <th>Thưởng/Phạt</th>
+  </tr>`;
 
-<td>${num(r.dm_tkm)}</td>
-<td>${num(r.th_tkm)}</td>
-<td>${num(r.cl_tkm)}</td>
-<td>${r.tl_tkm}%</td>
-<td>${num(r.t_p_tkm)}</td>
+  data.forEach(r=>{
+    let color = r.cl>=0 ? "#e8f5e9":"#ffebee";
 
-<td>${num(r.dm_xlsc)}</td>
-<td>${num(r.th_sc)}</td>
-<td>${num(r.cl_sc)}</td>
-<td>${r.tl_sc}%</td>
-<td>${num(r.t_p_sc)}</td>
-</tr>`;
-});
+    html += `<tr>
+      <td>${r.huyen}</td>
+    
+      <!-- TKM -->
+      <td>${num(r.dm_tkm)}</td>
+      <td>${num(r.th_tkm)}</td>
+      <td>${num(r.cl_tkm)}</td>
+      <td>${r.tl_tkm}%</td>
+      <td>${num(r.t_p_tkm)}</td>
+    
+      <!-- SC -->
+      <td>${num(r.dm_sc)}</td>
+      <td>${num(r.th_sc)}</td>
+      <td>${num(r.cl_sc)}</td>
+      <td>${r.tl_sc}%</td>
+      <td>${num(r.t_p_sc)}</td>
+    </tr>`;
+  });
 
-html+="</tbody>";
-document.getElementById("table").innerHTML=html;
+  document.getElementById("myTable").innerHTML = html;
 }
 
-/* TOP TKM */
+// ===== TOP =====
 function renderTop(data){
-let s=[...data].sort((a,b)=>b.t_p_tkm-a.t_p_tkm).slice(0,5);
+  let s = [...data].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
 
-document.getElementById("top").innerHTML=
-"<h4>📦 Top TKM</h4>"+
-s.map((r,i)=>`
-<div class="card top">
-🏆 ${i+1}. ${r.nhan_vien}<br>
-💰 ${num(r.t_p_tkm)}
-</div>`).join("");
+  let html="";
+  s.forEach((r,i)=>{
+    html += `<div class="card top">
+      🏆 ${i+1}. ${r.nhan_vien} - ${r.huyen} (${num(r.t_p)})
+    </div>`;
+  });
+
+  document.getElementById("top").innerHTML = html;
 }
 
-/* TOP SC */
+// ===== WORST =====
 function renderWorst(data){
-let s=[...data].sort((a,b)=>b.t_p_sc-a.t_p_sc).slice(0,5);
+  let s = [...data].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
 
-document.getElementById("worst").innerHTML=
-"<h4>🔧 Top SC</h4>"+
-s.map((r,i)=>`
-<div class="card worst">
-🏆 ${i+1}. ${r.nhan_vien}<br>
-💰 ${num(r.t_p_sc)}
-</div>`).join("");
+  let html="";
+  s.forEach((r,i)=>{
+    html += `<div class="card worst">
+      ❌ ${i+1}. ${r.nhan_vien} - ${r.huyen} (${num(r.t_p)})
+    </div>`;
+  });
+
+  document.getElementById("worst").innerHTML = html;
 }
 
-/* LIST */
+// ===== LIST (KPI STYLE) =====
 function renderList(data){
 
-let html="";
-data.forEach(r=>{
-html+=`
-<div class="card">
-<b>${r.nhan_vien} - ${r.huyen}</b><br>
-🎯 Tỉ lệ: <span class="${r.tl>=0?'ok':'fail'}">${r.tl}%</span><br>
-💰 Thưởng/Phạt: <span class="${r.t_p>=0?'ok':'fail'}">${num(r.t_p)}</span>
-</div>`;
-});
+  let html = "";
 
-document.getElementById("list").innerHTML=html;
+  data.forEach(r=>{
+
+    let bad = getStatus(r);
+    if(showBadOnly && bad.length===0) return;
+
+    html += `
+    <div class="card">
+
+      <b>👤 ${r.nhan_vien} - ${r.huyen}</b><br>
+
+      🎯 <b>Tỉ lệ:</b> <span class="${r.tl>=0?'ok':'fail'}">${r.tl}%</span><br>
+      💰 <b>Thưởng/Phạt:</b> <span class="${r.cl>=0?'ok':'fail'}">${num(r.t_p)}</span><br><br>
+
+      📦 <b>TKM:</b><br>
+      - Định mức: ${num(r.dm_tkm)}<br>
+      - Thực hiện: ${num(r.th_tkm)}<br><br>
+
+      🔧 <b>XLSC:</b><br>
+      - Định mức: ${num(r.dm_xlsc)}<br>
+      - Thực hiện: ${num(r.th_sc)}<br><br>
+
+      📊 <b>Tổng:</b><br>
+      - Định mức: ${num(r.t_dm)}<br>
+      - Thực hiện: ${num(r.t_th)}<br><br>
+
+      ${r.cl < 0 
+        ? `<div class="fail">❌ Chênh lệch: ${num(r.cl)}</div>` 
+        : `<div class="ok">✅ Chênh lệch: ${num(r.cl)}</div>`}
+
+       ${bad.length 
+        ? `<div class="fail">❌ Thực hiện kém: ${bad.join(", ")}</div>`
+        : `<div class="ok">✅ Thực hiện tốt</div>`
+      }
+
+    </div>`;
+  });
+
+  document.getElementById("list").innerHTML = html;
 }
 
+function onlyBad(v){
+  showBadOnly = v;
+  applyFilter();
+}
+function reloadPage(){
+  // 🌫️ làm mờ màn hình
+  document.body.style.opacity = 0.3;
+  document.body.style.transition = "0.3s";
+
+  // ⏳ delay rồi reload thật
+  setTimeout(()=>{
+    location.reload();
+  },300);
+}
 load();
 
 </script>
