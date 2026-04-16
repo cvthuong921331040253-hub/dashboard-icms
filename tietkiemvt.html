@@ -23,9 +23,20 @@ body { font-family: Arial; background:#f5f7fb; padding:8px; }
 
 input { padding:4px; margin-right:6px; }
 
-table { border-collapse:collapse; width:100%; }
-th { background:#e3f2fd; padding:4px; font-size:12px; }
-td { padding:4px; font-size:12px; text-align:center; }
+table {
+  border-collapse: collapse;
+  width: max-content; /* 🔥 co theo nội dung */
+  min-width: 100%;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap; /* 🔥 không xuống dòng */
+}
+th, td {
+  width: auto;
+}
 
 .header {
   position: sticky;
@@ -40,7 +51,6 @@ td { padding:4px; font-size:12px; text-align:center; }
 
 table {
   border-collapse: collapse;
-  min-width: 1000px;
 }
 
 /* CỐ ĐỊNH CỘT HUYỆN */
