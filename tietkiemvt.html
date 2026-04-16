@@ -256,23 +256,28 @@ function load(){
     document.getElementById("logtime").innerText =
     tg ? "🕒 Logtime: " + tg : "";
     // ===== TABLE (1-30) =====
-    tableData = raw.slice(0,30).map(r=>({
-      huyen: r.huyen,
+    tableData = raw.slice(0,30).map(r=>{
     
-      // ===== TKM =====
-      dm_tkm: Number(r.dm_tkm||0),
-      th_tkm: Number(r.th_tkm||0),
-      cl_tkm: Number(r.cl_tkm||0),
-      tl_tkm: Number(r.tl_tkm||0),
-      t_p_tkm: Number(r.t_p_tkm||0),
+      let cl = Number(r.cl_tkm||0) + Number(r.cl_sc||0);
+      let tl = Number(r.tl_tkm||0) + Number(r.tl_sc||0);
+      let tp = Number(r.t_p_tkm||0) + Number(r.t_p_sc||0);
     
-      // ===== SC =====
-      dm_sc: Number(r.dm_xlsc||0),
-      th_sc: Number(r.th_sc||0),
-      cl_sc: Number(r.cl_sc||0),
-      tl_sc: Number(r.tl_sc||0),
-      t_p_sc: Number(r.t_p_sc||0)
-    }));
+      return {
+        huyen: r.huyen,
+    
+        // giữ nguyên riêng
+        dm_tkm: Number(r.dm_tkm||0),
+        dm_sc: Number(r.dm_xlsc||0),
+    
+        th_tkm: Number(r.th_tkm||0),
+        th_sc: Number(r.th_sc||0),
+    
+        // 🔥 GỘP
+        cl: cl,
+        tl: tl,
+        t_p: tp
+      };
+    });
 
     // ===== NHÂN VIÊN (31+) =====
     nvData = raw.slice(30).map(r=>({
@@ -378,20 +383,22 @@ html += `<thead>
     html += `<tr>
       <td>${r.huyen}</td>
     
-      <!-- TKM -->
-      <td>${num(r.dm_tkm)}</td>
-      <td>${num(r.th_tkm)}</td>
-      <td>${num(r.cl_tkm)}</td>
-      <td>${r.tl_tkm}%</td>
-      <td>${num(r.t_p_tkm)}</td>
-    
-      <!-- SC -->
-      <td>${num(r.dm_sc)}</td>
-      <td>${num(r.th_sc)}</td>
-      <td>${num(r.cl_sc)}</td>
-      <td>${r.tl_sc}%</td>
-      <td>${num(r.t_p_sc)}</td>
-    </tr>`;
+  let color = r.t_p >= 0 ? "ok" : "fail";
+  
+  html += `<tr>
+    <td>${r.huyen}</td>
+  
+    <td>${num(r.dm_tkm)}</td>
+    <td>${num(r.dm_sc)}</td>
+  
+    <td>${num(r.th_tkm)}</td>
+    <td>${num(r.th_sc)}</td>
+  
+    <td>${num(r.cl)}</td>
+    <td>${r.tl}%</td>
+  
+    <td class="${color}">${num(r.t_p)}</td>
+  </tr>`;
   });
   html += "</tbody>";
   document.getElementById("myTable").innerHTML = html;
