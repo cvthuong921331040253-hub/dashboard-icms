@@ -33,12 +33,14 @@ td { padding:4px; font-size:12px; text-align:center; }
   background: #f5f7fb;
   z-index: 1000;
 }
-  .table-wrap {
+ .table-wrap {
+  width: 100%;
   overflow-x: auto;
 }
 
 table {
-  min-width: 900px;
+  border-collapse: collapse;
+  min-width: 1000px;
 }
 
 /* CỐ ĐỊNH CỘT HUYỆN */
@@ -47,20 +49,20 @@ td:first-child {
   position: sticky;
   left: 0;
   background: #d0e7ff;
-  z-index: 2;
-  font-weight: bold;
+  z-index: 5;
 }
 
 /* HEADER */
 th {
   position: sticky;
   top: 0;
-  z-index: 3;
+  background: #e3f2fd;
+  z-index: 6;
 }
 
-/* HEADER CỘT HUYỆN */
+/* GÓC TRÊN TRÁI */
 th:first-child {
-  z-index: 4;
+  z-index: 7;
 }
 </style>
 </head>
@@ -75,8 +77,10 @@ th:first-child {
 <label><input type="checkbox" onchange="onlyBad(this.checked)"> Chỉ NV kém</label>
 </div>
 
-<h3>📊 Bảng huyện (1-30)</h3>
-<div id="table"></div>
+<h3>📊 Bảng huyện</h3>
+<div class="table-wrap">
+  <table id="myTable"></table>
+</div>
 
 <h3>🏆 Top 10 NV tốt</h3>
 <div id="top"></div>
@@ -219,7 +223,7 @@ function renderTable(data){
   });
 
   html += "</table>";
-  document.getElementById("table").innerHTML = html;
+  document.getElementById("myTable").innerHTML = html;
 }
 
 // ===== TOP =====
