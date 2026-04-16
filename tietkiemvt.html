@@ -64,9 +64,10 @@ tr:hover {
   z-index: 1000;
   padding-bottom: 6px;
 }
- .table-wrap {
-  width: 100%;
+.table-wrap {
   overflow-x: auto;
+  overflow-y: auto;     /* 🔥 cần cho sticky header */
+  max-height: 400px;    /* 🔥 chiều cao vùng bảng */
 }
 
 
@@ -88,12 +89,12 @@ th {
   position: sticky;
   top: 0;
   background: #e3f2fd;
-  z-index: 6;
+  z-index: 5;
 }
 
 /* GÓC TRÊN TRÁI */
 th:first-child {
-  z-index: 7;
+  z-index: 6; /* cao hơn header thường */
 }
 .card {
   font-size: 13px;
