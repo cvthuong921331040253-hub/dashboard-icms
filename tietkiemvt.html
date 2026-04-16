@@ -25,17 +25,36 @@ input { padding:4px; margin-right:6px; }
 
 table {
   border-collapse: collapse;
-  width: max-content; /* 🔥 co theo nội dung */
+  width: max-content;   /* 🔥 co theo nội dung */
   min-width: 100%;
 }
 
 th, td {
-  border: 1px solid #ccc;
-  padding: 4px 6px;
-  white-space: nowrap; /* 🔥 không xuống dòng */
+  border: 1px solid #d0d7de;
+  padding: 6px 8px;
+  font-size: 13px;
+  white-space: nowrap;
 }
-th, td {
-  width: auto;
+
+/* header đẹp */
+th {
+  background: #e3f2fd;
+  font-weight: 600;
+}
+
+/* zebra giống Excel */
+tr:nth-child(even) {
+  background: #f9fbff;
+}
+
+/* hover */
+tr:hover {
+  background: #fff3cd;
+}
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
 }
 
 .header {
@@ -59,7 +78,7 @@ td:first-child {
   position: sticky;
   left: 0;
   background: #d0e7ff;
-  z-index: 5;
+  z-index: 3;
 }
 
 /* HEADER */
@@ -239,7 +258,7 @@ function applyFilter(){
 // ===== TABLE =====
 function renderTable(data){
 
-  let html = "<table border=1>";
+  let html = "";
 
   html += `<tr>
     <th>Huyện</th>
