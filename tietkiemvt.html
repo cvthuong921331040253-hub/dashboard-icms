@@ -226,7 +226,7 @@ function load(){
     document.getElementById("logtime").innerText =
     tg ? "🕒 Logtime: " + tg : "";
     // ===== TABLE (1-30) =====
-    tableData = raw.slice(0,30).map(r=>{
+    tableData = raw.slice(0,29).map(r=>{
     
       let tp = Number(r.t_p_tkm||0) + Number(r.t_p_sc||0);
     
