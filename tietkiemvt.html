@@ -434,11 +434,11 @@ function renderList(data){
 
     if(showBadOnly && r.tl >= 0) return;
 
-    // 🔥 màu theo chênh lệch
-    let tkmColor = r.cl_tkm >= 0 ? "ok" : "fail";
-    let scColor  = r.cl_sc >= 0 ? "ok" : "fail";
+    // 🔥 màu theo THƯỞNG/PHẠT (KHÔNG dùng cl nữa)
+    let tkmColor = r.t_p_tkm >= 0 ? "ok" : "fail";
+    let scColor  = r.t_p_sc >= 0 ? "ok" : "fail";
 
-    // 🔥 tổng thưởng phạt
+    // 🔥 tổng
     let tong = r.t_p_tkm + r.t_p_sc;
     let tongColor = tong >= 0 ? "ok" : "fail";
 
@@ -447,21 +447,20 @@ function renderList(data){
 
       <b>👤 ${r.nhan_vien} - ${r.huyen}</b><br>
 
-      🎯 <b>Tỉ lệ:</b> 
-      <span class="${r.tl>=0?'ok':'fail'}">${r.tl}%</span><br>
-
       💰 <b>Thưởng/Phạt:</b> 
-      <span class="${r.t_p>=0?'ok':'fail'}">${num(r.t_p)}</span><br><br>
+      <span class="${tongColor}">${num(tong)}</span><br><br>
 
       📦 <b>TKM:</b><br>
       - Định mức: ${num(r.dm_tkm)}<br>
-      - Thực hiện: 
-        <span class="${tkmColor}">${num(r.th_tkm)}</span><br><br>
+      - Thực hiện: ${num(r.th_tkm)}<br>
+      - Thưởng/Phạt: 
+        <span class="${tkmColor}">${num(r.t_p_tkm)}</span><br><br>
 
       🔧 <b>XLSC:</b><br>
       - Định mức: ${num(r.dm_xlsc)}<br>
-      - Thực hiện: 
-        <span class="${scColor}">${num(r.th_sc)}</span><br><br>
+      - Thực hiện: ${num(r.th_sc)}<br>
+      - Thưởng/Phạt: 
+        <span class="${scColor}">${num(r.t_p_sc)}</span><br><br>
 
       📊 <b>Tổng:</b> 
       <span class="${tongColor}">${num(tong)}</span>
