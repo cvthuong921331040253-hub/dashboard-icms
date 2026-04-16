@@ -25,45 +25,11 @@ input { padding:4px; margin-right:6px; }
 table {
   border: 2px solid #666;   /* 🔥 khung ngoài đậm */
 }
-table {
-  border-collapse: collapse;
-  width: max-content;   /* 🔥 co theo nội dung */
-  min-width: 100%;
-}
-table {
-  position: relative;   /* 🔥 QUAN TRỌNG NHẤT */
-}
-/* bảng co theo nội dung giống Excel */
-table {
-  width: max-content;
-  min-width: 100%;
-}
 th, td {
   border: 1px solid #999;
   padding: 3px 6px;
   font-size: 12px;
 }
-/* header đẹp */
-th {
-  background: #e3f2fd;
-  font-weight: 600;
-}
-
-/* zebra giống Excel */
-tr:nth-child(even) {
-  background: #f9fbff;
-}
-
-/* hover */
-tr:hover {
-  background: #fff3cd;
-}
-.table-wrap {
-  overflow-x: auto;
-  overflow-y: auto;
-  max-height: 400px;   /* 🔥 quan trọng */
-}
-
 .header {
   position: sticky;
   top: 0;
@@ -71,45 +37,6 @@ tr:hover {
   z-index: 1000;
   padding-bottom: 6px;
 }
-.table-wrap {
-  overflow-x: auto;
-  overflow-y: auto;     /* 🔥 cần cho sticky header */
-  max-height: 400px;    /* 🔥 chiều cao vùng bảng */
-}
-
-td:first-child {
-  box-shadow: 2px 0 6px rgba(0,0,0,0.1);  /* 🔥 nổi */
-}
-
-th:first-child {
-  box-shadow: 2px 0 6px rgba(0,0,0,0.2);
-}
-
-}
-/* 🔥 Ô HUYỆN (rowspan = 2) – QUAN TRỌNG NHẤT */
-thead th[rowspan] {
-  position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 999;            /* 🔥 cao nhất */
-  background: #b3d7ff;
-}
-
-/* cột huyện body */
-tbody td:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  background: #d0e7ff;
-}
-thead th {
-  position: relative;
-}
-thead {
-  position: relative;
-  z-index: 1;
-}
-/* ===== HEADER STICKY ===== */
 
 /* dòng header 1 */
 thead tr:first-child th {
