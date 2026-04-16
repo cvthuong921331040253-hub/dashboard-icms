@@ -215,11 +215,6 @@ thead tr:nth-child(2) th {
   font-weight: bold;
 }
 
-.col-fixed div {
-  padding: 6px 8px;
-  border-bottom: 1px solid #999;
-}
-
 .table-scroll {
   overflow: auto;
   width: 100%;
@@ -234,6 +229,22 @@ th, td {
   padding: 6px 8px;
   border: 1px solid #999;
   white-space: nowrap;
+}
+.col-fixed div {
+  height: 34px;              /* 🔥 QUAN TRỌNG */
+  line-height: 34px;
+  padding: 0 8px;
+  border-bottom: 1px solid #999;
+}
+
+table tbody tr td {
+  height: 34px;              /* 🔥 BẮT BUỘC phải giống trên */
+}
+.col-fixed div:first-child {
+  height: 68px;      /* = 34px x 2 dòng */
+  line-height: 68px;
+  font-weight: bold;
+  background: #b3d7ff;
 }
 </style>
 </head>
