@@ -258,23 +258,20 @@ function load(){
     // ===== TABLE (1-30) =====
     tableData = raw.slice(0,30).map(r=>{
     
-      let cl = Number(r.cl_tkm||0) + Number(r.cl_sc||0);
-      let tl = Number(r.tl_tkm||0) + Number(r.tl_sc||0);
       let tp = Number(r.t_p_tkm||0) + Number(r.t_p_sc||0);
     
       return {
         huyen: r.huyen,
     
-        // giữ nguyên riêng
         dm_tkm: Number(r.dm_tkm||0),
-        dm_sc: Number(r.dm_xlsc||0),
-    
         th_tkm: Number(r.th_tkm||0),
-        th_sc: Number(r.th_sc||0),
+        tl_tkm: Number(r.tl_tkm||0),
     
-        // 🔥 GỘP
-        cl: cl,
-        tl: tl,
+        dm_sc: Number(r.dm_xlsc||0),
+        th_sc: Number(r.th_sc||0),
+        tl_sc: Number(r.tl_sc||0),
+    
+        // 🔥 tổng
         t_p: tp
       };
     });
@@ -354,46 +351,40 @@ function applyFilter(){
 // ===== TABLE =====
 function renderTable(data){
 
-  let html = "";
-html += `<thead>
-<tr>
-  <th rowspan="2">Huyện</th>
-  <th colspan="5">📦 Triển khai mới (TKM)</th>
-  <th colspan="5">🔧 Sự cố (SC)</th>
-</tr>
+  let html = `
+  <thead>
+    <tr>
+      <th>Huyện</th>
+      <th>Định mức TKM</th>
+      <th>Thực hiện TKM</th>
+      <th>Tỉ lệ TKM</th>
+      <th>Định mức SC</th>
+      <th>Thực hiện SC</th>
+      <th>Tỉ lệ SC</th>
+      <th>Tổng Thưởng/Phạt</th>
+    </tr>
+  </thead><tbody>`;
 
-<tr>
-  <th>Định mức</th>
-  <th>Thực hiện</th>
-  <th>Chênh lệch</th>
-  <th>Tỉ lệ</th>
-  <th>Thưởng/Phạt</th>
+  data.forEach(r=>{
 
-  <th>Định mức</th>
-  <th>Thực hiện</th>
-  <th>Chênh lệch</th>
-  <th>Tỉ lệ</th>
-  <th>Thưởng/Phạt</th>
-</tr>
-</thead><tbody>`;
+    let color = r.t_p >= 0 ? "ok" : "fail";
 
-data.forEach(r=>{
-  let color = r.t_p >= 0 ? "ok" : "fail";
-  html += `<tr>
-    <td>${r.huyen}</td>
+    html += `
+    <tr>
+      <td>${r.huyen}</td>
 
-    <td>${num(r.dm_tkm)}</td>
-    <td>${num(r.dm_sc)}</td>
+      <td>${num(r.dm_tkm)}</td>
+      <td>${num(r.th_tkm)}</td>
+      <td>${r.tl_tkm}%</td>
 
-    <td>${num(r.th_tkm)}</td>
-    <td>${num(r.th_sc)}</td>
+      <td>${num(r.dm_sc)}</td>
+      <td>${num(r.th_sc)}</td>
+      <td>${r.tl_sc}%</td>
 
-    <td>${num(r.cl)}</td>
-    <td>${r.tl}%</td>
+      <td class="${color}">${num(r.t_p)}</td>
+    </tr>`;
+  });
 
-    <td class="${color}">${num(r.t_p)}</td>
-  </tr>`;
-});
   html += "</tbody>";
   document.getElementById("myTable").innerHTML = html;
 }
