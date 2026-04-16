@@ -377,29 +377,23 @@ html += `<thead>
 </tr>
 </thead><tbody>`;
 
-  data.forEach(r=>{
-    let color = r.cl>=0 ? "#e8f5e9":"#ffebee";
-
-    html += `<tr>
-      <td>${r.huyen}</td>
-    
+data.forEach(r=>{
   let color = r.t_p >= 0 ? "ok" : "fail";
-  
   html += `<tr>
     <td>${r.huyen}</td>
-  
+
     <td>${num(r.dm_tkm)}</td>
     <td>${num(r.dm_sc)}</td>
-  
+
     <td>${num(r.th_tkm)}</td>
     <td>${num(r.th_sc)}</td>
-  
+
     <td>${num(r.cl)}</td>
     <td>${r.tl}%</td>
-  
+
     <td class="${color}">${num(r.t_p)}</td>
   </tr>`;
-  });
+});
   html += "</tbody>";
   document.getElementById("myTable").innerHTML = html;
 }
