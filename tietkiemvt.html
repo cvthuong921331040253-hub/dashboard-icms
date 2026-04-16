@@ -81,27 +81,18 @@ td:first-child {
   background: #d0e7ff;
   z-index: 4;   /* 🔥 tăng lên */
 }
-/* Ô góc trên trái (Huyện) */
-th[rowspan] {
-  position: sticky;
-  left: 0;
-  top: 0;           /* 🔥 cực kỳ quan trọng */
-  z-index: 10;      /* 🔥 cao nhất */
-  background: #d0e7ff;
-}
-  font-weight: bold;
-  text-align: left;   /* 🔥 THÊM DÒNG NÀY */
-}
 
 /* ===== FIX CHUẨN 100% ===== */
 
 /* Ô Huyện (rowspan) */
 th[rowspan] {
   position: sticky;
-  top: 0;
   left: 0;
-  z-index: 30;   /* 🔥 cao nhất */
+  top: 0;
+  z-index: 30;
   background: #d0e7ff;
+  font-weight: bold;
+  text-align: left;
 }
 
 /* Header dòng 1 */
