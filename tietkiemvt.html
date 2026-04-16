@@ -220,6 +220,10 @@ function load(){
 
     let raw = res.data || [];
     let tg = raw[0]?.tg_update || raw[1]?.tg_update || "";
+    if(tg){
+      let d = new Date(tg);
+      tg = d.toLocaleString("vi-VN");
+    }
     document.getElementById("logtime").innerText =
     tg ? "🕒 Logtime: " + tg : "";
     // ===== TABLE (1-30) =====
