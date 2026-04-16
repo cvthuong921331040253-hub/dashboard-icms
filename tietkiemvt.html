@@ -218,6 +218,8 @@ function load(){
   .then(res=>{
 
     let raw = res.data || [];
+    console.log("RAW:", raw);
+    console.log("TOTAL:", raw.length);
     let tg = raw[0]?.tg_update || raw[1]?.tg_update || "";
     if(tg){
       let d = new Date(tg);
