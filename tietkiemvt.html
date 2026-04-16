@@ -3,117 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khoán Vật Tư Dashboard</title>
 
 <style>
-body {
-  font-family: Arial;
-  background: #f5f7fb;
-  padding: 10px;
-}
+body { font-family: Arial; background:#f5f7fb; padding:10px; }
 
 .card {
-  background: #fff;
-  padding: 8px;
-  margin-bottom: 8px;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  background:#fff; padding:8px; margin-bottom:8px;
+  border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.1);
 }
 
-.header {
-  position: sticky;
-  top: 0;
-  background: #f5f7fb;
-  z-index: 1000;
-  padding-bottom: 8px;
-}
+.ok { color:green; }
+.bad { color:red; font-weight:bold; }
 
-input {
-  padding: 4px;
-  margin-right: 6px;
-}
-
-.reload-btn {
-  padding: 6px 10px;
-  border: none;
-  background: #2196f3;
-  color: white;
-  border-radius: 6px;
-}
-
-.ok { color: green; }
-.bad { color: red; font-weight: bold; }
-
-.table-wrap {
-  overflow-x: auto;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  min-width: 1100px;
-  background: #fff;
-}
-
-th {
-  background: #e3f2fd;
-  padding: 6px;
-}
-
-td {
-  text-align: center;
-  padding: 6px;
-}
-
-tr:nth-child(even) {
-  background: #f1f6ff;
-}
-
-/* sticky cột nhân viên */
-td:first-child, th:first-child {
-  position: sticky;
-  left: 0;
-  background: #d0e7ff;
-  font-weight: bold;
-}
+table { border-collapse:collapse; width:100%; background:#fff; }
+th { background:#e3f2fd; padding:6px; }
+td { text-align:center; padding:6px; }
+tr:nth-child(even){ background:#f1f6ff; }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <h2>📊 Khoán Vật Tư</h2>
+<h2>📊 Khoán Vật Tư</h2>
 
-  🔍 Nhân viên <input id="nv" onkeyup="filter()">
-  🔍 Huyện <input id="huyen" onkeyup="filter()">
-  <button onclick="reload()" class="reload-btn">🔄</button>
+<h3>📊 Bảng tổng hợp (30 dòng)</h3>
+<div id="table"></div>
 
-  <div id="logtime" style="font-size:12px;color:#666;margin-top:4px"></div>
-</div>
-
-<h3>📊 Bảng tổng hợp</h3>
-<div class="table-wrap">
-  <div id="table"></div>
-</div>
-
-<h3>🏆 Top thưởng</h3>
+<h3>🏆 Top 10 thưởng</h3>
 <div id="top"></div>
 
-<h3>⚠️ Top phạt</h3>
+<h3>⚠️ Top 10 phạt</h3>
 <div id="worst"></div>
+
+<h3>📋 Danh sách nhân viên</h3>
+<div id="list"></div>
 
 <script>
 
 const API = "https://script.google.com/macros/s/AKfycby2YYZVK6r1QXP_TgnB0i99prYJmEG8cJwGDQILU1tph0i38b80BhN6Oa9bT5IMuQft0A/exec?sheet=Khoan vt";
 
-let allData = [];
+let allData = [];   // 🔥 toàn bộ
+let tableData = []; // 🔥 30 dòng
 
-// ===== FORMAT =====
 function num(v){
-  return Number(v || 0).toLocaleString("vi-VN");
+  return Number(v||0).toLocaleString("vi-VN");
 }
 
-// ===== LOAD =====
 function load(){
   fetch(API)
   .then(r=>r.json())
@@ -121,11 +56,8 @@ function load(){
 
     let raw = res.data || [];
 
-    document.getElementById("logtime").innerText =
-      raw[1]?.["Tg update"] ? "🕒 " + raw[1]["Tg update"] : "";
-
-    // 🔥 FIX KEY "nhan vien"
-    allData = raw.slice(0,30).map(r => ({
+    // ===== DATA FULL =====
+    allData = raw.map(r=>({
       nhan_vien: r["nhan vien"] || r.nhan_vien,
       huyen: r.huyen,
       dm_tkm: r.dm_tkm,
@@ -134,95 +66,60 @@ function load(){
       th_sc: r.th_sc
     }));
 
-    // ===== TÍNH TOÁN =====
-    allData.forEach(r=>{
-      r.t_dm = (r.dm_tkm || 0) + (r.dm_xlsc || 0);
-      r.t_th = (r.th_tkm || 0) + (r.th_sc || 0);
-      r.cl = r.t_th - r.t_dm;
-      r.tl = r.t_dm ? Math.round(r.t_th / r.t_dm * 100) : 0;
-      r.t_p = r.cl;
-    });
+    // ===== DATA TABLE (30 dòng) =====
+    tableData = allData.slice(0,30);
 
-    applyFilter();
+    // ===== TÍNH TOÁN =====
+    allData.forEach(calc);
+    tableData.forEach(calc);
+
+    renderTable();
     renderTop();
     renderWorst();
+    renderList();
   });
 }
 
-// ===== TABLE =====
-function render(data){
+function calc(r){
+  r.t_dm = (r.dm_tkm||0)+(r.dm_xlsc||0);
+  r.t_th = (r.th_tkm||0)+(r.th_sc||0);
+  r.cl = r.t_th - r.t_dm;
+  r.tl = r.t_dm ? Math.round(r.t_th/r.t_dm*100) : 0;
+  r.t_p = r.cl;
+}
 
-  let html = `
-  <table border="1">
+// ===== TABLE (KHÔNG NHÂN VIÊN) =====
+function renderTable(){
+  let html = `<table>
     <tr>
-      <th>Nhân viên</th>
       <th>Huyện</th>
-      <th>ĐM TKM</th>
-      <th>ĐM XLSC</th>
-      <th>TH TKM</th>
-      <th>TH XLSC</th>
-      <th>Tổng ĐM</th>
-      <th>Tổng TH</th>
+      <th>ĐM</th>
+      <th>TH</th>
       <th>CL</th>
-      <th>Tỉ lệ</th>
-      <th>Thưởng/Phạt</th>
-    </tr>
-  `;
+      <th>%</th>
+      <th>Thưởng</th>
+    </tr>`;
 
-  data.forEach(r=>{
-
-    let color = r.t_p >= 0 ? "#e8f5e9" : "#ffebee";
+  tableData.forEach(r=>{
+    let color = r.t_p>=0 ? "#e8f5e9":"#ffebee";
 
     html += `<tr>
-      <td><b>${r.nhan_vien || ""}</b></td>
-      <td>${r.huyen || ""}</td>
-
-      <td>${num(r.dm_tkm)}</td>
-      <td>${num(r.dm_xlsc)}</td>
-
-      <td>${num(r.th_tkm)}</td>
-      <td>${num(r.th_sc)}</td>
-
+      <td>${r.huyen}</td>
       <td>${num(r.t_dm)}</td>
       <td>${num(r.t_th)}</td>
-
       <td>${num(r.cl)}</td>
-
-      <td style="color:${r.tl>=100?'green':'red'}; font-weight:bold">
-        ${r.tl}%
-      </td>
-
-      <td style="background:${color}; font-weight:bold">
-        ${num(r.t_p)}
-      </td>
+      <td class="${r.tl>=100?'ok':'bad'}">${r.tl}%</td>
+      <td style="background:${color}">${num(r.t_p)}</td>
     </tr>`;
   });
 
   html += "</table>";
-
   document.getElementById("table").innerHTML = html;
 }
 
-// ===== FILTER =====
-function filter(){
-  applyFilter();
-}
-
-function applyFilter(){
-  let nv = document.getElementById("nv").value.toLowerCase();
-  let h = document.getElementById("huyen").value.toLowerCase();
-
-  let f = allData.filter(r =>
-    (r.nhan_vien || "").toLowerCase().includes(nv) &&
-    (r.huyen || "").toLowerCase().includes(h)
-  );
-
-  render(f);
-}
-
-// ===== TOP 10 THƯỞNG =====
+// ===== TOP =====
 function renderTop(){
-  let top = [...allData].sort((a,b)=> b.t_p - a.t_p).slice(0,10);
+  let top = [...allData].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
 
   let html="";
   top.forEach((r,i)=>{
@@ -234,28 +131,39 @@ function renderTop(){
   document.getElementById("top").innerHTML = html;
 }
 
-// ===== TOP 10 PHẠT =====
+// ===== WORST =====
 function renderWorst(){
-  let worst = [...allData].sort((a,b)=> a.t_p - b.t_p).slice(0,10);
+  let worst = [...allData].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
 
   let html="";
   worst.forEach((r,i)=>{
     html += `<div class="card bad">
-      ❌ TOP PHẠT ${i+1} - ${r.nhan_vien} (${num(r.t_p)})
+      ❌ PHẠT ${i+1} - ${r.nhan_vien} (${num(r.t_p)})
     </div>`;
   });
 
   document.getElementById("worst").innerHTML = html;
 }
 
-// ===== RELOAD =====
-function reload(){
-  location.reload();
+// ===== LIST GIỐNG KPI =====
+function renderList(){
+  let html="";
+
+  allData.forEach(r=>{
+
+    let cls = r.t_p >= 0 ? "ok" : "bad";
+
+    html += `<div class="card ${cls}">
+      👤 ${r.nhan_vien} - ${r.huyen}
+      | 🎯 ${r.tl}%
+      | 💰 ${num(r.t_p)}
+    </div>`;
+  });
+
+  document.getElementById("list").innerHTML = html;
 }
 
-// START
 load();
-setInterval(load,60000);
 
 </script>
 
