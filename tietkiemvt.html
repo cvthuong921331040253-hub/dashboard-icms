@@ -69,7 +69,7 @@ tr:nth-child(even) {
   background: #f1f6ff;
 }
 
-/* sticky cột huyện */
+/* sticky cột nhân viên */
 td:first-child, th:first-child {
   position: sticky;
   left: 0;
@@ -124,8 +124,15 @@ function load(){
     document.getElementById("logtime").innerText =
       raw[1]?.["Tg update"] ? "🕒 " + raw[1]["Tg update"] : "";
 
-    // 👉 lấy 30 dòng đầu NHƯNG GIỮ nguyên data
-    allData = raw.slice(0,30);
+    // 🔥 FIX KEY "nhan vien"
+    allData = raw.slice(0,30).map(r => ({
+      nhan_vien: r["nhan vien"] || r.nhan_vien,
+      huyen: r.huyen,
+      dm_tkm: r.dm_tkm,
+      dm_xlsc: r.dm_xlsc,
+      th_tkm: r.th_tkm,
+      th_sc: r.th_sc
+    }));
 
     // ===== TÍNH TOÁN =====
     allData.forEach(r=>{
@@ -135,9 +142,6 @@ function load(){
       r.tl = r.t_dm ? Math.round(r.t_th / r.t_dm * 100) : 0;
       r.t_p = r.cl;
     });
-
-    // sort theo thưởng
-    allData.sort((a,b)=> b.t_p - a.t_p);
 
     applyFilter();
     renderTop();
@@ -151,6 +155,7 @@ function render(data){
   let html = `
   <table border="1">
     <tr>
+      <th>Nhân viên</th>
       <th>Huyện</th>
       <th>ĐM TKM</th>
       <th>ĐM XLSC</th>
@@ -166,9 +171,10 @@ function render(data){
 
   data.forEach(r=>{
 
-    let colorCL = r.cl >= 0 ? "#e8f5e9" : "#ffebee";
+    let color = r.t_p >= 0 ? "#e8f5e9" : "#ffebee";
 
     html += `<tr>
+      <td><b>${r.nhan_vien || ""}</b></td>
       <td>${r.huyen || ""}</td>
 
       <td>${num(r.dm_tkm)}</td>
@@ -180,15 +186,13 @@ function render(data){
       <td>${num(r.t_dm)}</td>
       <td>${num(r.t_th)}</td>
 
-      <td style="background:${colorCL}">
-        ${num(r.cl)}
-      </td>
+      <td>${num(r.cl)}</td>
 
       <td style="color:${r.tl>=100?'green':'red'}; font-weight:bold">
         ${r.tl}%
       </td>
 
-      <td style="background:${colorCL}; font-weight:bold">
+      <td style="background:${color}; font-weight:bold">
         ${num(r.t_p)}
       </td>
     </tr>`;
@@ -216,9 +220,9 @@ function applyFilter(){
   render(f);
 }
 
-// ===== TOP =====
+// ===== TOP 10 THƯỞNG =====
 function renderTop(){
-  let top = allData.slice(0,5);
+  let top = [...allData].sort((a,b)=> b.t_p - a.t_p).slice(0,10);
 
   let html="";
   top.forEach((r,i)=>{
@@ -230,9 +234,9 @@ function renderTop(){
   document.getElementById("top").innerHTML = html;
 }
 
-// ===== WORST =====
+// ===== TOP 10 PHẠT =====
 function renderWorst(){
-  let worst = [...allData].slice(-5).reverse();
+  let worst = [...allData].sort((a,b)=> a.t_p - b.t_p).slice(0,10);
 
   let html="";
   worst.forEach((r,i)=>{
