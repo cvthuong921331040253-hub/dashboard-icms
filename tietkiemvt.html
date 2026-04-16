@@ -42,7 +42,7 @@ th, td {
 .card br {
   line-height: 0.8;
 }
-
+/* Nút load */
 .header-top {
   display: flex;
   justify-content: space-between; /* 🔥 đẩy về 2 bên nút button load */
@@ -61,7 +61,7 @@ th, td {
   background: #1976d2;
 }
 
-/* ===== MOBILE ===== */
+/* Giao diện chuẩn mobile */
 @media (max-width: 600px) {
 
   body {
@@ -72,7 +72,7 @@ th, td {
   h2 { font-size: 16px; }
   h3 { font-size: 14px; }
 
-  /* ===== WRAP TABLE (QUAN TRỌNG) ===== */
+  /*Tùy chỉnh bảng */
   .table-wrap {
     overflow-x: auto;
     overflow-y: auto;
@@ -82,7 +82,7 @@ th, td {
     background: #fff;
   }
 
-  /* ===== TABLE ===== */
+  /*Tùy chỉnh bảng */
   #myTable {
     min-width: 900px;   /* 👉 ép rộng để scroll */
     border-collapse: collapse;
@@ -102,13 +102,12 @@ th, td {
     background: #f9fbff;
   }
 
-  /* zebra row */
+  /*Tùy chỉnh bảng */
   #myTable tr:nth-child(even) td {
     background: #f1f6ff;
   }
 
-/* ===== STICKY CỘT HUYỆN (FIX CHUẨN) ===== */
-
+/*Fix scroll của bảng */
 /* ✅ Chỉ áp cho BODY */
 #myTable td:first-child {
   position: sticky;
@@ -131,9 +130,8 @@ th, td {
   z-index: 4;
 }
 }
-/* ===== HEADER STICKY 2 DÒNG ===== */
-
-/* dòng 1 */
+/*Fix scroll 2 tiêu đề của bảng */
+/* ✅dòng 1 */
 #myTable tr:first-child th {
   position: sticky;
   top: 0;
@@ -141,12 +139,18 @@ th, td {
   background: #e3f2fd;
 }
 
-/* dòng 2 */
+/*✅ dòng 2 */
 #myTable tr:nth-child(2) th {
   position: sticky;
   top: 22px; /* 👈 chỉnh theo chiều cao dòng 1 */
   z-index: 2;
   background: #e3f2fd;
+}
+/*Cho bảng tự giãn theo nội dung */
+#myTable {
+  border-collapse: collapse;
+  width: max-content;   /* 👈 QUAN TRỌNG */
+  min-width: 100%;      /* 👈 vẫn full nếu ít cột */
 }
 </style>
 </head>
