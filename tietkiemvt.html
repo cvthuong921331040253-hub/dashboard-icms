@@ -13,19 +13,24 @@ body { font-family: Arial; background:#f5f7fb; padding:8px; }
   padding:8px;
   margin-bottom:8px;
   box-shadow:0 1px 3px rgba(0,0,0,0.1);
+  font-size: 13px;
+  line-height: 1.4;
 }
-
+/* xanh/đỏ thưởng/phạt*/
 .ok { color:green; }
 .fail { color:red; font-weight:bold; }
-
+/* top NV tốt, NV kém*/
 .top { background:#e8f5e9; }
 .worst { background:#ffeaea; }
+/* Style ô tìm kiếm*/
 input { padding:4px; margin-right:6px; }
+/* Style bảng*/
 th, td {
   border: 1px solid #999;
   padding: 3px 6px;
   font-size: 12px;
 }
+/* Cố định thanh tìm kiếm phía trên*/
 .header {
   position: sticky;
   top: 0;
@@ -34,25 +39,6 @@ th, td {
   padding-bottom: 6px;
 }
 
-/* dòng header 1 */
-thead tr:first-child th {
-  position: sticky;
-  top: 0;
-  z-index: 6;
-  background: #e3f2fd;
-}
-
-/* dòng header 2 */
-thead tr:nth-child(2) th {
-  position: sticky;
-  top: 22px;
-  z-index: 5;
-  background: #e3f2fd;
-}
-.card {
-  font-size: 13px;
-  line-height: 1.4;
-}
 .card br {
   line-height: 0.8;
 }
