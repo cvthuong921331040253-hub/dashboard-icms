@@ -89,45 +89,43 @@ th[rowspan] {
   z-index: 10;      /* 🔥 cao nhất */
   background: #d0e7ff;
 }
-
-/* CỘT HUYỆN HEADER */
-th:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 7;   /* 🔥 cao nhất */
-  background: #d0e7ff;
-}
-
   font-weight: bold;
   text-align: left;   /* 🔥 THÊM DÒNG NÀY */
 }
-th:first-child,
-td:first-child {
-  font-weight: bold;   /* 🔥 BÔI ĐẬM */
-}
 
-/* HEADER */
-/* ===== HEADER 2 DÒNG ===== */
+/* ===== FIX CHUẨN 100% ===== */
 
-/* Dòng 1: 📦 TKM + 🔧 SC */
-table tr:nth-child(1) th {
+/* Ô Huyện (rowspan) */
+th[rowspan] {
   position: sticky;
   top: 0;
-  z-index: 5;
-  background: #e3f2fd;
+  left: 0;
+  z-index: 30;   /* 🔥 cao nhất */
+  background: #d0e7ff;
 }
 
-/* Dòng 2: Định mức, TH... */
-table tr:nth-child(2) th {
+/* Header dòng 1 */
+thead tr:first-child th {
   position: sticky;
-  top: 24px; /* 🔥 chỉnh nếu lệch */
-  z-index: 5;
+  top: 0;
+  z-index: 20;
   background: #e3f2fd;
 }
 
-/* GÓC TRÊN TRÁI */
-th:first-child {
-  z-index: 9; /* cao hơn header thường */
+/* Header dòng 2 */
+thead tr:nth-child(2) th {
+  position: sticky;
+  top: 28px;
+  z-index: 10;
+  background: #e3f2fd;
+}
+
+/* Cột huyện body */
+tbody td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  background: #d0e7ff;
 }
 .card {
   font-size: 13px;
@@ -349,26 +347,27 @@ function applyFilter(){
 function renderTable(data){
 
   let html = "";
+html += `<thead>
+<tr>
+  <th rowspan="2">Huyện</th>
+  <th colspan="5">📦 Triển khai mới (TKM)</th>
+  <th colspan="5">🔧 Sự cố (SC)</th>
+</tr>
 
-  html += `<tr>
-    <th rowspan="2">Huyện</th>
-    <th colspan="5">📦 Triển khai mới (TKM)</th>
-    <th colspan="5">🔧 Sự cố (SC)</th>
-  </tr>
-  
-  <tr>
-    <th>Định mức</th>
-    <th>Thực hiện</th>
-    <th>Chênh lệch</th>
-    <th>Tỉ lệ</th>
-    <th>Thưởng/Phạt</th>
-  
-    <th>Định mức</th>
-    <th>Thực hiện</th>
-    <th>Chênh lệch</th>
-    <th>Tỉ lệ</th>
-    <th>Thưởng/Phạt</th>
-  </tr>`;
+<tr>
+  <th>Định mức</th>
+  <th>Thực hiện</th>
+  <th>Chênh lệch</th>
+  <th>Tỉ lệ</th>
+  <th>Thưởng/Phạt</th>
+
+  <th>Định mức</th>
+  <th>Thực hiện</th>
+  <th>Chênh lệch</th>
+  <th>Tỉ lệ</th>
+  <th>Thưởng/Phạt</th>
+</tr>
+</thead><tbody>`;
 
   data.forEach(r=>{
     let color = r.cl>=0 ? "#e8f5e9":"#ffebee";
@@ -391,7 +390,7 @@ function renderTable(data){
       <td>${num(r.t_p_sc)}</td>
     </tr>`;
   });
-
+  html += "</tbody>";
   document.getElementById("myTable").innerHTML = html;
 }
 
