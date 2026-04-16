@@ -5,39 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body { font-family: Arial; background:#f5f7fb; padding:10px; }
+body { font-family: Arial; background:#f5f7fb; padding:8px; }
 
 .card {
-  background:#fff; padding:8px; margin-bottom:8px;
-  border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.1);
+  background:#fff;
+  border-radius:8px;
+  padding:8px;
+  margin-bottom:8px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
 }
 
 .ok { color:green; }
-.bad { color:red; font-weight:bold; }
+.fail { color:red; font-weight:bold; }
 
-table { border-collapse:collapse; width:100%; background:#fff; }
-th { background:#e3f2fd; padding:6px; }
-td { text-align:center; padding:6px; }
-tr:nth-child(even){ background:#f1f6ff; }
+.top { background:#e8f5e9; }
+.worst { background:#ffeaea; }
 
 input { padding:4px; margin-right:6px; }
+
+.header {
+  position: sticky;
+  top: 0;
+  background: #f5f7fb;
+  z-index: 1000;
+}
+
 </style>
 </head>
 
 <body>
 
-<h2>📊 Khoán Vật Tư</h2>
+<div class="header">
+<h2>📊 KPI Khoán Vật Tư</h2>
 
-🔍 Nhân viên <input id="nv" onkeyup="filter()">
+🔍 Nhân viên <input id="nv" onkeyup="filter()"><br>
 🔍 Huyện <input id="huyen" onkeyup="filter()">
+<label><input type="checkbox" onchange="onlyBad(this.checked)"> Chỉ NV kém</label>
+</div>
 
-<h3>📊 Bảng tổng hợp (1-30)</h3>
+<h3>📊 Bảng huyện (1-30)</h3>
 <div id="table"></div>
 
-<h3>🏆 Top 10 thưởng</h3>
+<h3>🏆 Top 10 NV tốt</h3>
 <div id="top"></div>
 
-<h3>⚠️ Top 10 phạt</h3>
+<h3>⚠️ Top 10 NV kém</h3>
 <div id="worst"></div>
 
 <h3>📋 Danh sách nhân viên</h3>
@@ -49,10 +61,9 @@ const API = "https://script.google.com/macros/s/AKfycby2YYZVK6r1QXP_TgnB0i99prYJ
 
 let tableData = [];
 let nvData = [];
+let showBadOnly = false;
 
-function num(v){
-  return Number(v||0).toLocaleString("vi-VN");
-}
+function num(v){ return Number(v||0).toLocaleString("vi-VN"); }
 
 function calc(r){
   r.t_dm = (r.dm_tkm||0)+(r.dm_xlsc||0);
@@ -62,6 +73,16 @@ function calc(r){
   r.t_p = r.cl;
 }
 
+// KPI fail list
+function getBad(r){
+  let bad = [];
+
+  if(r.tl < 100) bad.push(`Tỉ lệ <100% (${r.tl}%)`);
+  if(r.cl < 0) bad.push(`Âm (${num(r.cl)})`);
+
+  return bad;
+}
+
 function load(){
   fetch(API)
   .then(r=>r.json())
@@ -69,11 +90,11 @@ function load(){
 
     let raw = res.data || [];
 
-    // ===== TABLE (1-30) =====
+    // huyện
     tableData = raw.slice(0,30);
     tableData.forEach(calc);
 
-    // ===== NHÂN VIÊN (31+) =====
+    // nhân viên
     nvData = raw.slice(30).map(r=>({
       nhan_vien: r["nhan vien"] || r.nhan_vien,
       huyen: r.huyen,
@@ -85,59 +106,50 @@ function load(){
 
     nvData.forEach(calc);
 
-    renderAll();
+    applyFilter();
   });
 }
 
-// ===== RENDER ALL =====
-function renderAll(){
-  renderTable(tableData);
-  renderTop(nvData);
-  renderWorst(nvData);
-  renderList(nvData);
-}
-
 // ===== FILTER =====
-function filter(){
+function filter(){ applyFilter(); }
+
+function applyFilter(){
 
   let nv = document.getElementById("nv").value.toLowerCase();
   let h = document.getElementById("huyen").value.toLowerCase();
 
-  let tableFiltered = tableData.filter(r =>
-    (r.huyen || "").toLowerCase().includes(h)
+  let tableF = tableData.filter(r =>
+    (r.huyen||"").toLowerCase().includes(h)
   );
 
-  let nvFiltered = nvData.filter(r =>
-    (r.nhan_vien || "").toLowerCase().includes(nv) &&
-    (r.huyen || "").toLowerCase().includes(h)
+  let nvF = nvData.filter(r =>
+    (r.nhan_vien||"").toLowerCase().includes(nv) &&
+    (r.huyen||"").toLowerCase().includes(h)
   );
 
-  renderTable(tableFiltered);
-  renderTop(nvFiltered);
-  renderWorst(nvFiltered);
-  renderList(nvFiltered);
+  renderTable(tableF);
+  renderTop(nvF);
+  renderWorst(nvF);
+  renderList(nvF);
 }
 
 // ===== TABLE =====
 function renderTable(data){
+  let html = "<table border=1 style='width:100%; font-size:12px'>";
 
-  let html = `<table>
-    <tr>
-      <th>Huyện</th>
-      <th>ĐM TKM</th>
-      <th>ĐM XLSC</th>
-      <th>TH TKM</th>
-      <th>TH XLSC</th>
-      <th>Tổng ĐM</th>
-      <th>Tổng TH</th>
-      <th>CL</th>
-      <th>%</th>
-      <th>Thưởng/Phạt</th>
-    </tr>`;
+  html += `<tr>
+    <th>Huyện</th>
+    <th>ĐM TKM</th>
+    <th>ĐM XLSC</th>
+    <th>TH TKM</th>
+    <th>TH XLSC</th>
+    <th>Tổng ĐM</th>
+    <th>Tổng TH</th>
+    <th>CL</th>
+    <th>%</th>
+  </tr>`;
 
   data.forEach(r=>{
-    let color = r.cl>=0 ? "#e8f5e9":"#ffebee";
-
     html += `<tr>
       <td>${r.huyen}</td>
       <td>${num(r.dm_tkm)}</td>
@@ -147,8 +159,7 @@ function renderTable(data){
       <td>${num(r.t_dm)}</td>
       <td>${num(r.t_th)}</td>
       <td>${num(r.cl)}</td>
-      <td class="${r.tl>=100?'ok':'bad'}">${r.tl}%</td>
-      <td style="background:${color}">${num(r.cl)}</td>
+      <td>${r.tl}%</td>
     </tr>`;
   });
 
@@ -158,12 +169,12 @@ function renderTable(data){
 
 // ===== TOP =====
 function renderTop(data){
-  let top = [...data].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
+  let s = [...data].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
 
   let html="";
-  top.forEach((r,i)=>{
-    html += `<div class="card ok">
-      🏆 TOP ${i+1} - ${r.nhan_vien} (${num(r.t_p)})
+  s.forEach((r,i)=>{
+    html += `<div class="card top">
+      🏆 ${i+1}. ${r.nhan_vien} - ${r.huyen} (${num(r.t_p)})
     </div>`;
   });
 
@@ -172,34 +183,44 @@ function renderTop(data){
 
 // ===== WORST =====
 function renderWorst(data){
-  let worst = [...data].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
+  let s = [...data].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
 
   let html="";
-  worst.forEach((r,i)=>{
-    html += `<div class="card bad">
-      ❌ PHẠT ${i+1} - ${r.nhan_vien} (${num(r.t_p)})
+  s.forEach((r,i)=>{
+    html += `<div class="card worst">
+      ❌ ${i+1}. ${r.nhan_vien} - ${r.huyen} (${num(r.t_p)})
     </div>`;
   });
 
   document.getElementById("worst").innerHTML = html;
 }
 
-// ===== LIST =====
+// ===== LIST KPI =====
 function renderList(data){
 
   let html="";
 
   data.forEach(r=>{
-    let cls = r.t_p >= 0 ? "ok" : "bad";
 
-    html += `<div class="card ${cls}">
+    let bad = getBad(r);
+    if(showBadOnly && bad.length===0) return;
+
+    html += `<div class="card">
       👤 ${r.nhan_vien} - ${r.huyen}
       | 🎯 ${r.tl}%
       | 💰 ${num(r.t_p)}
+
+      ${bad.length ? `<div class="fail">❌ ${bad.join(", ")}</div>` : ""}
     </div>`;
   });
 
   document.getElementById("list").innerHTML = html;
+}
+
+// checkbox
+function onlyBad(v){
+  showBadOnly = v;
+  applyFilter();
 }
 
 load();
