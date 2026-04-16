@@ -322,16 +322,25 @@ function renderTable(data){
 
   let html = "";
 
-    html += `<tr>
-      <th rowspan="2">Huyện</th>
-      <th colspan="5">📦 Triển khai mới (TKM)</th>
-      <th colspan="5">🔧 Sự cố (SC)</th>
-    </tr>
-    
-    <tr>
-      <th>ĐM</th><th>TH</th><th>CL</th><th>%</th><th>Thưởng</th>
-      <th>ĐM</th><th>TH</th><th>CL</th><th>%</th><th>Thưởng</th>
-    </tr>`;
+  html += `<tr>
+    <th rowspan="2">Huyện</th>
+    <th colspan="5">📦 Triển khai mới (TKM)</th>
+    <th colspan="5">🔧 Sự cố (SC)</th>
+  </tr>
+  
+  <tr>
+    <th>Định mức</th>
+    <th>Thực hiện</th>
+    <th>Chênh lệch</th>
+    <th>Tỉ lệ</th>
+    <th>Thưởng/Phạt</th>
+  
+    <th>Định mức</th>
+    <th>Thực hiện</th>
+    <th>Chênh lệch</th>
+    <th>Tỉ lệ</th>
+    <th>Thưởng/Phạt</th>
+  </tr>`;
 
   data.forEach(r=>{
     let color = r.cl>=0 ? "#e8f5e9":"#ffebee";
