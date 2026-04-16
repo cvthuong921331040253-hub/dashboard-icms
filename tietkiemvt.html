@@ -23,13 +23,16 @@ body { font-family: Arial; background:#f5f7fb; padding:8px; }
 
 input { padding:4px; margin-right:6px; }
 
+table { border-collapse:collapse; width:100%; }
+th { background:#e3f2fd; padding:4px; font-size:12px; }
+td { padding:4px; font-size:12px; text-align:center; }
+
 .header {
   position: sticky;
   top: 0;
   background: #f5f7fb;
   z-index: 1000;
 }
-
 </style>
 </head>
 
@@ -59,6 +62,18 @@ input { padding:4px; margin-right:6px; }
 
 const API = "https://script.google.com/macros/s/AKfycby2YYZVK6r1QXP_TgnB0i99prYJmEG8cJwGDQILU1tph0i38b80BhN6Oa9bT5IMuQft0A/exec?sheet=Khoan vt";
 
+const LABEL = {
+  dm_tkm: "Định mức TKM",
+  dm_xlsc: "Định mức XLSC",
+  th_tkm: "Thực hiện TKM",
+  th_sc: "Thực hiện XLSC",
+  t_dm: "Tổng định mức",
+  t_th: "Tổng thực hiện",
+  cl: "Chênh lệch",
+  tl: "Tỉ lệ",
+  t_p: "Thưởng/Phạt"
+};
+
 let tableData = [];
 let nvData = [];
 let showBadOnly = false;
@@ -73,13 +88,10 @@ function calc(r){
   r.t_p = r.cl;
 }
 
-// KPI fail list
 function getBad(r){
   let bad = [];
-
   if(r.tl < 100) bad.push(`Tỉ lệ <100% (${r.tl}%)`);
-  if(r.cl < 0) bad.push(`Âm (${num(r.cl)})`);
-
+  if(r.cl < 0) bad.push(`Chênh lệch âm (${num(r.cl)})`);
   return bad;
 }
 
@@ -90,11 +102,9 @@ function load(){
 
     let raw = res.data || [];
 
-    // huyện
     tableData = raw.slice(0,30);
     tableData.forEach(calc);
 
-    // nhân viên
     nvData = raw.slice(30).map(r=>({
       nhan_vien: r["nhan vien"] || r.nhan_vien,
       huyen: r.huyen,
@@ -110,7 +120,6 @@ function load(){
   });
 }
 
-// ===== FILTER =====
 function filter(){ applyFilter(); }
 
 function applyFilter(){
@@ -133,23 +142,26 @@ function applyFilter(){
   renderList(nvF);
 }
 
-// ===== TABLE =====
 function renderTable(data){
-  let html = "<table border=1 style='width:100%; font-size:12px'>";
+
+  let html = "<table border=1>";
 
   html += `<tr>
     <th>Huyện</th>
-    <th>ĐM TKM</th>
-    <th>ĐM XLSC</th>
-    <th>TH TKM</th>
-    <th>TH XLSC</th>
-    <th>Tổng ĐM</th>
-    <th>Tổng TH</th>
-    <th>CL</th>
-    <th>%</th>
+    <th>${LABEL.dm_tkm}</th>
+    <th>${LABEL.dm_xlsc}</th>
+    <th>${LABEL.th_tkm}</th>
+    <th>${LABEL.th_sc}</th>
+    <th>${LABEL.t_dm}</th>
+    <th>${LABEL.t_th}</th>
+    <th>${LABEL.cl}</th>
+    <th>${LABEL.tl}</th>
+    <th>${LABEL.t_p}</th>
   </tr>`;
 
   data.forEach(r=>{
+    let color = r.cl>=0 ? "#e8f5e9":"#ffebee";
+
     html += `<tr>
       <td>${r.huyen}</td>
       <td>${num(r.dm_tkm)}</td>
@@ -160,6 +172,7 @@ function renderTable(data){
       <td>${num(r.t_th)}</td>
       <td>${num(r.cl)}</td>
       <td>${r.tl}%</td>
+      <td style="background:${color}">${num(r.cl)}</td>
     </tr>`;
   });
 
@@ -167,7 +180,6 @@ function renderTable(data){
   document.getElementById("table").innerHTML = html;
 }
 
-// ===== TOP =====
 function renderTop(data){
   let s = [...data].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
 
@@ -181,7 +193,6 @@ function renderTop(data){
   document.getElementById("top").innerHTML = html;
 }
 
-// ===== WORST =====
 function renderWorst(data){
   let s = [...data].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
 
@@ -195,29 +206,68 @@ function renderWorst(data){
   document.getElementById("worst").innerHTML = html;
 }
 
-// ===== LIST KPI =====
 function renderList(data){
 
-  let html="";
+  let html = "";
 
   data.forEach(r=>{
 
     let bad = getBad(r);
     if(showBadOnly && bad.length===0) return;
 
-    html += `<div class="card">
-      👤 ${r.nhan_vien} - ${r.huyen}
-      | 🎯 ${r.tl}%
-      | 💰 ${num(r.t_p)}
+    let colorCL = r.cl >= 0 ? "#e8f5e9" : "#ffebee";
 
-      ${bad.length ? `<div class="fail">❌ ${bad.join(", ")}</div>` : ""}
+    html += `
+    <div class="card">
+
+      <b>👤 ${r.nhan_vien} - ${r.huyen}</b><br><br>
+
+      <table>
+        <tr>
+          <th>${LABEL.dm_tkm}</th>
+          <th>${LABEL.dm_xlsc}</th>
+          <th>${LABEL.th_tkm}</th>
+          <th>${LABEL.th_sc}</th>
+          <th>${LABEL.t_dm}</th>
+          <th>${LABEL.t_th}</th>
+          <th>${LABEL.cl}</th>
+          <th>${LABEL.tl}</th>
+          <th>${LABEL.t_p}</th>
+        </tr>
+
+        <tr>
+          <td>${num(r.dm_tkm)}</td>
+          <td>${num(r.dm_xlsc)}</td>
+          <td>${num(r.th_tkm)}</td>
+          <td>${num(r.th_sc)}</td>
+          <td>${num(r.t_dm)}</td>
+          <td>${num(r.t_th)}</td>
+
+          <td style="background:${colorCL}">
+            ${num(r.cl)}
+          </td>
+
+          <td style="color:${r.tl>=100?'green':'red'}; font-weight:bold">
+            ${r.tl}%
+          </td>
+
+          <td style="background:${colorCL}; font-weight:bold">
+            ${num(r.t_p)}
+          </td>
+        </tr>
+      </table>
+
+      ${bad.length ? `
+        <div class="fail" style="margin-top:6px">
+          ❌ ${bad.join(", ")}
+        </div>` : ""}
+
     </div>`;
   });
 
   document.getElementById("list").innerHTML = html;
 }
 
-// checkbox
 function onlyBad(v){
   showBadOnly = v;
   applyFilter();
