@@ -33,7 +33,11 @@ table {
 table {
   position: relative;   /* 🔥 QUAN TRỌNG NHẤT */
 }
-
+/* bảng co theo nội dung giống Excel */
+table {
+  width: max-content;
+  min-width: 100%;
+}
 th, td {
   border: 1.5px solid #999;
   padding: 6px 8px;
@@ -75,17 +79,32 @@ tr:hover {
   max-height: 400px;    /* 🔥 chiều cao vùng bảng */
 }
 
+td:first-child {
+  box-shadow: 2px 0 6px rgba(0,0,0,0.1);  /* 🔥 nổi */
+}
 
-/* CỐ ĐỊNH CỘT HUYỆN */
+th:first-child {
+  box-shadow: 2px 0 6px rgba(0,0,0,0.2);
+}
 /* CỘT HUYỆN BODY */
 td:first-child {
   position: sticky;
   left: 0;
   background: #d0e7ff;
-  z-index: 4;   /* 🔥 tăng lên */
+  z-index: 5;
+  font-weight: bold;
 }
-
-/* ===== FIX CHUẨN 100% ===== */
+/* HEADER HUYỆN */
+th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background: #b3d7ff;
+}
+th, td {
+  text-align: center;        /* 🔥 căn giữa */
+  vertical-align: middle;
+}
 
 /* Ô Huyện (rowspan) */
 th[rowspan] {
@@ -351,19 +370,25 @@ function applyFilter(){
 // ===== TABLE =====
 function renderTable(data){
 
-  let html = `
-  <thead>
+    let html = `
+    <thead>
     <tr>
-      <th>Huyện</th>
-      <th>Định mức TKM</th>
-      <th>Thực hiện TKM</th>
-      <th>Tỉ lệ TKM</th>
-      <th>Định mức SC</th>
-      <th>Thực hiện SC</th>
-      <th>Tỉ lệ SC</th>
-      <th>Tổng Thưởng/Phạt</th>
+      <th rowspan="2">Huyện</th>
+      <th colspan="3" style="background:#e3f2fd">📦 TKM</th>
+      <th colspan="3" style="background:#fff3e0">🔧 SC</th>
+      <th rowspan="2">Tổng Thưởng/Phạt</th>
     </tr>
-  </thead><tbody>`;
+    
+    <tr>
+      <th>Định mức</th>
+      <th>Thực hiện</th>
+      <th>Tỉ lệ</th>
+    
+      <th>Định mức</th>
+      <th>Thực hiện</th>
+      <th>Tỉ lệ</th>
+    </tr>
+    </thead><tbody>`;
 
   data.forEach(r=>{
 
