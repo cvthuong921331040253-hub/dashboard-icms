@@ -20,11 +20,7 @@ body { font-family: Arial; background:#f5f7fb; padding:8px; }
 
 .top { background:#e8f5e9; }
 .worst { background:#ffeaea; }
-
 input { padding:4px; margin-right:6px; }
-table {
-  border: 2px solid #666;   /* 🔥 khung ngoài đậm */
-}
 th, td {
   border: 1px solid #999;
   padding: 3px 6px;
@@ -77,56 +73,6 @@ thead tr:nth-child(2) th {
 
 .reload-btn:hover {
   background: #1976d2;
-}
-table {
-  border-collapse: collapse;
-}
-th {
-  background: #d0e7ff;
-  font-weight: bold;
-  border-bottom: 2px solid #666;
-}
-td:first-child {
-  background: #d0e7ff;
-  font-weight: bold;
-}
-td:last-child {
-  font-weight: bold;
-}
-/* ngăn giữa TKM và SC */
-td:nth-child(4),
-th:nth-child(4) {
-  border-right: 2px solid #666;
-}
-/* 📱 BÓP BẢNG CHO MOBILE */
-@media (max-width: 768px) {
-
-  table {
-    font-size: 10px;   /* 🔥 nhỏ chữ */
-  }
-
-  th, td {
-    padding: 2px 3px;  /* 🔥 bóp ô */
-  }
-
-  /* ẩn bớt chữ dài */
-  th {
-    white-space: nowrap;
-  }
-
-  /* giới hạn chiều rộng */
-  td, th {
-    max-width: 60px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* cột huyện rộng hơn chút */
-  td:first-child, th:first-child {
-    max-width: 90px;
-  }
-
-}
 </style>
 </head>
 
