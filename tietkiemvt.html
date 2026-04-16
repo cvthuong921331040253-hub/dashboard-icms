@@ -116,8 +116,22 @@ function load(){
     document.getElementById("logtime").innerText =
       raw[1]?.["Tg update"] ? "🕒 " + raw[1]["Tg update"] : "";
 
-    // bỏ header
-    allData = raw.slice(2);
+    // lấy từ dòng 1 → 30
+    allData = raw.slice(0, 30);
+    
+    // chỉ giữ từ cột huyen trở đi
+    allData = allData.map(r => ({
+      huyen: r.huyen,
+      dm_tkm: r.dm_tkm,
+      dm_xlsc: r.dm_xlsc,
+      th_tkm: r.th_tkm,
+      th_sc: r.th_sc,
+      t_dm: r.t_dm,
+      t_th: r.t_th,
+      cl: r.cl,
+      tl: r.tl,
+      t_p: r.t_p
+    }));
 
     // ===== TÍNH TOÁN =====
     allData.forEach(r=>{
