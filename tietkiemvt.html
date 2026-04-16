@@ -98,20 +98,6 @@ thead th[rowspan] {
   background: #b3d7ff;
 }
 
-/* header dòng 1 */
-thead tr:first-child th {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-/* header dòng 2 */
-thead tr:nth-child(2) th {
-  position: sticky;
-  top: 32px;               /* chỉnh nếu lệch */
-  z-index: 5;
-}
-
 /* cột huyện body */
 tbody td:first-child {
   position: sticky;
@@ -128,19 +114,19 @@ thead {
 }
 /* ===== HEADER STICKY ===== */
 
-/* dòng header 1 (TKM / SC) */
+/* dòng header 1 */
 thead tr:first-child th {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 6;
   background: #e3f2fd;
 }
 
-/* dòng header 2 (Định mức / Thực hiện / Tỉ lệ) */
+/* dòng header 2 */
 thead tr:nth-child(2) th {
   position: sticky;
-  top: 22px;   /* 🔥 bằng chiều cao dòng trên */
-  z-index: 15;
+  top: 28px;
+  z-index: 5;
   background: #e3f2fd;
 }
 .card {
@@ -204,23 +190,6 @@ thead tr:nth-child(2) th {
 .reload-btn:hover {
   background: #1976d2;
 }
-.table-container {
-  display: flex;
-  border: 2px solid #666;
-}
-
-.col-fixed {
-  min-width: 120px;
-  background: #d0e7ff;
-  font-weight: bold;
-}
-
-.table-scroll {
-  overflow: auto;
-  width: 100%;
-  max-height: 400px;
-}
-
 table {
   border-collapse: collapse;
 }
@@ -230,26 +199,11 @@ th, td {
   border: 1px solid #999;
   white-space: nowrap;
 }
-.col-fixed div {
-  height: 34px;
-  display: flex;
-  align-items: center;
-  padding-left: 8px;
-  border-bottom: 1px solid #999;
-}
 
 table tbody tr td {
   height: 34px;              /* 🔥 BẮT BUỘC phải giống trên */
 }
-.huyen-header {
-  height: 68px;            /* đúng bằng 2 dòng header */
-  display: flex;
-  align-items: center;
-  padding-left: 8px;
-  font-weight: bold;
-  background: #b3d7ff;
-  border-bottom: 2px solid #666;
-}
+
 </style>
 </head>
 
@@ -270,11 +224,8 @@ table tbody tr td {
 
 <div id="tableSection">
   <h3>📊 Bảng huyện</h3>
-<div class="table-container">
-  <div class="col-fixed" id="colHuyen"></div>
-  <div class="table-scroll">
-    <table id="myTable"></table>
-  </div>
+<div class="table-wrap">
+  <table id="myTable"></table>
 </div>
 </div>
 
@@ -421,36 +372,31 @@ function applyFilter(){
 // ===== TABLE =====
 function renderTable(data){
 
-    let html = `
-    <thead>
-    <tr>
-      <th style="width:120px"></th>   <!-- 🔥 THÊM -->
-      <th colspan="3" style="background:#e3f2fd">📦 TKM</th>
-      <th colspan="3" style="background:#fff3e0">🔧 SC</th>
-      <th rowspan="2">Tổng Thưởng/Phạt</th>
-    </tr>
-    
-    <tr>
-      <th></th>  <!-- 🔥 THÊM -->
-      <th>Định mức</th>
-      <th>Thực hiện</th>
-      <th>Tỉ lệ</th>
-    
-      <th>Định mức</th>
-      <th>Thực hiện</th>
-      <th>Tỉ lệ</th>
-    </tr>
-    </thead><tbody>`;
-  let huyenHTML = `
-<div class="huyen-header">Huyện</div>
-`;
+  let html = "";
+
+  html += `<tr>
+    <th rowspan="2">Huyện</th>
+    <th colspan="3">📦 TKM</th>
+    <th colspan="3">🔧 SC</th>
+    <th rowspan="2">Tổng Thưởng/Phạt</th>
+  </tr>
+
+  <tr>
+    <th>Định mức</th>
+    <th>Thực hiện</th>
+    <th>Tỉ lệ</th>
+
+    <th>Định mức</th>
+    <th>Thực hiện</th>
+    <th>Tỉ lệ</th>
+  </tr>`;
+
   data.forEach(r=>{
-    huyenHTML += `<div>${r.huyen}</div>`;
     let color = r.t_p >= 0 ? "ok" : "fail";
 
-    html += `
-    <tr>  
-      <td style="width:120px"></td>   <!-- 🔥 THÊM DÒNG NÀY -->
+    html += `<tr>
+      <td>${r.huyen}</td>
+
       <td>${num(r.dm_tkm)}</td>
       <td>${num(r.th_tkm)}</td>
       <td>${r.tl_tkm}%</td>
@@ -463,9 +409,7 @@ function renderTable(data){
     </tr>`;
   });
 
-  html += "</tbody>";
   document.getElementById("myTable").innerHTML = html;
-  document.getElementById("colHuyen").innerHTML = huyenHTML;
 }
 
 // ===== TOP =====
