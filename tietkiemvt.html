@@ -425,44 +425,36 @@ function renderWorst(data){
   document.getElementById("worst").innerHTML = html;
 }
 
-// ===== LIST (KPI STYLE) =====
+// ===== LIST (Danh sách nhân viên) =====
 function renderList(data){
 
   let html = "";
 
   data.forEach(r=>{
 
-    let bad = getStatus(r);
-    if(showBadOnly && bad.length===0) return;
+    if(showBadOnly && r.tl >= 0) return;
+
+    // 🔥 màu TKM / SC theo CHÊNH LỆCH (thực hiện)
+    let tkmColor = r.cl_tkm >= 0 ? "ok" : "fail";
+    let scColor  = r.cl_sc >= 0 ? "ok" : "fail";
+
+    // 🔥 tổng thưởng phạt
+    let tong = r.t_p_tkm + r.t_p_sc;
+    let tongColor = tong >= 0 ? "ok" : "fail";
 
     html += `
     <div class="card">
 
       <b>👤 ${r.nhan_vien} - ${r.huyen}</b><br>
 
-      🎯 <b>Tỉ lệ:</b> <span class="${r.tl>=0?'ok':'fail'}">${r.tl}%</span><br>
-      💰 <b>Thưởng/Phạt:</b> <span class="${r.cl>=0?'ok':'fail'}">${num(r.t_p)}</span><br><br>
+      📦 <b>TKM:</b> 
+      <span class="${tkmColor}">${num(r.cl_tkm)}</span><br>
 
-      📦 <b>TKM:</b><br>
-      - Định mức: ${num(r.dm_tkm)}<br>
-      - Thực hiện: ${num(r.th_tkm)}<br><br>
+      🔧 <b>SC:</b> 
+      <span class="${scColor}">${num(r.cl_sc)}</span><br>
 
-      🔧 <b>XLSC:</b><br>
-      - Định mức: ${num(r.dm_xlsc)}<br>
-      - Thực hiện: ${num(r.th_sc)}<br><br>
-
-      📊 <b>Tổng:</b><br>
-      - Định mức: ${num(r.t_dm)}<br>
-      - Thực hiện: ${num(r.t_th)}<br><br>
-
-      ${r.cl < 0 
-        ? `<div class="fail">❌ Chênh lệch: ${num(r.cl)}</div>` 
-        : `<div class="ok">✅ Chênh lệch: ${num(r.cl)}</div>`}
-
-       ${bad.length 
-        ? `<div class="fail">❌ Thực hiện kém: ${bad.join(", ")}</div>`
-        : `<div class="ok">✅ Thực hiện tốt</div>`
-      }
+      📊 <b>Tổng:</b> 
+      <span class="${tongColor}">${num(tong)}</span>
 
     </div>`;
   });
