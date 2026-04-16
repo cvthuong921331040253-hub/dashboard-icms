@@ -215,51 +215,35 @@ function renderList(data){
     let bad = getBad(r);
     if(showBadOnly && bad.length===0) return;
 
-    let colorCL = r.cl >= 0 ? "#e8f5e9" : "#ffebee";
+    let color = r.cl >= 0 ? "ok" : "fail";
 
     html += `
     <div class="card">
 
-      <b>👤 ${r.nhan_vien} - ${r.huyen}</b><br><br>
+      <b>👤 ${r.nhan_vien} - ${r.huyen}</b><br>
 
-      <table>
-        <tr>
-          <th>${LABEL.dm_tkm}</th>
-          <th>${LABEL.dm_xlsc}</th>
-          <th>${LABEL.th_tkm}</th>
-          <th>${LABEL.th_sc}</th>
-          <th>${LABEL.t_dm}</th>
-          <th>${LABEL.t_th}</th>
-          <th>${LABEL.cl}</th>
-          <th>${LABEL.tl}</th>
-          <th>${LABEL.t_p}</th>
-        </tr>
+      🎯 <b>Tỉ lệ:</b> <span class="${r.tl>=100?'ok':'fail'}">${r.tl}%</span><br>
+      💰 <b>Thưởng/Phạt:</b> <span class="${color}">${num(r.t_p)}</span><br><br>
 
-        <tr>
-          <td>${num(r.dm_tkm)}</td>
-          <td>${num(r.dm_xlsc)}</td>
-          <td>${num(r.th_tkm)}</td>
-          <td>${num(r.th_sc)}</td>
-          <td>${num(r.t_dm)}</td>
-          <td>${num(r.t_th)}</td>
+      📦 <b>TKM:</b><br>
+      - Định mức: ${num(r.dm_tkm)}<br>
+      - Thực hiện: ${num(r.th_tkm)}<br><br>
 
-          <td style="background:${colorCL}">
-            ${num(r.cl)}
-          </td>
+      🔧 <b>XLSC:</b><br>
+      - Định mức: ${num(r.dm_xlsc)}<br>
+      - Thực hiện: ${num(r.th_sc)}<br><br>
 
-          <td style="color:${r.tl>=100?'green':'red'}; font-weight:bold">
-            ${r.tl}%
-          </td>
+      📊 <b>Tổng:</b><br>
+      - Định mức: ${num(r.t_dm)}<br>
+      - Thực hiện: ${num(r.t_th)}<br><br>
 
-          <td style="background:${colorCL}; font-weight:bold">
-            ${num(r.t_p)}
-          </td>
-        </tr>
-      </table>
+      ${r.cl < 0 
+        ? `<div class="fail">❌ Chênh lệch: ${num(r.cl)}</div>` 
+        : `<div class="ok">✅ Chênh lệch: ${num(r.cl)}</div>`}
 
       ${bad.length ? `
         <div class="fail" style="margin-top:6px">
-          ❌ ${bad.join(", ")}
+          ❌ KPI kém: ${bad.join(", ")}
         </div>` : ""}
 
     </div>`;
