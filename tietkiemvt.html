@@ -214,8 +214,8 @@ function load(){
 
     let raw = res.data || [];
     let tg = raw[0]?.tg_update || raw[1]?.tg_update || "";
-    document.getElementById("logtime").innerHTML =
-    tg ? `🕒 <b>Logtime:</b> ${tg}` : "";
+      document.getElementById("logtime").innerHTML =
+      tg ? `🕒 <b>Logtime:</b> ${tg}` : "";
     // ===== TABLE (1-30) =====
     tableData = raw.slice(0,30).map(r=>({
       huyen: r.huyen,
