@@ -89,30 +89,35 @@ th, td {
   text-align: center;        /* 🔥 căn giữa */
   vertical-align: middle;
 }
+/* 🔥 Ô HUYỆN (rowspan = 2) – QUAN TRỌNG NHẤT */
+thead th[rowspan] {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 999;            /* 🔥 cao nhất */
+  background: #b3d7ff;
+}
 
-/* CỘT HUYỆN DUY NHẤT */
+/* header dòng 1 */
+thead tr:first-child th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* header dòng 2 */
+thead tr:nth-child(2) th {
+  position: sticky;
+  top: 32px;               /* chỉnh nếu lệch */
+  z-index: 5;
+}
+
+/* cột huyện body */
 tbody td:first-child {
   position: sticky;
   left: 0;
+  z-index: 1;
   background: #d0e7ff;
-  z-index: 10;
-  font-weight: bold;
-}
-/* 🔥 FIX DUY NHẤT CHO Ô "HUYỆN" */
-thead th:first-child {
-  position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 999;         /* cao nhất */
-  background: #b3d7ff;
-}
-/* ô góc trên trái */
-thead th:first-child {
-  position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 50;   /* cao nhất */
-  background: #b3d7ff;
 }
 thead th {
   position: relative;
