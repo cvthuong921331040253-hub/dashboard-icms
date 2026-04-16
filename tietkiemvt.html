@@ -80,13 +80,6 @@ let showBadOnly = false;
 
 function num(v){ return Number(v||0).toLocaleString("vi-VN"); }
 
-function calc(r){
-  r.t_dm = (r.dm_tkm||0)+(r.dm_xlsc||0);
-  r.t_th = (r.th_tkm||0)+(r.th_sc||0);
-  r.cl = r.t_th - r.t_dm;
-  r.tl = r.t_dm ? Math.round(r.t_th/r.t_dm*100) : 0;
-  r.t_p = r.cl;
-}
 
 function getBad(r){
   let bad = [];
