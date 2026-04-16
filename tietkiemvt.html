@@ -51,6 +51,7 @@ input {
 table {
   border-collapse: collapse;
   width: 100%;
+  min-width: 1100px;
   background: #fff;
 }
 
@@ -83,6 +84,7 @@ td:first-child, th:first-child {
 <div class="header">
   <h2>📊 Khoán Vật Tư</h2>
 
+  🔍 Nhân viên <input id="nv" onkeyup="filter()">
   🔍 Huyện <input id="huyen" onkeyup="filter()">
   <button onclick="reload()" class="reload-btn">🔄</button>
 
@@ -122,14 +124,8 @@ function load(){
     document.getElementById("logtime").innerText =
       raw[1]?.["Tg update"] ? "🕒 " + raw[1]["Tg update"] : "";
 
-    // 👉 lấy 30 dòng đầu + bỏ cột nhân viên
-    allData = raw.slice(0,30).map(r => ({
-      huyen: r.huyen,
-      dm_tkm: r.dm_tkm,
-      dm_xlsc: r.dm_xlsc,
-      th_tkm: r.th_tkm,
-      th_sc: r.th_sc
-    }));
+    // 👉 lấy 30 dòng đầu NHƯNG GIỮ nguyên data
+    allData = raw.slice(0,30);
 
     // ===== TÍNH TOÁN =====
     allData.forEach(r=>{
@@ -156,11 +152,15 @@ function render(data){
   <table border="1">
     <tr>
       <th>Huyện</th>
-      <th>ĐM</th>
-      <th>TH</th>
+      <th>ĐM TKM</th>
+      <th>ĐM XLSC</th>
+      <th>TH TKM</th>
+      <th>TH XLSC</th>
+      <th>Tổng ĐM</th>
+      <th>Tổng TH</th>
       <th>CL</th>
       <th>Tỉ lệ</th>
-      <th>Thưởng</th>
+      <th>Thưởng/Phạt</th>
     </tr>
   `;
 
@@ -169,7 +169,13 @@ function render(data){
     let colorCL = r.cl >= 0 ? "#e8f5e9" : "#ffebee";
 
     html += `<tr>
-      <td><b>${r.huyen || ""}</b></td>
+      <td>${r.huyen || ""}</td>
+
+      <td>${num(r.dm_tkm)}</td>
+      <td>${num(r.dm_xlsc)}</td>
+
+      <td>${num(r.th_tkm)}</td>
+      <td>${num(r.th_sc)}</td>
 
       <td>${num(r.t_dm)}</td>
       <td>${num(r.t_th)}</td>
@@ -199,9 +205,11 @@ function filter(){
 }
 
 function applyFilter(){
+  let nv = document.getElementById("nv").value.toLowerCase();
   let h = document.getElementById("huyen").value.toLowerCase();
 
   let f = allData.filter(r =>
+    (r.nhan_vien || "").toLowerCase().includes(nv) &&
     (r.huyen || "").toLowerCase().includes(h)
   );
 
@@ -215,7 +223,7 @@ function renderTop(){
   let html="";
   top.forEach((r,i)=>{
     html += `<div class="card ok">
-      🏆 TOP ${i+1} - ${r.huyen} (${num(r.t_p)})
+      🏆 TOP ${i+1} - ${r.nhan_vien} (${num(r.t_p)})
     </div>`;
   });
 
@@ -229,7 +237,7 @@ function renderWorst(){
   let html="";
   worst.forEach((r,i)=>{
     html += `<div class="card bad">
-      ❌ TOP PHẠT ${i+1} - ${r.huyen} (${num(r.t_p)})
+      ❌ TOP PHẠT ${i+1} - ${r.nhan_vien} (${num(r.t_p)})
     </div>`;
   });
 
