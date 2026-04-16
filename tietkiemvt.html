@@ -68,88 +68,64 @@ th, td {
     padding: 6px;
   }
 
-  h2 {
-    font-size: 16px;
+  h2 { font-size: 16px; }
+  h3 { font-size: 14px; }
+
+  /* ===== WRAP TABLE (QUAN TRỌNG) ===== */
+  .table-wrap {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 60vh;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #ddd;
+    background: #fff;
   }
 
- /* ===== TABLE KPI ===== */
-#tableKPI table {
-  background: #fff;
-}
+  /* ===== TABLE ===== */
+  #myTable {
+    min-width: 900px;   /* 👉 ép rộng để scroll */
+    border-collapse: collapse;
+  }
 
-#tableKPI th {
-  background: #e3f2fd; /* xanh nhẹ */
-  text-align: center;
-  font-weight: bold;
-}
+  #myTable th {
+    background: #e3f2fd;
+    text-align: center;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
 
-#tableKPI td {
-  text-align: center;       /* 👉 số nằm giữa */
-  vertical-align: middle;
-  background: #f9fbff;      /* nền nhẹ */
-}
+  #myTable td {
+    text-align: center;
+    background: #f9fbff;
+  }
 
-/* dòng xen kẽ cho đẹp */
-#tableKPI tr:nth-child(even) td {
-  background: #f1f6ff;
-}
-  /* ===== FIX KPI TABLE ===== */
-#tableKPI {
-  background: #fff;
-  padding-bottom: 5px;
-}
-  .kpi-wrapper {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
+  /* zebra row */
+  #myTable tr:nth-child(even) td {
+    background: #f1f6ff;
+  }
 
-#tableKPI table {
-  min-width: 1200px;
-}
- /* ===== CỘT HUYỆN MÀU XANH ===== */
-#tableKPI th:first-child,
-#tableKPI td:first-child {
-  position: sticky;
-  left: 0;
+  /* ===== STICKY CỘT HUYỆN ===== */
+  #myTable th:first-child,
+  #myTable td:first-child {
+    position: sticky;
+    left: 0;
+    background: #d0e7ff;
+    font-weight: 500;
+    border-right: 2px solid #90caf9;
+    box-shadow: 3px 0 6px rgba(0,0,0,0.08);
+    z-index: 3;
+    white-space: nowrap;
+    width: 80px;
+  }
 
-  /* nền xanh */
-  background: #d0e7ff;
+  #myTable th:first-child {
+    background: #90caf9;
+    font-weight: bold;
+    z-index: 4;
+  }
 
-  /* chữ đậm */
-  font-weight: 500;
-
-  /* viền phân cách */
-  border-right: 2px solid #90caf9;
-
-  /* đổ bóng nhẹ */
-  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
-
-  z-index: 3;
-}
-
-/* header cột đầu xanh đậm hơn */
-#tableKPI th:first-child {
-  background: #90caf9;
-  font-weight: bold;
-  z-index: 4;
-}
-/* cột huyện vừa với chữ */
-#tableKPI th:first-child,
-#tableKPI td:first-child {
-  width: 80px;        /* 👈 chỉnh ở đây */
-  min-width: 60px;
-  white-space: nowrap;
-}
-  /* bảng full width */
-#tableKPI table {
-  width: 100%;
-  table-layout: fixed; /* 👉 chia đều cột */
-}
-  /* căn chữ log time */
-  .logtime {
-  font-size: 12px;
-  color: #666;
-  margin-top: 2px;
 }
 </style>
 </head>
