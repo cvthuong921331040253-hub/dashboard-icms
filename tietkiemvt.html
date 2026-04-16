@@ -30,6 +30,9 @@ table {
   width: max-content;   /* 🔥 co theo nội dung */
   min-width: 100%;
 }
+table {
+  position: relative;   /* 🔥 QUAN TRỌNG NHẤT */
+}
 
 th, td {
   border: 1.5px solid #999;
@@ -99,7 +102,7 @@ th[rowspan] {
 thead tr:first-child th {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 25;
   background: #e3f2fd;
 }
 
