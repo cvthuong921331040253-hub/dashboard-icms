@@ -107,25 +107,29 @@ th, td {
     background: #f1f6ff;
   }
 
-  /* ===== STICKY CỘT HUYỆN ===== */
-  #myTable th:first-child,
-  #myTable td:first-child {
-    position: sticky;
-    left: 0;
-    background: #d0e7ff;
-    font-weight: 500;
-    border-right: 2px solid #90caf9;
-    box-shadow: 3px 0 6px rgba(0,0,0,0.08);
-    z-index: 3;
-    white-space: nowrap;
-    width: 80px;
-  }
+/* ===== STICKY CỘT HUYỆN (FIX CHUẨN) ===== */
 
-  #myTable th:first-child {
-    background: #90caf9;
-    font-weight: bold;
-    z-index: 4;
-  }
+/* ✅ Chỉ áp cho BODY */
+#myTable td:first-child {
+  position: sticky;
+  left: 0;
+  background: #d0e7ff;
+  font-weight: 500;
+  border-right: 2px solid #90caf9;
+  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
+  z-index: 3;
+  white-space: nowrap;
+  width: 80px;
+}
+
+/* ✅ Chỉ header dòng 1 (Huyện) */
+#myTable tr:first-child th:first-child {
+  position: sticky;
+  left: 0;
+  background: #90caf9;
+  font-weight: bold;
+  z-index: 4;
+}
 
 }
 </style>
