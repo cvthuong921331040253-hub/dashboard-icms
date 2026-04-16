@@ -60,49 +60,96 @@ th, td {
 .reload-btn:hover {
   background: #1976d2;
 
-  /* 📱 Fix mobile không bị zoom */
-html, body {
-  width: 100%;
-  overflow-x: hidden;
-}
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
 
-/* 📊 Wrapper bảng để scroll */
-.table-wrap {
-  width: 100%;
-  overflow-x: auto;   /* 👉 scroll ngang */
-  overflow-y: auto;   /* 👉 scroll dọc nếu cao */
-  max-height: 60vh;   /* 👉 giới hạn chiều cao */
-  border: 1px solid #ddd;
-}
-
-/* 📊 Bảng không bị co nhỏ */
-table {
-  min-width: 600px;   /* 👉 ép bảng rộng để có scroll ngang */
-  border-collapse: collapse;
-}
-
-/* 📱 Fix chữ không bị quá nhỏ */
-th, td {
-  white-space: nowrap;  /* 👉 không xuống dòng */
-}
-
-/* 📱 Tối ưu mobile */
-@media (max-width: 768px) {
   body {
     font-size: 13px;
+    padding: 6px;
   }
 
   h2 {
     font-size: 16px;
   }
 
-  h3 {
-    font-size: 14px;
-  }
+ /* ===== TABLE KPI ===== */
+#tableKPI table {
+  background: #fff;
+}
 
-  .card {
-    font-size: 12px;
-  }
+#tableKPI th {
+  background: #e3f2fd; /* xanh nhẹ */
+  text-align: center;
+  font-weight: bold;
+}
+
+#tableKPI td {
+  text-align: center;       /* 👉 số nằm giữa */
+  vertical-align: middle;
+  background: #f9fbff;      /* nền nhẹ */
+}
+
+/* dòng xen kẽ cho đẹp */
+#tableKPI tr:nth-child(even) td {
+  background: #f1f6ff;
+}
+  /* ===== FIX KPI TABLE ===== */
+#tableKPI {
+  background: #fff;
+  padding-bottom: 5px;
+}
+  .kpi-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#tableKPI table {
+  min-width: 1200px;
+}
+ /* ===== CỘT HUYỆN MÀU XANH ===== */
+#tableKPI th:first-child,
+#tableKPI td:first-child {
+  position: sticky;
+  left: 0;
+
+  /* nền xanh */
+  background: #d0e7ff;
+
+  /* chữ đậm */
+  font-weight: 500;
+
+  /* viền phân cách */
+  border-right: 2px solid #90caf9;
+
+  /* đổ bóng nhẹ */
+  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
+
+  z-index: 3;
+}
+
+/* header cột đầu xanh đậm hơn */
+#tableKPI th:first-child {
+  background: #90caf9;
+  font-weight: bold;
+  z-index: 4;
+}
+/* cột huyện vừa với chữ */
+#tableKPI th:first-child,
+#tableKPI td:first-child {
+  width: 80px;        /* 👈 chỉnh ở đây */
+  min-width: 60px;
+  white-space: nowrap;
+}
+  /* bảng full width */
+#tableKPI table {
+  width: 100%;
+  table-layout: fixed; /* 👉 chia đều cột */
+}
+  /* căn chữ log time */
+  .logtime {
+  font-size: 12px;
+  color: #666;
+  margin-top: 2px;
 }
 </style>
 </head>
