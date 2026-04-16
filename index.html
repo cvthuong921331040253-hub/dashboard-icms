@@ -209,6 +209,7 @@ function load(tab){
 }
 const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
 let allData = [];
+let tableDataGlobal = [];
 let showBadOnly = false;
 
 // ===== FIX DATA =====
@@ -384,7 +385,7 @@ tableDataGlobal = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,14);
   log ? "🕒Logtime: " + log : "";
 
 // 👉 TÍNH RANK HUYỆN (ít KPI tồi = rank cao)
-let huyenRank = [...tableData]
+let huyenRank = [...tableDataGlobal]
   .map(r => ({
     ...r,
     bad: getBadKPI(r).length
@@ -397,7 +398,7 @@ huyenRank.forEach((r,i)=>{
 });
 
 // map lại vào tableData
-tableData.forEach(r=>{
+tableDataGlobal.forEach(r=>{
   let f = huyenRank.find(x => x.huyen === r.huyen);
   r.rank = f ? f.rank : "";
 });
@@ -409,10 +410,10 @@ tableData.forEach(r=>{
     allData.sort((a,b)=> b.score - a.score);
 
     applyFilter();
-    renderTableExcel(tableData); // ✅ bảng đúng 1–15
+    renderTableExcel(tableDataGlobal); // ✅ bảng đúng 1–15
     top10();
     topWorst();
-    renderBadHuyen(tableData);
+    renderBadHuyen(tableDataGlobal);
     loadThuHoi();
   });
 }
@@ -531,7 +532,7 @@ function applyFilter(){
 // ===== CHECKBOX =====
 function onlyBad(v){
   showBadOnly = v;
-  render(allData);
+  applyFilter();
 }
 
 // ===== TOP =====
