@@ -39,12 +39,10 @@ table {
   min-width: 100%;
 }
 th, td {
-  border: 1.5px solid #999;
+  border: 1px solid #999;
   padding: 3px 6px;
   font-size: 12px;
-  white-space: nowrap;
 }
-
 /* header đẹp */
 th {
   background: #e3f2fd;
@@ -87,9 +85,6 @@ th:first-child {
   box-shadow: 2px 0 6px rgba(0,0,0,0.2);
 }
 
-th, td {
-  text-align: center;        /* 🔥 căn giữa */
-  vertical-align: middle;
 }
 /* 🔥 Ô HUYỆN (rowspan = 2) – QUAN TRỌNG NHẤT */
 thead th[rowspan] {
@@ -127,7 +122,7 @@ thead tr:first-child th {
 /* dòng header 2 */
 thead tr:nth-child(2) th {
   position: sticky;
-  top: 26px;
+  top: 22px;
   z-index: 5;
   background: #e3f2fd;
 }
@@ -170,10 +165,6 @@ thead tr:nth-child(2) th {
   }
 }
 @media (max-width: 768px) {
-  th, td {
-    font-size: 11px;   /* 🔥 chỉnh nhỏ bảng huyện tại đây */
-    padding: 4px 5px;  /* 🔥 giảm padding bảng huyện cho gọn */
-  }
 }
 .header-top {
   display: flex;
@@ -196,15 +187,6 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
-  padding: 6px 8px;
-  border: 1px solid #999;
-  white-space: nowrap;
-}
-
-table tbody tr td {
-  height: 34px;              /* 🔥 BẮT BUỘC phải giống trên */
-}
 
 </style>
 </head>
