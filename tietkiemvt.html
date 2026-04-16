@@ -231,20 +231,24 @@ th, td {
   white-space: nowrap;
 }
 .col-fixed div {
-  height: 34px;              /* 🔥 QUAN TRỌNG */
-  line-height: 34px;
-  padding: 0 8px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
   border-bottom: 1px solid #999;
 }
 
 table tbody tr td {
   height: 34px;              /* 🔥 BẮT BUỘC phải giống trên */
 }
-.col-fixed div:first-child {
-  height: 68px;      /* = 34px x 2 dòng */
-  line-height: 68px;
+.huyen-header {
+  height: 68px;            /* đúng bằng 2 dòng header */
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
   font-weight: bold;
   background: #b3d7ff;
+  border-bottom: 2px solid #666;
 }
 </style>
 </head>
@@ -435,7 +439,9 @@ function renderTable(data){
       <th>Tỉ lệ</th>
     </tr>
     </thead><tbody>`;
-  let huyenHTML = `<div><b>Huyện</b></div>`;
+  let huyenHTML = `
+<div class="huyen-header">Huyện</div>
+`;
   data.forEach(r=>{
     huyenHTML += `<div>${r.huyen}</div>`;
     let color = r.t_p >= 0 ? "ok" : "fail";
