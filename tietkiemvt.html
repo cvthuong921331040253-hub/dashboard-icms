@@ -80,14 +80,7 @@ let showBadOnly = false;
 
 function num(v){ return Number(v||0).toLocaleString("vi-VN"); }
 
-
-function getBad(r){
-  let bad = [];
-  if(r.tl < 100) bad.push(`Tỉ lệ <100% (${r.tl}%)`);
-  if(r.cl < 0) bad.push(`Chênh lệch âm (${num(r.cl)})`);
-  return bad;
-}
-
+// ===== LOAD =====
 function load(){
   fetch(API)
   .then(r=>r.json())
@@ -95,24 +88,48 @@ function load(){
 
     let raw = res.data || [];
 
-    tableData = raw.slice(0,30);
-    tableData.forEach(calc);
+    // ===== TABLE (1-30) =====
+    tableData = raw.slice(0,30).map(r=>({
+      huyen: r.huyen,
+      dm_tkm: Number(r.dm_tkm||0),
+      dm_xlsc: Number(r.dm_xlsc||0),
+      th_tkm: Number(r.th_tkm||0),
+      th_sc: Number(r.th_sc||0),
+      t_dm: Number(r.t_dm||0),
+      t_th: Number(r.t_th||0),
+      cl: Number(r.cl||0),
+      tl: Number(r.tl||0),
+      t_p: Number(r.t_p||0)
+    }));
 
+    // ===== NHÂN VIÊN (31+) =====
     nvData = raw.slice(30).map(r=>({
       nhan_vien: r["nhan vien"] || r.nhan_vien,
       huyen: r.huyen,
-      dm_tkm: r.dm_tkm,
-      dm_xlsc: r.dm_xlsc,
-      th_tkm: r.th_tkm,
-      th_sc: r.th_sc
+      dm_tkm: Number(r.dm_tkm||0),
+      dm_xlsc: Number(r.dm_xlsc||0),
+      th_tkm: Number(r.th_tkm||0),
+      th_sc: Number(r.th_sc||0),
+      t_dm: Number(r.t_dm||0),
+      t_th: Number(r.t_th||0),
+      cl: Number(r.cl||0),
+      tl: Number(r.tl||0),
+      t_p: Number(r.t_p||0)
     }));
-
-    nvData.forEach(calc);
 
     applyFilter();
   });
 }
 
+// ===== KPI FAIL =====
+function getBad(r){
+  let bad = [];
+  if(r.tl < 100) bad.push(`Tỉ lệ <100% (${r.tl}%)`);
+  if(r.cl < 0) bad.push(`Chênh lệch âm (${num(r.cl)})`);
+  return bad;
+}
+
+// ===== FILTER =====
 function filter(){ applyFilter(); }
 
 function applyFilter(){
@@ -135,6 +152,7 @@ function applyFilter(){
   renderList(nvF);
 }
 
+// ===== TABLE =====
 function renderTable(data){
 
   let html = "<table border=1>";
@@ -165,7 +183,7 @@ function renderTable(data){
       <td>${num(r.t_th)}</td>
       <td>${num(r.cl)}</td>
       <td>${r.tl}%</td>
-      <td style="background:${color}">${num(r.cl)}</td>
+      <td style="background:${color}">${num(r.t_p)}</td>
     </tr>`;
   });
 
@@ -173,6 +191,7 @@ function renderTable(data){
   document.getElementById("table").innerHTML = html;
 }
 
+// ===== TOP =====
 function renderTop(data){
   let s = [...data].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
 
@@ -186,6 +205,7 @@ function renderTop(data){
   document.getElementById("top").innerHTML = html;
 }
 
+// ===== WORST =====
 function renderWorst(data){
   let s = [...data].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
 
@@ -199,6 +219,7 @@ function renderWorst(data){
   document.getElementById("worst").innerHTML = html;
 }
 
+// ===== LIST (KPI STYLE) =====
 function renderList(data){
 
   let html = "";
@@ -208,15 +229,13 @@ function renderList(data){
     let bad = getBad(r);
     if(showBadOnly && bad.length===0) return;
 
-    let color = r.cl >= 0 ? "ok" : "fail";
-
     html += `
     <div class="card">
 
       <b>👤 ${r.nhan_vien} - ${r.huyen}</b><br>
 
       🎯 <b>Tỉ lệ:</b> <span class="${r.tl>=100?'ok':'fail'}">${r.tl}%</span><br>
-      💰 <b>Thưởng/Phạt:</b> <span class="${color}">${num(r.t_p)}</span><br><br>
+      💰 <b>Thưởng/Phạt:</b> <span class="${r.cl>=0?'ok':'fail'}">${num(r.t_p)}</span><br><br>
 
       📦 <b>TKM:</b><br>
       - Định mức: ${num(r.dm_tkm)}<br>
