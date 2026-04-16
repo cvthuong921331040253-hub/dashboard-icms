@@ -62,6 +62,7 @@ tr:hover {
   top: 0;
   background: #f5f7fb;
   z-index: 1000;
+  padding-bottom: 6px;
 }
  .table-wrap {
   width: 100%;
@@ -155,14 +156,18 @@ th:first-child {
 
 <body>
 
-<div class="header-top">
-  <h2>📊 KPI Khoán Vật Tư</h2>
-  <button onclick="reloadPage()" class="reload-btn">🔄</button>
-</div>
+<div class="header">
 
-🔍 Nhân viên <input id="nv" onkeyup="filter()"><br>
-🔍 Huyện <input id="huyen" onkeyup="filter()">
-<label><input type="checkbox" onchange="onlyBad(this.checked)"> NV kém</label>
+  <div class="header-top">
+    <h2>📊 KPI Khoán Vật Tư</h2>
+    <button onclick="reloadPage()" class="reload-btn">🔄</button>
+  </div>
+
+  🔍 Nhân viên <input id="nv" onkeyup="filter()"><br>
+  🔍 Huyện <input id="huyen" onkeyup="filter()">
+  <label><input type="checkbox" onchange="onlyBad(this.checked)"> NV kém</label>
+
+</div>
 
 <h3>📊 Bảng huyện</h3>
 <div class="table-wrap">
