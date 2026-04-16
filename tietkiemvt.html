@@ -89,15 +89,14 @@ th, td {
   text-align: center;        /* 🔥 căn giữa */
   vertical-align: middle;
 }
-/* ===== FIX CỘT HUYỆN CHUẨN ===== */
 
-/* HEADER HUYỆN */
-thead th:first-child {
+/* 🔥 Ô GÓC TRÊN TRÁI (Huyện) */
+thead th[rowspan] {
   position: sticky;
+  top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 1000;   /* 🔥 CAO NHẤT */
   background: #b3d7ff;
-  font-weight: bold;
 }
 
 /* BODY HUYỆN */
@@ -112,7 +111,7 @@ tbody td:first-child {
 thead tr:first-child th {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 10;
   background: #e3f2fd;
 }
 
@@ -120,7 +119,7 @@ thead tr:first-child th {
 thead tr:nth-child(2) th {
   position: sticky;
   top: 22px;
-  z-index: 10;
+  z-index: 5;
   background: #e3f2fd;
 }
 thead {
