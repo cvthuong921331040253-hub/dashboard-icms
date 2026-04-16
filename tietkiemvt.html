@@ -181,9 +181,11 @@ th:first-child {
 
 </div>
 
-<h3>📊 Bảng huyện</h3>
-<div class="table-wrap">
-  <table id="myTable"></table>
+<div id="tableSection">
+  <h3>📊 Bảng huyện</h3>
+  <div class="table-wrap">
+    <table id="myTable"></table>
+  </div>
 </div>
 
 <div id="topSection">
@@ -289,6 +291,11 @@ function applyFilter(){
   // 🔥 Ẩn/hiện TOP
   document.getElementById("topSection").style.display =
     isSearching ? "none" : "block";
+  let isSearchNV = nv !== "";
+
+  // 🔥 Ẩn bảng huyện khi tìm nhân viên
+  document.getElementById("tableSection").style.display =
+    isSearchNV ? "none" : "block";
 
   let tableF = tableData.filter(r =>
     (r.huyen||"").toLowerCase().includes(h)
