@@ -424,12 +424,14 @@ function renderTable(data){
     let html = `
     <thead>
     <tr>
+      <th style="width:120px"></th>   <!-- 🔥 THÊM -->
       <th colspan="3" style="background:#e3f2fd">📦 TKM</th>
       <th colspan="3" style="background:#fff3e0">🔧 SC</th>
       <th rowspan="2">Tổng Thưởng/Phạt</th>
     </tr>
     
     <tr>
+      <th></th>  <!-- 🔥 THÊM -->
       <th>Định mức</th>
       <th>Thực hiện</th>
       <th>Tỉ lệ</th>
@@ -448,6 +450,7 @@ function renderTable(data){
 
     html += `
     <tr>  
+      <td style="width:120px"></td>   <!-- 🔥 THÊM DÒNG NÀY -->
       <td>${num(r.dm_tkm)}</td>
       <td>${num(r.th_tkm)}</td>
       <td>${r.tl_tkm}%</td>
