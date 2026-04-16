@@ -378,7 +378,7 @@ function load(){
 // 👉 lấy TG update dòng 2 (index 1)
   let log = rawData[1]?.["Tg update"] || "";
 // 👉 dòng 1–15 (bảng Excel)
-let tableData = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,14);
+tableDataGlobal = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,14);
 // 👉 hiển thị
   document.getElementById("logtime").innerText =
   log ? "🕒Logtime: " + log : "";
@@ -481,15 +481,52 @@ function filter(){
   applyFilter();
 }
 function applyFilter(){
-  let nv = document.getElementById("nv").value.toLowerCase();
-  let h = document.getElementById("huyen").value.toLowerCase();
+  let nv = document.getElementById("nv").value.toLowerCase().trim();
+  let h = document.getElementById("huyen").value.toLowerCase().trim();
 
+  let isSearchNV = nv !== "";
+  let isSearchHuyen = h !== "";
+
+  // ===== FILTER DATA =====
   let f = allData.filter(r =>
     (r.nhan_vien||"").toLowerCase().includes(nv) &&
     (r.huyen||"").toLowerCase().includes(h)
   );
 
   render(f);
+
+  // ===== CASE 1: TÌM NHÂN VIÊN =====
+  if(isSearchNV){
+    document.getElementById("top").style.display = "none";
+    document.getElementById("worst").style.display = "none";
+    document.getElementById("badHuyen").style.display = "none";
+    document.getElementById("tableKPI").style.display = "none";
+    return;
+  }
+
+  // ===== CASE 2: TÌM HUYỆN =====
+  if(isSearchHuyen){
+    document.getElementById("top").style.display = "none";
+    document.getElementById("worst").style.display = "none";
+    document.getElementById("badHuyen").style.display = "none";
+    document.getElementById("tableKPI").style.display = "block";
+
+    // 👉 FILTER TABLE KPI THEO HUYỆN
+    let tableFiltered = tableDataGlobal.filter(r =>
+      (r.huyen||"").toLowerCase().includes(h)
+    );
+
+    renderTableExcel(tableFiltered);
+    return;
+  }
+
+  // ===== DEFAULT (KHÔNG SEARCH) =====
+  document.getElementById("top").style.display = "block";
+  document.getElementById("worst").style.display = "block";
+  document.getElementById("badHuyen").style.display = "block";
+  document.getElementById("tableKPI").style.display = "block";
+
+  renderTableExcel(tableDataGlobal);
 }
 // ===== CHECKBOX =====
 function onlyBad(v){
