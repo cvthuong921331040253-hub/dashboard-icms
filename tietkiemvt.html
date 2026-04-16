@@ -19,6 +19,8 @@ table { border-collapse:collapse; width:100%; background:#fff; }
 th { background:#e3f2fd; padding:6px; }
 td { text-align:center; padding:6px; }
 tr:nth-child(even){ background:#f1f6ff; }
+
+input { padding:4px; margin-right:6px; }
 </style>
 </head>
 
@@ -26,7 +28,10 @@ tr:nth-child(even){ background:#f1f6ff; }
 
 <h2>📊 Khoán Vật Tư</h2>
 
-<h3>📊 Bảng tổng hợp</h3>
+🔍 Nhân viên <input id="nv" onkeyup="filter()">
+🔍 Huyện <input id="huyen" onkeyup="filter()">
+
+<h3>📊 Bảng tổng hợp (1-30)</h3>
 <div id="table"></div>
 
 <h3>🏆 Top 10 thưởng</h3>
@@ -42,8 +47,8 @@ tr:nth-child(even){ background:#f1f6ff; }
 
 const API = "https://script.google.com/macros/s/AKfycby2YYZVK6r1QXP_TgnB0i99prYJmEG8cJwGDQILU1tph0i38b80BhN6Oa9bT5IMuQft0A/exec?sheet=Khoan vt";
 
-let tableData = []; // dòng 1-30
-let nvData = [];    // dòng 31+
+let tableData = [];
+let nvData = [];
 
 function num(v){
   return Number(v||0).toLocaleString("vi-VN");
@@ -64,10 +69,11 @@ function load(){
 
     let raw = res.data || [];
 
-    // ===== TABLE: 1-30 =====
+    // ===== TABLE (1-30) =====
     tableData = raw.slice(0,30);
+    tableData.forEach(calc);
 
-    // ===== NHÂN VIÊN: 31+ =====
+    // ===== NHÂN VIÊN (31+) =====
     nvData = raw.slice(30).map(r=>({
       nhan_vien: r["nhan vien"] || r.nhan_vien,
       huyen: r.huyen,
@@ -77,19 +83,43 @@ function load(){
       th_sc: r.th_sc
     }));
 
-    // tính toán
-    tableData.forEach(calc);
     nvData.forEach(calc);
 
-    renderTable();
-    renderTop();
-    renderWorst();
-    renderList();
+    renderAll();
   });
 }
 
-// ===== TABLE FULL (BỎ NHÂN VIÊN) =====
-function renderTable(){
+// ===== RENDER ALL =====
+function renderAll(){
+  renderTable(tableData);
+  renderTop(nvData);
+  renderWorst(nvData);
+  renderList(nvData);
+}
+
+// ===== FILTER =====
+function filter(){
+
+  let nv = document.getElementById("nv").value.toLowerCase();
+  let h = document.getElementById("huyen").value.toLowerCase();
+
+  let tableFiltered = tableData.filter(r =>
+    (r.huyen || "").toLowerCase().includes(h)
+  );
+
+  let nvFiltered = nvData.filter(r =>
+    (r.nhan_vien || "").toLowerCase().includes(nv) &&
+    (r.huyen || "").toLowerCase().includes(h)
+  );
+
+  renderTable(tableFiltered);
+  renderTop(nvFiltered);
+  renderWorst(nvFiltered);
+  renderList(nvFiltered);
+}
+
+// ===== TABLE =====
+function renderTable(data){
 
   let html = `<table>
     <tr>
@@ -105,8 +135,7 @@ function renderTable(){
       <th>Thưởng/Phạt</th>
     </tr>`;
 
-  tableData.forEach(r=>{
-
+  data.forEach(r=>{
     let color = r.cl>=0 ? "#e8f5e9":"#ffebee";
 
     html += `<tr>
@@ -128,8 +157,8 @@ function renderTable(){
 }
 
 // ===== TOP =====
-function renderTop(){
-  let top = [...nvData].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
+function renderTop(data){
+  let top = [...data].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
 
   let html="";
   top.forEach((r,i)=>{
@@ -142,8 +171,8 @@ function renderTop(){
 }
 
 // ===== WORST =====
-function renderWorst(){
-  let worst = [...nvData].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
+function renderWorst(data){
+  let worst = [...data].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
 
   let html="";
   worst.forEach((r,i)=>{
@@ -155,13 +184,12 @@ function renderWorst(){
   document.getElementById("worst").innerHTML = html;
 }
 
-// ===== LIST KPI STYLE =====
-function renderList(){
+// ===== LIST =====
+function renderList(data){
 
   let html="";
 
-  nvData.forEach(r=>{
-
+  data.forEach(r=>{
     let cls = r.t_p >= 0 ? "ok" : "bad";
 
     html += `<div class="card ${cls}">
