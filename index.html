@@ -404,7 +404,7 @@ tableDataGlobal.forEach(r=>{
 });
 
 // 👉 dòng 16+ (tính KPI)
-    allData = rawData.slice(15);
+    allData = rawData.slice(14);
 
     allData.forEach(r=> r.score = calcScore(r));
     allData.sort((a,b)=> b.score - a.score);
