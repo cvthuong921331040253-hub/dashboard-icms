@@ -182,21 +182,27 @@ input {
   </div>
 
 </div>
-<h3>📊 Bảng KPI tổng hợp</h3>
-<div class="kpi-wrapper">
-  <div id="tableKPI"></div>
-</div>
+  <div id="sectionTable">
+    <h3>📊 Bảng KPI tổng hợp</h3>
+    <div class="kpi-wrapper">
+      <div id="tableKPI"></div>
+    </div>
+  </div>
   <h3>🔥 Đánh giá tỉ trọng KPI tồi</h3>
   <div id="worstKPI"></div>
     
   <h3>⚠️KPI huyện đang tồi</h3>
   <div id="badHuyen"></div>
   
+  <div id="sectionTop">
   <h3>🏆 Top 10 NV tốt</h3>
   <div id="top"></div>
+  </div>
 
-  <h3>⚠️ Top 10 NV kém</h3>
-  <div id="worst"></div>
+  <div id="sectionWorst">
+    <h3>⚠️ Top 10 NV kém</h3>
+    <div id="worst"></div>
+  </div>
 
   <h3>📋 Danh sách</h3>
   <div id="data"></div>
@@ -577,9 +583,9 @@ if(showBadOnly){
   renderKPIBadByHuyen(tableDataGlobal);
 
   // 4. ẨN các phần không cần
-  document.getElementById("top").style.display = "none";
-  document.getElementById("worst").style.display = "none";
-  document.getElementById("tableKPI").style.display = "none";
+  document.getElementById("sectionTop").style.display = "none";
+  document.getElementById("sectionWorst").style.display = "none";
+  document.getElementById("sectionTable").style.display = "none";
 
   // 5. HIỆN các phần cần
   document.getElementById("badHuyen").style.display = "block";
