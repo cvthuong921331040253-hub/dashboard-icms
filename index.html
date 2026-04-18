@@ -186,7 +186,9 @@ input {
 <div class="kpi-wrapper">
   <div id="tableKPI"></div>
 </div>
-  
+  <h3>🔥 Đánh giá tỉ trọng KPI tồi</h3>
+  <div id="worstKPI"></div>
+    
   <h3>⚠️KPI huyện đang tồi</h3>
   <div id="badHuyen"></div>
   
@@ -212,6 +214,14 @@ let allData = [];
 let tableDataGlobal = [];
 let showBadOnly = false;
 
+const KPI_ORDER = [
+  "TK mới 3h","TK mới 10h","TK mới 16h","TK mới 24h",
+  "TK có sẵn 3h","TK có sẵn 10h","TK có sẵn 16h","TK có sẵn 24h",
+  "TK tích hẹn",
+  "SC 3h","SC 10h","SC 16h","SC 24h",
+  "SC HOT","SC VIP","SC HT 24h","SC SOC 24h","SC SOC 72h","SC Hẹn","SC Lặp"
+];
+  
 // ===== FIX DATA =====
 function safe(v){ return v ?? 0; }
 
@@ -378,7 +388,29 @@ function getKPIBadByHuyen(data){
       });
     });
   });
+  
+function renderKPIBadByHuyen(data){
 
+  let stats = getKPIBadByHuyen(data);
+
+  let html = "";
+
+  stats.forEach((k,i)=>{
+
+    let ds = k.list
+      .map(x => `${x.huyen} ${x.value}`)
+      .join(", ");
+
+    html += `
+      <div class="card worst">
+        <b>${i+1}. ${k.name}</b><br>
+        - TTH: ${ds}
+      </div>
+    `;
+  });
+
+  document.getElementById("worstKPI").innerHTML = html;
+}
   // sắp xếp theo KPI_ORDER
   let result = KPI_ORDER
     .map(name => ({
@@ -444,7 +476,7 @@ tableDataGlobal.forEach(r=>{
     top10();
     topWorst();
     renderBadHuyen(tableDataGlobal);
-    loadThuHoi();
+    renderKPIBadByHuyen(tableDataGlobal);
   });
 }
 
@@ -536,12 +568,28 @@ function applyFilter(){
     let badNV = f
       .filter(r => getBadKPI(r).length > 0)
       .sort((a,b)=> a.score - b.score);
-
+        
     // 2. render NV
     render(badNV);
 
     // 3. hiện huyện tồi
-    renderBadHuyen(tableDataGlobal);
+    if(showBadOnly){
+
+  let badNV = f
+    .filter(r => getBadKPI(r).length > 0)
+    .sort((a,b)=> a.score - b.score);
+
+  render(badNV);
+  renderBadHuyen(tableDataGlobal);
+
+    renderKPIBadByHuyen(tableDataGlobal);
+    document.getElementById("top").style.display = "none";
+    document.getElementById("worst").style.display = "none";
+    document.getElementById("tableKPI").style.display = "none";
+    document.getElementById("badHuyen").style.display = "block";
+  
+    return;
+  }
 
     // 4. ẩn UI không cần
     document.getElementById("top").style.display = "none";
