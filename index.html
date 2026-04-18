@@ -359,6 +359,36 @@ if(bad.length > 0){
 
   document.getElementById("badHuyen").innerHTML = html;
 }
+function getKPIBadByHuyen(data){
+
+  let map = {};
+
+  data.forEach(r=>{
+    let bad = getBadKPI(r);
+
+    bad.forEach(kpi=>{
+      let clean = kpi.replace(/<[^>]*>/g, "");
+      let [name, value] = clean.split(":");
+
+      if(!map[name]) map[name] = [];
+
+      map[name].push({
+        huyen: r.huyen,
+        value: value.trim()
+      });
+    });
+  });
+
+  // sắp xếp theo KPI_ORDER
+  let result = KPI_ORDER
+    .map(name => ({
+      name,
+      list: map[name] || []
+    }))
+    .filter(x => x.list.length > 0);
+
+  return result;
+}
 // ===== KPI RENDER =====
 function kpi(label,v,t,type="up"){
   let ok = check(v,t,type);
@@ -437,7 +467,7 @@ function render(data){
       📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
       🚨 SC: ${safe(r.tong_sc)} |
       🏆 Xếp hạng: ${allData.findIndex(x => x === r) + 1} | 🎯 ${r.score.toFixed(0)} điểm |
-      ${badList.length ? `<div class="fail">❌ KPI kém: ${badText}</div>` : ""}
+      ${badList.length ? `<div class="fail">❌ Tồi ${badList.length}/20 KPI</div>` : ""}
       <br><br>
     `;
 
