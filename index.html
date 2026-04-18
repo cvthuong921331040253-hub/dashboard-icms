@@ -595,32 +595,28 @@ if(showBadOnly){
   
   return;
 }
-
-  // =============================
   // 🔍 SEARCH NHÂN VIÊN
-  // =============================
   if(isSearchNV){
     render(f);
-
-    document.getElementById("top").style.display = "none";
-    document.getElementById("worst").style.display = "none";
+  
+    document.getElementById("sectionTop").style.display = "none";
+    document.getElementById("sectionWorst").style.display = "none";
     document.getElementById("badHuyen").style.display = "none";
-    document.getElementById("tableKPI").style.display = "none";
+    document.getElementById("sectionTable").style.display = "none";
     return;
   }
   // 🔍 SEARCH HUYỆN
   if(isSearchHuyen){
     render(f);
-
-    document.getElementById("top").style.display = "none";
-    document.getElementById("worst").style.display = "none";
+  
+    document.getElementById("sectionTop").style.display = "none";
+    document.getElementById("sectionWorst").style.display = "none";
     document.getElementById("badHuyen").style.display = "none";
     document.getElementById("sectionTable").style.display = "block";
-
+  // 🔍 SEARCH TRÊN BẢNG KPI
     let tableFiltered = tableDataGlobal.filter(r =>
       (r.huyen||"").toLowerCase().includes(h)
     );
-
     renderTableExcel(tableFiltered);
     return;
   }
