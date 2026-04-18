@@ -340,21 +340,26 @@ function getBadKPI(r){
 // ===== KPI HUYỆN TỒI =====
 function renderBadHuyen(data){
 
+  let list = data.map(r => ({
+    ...r,
+    bad: getBadKPI(r)
+  }))
+  .filter(r => r.bad.length > 0)
+  .sort((a,b)=> b.bad.length - a.bad.length); // tồi nhất lên trước
+
   let html = "";
 
-  data.forEach(r => {
-let bad = getBadKPI(r);
+  list.forEach(r => {
 
-if(bad.length > 0){
-  html += `
-    <div class="card worst">
-      ❌ <b>${r.huyen}</b>: ➜ Tồi ${bad.length}/20 KPI | 🏆 Xếp hạng: ${r.rank || "-"}
-      <div style="margin-top:5px">
-        ${bad.join(", ")}
+    let detail = r.bad
+      .map(x => x.replace(/<[^>]*>/g, "")) // bỏ <b>
+      .join(", ");
+
+    html += `
+      <div class="card worst">
+        ❌ ${r.huyen}: Tồi ${r.bad.length}/20 KPI | 🏆 ${r.rank || "-"} ➜ ${detail}
       </div>
-    </div>
-  `;
-}
+    `;
   });
 
   document.getElementById("badHuyen").innerHTML = html;
@@ -424,7 +429,9 @@ function render(data){
 
   data.forEach((r,i)=>{
 
-    let badList = getBadKPI(r);
+    let badText = badList
+    .map(x => x.replace(/<[^>]*>/g, "")) // bỏ <b>
+    .join(", ");
     if(showBadOnly && badList.length === 0) return;
 
     let htmlCard = `
@@ -434,7 +441,7 @@ function render(data){
       📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
       🚨 SC: ${safe(r.tong_sc)} |
       🏆 Xếp hạng: ${allData.findIndex(x => x === r) + 1} | 🎯 ${r.score.toFixed(0)} điểm |
-      ${badList.length ? `<div class="fail">❌ KPI kém: ${badList.join(", ")}</div>` : ""}
+      ${badList.length ? `<div class="fail">❌ KPI kém: ${badText}</div>` : ""}
       <br><br>
     `;
 
@@ -489,10 +496,18 @@ function applyFilter(){
   let isSearchHuyen = h !== "";
 
   // ===== FILTER DATA =====
-  let f = allData.filter(r =>
-    (r.nhan_vien||"").toLowerCase().includes(nv) &&
-    (r.huyen||"").toLowerCase().includes(h)
-  );
+  let f = allData
+    .filter(r =>
+      (r.nhan_vien||"").toLowerCase().includes(nv) &&
+      (r.huyen||"").toLowerCase().includes(h)
+    );
+  
+  // 👉 nếu bật KPI kém → chỉ lấy NV tồi + sort từ thấp → cao
+  if(showBadOnly){
+    f = f
+      .filter(r => getBadKPI(r).length > 0)
+      .sort((a,b)=> a.score - b.score);
+  }
 
   render(f);
 
@@ -522,10 +537,17 @@ function applyFilter(){
   }
 
   // ===== DEFAULT (KHÔNG SEARCH) =====
-  document.getElementById("top").style.display = "block";
-  document.getElementById("worst").style.display = "block";
-  document.getElementById("badHuyen").style.display = "block";
-  document.getElementById("tableKPI").style.display = "block";
+  if(showBadOnly){
+    document.getElementById("top").style.display = "none";
+    document.getElementById("worst").style.display = "none";
+    document.getElementById("badHuyen").style.display = "block";
+    document.getElementById("tableKPI").style.display = "none";
+  } else {
+    document.getElementById("top").style.display = "block";
+    document.getElementById("worst").style.display = "block";
+    document.getElementById("badHuyen").style.display = "block";
+    document.getElementById("tableKPI").style.display = "block";
+  }
 
   renderTableExcel(tableDataGlobal);
 }
