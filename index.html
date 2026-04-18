@@ -188,8 +188,10 @@ input {
       <div id="tableKPI"></div>
     </div>
   </div>
+<div id="sectionWorstKPI">
   <h3>🔥 Đánh giá tỉ trọng KPI tồi</h3>
   <div id="worstKPI"></div>
+</div>
     
   <h3>⚠️KPI huyện đang tồi</h3>
   <div id="badHuyen"></div>
@@ -631,7 +633,7 @@ if(showBadOnly){
   document.getElementById("worst").style.display = "block";
   document.getElementById("badHuyen").style.display = "block";
   document.getElementById("tableKPI").style.display = "block";
-  document.getElementById("worstKPI").style.display = "none";
+  document.getElementById("sectionWorstKPI").style.display = "none";
   renderTableExcel(tableDataGlobal);
 }
 // ===== CHECKBOX =====
