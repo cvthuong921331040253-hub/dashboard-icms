@@ -414,10 +414,10 @@ function renderKPIBadByHuyen(data){
   let html = "";
 
   stats.forEach((k,i)=>{
-
-    let ds = k.list
-      .map(x => `${x.huyen} ${x.value}`)
-      .join(", ");
+// Hiển thị của Đánh giá tỉ trọng KPI tồi
+  let ds = k.list
+    .map(x => `<b>${x.huyen}</b> ${x.value}`)
+    .join(", ");
 
     html += `
       <div class="card worst">
