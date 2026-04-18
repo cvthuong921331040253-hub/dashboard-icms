@@ -499,7 +499,7 @@ function render(data){
       📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
       🚨 SC: ${safe(r.tong_sc)} |
       🏆 Xếp hạng: ${allData.findIndex(x => x === r) + 1} | 🎯 ${r.score.toFixed(0)} điểm |
-      ${badList.length ? `<div class="fail">❌ Tồi ${badList.length}/20 KPI</div>` : ""}
+      ${badList.length ? `<div class="fail">❌ Tồi ${badList.length}/20 KPI ➜ ${badText}</div>` : ""}
       <br><br>
     `;
 
