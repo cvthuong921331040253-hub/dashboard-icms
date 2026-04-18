@@ -626,16 +626,18 @@ if(showBadOnly){
   }
 
   // 🟢 DEFAULT
-  // =============================
   render(f);
-
-  document.getElementById("top").style.display = "block";
-  document.getElementById("worst").style.display = "block";
+  // 👇 HIỆN lại đầy đủ
+  document.getElementById("sectionTop").style.display = "block";
+  document.getElementById("sectionWorst").style.display = "block";
+  document.getElementById("sectionTable").style.display = "block";
   document.getElementById("badHuyen").style.display = "block";
-  document.getElementById("sectionWorstKPI").style.display = "block";
+  
+  // 👇 Ẩn KPI tỉ trọng
   document.getElementById("sectionWorstKPI").style.display = "none";
+  
+  // 👇 render lại bảng
   renderTableExcel(tableDataGlobal);
-}
 // ===== CHECKBOX =====
 function onlyBad(v){
   showBadOnly = v;
