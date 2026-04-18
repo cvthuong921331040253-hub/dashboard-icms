@@ -388,6 +388,16 @@ function getKPIBadByHuyen(data){
       });
     });
   });
+
+  let result = KPI_ORDER
+    .map(name => ({
+      name,
+      list: map[name] || []
+    }))
+    .filter(x => x.list.length > 0);
+
+  return result;
+}
   
 function renderKPIBadByHuyen(data){
 
@@ -562,43 +572,31 @@ function applyFilter(){
   // =============================
   // 🔴 MODE KPI KÉM (VIẾT MỚI)
   // =============================
-  if(showBadOnly){
+if(showBadOnly){
 
-    // 1. lọc NV có KPI kém + sort điểm thấp → cao
-    let badNV = f
-      .filter(r => getBadKPI(r).length > 0)
-      .sort((a,b)=> a.score - b.score);
-        
-    // 2. render NV
-    render(badNV);
-
-    // 3. hiện huyện tồi
-    if(showBadOnly){
-
+  // 1. lọc NV tồi
   let badNV = f
     .filter(r => getBadKPI(r).length > 0)
     .sort((a,b)=> a.score - b.score);
 
+  // 2. render NV
   render(badNV);
+
+  // 3. render huyện + KPI tỉ trọng
   renderBadHuyen(tableDataGlobal);
+  renderKPIBadByHuyen(tableDataGlobal);
 
-    renderKPIBadByHuyen(tableDataGlobal);
-    document.getElementById("top").style.display = "none";
-    document.getElementById("worst").style.display = "none";
-    document.getElementById("tableKPI").style.display = "none";
-    document.getElementById("badHuyen").style.display = "block";
+  // 4. ẨN các phần không cần
+  document.getElementById("top").style.display = "none";
+  document.getElementById("worst").style.display = "none";
+  document.getElementById("tableKPI").style.display = "none";
+
+  // 5. HIỆN các phần cần
+  document.getElementById("badHuyen").style.display = "block";
+  document.getElementById("worstKPI").style.display = "block";
   
-    return;
-  }
-
-    // 4. ẩn UI không cần
-    document.getElementById("top").style.display = "none";
-    document.getElementById("worst").style.display = "none";
-    document.getElementById("tableKPI").style.display = "none";
-    document.getElementById("badHuyen").style.display = "block";
-
-    return;
-  }
+  return;
+}
 
   // =============================
   // 🔍 SEARCH NHÂN VIÊN
@@ -612,10 +610,7 @@ function applyFilter(){
     document.getElementById("tableKPI").style.display = "none";
     return;
   }
-
-  // =============================
   // 🔍 SEARCH HUYỆN
-  // =============================
   if(isSearchHuyen){
     render(f);
 
