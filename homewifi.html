@@ -1,145 +1,163 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard Taget CDBR</title>
+<meta charset="UTF-8">
+<title>Homewifi Dashboard</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      padding: 20px;
-    }
+<style>
+body {
+  font-family: Arial;
+  padding: 10px;
+  background: #f5f5f5;
+}
 
-    h2 {
-      margin-top: 10px;
-    }
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      font-size: 13px;
-    }
+.high {
+  color: red;
+  font-weight: bold;
+}
 
-    th, td {
-      border: 1px solid #ccc;
-      padding: 6px;
-      text-align: left;
-    }
+input {
+  padding: 6px;
+  margin-right: 6px;
+  margin-bottom: 10px;
+}
 
-    th {
-      background-color: #f2f2f2;
-    }
-
-    .red {
-      background-color: #ffcccc;
-    }
-
-    .box {
-      padding: 10px;
-      background: #f5f5f5;
-      margin-bottom: 10px;
-      border-radius: 5px;
-    }
-  </style>
+h3 {
+  margin-top: 15px;
+}
+</style>
 </head>
 
 <body>
 
-<h2>📊 Dashboard</h2>
+<h3>📋 Danh sách xử lý Homewifi</h3>
 
-<div class="box" id="dashboard"></div>
+<input id="nv_th" placeholder="Tìm nhân viên">
+<input id="huyen_th" placeholder="Tìm huyện">
+<button onclick="filterTH()">Lọc</button>
 
-<label>
-  <input type="checkbox" onchange="onlyOpen(this.checked)">
-  Chỉ hiện chưa đóng
-</label>
-
-<br><br>
-
-<h2>📋 Dữ liệu</h2>
-
-<select onchange="loadData(this.value)">
-  <option value="Taget CDBR">Taget CDBR</option>
-</select>
-
-<br><br>
-
-<div id="data"></div>
+<div id="dataTH">Đang tải...</div>
 
 <script>
-let currentData = [];
 
-function loadData(sheet) {
-  const api = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=" + sheet;
+// 🔥 API của bạn
+const API_TH = "https://script.google.com/macros/s/AKfycbyezxVz4giR-_yzv9ogTlbuvb4jkwyfZCrrDv53ScmkPrcDY1f1Mv-jMVziS3OGWLkl/exec?sheet=Homewifi";
 
-  fetch(api)
-    .then(res => res.json())
+let dataTH = [];
+
+// ============================
+// LOAD DATA
+// ============================
+function loadTH(){
+  fetch(API_TH)
+    .then(r => r.json())
     .then(res => {
-
-      currentData = res.data;
-
-      renderTable(currentData, res.headers);
-
-      // dashboard
-      let total = res.data.length;
-
-      let chuaDong = res.data.filter(r => r["Trạng thái wo"] == "Chưa đóng").length;
-
-      let percent = ((chuaDong / total) * 100).toFixed(1);
-
-      document.getElementById("dashboard").innerHTML = `
-        <b>Tổng:</b> ${total} <br>
-        <b>Chưa đóng:</b> <span style="color:red">${chuaDong}</span> <br>
-        <b>Tỷ lệ:</b> <span style="color:red">${percent}%</span>
-      `;
+      dataTH = res.data;
+      renderTH(dataTH);
+    })
+    .catch(err => {
+      document.getElementById("dataTH").innerHTML = "❌ Lỗi tải dữ liệu";
+      console.error(err);
     });
 }
 
-function renderTable(data, headers) {
-  let html = "<table><tr>";
+// ============================
+// GOM THEO NHÂN VIÊN
+// ============================
+function groupByNV(data){
 
-  headers.forEach(h => {
-    html += `<th>${h}</th>`;
+  let map = {};
+
+  data.forEach(r => {
+
+    let key = (r.nhan_vien || "") + "_" + (r.huyen || "");
+
+    if(!map[key]){
+      map[key] = {
+        nhan_vien: r.nhan_vien,
+        huyen: r.huyen,
+        account: r.account,
+        seri: [],
+        t_p: 0,
+        thang: r.thang
+      };
+    }
+
+    if(r.seri){
+      map[key].seri.push(r.seri);
+    }
+
+    map[key].t_p += Number(r.t_p || 0);
   });
 
-  html += "</tr>";
+  return Object.values(map);
+}
 
-  data.forEach(row => {
+// ============================
+// RENDER
+// ============================
+function renderTH(data){
 
-    let color = row["Trạng thái wo"] == "Chưa đóng" ? "class='red'" : "";
+  let grouped = groupByNV(data);
 
-    html += `<tr ${color}>`;
+  // chỉ lấy NV có phạt
+  grouped = grouped.filter(r => r.t_p > 0);
 
-    headers.forEach(h => {
-      html += `<td>${row[h] || ""}</td>`;
-    });
+  // sort tiền giảm dần
+  grouped.sort((a,b)=> b.t_p - a.t_p);
 
-    html += "</tr>";
+  let html = "";
+
+  grouped.forEach(r => {
+
+    let tien = Number(r.t_p).toLocaleString("vi-VN");
+
+    let colorClass = r.t_p > 200000 ? "high" : "";
+
+    html += `
+      <div class="card">
+        <b>👤 ${r.nhan_vien || "-"} - ${r.huyen || "-"}</b><br>
+
+        📱 Account: ${r.account || "-"}<br>
+        🔧 Seri: ${r.seri.join(", ") || "-"}<br>
+        📅 Tháng triển khai: ${r.thang || "-"}<br>
+        💰 Tiền phạt: <span class="${colorClass}">${tien}</span>
+      </div>
+    `;
   });
 
-  html += "</table>";
-
-  document.getElementById("data").innerHTML = html;
+  document.getElementById("dataTH").innerHTML = html || "Không có dữ liệu";
 }
 
-function onlyOpen(checked) {
-  let filtered = checked 
-    ? currentData.filter(r => r["Trạng thái wo"] == "Chưa đóng")
-    : currentData;
+// ============================
+// FILTER
+// ============================
+function filterTH(){
 
-  // cần lấy lại headers từ lần load trước
-  fetchHeaders(filtered);
+  let nv = document.getElementById("nv_th").value.toLowerCase();
+  let h = document.getElementById("huyen_th").value.toLowerCase();
+
+  let f = dataTH.filter(r =>
+    (r.nhan_vien || "").toLowerCase().includes(nv) &&
+    (r.huyen || "").toLowerCase().includes(h)
+  );
+
+  renderTH(f);
 }
 
-function fetchHeaders(data) {
-  if (data.length === 0) return;
+// ============================
+// INIT
+// ============================
+loadTH();
 
-  let headers = Object.keys(data[0]);
-  renderTable(data, headers);
-}
-
-// load mặc định
-loadData("Taget CDBR");
 </script>
 
 </body>
