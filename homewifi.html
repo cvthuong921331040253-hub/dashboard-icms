@@ -19,6 +19,12 @@ body {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+.account {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed #ddd;
+}
+
 .high {
   color: red;
   font-weight: bold;
@@ -28,10 +34,6 @@ input {
   padding: 6px;
   margin-right: 6px;
   margin-bottom: 10px;
-}
-
-h3 {
-  margin-top: 15px;
 }
 </style>
 </head>
@@ -48,7 +50,7 @@ h3 {
 
 <script>
 
-// 🔥 API của bạn
+// 🔥 API
 const API_TH = "https://script.google.com/macros/s/AKfycbyezxVz4giR-_yzv9ogTlbuvb4jkwyfZCrrDv53ScmkPrcDY1f1Mv-jMVziS3OGWLkl/exec?sheet=Homewifi";
 
 let dataTH = [];
@@ -70,15 +72,15 @@ function loadTH(){
 }
 
 // ============================
-// GOM THEO NHÂN VIÊN
+// GOM THEO ACCOUNT (ĐÚNG LOGIC)
 // ============================
-function groupByNV(data){
+function groupByAccount(data){
 
   let map = {};
 
   data.forEach(r => {
 
-    let key = (r.nhan_vien || "") + "_" + (r.huyen || "");
+    let key = (r.nhan_vien || "") + "_" + (r.account || "");
 
     if(!map[key]){
       map[key] = {
@@ -106,9 +108,9 @@ function groupByNV(data){
 // ============================
 function renderTH(data){
 
-  let grouped = groupByNV(data);
+  let grouped = groupByAccount(data);
 
-  // chỉ lấy NV có phạt
+  // chỉ lấy account có phạt
   grouped = grouped.filter(r => r.t_p > 0);
 
   // sort tiền giảm dần
@@ -119,17 +121,18 @@ function renderTH(data){
   grouped.forEach(r => {
 
     let tien = Number(r.t_p).toLocaleString("vi-VN");
-
     let colorClass = r.t_p > 200000 ? "high" : "";
 
     html += `
       <div class="card">
-        <b>👤 ${r.nhan_vien || "-"} - ${r.huyen || "-"}</b><br>
+        <b>👤 ${r.nhan_vien || "-"} - ${r.huyen || "-"}</b>
 
-        📱 Account: ${r.account || "-"}<br>
-        🔧 Seri: ${r.seri.join(", ") || "-"}<br>
-        📅 Tháng triển khai: ${r.thang || "-"}<br>
-        💰 Tiền phạt: <span class="${colorClass}">${tien}</span>
+        <div class="account">
+          📱 Account: <b>${r.account || "-"}</b><br>
+          🔧 Seri: ${r.seri.join(", ") || "-"}<br>
+          📅 Tháng triển khai: ${r.thang || "-"}<br>
+          💰 Tiền phạt: <span class="${colorClass}">${tien}</span>
+        </div>
       </div>
     `;
   });
