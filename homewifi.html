@@ -38,10 +38,6 @@ body {
   border-bottom: 1px solid #ddd;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-body {
-  padding-top: 130px;
-}
-
 
 h3 {
   margin: 4px 0;
@@ -166,6 +162,14 @@ function loadTH(){
     });
 }
 
+function fixHeaderSpace(){
+  let header = document.getElementById("header");
+  document.body.style.paddingTop = header.offsetHeight + "px";
+}
+
+window.addEventListener("load", fixHeaderSpace);
+window.addEventListener("resize", fixHeaderSpace);
+  
 // RELOAD
 function reloadData(){
   document.getElementById("dataTH").innerHTML = "⏳ Đang tải lại...";
