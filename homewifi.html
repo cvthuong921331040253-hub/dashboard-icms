@@ -236,19 +236,16 @@ function renderTH(data){
     let tien = Number(r.t_p).toLocaleString("vi-VN");
     let color = r.t_p > 200000 ? "high" : "";
 
-    html += `
-      <div class="card">
-        <b>👤 ${r.nhan_vien} - ${r.huyen}</b>
-
-        <div class="account">
-          📱 <b>${r.account}</b><br>
-          🔧 ${r.seri.join(", ")}<br>
-          📅 Tháng: ${r.thang}<br>
-          💰 <span class="${color}">${tien}</span><br>
-          ⏰ ${formatTime(r.update)}
-        </div>
-      </div>
-    `;
+   html += `
+    <div class="card">
+      <b>👤 ${r.nhan_vien} - ${r.huyen}</b><br>
+  
+      📱 ${r.account}<br>
+      🔧 Thiếu: ${r.seri.join(", ")}<br>
+      📅 TKM tháng: ${r.thang}<br>
+      💰 Phạt: <span class="${color}">${tien}</span>
+    </div>
+  `;
   });
 
   document.getElementById("dataTH").innerHTML = html || "Không có dữ liệu";
