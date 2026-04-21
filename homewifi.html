@@ -257,8 +257,23 @@ function renderTH(data){
 
 // FILTER
 function filterTH(){
-  let nv = document.getElementById("nv_th").value.toLowerCase();
-  let h = document.getElementById("huyen_th").value.toLowerCase();
+  autoFilter();
+}
+
+// INIT
+loadTH();
+document.getElementById("nv_th").addEventListener("input", autoFilter);
+document.getElementById("huyen_th").addEventListener("input", autoFilter);
+function autoFilter(){
+
+  let nv = document.getElementById("nv_th").value.toLowerCase().trim();
+  let h = document.getElementById("huyen_th").value.toLowerCase().trim();
+
+  // nếu xóa hết → trả về dữ liệu ban đầu
+  if(!nv && !h){
+    renderTH(dataTH);
+    return;
+  }
 
   let f = dataTH.filter(r =>
     (r.nhan_vien||"").toLowerCase().includes(nv) &&
@@ -267,9 +282,6 @@ function filterTH(){
 
   renderTH(f);
 }
-
-// INIT
-loadTH();
 
 </script>
 
