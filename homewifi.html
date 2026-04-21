@@ -2,22 +2,74 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- 🔥 FIX ZOOM MOBILE -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
 <title>Homewifi Dashboard</title>
 
 <style>
 body {
   font-family: Arial;
-  padding: 10px;
+  padding: 6px;
+  margin: 0;
   background: #f5f5f5;
 }
 
+/* HEADER */
+#header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 999;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+h3 {
+  margin: 4px 0;
+}
+
+/* LOGTIME */
+#logtime {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+/* FILTER */
+.filter {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter input {
+  flex: 1;
+  min-width: 45%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.filter button {
+  padding: 8px 10px;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  background: #2196f3;
+  color: white;
+}
+
+/* CARD */
 .card {
   background: #fff;
-  border-radius: 10px;
-  padding: 12px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  font-size: 13px;
 }
 
 .account {
@@ -31,43 +83,10 @@ body {
   font-weight: bold;
 }
 
-input {
-  padding: 6px;
-  margin-right: 6px;
-  margin-bottom: 10px;
-}
-
-#logtime {
-  color: #666;
-  margin-bottom: 10px;
-}
-
-#header {
-  position: sticky;
-  top: 0;
-  background: #f5f5f5;
-  z-index: 999;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #ddd;
-}
-/* Giao diện chuẩn mobile */
+/* MOBILE */
 @media (max-width: 600px) {
-
   body {
     font-size: 13px;
-    padding: 6px;
-  }
-
-  h2 { font-size: 16px; }
-  h3 { font-size: 14px; }
-
-  input {
-    width: 100%;
-    margin-bottom: 6px;
-  }
-
-  button {
-    width: 100%;
   }
 }
 </style>
@@ -77,12 +96,14 @@ input {
 
 <div id="header">
   <h3>📋 Danh sách xử lý Homewifi</h3>
-  <div id="logtime"></div>
+  <div id="logtime">Đang tải...</div>
 
-  <input id="nv_th" placeholder="Tìm nhân viên">
-  <input id="huyen_th" placeholder="Tìm huyện">
-  <button onclick="filterTH()">Lọc</button>
-  <button onclick="reloadData()">🔄 Load lại</button>
+  <div class="filter">
+    <input id="nv_th" placeholder="Tìm nhân viên">
+    <input id="huyen_th" placeholder="Tìm huyện">
+    <button onclick="filterTH()">Lọc</button>
+    <button onclick="reloadData()">🔄</button>
+  </div>
 </div>
 
 <div id="dataTH">Đang tải...</div>
@@ -94,9 +115,7 @@ const API_TH = "https://script.google.com/macros/s/AKfycbyezxVz4giR-_yzv9ogTlbuv
 
 let dataTH = [];
 
-// ============================
-// LOAD DATA
-// ============================
+// LOAD
 function loadTH(){
   fetch(API_TH)
     .then(r => r.json())
@@ -104,71 +123,53 @@ function loadTH(){
 
       dataTH = res.data;
 
-      // 🔥 logtime mới nhất
       let latest = getLatestLogtime(dataTH);
-
       let isOld = (Date.now() - latest) > 24*60*60*1000;
 
       document.getElementById("logtime").innerHTML =
         `⏰ Cập nhật: <span style="color:${isOld?'red':'#666'}">
-          ${formatTime(latest)}
+        ${formatTime(latest)}
         </span>`;
 
       renderTH(dataTH);
     })
-    .catch(err => {
+    .catch(() => {
       document.getElementById("dataTH").innerHTML = "❌ Lỗi tải dữ liệu";
-      console.error(err);
     });
 }
+
+// RELOAD
 function reloadData(){
   document.getElementById("dataTH").innerHTML = "⏳ Đang tải lại...";
   loadTH();
 }
 
-// ============================
-// LẤY LOGTIME MỚI NHẤT
-// ============================
+// LOGTIME
 function getLatestLogtime(data){
-
   let max = 0;
-
   data.forEach(r=>{
     let t = new Date(r.update).getTime();
     if(t > max) max = t;
   });
-
   return max;
 }
 
-// ============================
-// FORMAT TIME
-// ============================
+// FORMAT
 function formatTime(date){
-
   let d = new Date(date);
-
-  let dd = String(d.getDate()).padStart(2,'0');
-  let mm = String(d.getMonth()+1).padStart(2,'0');
-  let yy = d.getFullYear();
-
-  let hh = String(d.getHours()).padStart(2,'0');
-  let mi = String(d.getMinutes()).padStart(2,'0');
-
-  return `${dd}/${mm}/${yy} ${hh}:${mi}`;
+  return `${String(d.getDate()).padStart(2,'0')}/
+          ${String(d.getMonth()+1).padStart(2,'0')}/
+          ${d.getFullYear()} 
+          ${String(d.getHours()).padStart(2,'0')}:
+          ${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
-// ============================
-// GOM THEO ACCOUNT (ĐÚNG)
-// ============================
+// GROUP
 function groupByAccount(data){
-
   let map = {};
 
-  data.forEach(r => {
-
-    let key = (r.nhan_vien || "") + "_" + (r.account || "");
-
+  data.forEach(r=>{
+    let key = (r.nhan_vien||"") + "_" + (r.account||"");
     let log = new Date(r.update || 0);
 
     if(!map[key]){
@@ -183,13 +184,9 @@ function groupByAccount(data){
       };
     }
 
-    if(r.seri){
-      map[key].seri.push(r.seri);
-    }
-
+    if(r.seri) map[key].seri.push(r.seri);
     map[key].t_p += Number(r.t_p || 0);
 
-    // lấy log mới nhất từng account
     if(log > map[key].update){
       map[key].update = log;
     }
@@ -198,34 +195,30 @@ function groupByAccount(data){
   return Object.values(map);
 }
 
-// ============================
 // RENDER
-// ============================
 function renderTH(data){
 
-  let grouped = groupByAccount(data);
-
-  grouped = grouped.filter(r => r.t_p > 0);
-
-  grouped.sort((a,b)=> b.t_p - a.t_p);
+  let grouped = groupByAccount(data)
+    .filter(r => r.t_p > 0)
+    .sort((a,b)=> b.t_p - a.t_p);
 
   let html = "";
 
   grouped.forEach(r => {
 
     let tien = Number(r.t_p).toLocaleString("vi-VN");
-    let colorClass = r.t_p > 200000 ? "high" : "";
+    let color = r.t_p > 200000 ? "high" : "";
 
     html += `
       <div class="card">
-        <b>👤 ${r.nhan_vien || "-"} - ${r.huyen || "-"}</b>
+        <b>👤 ${r.nhan_vien} - ${r.huyen}</b>
 
         <div class="account">
-          📱 Account: <b>${r.account || "-"}</b><br>
-          🔧 Seri: ${r.seri.join(", ") || "-"}<br>
-          📅 Tháng triển khai: ${r.thang || "-"}<br>
-          💰 Tiền phạt: <span class="${colorClass}">${tien}</span><br>
-          ⏰ Logtime: ${formatTime(r.update)}
+          📱 <b>${r.account}</b><br>
+          🔧 ${r.seri.join(", ")}<br>
+          📅 Tháng: ${r.thang}<br>
+          💰 <span class="${color}">${tien}</span><br>
+          ⏰ ${formatTime(r.update)}
         </div>
       </div>
     `;
@@ -234,25 +227,20 @@ function renderTH(data){
   document.getElementById("dataTH").innerHTML = html || "Không có dữ liệu";
 }
 
-// ============================
 // FILTER
-// ============================
 function filterTH(){
-
   let nv = document.getElementById("nv_th").value.toLowerCase();
   let h = document.getElementById("huyen_th").value.toLowerCase();
 
   let f = dataTH.filter(r =>
-    (r.nhan_vien || "").toLowerCase().includes(nv) &&
-    (r.huyen || "").toLowerCase().includes(h)
+    (r.nhan_vien||"").toLowerCase().includes(nv) &&
+    (r.huyen||"").toLowerCase().includes(h)
   );
 
   renderTH(f);
 }
 
-// ============================
 // INIT
-// ============================
 loadTH();
 
 </script>
