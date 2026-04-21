@@ -3,12 +3,18 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- 🔥 FIX ZOOM MOBILE -->
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <title>Homewifi Dashboard</title>
 
 <style>
+
+/* 🔥 CHẶN TRÀN NGANG */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   font-family: Arial;
   padding: 6px;
@@ -51,6 +57,7 @@ h3 {
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 6px;
+  box-sizing: border-box;
 }
 
 .filter button {
@@ -64,20 +71,30 @@ h3 {
 
 /* CARD */
 .card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  margin-bottom: 8px;
+  padding: 10px;
   background: #fff;
   border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 8px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   font-size: 13px;
 }
 
+/* 🔥 FIX TRÀN SERI (QUAN TRỌNG NHẤT) */
 .account {
   margin-top: 6px;
   padding-top: 6px;
   border-top: 1px dashed #ddd;
+
+  word-break: break-all;     /* 🔥 fix chuỗi dài */
+  overflow-wrap: anywhere;   /* 🔥 fix mạnh hơn */
 }
 
+/* TEXT ĐỎ */
 .high {
   color: red;
   font-weight: bold;
@@ -89,6 +106,7 @@ h3 {
     font-size: 13px;
   }
 }
+
 </style>
 </head>
 
@@ -110,7 +128,6 @@ h3 {
 
 <script>
 
-// 🔥 API
 const API_TH = "https://script.google.com/macros/s/AKfycbyezxVz4giR-_yzv9ogTlbuvb4jkwyfZCrrDv53ScmkPrcDY1f1Mv-jMVziS3OGWLkl/exec?sheet=Homewifi";
 
 let dataTH = [];
@@ -157,11 +174,7 @@ function getLatestLogtime(data){
 // FORMAT
 function formatTime(date){
   let d = new Date(date);
-  return `${String(d.getDate()).padStart(2,'0')}/
-          ${String(d.getMonth()+1).padStart(2,'0')}/
-          ${d.getFullYear()} 
-          ${String(d.getHours()).padStart(2,'0')}:
-          ${String(d.getMinutes()).padStart(2,'0')}`;
+  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
 // GROUP
