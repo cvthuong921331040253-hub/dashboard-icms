@@ -126,7 +126,6 @@ h3 {
   <div class="filter">
     <input id="nv_th" placeholder="Tìm nhân viên">
     <input id="huyen_th" placeholder="Tìm huyện">
-    <button onclick="filterTH()">Lọc</button>
     <button onclick="reloadData()">🔄</button>
   </div>
 </div>
@@ -255,10 +254,6 @@ function renderTH(data){
   document.getElementById("dataTH").innerHTML = html || "Không có dữ liệu";
 }
 
-// FILTER
-function filterTH(){
-  autoFilter();
-}
 
 // INIT
 loadTH();
