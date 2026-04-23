@@ -156,6 +156,7 @@ function loadTH(){
         ${formatTime(latest)}
         </span>`;
 
+      renderTong(dataTH);
       renderTH(dataTH);
     })
     .catch(() => {
@@ -339,6 +340,7 @@ function autoFilter(){
     (r.huyen||"").toLowerCase().includes(h)
   );
 
+  renderTong(f);
   renderTH(f);
 }
 
