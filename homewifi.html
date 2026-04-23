@@ -131,6 +131,7 @@ h3 {
   </div>
 </div>
 
+<div id="tongTH"></div>
 <div id="dataTH">Đang tải...</div>
 
 <script>
@@ -222,7 +223,78 @@ function groupByAccount(data){
 
   return Object.values(map);
 }
+function calcTong(data){
 
+  let grouped = groupByAccount(data).filter(r => r.t_p > 0);
+
+  let tongAll = new Set(); // đếm account unique
+  let byMonth = {};
+
+  grouped.forEach(r => {
+    tongAll.add(r.account);
+
+    let thang = r.thang || "Không rõ";
+
+    if(!byMonth[thang]){
+      byMonth[thang] = {
+        accounts: new Set(),
+        tien: 0
+      };
+    }
+
+    byMonth[thang].accounts.add(r.account);
+    byMonth[thang].tien += Number(r.t_p || 0);
+  });
+
+  return {
+    totalAccount: tongAll.size,
+    byMonth
+  };
+}
+function renderTong(data){
+
+  let t = calcTong(data);
+
+  let html = `
+    <div class="card">
+      <b>📊 Tổng thuê bao lắp thiếu Homewifi:</b> ${t.totalAccount}
+    </div>
+  `;
+
+  // sort tháng tăng dần
+  let months = Object.keys(t.byMonth).sort((a,b)=> a-b);
+
+  months.forEach(m => {
+    let obj = t.byMonth[m];
+
+    let count = obj.accounts.size;
+    let tien = obj.tien.toLocaleString("vi-VN");
+
+    html = `
+      <div class="card">
+        <b>📊 Tổng thuê bao lắp thiếu:</b> ${t.totalAccount} thuê bao
+      </div>
+    `;
+    
+    let months = Object.keys(t.byMonth)
+      .sort((a,b)=> parseInt(a) - parseInt(b));
+    
+    months.forEach(m => {
+      let obj = t.byMonth[m];
+    
+      let count = obj.accounts.size;
+      let tien = obj.tien.toLocaleString("vi-VN");
+    
+      html += `
+        <div class="card">
+          <b>📅 Tháng ${parseInt(m)}</b>: ${count} thuê bao, 
+          <b>💰 Phạt:</b> <span class="high">${tien}</span>
+        </div>
+      `;
+    });
+
+  document.getElementById("tongTH").innerHTML = html;
+}
 // RENDER
 function renderTH(data){
 
@@ -264,6 +336,7 @@ function autoFilter(){
 
   // nếu xóa hết → trả về dữ liệu ban đầu
   if(!nv && !h){
+    renderTong(dataTH);
     renderTH(dataTH);
     return;
   }
