@@ -240,12 +240,38 @@ function filterTH(){
   let nv = document.getElementById("nv_th").value.toLowerCase();
   let h = document.getElementById("huyen_th").value.toLowerCase();
 
-  let f = dataTH.filter(r =>
+  let tableHuyenDiv = document.getElementById("tableHuyen");
+
+  // ===== 1. FILTER NHÂN VIÊN =====
+  let filteredNV = dataTH.filter(r =>
     (r.nhan_vien||"").toLowerCase().includes(nv) &&
     (r.huyen||"").toLowerCase().includes(h)
   );
 
-  renderTH(f);
+  renderTH(filteredNV);
+
+  // ===== 2. LOGIC HIỂN THỊ =====
+
+  // 🔴 Nếu đang lọc nhân viên → ẨN bảng huyện
+  if(nv){
+    tableHuyenDiv.style.display = "none";
+    return;
+  }
+
+  // 🟢 Nếu lọc huyện → lọc lại bảng huyện
+  if(h){
+    let filteredHuyen = dataHuyenGlobal.filter(r =>
+      (r.huyen||"").toLowerCase().includes(h)
+    );
+
+    renderHuyen(filteredHuyen);
+    tableHuyenDiv.style.display = "block";
+    return;
+  }
+
+  // 🔄 Nếu không filter gì → trả về mặc định
+  renderHuyen(dataHuyenGlobal);
+  tableHuyenDiv.style.display = "block";
 }
 
 // START
