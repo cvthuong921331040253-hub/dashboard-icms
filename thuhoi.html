@@ -230,6 +230,9 @@ function loadThuHoi(){
     dataHuyen.sort((a,b)=> b.tong_phat - a.tong_phat);
 
     renderHuyen(dataHuyen);
+    dataTH.forEach(nv => {
+    nv.list.sort((a, b) => a.uu_tien - b.uu_tien);
+  });
     renderTH(dataTH);
 
     document.getElementById("loadingTH").style.display = "none";
