@@ -107,7 +107,6 @@ function renderHuyen(data){
       <th>Cần thu</th>
       <th>Đã thu</th>
       <th>Tỷ lệ</th>
-      <th>Phạt</th>
     </tr>
   `;
 
@@ -122,7 +121,6 @@ function renderHuyen(data){
         <td style="color:${ty_le<1?'red':'green'}">
           ${(ty_le*100).toFixed(0)}%
         </td>
-        <td>${r.tong_phat.toLocaleString()}</td>
       </tr>
     `;
   });
@@ -143,7 +141,6 @@ function renderTH(data){
       • [ƯT ${acc.uu_tien}] ${acc.account}
       | ${acc.da}/${acc.can}
       (${(acc.ty_le*100).toFixed(0)}%)
-      ${acc.phat > 0 ? ` - 💸 ${acc.phat.toLocaleString()}` : ''}
       </div>
     `).join("");
 
@@ -151,7 +148,6 @@ function renderTH(data){
       <div class="card ${ty_le<1?'worst':'top'}">
         👤 <b>${r.nhan_vien}</b> - ${r.huyen}<br>
         💰 ${r.tong_da}/${r.tong_can} (${(ty_le*100).toFixed(0)}%)<br>
-        💸 ${r.tong_phat.toLocaleString()}<br>
         ${listHTML}
       </div>
     `;
@@ -199,12 +195,11 @@ function loadThuHoi(){
       let ty_le = can === 0 ? 1 : da / can;
 
       if(!nhanvienMap[nv]){
-        nhanvienMap[nv] = { nhan_vien:nv, huyen:h, tong_can:0, tong_da:0, tong_phat:0, list:[] };
+        nhanvienMap[nv] = { nhan_vien:nv, huyen:h, tong_can:0, tong_da:0, list:[] };
       }
 
       nhanvienMap[nv].tong_can += can;
       nhanvienMap[nv].tong_da += da;
-      if(ty_le < 1) nhanvienMap[nv].tong_phat += phat;
 
       nhanvienMap[nv].list.push({
         account:r.account,
@@ -226,8 +221,8 @@ function loadThuHoi(){
     dataTH = Object.values(nhanvienMap);
     let dataHuyen = Object.values(huyenMap);
 
-    dataTH.sort((a,b)=> b.tong_phat - a.tong_phat);
-    dataHuyen.sort((a,b)=> b.tong_phat - a.tong_phat);
+    dataTH.sort((a,b)=> (a.tong_da/a.tong_can) - (b.tong_da/b.tong_can));
+    dataHuyen.sort((a,b)=> (a.tong_da/a.tong_can) - (b.tong_da/b.tong_can));
 
     renderHuyen(dataHuyen);
     dataTH.forEach(nv => {
