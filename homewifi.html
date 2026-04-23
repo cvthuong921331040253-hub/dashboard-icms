@@ -233,7 +233,9 @@ function calcTong(data){
   grouped.forEach(r => {
     tongAll.add(r.account);
 
-    let thang = r.thang || "Không rõ";
+    let raw = (r.thang || "").toString().trim();
+    let thang = raw.replace(/\D/g,'');
+    if(!thang) return;
 
     if(!byMonth[thang]){
       byMonth[thang] = {
@@ -255,43 +257,34 @@ function renderTong(data){
 
   let t = calcTong(data);
 
+  // tổng
   let html = `
     <div class="card">
-      <b>📊 Tổng thuê bao lắp thiếu Homewifi:</b> ${t.totalAccount}
+      <b>📊 Tổng thuê bao lắp thiếu:</b> ${t.totalAccount} thuê bao
     </div>
   `;
 
-  // sort tháng tăng dần
-  let months = Object.keys(t.byMonth).sort((a,b)=> a-b);
+  // chuẩn hóa + sort tháng
+  let months = Object.keys(t.byMonth)
+    .map(m => m.toString().trim().replace(/\D/g,'')) // 🔥 chuẩn hóa
+    .filter(m => m)
+    .sort((a,b)=> parseInt(a) - parseInt(b));
 
   months.forEach(m => {
+
     let obj = t.byMonth[m];
+    if(!obj) return;
 
     let count = obj.accounts.size;
     let tien = obj.tien.toLocaleString("vi-VN");
 
-    html = `
+    html += `
       <div class="card">
-        <b>📊 Tổng thuê bao lắp thiếu:</b> ${t.totalAccount} thuê bao
+        <b>📅 Tháng ${parseInt(m)}</b>: ${count} thuê bao, 
+        <b>💰 Phạt:</b> <span class="high">${tien}</span>
       </div>
     `;
-    
-    let months = Object.keys(t.byMonth)
-      .sort((a,b)=> parseInt(a) - parseInt(b));
-    
-    months.forEach(m => {
-      let obj = t.byMonth[m];
-    
-      let count = obj.accounts.size;
-      let tien = obj.tien.toLocaleString("vi-VN");
-    
-      html += `
-        <div class="card">
-          <b>📅 Tháng ${parseInt(m)}</b>: ${count} thuê bao, 
-          <b>💰 Phạt:</b> <span class="high">${tien}</span>
-        </div>
-      `;
-    });
+  });
 
   document.getElementById("tongTH").innerHTML = html;
 }
