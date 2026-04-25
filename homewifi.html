@@ -139,7 +139,27 @@ let noteData = [];
 
 // ===== LOAD =====
 async function loadAll(){
+  // 🔥 CACHE
+let cache = localStorage.getItem("cache_homewifi");
 
+if(cache){
+  let data = JSON.parse(cache);
+
+  dataTH = data.dataTH;
+  noteData = data.noteData;
+
+  // logtime
+  let latest = getLatestLogtime(dataTH);
+  document.getElementById("logtime").innerHTML =
+    "⏰ Cập nhật: " + formatTime(latest);
+
+  renderTong(dataTH);
+  renderTH(dataTH);
+
+  console.log("🚀 LOAD TỪ CACHE");
+
+  return; // ❗ cực quan trọng (không gọi API nữa)
+}
   document.getElementById("dataTH").innerHTML = "⏳ Đang tải dữ liệu...";
 
   let th = await fetch(API_TH).then(r=>r.json());
@@ -147,6 +167,11 @@ async function loadAll(){
 
   let note = await fetch(API_NOTE).then(r=>r.json());
   noteData = note.data;
+  // 🔥 LƯU CACHE ĐÚNG CHỖ
+  localStorage.setItem("cache_homewifi", JSON.stringify({
+    dataTH,
+    noteData
+  }));
 
   // 🔥 thời gian load
   let latest = getLatestLogtime(dataTH);
@@ -324,7 +349,7 @@ function renderHistory(list){
     ${n.status=="done"?"✅ Đã xử lý":"❌ Bất khả kháng: " + n.note}<br>
     ${n.image 
       ? n.image.split(",").map(url => 
-          `<a href="${url}" target="_blank">📷 Ảnh</a>`
+          `<span onclick="viewImage('${url}')" style="color:blue;cursor:pointer">📷 Ảnh</span>`
         ).join(" ")
       : ""
     }
@@ -365,6 +390,32 @@ function highlightAccount(account){
   }
 
 }
+function clearCache(){
+  localStorage.removeItem("cache_homewifi");
+  alert("Đã xóa cache");
+}
+function viewImage(url){
+  let div = document.createElement("div");
+
+  div.style = `
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.8);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+  `;
+
+  div.innerHTML = `
+    <img src="${url}" style="max-width:90%;max-height:90%">
+  `;
+
+  div.onclick = ()=> div.remove();
+
+  document.body.appendChild(div);
+}
 
 // ===== FILTER =====
 document.getElementById("search_all").addEventListener("input", ()=>{
@@ -387,7 +438,6 @@ document.getElementById("search_all").addEventListener("input", ()=>{
 loadAll();
 document.getElementById("dataTH").innerHTML =
   "<div class='card'>⏳ Đang tải dữ liệu...</div>";
-
 </script>
 
 </body>
