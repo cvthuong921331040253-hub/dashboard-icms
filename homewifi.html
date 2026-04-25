@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -7,18 +8,19 @@
 <style>
 body{font-family:Arial;background:#f5f5f5;margin:0;padding:6px}
 .card{background:#fff;padding:10px;margin-bottom:8px;border-radius:8px}
-input,select,button{padding:6px;margin-top:4px;width:100%}
 .high{color:red;font-weight:bold}
 .history{background:#fafafa;padding:6px;margin-top:6px;border-radius:6px}
 .done{color:green;font-weight:bold}
 .fail{color:orange;font-weight:bold}
-.card {cursor: pointer;}
+button{padding:6px;margin-top:4px}
 </style>
+
 </head>
 
 <body>
 
 <h3>📋 Xử lý Homewifi thiếu</h3>
+
 <div id="logtime"></div>
 <input id="search_all" placeholder="🔍 Tìm account / nhân viên / huyện">
 
@@ -33,25 +35,23 @@ const API_NOTE = "https://script.google.com/macros/s/AKfycbyecpvfz4Z1ZYUh0PrUCtw
 let dataTH = [];
 let noteData = [];
 
-// LOAD
+// ===== LOAD =====
 async function loadAll(){
   let th = await fetch(API_TH).then(r=>r.json());
   dataTH = th.data;
-  let latest = getLatestLogtime(dataTH);
-  
-  document.getElementById("logtime").innerHTML = `
-  ⏰ Cập nhật: ${new Date(latest).toLocaleString("vi-VN")}
-  `;
+
   let note = await fetch(API_NOTE).then(r=>r.json());
   noteData = note.data;
 
   renderAll(dataTH);
 }
+
+// ===== CHUYỂN TRANG =====
 function goDetail(account){
   window.location.href = "homewifinhaplieu.html?account=" + account;
 }
 
-// ===== GROUP + TỔNG =====
+// ===== GROUP =====
 function groupByAccount(data){
   let map = {};
 
@@ -76,131 +76,12 @@ function groupByAccount(data){
   return Object.values(map);
 }
 
-function calcTong(data){
-
-  let grouped = groupByAccount(data).filter(r => r.t_p > 0);
-
-  let tongAll = new Set();
-  let byMonth = {};
-
-  grouped.forEach(r => {
-
-    tongAll.add(r.account);
-
-    let thang = (r.thang||"").toString().replace(/\D/g,'');
-
-    if(!thang) return;
-
-    if(!byMonth[thang]){
-      byMonth[thang] = { accounts:new Set(), tien:0 };
-    }
-
-    byMonth[thang].accounts.add(r.account);
-    byMonth[thang].tien += r.t_p;
-  });
-
-  return { totalAccount: tongAll.size, byMonth };
-}
-
-function renderTong(data){
-
-  let t = calcTong(data);
-
-  let html = `
-    <div class="card">
-      <b>📊 Tổng thuê bao:</b> ${t.totalAccount}
-    </div>
-  `;
-
-  let months = Object.keys(t.byMonth).sort((a,b)=>a-b);
-
-  months.forEach(m=>{
-    let obj = t.byMonth[m];
-    html += `
-      <div class="card">
-        📅 Tháng ${m} | ${obj.accounts.size} thuê bao |
-        💰 <span class="high">${obj.tien.toLocaleString()}</span>
-      </div>
-    `;
-  });
-
-  document.getElementById("tongTH").innerHTML = html;
-}
-
 // ===== NOTE =====
 function getNote(account){
   return noteData.filter(n => n.account == account);
 }
-function isExist(account){
-  return noteData.some(n => n.account == account);
-}
 
-// SAVE
-function save(account, nhan_vien){
-
-  let note = document.getElementById("note_"+account).value.trim();
-  let status = document.getElementById("status_"+account).value;
-  let file = document.getElementById("img_"+account).files[0];
-
-  let existed = isExist(account);
-
-  // 🔒 CHỐNG NHẬP TRÙNG
-  if(existed){
-    if(!confirm("Account đã tồn tại. Bạn muốn CẬP NHẬT?")){
-      return;
-    }
-  }
-
-  // 🎯 LOGIC NGHIỆP VỤ
-  if(status === "done"){
-    if(!file){
-      alert("⚠️ Đã xử lý → bắt buộc phải có ảnh");
-      return;
-    }
-  }
-
-  if(status === "fail"){
-    if(!file || !note){
-      alert("⚠️ Bất khả kháng → cần nhập ghi chú + ảnh");
-      return;
-    }
-  }
-
-  // 🚀 upload
-  if(file){
-    compressImage(file, (base64)=>{
-      send(account, note, status, base64, nhan_vien, existed);
-    });
-  }else{
-    send(account, note, status, "", nhan_vien, existed);
-  }
-}
-
-function send(account, note, status, image, nhan_vien, existed){
-
-  fetch(API_NOTE,{
-    method:"POST",
-    body: JSON.stringify({
-      account,
-      note,
-      status,
-      image,
-      nhan_vien,
-      mode: existed ? "update" : "insert"
-    })
-  })
-  .then(res => res.text())
-  .then(txt=>{
-    alert("✅ Đã lưu");
-    loadAll();
-  })
-  .catch(err=>{
-    console.error(err);
-    alert("❌ Lỗi upload");
-  });
-}
-
-// ===== RENDER LIST =====
+// ===== RENDER =====
 function renderTH(data){
 
   let html = "";
@@ -223,7 +104,7 @@ function renderTH(data){
     }
 
     html += `
-    <div class="card" onclick="goDetail('${r.account}')">
+    <div class="card">
 
       <b class="${statusClass}">${statusIcon} ${r.account}</b><br>
       👤 ${r.nhan_vien} - ${r.huyen}<br>
@@ -233,24 +114,17 @@ function renderTH(data){
       ${Number(r.t_p||0).toLocaleString()}
       </span>
 
-      <hr>
+      <div style="display:flex; gap:6px; margin-top:6px">
 
-      <input id="note_${r.account}" placeholder="Ghi chú...">
+        <button onclick="toggleHistory('${r.account}')">
+          📜 Lịch sử
+        </button>
 
-      <select id="status_${r.account}">
-        <option value="done">✅ Đã xử lý</option>
-        <option value="fail">⚠️ Bất khả kháng</option>
-      </select>
+        <button onclick="goDetail('${r.account}')">
+          ✏️ Nhập dữ liệu
+        </button>
 
-      <input type="file" id="img_${r.account}" style="display:none">
-      <button onclick="event.stopPropagation(); document.getElementById('img_${r.account}').click()">
-      📷 Chọn ảnh
-      </button>
-      <div id="file_${r.account}" style="font-size:12px;color:#666"></div>
-
-      <button onclick="event.stopPropagation(); save('${r.account}','${r.nhan_vien}')">💾 Lưu</button>
-
-      <<button onclick="event.stopPropagation(); toggleHistory('${r.account}')">📜 Lịch sử</button>
+      </div>
 
       <div id="his_${r.account}" class="history" style="display:none">
         ${renderHistory(notes)}
@@ -260,16 +134,17 @@ function renderTH(data){
     `;
   });
 
-  document.getElementById("dataTH").innerHTML = html || "Không có dữ liệu";
+  document.getElementById("dataTH").innerHTML = html;
 }
 
-// HISTORY
+// ===== HISTORY =====
 function renderHistory(list){
   if(!list.length) return "Chưa có";
+
   return list.map(n=>`
     ⏰ ${formatTime(n.time)}<br>
     👤 ${n.nhan_vien}<br>
-    ${n.status=="done"?"✅":"⚠️"} ${n.note}<br>
+    ${n.status=="done"?"✅ Đã xử lý":"❌ Bất khả kháng: " + n.note}<br>
     ${n.image ? `<a href="${n.image}" target="_blank">📷 Ảnh</a>`:""}
     <hr>
   `).join("");
@@ -283,70 +158,10 @@ function toggleHistory(acc){
 function formatTime(t){
   return new Date(t).toLocaleString("vi-VN");
 }
-function getLatestLogtime(data){
-  let max = 0;
-  data.forEach(r=>{
-    let t = new Date(r.update).getTime();
-    if(t > max) max = t;
-  });
-  return max;
-}
-function compressImage(file, callback){
 
-  let img = new Image();
-  let reader = new FileReader();
-
-  reader.onload = function(e){
-    img.src = e.target.result;
-  };
-
-  img.onload = function(){
-
-    let canvas = document.createElement("canvas");
-
-    // 👇 chỉnh kích thước tối đa
-    let maxWidth = 1000;
-
-    let scale = Math.min(1, maxWidth / img.width);
-
-    canvas.width = maxWidth;
-    canvas.height = img.height * scale;
-
-    let ctx = canvas.getContext("2d");
-
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-    // 👇 giảm chất lượng (0.7 là đẹp + nhẹ)
-    let base64 = canvas.toDataURL("image/jpeg", 0.7);
-
-    callback(base64);
-  };
-
-  reader.readAsDataURL(file);
-}
-document.addEventListener("change", function(e){
-
-  if(e.target.type === "file"){
-
-    let id = e.target.id.replace("img_","");
-    let file = e.target.files[0];
-
-    if(!file) return;
-
-    document.getElementById("file_"+id).innerText = "📎 " + file.name;
-  }
-
-});
-
-// ===== FILTER 1 Ô =====
+// ===== FILTER =====
 document.getElementById("search_all").addEventListener("input", ()=>{
-
   let key = document.getElementById("search_all").value.toLowerCase();
-
-  if(!key){
-    renderAll(dataTH);
-    return;
-  }
 
   let f = dataTH.filter(r=>{
     return (r.account||"").toLowerCase().includes(key) ||
@@ -354,14 +169,8 @@ document.getElementById("search_all").addEventListener("input", ()=>{
            (r.huyen||"").toLowerCase().includes(key);
   });
 
-  renderAll(f);
+  renderTH(f);
 });
-
-// ===== GỌI CHUNG =====
-function renderAll(data){
-  renderTong(data);
-  renderTH(data);
-}
 
 // INIT
 loadAll();
