@@ -235,7 +235,6 @@ function renderHistory(list){
 
   return list.map(n=>`
     ⏰ ${formatTime(n.time)}<br>
-    👤 ${n.nhan_vien}<br>
     ${n.status=="done"?"✅ Đã xử lý":"❌ Bất khả kháng: " + n.note}<br>
     ${n.image 
       ? n.image.split(",").map(url => 
