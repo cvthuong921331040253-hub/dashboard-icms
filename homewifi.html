@@ -139,25 +139,27 @@ let noteData = [];
 
 // ===== LOAD =====
 async function loadAll(){
-  // 🔥 CACHE
-let cache = localStorage.getItem("cache_homewifi");
 
-if(cache){
-  let data = JSON.parse(cache);
+  let cache = localStorage.getItem("cache_homewifi");
 
-  dataTH = data.dataTH;
-  noteData = data.noteData;
+  // 🔥 1. LOAD CACHE (nếu có)
+  if(cache){
+    let data = JSON.parse(cache);
 
-  // logtime
-  let latest = getLatestLogtime(dataTH);
-  document.getElementById("logtime").innerHTML =
-    "⏰ Cập nhật: " + formatTime(latest);
+    dataTH = data.dataTH;
+    noteData = data.noteData;
 
-  renderTong(dataTH);
-  renderTH(dataTH);
+    let latest = getLatestLogtime(dataTH);
+    document.getElementById("logtime").innerHTML =
+      "⏰ Cập nhật: " + formatTime(latest);
 
-  console.log("🚀 LOAD TỪ CACHE");
-  
+    renderTong(dataTH);
+    renderTH(dataTH);
+
+    console.log("🚀 LOAD TỪ CACHE");
+  }
+
+  // 🔥 2. LUÔN LOAD API (QUAN TRỌNG)
   document.getElementById("dataTH").innerHTML = "⏳ Đang tải dữ liệu...";
 
   let th = await fetch(API_TH).then(r=>r.json());
@@ -165,18 +167,17 @@ if(cache){
 
   let note = await fetch(API_NOTE).then(r=>r.json());
   noteData = note.data;
-  // 🔥 LƯU CACHE ĐÚNG CHỖ
+
   localStorage.setItem("cache_homewifi", JSON.stringify({
     dataTH,
     noteData
   }));
 
-  // 🔥 thời gian load
   let latest = getLatestLogtime(dataTH);
   document.getElementById("logtime").innerHTML =
     "⏰ Cập nhật: " + formatTime(latest);
 
-  renderTong(dataTH); // 🔥 thêm lại
+  renderTong(dataTH);
   renderTH(dataTH);
 }
 function renderTong(data){
