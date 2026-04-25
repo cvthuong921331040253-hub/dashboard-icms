@@ -89,6 +89,8 @@ async function save(){
   if(status === "done"){
     if(files.length === 0){
       alert("⚠️ Đã xử lý phải có ảnh");
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("btnSave").disabled = false;
       return;
     }
   }
