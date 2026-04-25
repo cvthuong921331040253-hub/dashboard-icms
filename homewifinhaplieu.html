@@ -126,7 +126,8 @@ function send(note, status, images, existed){
   .then(res=>res.text())
   .then(()=>{
     alert("✅ Đã lưu");
-    window.history.back();
+    localStorage.setItem("updated_account", account);
+    window.location.href = "cvthuong921331040253-hub.github.io/dashboard-icms/homewifi.html";
   })
   .catch(()=>{
     alert("❌ Lỗi upload");
