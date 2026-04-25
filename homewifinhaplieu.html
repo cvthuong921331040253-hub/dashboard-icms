@@ -33,8 +33,10 @@ input,select,button{width:100%;padding:8px;margin-top:8px}
 
 <div class="preview" id="preview"></div>
 
-<button onclick="save()">💾 Lưu</button>
-
+<button id="btnSave" onclick="save()">💾 Lưu</button>
+<div id="loading" style="display:none; margin-top:10px; text-align:center">
+  ⏳ Đang tải dữ liệu...
+</div>
 </div>
 
 <script>
@@ -66,6 +68,8 @@ function isExist(account){
 }
 
 // ===== SAVE =====
+document.getElementById("loading").style.display = "block";
+document.getElementById("btnSave").disabled = true;
 async function save(){
 
   let note = document.getElementById("note").value.trim();
@@ -126,16 +130,23 @@ function send(note, status, images, existed){
   .then(res=>res.text())
   .then(()=>{
     alert("✅ Đã lưu");
+  
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("btnSave").disabled = false;
+  
     localStorage.setItem("updated_account", account);
   
     if(document.referrer.includes("homewifi")){
-      window.history.back(); // quay lại nếu đúng flow
+      window.history.back();
     }else{
       window.location.href = "https://cvthuong921331040253-hub.github.io/dashboard-icms/homewifi.html";
     }
   })
   .catch(()=>{
     alert("❌ Lỗi upload");
+  
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("btnSave").disabled = false;
   });
 }
 
