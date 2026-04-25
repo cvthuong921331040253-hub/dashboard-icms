@@ -431,7 +431,10 @@ function viewImageList(urls, index = 0){
 
   function render(i){
     div.innerHTML = `
-      <div style="position:absolute;top:10px;right:15px;color:#fff;font-size:24px;cursor:pointer">✖</div>
+    <div onclick="window.closeImg()" 
+      style="position:absolute;top:10px;right:15px;color:#fff;font-size:24px;cursor:pointer;z-index:10">
+      ✖
+    </div>
 
       ${
         i > 0 
@@ -502,7 +505,9 @@ function viewImageList(urls, index = 0){
 
   window.next = next;
   window.prev = prev;
-
+  window.closeImg = ()=>{
+  div.remove();
+};
   render(index);
   bindSwipe(); // 🔥 QUAN TRỌNG
 
