@@ -128,23 +128,7 @@ body{
   </div>
 
 </div>
-<div id="formPage" style="display:none; padding:10px">
 
-  <h3>📋 Nhập xử lý</h3>
-
-  <textarea id="note"></textarea>
-
-  <select id="status">
-    <option value="done">✅ Đã xử lý</option>
-    <option value="fail">❌ Bất khả kháng</option>
-  </select>
-
-  <input type="file" id="img" multiple>
-
-  <button onclick="saveInline()">💾 Lưu</button>
-  <button onclick="backToList()">⬅️ Quay lại</button>
-
-</div>
 <script>
 
 const API_TH   = "https://script.google.com/macros/s/AKfycbyezxVz4giR-_yzv9ogTlbuvb4jkwyfZCrrDv53ScmkPrcDY1f1Mv-jMVziS3OGWLkl/exec?sheet=Homewifi";
@@ -257,12 +241,7 @@ function calcTong(data){
 
 
 // ===== CHUYỂN TRANG =====
-function goDetail(account){
-  document.querySelector(".app").style.display = "none";
-  document.getElementById("formPage").style.display = "block";
-
-  openForm(account);
-}
+window.location.href = "homewifinhaplieu.html?account=" + account;
 
 // ===== GROUP =====
 function groupByAccount(data){
@@ -456,18 +435,6 @@ let currentAccount = "";
 function openForm(acc){
   currentAccount = acc;
 }
-
-function backToList(){
-  document.getElementById("formPage").style.display = "none";
-  document.querySelector(".app").style.display = "block";
-}
-
-async function saveInline(){
-  alert("Giữ nguyên code save của bạn");
-
-  backToList();
-
-  loadAll(); // reload nhẹ dữ liệu (không reload trang)
 }
 // INIT
 loadAll();
