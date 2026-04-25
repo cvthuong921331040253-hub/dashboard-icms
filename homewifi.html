@@ -351,7 +351,7 @@ if(acc){
   },150); // delay nhỏ cho chắc chắn DOM xong
 }
 }
-// ===== HISTORY =====
+  
 function renderHistory(list){
   if(!list.length) return "Chưa có";
 
@@ -360,11 +360,14 @@ function renderHistory(list){
     ${n.status=="done"?"✅ Đã xử lý":"❌ Bất khả kháng: " + n.note}<br>
     ${
       n.image 
-      ? n.image.split(",").map(url => {
-          url = url.trim();
-          return `<span onclick="viewImage('${url}')" 
-                  style="color:blue;cursor:pointer">📷 Ảnh</span>`;
-        }).join(" ")
+      ? (() => {
+          let arr = n.image.split(",").map(u=>u.trim());
+
+          return arr.map((u,i)=>`
+            <span onclick='viewImageList(${JSON.stringify(arr)}, ${i})'
+              style="color:blue;cursor:pointer">📷 Ảnh ${i+1}</span>
+          `).join(" ");
+        })()
       : ""
     }
     <hr>
@@ -408,7 +411,8 @@ function clearCache(){
   localStorage.removeItem("cache_homewifi");
   alert("Đã xóa cache");
 }
-function viewImage(url){
+function viewImageList(urls, index = 0){
+
   let div = document.createElement("div");
 
   div.style = `
@@ -419,57 +423,44 @@ function viewImage(url){
     z-index:9999;
   `;
 
-  // 🔥 lấy fileId
-  let idMatch = url.match(/[-\w]{25,}/);
-  let fileId = idMatch ? idMatch[0] : "";
+  let idList = urls.map(u => {
+    let m = u.match(/[-\w]{25,}/);
+    return m ? m[0] : "";
+  });
 
-  div.innerHTML = `
-    <div style="
-      position:absolute;
-      top:10px;
-      right:15px;
-      color:#fff;
-      font-size:24px;
-      z-index:10;
-      cursor:pointer
-    ">✖</div>
+  function render(i){
+    div.innerHTML = `
+      <div style="position:absolute;top:10px;right:15px;color:#fff;font-size:24px;cursor:pointer">✖</div>
 
-    <iframe 
-      src="https://drive.google.com/file/d/${fileId}/preview"
-      style="width:100%;height:100%;border:none"
-      allow="autoplay">
-    </iframe>
-  `;
+      <div onclick="event.stopPropagation();prev()" 
+        style="position:absolute;left:10px;top:50%;color:#fff;font-size:30px;cursor:pointer">⬅</div>
+
+      <div onclick="event.stopPropagation();next()" 
+        style="position:absolute;right:10px;top:50%;color:#fff;font-size:30px;cursor:pointer">➡</div>
+
+      <iframe src="https://drive.google.com/file/d/${idList[i]}/preview"
+        style="width:100%;height:100%;border:none"></iframe>
+    `;
+  }
+
+  function next(){
+    index = (index + 1) % idList.length;
+    render(index);
+  }
+
+  function prev(){
+    index = (index - 1 + idList.length) % idList.length;
+    render(index);
+  }
+
+  window.next = next;
+  window.prev = prev;
+
+  render(index);
 
   div.onclick = ()=> div.remove();
 
   document.body.appendChild(div);
-}
-function convertDrive(url){
-  if(!url) return "";
-
-  // 🔥 bỏ query ?usp=...
-  url = url.split("?")[0];
-
-  let match = url.match(/\/d\/([-\w]+)/);
-  if(match){
-    return "https://drive.google.com/uc?export=view&id=" + match[1];
-  }
-
-  return url;
-}
-function convertDrive(url){
-  if(!url) return "";
-
-  // 🔥 bỏ query ?usp=...
-  url = url.split("?")[0];
-
-  let match = url.match(/\/d\/([-\w]+)/);
-  if(match){
-    return "https://drive.google.com/uc?export=view&id=" + match[1];
-  }
-
-  return url;
 }
 
 // ===== FILTER =====
