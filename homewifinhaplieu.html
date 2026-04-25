@@ -190,7 +190,7 @@ async function save(){
 
   // 🔒 CHỐNG TRÙNG
   if(existed){
-    if(!confirm("Account đã cập nhật. Bạn muốn cập nhật?")){
+    if(!confirm("Account đã cập nhật trước đó. Bạn muốn cập nhật lại?")){
       document.getElementById("loading").style.display = "none";
       document.getElementById("btnSave").disabled = false;
       return;
@@ -200,7 +200,7 @@ async function save(){
   // 🎯 LOGIC
   if(status === "done"){
     if(files.length === 0){
-      alert("⚠️ Đã xử lý phải có ảnh");
+      alert("⚠️ Đã xử lý phải có hình ảnh có tọa độ");
       document.getElementById("loading").style.display = "none";
       document.getElementById("btnSave").disabled = false;
       return;
@@ -209,7 +209,7 @@ async function save(){
 
   if(status === "fail"){
     if(files.length === 0 || !note){
-      alert("⚠️ Bất khả kháng cần ghi chú + ảnh");
+      alert("⚠️ Bất khả kháng cần ghi chú + hình ảnh có tọa độ");
       document.getElementById("loading").style.display = "none";
       document.getElementById("btnSave").disabled = false;
       return;
