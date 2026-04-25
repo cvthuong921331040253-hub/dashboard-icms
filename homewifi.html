@@ -506,7 +506,11 @@ function viewImageList(urls, index = 0){
   render(index);
   bindSwipe(); // 🔥 QUAN TRỌNG
 
-  div.onclick = ()=> div.remove();
+  div.onclick = (e)=>{
+  if(e.target === div){
+    div.remove();
+  }
+};
 
   document.body.appendChild(div);
 }
