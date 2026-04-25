@@ -112,7 +112,7 @@ function renderTH(data){
     }
 
     html += `
-    <div class="card">
+    <div class="card" data-acc="${r.account}">
 
       <b class="${statusClass}">${statusIcon} ${r.account}</b><br>
       👤 ${r.nhan_vien} - ${r.huyen}<br>
@@ -170,6 +170,21 @@ function toggleHistory(acc){
 
 function formatTime(t){
   return new Date(t).toLocaleString("vi-VN");
+}
+function highlightAccount(account){
+
+  let el = document.querySelector(`[data-acc='${account}']`);
+
+  if(el){
+    el.style.background = "#fff3cd";
+
+    setTimeout(()=>{
+      el.style.background = "#fff";
+    },2000);
+
+    el.scrollIntoView({behavior:"smooth",block:"center"});
+  }
+
 }
 
 // ===== FILTER =====
