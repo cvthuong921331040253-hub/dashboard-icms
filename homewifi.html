@@ -157,9 +157,7 @@ if(cache){
   renderTH(dataTH);
 
   console.log("🚀 LOAD TỪ CACHE");
-
-  return; // ❗ cực quan trọng (không gọi API nữa)
-}
+  
   document.getElementById("dataTH").innerHTML = "⏳ Đang tải dữ liệu...";
 
   let th = await fetch(API_TH).then(r=>r.json());
