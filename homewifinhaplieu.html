@@ -199,7 +199,14 @@ document.getElementById("img").addEventListener("change", function(){
     preview.appendChild(img);
   }
 });
+// 🔥 DEBUG FILE INPUT
+document.getElementById("img").addEventListener("click", ()=>{
+  console.log("CLICK FILE INPUT");
+});
 
+document.getElementById("img").addEventListener("change", ()=>{
+  console.log("ĐÃ CHỌN FILE");
+});
 // INIT
 getParam();
 loadNote();
