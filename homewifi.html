@@ -413,12 +413,21 @@ function viewImage(url){
 
   div.innerHTML = `
     <div style="color:#fff;position:absolute;top:15px;right:20px;font-size:22px">✖</div>
-    <img src="${url}" style="max-width:95%;max-height:85%;border-radius:8px">
+    <img src="${convertDrive(url)}" style="max-width:95%;max-height:85%;border-radius:8px">
   `;
 
   div.onclick = ()=> div.remove();
 
   document.body.appendChild(div);
+}
+  function convertDrive(url){
+  if(url.includes("drive.google.com")){
+    let id = url.match(/[-\w]{25,}/);
+    if(id){
+      return "https://drive.google.com/uc?export=view&id=" + id[0];
+    }
+  }
+  return url;
 }
 
 // ===== FILTER =====
