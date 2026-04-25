@@ -279,7 +279,7 @@ function compressImage(file, callback){
     // 👇 chỉnh kích thước tối đa
     let maxWidth = 1000;
 
-    let scale = maxWidth / img.width;
+    let scale = Math.min(1, maxWidth / img.width);
 
     canvas.width = maxWidth;
     canvas.height = img.height * scale;
