@@ -430,34 +430,67 @@ function viewImageList(urls, index = 0){
 
   function render(i){
     div.innerHTML = `
-      <div style="position:absolute;top:10px;right:15px;color:#fff;font-size:24px;cursor:pointer">✖</div>
-
-      <div onclick="event.stopPropagation();prev()" 
-        style="position:absolute;left:10px;top:50%;color:#fff;font-size:30px;cursor:pointer">⬅</div>
-
-      <div onclick="event.stopPropagation();next()" 
-        style="position:absolute;right:10px;top:50%;color:#fff;font-size:30px;cursor:pointer">➡</div>
-
+      <div style="position:absolute;top:10px;right:15px;color:#fff;font-size:24px">✖</div>
+  
+      ${
+        i > 0 
+        ? `<div onclick="event.stopPropagation();prev()" 
+            style="position:absolute;left:10px;top:50%;color:#fff;font-size:30px">⬅</div>`
+        : ""
+      }
+  
+      ${
+        i < idList.length - 1
+        ? `<div onclick="event.stopPropagation();next()" 
+            style="position:absolute;right:10px;top:50%;color:#fff;font-size:30px">➡</div>`
+        : ""
+      }
+  
       <iframe src="https://drive.google.com/file/d/${idList[i]}/preview"
         style="width:100%;height:100%;border:none"></iframe>
     `;
   }
 
   function next(){
-    index = (index + 1) % idList.length;
-    render(index);
+    if(index < idList.length - 1){
+      index++;
+      render(index);
+    }
   }
-
+  
   function prev(){
-    index = (index - 1 + idList.length) % idList.length;
-    render(index);
+    if(index > 0){
+      index--;
+      render(index);
+    }
   }
 
   window.next = next;
   window.prev = prev;
 
   render(index);
+  render(index);
 
+  // 👉 Lướt chạm hình ảnh trên mobile
+  let startX = 0;
+  
+  div.addEventListener("touchstart", e=>{
+    startX = e.touches[0].clientX;
+  });
+  
+  div.addEventListener("touchend", e=>{
+    let endX = e.changedTouches[0].clientX;
+  
+    let diff = endX - startX;
+  
+    if(Math.abs(diff) > 50){
+      if(diff < 0){
+        next();
+      }else{
+        prev();
+      }
+    }
+  });
   div.onclick = ()=> div.remove();
 
   document.body.appendChild(div);
