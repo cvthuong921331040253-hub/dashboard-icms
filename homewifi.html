@@ -6,42 +6,128 @@
 <title>Xử lý Homewifi thiếu</title>
 
 <style>
-body{font-family:Arial;background:#f5f5f5;margin:0;padding:6px}
-.card{background:#fff;padding:10px;margin-bottom:8px;border-radius:8px}
-.high{color:red;font-weight:bold}
-.history{background:#fafafa;padding:6px;margin-top:6px;border-radius:6px}
-.done{color:green;font-weight:bold}
-.fail{color:orange;font-weight:bold}
-button{padding:6px;margin-top:4px;cursor:pointer}
-.header{position: fixed;top: 0;left: 0;width: 100%;background: #f5f5f5;padding: 8px;z-index: 1000;box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
-h3{margin: 0 0 6px 0;}
-#search_all{width: 100%;box-sizing: border-box;padding: 6px;border-radius: 6px;border: 1px solid #ccc;font-size: 14px;}
-body{font-size:14px;}
-.card{padding:8px;font-size:14px;}
-button{flex:1;font-size:13px;}
-.header{padding: 6px;}
-#tongTH .card{margin-bottom:6px;padding:6px;}
-function fixHeaderSpace(){
-  let header = document.querySelector(".header");
-  document.body.style.paddingTop = header.offsetHeight + "px";
+body{
+  margin:0;
+  font-family: Arial;
+  background:#f5f5f5;
 }
 
-window.addEventListener("load", fixHeaderSpace);
-window.addEventListener("resize", fixHeaderSpace);
+/* APP */
+.app{
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+
+/* HEADER */
+.app-header{
+  position:sticky;
+  top:0;
+  background:#fff;
+  padding:10px;
+  z-index:10;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.title{
+  font-size:18px;
+  font-weight:bold;
+}
+
+.logtime{
+  font-size:12px;
+  color:#666;
+  margin-top:4px;
+}
+
+/* SEARCH */
+.search{
+  width:100%;
+  margin-top:6px;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid #ddd;
+  box-sizing:border-box;
+  font-size:14px;
+}
+
+/* BODY */
+.app-body{
+  flex:1;
+  overflow:auto;
+  padding:8px;
+}
+
+/* CARD */
+.card{
+  background:#fff;
+  border-radius:10px;
+  padding:10px;
+  margin-bottom:8px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  font-size:14px;
+}
+
+.high{
+  color:red;
+  font-weight:bold;
+}
+
+/* BUTTON */
+.row-btn{
+  display:flex;
+  gap:6px;
+  margin-top:6px;
+}
+
+.row-btn button{
+  flex:1;
+  padding:8px;
+  border:none;
+  border-radius:8px;
+  background:#f0f0f0;
+  font-size:13px;
+  cursor:pointer;
+}
+
+.row-btn button:active{
+  background:#ddd;
+}
+
+/* HISTORY */
+.history{
+  background:#fafafa;
+  padding:6px;
+  border-radius:6px;
+  margin-top:6px;
+}
+.app-body{
+  scroll-behavior:smooth;
+}
 </style>
 
 </head>
 
 <body>
  
-<div class="header">
-  <h3>📋 Xử lý Homewifi thiếu</h3>
-  <div id="logtime" style="margin-top:6px; padding:6px; font-size:13px; color:#666"></div>
-  <input id="search_all" placeholder="🔍 Tìm account / nhân viên / huyện">
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="app-header">
+    <div class="title">📋 Xử lý Homewifi thiếu</div>
+    <div id="logtime" class="logtime"></div>
+
+    <input id="search_all" class="search"
+      placeholder="🔍 Tìm account / nhân viên / huyện">
+  </div>
+
+  <!-- CONTENT -->
+  <div class="app-body">
+    <div id="tongTH"></div>
+    <div id="dataTH"></div>
+  </div>
 
 </div>
-  <div id="tongTH" style="margin-top:8px;"></div>
-  <div id="dataTH"></div>
 
 <script>
 
@@ -172,8 +258,8 @@ function renderTH(data){
 
   let grouped = groupByAccount(data)
     .filter(r => r.t_p > 0)
-    .slice(0, 200) // 🔥 giới hạn 200 record
-    .sort((a,b)=> b.t_p - a.t_p);
+    .sort((a,b)=> b.t_p - a.t_p)
+    .slice(0, 200); // 🔥 giới hạn 200 dòng
 
   grouped.forEach(r=>{
 
@@ -199,16 +285,14 @@ function renderTH(data){
       ${Number(r.t_p||0).toLocaleString()}
       </span>
 
-      <div style="display:flex; gap:6px; margin-top:6px">
-
+      <div class="row-btn">
         <button onclick="toggleHistory('${r.account}')">
           📜 Lịch sử
         </button>
-
+      
         <button onclick="goDetail('${r.account}')">
           ✏️ Nhập dữ liệu
         </button>
-
       </div>
 
       <div id="his_${r.account}" class="history" style="display:none">
@@ -297,6 +381,8 @@ document.getElementById("search_all").addEventListener("input", ()=>{
 
 // INIT
 loadAll();
+document.getElementById("dataTH").innerHTML =
+  "<div class='card'>⏳ Đang tải dữ liệu...</div>";
 
 </script>
 
