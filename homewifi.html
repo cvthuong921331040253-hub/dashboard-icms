@@ -47,6 +47,9 @@ async function loadAll(){
 
   renderAll(dataTH);
 }
+  function goDetail(account){
+  window.location.href = "form.html?account=" + account;
+}
 
 // ===== GROUP + TỔNG =====
 function groupByAccount(data){
@@ -240,14 +243,14 @@ function renderTH(data){
       </select>
 
       <input type="file" id="img_${r.account}" style="display:none">
-      <button onclick="document.getElementById('img_${r.account}').click()">
+      <button onclick="event.stopPropagation(); document.getElementById('img_${r.account}').click()">
       📷 Chọn ảnh
       </button>
       <div id="file_${r.account}" style="font-size:12px;color:#666"></div>
 
-      <button onclick="save('${r.account}','${r.nhan_vien}')">💾 Lưu</button>
+      <button onclick="event.stopPropagation(); save('${r.account}','${r.nhan_vien}')">💾 Lưu</button>
 
-      <button onclick="toggleHistory('${r.account}')">📜 Lịch sử</button>
+      <<button onclick="event.stopPropagation(); toggleHistory('${r.account}')">📜 Lịch sử</button>
 
       <div id="his_${r.account}" class="history" style="display:none">
         ${renderHistory(notes)}
