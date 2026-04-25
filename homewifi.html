@@ -167,7 +167,11 @@ function renderTH(data){
 
   let html = "";
 
-  data.forEach(r=>{
+  let grouped = groupByAccount(data)
+    .filter(r => r.t_p > 0)
+    .sort((a,b)=> b.t_p - a.t_p);
+
+  grouped.forEach(r=>{
 
     let notes = getNote(r.account);
     let latest = notes[notes.length-1];
@@ -214,7 +218,7 @@ function renderTH(data){
     `;
   });
 
-  document.getElementById("dataTH").innerHTML = html;
+  document.getElementById("dataTH").innerHTML = html || "Không có dữ liệu";
 }
 
 // HISTORY
