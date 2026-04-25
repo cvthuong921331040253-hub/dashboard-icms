@@ -141,15 +141,12 @@ function save(account, nhan_vien){
   }
 
   if(file){
-    let reader = new FileReader();
-    reader.onload = function(){
-      send(account, note, status, reader.result, nhan_vien);
-    };
-    reader.readAsDataURL(file);
+    compressImage(file, (base64)=>{
+      send(account, note, status, base64, nhan_vien);
+    });
   }else{
     send(account, note, status, "", nhan_vien);
   }
-}
 
 function send(account, note, status, image, nhan_vien){
 
@@ -264,6 +261,39 @@ function getLatestLogtime(data){
     if(t > max) max = t;
   });
   return max;
+}
+function compressImage(file, callback){
+
+  let img = new Image();
+  let reader = new FileReader();
+
+  reader.onload = function(e){
+    img.src = e.target.result;
+  };
+
+  img.onload = function(){
+
+    let canvas = document.createElement("canvas");
+
+    // 👇 chỉnh kích thước tối đa
+    let maxWidth = 1000;
+
+    let scale = maxWidth / img.width;
+
+    canvas.width = maxWidth;
+    canvas.height = img.height * scale;
+
+    let ctx = canvas.getContext("2d");
+
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    // 👇 giảm chất lượng (0.7 là đẹp + nhẹ)
+    let base64 = canvas.toDataURL("image/jpeg", 0.7);
+
+    callback(base64);
+  };
+
+  reader.readAsDataURL(file);
 }
 document.addEventListener("change", function(e){
 
