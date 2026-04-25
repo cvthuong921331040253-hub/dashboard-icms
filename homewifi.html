@@ -18,7 +18,7 @@ input,select,button{padding:6px;margin-top:4px;width:100%}
 <body>
 
 <h3>📋 Xử lý Homewifi thiếu</h3>
-
+<div id="logtime"></div>
 <input id="search_all" placeholder="🔍 Tìm account / nhân viên / huyện">
 
 <div id="tongTH"></div>
@@ -37,12 +37,10 @@ async function loadAll(){
   let th = await fetch(API_TH).then(r=>r.json());
   dataTH = th.data;
   let latest = getLatestLogtime(dataTH);
-
-  document.getElementById("tongTH").insertAdjacentHTML("beforebegin", `
-  <div style="font-size:12px;color:#666;margin-bottom:6px">
+  
+  document.getElementById("logtime").innerHTML = `
   ⏰ Cập nhật: ${new Date(latest).toLocaleString("vi-VN")}
-  </div>
-  `);
+  `;
   let note = await fetch(API_NOTE).then(r=>r.json());
   noteData = note.data;
 
