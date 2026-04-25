@@ -12,7 +12,7 @@ body{font-family:Arial;background:#f5f5f5;margin:0;padding:6px}
 .history{background:#fafafa;padding:6px;margin-top:6px;border-radius:6px}
 .done{color:green;font-weight:bold}
 .fail{color:orange;font-weight:bold}
-button{padding:6px;margin-top:4px}
+button{padding:6px;margin-top:4px;cursor:pointer}
 </style>
 
 </head>
@@ -24,7 +24,6 @@ button{padding:6px;margin-top:4px}
 <div id="logtime"></div>
 <input id="search_all" placeholder="🔍 Tìm account / nhân viên / huyện">
 
-<div id="tongTH"></div>
 <div id="dataTH"></div>
 
 <script>
@@ -43,7 +42,7 @@ async function loadAll(){
   let note = await fetch(API_NOTE).then(r=>r.json());
   noteData = note.data;
 
-  renderAll(dataTH);
+  renderTH(dataTH);
 }
 
 // ===== CHUYỂN TRANG =====
@@ -93,7 +92,7 @@ function renderTH(data){
   grouped.forEach(r=>{
 
     let notes = getNote(r.account);
-    let latest = notes[notes.length-1];
+    let latest = notes.length ? notes[notes.length-1] : null;
 
     let statusIcon = "";
     let statusClass = "";
@@ -134,7 +133,7 @@ function renderTH(data){
     `;
   });
 
-  document.getElementById("dataTH").innerHTML = html;
+  document.getElementById("dataTH").innerHTML = html || "Không có dữ liệu";
 }
 
 // ===== HISTORY =====
