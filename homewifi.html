@@ -52,16 +52,7 @@ async function loadAll(){
 
   renderTH(dataTH);
 }
-window.addEventListener("load", () => {
 
-  let acc = localStorage.getItem("updated_account");
-
-  if(acc){
-    highlightAccount(acc);
-    localStorage.removeItem("updated_account");
-  }
-
-});
 
 // ===== CHUYỂN TRANG =====
 function goDetail(account){
@@ -196,6 +187,16 @@ document.getElementById("search_all").addEventListener("input", ()=>{
 
 // INIT
 loadAll();
+window.addEventListener("load", () => {
+
+  let acc = localStorage.getItem("updated_account");
+
+  if(acc){
+    highlightAccount(acc);
+    localStorage.removeItem("updated_account");
+  }
+
+});
 
 </script>
 
