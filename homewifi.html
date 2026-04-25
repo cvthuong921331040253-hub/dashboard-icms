@@ -61,9 +61,9 @@ async function loadAll(){
   noteData = note.data;
 
   // 🔥 thời gian load
-  let lastUpdate = dataTH[0]?.update_time || dataTH[0]?.time || "";
+  let latest = getLatestLogtime(dataTH);
   document.getElementById("logtime").innerHTML =
-    "⏰ Cập nhật: " + formatTime(lastUpdate);
+    "⏰ Cập nhật: " + formatTime(latest);
 
   renderTong(dataTH); // 🔥 thêm lại
   renderTH(dataTH);
@@ -254,6 +254,16 @@ function toggleHistory(acc){
 
 function formatTime(t){
   return new Date(t).toLocaleString("vi-VN");
+}
+function getLatestLogtime(data){
+  let max = 0;
+
+  data.forEach(r=>{
+    let t = new Date(r.update).getTime(); // 👈 field đúng là update
+    if(t > max) max = t;
+  });
+
+  return max;
 }
 function highlightAccount(account){
 
