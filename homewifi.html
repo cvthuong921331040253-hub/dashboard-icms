@@ -145,11 +145,11 @@ function renderHistory(list){
     👤 ${n.nhan_vien}<br>
     ${n.status=="done"?"✅ Đã xử lý":"❌ Bất khả kháng: " + n.note}<br>
     ${n.image 
-  ? n.image.split(",").map(url => 
-      `<img src="${url}" style="width:80px;margin:4px;border-radius:6px">`
-    ).join("")
-  : ""
-}
+      ? n.image.split(",").map(url => 
+          `<a href="${url}" target="_blank">📷 Ảnh</a>`
+        ).join(" ")
+      : ""
+    }
     <hr>
   `).join("");
 }
