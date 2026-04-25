@@ -160,9 +160,7 @@ async function loadAll(){
   }
 
   // 🔥 2. LUÔN LOAD API (QUAN TRỌNG)
-  if(!cache){
   document.getElementById("dataTH").innerHTML = "⏳ Đang tải dữ liệu...";
-}
 
   let th = await fetch(API_TH).then(r=>r.json());
   dataTH = th.data;
