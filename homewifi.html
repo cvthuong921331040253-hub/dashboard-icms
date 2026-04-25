@@ -152,13 +152,25 @@ function save(account, nhan_vien){
 }
 
 function send(account, note, status, image, nhan_vien){
+
   fetch(API_NOTE,{
     method:"POST",
     body: JSON.stringify({account,note,status,image,nhan_vien})
   })
-  .then(()=>{
+  .then(res => res.text()) // 👈 bắt response
+  .then(txt=>{
+    console.log("SERVER:", txt);
+
     alert("✅ Đã lưu");
+
+    document.getElementById("note_"+account).value = "";
+    document.getElementById("img_"+account).value = "";
+
     loadAll();
+  })
+  .catch(err=>{
+    console.error(err);
+    alert("❌ Lỗi upload");
   });
 }
 
@@ -204,7 +216,11 @@ function renderTH(data){
         <option value="fail">⚠️ Bất khả kháng</option>
       </select>
 
-      <input type="file" id="img_${r.account}">
+      <input type="file" id="img_${r.account}" style="display:none">
+
+      <button onclick="document.getElementById('img_${r.account}').click()">
+      📷 Chọn ảnh
+      </button>
 
       <button onclick="save('${r.account}','${r.nhan_vien}')">💾 Lưu</button>
 
