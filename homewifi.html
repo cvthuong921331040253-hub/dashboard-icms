@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Homewifi Dashboard PRO</title>
+<title>Xử lý Homewifi thiếu</title>
 
 <style>
 body{font-family:Arial;background:#f5f5f5;margin:0;padding:6px}
@@ -17,10 +17,11 @@ input,select,button{padding:6px;margin-top:4px;width:100%}
 
 <body>
 
-<h3>📋 Dashboard Homewifi PRO</h3>
+<h3>📋 Xử lý Homewifi thiếu</h3>
 
-<input id="acc_th" placeholder="🔍 Tìm account">
+<input id="search_all" placeholder="🔍 Tìm account / nhân viên / huyện">
 
+<div id="tongTH"></div>
 <div id="dataTH"></div>
 
 <script>
@@ -33,17 +34,90 @@ let noteData = [];
 
 // LOAD
 async function loadAll(){
-
   let th = await fetch(API_TH).then(r=>r.json());
   dataTH = th.data;
 
   let note = await fetch(API_NOTE).then(r=>r.json());
   noteData = note.data;
 
-  renderTH(dataTH);
+  renderAll(dataTH);
 }
 
-// LẤY NOTE THEO ACCOUNT
+// ===== GROUP + TỔNG =====
+function groupByAccount(data){
+  let map = {};
+
+  data.forEach(r=>{
+    let key = r.account;
+
+    if(!map[key]){
+      map[key] = {
+        nhan_vien: r.nhan_vien,
+        huyen: r.huyen,
+        account: r.account,
+        t_p: 0,
+        thang: r.thang
+      };
+    }
+
+    map[key].t_p += Number(r.t_p || 0);
+  });
+
+  return Object.values(map);
+}
+
+function calcTong(data){
+
+  let grouped = groupByAccount(data).filter(r => r.t_p > 0);
+
+  let tongAll = new Set();
+  let byMonth = {};
+
+  grouped.forEach(r => {
+
+    tongAll.add(r.account);
+
+    let thang = (r.thang||"").toString().replace(/\D/g,'');
+
+    if(!thang) return;
+
+    if(!byMonth[thang]){
+      byMonth[thang] = { accounts:new Set(), tien:0 };
+    }
+
+    byMonth[thang].accounts.add(r.account);
+    byMonth[thang].tien += r.t_p;
+  });
+
+  return { totalAccount: tongAll.size, byMonth };
+}
+
+function renderTong(data){
+
+  let t = calcTong(data);
+
+  let html = `
+    <div class="card">
+      <b>📊 Tổng thuê bao:</b> ${t.totalAccount}
+    </div>
+  `;
+
+  let months = Object.keys(t.byMonth).sort((a,b)=>a-b);
+
+  months.forEach(m=>{
+    let obj = t.byMonth[m];
+    html += `
+      <div class="card">
+        📅 Tháng ${m} | ${obj.accounts.size} thuê bao |
+        💰 <span class="high">${obj.tien.toLocaleString()}</span>
+      </div>
+    `;
+  });
+
+  document.getElementById("tongTH").innerHTML = html;
+}
+
+// ===== NOTE =====
 function getNote(account){
   return noteData.filter(n => n.account == account);
 }
@@ -72,16 +146,9 @@ function save(account, nhan_vien){
 }
 
 function send(account, note, status, image, nhan_vien){
-
   fetch(API_NOTE,{
     method:"POST",
-    body: JSON.stringify({
-      account,
-      note,
-      status,
-      image,
-      nhan_vien
-    })
+    body: JSON.stringify({account,note,status,image,nhan_vien})
   })
   .then(()=>{
     alert("✅ Đã lưu");
@@ -89,33 +156,22 @@ function send(account, note, status, image, nhan_vien){
   });
 }
 
-// RENDER
+// ===== RENDER LIST =====
 function renderTH(data){
-
-  let accFilter = document.getElementById("acc_th").value.toLowerCase();
 
   let html = "";
 
   data.forEach(r=>{
 
-    if(accFilter && !r.account.toLowerCase().includes(accFilter)) return;
-
     let notes = getNote(r.account);
-
     let latest = notes[notes.length-1];
 
     let statusIcon = "";
     let statusClass = "";
 
     if(latest){
-      if(latest.status=="done"){
-        statusIcon = "✅";
-        statusClass = "done";
-      }
-      if(latest.status=="fail"){
-        statusIcon = "⚠️";
-        statusClass = "fail";
-      }
+      if(latest.status=="done"){statusIcon="✅";statusClass="done";}
+      if(latest.status=="fail"){statusIcon="⚠️";statusClass="fail";}
     }
 
     html += `
@@ -130,7 +186,7 @@ function renderTH(data){
 
       <hr>
 
-      📝 <input id="note_${r.account}" placeholder="Ghi chú...">
+      <input id="note_${r.account}" placeholder="Ghi chú...">
 
       <select id="status_${r.account}">
         <option value="done">✅ Đã xử lý</option>
@@ -156,38 +212,49 @@ function renderTH(data){
 
 // HISTORY
 function renderHistory(list){
-
   if(!list.length) return "Chưa có";
-
   return list.map(n=>`
-    <div>
-      ⏰ ${formatTime(n.time)}<br>
-      👤 ${n.nhan_vien}<br>
-      ${n.status=="done"?"✅":"⚠️"} ${n.note}<br>
-      ${n.image ? `<a href="${n.image}" target="_blank">📷 Xem ảnh</a>`:""}
-      <hr>
-    </div>
+    ⏰ ${formatTime(n.time)}<br>
+    👤 ${n.nhan_vien}<br>
+    ${n.status=="done"?"✅":"⚠️"} ${n.note}<br>
+    ${n.image ? `<a href="${n.image}" target="_blank">📷 Ảnh</a>`:""}
+    <hr>
   `).join("");
 }
 
-// TOGGLE
 function toggleHistory(acc){
-
   let el = document.getElementById("his_"+acc);
-
-  el.style.display = (el.style.display=="none") ? "block" : "none";
+  el.style.display = el.style.display=="none" ? "block":"none";
 }
 
-// TIME
 function formatTime(t){
-  let d = new Date(t);
-  return d.toLocaleString("vi-VN");
+  return new Date(t).toLocaleString("vi-VN");
 }
 
-// FILTER
-document.getElementById("acc_th").addEventListener("input", ()=>{
-  renderTH(dataTH);
+// ===== FILTER 1 Ô =====
+document.getElementById("search_all").addEventListener("input", ()=>{
+
+  let key = document.getElementById("search_all").value.toLowerCase();
+
+  if(!key){
+    renderAll(dataTH);
+    return;
+  }
+
+  let f = dataTH.filter(r=>{
+    return (r.account||"").toLowerCase().includes(key) ||
+           (r.nhan_vien||"").toLowerCase().includes(key) ||
+           (r.huyen||"").toLowerCase().includes(key);
+  });
+
+  renderAll(f);
 });
+
+// ===== GỌI CHUNG =====
+function renderAll(data){
+  renderTong(data);
+  renderTH(data);
+}
 
 // INIT
 loadAll();
