@@ -142,7 +142,16 @@ function renderTH(data){
     `;
   });
 
-  document.getElementById("dataTH").innerHTML = html || "Không có dữ liệu";
+document.getElementById("dataTH").innerHTML = html || "Không có dữ liệu";
+
+// 🔥 FIX highlight đúng thời điểm
+let acc = localStorage.getItem("updated_account");
+
+if(acc){
+  setTimeout(()=>{
+    highlightAccount(acc);
+    localStorage.removeItem("updated_account");
+  },150); // delay nhỏ cho chắc chắn DOM xong
 }
 
 // ===== HISTORY =====
@@ -202,16 +211,6 @@ document.getElementById("search_all").addEventListener("input", ()=>{
 
 // INIT
 loadAll();
-window.addEventListener("load", () => {
-
-  let acc = localStorage.getItem("updated_account");
-
-  if(acc){
-    highlightAccount(acc);
-    localStorage.removeItem("updated_account");
-  }
-
-});
 
 </script>
 
