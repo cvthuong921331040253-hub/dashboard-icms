@@ -127,7 +127,12 @@ function send(note, status, images, existed){
   .then(()=>{
     alert("✅ Đã lưu");
     localStorage.setItem("updated_account", account);
-    window.history.back(); // 🔥 QUAY LẠI KHÔNG RELOAD
+  
+    if(document.referrer.includes("homewifi")){
+      window.history.back(); // quay lại nếu đúng flow
+    }else{
+      window.location.href = "https://cvthuong921331040253-hub.github.io/dashboard-icms/homewifi.html";
+    }
   })
   .catch(()=>{
     alert("❌ Lỗi upload");
