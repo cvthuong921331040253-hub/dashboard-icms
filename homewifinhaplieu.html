@@ -68,10 +68,10 @@ function isExist(account){
 }
 
 // ===== SAVE =====
-document.getElementById("loading").style.display = "block";
-document.getElementById("btnSave").disabled = true;
-async function save(){
 
+async function save(){
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("btnSave").disabled = true;
   let note = document.getElementById("note").value.trim();
   let status = document.getElementById("status").value;
   let files = document.getElementById("img").files;
