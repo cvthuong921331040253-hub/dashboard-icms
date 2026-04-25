@@ -346,10 +346,11 @@ function renderHistory(list){
   return list.map(n=>`
     ⏰ ${formatTime(n.time)}<br>
     ${n.status=="done"?"✅ Đã xử lý":"❌ Bất khả kháng: " + n.note}<br>
-    n.image 
+    ${
+      n.image 
       ? n.image.split(",").map(url => {
           url = url.trim();
-          return `<span onclick="viewImage('${url.replace(/'/g,"\\'")}')" 
+          return `<span onclick="viewImage('${url}')" 
                   style="color:blue;cursor:pointer">📷 Ảnh</span>`;
         }).join(" ")
       : ""
@@ -440,7 +441,6 @@ let currentAccount = "";
 
 function openForm(acc){
   currentAccount = acc;
-}
 }
 // INIT
 loadAll();
