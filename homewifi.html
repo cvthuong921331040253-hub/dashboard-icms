@@ -369,13 +369,17 @@ function highlightAccount(account){
 // ===== FILTER =====
 document.getElementById("search_all").addEventListener("input", ()=>{
   let key = document.getElementById("search_all").value.toLowerCase();
-
+  if(!key){
+  renderTong(dataTH);
+  renderTH(dataTH);
+  return;
+}
   let f = dataTH.filter(r=>{
     return (r.account||"").toLowerCase().includes(key) ||
            (r.nhan_vien||"").toLowerCase().includes(key) ||
            (r.huyen||"").toLowerCase().includes(key);
   });
-
+  renderTong(f);
   renderTH(f);
 });
 
