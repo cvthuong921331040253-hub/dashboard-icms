@@ -15,12 +15,14 @@ body{font-family:Arial;background:#f5f5f5;margin:0;padding:6px}
 button{padding:6px;margin-top:4px;cursor:pointer}
 .header{position: fixed;top: 0;left: 0;width: 100%;background: #f5f5f5;padding: 8px;z-index: 1000;box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
 /* đẩy nội dung xuống tránh bị đè */
-#dataTH{margin-top: 90px;}
+#dataTH{margin-top: 160px;}
 h3{margin: 0 0 6px 0;}
 #search_all{width: 100%;padding: 6px;}
 body{font-size:14px;}
 .card{padding:8px;font-size:14px;}
 button{flex:1;font-size:13px;}
+.header{padding: 6px;}
+#tongTH .card{margin-bottom:6px;padding:6px;}
 </style>
 
 </head>
@@ -30,7 +32,7 @@ button{flex:1;font-size:13px;}
 <div class="header">
 
   <h3>📋 Xử lý Homewifi thiếu</h3>
-  <div id="logtime" style="margin-top:60px; padding:6px; font-size:13px; color:#666"></div>
+  <div id="logtime" style="margin-top:6px; padding:6px; font-size:13px; color:#666"></div>
   <div id="tongTH"></div>
 
   <input id="search_all" placeholder="🔍 Tìm account / nhân viên / huyện">
@@ -59,8 +61,9 @@ async function loadAll(){
   noteData = note.data;
 
   // 🔥 thời gian load
+  let lastUpdate = dataTH[0]?.update_time || dataTH[0]?.time || "";
   document.getElementById("logtime").innerHTML =
-    "⏰ Cập nhật: " + new Date().toLocaleString("vi-VN");
+    "⏰ Cập nhật: " + formatTime(lastUpdate);
 
   renderTong(dataTH); // 🔥 thêm lại
   renderTH(dataTH);
