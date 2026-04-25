@@ -435,14 +435,14 @@ function viewImageList(urls, index = 0){
 
       ${
         i > 0 
-        ? `<div onclick="event.stopPropagation();prev()" 
+        ? `<div onclick="event.stopPropagation();window.prev()" 
             style="position:absolute;left:10px;top:50%;color:#fff;font-size:30px;cursor:pointer">⬅</div>`
         : ""
       }
 
       ${
         i < idList.length - 1
-        ? `<div onclick="event.stopPropagation();next()" 
+        ? `<div onclick="event.stopPropagation();window.next()" 
             style="position:absolute;right:10px;top:50%;color:#fff;font-size:30px;cursor:pointer">➡</div>`
         : ""
       }
