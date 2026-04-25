@@ -246,7 +246,7 @@ function send(note, status, images, existed){
   .then(res=>res.text())
   .then(()=>{
     alert("✅ Đã lưu");
-  
+    localStorage.removeItem("cache_homewifi");
     document.getElementById("loading").style.display = "none";
     document.getElementById("btnSave").disabled = false;
   
