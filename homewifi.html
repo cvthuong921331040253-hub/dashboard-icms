@@ -18,6 +18,9 @@ button{padding:6px;margin-top:4px;cursor:pointer}
 #dataTH{margin-top: 90px;}
 h3{margin: 0 0 6px 0;}
 #search_all{width: 100%;padding: 6px;}
+body{font-size:14px;}
+.card{padding:8px;font-size:14px;}
+button{flex:1;font-size:13px;}
 </style>
 
 </head>
@@ -27,6 +30,8 @@ h3{margin: 0 0 6px 0;}
 <div class="header">
 
   <h3>📋 Xử lý Homewifi thiếu</h3>
+  <div id="logtime" style="margin-top:60px; padding:6px; font-size:13px; color:#666"></div>
+  <div id="tongTH"></div>
 
   <input id="search_all" placeholder="🔍 Tìm account / nhân viên / huyện">
 
@@ -44,13 +49,79 @@ let noteData = [];
 
 // ===== LOAD =====
 async function loadAll(){
+
+  document.getElementById("dataTH").innerHTML = "⏳ Đang tải dữ liệu...";
+
   let th = await fetch(API_TH).then(r=>r.json());
   dataTH = th.data;
 
   let note = await fetch(API_NOTE).then(r=>r.json());
   noteData = note.data;
 
+  // 🔥 thời gian load
+  document.getElementById("logtime").innerHTML =
+    "⏰ Cập nhật: " + new Date().toLocaleString("vi-VN");
+
+  renderTong(dataTH); // 🔥 thêm lại
   renderTH(dataTH);
+}
+function renderTong(data){
+
+  let t = calcTong(data);
+
+  let html = `
+    <div class="card">
+      <b>📊 Tổng thuê bao lắp thiếu:</b> ${t.totalAccount} thuê bao
+    </div>
+  `;
+
+  let months = Object.keys(t.byMonth)
+    .map(m => m.toString().trim().replace(/\D/g,''))
+    .filter(m => m)
+    .sort((a,b)=> parseInt(a) - parseInt(b));
+
+  months.forEach(m=>{
+    let obj = t.byMonth[m];
+    if(!obj) return;
+
+    html += `
+      <div class="card">
+        <b>📅 Tháng ${parseInt(m)}</b>: ${obj.accounts.size} thuê bao,
+        <b>💰 Phạt:</b>
+        <span class="high">${obj.tien.toLocaleString()}</span>
+      </div>
+    `;
+  });
+
+  document.getElementById("tongTH").innerHTML = html;
+}
+function calcTong(data){
+
+  let byMonth = {};
+  let accounts = new Set();
+
+  data.forEach(r=>{
+    if(!r.account) return;
+
+    accounts.add(r.account);
+
+    let m = (r.thang || "").toString().replace(/\D/g,'');
+
+    if(!byMonth[m]){
+      byMonth[m] = {
+        accounts: new Set(),
+        tien: 0
+      };
+    }
+
+    byMonth[m].accounts.add(r.account);
+    byMonth[m].tien += Number(r.t_p || 0);
+  });
+
+  return {
+    totalAccount: accounts.size,
+    byMonth
+  };
 }
 
 
@@ -96,6 +167,7 @@ function renderTH(data){
 
   let grouped = groupByAccount(data)
     .filter(r => r.t_p > 0)
+    .slice(0, 200) // 🔥 giới hạn 200 record
     .sort((a,b)=> b.t_p - a.t_p);
 
   grouped.forEach(r=>{
