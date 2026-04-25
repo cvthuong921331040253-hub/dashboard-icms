@@ -127,43 +127,67 @@ function renderTong(data){
 function getNote(account){
   return noteData.filter(n => n.account == account);
 }
+function isExist(account){
+  return noteData.some(n => n.account == account);
+}
 
 // SAVE
 function save(account, nhan_vien){
 
-  let note = document.getElementById("note_"+account).value;
+  let note = document.getElementById("note_"+account).value.trim();
   let status = document.getElementById("status_"+account).value;
   let file = document.getElementById("img_"+account).files[0];
 
-  if(!note && !file){
-    alert("Nhập ghi chú hoặc chọn ảnh");
-    return;
+  let existed = isExist(account);
+
+  // 🔒 CHỐNG NHẬP TRÙNG
+  if(existed){
+    if(!confirm("Account đã tồn tại. Bạn muốn CẬP NHẬT?")){
+      return;
+    }
   }
 
+  // 🎯 LOGIC NGHIỆP VỤ
+  if(status === "done"){
+    if(!file){
+      alert("⚠️ Đã xử lý → bắt buộc phải có ảnh");
+      return;
+    }
+  }
+
+  if(status === "fail"){
+    if(!file || !note){
+      alert("⚠️ Bất khả kháng → cần nhập ghi chú + ảnh");
+      return;
+    }
+  }
+
+  // 🚀 upload
   if(file){
     compressImage(file, (base64)=>{
-      send(account, note, status, base64, nhan_vien);
+      send(account, note, status, base64, nhan_vien, existed);
     });
   }else{
-    send(account, note, status, "", nhan_vien);
+    send(account, note, status, "", nhan_vien, existed);
   }
-  }
+}
 
-function send(account, note, status, image, nhan_vien){
+function send(account, note, status, image, nhan_vien, existed){
 
   fetch(API_NOTE,{
     method:"POST",
-    body: JSON.stringify({account,note,status,image,nhan_vien})
+    body: JSON.stringify({
+      account,
+      note,
+      status,
+      image,
+      nhan_vien,
+      mode: existed ? "update" : "insert"
+    })
   })
-  .then(res => res.text()) // 👈 bắt response
+  .then(res => res.text())
   .then(txt=>{
-    console.log("SERVER:", txt);
-
     alert("✅ Đã lưu");
-
-    document.getElementById("note_"+account).value = "";
-    document.getElementById("img_"+account).value = "";
-
     loadAll();
   })
   .catch(err=>{
