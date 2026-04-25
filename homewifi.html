@@ -2,347 +2,195 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-<title>Homewifi Dashboard</title>
+<title>Homewifi Dashboard PRO</title>
 
 <style>
-
-/* 🔥 CHẶN TRÀN NGANG */
-html {
-  overflow-x: hidden;
-}
-
-body {
-  overflow-x: hidden;
-  margin: 0;
-}
-
-body {
-  font-family: Arial;
-  padding: 6px;
-  margin: 0;
-  background: #f5f5f5;
-}
-
-/* HEADER */
-#header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: #fff;
-  z-index: 9999;
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-h3 {
-  margin: 4px 0;
-}
-
-/* LOGTIME */
-#logtime {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 6px;
-}
-
-/* FILTER */
-.filter {
-  display: flex;
-  gap: 4px;
-  flex-wrap: nowrap;
-}
-
-.filter input {
-  flex: unset;
-  width: 90px; 
-
-  padding: 6px;
-  font-size: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-sizing: border-box;
-}
-
-.filter button {
-  padding: 6px 6px;
-  font-size: 12px;
-  border: none;
-  border-radius: 6px;
-  background: #2196f3;
-  color: white;
-}
-
-/* CARD */
-.card {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  margin-bottom: 8px;
-  padding: 10px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  font-size: 13px;
-}
-
-/* 🔥 FIX TRÀN SERI (QUAN TRỌNG NHẤT) */
-.account {
-  margin-top: 6px;
-  padding-top: 6px;
-  border-top: 1px dashed #ddd;
-
-  word-break: break-all;     /* 🔥 fix chuỗi dài */
-  overflow-wrap: anywhere;   /* 🔥 fix mạnh hơn */
-}
-
-/* TEXT ĐỎ */
-.high {
-  color: red;
-  font-weight: bold;
-}
-
-/* MOBILE */
-@media (max-width: 600px) {
-  body {
-    font-size: 13px;
-  }
-}
-
+body{font-family:Arial;background:#f5f5f5;margin:0;padding:6px}
+.card{background:#fff;padding:10px;margin-bottom:8px;border-radius:8px}
+input,select,button{padding:6px;margin-top:4px;width:100%}
+.high{color:red;font-weight:bold}
+.history{background:#fafafa;padding:6px;margin-top:6px;border-radius:6px}
+.done{color:green;font-weight:bold}
+.fail{color:orange;font-weight:bold}
 </style>
 </head>
 
 <body>
 
-<div id="header">
-  <h3>📋 Danh sách xử lý Homewifi</h3>
-  <div id="logtime">Đang tải...</div>
+<h3>📋 Dashboard Homewifi PRO</h3>
 
-  <div class="filter">
-    <input id="nv_th" placeholder="Tìm nhân viên">
-    <input id="huyen_th" placeholder="Tìm huyện">
-    <button onclick="reloadData()">🔄</button>
-  </div>
-</div>
+<input id="acc_th" placeholder="🔍 Tìm account">
 
-<div id="tongTH"></div>
-<div id="dataTH">Đang tải...</div>
+<div id="dataTH"></div>
 
 <script>
 
-const API_TH = "https://script.google.com/macros/s/AKfycbyezxVz4giR-_yzv9ogTlbuvb4jkwyfZCrrDv53ScmkPrcDY1f1Mv-jMVziS3OGWLkl/exec?sheet=Homewifi";
+const API_TH   = "https://script.google.com/macros/s/AKfycbyezxVz4giR-_yzv9ogTlbuvb4jkwyfZCrrDv53ScmkPrcDY1f1Mv-jMVziS3OGWLkl/exec?sheet=Homewifi";
+const API_NOTE = "https://script.google.com/macros/s/AKfycby65IonkB4-im-6x2iJVAbMyzbUfaSs0e2udEQHoi5qnOSVdbO8wRyWGxiTE5KJZ0I5BQ/exec";
 
 let dataTH = [];
+let noteData = [];
 
 // LOAD
-function loadTH(){
-  fetch(API_TH)
-    .then(r => r.json())
-    .then(res => {
+async function loadAll(){
 
-      dataTH = res.data;
+  let th = await fetch(API_TH).then(r=>r.json());
+  dataTH = th.data;
 
-      let latest = getLatestLogtime(dataTH);
-      let isOld = (Date.now() - latest) > 24*60*60*1000;
+  let note = await fetch(API_NOTE).then(r=>r.json());
+  noteData = note.data;
 
-      document.getElementById("logtime").innerHTML =
-        `⏰ Cập nhật: <span style="color:${isOld?'red':'#666'}">
-        ${formatTime(latest)}
-        </span>`;
-
-      renderTong(dataTH);
-      renderTH(dataTH);
-    })
-    .catch(() => {
-      document.getElementById("dataTH").innerHTML = "❌ Lỗi tải dữ liệu";
-    });
+  renderTH(dataTH);
 }
 
-function fixHeaderSpace(){
-  let header = document.getElementById("header");
-  document.body.style.paddingTop = header.offsetHeight + "px";
+// LẤY NOTE THEO ACCOUNT
+function getNote(account){
+  return noteData.filter(n => n.account == account);
 }
 
-window.addEventListener("load", fixHeaderSpace);
-window.addEventListener("resize", fixHeaderSpace);
-  
-// RELOAD
-function reloadData(){
-  document.getElementById("dataTH").innerHTML = "⏳ Đang tải lại...";
-  loadTH();
-}
+// SAVE
+function save(account, nhan_vien){
 
-// LOGTIME
-function getLatestLogtime(data){
-  let max = 0;
-  data.forEach(r=>{
-    let t = new Date(r.update).getTime();
-    if(t > max) max = t;
-  });
-  return max;
-}
+  let note = document.getElementById("note_"+account).value;
+  let status = document.getElementById("status_"+account).value;
+  let file = document.getElementById("img_"+account).files[0];
 
-// FORMAT
-function formatTime(date){
-  let d = new Date(date);
-  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-}
-
-// GROUP
-function groupByAccount(data){
-  let map = {};
-
-  data.forEach(r=>{
-    let key = (r.nhan_vien||"") + "_" + (r.account||"");
-    let log = new Date(r.update || 0);
-
-    if(!map[key]){
-      map[key] = {
-        nhan_vien: r.nhan_vien,
-        huyen: r.huyen,
-        account: r.account,
-        seri: [],
-        t_p: 0,
-        thang: r.thang,
-        update: log
-      };
-    }
-
-    if(r.seri) map[key].seri.push(r.seri);
-    map[key].t_p += Number(r.t_p || 0);
-
-    if(log > map[key].update){
-      map[key].update = log;
-    }
-  });
-
-  return Object.values(map);
-}
-function calcTong(data){
-
-  let grouped = groupByAccount(data).filter(r => r.t_p > 0);
-
-  let tongAll = new Set(); // đếm account unique
-  let byMonth = {};
-
-  grouped.forEach(r => {
-    tongAll.add(r.account);
-
-    let raw = (r.thang || "").toString().trim();
-    let thang = raw.replace(/\D/g,'');
-    if(!thang) return;
-
-    if(!byMonth[thang]){
-      byMonth[thang] = {
-        accounts: new Set(),
-        tien: 0
-      };
-    }
-
-    byMonth[thang].accounts.add(r.account);
-    byMonth[thang].tien += Number(r.t_p || 0);
-  });
-
-  return {
-    totalAccount: tongAll.size,
-    byMonth
-  };
-}
-function renderTong(data){
-
-  let t = calcTong(data);
-
-  // tổng
-  let html = `
-    <div class="card">
-      <b>📊 Tổng thuê bao lắp thiếu:</b> ${t.totalAccount} thuê bao
-    </div>
-  `;
-
-  // chuẩn hóa + sort tháng
-  let months = Object.keys(t.byMonth)
-    .map(m => m.toString().trim().replace(/\D/g,'')) // 🔥 chuẩn hóa
-    .filter(m => m)
-    .sort((a,b)=> parseInt(a) - parseInt(b));
-
-  months.forEach(m => {
-
-    let obj = t.byMonth[m];
-    if(!obj) return;
-
-    let count = obj.accounts.size;
-    let tien = obj.tien.toLocaleString("vi-VN");
-
-    html += `
-      <div class="card">
-        <b>📅 Tháng ${parseInt(m)}</b>: ${count} thuê bao, 
-        <b>💰 Phạt:</b> <span class="high">${tien}</span>
-      </div>
-    `;
-  });
-
-  document.getElementById("tongTH").innerHTML = html;
-}
-// RENDER
-function renderTH(data){
-
-  let grouped = groupByAccount(data)
-    .filter(r => r.t_p > 0)
-    .sort((a,b)=> b.t_p - a.t_p);
-
-  let html = "";
-
-  grouped.forEach(r => {
-
-    let tien = Number(r.t_p).toLocaleString("vi-VN");
-    let color = r.t_p > 200000 ? "high" : "";
-
-   html += `
-    <div class="card">
-      <b>👤 ${r.nhan_vien} - ${r.huyen}</b><br>
-  
-      📱 ${r.account}<br>
-      🔧 Thiếu: ${r.seri.join(", ")}<br>
-      📅 TKM tháng: ${r.thang}<br>
-      💰 Phạt: <span class="${color}">${tien}</span>
-    </div>
-  `;
-  });
-
-  document.getElementById("dataTH").innerHTML = html || "Không có dữ liệu";
-}
-
-
-// INIT
-loadTH();
-document.getElementById("nv_th").addEventListener("input", autoFilter);
-document.getElementById("huyen_th").addEventListener("input", autoFilter);
-function autoFilter(){
-
-  let nv = document.getElementById("nv_th").value.toLowerCase().trim();
-  let h = document.getElementById("huyen_th").value.toLowerCase().trim();
-
-  // nếu xóa hết → trả về dữ liệu ban đầu
-  if(!nv && !h){
-    renderTong(dataTH);
-    renderTH(dataTH);
+  if(!note && !file){
+    alert("Nhập ghi chú hoặc chọn ảnh");
     return;
   }
 
-  let f = dataTH.filter(r =>
-    (r.nhan_vien||"").toLowerCase().includes(nv) &&
-    (r.huyen||"").toLowerCase().includes(h)
-  );
-
-  renderTong(f);
-  renderTH(f);
+  if(file){
+    let reader = new FileReader();
+    reader.onload = function(){
+      send(account, note, status, reader.result, nhan_vien);
+    };
+    reader.readAsDataURL(file);
+  }else{
+    send(account, note, status, "", nhan_vien);
+  }
 }
+
+function send(account, note, status, image, nhan_vien){
+
+  fetch(API_NOTE,{
+    method:"POST",
+    body: JSON.stringify({
+      account,
+      note,
+      status,
+      image,
+      nhan_vien
+    })
+  })
+  .then(()=>{
+    alert("✅ Đã lưu");
+    loadAll();
+  });
+}
+
+// RENDER
+function renderTH(data){
+
+  let accFilter = document.getElementById("acc_th").value.toLowerCase();
+
+  let html = "";
+
+  data.forEach(r=>{
+
+    if(accFilter && !r.account.toLowerCase().includes(accFilter)) return;
+
+    let notes = getNote(r.account);
+
+    let latest = notes[notes.length-1];
+
+    let statusIcon = "";
+    let statusClass = "";
+
+    if(latest){
+      if(latest.status=="done"){
+        statusIcon = "✅";
+        statusClass = "done";
+      }
+      if(latest.status=="fail"){
+        statusIcon = "⚠️";
+        statusClass = "fail";
+      }
+    }
+
+    html += `
+    <div class="card">
+
+      <b class="${statusClass}">${statusIcon} ${r.account}</b><br>
+      👤 ${r.nhan_vien} - ${r.huyen}<br>
+
+      💰 <span class="${r.t_p>200000?'high':''}">
+      ${Number(r.t_p||0).toLocaleString()}
+      </span>
+
+      <hr>
+
+      📝 <input id="note_${r.account}" placeholder="Ghi chú...">
+
+      <select id="status_${r.account}">
+        <option value="done">✅ Đã xử lý</option>
+        <option value="fail">⚠️ Bất khả kháng</option>
+      </select>
+
+      <input type="file" id="img_${r.account}">
+
+      <button onclick="save('${r.account}','${r.nhan_vien}')">💾 Lưu</button>
+
+      <button onclick="toggleHistory('${r.account}')">📜 Lịch sử</button>
+
+      <div id="his_${r.account}" class="history" style="display:none">
+        ${renderHistory(notes)}
+      </div>
+
+    </div>
+    `;
+  });
+
+  document.getElementById("dataTH").innerHTML = html;
+}
+
+// HISTORY
+function renderHistory(list){
+
+  if(!list.length) return "Chưa có";
+
+  return list.map(n=>`
+    <div>
+      ⏰ ${formatTime(n.time)}<br>
+      👤 ${n.nhan_vien}<br>
+      ${n.status=="done"?"✅":"⚠️"} ${n.note}<br>
+      ${n.image ? `<a href="${n.image}" target="_blank">📷 Xem ảnh</a>`:""}
+      <hr>
+    </div>
+  `).join("");
+}
+
+// TOGGLE
+function toggleHistory(acc){
+
+  let el = document.getElementById("his_"+acc);
+
+  el.style.display = (el.style.display=="none") ? "block" : "none";
+}
+
+// TIME
+function formatTime(t){
+  let d = new Date(t);
+  return d.toLocaleString("vi-VN");
+}
+
+// FILTER
+document.getElementById("acc_th").addEventListener("input", ()=>{
+  renderTH(dataTH);
+});
+
+// INIT
+loadAll();
 
 </script>
 
