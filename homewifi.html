@@ -36,7 +36,13 @@ let noteData = [];
 async function loadAll(){
   let th = await fetch(API_TH).then(r=>r.json());
   dataTH = th.data;
+  let latest = getLatestLogtime(dataTH);
 
+  document.getElementById("tongTH").insertAdjacentHTML("beforebegin", `
+  <div style="font-size:12px;color:#666;margin-bottom:6px">
+  ⏰ Cập nhật: ${new Date(latest).toLocaleString("vi-VN")}
+  </div>
+  `);
   let note = await fetch(API_NOTE).then(r=>r.json());
   noteData = note.data;
 
@@ -55,11 +61,13 @@ function groupByAccount(data){
         nhan_vien: r.nhan_vien,
         huyen: r.huyen,
         account: r.account,
+        seri: [],
         t_p: 0,
         thang: r.thang
       };
     }
 
+    if(r.seri) map[key].seri.push(r.seri);
     map[key].t_p += Number(r.t_p || 0);
   });
 
@@ -179,7 +187,8 @@ function renderTH(data){
 
       <b class="${statusClass}">${statusIcon} ${r.account}</b><br>
       👤 ${r.nhan_vien} - ${r.huyen}<br>
-
+      🔧 Thiếu: ${r.seri.join(", ")}<br>
+      📅 TKM tháng: ${r.thang}<br>
       💰 <span class="${r.t_p>200000?'high':''}">
       ${Number(r.t_p||0).toLocaleString()}
       </span>
@@ -229,6 +238,14 @@ function toggleHistory(acc){
 
 function formatTime(t){
   return new Date(t).toLocaleString("vi-VN");
+}
+function getLatestLogtime(data){
+  let max = 0;
+  data.forEach(r=>{
+    let t = new Date(r.update).getTime();
+    if(t > max) max = t;
+  });
+  return max;
 }
 
 // ===== FILTER 1 Ô =====
