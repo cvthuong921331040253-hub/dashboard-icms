@@ -7,132 +7,160 @@
 
 <style>
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
-  background: #f0f4f9;
-  margin: 0;
-  padding: 10px;
-  color: #222;
+  font-family: Arial;
+  padding: 8px;
+  background: #f5f7fb;
 }
 
-/* ===== HEADER ===== */
-.header-fixed {
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.ok { color: green; }
+.fail { color: red; font-weight: bold; }
+
+.top { background: #e8f5e9; }
+.worst { background: #ffeaea; }
+
+input {
+  padding: 4px;
+  margin-right: 6px;
+}
+.reload-btn {
+  position: static; /* 👈 đổi dòng này */
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: #2196f3;
+  color: white;
+  font-size: 14px;
+}
+  .header-fixed {
   position: sticky;
   top: 0;
-  background: #ffffff;
-  z-index: 1000;
-  padding: 10px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  margin-bottom: 10px;
+  background: #f5f7fb;
+  z-index: 1000;   /* 👈 tăng lên cho chắc */
+  padding-bottom: 6px;
 }
-
-.header-title h2 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.logtime {
-  font-size: 12px;
-  color: #888;
-}
-
-/* ===== INPUT ===== */
-input {
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  width: 45%;
+  .header-filter {
   margin-top: 5px;
 }
-
-/* ===== BUTTON ===== */
-.reload-btn {
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(135deg,#2196f3,#42a5f5);
-  color: white;
-  padding: 8px 12px;
-  font-size: 14px;
+  .header-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-
-/* ===== CARD ===== */
-.card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 12px;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  font-size: 14px;
-}
-
-/* ===== STATUS ===== */
-.ok {
-  color: #2e7d32;
-}
-
-.fail {
-  color: #d32f2f;
-  font-weight: 500;
-}
-
-/* ===== TOP / WORST ===== */
-.top {
-  background: linear-gradient(135deg,#e8f5e9,#ffffff);
-}
-
-.worst {
-  background: linear-gradient(135deg,#ffeaea,#ffffff);
-}
-
-/* ===== SECTION TITLE ===== */
-h3 {
-  margin: 12px 0 6px;
-  font-size: 16px;
-}
-
-/* ===== TABLE ===== */
-#tableKPI table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-}
-
-#tableKPI th {
-  background: #1976d2;
-  color: white;
-  padding: 6px;
-}
-
-#tableKPI td {
-  padding: 6px;
-  text-align: center;
-}
-
-#tableKPI tr:nth-child(even) {
-  background: #f5faff;
-}
-
-/* ===== SCROLL TABLE ===== */
-.kpi-wrapper {
-  overflow-x: auto;
-  border-radius: 10px;
-}
-
-/* ===== MOBILE ===== */
+  /* ===== MOBILE ===== */
 @media (max-width: 600px) {
 
   body {
     font-size: 13px;
+    padding: 6px;
+  }
+
+  h2 {
+    font-size: 16px;
   }
 
   .card {
+    padding: 6px;
+    margin-bottom: 6px;
     font-size: 13px;
   }
 
   input {
-    width: 100%;
+    padding: 3px;
+    font-size: 12px;
   }
 
+  .reload-btn {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+}
+  /* ===== TABLE KPI ===== */
+#tableKPI table {
+  background: #fff;
+}
+
+#tableKPI th {
+  background: #e3f2fd; /* xanh nhẹ */
+  text-align: center;
+  font-weight: bold;
+}
+
+#tableKPI td {
+  text-align: center;       /* 👉 số nằm giữa */
+  vertical-align: middle;
+  background: #f9fbff;      /* nền nhẹ */
+}
+
+/* dòng xen kẽ cho đẹp */
+#tableKPI tr:nth-child(even) td {
+  background: #f1f6ff;
+}
+  /* ===== FIX KPI TABLE ===== */
+#tableKPI {
+  background: #fff;
+  padding-bottom: 5px;
+}
+  .kpi-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#tableKPI table {
+  min-width: 1200px;
+}
+ /* ===== CỘT HUYỆN MÀU XANH ===== */
+#tableKPI th:first-child,
+#tableKPI td:first-child {
+  position: sticky;
+  left: 0;
+
+  /* nền xanh */
+  background: #d0e7ff;
+
+  /* chữ đậm */
+  font-weight: 500;
+
+  /* viền phân cách */
+  border-right: 2px solid #90caf9;
+
+  /* đổ bóng nhẹ */
+  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
+
+  z-index: 3;
+}
+
+/* header cột đầu xanh đậm hơn */
+#tableKPI th:first-child {
+  background: #90caf9;
+  font-weight: bold;
+  z-index: 4;
+}
+/* cột huyện vừa với chữ */
+#tableKPI th:first-child,
+#tableKPI td:first-child {
+  width: 80px;        /* 👈 chỉnh ở đây */
+  min-width: 60px;
+  white-space: nowrap;
+}
+  /* bảng full width */
+#tableKPI table {
+  width: 100%;
+  table-layout: fixed; /* 👉 chia đều cột */
+}
+  /* căn chữ log time */
+  .logtime {
+  font-size: 12px;
+  color: #666;
+  margin-top: 2px;
 }
 </style>
 </head>
