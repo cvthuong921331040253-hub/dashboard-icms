@@ -30,13 +30,6 @@ body {
 .top { background: #e8f5e9; }
 .worst { background: #ffeaea; }
 
-input {
-  padding: 6px 10px;
-  margin-right: 6px;
-  border-radius: 10px;     /* 👈 bo góc */
-  border: 1px solid #ddd;
-  outline: none;
-}
 .reload-btn {
   padding: 5px 8px;           /* 👈 nhỏ lại */
   border: none;
@@ -82,8 +75,8 @@ input {
 
 input {
   padding: 6px 10px;
-  margin-right: 6px;
-  border-radius: 10px;     /* 👈 bo góc */
+  margin: 6px 0;        
+  border-radius: 10px; /* 👈 BO GÓC */
   border: 1px solid #ddd;
   outline: none;
 }
@@ -232,7 +225,7 @@ input[type="checkbox"]:checked + .checkbox-btn {
   <button onclick="reloadPage()" class="reload-btn">🔄</button>
 </div>
   <div class="header-filter">
-  <input id="nv" placeholder="Tìm nhân viên..." onkeyup="filter()"><br><br>
+  <input id="nv" placeholder="Tìm nhân viên..." onkeyup="filter()"><br>
   <input id="huyen" placeholder="Tìm huyện..." onkeyup="filter()">
     <input type="checkbox" id="badCheck" onchange="onlyBad(this.checked)">
     <label for="badCheck" class="checkbox-btn">⚠️ KPI kém</label>
