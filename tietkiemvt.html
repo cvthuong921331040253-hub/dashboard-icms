@@ -103,15 +103,15 @@ th, td {
   /*Tùy chỉnh bảng */
   .table-wrap {
     overflow-x: auto;
-    overflow-y: auto;
+    overflow-y: auto;   /* 👈 GIỮ CẢ 2 SCROLL */
     max-height: 60vh;
+  
     -webkit-overflow-scrolling: touch;
   
     border: 1px solid #ddd;
     background: #fff;
   
-    border-radius: 12px;   /* 👈 BO GÓC */
-    overflow-x: auto; overflow-y: hidden;      /* 👈 QUAN TRỌNG để bo góc */
+    border-radius: 12px;
   }
 
   /*Tùy chỉnh bảng */
@@ -177,13 +177,7 @@ th, td {
   top: 22px; /* 👈 chỉnh theo chiều cao dòng 1 */
   z-index: 2;
   background: #e3f2fd;
-}
-html, body {
-  height: 100%;
-}
-body {
-  overflow-y: auto;
-}
+
 /*Cho bảng tự giãn theo nội dung */
 #myTable {
   border-collapse: collapse;
