@@ -96,9 +96,28 @@ input {
   background: #e3f2fd;        /* 👈 xanh nhạt */
   color: #1976d2;             /* 👈 chữ xanh */
 
+  font-size: 13px;}
+}
+ /* 👈 KPI KÉM BUTTON */
+input[type="checkbox"] {
+  display: none;
+}
+/* ===== KPI KÉM BUTTON ===== */
+.checkbox-btn {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;              /* 👈 BO TRÒN */
+  background: #e0e0e0;
+  color: #333;
   font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
+/* khi được check */
+input[type="checkbox"]:checked + .checkbox-btn {
+  background: #ff5252;
+  color: white;
 }
   /* ===== TABLE KPI ===== */
 #tableKPI table {
@@ -215,7 +234,8 @@ input {
   <div class="header-filter">
   <input id="nv" placeholder="Tìm nhân viên..." onkeyup="filter()"><br>
   <input id="huyen" placeholder="Tìm huyện..." onkeyup="filter()">
-    <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
+    <input type="checkbox" id="badCheck" onchange="onlyBad(this.checked)">
+    <label for="badCheck" class="checkbox-btn">⚠️ KPI kém</label>
   </div>
 
 </div>
