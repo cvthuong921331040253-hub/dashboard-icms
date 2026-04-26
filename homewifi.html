@@ -522,17 +522,41 @@ function viewImageList(urls, index = 0){
 
 // ===== FILTER =====
 document.getElementById("search_all").addEventListener("input", ()=>{
-  let key = document.getElementById("search_all").value.toLowerCase();
+
+  let key = document.getElementById("search_all").value.toLowerCase().trim();
+
   if(!key){
-  renderTong(dataTH);
-  renderTH(dataTH);
-  return;
-}
+    renderTong(dataTH);
+    renderTH(dataTH);
+    return;
+  }
+
+  // 🔥 lấy danh sách account đã xử lý
+  let updatedAccounts = noteData.map(n => n.account);
+
   let f = dataTH.filter(r=>{
-    return (r.account||"").toLowerCase().includes(key) ||
-           (r.nhan_vien||"").toLowerCase().includes(key) ||
-           (r.huyen||"").toLowerCase().includes(key);
+
+    let text =
+      (r.account||"") +
+      (r.nhan_vien||"") +
+      (r.huyen||"");
+
+    text = text.toLowerCase();
+
+    // 🔥 tìm "đã xử lý"
+    if(key.includes("đã")){
+      return updatedAccounts.includes(r.account);
+    }
+
+    // 🔥 tìm "chưa có"
+    if(key.includes("chưa")){
+      return !updatedAccounts.includes(r.account);
+    }
+
+    // 🔍 tìm bình thường
+    return text.includes(key);
   });
+
   renderTong(f);
   renderTH(f);
 });
