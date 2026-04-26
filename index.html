@@ -137,25 +137,37 @@ input {
 #tableKPI table {
   min-width: 1200px;
 }
- /* ===== CỘT HUYỆN MÀU XANH ===== */
-#tableKPI th:first-child,
-#tableKPI td:first-child {
+/* ===== CỘT HUYỆN MÀU XANH===== */
+#tableKPI th:first-child {
   position: sticky;
   left: 0;
-
-  /* nền xanh */
-  background: #d0e7ff;
-
-  /* chữ đậm */
-  font-weight: 500;
-
-  /* viền phân cách */
+  background: #90caf9;
+  font-weight: bold;
   border-right: 2px solid #90caf9;
-
-  /* đổ bóng nhẹ */
   box-shadow: 3px 0 6px rgba(0,0,0,0.08);
+  z-index: 4;
+}
 
+/* 👇 CHỈ tô xanh nếu KHÔNG phải bad */
+#tableKPI td:first-child:not(.bad) {
+  position: sticky;
+  left: 0;
+  background: #d0e7ff;
+  font-weight: 500;
+  border-right: 2px solid #90caf9;
+  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
   z-index: 3;
+}
+
+/* 👇 nếu là bad → ưu tiên màu đỏ */
+#tableKPI td.bad:first-child {
+  position: sticky;
+  left: 0;
+  background: #ffcccc;
+  font-weight: bold;
+  border-right: 2px solid #90caf9;
+  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
+  z-index: 4;
 }
 
 /* header cột đầu xanh đậm hơn */
