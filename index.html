@@ -598,72 +598,83 @@ function applyFilter(){
   );
 
   // =============================
-  // 🔴 MODE KPI KÉM (VIẾT MỚI)
+  // 🔴 MODE KPI KÉM
   // =============================
-if(showBadOnly){
+  if(showBadOnly){
 
-  // 1. lọc NV tồi
-  let badNV = f
-    .filter(r => getBadKPI(r).length > 0)
-    .sort((a,b)=> a.score - b.score);
+    let badNV = f
+      .filter(r => getBadKPI(r).length > 0)
+      .sort((a,b)=> a.score - b.score);
 
-  // 2. render NV
-  render(badNV);
+    render(badNV);
 
-  // 3. render huyện + KPI tỉ trọng
-  renderBadHuyen(tableDataGlobal);
-  renderKPIBadByHuyen(tableDataGlobal);
+    renderBadHuyen(tableDataGlobal);
+    renderKPIBadByHuyen(tableDataGlobal);
 
-  // 4. ẨN các phần không cần
-  document.getElementById("sectionTop").style.display = "none";
-  document.getElementById("sectionWorst").style.display = "none";
-  document.getElementById("sectionTable").style.display = "none";
+    // UI
+    sectionTop.style.display = "none";
+    sectionWorst.style.display = "none";
+    sectionTable.style.display = "none";
 
-  // 5. HIỆN các phần cần
-  document.getElementById("badHuyen").style.display = "block";
-  document.getElementById("sectionWorstKPI").style.display = "block";
-  
-  return;
-}
-  // 🔍 SEARCH NHÂN VIÊN
-  if(isSearchNV){
-    render(f);
-  
-    document.getElementById("sectionTop").style.display = "none";
-    document.getElementById("sectionWorst").style.display = "none";
-    document.getElementById("badHuyen").style.display = "none";
-    document.getElementById("sectionTable").style.display = "none";
+    badHuyen.style.display = "block";
+    sectionWorstKPI.style.display = "block";
+
     return;
   }
-  // 🔍 SEARCH HUYỆN
-  if(isSearchHuyen){
+
+  // =============================
+  // 🔍 SEARCH NHÂN VIÊN
+  // =============================
+  if(isSearchNV){
+
     render(f);
-  
-    document.getElementById("sectionTop").style.display = "none";
-    document.getElementById("sectionWorst").style.display = "none";
-    document.getElementById("badHuyen").style.display = "none";
-    document.getElementById("sectionTable").style.display = "block";
-  // 🔍 SEARCH TRÊN BẢNG KPI
+
+    sectionTop.style.display = "none";
+    sectionWorst.style.display = "none";
+    sectionTable.style.display = "none";
+    badHuyen.style.display = "none";
+    sectionWorstKPI.style.display = "none";
+
+    return;
+  }
+
+  // =============================
+  // 🔍 SEARCH HUYỆN
+  // =============================
+  if(isSearchHuyen){
+
+    render(f);
+
+    // bảng KPI lọc theo huyện
     let tableFiltered = tableDataGlobal.filter(r =>
       (r.huyen||"").toLowerCase().includes(h)
     );
+
     renderTableExcel(tableFiltered);
+
+    sectionTop.style.display = "none";
+    sectionWorst.style.display = "none";
+    sectionTable.style.display = "block";
+    badHuyen.style.display = "none";
+    sectionWorstKPI.style.display = "none";
+
     return;
   }
 
+  // =============================
   // 🟢 DEFAULT
+  // =============================
   render(f);
-  // 👇 HIỆN lại đầy đủ
-  document.getElementById("sectionTop").style.display = "block";
-  document.getElementById("sectionWorst").style.display = "block";
-  document.getElementById("sectionTable").style.display = "block";
-  document.getElementById("badHuyen").style.display = "block";
-  
-  // 👇 Ẩn KPI tỉ trọng
-  document.getElementById("sectionWorstKPI").style.display = "none";
-  
-  // 👇 render lại bảng
+
   renderTableExcel(tableDataGlobal);
+  renderBadHuyen(tableDataGlobal);          // 👈 QUAN TRỌNG
+  renderKPIBadByHuyen(tableDataGlobal);     // 👈 nếu muốn hiện luôn
+
+  sectionTop.style.display = "block";
+  sectionWorst.style.display = "block";
+  sectionTable.style.display = "block";
+  badHuyen.style.display = "block";
+  sectionWorstKPI.style.display = "none";
 }
   
 // ===== CHECKBOX =====
