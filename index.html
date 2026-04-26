@@ -27,17 +27,21 @@ body {
 .worst { background: #ffeaea; }
 
 input {
-  padding: 4px;
+  padding: 6px 10px;
   margin-right: 6px;
+  border-radius: 10px;     /* 👈 bo góc */
+  border: 1px solid #ddd;
+  outline: none;
 }
 .reload-btn {
-  position: static; /* 👈 đổi dòng này */
-  padding: 6px 10px;
+  padding: 5px 8px;           /* 👈 nhỏ lại */
   border: none;
-  border-radius: 6px;
-  background: #2196f3;
-  color: white;
-  font-size: 14px;
+  border-radius: 8px;
+
+  background: #e3f2fd;        /* 👈 xanh nhạt */
+  color: #1976d2;             /* 👈 chữ xanh */
+
+  font-size: 13px;
 }
   .header-fixed {
   position: sticky;
@@ -54,7 +58,7 @@ input {
   align-items: center;
   justify-content: space-between;
 }
-  /* ===== MOBILE ===== */
+/* ===== DÀNH CHO MOBILE ===== */
 @media (max-width: 600px) {
 
   body {
@@ -72,15 +76,24 @@ input {
     font-size: 13px;
   }
 
-  input {
-    padding: 3px;
-    font-size: 12px;
-  }
+input {
+  padding: 6px 10px;
+  margin-right: 6px;
+  border-radius: 10px;     /* 👈 bo góc */
+  border: 1px solid #ddd;
+  outline: none;
+}
 
-  .reload-btn {
-    padding: 8px 10px;
-    font-size: 14px;
-  }
+.reload-btn {
+  padding: 5px 8px;           /* 👈 nhỏ lại */
+  border: none;
+  border-radius: 8px;
+
+  background: #e3f2fd;        /* 👈 xanh nhạt */
+  color: #1976d2;             /* 👈 chữ xanh */
+
+  font-size: 13px;
+}
 
 }
   /* ===== TABLE KPI ===== */
@@ -156,6 +169,12 @@ input {
   width: 100%;
   table-layout: fixed; /* 👉 chia đều cột */
 }
+/* ===== BO TRÒN BẢNG ===== */
+.kpi-wrapper {
+  border-radius: 12px;
+  overflow: hidden; /* 👈 QUAN TRỌNG */
+  border: 1px solid #e0e0e0;
+}
   /* căn chữ log time */
   .logtime {
   font-size: 12px;
@@ -176,8 +195,8 @@ input {
   <button onclick="reloadPage()" class="reload-btn">🔄</button>
 </div>
   <div class="header-filter">
-    🔍 Nhân viên <input id="nv" onkeyup="filter()"><br>
-    🔍 Huyện <input id="huyen" onkeyup="filter()">
+  <input id="nv" placeholder="Tìm nhân viên..." onkeyup="filter()"><br>
+  <input id="huyen" placeholder="Tìm huyện..." onkeyup="filter()">
     <label><input type="checkbox" onchange="onlyBad(this.checked)"> KPI kém</label>
   </div>
 
