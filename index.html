@@ -6,6 +6,10 @@
 <title>KPI FINAL</title>
 
 <style>
+/* 👈 đổi màu điều kiện xanh đỏ */
+.bad {
+  background: #ffcccc;
+}
 body {
   font-family: Arial;
   padding: 8px;
@@ -228,13 +232,6 @@ input {
   <div id="data"></div>
 
 <script>
-function load(tab){
-  document.getElementById("kpiUI").style.display =
-    tab === "kpi" ? "block" : "none";
-
-  document.getElementById("thuhoiUI").style.display =
-    tab === "thuhoi" ? "block" : "none";
-}
 const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
 let allData = [];
 let tableDataGlobal = [];
@@ -501,8 +498,6 @@ tableDataGlobal.forEach(r=>{
     renderTableExcel(tableDataGlobal); // ✅ bảng đúng 1–15
     top10();
     topWorst();
-    renderBadHuyen(tableDataGlobal);
-    renderKPIBadByHuyen(tableDataGlobal);
   });
 }
 
@@ -689,7 +684,9 @@ function reloadPage(){
 }
 // START
 load();
-setInterval(load,50000);
+setInterval(()=> {
+  if(!document.hidden) load();
+},50000);
 function renderTableExcel(data){
 
   let html = `
@@ -728,7 +725,7 @@ function renderTableExcel(data){
 
     function cell(v,t,type="up"){
       let ok = check(v,t,type);
-      return `<td style="background:${ok?'':'#ffcccc'}; text-align:center">${toNumber(v)}</td>`;
+      return `<td class="${ok ? '' : 'bad'}" style="text-align:center">${toNumber(v)}</td>`;
     }
 
   data.forEach(r=>{
@@ -768,18 +765,6 @@ function renderTableExcel(data){
   html += "</table>";
 
   document.getElementById("tableKPI").innerHTML = html;
-}
-  
-function filterTH(){
-  let nv = document.getElementById("nv_th").value.toLowerCase();
-  let h = document.getElementById("huyen_th").value.toLowerCase();
-
-  let f = dataTH.filter(r =>
-    (r.nhan_vien||"").toLowerCase().includes(nv) &&
-    (r.huyen||"").toLowerCase().includes(h)
-  );
-
-  renderTH(f);
 }
 </script>
 </div>
