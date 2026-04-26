@@ -83,45 +83,78 @@ input {
   }
 
 }
+/* ===== MOBILE TỐI ƯU Bảng===== */
+@media (max-width: 600px) {
+
+  #tableKPI table {
+    font-size: 12px;
+    min-width: 800px;
+  }
+
+  #tableKPI th,
+  #tableKPI td {
+    padding: 5px;
+  }
+
+}
   /* ===== TABLE KPI ===== */
 #tableKPI table {
   background: #fff;
 }
 
+/* header */
 #tableKPI th {
-  background: #e3f2fd; /* xanh nhẹ */
-  text-align: center;
-  font-weight: bold;
+  position: sticky;
+  top: 0;
+  background: #1976d2;
+  color: white;
+  padding: 6px;
+  z-index: 5;
+  white-space: nowrap;
 }
 
+/* cell */
 #tableKPI td {
-  text-align: center;       /* 👉 số nằm giữa */
-  vertical-align: middle;
-  background: #f9fbff;      /* nền nhẹ */
+  padding: 6px;
+  text-align: center;
+  white-space: nowrap;
 }
 
-/* dòng xen kẽ cho đẹp */
+//* dòng xen kẽ */
 #tableKPI tr:nth-child(even) td {
-  background: #f1f6ff;
+  background: #f5faff;
 }
   /* ===== FIX KPI TABLE ===== */
 #tableKPI {
   background: #fff;
   padding-bottom: 5px;
 }
-  .kpi-wrapper {
+/* ===== KPI TABLE MOBILE PRO ===== */
+.kpi-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  background: #fff;
 }
 
+/* bảng */
 #tableKPI table {
-  min-width: 1200px;
+  min-width: 900px; /* 👈 giảm từ 1200 → dễ nhìn hơn */
+  border-collapse: collapse;
+  font-size: 13px;
 }
- /* ===== CỘT HUYỆN MÀU XANH ===== */
+/* ===== CỘT HUYỆN (QUAN TRỌNG) ===== */
 #tableKPI th:first-child,
 #tableKPI td:first-child {
   position: sticky;
   left: 0;
+
+  background: #e3f2fd;
+  font-weight: bold;
+
+  border-right: 2px solid #90caf9;
+  z-index: 6;
+}
 
   /* nền xanh */
   background: #d0e7ff;
@@ -138,11 +171,10 @@ input {
   z-index: 3;
 }
 
-/* header cột đầu xanh đậm hơn */
+/* header cột huyện */
 #tableKPI th:first-child {
-  background: #90caf9;
-  font-weight: bold;
-  z-index: 4;
+  background: #1565c0;
+  color: white;
 }
 /* cột huyện vừa với chữ */
 #tableKPI th:first-child,
