@@ -112,9 +112,12 @@ input {
 }
 
 #tableKPI td {
-  text-align: center;       /* 👉 số nằm giữa */
+  text-align: center;
   vertical-align: middle;
-  background: #f9fbff;      /* nền nhẹ */
+}
+
+#tableKPI td:not(.bad) {
+  background: #f9fbff;
 }
 
 /* dòng xen kẽ cho đẹp */
