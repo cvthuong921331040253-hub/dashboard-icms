@@ -373,23 +373,37 @@ function renderTable(data){
     <th>Tỉ lệ</th>
   </tr>`;
 
-  data.forEach(r=>{
-    let color = r.t_p >= 0 ? "ok" : "fail";
+data.forEach(r=>{
+  let color = r.t_p >= 0 ? "ok" : "fail";
 
-    html += `<tr>
-      <td>${r.huyen}</td>
+  html += `<tr>
+    <td>${r.huyen}</td>
 
-      <td>${num(r.dm_tkm)}</td>
-      <td>${num(r.th_tkm)}</td>
-      <td>${r.tl_tkm}%</td>
+    <td>${num(r.dm_tkm)}</td>
 
-      <td>${num(r.dm_sc)}</td>
-      <td>${num(r.th_sc)}</td>
-      <td>${r.tl_sc}%</td>
+    <td class="${r.th_tkm < r.dm_tkm ? 'fail' : ''}">
+      ${num(r.th_tkm)}
+    </td>
 
-      <td class="${color}">${num(r.t_p)}</td>
-    </tr>`;
-  });
+    <td class="${getColor(r.tl_tkm)}">
+      ${r.tl_tkm}%
+    </td>
+
+    <td>${num(r.dm_sc)}</td>
+
+    <td class="${r.th_sc < r.dm_sc ? 'fail' : ''}">
+      ${num(r.th_sc)}
+    </td>
+
+    <td class="${getColor(r.tl_sc)}">
+      ${r.tl_sc}%
+    </td>
+
+    <td class="${color}">
+      ${num(r.t_p)}
+    </td>
+  </tr>`;
+});
 
   document.getElementById("myTable").innerHTML = html;
 }
