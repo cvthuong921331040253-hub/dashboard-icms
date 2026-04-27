@@ -3,6 +3,9 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>THU HỒI</title>
 
 <style>
@@ -27,26 +30,6 @@ input {
 .top { background: #e8f5e9; }
 .worst { background: #ffeaea; }
 
-.header-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.header-filter {
-  margin-top: 5px;
-}
-.header-fixed {
-  position: sticky;
-  top: 0;
-
-  background: #f5f7fb;   /* 🔥 bắt buộc */
-  z-index: 9999;         /* 🔥 luôn nổi */
-
-  padding-bottom: 6px;
-  border-bottom: 1px solid #ddd;
-}
-
 .reload-btn {
   padding: 4px 8px;
   font-size: 13px;
@@ -60,27 +43,60 @@ input {
   font-size: 12px;
   color: #666;
 }
+.header {
+  position: sticky;
+  top: 0;
+  background:#f5f7fb;
+  z-index:1000;
+  padding-bottom:6px;
+}
+
+.header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.reload-btn{
+  padding:5px 8px;
+  border:none;
+  border-radius:8px;
+  background:#e3f2fd;
+  color:#1976d2;
+  font-size:13px;
+}
+
+.reload-btn:hover{
+  background:#1976d2;
+  color:#fff;
+}
+
+input{
+  padding:6px 10px;
+  margin:4px 0;
+  border-radius:10px;
+  border:1px solid #ddd;
+  width:100%;
+}
 </style>
 </head>
 
 <body>
 
 <!-- HEADER -->
-<div class="header-fixed">
+<div class="header">
 
-  <div class="header-title">
-    <div>
-      <h2>📥 THU HỒI</h2>
-      <div id="logtimeTH" class="logtime"></div>
-    </div>
-
-    <button onclick="loadThuHoi()" class="reload-btn">🔄</button>
+  <div class="header-top">
+    <h2>📥 Thu hồi</h2>
+    <button onclick="reloadPage()" class="reload-btn">🔄</button>
   </div>
 
-  <div class="header-filter">
-    🔍 Nhân viên <input id="nv_th" onkeyup="filterTH()"><br>
-    🔍 Huyện <input id="huyen_th" onkeyup="filterTH()">
-  </div>
+  <div id="logtimeTH" style="font-size:12px;color:#666;margin:6px 0"></div>
+
+  <input id="nv_th" placeholder="Tìm nhân viên..." onkeyup="filterTH()">
+  <input id="huyen_th" placeholder="Tìm huyện..." onkeyup="filterTH()">
+
+</div>
 
 </div>
 
@@ -118,7 +134,7 @@ function renderHuyen(data){
         <td>${r.huyen}</td>
         <td>${r.tong_can}</td>
         <td>${r.tong_da}</td>
-        <td style="color:${ty_le<1?'red':'green'}">
+        <td class="${ty_le<1?'phat':'ok'}">
           ${(ty_le*100).toFixed(0)}%
         </td>
       </tr>
@@ -140,7 +156,9 @@ function renderTH(data){
       <div style="font-size:12px; margin-left:10px">
       • [ƯT ${acc.uu_tien}] ${acc.account}
       | ${acc.da}/${acc.can}
+      <span class="${acc.ty_le<1?'phat':'ok'}">
       (${(acc.ty_le*100).toFixed(0)}%)
+</span>
       </div>
     `).join("");
 
@@ -160,11 +178,9 @@ function loadThuHoi(){
 
   document.getElementById("loadingTH").style.display = "block";
 
-  fetch(API_TH)
-  .then(r=>r.json())
-  .then(res=>{
-
-    let raw = res.data || [];
+fetch(API_TH + "&_=" + Date.now(), {
+  cache: "no-store"
+})
 
     // logtime
   if(raw.length > 0){
@@ -275,7 +291,12 @@ function filterTH(){
 
 // START
 loadThuHoi();
-
+function reloadPage(){
+  document.body.style.opacity = 0.3;
+  setTimeout(()=>{
+    location.reload();
+  },200);
+}
 </script>
 
 </body>
