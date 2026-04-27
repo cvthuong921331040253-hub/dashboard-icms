@@ -113,7 +113,7 @@ input{
 const API_TH = "https://script.google.com/macros/s/AKfycbzqj0IEDtejqhkPeJ9RHSczMz-K2_IqBdZB62VCtGL9l9rE4hyZa8tF8hx2vXupFa66/exec?sheet=Thu hoi";
 
 let dataTH = [];
-
+let dataHuyenGlobal = [];
 // ===== TABLE HUYỆN =====
 function renderHuyen(data){
   let html = `
@@ -178,22 +178,25 @@ function loadThuHoi(){
 
   document.getElementById("loadingTH").style.display = "block";
 
-fetch(API_TH + "&_=" + Date.now(), {
-  cache: "no-store"
-})
+  fetch(API_TH + "&_=" + Date.now(), {
+    cache: "no-store"
+  })
+  .then(r => r.json())
+  .then(res => {
 
-    // logtime
-  if(raw.length > 0){
-    let tg = raw[0].tg_update || raw[0]["Tg update"];
-  
-    if(tg){
-      let d = new Date(tg);
-  
-      document.getElementById("logtimeTH").innerText =
-  "🕒 Logtime: " + d.getDate()+"/"+(d.getMonth()+1)+" "
-  + d.getHours()+":"+String(d.getMinutes()).padStart(2,"0");
+    let raw = res.data || [];
+
+    // ===== LOGTIME =====
+    if(raw.length > 0){
+      let tg = raw[0].tg_update || raw[0]["Tg update"];
+    
+      if(tg){
+        let d = new Date(tg);
+        document.getElementById("logtimeTH").innerText =
+          "🕒 Logtime: " + d.getDate()+"/"+(d.getMonth()+1)+" "
+          + d.getHours()+":"+String(d.getMinutes()).padStart(2,"0");
+      }
     }
-  }
 
     let nhanvienMap = {};
     let huyenMap = {};
@@ -224,29 +227,29 @@ fetch(API_TH + "&_=" + Date.now(), {
       });
 
       if(!huyenMap[h]){
-        huyenMap[h] = { huyen:h, tong_can:0, tong_da:0, tong_phat:0 };
+        huyenMap[h] = { huyen:h, tong_can:0, tong_da:0 };
       }
 
       huyenMap[h].tong_can += can;
       huyenMap[h].tong_da += da;
-      if(ty_le < 1) huyenMap[h].tong_phat += phat;
-
     });
 
     dataTH = Object.values(nhanvienMap);
     let dataHuyen = Object.values(huyenMap);
-
-    dataTH.sort((a,b)=> (a.tong_da/a.tong_can) - (b.tong_da/b.tong_can));
-    dataHuyen.sort((a,b)=> (a.tong_da/a.tong_can) - (b.tong_da/b.tong_can));
-
+    dataHuyenGlobal = dataHuyen;
     renderHuyen(dataHuyen);
+
     dataTH.forEach(nv => {
-    nv.list.sort((a, b) => a.uu_tien - b.uu_tien);
-  });
+      nv.list.sort((a, b) => a.uu_tien - b.uu_tien);
+    });
+
     renderTH(dataTH);
 
     document.getElementById("loadingTH").style.display = "none";
 
+  })
+  .catch(err => {
+    console.log("API lỗi", err);
   });
 }
 
