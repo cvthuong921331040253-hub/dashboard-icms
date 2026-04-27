@@ -246,75 +246,68 @@ function num(v){ return Number(v||0).toLocaleString("vi-VN"); }
 
 // ===== LOAD =====
 function load(){
-fetch(API)
-  .then(r => r.json())
-  .then(res => {
+  fetch(API)
+    .then(r => r.json())
+    .then(res => {
 
-    let raw = res.data || [];
+      let raw = res.data || [];
 
-    let tg = raw[0]?.tg_update || raw[1]?.tg_update || "";
-    if(tg){
-      let d = new Date(tg);
-      tg = d.toLocaleString("vi-VN");
-    }
+      let tg = raw[0]?.tg_update || "";
+      if(tg){
+        let d = new Date(tg);
+        tg = d.toLocaleString("vi-VN");
+      }
 
-    document.getElementById("logtime").innerText =
-      tg ? "🕒 Logtime: " + tg : "";
+      document.getElementById("logtime").innerText =
+        tg ? "🕒 Logtime: " + tg : "";
 
-    // ... phần còn lại giữ nguyên
+      // ===== TABLE =====
+      tableData = raw.slice(0,29).map(r=>{
+        let tp = Number(r.t_p_tkm||0) + Number(r.t_p_sc||0);
 
-    applyFilter();
+        return {
+          huyen: r.huyen,
+          dm_tkm: Number(r.dm_tkm||0),
+          th_tkm: Number(r.th_tkm||0),
+          tl_tkm: Number(r.tl_tkm||0),
 
-  })
-  .catch(err => {
-    console.log("API lỗi", err);
-  });
-    // ===== TABLE (1-30) =====
-    tableData = raw.slice(0,29).map(r=>{
-      let tp = Number(r.t_p_tkm||0) + Number(r.t_p_sc||0);
-    
-      return {
+          dm_sc: Number(r.dm_xlsc||0),
+          th_sc: Number(r.th_sc||0),
+          tl_sc: Number(r.tl_sc||0),
+
+          t_p: tp
+        };
+      });
+
+      // ===== NHÂN VIÊN =====
+      nvData = raw.slice(29).map(r=>({
+        nhan_vien: r["nhan vien"] || r.nhan_vien,
         huyen: r.huyen,
-    
+
         dm_tkm: Number(r.dm_tkm||0),
+        dm_xlsc: Number(r.dm_xlsc||0),
         th_tkm: Number(r.th_tkm||0),
-        tl_tkm: Number(r.tl_tkm||0),
-    
-        dm_sc: Number(r.dm_xlsc||0),
         th_sc: Number(r.th_sc||0),
-        tl_sc: Number(r.tl_sc||0),
-    
-        // 🔥 tổng
-        t_p: tp
-      };
+
+        t_dm: Number(r.t_dm||0),
+        t_th: Number(r.t_th||0),
+
+        cl: Number(r.cl||0),
+        tl: Number(r.tl||0),
+
+        t_p_tkm: Number(r.t_p_tkm||0),
+        t_p_sc: Number(r.t_p_sc||0),
+
+        t_p: Number(r.t_p_tkm||0) + Number(r.t_p_sc||0)
+      }));
+
+      applyFilter();
+
+    })
+    .catch(err => {
+      console.log("API lỗi", err);
+      document.getElementById("logtime").innerText = "⚠️ Lỗi tải dữ liệu";
     });
-
-    // ===== NHÂN VIÊN (31+) =====
-    nvData = raw.slice(29).map(r=>({
-      nhan_vien: r["nhan vien"] || r.nhan_vien,
-      huyen: r.huyen,
-    
-      dm_tkm: Number(r.dm_tkm||0),
-      dm_xlsc: Number(r.dm_xlsc||0),
-      th_tkm: Number(r.th_tkm||0),
-      th_sc: Number(r.th_sc||0),
-    
-      t_dm: Number(r.t_dm||0),
-      t_th: Number(r.t_th||0),
-    
-      cl: Number(r.cl||0),
-      tl: Number(r.tl||0),
-    
-      // 🔥 TÁCH
-      t_p_tkm: Number(r.t_p_tkm||0),
-      t_p_sc: Number(r.t_p_sc||0),
-    
-      // 🔥 GỘP TOP
-      t_p: Number(r.t_p_tkm||0) + Number(r.t_p_sc||0)
-    }));
-
-    applyFilter();
-  });
 }
 
 // ===== KPI FAIL =====
