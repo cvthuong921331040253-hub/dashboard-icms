@@ -353,8 +353,9 @@ function applyFilter(){
   renderWorst(nvData);   // 🔥 luôn dùng full data
   renderList(nvF);
 }
+// ===== TÔ MÀU CHO TABLE NẾU ÂM =====
 function getColor(v){
-  return v < 0 ? "fail" : "";
+  return Number(v) < 0 ? "fail" : "";
 }
 // ===== TABLE =====
 function renderTable(data){
