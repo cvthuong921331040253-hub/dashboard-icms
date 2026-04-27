@@ -177,7 +177,7 @@ th, td {
   top: 22px; /* 👈 chỉnh theo chiều cao dòng 1 */
   z-index: 2;
   background: #e3f2fd;
-
+}
 /*Cho bảng tự giãn theo nội dung */
 #myTable {
   border-collapse: collapse;
@@ -249,7 +249,9 @@ function load(){
   fetch(API)
   .then(r=>r.json())
   .then(res=>{
-
+  .catch(err => {
+  console.log("API lỗi", err);
+});
     let raw = res.data || [];
     let tg = raw[0]?.tg_update || raw[1]?.tg_update || "";
     if(tg){
@@ -350,7 +352,9 @@ function applyFilter(){
   renderWorst(nvData);   // 🔥 luôn dùng full data
   renderList(nvF);
 }
-
+function getColor(v){
+  return v < 0 ? "fail" : "";
+}
 // ===== TABLE =====
 function renderTable(data){
 
@@ -443,7 +447,7 @@ function renderList(data){
 
   data.forEach(r=>{
 
-    if(showBadOnly && r.tl >= 0) return;
+    if(showBadOnly && r.t_p >= 0) return;
 
     // 🔥 màu theo THƯỞNG/PHẠT (KHÔNG dùng cl nữa)
     let tkmColor = r.t_p_tkm >= 0 ? "ok" : "fail";
