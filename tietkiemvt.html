@@ -355,9 +355,9 @@ function applyFilter(){
   renderWorst(nvData);   // 🔥 luôn dùng full data
   renderList(nvF);
 }
-// ===== TÔ MÀU CHO TABLE NẾU ÂM =====
-function getColor(v){
-  return Number(v) < 0 ? "tl-am" : "";
+// ===== TÔ MÀU NẾU ÂM =====
+function getColorClass(v){
+  return v > 0 ? "ok" : v < 0 ? "phat" : "";
 }
 // ===== TABLE =====
 function renderTable(data){
