@@ -246,23 +246,31 @@ function num(v){ return Number(v||0).toLocaleString("vi-VN"); }
 
 // ===== LOAD =====
 function load(){
-  fetch(API)
-  .then(r=>r.json())
-  .then(res=>{
-  .catch(err => {
-  console.log("API lỗi", err);
-});
+fetch(API)
+  .then(r => r.json())
+  .then(res => {
+
     let raw = res.data || [];
+
     let tg = raw[0]?.tg_update || raw[1]?.tg_update || "";
     if(tg){
       let d = new Date(tg);
       tg = d.toLocaleString("vi-VN");
     }
+
     document.getElementById("logtime").innerText =
-    tg ? "🕒 Logtime: " + tg : "";
+      tg ? "🕒 Logtime: " + tg : "";
+
+    // ... phần còn lại giữ nguyên
+
+    applyFilter();
+
+  })
+  .catch(err => {
+    console.log("API lỗi", err);
+  });
     // ===== TABLE (1-30) =====
     tableData = raw.slice(0,29).map(r=>{
-    
       let tp = Number(r.t_p_tkm||0) + Number(r.t_p_sc||0);
     
       return {
