@@ -16,9 +16,11 @@ body { font-family: Arial; background:#f5f7fb; padding:8px; }
   font-size: 13px;
   line-height: 1.4;
 }
-/* xanh/đỏ thưởng/phạt*/
-.ok { color:green; }
-.fail { color:red; font-weight:bold; }
+/* màu thưởng/phạt */
+.ok { color: green; }
+.phat { color: red; font-weight: bold; }
+/* màu tỉ lệ */
+.tl-am { color: red; font-weight: bold; }
 /* top NV tốt, NV kém*/
 .top { background:#e8f5e9; }
 .worst { background:#ffeaea; }
@@ -183,11 +185,6 @@ th, td {
   border-collapse: collapse;
   width: max-content;   /* 👈 QUAN TRỌNG */
   min-width: 100%;      /* 👈 vẫn full nếu ít cột */
-}
-/* Gán màu đỏ fail cho số trong bảng nếu âm */
-.fail{
-  color: red;
-  font-weight: bold;
 }
 
 </style>
@@ -360,7 +357,7 @@ function applyFilter(){
 }
 // ===== TÔ MÀU CHO TABLE NẾU ÂM =====
 function getColor(v){
-  return Number(v) < 0 ? "fail" : "";
+  return Number(v) < 0 ? "tl-am" : "";
 }
 // ===== TABLE =====
 function renderTable(data){
@@ -385,7 +382,7 @@ function renderTable(data){
   </tr>`;
 
 data.forEach(r=>{
-  let color = r.t_p >= 0 ? "ok" : "fail";
+  let color = r.t_p >= 0 ? "ok" : "phat";
 
   html += `<tr>
     <td>${r.huyen}</td>
