@@ -393,7 +393,7 @@ data.forEach(r=>{
       ${num(r.th_tkm)}
     </td>
 
-    <td class="${getColor(r.tl_tkm)}">
+    <td class="${getColorClass(r.tl_tkm)}">
       ${r.tl_tkm}%
     </td>
 
@@ -403,7 +403,7 @@ data.forEach(r=>{
       ${num(r.th_sc)}
     </td>
 
-    <td class="${getColor(r.tl_sc)}">
+    <td class="${getColorClass(r.tl_sc)}">
       ${r.tl_sc}%
     </td>
 
@@ -453,13 +453,11 @@ function renderList(data){
 
     if(showBadOnly && r.t_p >= 0) return;
 
-    // 🔥 màu theo THƯỞNG/PHẠT (KHÔNG dùng cl nữa)
-    let tkmColor = r.t_p_tkm >= 0 ? "ok" : "fail";
-    let scColor  = r.t_p_sc >= 0 ? "ok" : "fail";
-
-    // 🔥 tổng
-    let tong = r.t_p_tkm + r.t_p_sc;
-    let tongColor = tong >= 0 ? "ok" : "fail";
+  let tkmColor = getColorClass(r.t_p_tkm);
+  let scColor  = getColorClass(r.t_p_sc);
+  
+  let tong = r.t_p_tkm + r.t_p_sc;
+  let tongColor = getColorClass(tong);
 
     html += `
     <div class="card">
