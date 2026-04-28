@@ -117,23 +117,23 @@ th, td {
   }
    /*Tùy chỉnh bảng giao diện web*/
   @media (min-width: 601px) {
-
-  #myTable {
-    width: 100%;            /* co theo màn hình */
-    table-layout: fixed;    /* ép cột gọn lại */
+  
+    #myTable {
+      width: 100%;
+      table-layout: fixed;
+    }
+  
+    #myTable td, #myTable th {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  
+    .table-wrap {
+      overflow-x: auto;
+    }
+  
   }
-
-  #myTable td, #myTable th {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .table-wrap {
-    overflow-x: auto;
-  }
-
-}
 
   /*Tùy chỉnh bảng */
   #myTable {
