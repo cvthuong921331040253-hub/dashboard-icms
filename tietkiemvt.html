@@ -123,7 +123,7 @@ th, td {
   @media (min-width: 601px) {
   
     #myTable {
-      width: 100%;
+      width: 100% !important;        /* 👈 ép override */
       table-layout: fixed;
     }
   
@@ -132,11 +132,12 @@ th, td {
       overflow: hidden;
       text-overflow: ellipsis;
     }
+  
+  }
 
   /*Tùy chỉnh bảng */
   #myTable {
     border-collapse: collapse;
-    width: max-content;
     min-width: 100%;
   }
 
