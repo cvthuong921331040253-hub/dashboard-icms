@@ -115,6 +115,10 @@ th, td {
   
     border-radius: 12px;
   }
+    .table-wrap {
+      overflow-x: auto;
+    } 
+  }
    /*Tùy chỉnh bảng giao diện web*/
   @media (min-width: 601px) {
   
@@ -128,12 +132,6 @@ th, td {
       overflow: hidden;
       text-overflow: ellipsis;
     }
-  
-    .table-wrap {
-      overflow-x: auto;
-    }
-  
-  }
 
   /*Tùy chỉnh bảng */
   #myTable {
@@ -206,13 +204,6 @@ th, td {
   width: max-content;   /* 👈 QUAN TRỌNG */
   min-width: 100%;      /* 👈 vẫn full nếu ít cột */
 }
-/*Cho bảng tự giãn theo nội dung */
-#myTable {
-  border-collapse: collapse;
-  width: max-content;
-  min-width: 100%;
-}
-
 </style>
 </head>
 
