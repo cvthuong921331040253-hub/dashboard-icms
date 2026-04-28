@@ -115,18 +115,32 @@ th, td {
   
     border-radius: 12px;
   }
+   /*Tùy chỉnh bảng giao diện web*/
+  @media (min-width: 601px) {
+
+  #myTable {
+    width: 100%;            /* co theo màn hình */
+    table-layout: fixed;    /* ép cột gọn lại */
+  }
+
+  #myTable td, #myTable th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+}
 
   /*Tùy chỉnh bảng */
   #myTable {
     border-collapse: collapse;
-    width: 100%;              /* 👈 full theo màn hình */
-    table-layout: fixed;      /* 👈 ép cột co lại */
+    width: max-content;
+    min-width: 100%;
   }
-  #myTable td, #myTable th {
-  white-space: nowrap;      /* không xuống dòng */
-  overflow: hidden;
-  text-overflow: ellipsis;  /* ... nếu dài */
-}
 
   #myTable th {
     background: #e3f2fd;
