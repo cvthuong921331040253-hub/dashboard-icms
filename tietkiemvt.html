@@ -117,7 +117,26 @@ th, td {
   }
     .table-wrap {
       overflow-x: auto;
-    } 
+    }
+  #myTable td:first-child {
+  position: sticky;
+  left: 0;
+  background: #d0e7ff;
+  font-weight: 500;
+  border-right: 2px solid #90caf9;
+  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
+  z-index: 3;
+  white-space: nowrap;
+  width: 80px;
+}
+
+#myTable tr:first-child th:first-child {
+  position: sticky;
+  left: 0;
+  background: #90caf9;
+  font-weight: bold;
+  z-index: 4;
+}
   }
    /*Tùy chỉnh bảng giao diện web*/
   @media (min-width: 601px) {
@@ -161,29 +180,6 @@ th, td {
   #myTable tr:nth-child(even) td {
     background: #f1f6ff;
   }
-
-/*Fix scroll của bảng */
-/* ✅ Chỉ áp cho BODY */
-#myTable td:first-child {
-  position: sticky;
-  left: 0;
-  background: #d0e7ff;
-  font-weight: 500;
-  border-right: 2px solid #90caf9;
-  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
-  z-index: 3;
-  white-space: nowrap;
-  width: 80px;
-}
-
-/* ✅ Chỉ header dòng 1 (Huyện) */
-#myTable tr:first-child th:first-child {
-  position: sticky;
-  left: 0;
-  background: #90caf9;
-  font-weight: bold;
-  z-index: 4;
-}
 }
 /*Fix scroll 2 tiêu đề của bảng */
 /* ✅dòng 1 */
