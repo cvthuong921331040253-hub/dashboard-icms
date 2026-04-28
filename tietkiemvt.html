@@ -118,9 +118,15 @@ th, td {
 
   /*Tùy chỉnh bảng */
   #myTable {
-    min-width: 900px;   /* 👉 ép rộng để scroll */
     border-collapse: collapse;
+    width: 100%;              /* 👈 full theo màn hình */
+    table-layout: fixed;      /* 👈 ép cột co lại */
   }
+  #myTable td, #myTable th {
+  white-space: nowrap;      /* không xuống dòng */
+  overflow: hidden;
+  text-overflow: ellipsis;  /* ... nếu dài */
+}
 
   #myTable th {
     background: #e3f2fd;
