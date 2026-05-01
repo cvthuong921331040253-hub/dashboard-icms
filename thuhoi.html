@@ -298,7 +298,6 @@ function loadThuHoi(){
     dataHuyenGlobal = dataHuyen;
     renderHuyen(dataHuyen);
 
-    dataTH.forEach(nv => {
     // sort account ƯT trong từng nhân viên
     dataTH.forEach(nv => {
       nv.list.sort((a, b) => a.uu_tien - b.uu_tien);
