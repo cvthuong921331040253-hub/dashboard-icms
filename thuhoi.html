@@ -185,6 +185,7 @@ function renderTH(data){
     html += `
       <div class="card ${ty_le<1?'worst':'top'}">
         👤 <b>${r.nhan_vien}</b> - ${r.huyen}<br>
+        💸 Tổng tiền phạt: ${r.tong_phat.toLocaleString('vi-VN')}<br>
         ${listHTML}
       </div>
     `;
@@ -229,11 +230,21 @@ function loadThuHoi(){
       let can = Number(r.can_thu || 0);
       let da = Number(r.da_thu_hoi || 0);
       let phat = Number(r.tien_phat || 0);
-
+      // ✅ chỉ lấy 1 lần tiền phạt cho mỗi nhân viên
+      if(phat > 0 && nhanvienMap[nv].tong_phat === 0){
+        nhanvienMap[nv].tong_phat = phat;
+      }
       let ty_le = can === 0 ? 1 : da / can;
 
       if(!nhanvienMap[nv]){
-        nhanvienMap[nv] = { nhan_vien:nv, huyen:h, tong_can:0, tong_da:0, list:[] };
+        nhanvienMap[nv] = { 
+          nhan_vien:nv, 
+          huyen:h, 
+          tong_can:0, 
+          tong_da:0, 
+          tong_phat: 0,   // ✅ thêm dòng này
+          list:[]
+        };
       }
 
       nhanvienMap[nv].tong_can += can;
@@ -242,8 +253,7 @@ function loadThuHoi(){
       nhanvienMap[nv].list.push({
         account:r.account,
         uu_tien:r.uu_tien || 0,
-        can, da, ty_le,
-        phat: ty_le===1?0:phat
+        can, da, ty_le
       });
 
       if(!huyenMap[h]){
