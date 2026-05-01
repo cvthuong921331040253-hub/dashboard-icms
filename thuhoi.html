@@ -208,12 +208,13 @@ function renderTH(data){
 
     let listHTML = r.list.map(acc=>{
       let isDone = Number(acc.can) > 0 && Number(acc.da) === Number(acc.can);
-
+    
+      let styleDone = isDone 
+        ? "background:#c8f7c5; color:#1b5e20; font-weight:bold; border-radius:4px; padding:2px 4px;"
+        : "";
+    
       return `
-      <div 
-        style="font-size:12px; margin-left:10px"
-        class="${isDone ? 'ok' : ''}"
-      >
+      <div style="font-size:12px; margin-left:10px; ${styleDone}">
         • [ƯT ${acc.uu_tien}] ${acc.account}
         | ${acc.da}/${acc.can}
         <span>
