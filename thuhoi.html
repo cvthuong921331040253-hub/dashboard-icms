@@ -198,23 +198,27 @@ function renderHuyen(data){
 
 // ===== NHÂN VIÊN =====
 function renderTH(data){
-let listHTML = r.list.map(acc=>{
+  let html = "";
 
-  let isDone = Number(acc.can) > 0 && Number(acc.da) === Number(acc.can);
+  data.forEach(r=>{
+    let ty_le = r.tong_can === 0 ? 1 : r.tong_da / r.tong_can;
 
-  return `
-  <div 
-    style="font-size:12px; margin-left:10px"
-    class="${isDone ? 'ok' : ''}"
-  >
-    • [ƯT ${acc.uu_tien}] ${acc.account}
-    | ${acc.da}/${acc.can}
-    <span>
-      (${(acc.ty_le*100).toFixed(0)}%)
-    </span>
-  </div>
-  `;
-}).join("");
+    let listHTML = r.list.map(acc=>{
+      let isDone = Number(acc.can) > 0 && Number(acc.da) === Number(acc.can);
+
+      return `
+      <div 
+        style="font-size:12px; margin-left:10px"
+        class="${isDone ? 'ok' : ''}"
+      >
+        • [ƯT ${acc.uu_tien}] ${acc.account}
+        | ${acc.da}/${acc.can}
+        <span>
+          (${(acc.ty_le*100).toFixed(0)}%)
+        </span>
+      </div>
+      `;
+    }).join("");
 
     html += `
       <div class="card ${ty_le<1?'worst':'top'}">
