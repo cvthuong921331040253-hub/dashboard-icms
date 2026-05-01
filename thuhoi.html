@@ -306,7 +306,7 @@ function loadThuHoi(){
     let tongPhat = dataTH.reduce((sum, nv) => sum + (nv.tong_phat || 0), 0);
 
     document.getElementById("marqueeText").innerText =
-  "📢 Tổng tiền phạt toàn hệ thống: " + tongPhat.toLocaleString('vi-VN') + " | Cập nhật lúc " + new Date().toLocaleTimeString();
+  "📢 Lưu ý tập trung thu hồi ƯT1, ƯT2 trước, 📢 nhập tổ đội lưu ý (báo cáo thu hồi tháng 4 sang đầu tháng 5 mới nhập tổ đội, tương tự với các tháng tiếp theo" ;
     
     document.getElementById("loadingTH").style.display = "none";
 
