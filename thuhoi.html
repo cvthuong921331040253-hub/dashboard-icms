@@ -198,15 +198,23 @@ function renderTH(data){
   data.forEach(r=>{
     let ty_le = r.tong_can === 0 ? 1 : r.tong_da / r.tong_can;
 
-    let listHTML = r.list.map(acc=>`
-      <div style="font-size:12px; margin-left:10px">
-      • [ƯT ${acc.uu_tien}] ${acc.account}
-      | ${acc.da}/${acc.can}
-      <span class="${acc.ty_le<1?'phat':'ok'}">
-      (${(acc.ty_le*100).toFixed(0)}%)
-</span>
+    let listHTML = r.list.map(acc=>{
+    
+      let isDone = acc.can > 0 && acc.da === acc.can;
+    
+      return `
+      <div 
+        style="font-size:12px; margin-left:10px"
+        class="${isDone ? 'ok' : ''}"
+      >
+        • [ƯT ${acc.uu_tien}] ${acc.account}
+        | ${acc.da}/${acc.can}
+        <span class="${acc.ty_le<1?'phat':'ok'}">
+          (${(acc.ty_le*100).toFixed(0)}%)
+        </span>
       </div>
-    `).join("");
+      `;
+    }).join("");
 
     html += `
       <div class="card ${ty_le<1?'worst':'top'}">
