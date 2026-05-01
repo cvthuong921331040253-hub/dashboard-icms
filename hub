@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hub Dashboard</title>
+
+<style>
+body {
+  font-family: Arial;
+  background:#f5f7fb;
+  padding:15px;
+}
+
+.card {
+  display:block;
+  padding:14px;
+  margin-bottom:10px;
+  background:#fff;
+  border-radius:10px;
+  text-decoration:none;
+  color:#333;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+</style>
+</head>
+
+<body>
+
+<h2>📊 HUB DASHBOARD</h2>
+
+<a class="card" href="index.html">📈 KPI tổng</a>
+<a class="card" href="thuhoi.html">📥 Thu hồi</a>
+<a class="card" href="homewifi.html">📶 Home Wifi</a>
+<a class="card" href="homewifinhaplieu.html">📝 Nhập liệu</a>
+<a class="card" href="tietkiemvt.html">💰 Tiết kiệm VT</a>
+
+</body>
+</html>
