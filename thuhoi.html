@@ -227,7 +227,9 @@ function renderTH(data){
     html += `
       <div class="card ${ty_le<1?'worst':'top'}">
         👤 <b>${r.nhan_vien}</b> - ${r.huyen}<br>
-        💸 Tổng tiền phạt: ${r.tong_phat.toLocaleString('vi-VN')}<br>
+        💸 Tổng tiền phạt: <b style="color:#d32f2f">
+        ${r.tong_phat.toLocaleString('vi-VN')}
+        </b><br>
         ${listHTML}
       </div>
     `;
