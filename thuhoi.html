@@ -327,8 +327,8 @@ function loadThuHoi(){
     renderTH(dataTH);
     let tongPhat = dataTH.reduce((sum, nv) => sum + (nv.tong_phat || 0), 0);
 
-    document.getElementById("marqueeText").innerText =
-  "📢 Tập trung thu hồi ƯT1, ƯT2 trước, 📢 nhập tổ đội lưu ý: (báo cáo thu hồi tháng 4 sang đầu tháng 5 mới nhập tổ đội, tương tự với các tháng tiếp theo)" ;
+    document.getElementById("marqueeText").innerHTML =
+    `📢 Tập trung thu hồi ƯT1, ƯT2 trước | <b>📢 Nhập tổ đội lưu ý:</b> (báo cáo thu hồi tháng 4 sang đầu tháng 5 mới nhập tổ đội, tương tự với các tháng tiếp theo)`;
     
     document.getElementById("loadingTH").style.display = "none";
 
