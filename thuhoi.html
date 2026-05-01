@@ -205,7 +205,7 @@ function renderTH(data){
 
     let listHTML = r.list.map(acc=>{
     
-      let isDone = acc.can > 0 && acc.da === acc.can;
+      let isDone = Number(acc.can) > 0 && Number(acc.da) === Number(acc.can);
     
       return `
       <div 
