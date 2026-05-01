@@ -204,7 +204,7 @@ function renderTH(data){
     let ty_le = r.tong_can === 0 ? 1 : r.tong_da / r.tong_can;
 
     let listHTML = r.list.map(acc=>{
-      let isDone = Number(acc.can) > 0 && Number(acc.da) === Number(acc.can);
+      let isDone = Number(acc.da) === Number(acc.can);
 
       return `
       <div 
