@@ -300,6 +300,8 @@ function loadThuHoi(){
 
     dataTH.forEach(nv => {
       nv.list.sort((a, b) => a.uu_tien - b.uu_tien);
+      // ✅ SORT nhân viên theo tiền phạt (cao → thấp)
+      dataTH.sort((a, b) => b.tong_phat - a.tong_phat);
     });
 
     renderTH(dataTH);
