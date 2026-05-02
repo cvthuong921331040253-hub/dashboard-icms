@@ -9,112 +9,96 @@
 <title>THU HỒI</title>
 
 <style>
-#tableHuyen table td:nth-child(2),
-#tableHuyen table td:nth-child(3),
-#tableHuyen table td:nth-child(4),
-#tableHuyen table th:nth-child(2),
-#tableHuyen table th:nth-child(3),
-#tableHuyen table th:nth-child(4){
-  text-align: center;
-}
-/* ===== TABLE ĐẸP ===== */
-.table-wrap {
-  overflow-x: auto;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-.table-custom {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-
-.table-custom th {
-  background: #1976d2;
-  color: #fff;
-  padding: 8px;
-  text-align: center;
-}
-
-.table-custom td {
-  padding: 8px;
-  border-bottom: 1px solid #eee;
-  text-align: center;
-}
-
-.table-custom tr:hover {
-  background: #f5f7fb;
-}
-
-/* trạng thái */
-.rate-good {
-  color: #2e7d32;
-  font-weight: bold;
-}
-
-.rate-bad {
-  color: #d32f2f;
-  font-weight: bold;
-}
-
-.money {
-  font-weight: bold;
-  color: #d32f2f;
-}
-
-/* ===== TABLE FULL BORDER ===== */
-.table-custom {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-
-.table-custom th,
-.table-custom td {
-  border: 1px solid #ccc;   /* 🔥 full viền */
-  padding: 6px;
-  text-align: center;
-}
-
-.table-custom th {
-  background: #1976d2;
-  color: #fff;
-}
-
-/* hover nhẹ */
-.table-custom tr:hover {
-  background: #f5f7fb;
-}
-
-/* màu KPI */
-.rate-good {
-  color: #2e7d32;
-  font-weight: bold;
-}
-
-.rate-bad {
-  color: #d32f2f;
-  font-weight: bold;
-}
-
-.money {
-  font-weight: bold;
-  color: #d32f2f;
-}
-
-  
+/* ===== BODY ===== */
 body {
   font-family: Arial;
   padding: 8px;
   background: #f5f7fb;
   margin: 0;
 }
-input {
-  margin-bottom: 8px;
+
+/* ===== HEADER ===== */
+.header {
+  position: sticky;
+  top: 0;
+  background:#f5f7fb;
+  z-index:1000;
+  padding-bottom:6px;
 }
 
+.header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* ===== INPUT ===== */
+input{
+  padding:6px 10px;
+  margin:4px 0;
+  border-radius:20px;
+  border:1px solid #ddd;
+  width:100%;
+  box-sizing: border-box;
+}
+
+/* ===== TABLE WRAP ===== */
+.table-wrap {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* ===== TABLE ===== */
+.table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+/* ===== HEADER TABLE (STICKY) ===== */
+.table-custom th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #1976d2;
+  color: #fff;
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+/* ===== CELL ===== */
+.table-custom td {
+  padding: 6px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+/* ===== HOVER ===== */
+.table-custom tr:hover {
+  background: #f5f7fb;
+}
+
+/* ===== KPI ===== */
+.rate-good {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.rate-bad {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.money {
+  font-weight: bold;
+  color: #d32f2f;
+}
+
+/* ===== CARD ===== */
 .card {
   background: white;
   border-radius: 8px;
@@ -126,66 +110,14 @@ input {
 .top { background: #e8f5e9; }
 .worst { background: #ffeaea; }
 
-.reload-btn {
-  padding: 4px 8px;
-  font-size: 13px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* ===== DONE TEXT ===== */
+.ok {
+  color: #0a8f08;
+  font-weight: bold;
 }
 
-.logtime {
-  font-size: 12px;
-  color: #666;
-}
-.table-custom th {
-  position: sticky;
-  top: 120px;   /* 🔥 quan trọng */
-  z-index: 2;
-  background: #1976d2;
-}
-
-.header-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.reload-btn{
-  padding:5px 8px;
-  border:none;
-  border-radius:8px;
-  background:#e3f2fd;
-  color:#1976d2;
-  font-size:13px;
-}
-
-.reload-btn:hover{
-  background:#1976d2;
-  color:#fff;
-}
-
-input{
-  padding:6px 10px;
-  margin:4px 0;
-  border-radius:20px;
-  border:1px solid #ddd;
-  width:100%;
-  box-sizing: border-box; /* 🔥 QUAN TRỌNG */
-}
-/* Giao diện chuẩn mobile */
-@media (max-width: 600px) {
-
-  body {
-    font-size: 13px;
-    padding: 6px;
-  }
-
-  h2 { font-size: 16px; }
-  h3 { font-size: 14px; }
-  /* Giao diện chạy thông báo */
-  #marqueeBox {
+/* ===== MARQUEE ===== */
+#marqueeBox {
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
@@ -206,21 +138,6 @@ input{
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
-}
-/* Bôi xanh dòng nhân viên đã thu 1/1 100% */
-.ok {
-  background: #e8f5e9;
-  color: #1b5e20;
-  font-weight: bold;
-  border-radius: 4px;
-  padding: 2px 4px;
-}
-/* Cố định tiêu đề bảng */
-.table-custom th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background: #1976d2; /* giữ màu header */
 }
 </style>
 </head>
