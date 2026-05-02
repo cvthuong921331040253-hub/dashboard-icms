@@ -177,6 +177,7 @@ function renderHuyen(data){
       <th>Tồn</th>
       <th>Đã thu</th>
       <th>Tỷ lệ</th>
+      <th>Tiền phạt</th>
     </tr>
   `;
 
@@ -190,6 +191,9 @@ function renderHuyen(data){
         <td>${r.tong_da}</td>
         <td class="${ty_le<1?'phat':'ok'}">
           ${(ty_le*100).toFixed(0)}%
+        </td>
+        <td>
+          ${r.tong_phat.toLocaleString('vi-VN')}
         </td>
       </tr>
     `;
@@ -293,6 +297,11 @@ function loadThuHoi(){
       if(phat > 0 && nhanvienMap[nv].tong_phat === 0){
         nhanvienMap[nv].tong_phat = phat;
       }
+      // ✅ cộng tiền phạt cho huyện (mỗi NV chỉ 1 lần)
+      if(phat > 0 && !huyenMap[h].nv_set.has(nv)){
+        huyenMap[h].tong_phat += phat;
+        huyenMap[h].nv_set.add(nv);
+      }
 
       nhanvienMap[nv].tong_can += can;
       nhanvienMap[nv].tong_da += da;
@@ -304,11 +313,21 @@ function loadThuHoi(){
       });
 
       if(!huyenMap[h]){
-        huyenMap[h] = { huyen:h, tong_can:0, tong_da:0 };
+        huyenMap[h] = { 
+          huyen:h, 
+          tong_can:0, 
+          tong_da:0,
+          tong_phat:0,        // ✅ thêm
+          nv_set: new Set()   // ✅ chống trùng NV
+        };
       }
 
-      huyenMap[h].tong_can += can;
-      huyenMap[h].tong_da += da;
+      let uu = Number(r.uu_tien || 0);
+      
+      // ✅ chỉ tính ƯT1 + ƯT2
+      if(uu === 1 || uu === 2){
+        huyenMap[h].tong_can += can;
+        huyenMap[h].tong_da += da;
     });
 
     dataTH = Object.values(nhanvienMap);
