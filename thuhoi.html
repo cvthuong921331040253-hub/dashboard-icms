@@ -333,14 +333,6 @@ function loadThuHoi(){
   
   });
 
-      let uu = Number(r.uu_tien || 0);
-      
-      // ✅ chỉ tính ƯT1 + ƯT2
-      if(uu === 1 || uu === 2){
-        huyenMap[h].tong_can += can;
-        huyenMap[h].tong_da += da;
-    });
-
     dataTH = Object.values(nhanvienMap);
     let dataHuyen = Object.values(huyenMap);
     dataHuyenGlobal = dataHuyen;
