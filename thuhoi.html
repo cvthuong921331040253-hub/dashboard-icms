@@ -17,6 +17,53 @@
 #tableHuyen table th:nth-child(4){
   text-align: center;
 }
+/* ===== TABLE ĐẸP ===== */
+.table-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table-custom th {
+  background: #1976d2;
+  color: #fff;
+  padding: 8px;
+  text-align: center;
+}
+
+.table-custom td {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+.table-custom tr:hover {
+  background: #f5f7fb;
+}
+
+/* trạng thái */
+.rate-good {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.rate-bad {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.money {
+  font-weight: bold;
+  color: #d32f2f;
+}
+
 body {
   font-family: Arial;
   padding: 8px;
@@ -171,10 +218,11 @@ let dataHuyenGlobal = [];
 // ===== TABLE HUYỆN =====
 function renderHuyen(data){
   let html = `
-  <table border="1" style="width:100%; font-size:12px">
+  <div class="table-wrap">
+  <table class="table-custom">
     <tr>
       <th>Huyện</th>
-      <th>Tổng giao</th>
+      <th>Tồn</th>
       <th>Đã thu</th>
       <th>Tỷ lệ</th>
       <th>Tiền phạt</th>
@@ -183,23 +231,24 @@ function renderHuyen(data){
 
   data.forEach(r=>{
     let ty_le = r.tong_can === 0 ? 1 : r.tong_da / r.tong_can;
+    let percent = (ty_le*100).toFixed(0);
 
     html += `
       <tr>
-        <td>${r.huyen}</td>
+        <td style="text-align:left">${r.huyen}</td>
         <td>${r.tong_can}</td>
         <td>${r.tong_da}</td>
-        <td class="${ty_le<1?'phat':'ok'}">
-          ${(ty_le*100).toFixed(0)}%
+        <td class="${ty_le<1?'rate-bad':'rate-good'}">
+          ${percent}%
         </td>
-        <td>
+        <td class="money">
           ${r.tong_phat.toLocaleString('vi-VN')}
         </td>
       </tr>
     `;
   });
 
-  html += "</table>";
+  html += "</table></div>";
   document.getElementById("tableHuyen").innerHTML = html;
 }
 
