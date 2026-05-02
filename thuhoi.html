@@ -139,6 +139,26 @@ input{
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
+/* Giao diện chuẩn mobile */
+@media (max-width: 600px) {
+
+  body {
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  h2 { font-size: 16px; }
+  h3 { font-size: 14px; }
+  /* Giao diện chạy thông báo */
+  #marqueeBox {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  background: #fff3cd;
+  border-radius: 6px;
+  padding: 6px 0;
+  margin: 6px 0;
+}
 </style>
 </head>
 
