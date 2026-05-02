@@ -291,12 +291,18 @@ function loadThuHoi(){
     if(raw.length > 0){
       let tg = raw[0].tg_update || raw[0]["Tg update"];
     
-      if(tg){
-        let d = new Date(tg);
-        document.getElementById("logtimeTH").innerText =
-          "🕒 Logtime: " + d.getDate()+"/"+(d.getMonth()+1)+" "
-          + d.getHours()+":"+String(d.getMinutes()).padStart(2,"0");
-      }
+    if(tg){
+      let d = new Date(tg);
+    
+      let day = String(d.getDate()).padStart(2,"0");
+      let month = String(d.getMonth()+1).padStart(2,"0");
+      let year = d.getFullYear();
+      let hour = String(d.getHours()).padStart(2,"0");
+      let minute = String(d.getMinutes()).padStart(2,"0");
+    
+      document.getElementById("logtimeTH").innerText =
+        `🕒 Logtime: ${day}/${month}/${year} ${hour}:${minute}`;
+    }
     }
 
     let nhanvienMap = {};
