@@ -139,12 +139,11 @@ input {
   font-size: 12px;
   color: #666;
 }
-.header {
+.table-custom th {
   position: sticky;
-  top: 0;
-  background:#f5f7fb;
-  z-index:1000;
-  padding-bottom:6px;
+  top: 120px;   /* 🔥 quan trọng */
+  z-index: 2;
+  background: #1976d2;
 }
 
 .header-top{
@@ -216,7 +215,13 @@ input{
   border-radius: 4px;
   padding: 2px 4px;
 }
-  
+/* Cố định tiêu đề bảng */
+.table-custom th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #1976d2; /* giữ màu header */
+}
 </style>
 </head>
 
