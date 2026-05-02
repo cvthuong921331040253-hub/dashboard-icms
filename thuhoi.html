@@ -270,57 +270,68 @@ function loadThuHoi(){
     let nhanvienMap = {};
     let huyenMap = {};
 
-    raw.forEach(r=>{
-
-      let nv = r.nhan_vien || "Không tên";
-      let h = r.huyen || "Không rõ";
-
-      let can = Number(r.can_thu || 0);
-      let da = Number(r.da_thu_hoi || 0);
-      let phat = Number(r.tien_phat || 0);
-      
-      let ty_le = can === 0 ? 1 : da / can;
-      
-      // ✅ BẮT BUỘC: tạo nhân viên trước
-      if(!nhanvienMap[nv]){
-        nhanvienMap[nv] = { 
-          nhan_vien:nv, 
-          huyen:h, 
-          tong_can:0, 
-          tong_da:0, 
-          tong_phat: 0,
-          list:[]
-        };
-      }
-      
-      // ✅ SAU ĐÓ mới xử lý tiền phạt
-      if(phat > 0 && nhanvienMap[nv].tong_phat === 0){
-        nhanvienMap[nv].tong_phat = phat;
-      }
-      // ✅ cộng tiền phạt cho huyện (mỗi NV chỉ 1 lần)
-      if(phat > 0 && !huyenMap[h].nv_set.has(nv)){
-        huyenMap[h].tong_phat += phat;
-        huyenMap[h].nv_set.add(nv);
-      }
-
-      nhanvienMap[nv].tong_can += can;
-      nhanvienMap[nv].tong_da += da;
-
-      nhanvienMap[nv].list.push({
-        account:r.account,
-        uu_tien:r.uu_tien || 0,
-        can, da, ty_le
-      });
-
-      if(!huyenMap[h]){
-        huyenMap[h] = { 
-          huyen:h, 
-          tong_can:0, 
-          tong_da:0,
-          tong_phat:0,        // ✅ thêm
-          nv_set: new Set()   // ✅ chống trùng NV
-        };
-      }
+  raw.forEach(r=>{
+  
+    let nv = r.nhan_vien || "Không tên";
+    let h = r.huyen || "Không rõ";
+  
+    let can = Number(r.can_thu || 0);
+    let da = Number(r.da_thu_hoi || 0);
+    let phat = Number(r.tien_phat || 0);
+    let uu = Number(r.uu_tien || 0);
+  
+    // ===== 1. TẠO NHÂN VIÊN =====
+    if(!nhanvienMap[nv]){
+      nhanvienMap[nv] = { 
+        nhan_vien:nv, 
+        huyen:h, 
+        tong_can:0, 
+        tong_da:0, 
+        tong_phat: 0,
+        list:[]
+      };
+    }
+  
+    // ===== 2. TẠO HUYỆN (PHẢI TRƯỚC) =====
+    if(!huyenMap[h]){
+      huyenMap[h] = { 
+        huyen:h, 
+        tong_can:0, 
+        tong_da:0,
+        tong_phat:0,
+        nv_set: new Set()
+      };
+    }
+  
+    // ===== 3. TIỀN PHẠT NHÂN VIÊN =====
+    if(phat > 0 && nhanvienMap[nv].tong_phat === 0){
+      nhanvienMap[nv].tong_phat = phat;
+    }
+  
+    // ===== 4. TIỀN PHẠT HUYỆN (KHÔNG TRÙNG NV) =====
+    if(phat > 0 && !huyenMap[h].nv_set.has(nv)){
+      huyenMap[h].tong_phat += phat;
+      huyenMap[h].nv_set.add(nv);
+    }
+  
+    // ===== 5. CỘNG NHÂN VIÊN =====
+    nhanvienMap[nv].tong_can += can;
+    nhanvienMap[nv].tong_da += da;
+  
+    nhanvienMap[nv].list.push({
+      account:r.account,
+      uu_tien:uu,
+      can, da,
+      ty_le: can === 0 ? 1 : da / can
+    });
+  
+    // ===== 6. CHỈ TÍNH ƯT1 + ƯT2 CHO HUYỆN =====
+    if(uu === 1 || uu === 2){
+      huyenMap[h].tong_can += can;
+      huyenMap[h].tong_da += da;
+    }
+  
+  });
 
       let uu = Number(r.uu_tien || 0);
       
