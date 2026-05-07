@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Dashboard ICMS</title>
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f1f3f4;
+}
+
+.header{
+  background:#0b5394;
+  color:white;
+  padding:15px;
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+}
+
+.container{
+  padding:10px;
+}
+
+.top-box{
+  display:flex;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.main-btn{
+  flex:1;
+  border:none;
+  padding:18px;
+  border-radius:12px;
+  background:#0b5394;
+  color:white;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.card{
+  background:white;
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:12px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+.group-title{
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:10px;
+  color:#0b5394;
+}
+
+.sub-btn{
+  width:100%;
+  border:none;
+  padding:12px;
+  margin-bottom:8px;
+  border-radius:8px;
+  background:#e8f0fe;
+  text-align:left;
+  font-weight:bold;
+  font-size:15px;
+}
+
+.item{
+  background:white;
+  border-left:5px solid red;
+  padding:10px;
+  border-radius:8px;
+  margin-bottom:10px;
+}
+
+.item p{
+  margin:5px 0;
+  font-size:14px;
+}
+
+.red{
+  color:red;
+  font-weight:bold;
+}
+
+.green{
+  color:green;
+  font-weight:bold;
+}
+
+#loading{
+  text-align:center;
+  padding:20px;
+  font-size:18px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  DASHBOARD ICMS
+</div>
+
+<div class="container">
+
+  <div class="top-box">
+
+    <button class="main-btn"
+      onclick="showType('InOS')">
+      INOS
+    </button>
+
+    <button class="main-btn"
+      onclick="showType('OutOS')">
+      OUT OS
+    </button>
+
+  </div>
+
+  <div id="loading">
+    Đang tải dữ liệu...
+  </div>
+
+  <div id="content"></div>
+
+</div>
+
+<script>
+
+const API =
+'https://script.google.com/macros/s/AKfycbzjL9R3fTJ_JIa7DLT9faiaguDnA6Pq2GmuhcOYggQmDgRE8q9C48nhp9m04-XP5SKW/exec?sheet=ICMS';
+
+let DATA = [];
+
+fetch(API)
+.then(res => res.json())
+.then(data => {
+
+  DATA = data.map(x => ({
+
+    tram:
+      x.tram || x['Trạm'] || '',
+
+    thoigian:
+      Number(
+        x.thoigian ||
+        x['Thời gian tồn']
+      ) || 0,
+
+    mota:
+      x.mota ||
+      x['Mô tả'] || '',
+
+    danhmuc:
+      x.danhmuc ||
+      x['Danh mục'] || '',
+
+    tth:
+      x.tth ||
+      x['TTH'] || '',
+
+    wo_vvc:
+      x.wo_vvc ||
+      x['Trạng thái wo VVC'] || '',
+
+    wo_vtnet:
+      x.wo_vtnet ||
+      x['Trạng thái wo VTNET'] || '',
+
+    nhanvien_tao:
+      x.nhanvien_tao ||
+      x['Nhân viên tạo'] || '',
+
+    nhanvien:
+      x.nhanvien ||
+      x['Nhân viên'] || '',
+
+    type:
+      x.type ||
+      x['INOS_OUTOS'] || '',
+
+    danhgia:
+      Number(
+        x.thoigian ||
+        x['Thời gian tồn']
+      ) < 0
+      ? 'Quá hạn'
+      : 'Trong hạn'
+
+  }));
+
+  document.getElementById('loading')
+    .style.display = 'none';
+
+  console.log(DATA);
+
+});
+
+function showType(type){
+
+  const content =
+    document.getElementById('content');
+
+  const list =
+    DATA.filter(x => x.type == type);
+
+  const tths =
+    [...new Set(list.map(x => x.tth))];
+
+  let html = '';
+
+  tths.forEach(tth => {
+
+    const tthData =
+      list.filter(x => x.tth == tth);
+
+    const quaHan =
+      tthData.filter(
+        x => x.danhgia == 'Quá hạn'
+      );
+
+    const trongHan =
+      tthData.filter(
+        x => x.danhgia == 'Trong hạn'
+      );
+
+    html += `
+      <div class="card">
+
+        <div class="group-title">
+          ${tth}
+        </div>
+
+        <button class="sub-btn"
+          onclick="
+            showCategory(
+              '${type}',
+              '${tth}',
+              'Quá hạn'
+            )
+          ">
+
+          Quá hạn (${quaHan.length})
+
+        </button>
+
+        <button class="sub-btn"
+          onclick="
+            showCategory(
+              '${type}',
+              '${tth}',
+              'Trong hạn'
+            )
+          ">
+
+          Trong hạn (${trongHan.length})
+
+        </button>
+
+      </div>
+    `;
+
+  });
+
+  content.innerHTML = html;
+
+}
+
+function showCategory(
+  type,
+  tth,
+  status
+){
+
+  const content =
+    document.getElementById('content');
+
+  let list =
+    DATA.filter(x =>
+
+      x.type == type &&
+      x.tth == tth
+
+    );
+
+  list =
+    list.filter(
+      x => x.danhgia == status
+    );
+
+  const categories =
+    [...new Set(
+      list.map(x => x.danhmuc)
+    )];
+
+  let html = `
+    <div class="card">
+
+      <div class="group-title">
+        ${type}
+        /
+        ${tth}
+        /
+        ${status}
+      </div>
+  `;
+
+  categories.forEach(cat => {
+
+    const count =
+      list.filter(
+        x => x.danhmuc == cat
+      ).length;
+
+    html += `
+      <button class="sub-btn"
+
+        onclick="
+          showList(
+            '${type}',
+            '${tth}',
+            '${status}',
+            '${cat}'
+          )
+        ">
+
+        ${cat}
+        (${count})
+
+      </button>
+    `;
+
+  });
+
+  html += '</div>';
+
+  content.innerHTML = html;
+
+}
+
+function showList(
+  type,
+  tth,
+  status,
+  category
+){
+
+  const content =
+    document.getElementById('content');
+
+  let list =
+    DATA.filter(x =>
+
+      x.type == type &&
+      x.tth == tth &&
+      x.danhmuc == category &&
+      x.danhgia == status
+
+    );
+
+  list.sort(
+    (a,b) =>
+      a.thoigian - b.thoigian
+  );
+
+  let html = `
+    <div class="card">
+
+      <div class="group-title">
+        ${category}
+      </div>
+  `;
+
+  list.forEach(item => {
+
+    html += `
+
+      <div class="item">
+
+        <p>
+          <b>Trạm:</b>
+          ${item.tram}
+        </p>
+
+        <p>
+          <b>Nhân viên:</b>
+          ${item.nhanvien}
+        </p>
+
+        <p class="
+          ${item.thoigian < 0
+            ? 'red'
+            : 'green'}
+        ">
+          <b>Thời gian tồn:</b>
+          ${item.thoigian}
+        </p>
+
+        <p>
+          <b>Mô tả:</b>
+          ${item.mota}
+        </p>
+
+        <p>
+          <b>WO VVC:</b>
+          ${item.wo_vvc}
+        </p>
+
+        <p>
+          <b>WO VTNET:</b>
+          ${item.wo_vtnet}
+        </p>
+
+        <p>
+          <b>Nhân viên tạo:</b>
+          ${item.nhanvien_tao}
+        </p>
+
+      </div>
+
+    `;
+
+  });
+
+  html += '</div>';
+
+  content.innerHTML = html;
+
+}
+
+setInterval(() => {
+  location.reload();
+}, 60000);
+
+</script>
+
+</body>
+</html>
