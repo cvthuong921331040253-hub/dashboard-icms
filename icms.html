@@ -411,11 +411,17 @@ function showList(
           <b>Trạm:</b>
           ${item.tram}
         </p>
+        
         <p style="
-        color:
-          ${item.mawo ? '#000' : 'green'};
-        font-weight:bold;
-      ">
+          color:
+            ${item.mawo ? '#000' : '#00b0f0'};
+          font-weight:bold;
+          background:
+            ${item.mawo ? 'transparent' : '#e8f7ff'};
+          padding:6px 10px;
+          border-radius:8px;
+          display:inline-block;
+        ">
         <b>Mã wo:</b>
         ${item.mawo || 'Chờ duyệt chưa sinh wo'}
       </p>
