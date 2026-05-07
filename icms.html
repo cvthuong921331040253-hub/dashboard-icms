@@ -174,7 +174,23 @@ body{
     font-weight:bold;
   ">
   ← BACK
-</button>
+  </button>
+
+  <input
+  type="text"
+  id="searchInput"
+  placeholder="Tìm trạm, huyện, danh mục, WO, nhân viên..."
+  onkeyup="searchData()"
+  style="
+    width:100%;
+    box-sizing:border-box;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    margin-bottom:12px;
+    font-size:13px;
+  "
+>
   
   <div id="content"></div>
 
@@ -817,6 +833,155 @@ function showTimelineDV(){
         <small>
           ${count} công việc
         </small>
+
+      </div>
+
+    `;
+
+  });
+
+  html += '</div>';
+
+  content.innerHTML = html;
+
+}
+
+function searchData(){
+
+  saveHistory();
+
+  const keyword =
+    document.getElementById('searchInput')
+      .value
+      .toLowerCase()
+      .trim();
+
+  const content =
+    document.getElementById('content');
+
+  if(keyword == ''){
+
+    content.innerHTML = '';
+
+    return;
+
+  }
+
+  let list =
+    DATA.filter(x =>
+
+      String(x.tram)
+        .toLowerCase()
+        .includes(keyword)
+
+      ||
+
+      String(x.tth)
+        .toLowerCase()
+        .includes(keyword)
+
+      ||
+
+      String(x.danhmuc)
+        .toLowerCase()
+        .includes(keyword)
+
+      ||
+
+      String(x.mawo)
+        .toLowerCase()
+        .includes(keyword)
+
+      ||
+
+      String(x.nhanvien)
+        .toLowerCase()
+        .includes(keyword)
+
+      ||
+
+      String(x.dauviec)
+        .toLowerCase()
+        .includes(keyword)
+
+    );
+
+  list.sort(
+    (a,b) =>
+      a.thoigian - b.thoigian
+  );
+
+  let html = `
+
+    <div class="card">
+
+      <div class="group-title">
+        KẾT QUẢ TÌM KIẾM
+        (${list.length})
+      </div>
+
+  `;
+
+  list.forEach(item => {
+
+    html += `
+
+      <div class="item">
+
+        <p>
+          <b>Trạm:</b>
+          ${item.tram}
+        </p>
+
+        <p style="
+          color:
+            ${String(item.mawo)
+              .toLowerCase()
+              .includes('chưa sinh')
+              ? '#00b0f0'
+              : '#000'};
+
+          font-weight:bold;
+        ">
+
+          <b>Mã wo:</b>
+          ${item.mawo || 'Chưa sinh wo'}
+
+        </p>
+
+        <p>
+          <b>Huyện:</b>
+          ${item.tth}
+        </p>
+
+        <p>
+          <b>Danh mục:</b>
+          ${item.danhmuc}
+        </p>
+
+        <p>
+          <b>Đầu việc:</b>
+          ${item.dauviec}
+        </p>
+
+        <p>
+          <b>Nhân viên:</b>
+          ${item.nhanvien}
+        </p>
+
+        <p class="
+          ${item.thoigian < 0
+            ? 'red'
+            : 'green'}
+        ">
+          <b>Thời gian tồn:</b>
+          ${item.thoigian} ngày
+        </p>
+
+        <p>
+          <b>Mô tả:</b>
+          ${item.mota}
+        </p>
 
       </div>
 
