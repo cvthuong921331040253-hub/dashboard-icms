@@ -886,7 +886,10 @@ function showTimelineDV(){
         
           onclick="
             showDVDetail(
-              `${dv.replace(/`/g,'')}`
+              '${String(dv)
+                .replace(/'/g,'')
+                .replace(/"/g,'')
+              }'
             )
           "
         
@@ -914,9 +917,7 @@ function showTimelineDV(){
           <div style="
             margin-top:5px;
             height:10px;
-        
-            width:${Math.min(count * 1.2, 100)}%;
-        
+            width:${Math.max(Math.min(count * 0.4, 100),8)}%;
             background:#0b5394;
             border-radius:10px;
           "></div>
