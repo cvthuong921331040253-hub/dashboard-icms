@@ -882,19 +882,50 @@ function showTimelineDV(){
         margin-bottom:20px;
       ">
 
-        <b>${dv}</b>
-
-        <div style="
-          margin-top:5px;
-          height:10px;
-          width:${Math.min(count * 1.2, 100)}%;
-          background:#0b5394;
-          border-radius:10px;
-        "></div>
-
-        <small>
-          ${count} công việc
-        </small>
+        <button
+        
+          onclick="
+            showDVDetail(
+              `${dv.replace(/`/g,'')}`
+            )
+          "
+        
+          style="
+            width:100%;
+            border:none;
+            background:white;
+            text-align:left;
+        
+            padding:0;
+            margin:0;
+        
+            cursor:pointer;
+          "
+        
+        >
+        
+          <b style="
+            font-size:16px;
+            color:#0b5394;
+          ">
+            ${dv}
+          </b>
+        
+          <div style="
+            margin-top:5px;
+            height:10px;
+        
+            width:${Math.min(count * 1.2, 100)}%;
+        
+            background:#0b5394;
+            border-radius:10px;
+          "></div>
+        
+          <small>
+            ${count} công việc
+          </small>
+        
+        </button>
 
       </div>
 
@@ -1024,6 +1055,116 @@ function searchData(){
         <p>
           <b>Đầu việc:</b>
           ${item.dauviec}
+        </p>
+
+        <p>
+          <b>Nhân viên:</b>
+          ${item.nhanvien}
+        </p>
+
+        <p class="
+          ${item.thoigian < 0
+            ? 'red'
+            : 'green'}
+        ">
+          <b>Thời gian tồn:</b>
+          ${item.thoigian} ngày
+        </p>
+
+        <p>
+          <b>Mô tả:</b>
+          ${item.mota}
+        </p>
+
+      </div>
+
+    `;
+
+  });
+
+  html += '</div>';
+
+  content.innerHTML = html;
+
+}
+
+function showDVDetail(dv){
+
+  saveHistory();
+
+  const content =
+    document.getElementById('content');
+
+  let list =
+    DATA.filter(x => {
+
+      const value =
+
+        x.dauviec &&
+        String(x.dauviec).trim() != ''
+          ? x.dauviec
+          : 'Đầu việc trống';
+
+      return value == dv;
+
+    });
+
+  list.sort(
+    (a,b) =>
+      a.thoigian - b.thoigian
+  );
+
+  let html = `
+
+    <div class="card">
+
+      <div class="group-title">
+        ${dv}
+        (${list.length})
+      </div>
+
+  `;
+
+  list.forEach(item => {
+
+    html += `
+
+      <div class="item">
+
+        <p>
+          <b>Trạm:</b>
+          ${item.tram}
+        </p>
+
+        <p style="
+          color:
+            ${String(item.mawo)
+              .toLowerCase()
+              .includes('chưa sinh')
+              ? '#00b0f0'
+              : '#000'};
+
+          font-weight:bold;
+        ">
+
+          <b>Mã wo:</b>
+          ${item.mawo || 'Chưa sinh wo'}
+
+        </p>
+
+        <p>
+          <b>Huyện:</b>
+          ${item.tth}
+        </p>
+
+        <p>
+          <b>Danh mục:</b>
+          ${item.danhmuc}
+        </p>
+
+        <p>
+          <b>Đầu việc:</b>
+          ${dv}
         </p>
 
         <p>
