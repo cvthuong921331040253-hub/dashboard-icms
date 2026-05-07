@@ -606,12 +606,11 @@ function showChoCD(){
 
   let list =
     DATA.filter(x =>
-
-      String(x.wo_vtnet)
+  
+      String(x.wo_vvc)
       .toLowerCase()
       .includes('chờ cd duyệt')
-
-    );
+  );
 
   list.sort(
     (a,b) =>
@@ -623,7 +622,7 @@ function showChoCD(){
     <div class="card">
 
       <div class="group-title">
-        WO FT CHỜ CD DUYỆT
+        WO FT ĐÓNG CHỜ CD DUYỆT
       </div>
 
   `;
@@ -658,8 +657,8 @@ function showChoCD(){
           color:#ff9900;
           font-weight:bold;
         ">
-          <b>WO VTNET:</b>
-          ${item.wo_vtnet}
+        <b>WO VCC:</b>
+        ${item.wo_vvc}
         </p>
 
       </div>
