@@ -113,16 +113,26 @@ body{
 
 <div class="container">
 
+  <button class="main-btn"
+    onclick="reloadData()"
+    style="
+      margin-bottom:10px;
+      background:green;
+    ">
+    LOAD DỮ LIỆU
+  </button>
+
   <button
     onclick="goBack()"
     style="
-      margin-bottom:10px;
+      margin-bottom:15px;
       border:none;
-      padding:10px 16px;
+      padding:12px 16px;
       border-radius:8px;
       background:#666;
       color:white;
       font-weight:bold;
+      width:100%;
     ">
     ← BACK
   </button>
@@ -163,15 +173,6 @@ body{
     Đang tải dữ liệu...
   </div>
 
-  <button class="main-btn"
-    onclick="reloadData()"
-    style="
-      margin-bottom:15px;
-      background:green;
-    ">
-    LOAD DỮ LIỆU
-  </button>
-
   <div id="content"></div>
 
 </div>
@@ -183,7 +184,32 @@ const API =
 
 let DATA = [];
 
+let PAGE_HISTORY = [];
+
 loadData();
+
+function saveHistory(){
+
+  PAGE_HISTORY.push(
+    document.getElementById('content')
+      .innerHTML
+  );
+
+}
+
+function goBack(){
+
+  if(PAGE_HISTORY.length > 0){
+
+    const lastPage =
+      PAGE_HISTORY.pop();
+
+    document.getElementById('content')
+      .innerHTML = lastPage;
+
+  }
+
+}
 
 function loadData(){
 
@@ -246,13 +272,22 @@ function loadData(){
 
 }
 
-function goBack(){
+function reloadData(){
 
-  window.history.back();
+  DATA = [];
+
+  document.getElementById('content')
+    .innerHTML = '';
+
+  PAGE_HISTORY = [];
+
+  loadData();
 
 }
 
 function showType(type){
+
+  saveHistory();
 
   const content =
     document.getElementById('content');
@@ -336,6 +371,8 @@ function showCategory(
   status
 ){
 
+  saveHistory();
+
   const content =
     document.getElementById('content');
 
@@ -415,6 +452,8 @@ function showList(
   status,
   category
 ){
+
+  saveHistory();
 
   const content =
     document.getElementById('content');
@@ -539,18 +578,9 @@ function showList(
 
 }
 
-function reloadData(){
-
-  DATA = [];
-
-  document.getElementById('content')
-    .innerHTML = '';
-
-  loadData();
-
-}
-
 function showChoCD(){
+
+  saveHistory();
 
   const content =
     document.getElementById('content');
@@ -626,6 +656,8 @@ function showChoCD(){
 }
 
 function showTimelineTTH(){
+
+  saveHistory();
 
   const content =
     document.getElementById('content');
@@ -726,6 +758,8 @@ function showTimelineTTH(){
 }
 
 function showTimelineDV(){
+
+  saveHistory();
 
   const content =
     document.getElementById('content');
