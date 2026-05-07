@@ -355,22 +355,76 @@ function showType(type){
   const tths =
     [...new Set(list.map(x => x.tth))];
 
-  let html = '';
-
-  tths.forEach(tth => {
-
-    const tthData =
-      list.filter(x => x.tth == tth);
-
-    const quaHan =
-      tthData.filter(
+    const tongQuaHan =
+      list.filter(
         x => x.danhgia == 'Quá hạn'
-      );
-
-    const trongHan =
-      tthData.filter(
+      ).length;
+    
+    const tongTrongHan =
+      list.filter(
         x => x.danhgia == 'Trong hạn'
-      );
+      ).length;
+    
+    const tongTatCa =
+      tongQuaHan + tongTrongHan;
+    
+    let html = `
+    
+      <div class="card">
+    
+        <div class="group-title">
+          CNCT GLI
+        </div>
+    
+        <div class="sub-btn"
+    
+          onclick="
+            showALLTTHDetail(
+              'Quá hạn'
+            )
+          "
+    
+          style="
+            color:red;
+          "
+        >
+    
+          Tổng:
+          ${tongTatCa}
+    
+          |
+    
+          Quá hạn
+          (${tongQuaHan})
+    
+        </div>
+    
+        <div class="sub-btn"
+    
+          onclick="
+            showALLTTHDetail(
+              'Trong hạn'
+            )
+          "
+    
+          style="
+            color:green;
+          "
+        >
+    
+          Tổng:
+          ${tongTatCa}
+    
+          |
+    
+          Trong hạn
+          (${tongTrongHan})
+    
+        </div>
+    
+      </div>
+    
+    `;
 
     html += `
       <div class="card">
