@@ -1898,33 +1898,114 @@ function showALLList(
 
     html += `
 
-      <div class="item">
-
-        <p>
-          <b>Trạm:</b>
-          ${item.tram}
-        </p>
-
-        <p>
-          <b>Huyện:</b>
-          ${item.tth}
-        </p>
-
-        <p class="
-          ${item.thoigian < 0
-            ? 'red'
-            : 'green'}
+    <div class="item">
+    
+      <p>
+        <b>Trạm, tuyến, tủ:</b>
+        ${item.tram}
+      </p>
+    
+      <p style="
+        color:
+          ${String(item.mawo)
+            .toLowerCase()
+            .includes('chưa sinh')
+            ? '#00b0f0'
+            : '#000'};
+    
+        font-weight:bold;
+      ">
+    
+        <b>Mã wo:</b>
+        ${item.mawo || 'Chưa sinh wo'}
+      </p>
+    
+      <p>
+        <b>Loại công việc:</b>
+    
+        <span style="
+          color:
+            ${String(item.type)
+              .toLowerCase()
+              .includes('inos')
+              ? '#0b5394'
+              : '#ff6600'};
+    
+          font-weight:bold;
         ">
-          <b>Thời gian tồn:</b>
-          ${item.thoigian} ngày
-        </p>
-
-        <p>
-          <b>Mô tả:</b>
-          ${item.mota}
-        </p>
-
-      </div>
+    
+          ${item.type}
+    
+        </span>
+    
+      </p>
+    
+      <p>
+        <b>Huyện:</b>
+        ${item.tth}
+      </p>
+    
+      <p>
+        <b>Danh mục:</b>
+        ${item.danhmuc}
+      </p>
+    
+      <p>
+        <b>Đầu việc:</b>
+        ${item.dauviec || 'Đầu việc trống'}
+      </p>
+    
+      <p>
+        <b>Nhân viên:</b>
+        ${item.nhanvien}
+      </p>
+    
+      <p class="
+        ${item.thoigian < 0
+          ? 'red'
+          : 'green'}
+      ">
+    
+        <b>Thời gian tồn:</b>
+        ${item.thoigian} ngày
+    
+      </p>
+    
+      <p>
+        <b>Mô tả:</b>
+        ${item.mota}
+      </p>
+    
+      <p style="
+        color:
+          ${String(item.wo_vtnet)
+            .includes('Chờ CD duyệt')
+            ? '#ff9900'
+            : '#000'};
+    
+        font-weight:
+          ${String(item.wo_vtnet)
+            .includes('Chờ CD duyệt')
+            ? 'bold'
+            : 'normal'};
+      ">
+    
+        <b>Trạng thái wo vtnet:</b>
+        ${item.wo_vtnet}
+    
+      </p>
+    
+      <p>
+        <b>Trạng thái wo vcc:</b>
+        ${item.wo_vvc}
+      </p>
+    
+      <p>
+        <b>Nhân viên tạo:</b>
+        ${item.nhanvien_tao}
+      </p>
+    
+    </div>
 
     `;
 
