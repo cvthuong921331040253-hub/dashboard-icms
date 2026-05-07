@@ -76,6 +76,7 @@ body{
   border-radius:12px;
   margin-bottom:12px;
   box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  overflow:hidden;
 }
 
 .group-title{
@@ -839,7 +840,14 @@ function showTimelineDV(){
 
   const dvs =
     [...new Set(
-      list.map(x => x.dauviec)
+      list.map(x =>
+  
+        x.dauviec &&
+        String(x.dauviec).trim() != ''
+          ? x.dauviec
+          : 'Đầu việc trống'
+  
+      )
     )];
 
   let html = `
@@ -854,10 +862,19 @@ function showTimelineDV(){
 
   dvs.forEach(dv => {
 
-    const count =
-      list.filter(
-        x => x.dauviec == dv
-      ).length;
+  const count =
+    list.filter(x => {
+  
+      const value =
+  
+        x.dauviec &&
+        String(x.dauviec).trim() != ''
+          ? x.dauviec
+          : 'Đầu việc trống';
+  
+      return value == dv;
+  
+    }).length;
 
     html += `
 
@@ -870,7 +887,7 @@ function showTimelineDV(){
         <div style="
           margin-top:5px;
           height:10px;
-          width:${count * 4}px;
+          width:${Math.min(count * 1.2, 100)}%;
           background:#0b5394;
           border-radius:10px;
         "></div>
