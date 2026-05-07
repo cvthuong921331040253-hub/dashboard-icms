@@ -141,16 +141,6 @@ body{
 <div class="container">
   <div class="fixed-top">
   <button class="main-btn"
-    onclick="reloadData()"
-  style="
-    margin-bottom:4px;
-    background:green;
-    padding:4px;
-    font-size:10px;
-    height:34px;
-  ">
-    LOAD LẠI DỮ LIỆU
-  </button>
   <div class="top-box">
 
     <button class="main-btn"
@@ -183,9 +173,46 @@ body{
   
   </div>
 
-  <div id="loading">
-    ⏳ Đang tải dữ liệu... vui lòng chờ!
+<div style="
+  display:flex;
+  gap:4px;
+  align-items:center;
+  margin-top:4px;
+">
+
+  <button class="main-btn"
+    onclick="reloadData()"
+    style="
+      background:green;
+      width:120px;
+      height:26px;
+      font-size:10px;
+      flex-shrink:0;
+    "
+  >
+    LOAD
+  </button>
+
+    <div id="loading"
+      style="
+        flex:1;
+        text-align:left;
+        font-size:10px;
+        padding-left:4px;
+      "
+    >
+      ⏳ Đang tải dữ liệu...
+    </div>
+  
   </div>
+  
+  <div id="logtime"
+    style="
+      font-size:10px;
+      color:#666;
+      margin-top:2px;
+    "
+  ></div>
 
   <input
   type="text"
@@ -304,6 +331,9 @@ function loadData(){
       nhanvien:
         x.nhanvien || '',
 
+      tg_update:
+        x.tg_update || '',
+      
       type:
         x.type || '',
 
@@ -316,7 +346,18 @@ function loadData(){
 
     document.getElementById('loading')
       .style.display = 'none';
+    if(DATA.length > 0){
 
+    document.getElementById('logtime')
+    .innerHTML =
+
+    '🕒 Logtime: '
+    +
+    (
+      DATA[1]?.tg_update || ''
+    );
+
+}
   });
 
 }
