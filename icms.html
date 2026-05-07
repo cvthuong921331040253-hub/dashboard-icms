@@ -778,17 +778,47 @@ function showTimelineTTH(){
           margin-top:5px;
         ">
 
+        <button
+        
+          onclick="
+            showTTHDetail(
+              '${tth}',
+              'Quá hạn'
+            )
+          "
+        
+          style="
+            width:100%;
+            border:none;
+            background:white;
+            text-align:left;
+        
+            padding:0;
+            margin:0;
+        
+            cursor:pointer;
+          "
+        
+        >
+        
           <small>
             Quá hạn:
             ${quaHan}
           </small>
-
+        
           <div style="
-            height:14px;
-            width:${quaHan * 3}px;
+            height:10px;
+        
+            width:${Math.max(
+              Math.min(quaHan * 1.5, 100),
+              5
+            )}%;
+        
             background:red;
             border-radius:10px;
           "></div>
+        
+        </button>
 
         </div>
 
@@ -796,17 +826,47 @@ function showTimelineTTH(){
           margin-top:5px;
         ">
 
+        <button
+        
+          onclick="
+            showTTHDetail(
+              '${tth}',
+              'Trong hạn'
+            )
+          "
+        
+          style="
+            width:100%;
+            border:none;
+            background:white;
+            text-align:left;
+        
+            padding:0;
+            margin:0;
+        
+            cursor:pointer;
+          "
+        
+        >
+        
           <small>
             Trong hạn:
             ${trongHan}
           </small>
-
+        
           <div style="
-            height:8px;
-            width:${trongHan * 3}px;
+            height:10px;
+        
+            width:${Math.max(
+              Math.min(trongHan * 1.5, 100),
+              5
+            )}%;
+        
             background:green;
             border-radius:10px;
           "></div>
+        
+        </button>
 
         </div>
 
@@ -1166,6 +1226,119 @@ function showDVDetail(dv){
         <p>
           <b>Đầu việc:</b>
           ${dv}
+        </p>
+
+        <p>
+          <b>Nhân viên:</b>
+          ${item.nhanvien}
+        </p>
+
+        <p class="
+          ${item.thoigian < 0
+            ? 'red'
+            : 'green'}
+        ">
+          <b>Thời gian tồn:</b>
+          ${item.thoigian} ngày
+        </p>
+
+        <p>
+          <b>Mô tả:</b>
+          ${item.mota}
+        </p>
+
+      </div>
+
+    `;
+
+  });
+
+  html += '</div>';
+
+  content.innerHTML = html;
+
+}
+
+function showTTHDetail(
+  tth,
+  status
+){
+
+  saveHistory();
+
+  const content =
+    document.getElementById('content');
+
+  let list =
+    DATA.filter(x =>
+
+      String(x.type)
+      .toLowerCase()
+      .includes('inos')
+
+      &&
+
+      x.tth == tth
+
+      &&
+
+      x.danhgia == status
+
+    );
+
+  list.sort(
+    (a,b) =>
+      a.thoigian - b.thoigian
+  );
+
+  let html = `
+
+    <div class="card">
+
+      <div class="group-title">
+        ${tth}
+        /
+        ${status}
+        (${list.length})
+      </div>
+
+  `;
+
+  list.forEach(item => {
+
+    html += `
+
+      <div class="item">
+
+        <p>
+          <b>Trạm:</b>
+          ${item.tram}
+        </p>
+
+        <p style="
+          color:
+            ${String(item.mawo)
+              .toLowerCase()
+              .includes('chưa sinh')
+              ? '#00b0f0'
+              : '#000'};
+
+          font-weight:bold;
+        ">
+
+          <b>Mã WO:</b>
+          ${item.mawo}
+
+        </p>
+
+        <p>
+          <b>Danh mục:</b>
+          ${item.danhmuc}
+        </p>
+
+        <p>
+          <b>Đầu việc:</b>
+          ${item.dauviec || 'Đầu việc trống'}
         </p>
 
         <p>
