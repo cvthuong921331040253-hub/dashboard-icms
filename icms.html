@@ -148,7 +148,8 @@ fetch(API)
 
     tram:
       x.tram || x['Trạm'] || '',
-
+    mawo:
+      x.mawo || x['wo'] || '',
     thoigian:
       Number(
         x.thoigian ||
@@ -389,7 +390,14 @@ function showList(
           <b>Trạm:</b>
           ${item.tram}
         </p>
-
+        <p style="
+        color:
+          ${item.mawo ? '#000' : 'green'};
+        font-weight:bold;
+      ">
+        <b>Mã WO:</b>
+        ${item.mawo || 'CHƯA SINH WO'}
+      </p>
         <p>
           <b>Nhân viên:</b>
           ${item.nhanvien}
@@ -401,7 +409,7 @@ function showList(
             : 'green'}
         ">
           <b>Thời gian tồn:</b>
-          ${item.thoigian}
+          ${item.thoigian} ngày
         </p>
 
         <p>
