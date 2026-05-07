@@ -754,13 +754,108 @@ function showTimelineTTH(){
       list.map(x => x.tth)
     )];
 
+  const tongQuaHan =
+  list.filter(
+    x => x.danhgia == 'Quá hạn'
+  ).length;
+
+const tongTrongHan =
+  list.filter(
+    x => x.danhgia == 'Trong hạn'
+  ).length;
+
+const tongTatCa =
+  tongQuaHan + tongTrongHan;
+
   let html = `
 
     <div class="card">
 
-      <div class="group-title">
-        BIỂU ĐỒ TTH HẠNG MỤC INOS
+    <div class="group-title">
+      BIỂU ĐỒ TTH HẠNG MỤC INOS
+    </div>
+    
+    <div style="
+      margin-bottom:16px;
+    
+      background:#f5f7fa;
+    
+      border-radius:10px;
+    
+      padding:8px;
+    
+      border:1px solid #ddd;
+    ">
+    
+      <div style="
+        font-size:13px;
+        font-weight:bold;
+        color:#0b5394;
+    
+        margin-bottom:5px;
+      ">
+        CNCT GLI
       </div>
+    
+      <div style="
+        font-size:11px;
+        margin-bottom:5px;
+      ">
+    
+        Tổng:
+        <b>${tongTatCa}</b>
+    
+        |
+    
+        <span style="color:red">
+          Quá hạn:
+          <b>${tongQuaHan}</b>
+        </span>
+    
+        |
+    
+        <span style="color:green">
+          Trong hạn:
+          <b>${tongTrongHan}</b>
+        </span>
+    
+      </div>
+    
+      <div style="
+        display:flex;
+    
+        width:100%;
+    
+        height:10px;
+    
+        border-radius:20px;
+    
+        overflow:hidden;
+    
+        background:#ddd;
+      ">
+    
+        <div style="
+          width:${(
+            tongQuaHan /
+            tongTatCa
+          ) * 100}%;
+    
+          background:#ff3b30;
+        "></div>
+    
+        <div style="
+          width:${(
+            tongTrongHan /
+            tongTatCa
+          ) * 100}%;
+    
+          background:#34c759;
+        "></div>
+    
+      </div>
+    
+    </div>
 
   `;
 
