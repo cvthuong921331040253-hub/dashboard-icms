@@ -821,37 +821,64 @@ const tongTatCa =
     
       </div>
     
-      <div style="
-        display:flex;
-    
-        width:100%;
-    
-        height:10px;
-    
-        border-radius:20px;
-    
-        overflow:hidden;
-    
-        background:#ddd;
-      ">
-    
         <div style="
-          width:${(
-            tongQuaHan /
-            tongTatCa
-          ) * 100}%;
+          display:flex;
+        
+          width:100%;
+        
+          height:10px;
+        
+          border-radius:20px;
+        
+          overflow:hidden;
+        
+          background:#ddd;
+        ">
+    
+        <div
+        
+          onclick="
+            showALLTTHDetail(
+              'Quá hạn'
+            )
+          "
+        
+          style="
+            width:${(
+              tongQuaHan /
+              tongTatCa
+            ) * 100}%;
+        
+            background:#ff3b30;
+        
+            cursor:pointer;
+          "
+        
+        ></div>
     
           background:#ff3b30;
         "></div>
     
-        <div style="
-          width:${(
-            tongTrongHan /
-            tongTatCa
-          ) * 100}%;
-    
-          background:#34c759;
-        "></div>
+        <div
+        
+          onclick="
+            showALLTTHDetail(
+              'Trong hạn'
+            )
+          "
+        
+          style="
+            width:${(
+              tongTrongHan /
+              tongTatCa
+            ) * 100}%;
+        
+            background:#34c759;
+        
+            cursor:pointer;
+          "
+        
+        ></div>
     
       </div>
     
@@ -1588,6 +1615,91 @@ function showTTHDetail(
         <p>
           <b>Mô tả:</b>
           ${item.mota}
+        </p>
+
+      </div>
+
+    `;
+
+  });
+
+  html += '</div>';
+
+  content.innerHTML = html;
+
+}
+
+function showALLTTHDetail(status){
+
+  saveHistory();
+
+  const content =
+    document.getElementById('content');
+
+  let list =
+    DATA.filter(x =>
+
+      String(x.type)
+      .toLowerCase()
+      .includes('inos')
+
+      &&
+
+      x.danhgia == status
+
+    );
+
+  list.sort(
+    (a,b) =>
+      a.thoigian - b.thoigian
+  );
+
+  let html = `
+
+    <div class="card">
+
+      <div class="group-title">
+        CNCT GLI
+        /
+        ${status}
+        (${list.length})
+      </div>
+
+  `;
+
+  list.forEach(item => {
+
+    html += `
+
+      <div class="item">
+
+        <p>
+          <b>Trạm, tuyến, tủ:</b>
+          ${item.tram}
+        </p>
+
+        <p>
+          <b>Huyện:</b>
+          ${item.tth}
+        </p>
+
+        <p>
+          <b>Danh mục:</b>
+          ${item.danhmuc}
+        </p>
+
+        <p>
+          <b>Đầu việc:</b>
+          ${item.dauviec || 'Đầu việc trống'}
+        </p>
+
+        <p class="
+          ${item.thoigian < 0
+            ? 'red'
+            : 'green'}
+        ">
+          <b>Thời gian tồn:</b>
+          ${item.thoigian} ngày
         </p>
 
       </div>
