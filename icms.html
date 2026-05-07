@@ -780,111 +780,108 @@ function showTimelineTTH(){
       ).length;
 
     html += `
-
-      <div style="
-        margin-bottom:20px;
-      ">
-
-        <b>${tth}</b>
-
         <div style="
-          margin-top:5px;
+          margin-bottom:12px;
         ">
-
-        <button
-        
-          onclick="
-            showTTHDetail(
-              '${tth}',
-              'Quá hạn'
-            )
-          "
-        
-          style="
-            width:100%;
-            border:none;
-            background:white;
-            text-align:left;
-        
-            padding:0;
-            margin:0;
-        
-            cursor:pointer;
-          "
-        
-        >
-        
-          <small>
-            Quá hạn:
-            ${quaHan}
-          </small>
         
           <div style="
-            height:10px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
         
-            width:${Math.max(
-              Math.min(quaHan * 1.5, 100),
-              5
-            )}%;
+            font-size:12px;
+            font-weight:bold;
         
-            background:red;
-            border-radius:10px;
-          "></div>
+            margin-bottom:4px;
+          ">
         
-        </button>
-
-        </div>
-
-        <div style="
-          margin-top:5px;
-        ">
-
-        <button
+            <span style="
+              color:#0b5394;
+            ">
+              ${tth}
+            </span>
         
-          onclick="
-            showTTHDetail(
-              '${tth}',
-              'Trong hạn'
-            )
-          "
+            <span>
         
-          style="
-            width:100%;
-            border:none;
-            background:white;
-            text-align:left;
+              <span style="
+                color:red;
+              ">
+                QH ${quaHan}
+              </span>
         
-            padding:0;
-            margin:0;
+              |
         
-            cursor:pointer;
-          "
+              <span style="
+                color:green;
+              ">
+                TH ${trongHan}
+              </span>
         
-        >
+            </span>
         
-          <small>
-            Trong hạn:
-            ${trongHan}
-          </small>
+          </div>
         
           <div style="
+            display:flex;
+        
+            width:100%;
+        
             height:10px;
         
-            width:${Math.max(
-              Math.min(trongHan * 1.5, 100),
-              5
-            )}%;
+            border-radius:20px;
         
-            background:green;
-            border-radius:10px;
-          "></div>
+            overflow:hidden;
         
-        </button>
-
+            background:#ddd;
+          ">
+        
+            <div
+        
+              onclick="
+                showTTHDetail(
+                  '${tth}',
+                  'Quá hạn'
+                )
+              "
+        
+              style="
+                width:${(
+                  quaHan /
+                  (quaHan + trongHan)
+                ) * 100}%;
+        
+                background:#ff3b30;
+        
+                cursor:pointer;
+              "
+        
+            ></div>
+        
+            <div
+        
+              onclick="
+                showTTHDetail(
+                  '${tth}',
+                  'Trong hạn'
+                )
+              "
+        
+              style="
+                width:${(
+                  trongHan /
+                  (quaHan + trongHan)
+                ) * 100}%;
+        
+                background:#34c759;
+        
+                cursor:pointer;
+              "
+        
+            ></div>
+        
+          </div>
+        
         </div>
-
-      </div>
-
     `;
 
   });
