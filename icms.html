@@ -31,16 +31,18 @@ body{
   display:flex;
   gap:10px;
   margin-bottom:15px;
+  flex-wrap:wrap;
 }
 
 .main-btn{
   flex:1;
+  min-width:180px;
   border:none;
   padding:18px;
   border-radius:12px;
   background:#0b5394;
   color:white;
-  font-size:18px;
+  font-size:16px;
   font-weight:bold;
 }
 
@@ -111,6 +113,20 @@ body{
 
 <div class="container">
 
+  <button
+    onclick="goBack()"
+    style="
+      margin-bottom:10px;
+      border:none;
+      padding:10px 16px;
+      border-radius:8px;
+      background:#666;
+      color:white;
+      font-weight:bold;
+    ">
+    ← BACK
+  </button>
+
   <div class="top-box">
 
     <button class="main-btn"
@@ -123,11 +139,30 @@ body{
       OUT OS
     </button>
 
+    <button class="main-btn"
+      style="background:#ff9900"
+      onclick="showChoCD()">
+      WO FT CHỜ CD DUYỆT
+    </button>
+
+    <button class="main-btn"
+      style="background:#6a1b9a"
+      onclick="showTimelineTTH()">
+      TIMELINE TTH
+    </button>
+
+    <button class="main-btn"
+      style="background:#00897b"
+      onclick="showTimelineDV()">
+      TIMELINE ĐẦU VIỆC
+    </button>
+
   </div>
 
   <div id="loading">
     Đang tải dữ liệu...
   </div>
+
   <button class="main-btn"
     onclick="reloadData()"
     style="
@@ -136,6 +171,7 @@ body{
     ">
     LOAD DỮ LIỆU
   </button>
+
   <div id="content"></div>
 
 </div>
@@ -161,68 +197,58 @@ function loadData(){
     DATA = data.map(x => ({
 
       tram:
-        x.tram || x['Trạm'] || '',
+        x.tram || '',
 
       mawo:
-        x.mawo || x['wo'] || '',
-      
+        x.mawo || x.wo || '',
+
       dauviec:
-        x.dauviec || x['dv'] || '',
-      
+        x.dauviec || x.dv || '',
+
       thoigian:
-        Number(
-          x.thoigian ||
-          x['Thời gian tồn']
-        ) || 0,
+        Number(x.thoigian) || 0,
 
       mota:
-        x.mota ||
-        x['Mô tả'] || '',
+        x.mota || '',
 
       danhmuc:
-        x.danhmuc ||
-        x['Danh mục'] || '',
+        x.danhmuc || '',
 
       tth:
-        x.tth ||
-        x['TTH'] || '',
+        x.tth || '',
 
       wo_vvc:
-        x.wo_vvc ||
-        x['Trạng thái wo VVC'] || '',
+        x.wo_vvc || '',
 
       wo_vtnet:
-        x.wo_vtnet ||
-        x['Trạng thái wo VTNET'] || '',
+        x.wo_vtnet || '',
 
       nhanvien_tao:
-        x.nhanvien_tao ||
-        x['Nhân viên tạo'] || '',
+        x.nhanvien_tao || '',
 
       nhanvien:
-        x.nhanvien ||
-        x['Nhân viên'] || '',
+        x.nhanvien || '',
 
       type:
-        x.type ||
-        x['INOS_OUTOS'] || '',
+        x.type || '',
 
       danhgia:
-        Number(
-          x.thoigian ||
-          x['Thời gian tồn']
-        ) < 0
-        ? 'Quá hạn'
-        : 'Trong hạn'
+        Number(x.thoigian) < 0
+          ? 'Quá hạn'
+          : 'Trong hạn'
 
     }));
 
     document.getElementById('loading')
       .style.display = 'none';
 
-    console.log(DATA);
-
   });
+
+}
+
+function goBack(){
+
+  window.history.back();
 
 }
 
@@ -232,7 +258,15 @@ function showType(type){
     document.getElementById('content');
 
   const list =
-    DATA.filter(x => x.type == type);
+    DATA.filter(x =>
+
+      String(x.type)
+      .toLowerCase()
+      ==
+      String(type)
+      .toLowerCase()
+
+    );
 
   const tths =
     [...new Set(list.map(x => x.tth))];
@@ -308,7 +342,14 @@ function showCategory(
   let list =
     DATA.filter(x =>
 
-      x.type == type &&
+      String(x.type)
+      .toLowerCase()
+      ==
+      String(type)
+      .toLowerCase()
+
+      &&
+
       x.tth == tth
 
     );
@@ -381,7 +422,14 @@ function showList(
   let list =
     DATA.filter(x =>
 
-      x.type == type &&
+      String(x.type)
+      .toLowerCase()
+      ==
+      String(type)
+      .toLowerCase()
+
+      &&
+
       x.tth == tth &&
       x.danhmuc == category &&
       x.danhgia == status
@@ -411,7 +459,7 @@ function showList(
           <b>Trạm:</b>
           ${item.tram}
         </p>
-        
+
         <p style="
           color:
             ${String(item.mawo)
@@ -419,18 +467,20 @@ function showList(
               .includes('chưa sinh')
               ? '#00b0f0'
               : '#000'};
-        
+
           font-weight:bold;
         ">
-        <b>Mã wo:</b>
-        ${item.mawo || 'Chưa sinh wo'}
-      </p>
-      
-      <p>
+
+          <b>Mã wo:</b>
+          ${item.mawo || 'Chưa sinh wo'}
+
+        </p>
+
+        <p>
           <b>Đầu việc:</b>
           ${item.dauviec || ''}
         </p>
-        
+
         <p>
           <b>Nhân viên:</b>
           ${item.nhanvien}
@@ -452,23 +502,24 @@ function showList(
 
         <p style="
           color:
-            ${String(item.wo_vvc)
+            ${String(item.wo_vtnet)
               .includes('Chờ CD duyệt')
               ? '#ff9900'
               : '#000'};
+
           font-weight:
-            ${String(item.wo_vvc)
+            ${String(item.wo_vtnet)
               .includes('Chờ CD duyệt')
               ? 'bold'
               : 'normal'};
         ">
-          <b>Trạng thái wo vcc:</b>
-          ${item.wo_vvc}
+          <b>Trạng thái wo vtnet:</b>
+          ${item.wo_vtnet}
         </p>
 
         <p>
-          <b>Trạng thái wo vtnet:</b>
-          ${item.wo_vtnet}
+          <b>Trạng thái wo vcc:</b>
+          ${item.wo_vvc}
         </p>
 
         <p>
@@ -487,6 +538,7 @@ function showList(
   content.innerHTML = html;
 
 }
+
 function reloadData(){
 
   DATA = [];
@@ -495,6 +547,249 @@ function reloadData(){
     .innerHTML = '';
 
   loadData();
+
+}
+
+function showChoCD(){
+
+  const content =
+    document.getElementById('content');
+
+  let list =
+    DATA.filter(x =>
+
+      String(x.wo_vtnet)
+      .toLowerCase()
+      .includes('chờ cd duyệt')
+
+    );
+
+  list.sort(
+    (a,b) =>
+      a.thoigian - b.thoigian
+  );
+
+  let html = `
+
+    <div class="card">
+
+      <div class="group-title">
+        WO FT CHỜ CD DUYỆT
+      </div>
+
+  `;
+
+  list.forEach(item => {
+
+    html += `
+
+      <div class="item">
+
+        <p>
+          <b>Trạm:</b>
+          ${item.tram}
+        </p>
+
+        <p>
+          <b>Mã wo:</b>
+          ${item.mawo}
+        </p>
+
+        <p>
+          <b>Đầu việc:</b>
+          ${item.dauviec}
+        </p>
+
+        <p class="red">
+          <b>Thời gian tồn:</b>
+          ${item.thoigian} ngày
+        </p>
+
+        <p style="
+          color:#ff9900;
+          font-weight:bold;
+        ">
+          <b>WO VTNET:</b>
+          ${item.wo_vtnet}
+        </p>
+
+      </div>
+
+    `;
+
+  });
+
+  html += '</div>';
+
+  content.innerHTML = html;
+
+}
+
+function showTimelineTTH(){
+
+  const content =
+    document.getElementById('content');
+
+  const list =
+    DATA.filter(x =>
+
+      String(x.type)
+      .toLowerCase()
+      .includes('inos')
+
+    );
+
+  const tths =
+    [...new Set(
+      list.map(x => x.tth)
+    )];
+
+  let html = `
+
+    <div class="card">
+
+      <div class="group-title">
+        TIMELINE TTH INOS
+      </div>
+
+  `;
+
+  tths.forEach(tth => {
+
+    const tthData =
+      list.filter(x => x.tth == tth);
+
+    const quaHan =
+      tthData.filter(
+        x => x.danhgia == 'Quá hạn'
+      ).length;
+
+    const trongHan =
+      tthData.filter(
+        x => x.danhgia == 'Trong hạn'
+      ).length;
+
+    html += `
+
+      <div style="
+        margin-bottom:20px;
+      ">
+
+        <b>${tth}</b>
+
+        <div style="
+          margin-top:5px;
+        ">
+
+          <small>
+            Quá hạn:
+            ${quaHan}
+          </small>
+
+          <div style="
+            height:14px;
+            width:${quaHan * 3}px;
+            background:red;
+            border-radius:10px;
+          "></div>
+
+        </div>
+
+        <div style="
+          margin-top:5px;
+        ">
+
+          <small>
+            Trong hạn:
+            ${trongHan}
+          </small>
+
+          <div style="
+            height:14px;
+            width:${trongHan * 3}px;
+            background:green;
+            border-radius:10px;
+          "></div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+  html += '</div>';
+
+  content.innerHTML = html;
+
+}
+
+function showTimelineDV(){
+
+  const content =
+    document.getElementById('content');
+
+  const list =
+    DATA.filter(x =>
+
+      String(x.type)
+      .toLowerCase()
+      .includes('inos')
+
+    );
+
+  const dvs =
+    [...new Set(
+      list.map(x => x.dauviec)
+    )];
+
+  let html = `
+
+    <div class="card">
+
+      <div class="group-title">
+        TIMELINE ĐẦU VIỆC INOS
+      </div>
+
+  `;
+
+  dvs.forEach(dv => {
+
+    const count =
+      list.filter(
+        x => x.dauviec == dv
+      ).length;
+
+    html += `
+
+      <div style="
+        margin-bottom:20px;
+      ">
+
+        <b>${dv}</b>
+
+        <div style="
+          margin-top:5px;
+          height:16px;
+          width:${count * 4}px;
+          background:#0b5394;
+          border-radius:10px;
+        "></div>
+
+        <small>
+          ${count} công việc
+        </small>
+
+      </div>
+
+    `;
+
+  });
+
+  html += '</div>';
+
+  content.innerHTML = html;
 
 }
 
