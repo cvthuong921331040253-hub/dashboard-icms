@@ -416,7 +416,7 @@ function showList(
           color:
             ${item.mawo ? '#000' : '#00b0f0'};
           font-weight:bold;
-        ">>
+        ">
         <b>Mã wo:</b>
         ${item.mawo || 'Chưa sinh wo'}
       </p>
@@ -445,7 +445,18 @@ function showList(
           ${item.mota}
         </p>
 
-        <p>
+        <p style="
+          color:
+            ${String(item.wo_vvc)
+              .includes('Chờ CD duyệt')
+              ? '#ff9900'
+              : '#000'};
+          font-weight:
+            ${String(item.wo_vvc)
+              .includes('Chờ CD duyệt')
+              ? 'bold'
+              : 'normal'};
+        ">
           <b>Trạng thái wo vcc:</b>
           ${item.wo_vvc}
         </p>
