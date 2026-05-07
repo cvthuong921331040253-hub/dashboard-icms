@@ -92,6 +92,27 @@ body{
   box-sizing:border-box;
 }
 
+.fade-in{
+  animation:
+    fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn{
+
+  from{
+    opacity:0;
+    transform:
+      translateY(8px);
+  }
+
+  to{
+    opacity:1;
+    transform:
+      translateY(0);
+  }
+
+}
+
 .item{
   background:white;
   border-left:4px solid red;
@@ -410,7 +431,7 @@ function showType(type){
     
     let html = `
     
-      <div class="card">
+      <div class="card fade-in">
 
           <div class="group-title">
             CNCT GLI
@@ -470,7 +491,7 @@ tths.forEach(tth => {
 
   html += `
 
-    <div class="card">
+    <div class="card fade-in">
 
       <div class="group-title">
         ${tth}
@@ -551,7 +572,7 @@ function showCategory(
     )];
 
   let html = `
-    <div class="card">
+    <div class="card fade-in">
 
       <div class="group-title">
         ${type}
@@ -630,7 +651,7 @@ function showList(
   );
 
   let html = `
-    <div class="card">
+    <div class="card fade-in">
 
       <div class="group-title">
         ${category}
@@ -641,7 +662,7 @@ function showList(
 
     html += `
 
-      <div class="item">
+      <div class="item fade-in">
 
         <p>
           <b>Trạm, tuyến, tủ:</b>
@@ -764,7 +785,7 @@ function showChoCD(){
 
   let html = `
 
-    <div class="card">
+    <div class="card fade-in">
 
       <div class="group-title">
         WO FT ĐÓNG CHỜ CD DUYỆT
@@ -776,7 +797,7 @@ function showChoCD(){
 
     html += `
 
-      <div class="item">
+      <div class="item fade-in">
 
         <p>
           <b>Trạm, tuyến, tủ:</b>
@@ -869,7 +890,7 @@ const tongTatCa =
 
   let html = `
 
-    <div class="card">
+    <div class="card fade-in">
 
     <div class="group-title">
       BIỂU ĐỒ TTH HẠNG MỤC INOS
@@ -1145,7 +1166,7 @@ function showTimelineDV(){
 
   let html = `
 
-    <div class="card">
+    <div class="card fade-in">
 
       <div class="group-title">
         BIỂU ĐỒ ĐẦU VIỆC HẠNG MỤC INOS
@@ -1378,7 +1399,7 @@ function searchData(){
 
   let html = `
 
-    <div class="card">
+    <div class="card fade-in">
 
       <div class="group-title">
         KẾT QUẢ TÌM KIẾM
@@ -1391,7 +1412,7 @@ function searchData(){
 
     html += `
 
-      <div class="item">
+      <div class="item fade-in">
 
         <p>
           <b>Trạm, tuyến, tủ:</b>
@@ -1502,7 +1523,7 @@ function showDVDetail(dv){
 
   let html = `
 
-    <div class="card">
+    <div class="card fade-in">
 
       <div class="group-title">
         ${dv}
@@ -1515,7 +1536,7 @@ function showDVDetail(dv){
 
     html += `
 
-      <div class="item">
+      <div class="item fade-in">
 
         <p>
           <b>Trạm, tuyến, tủ:</b>
@@ -1632,7 +1653,7 @@ function showTTHDetail(
 
   let html = `
 
-    <div class="card">
+    <div class="card fade-in">
 
       <div class="group-title">
         ${tth}
@@ -1647,7 +1668,7 @@ function showTTHDetail(
 
     html += `
 
-      <div class="item">
+      <div class="item fade-in">
       
         <p>
           <b>Trạm, tuyến, tủ:</b>
@@ -1793,8 +1814,7 @@ function showALLTTHDetail(status){
 
   let html = `
 
-    <div class="card">
-
+    <div class="card fade-in">
       <div class="group-title">
         CNCT GLI
         /
@@ -1808,7 +1828,7 @@ function showALLTTHDetail(status){
 
     html += `
 
-      <div class="item">
+     <div class="item fade-in">
       
         <p>
           <b>Trạm, tuyến, tủ:</b>
@@ -1953,7 +1973,7 @@ function showALLCategory(status){
 
   let html = `
 
-    <div class="card">
+    <div class="card fade-in">
 
       <div class="group-title">
         InOS
@@ -2034,7 +2054,7 @@ function showALLList(
 
   let html = `
 
-    <div class="card">
+    <div class="card fade-in">
 
       <div class="group-title">
 
@@ -2054,7 +2074,7 @@ function showALLList(
 
     html += `
 
-    <div class="item">
+    <div class="item fade-in">
     
       <p>
         <b>Trạm, tuyến, tủ:</b>
