@@ -914,12 +914,12 @@ function showTimelineDV(){
   const dvs =
     [...new Set(
       list.map(x =>
-  
+
         x.dauviec &&
         String(x.dauviec).trim() != ''
           ? x.dauviec
           : 'Đầu việc trống'
-  
+
       )
     )];
 
@@ -928,26 +928,51 @@ function showTimelineDV(){
     <div class="card">
 
       <div class="group-title">
-        TIMELINE ĐẦU VIỆC INOS
+        BIỂU ĐỒ ĐẦU VIỆC INOS
       </div>
 
   `;
 
   dvs.forEach(dv => {
 
-  const tong = quaHan + trongHan;
-    list.filter(x => {
-  
-      const value =
-  
-        x.dauviec &&
-        String(x.dauviec).trim() != ''
-          ? x.dauviec
-          : 'Đầu việc trống';
-  
-      return value == dv;
-  
-    }).length;
+    const quaHan =
+      list.filter(x => {
+
+        const value =
+
+          x.dauviec &&
+          String(x.dauviec).trim() != ''
+            ? x.dauviec
+            : 'Đầu việc trống';
+
+        return (
+          value == dv
+          &&
+          x.danhgia == 'Quá hạn'
+        );
+
+      }).length;
+
+    const trongHan =
+      list.filter(x => {
+
+        const value =
+
+          x.dauviec &&
+          String(x.dauviec).trim() != ''
+            ? x.dauviec
+            : 'Đầu việc trống';
+
+        return (
+          value == dv
+          &&
+          x.danhgia == 'Trong hạn'
+        );
+
+      }).length;
+
+    const tong =
+      quaHan + trongHan;
 
     html += `
 
@@ -956,7 +981,7 @@ function showTimelineDV(){
       ">
 
         <button
-        
+
           onclick="
             showDVDetail(
               '${String(dv)
@@ -965,67 +990,93 @@ function showTimelineDV(){
               }'
             )
           "
-        
+
           style="
             width:100%;
             border:none;
             background:white;
             text-align:left;
-        
+
             padding:0;
             margin:0;
-        
+
             cursor:pointer;
           "
-        
+
         >
-        
+
           <b style="
             font-size:16px;
             color:#0b5394;
           ">
             ${dv}
           </b>
-          
+
           <div style="
             margin-top:2px;
-            margin-bottom:4px;
-          
+            margin-bottom:6px;
+
             font-size:11px;
             color:#666;
           ">
-          
+
             Tổng:
             <b>${tong}</b>
-          
+
             |
-          
+
             <span style="color:red">
               Quá hạn:
               <b>${quaHan}</b>
             </span>
-          
+
             |
-          
+
             <span style="color:green">
               Trong hạn:
               <b>${trongHan}</b>
             </span>
-          
+
           </div>
-        
+
           <div style="
             margin-top:5px;
-            height:10px;
-            width:${Math.max(Math.min(count * 0.4, 100),8)}%;
-            background:#0b5394;
-            border-radius:10px;
-          "></div>
-        
-          <small>
-            ${count} công việc
-          </small>
-        
+          ">
+
+            <div style="
+              height:8px;
+
+              width:${Math.max(
+                Math.min(quaHan * 0.5, 100),
+                5
+              )}%;
+
+              background:red;
+
+              border-radius:10px;
+            "></div>
+
+          </div>
+
+          <div style="
+            margin-top:5px;
+          ">
+
+            <div style="
+              height:8px;
+
+              width:${Math.max(
+                Math.min(trongHan * 0.5, 100),
+                5
+              )}%;
+
+              background:green;
+
+              border-radius:10px;
+            "></div>
+
+          </div>
+
         </button>
 
       </div>
