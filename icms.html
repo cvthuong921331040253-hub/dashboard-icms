@@ -935,7 +935,7 @@ function showTimelineDV(){
 
   dvs.forEach(dv => {
 
-  const count =
+  const tong = quaHan + trongHan;
     list.filter(x => {
   
       const value =
@@ -986,6 +986,33 @@ function showTimelineDV(){
           ">
             ${dv}
           </b>
+          
+          <div style="
+            margin-top:2px;
+            margin-bottom:4px;
+          
+            font-size:11px;
+            color:#666;
+          ">
+          
+            Tổng:
+            <b>${tong}</b>
+          
+            |
+          
+            <span style="color:red">
+              Quá hạn:
+              <b>${quaHan}</b>
+            </span>
+          
+            |
+          
+            <span style="color:green">
+              Trong hạn:
+              <b>${trongHan}</b>
+            </span>
+          
+          </div>
         
           <div style="
             margin-top:5px;
