@@ -371,57 +371,42 @@ function showType(type){
     let html = `
     
       <div class="card">
-    
-        <div class="group-title">
-          CNCT GLI
+
+          <div class="group-title">
+            CNCT GLI
+          </div>
+        
+          <button class="sub-btn"
+        
+            onclick="
+              showALLTTHDetail(
+                'Quá hạn'
+              )
+            "
+        
+          >
+        
+            Quá hạn
+            (${tongQuaHan})
+        
+          </button>
+        
+          <button class="sub-btn"
+        
+            onclick="
+              showALLTTHDetail(
+                'Trong hạn'
+              )
+            "
+        
+          >
+        
+            Trong hạn
+            (${tongTrongHan})
+        
+          </button>
+        
         </div>
-    
-        <div class="sub-btn"
-    
-          onclick="
-            showALLTTHDetail(
-              'Quá hạn'
-            )
-          "
-    
-          style="
-            color:red;
-          "
-        >
-    
-          Tổng:
-          ${tongTatCa}
-    
-          |
-    
-          Quá hạn
-          (${tongQuaHan})
-    
-        </div>
-    
-        <div class="sub-btn"
-    
-          onclick="
-            showALLTTHDetail(
-              'Trong hạn'
-            )
-          "
-    
-          style="
-            color:green;
-          "
-        >
-    
-          Tổng:
-          ${tongTatCa}
-    
-          |
-    
-          Trong hạn
-          (${tongTrongHan})
-    
-        </div>
-    
       </div>
     
     `;
