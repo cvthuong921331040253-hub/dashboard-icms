@@ -414,7 +414,12 @@ function showList(
         
         <p style="
           color:
-            ${item.mawo ? '#000' : '#00b0f0'};
+            ${String(item.mawo)
+              .toLowerCase()
+              .includes('chưa sinh')
+              ? '#00b0f0'
+              : '#000'};
+        
           font-weight:bold;
         ">
         <b>Mã wo:</b>
