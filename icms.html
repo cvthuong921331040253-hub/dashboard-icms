@@ -128,7 +128,14 @@ body{
   <div id="loading">
     Đang tải dữ liệu...
   </div>
-
+  <button class="main-btn"
+    onclick="reloadData()"
+    style="
+      margin-bottom:15px;
+      background:green;
+    ">
+    LOAD DỮ LIỆU
+  </button>
   <div id="content"></div>
 
 </div>
@@ -140,70 +147,81 @@ const API =
 
 let DATA = [];
 
-fetch(API)
-.then(res => res.json())
-.then(data => {
+loadData();
 
-  DATA = data.map(x => ({
-
-    tram:
-      x.tram || x['Trạm'] || '',
-    mawo:
-      x.mawo || x['wo'] || '',
-    thoigian:
-      Number(
-        x.thoigian ||
-        x['Thời gian tồn']
-      ) || 0,
-
-    mota:
-      x.mota ||
-      x['Mô tả'] || '',
-
-    danhmuc:
-      x.danhmuc ||
-      x['Danh mục'] || '',
-
-    tth:
-      x.tth ||
-      x['TTH'] || '',
-
-    wo_vvc:
-      x.wo_vvc ||
-      x['Trạng thái wo VVC'] || '',
-
-    wo_vtnet:
-      x.wo_vtnet ||
-      x['Trạng thái wo VTNET'] || '',
-
-    nhanvien_tao:
-      x.nhanvien_tao ||
-      x['Nhân viên tạo'] || '',
-
-    nhanvien:
-      x.nhanvien ||
-      x['Nhân viên'] || '',
-
-    type:
-      x.type ||
-      x['INOS_OUTOS'] || '',
-
-    danhgia:
-      Number(
-        x.thoigian ||
-        x['Thời gian tồn']
-      ) < 0
-      ? 'Quá hạn'
-      : 'Trong hạn'
-
-  }));
+function loadData(){
 
   document.getElementById('loading')
-    .style.display = 'none';
+    .style.display = 'block';
 
-  console.log(DATA);
+  fetch(API)
+  .then(res => res.json())
+  .then(data => {
 
-});
+    DATA = data.map(x => ({
+
+      tram:
+        x.tram || x['Trạm'] || '',
+
+      mawo:
+        x.mawo || x['wo'] || '',
+
+      thoigian:
+        Number(
+          x.thoigian ||
+          x['Thời gian tồn']
+        ) || 0,
+
+      mota:
+        x.mota ||
+        x['Mô tả'] || '',
+
+      danhmuc:
+        x.danhmuc ||
+        x['Danh mục'] || '',
+
+      tth:
+        x.tth ||
+        x['TTH'] || '',
+
+      wo_vvc:
+        x.wo_vvc ||
+        x['Trạng thái wo VVC'] || '',
+
+      wo_vtnet:
+        x.wo_vtnet ||
+        x['Trạng thái wo VTNET'] || '',
+
+      nhanvien_tao:
+        x.nhanvien_tao ||
+        x['Nhân viên tạo'] || '',
+
+      nhanvien:
+        x.nhanvien ||
+        x['Nhân viên'] || '',
+
+      type:
+        x.type ||
+        x['INOS_OUTOS'] || '',
+
+      danhgia:
+        Number(
+          x.thoigian ||
+          x['Thời gian tồn']
+        ) < 0
+        ? 'Quá hạn'
+        : 'Trong hạn'
+
+    }));
+
+    document.getElementById('loading')
+      .style.display = 'none';
+
+    console.log(DATA);
+
+  });
+
+}
 
 function showType(type){
 
@@ -443,10 +461,16 @@ function showList(
   content.innerHTML = html;
 
 }
+function reloadData(){
 
-setInterval(() => {
-  location.reload();
-}, 60000);
+  DATA = [];
+
+  document.getElementById('content')
+    .innerHTML = '';
+
+  loadData();
+
+}
 
 </script>
 
