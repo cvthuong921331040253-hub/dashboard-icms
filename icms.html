@@ -426,43 +426,65 @@ function showType(type){
     
     `;
 
-    html += `
-      <div class="card">
+tths.forEach(tth => {
 
-        <div class="group-title">
-          ${tth}
-        </div>
+  const quaHan =
+    list.filter(
+      x =>
+        x.tth == tth
+        &&
+        x.danhgia == 'Quá hạn'
+    );
 
-        <button class="sub-btn"
-          onclick="
-            showCategory(
-              '${type}',
-              '${tth}',
-              'Quá hạn'
-            )
-          ">
+  const trongHan =
+    list.filter(
+      x =>
+        x.tth == tth
+        &&
+        x.danhgia == 'Trong hạn'
+    );
 
-          Quá hạn (${quaHan.length})
+  html += `
 
-        </button>
+    <div class="card">
 
-        <button class="sub-btn"
-          onclick="
-            showCategory(
-              '${type}',
-              '${tth}',
-              'Trong hạn'
-            )
-          ">
-
-          Trong hạn (${trongHan.length})
-
-        </button>
-
+      <div class="group-title">
+        ${tth}
       </div>
-    `;
 
-  });
+      <button class="sub-btn"
+        onclick="
+          showCategory(
+            '${type}',
+            '${tth}',
+            'Quá hạn'
+          )
+        ">
+
+        Quá hạn
+        (${quaHan.length})
+
+      </button>
+
+      <button class="sub-btn"
+        onclick="
+          showCategory(
+            '${type}',
+            '${tth}',
+            'Trong hạn'
+          )
+        ">
+
+        Trong hạn
+        (${trongHan.length})
+
+      </button>
+
+    </div>
+
+  `;
+
+});
 
   content.innerHTML = html;
 
