@@ -379,7 +379,7 @@ function showType(type){
           <button class="sub-btn"
         
             onclick="
-              showALLTTHDetail(
+              showALLCategory(
                 'Quá hạn'
               )
             "
@@ -393,8 +393,7 @@ function showType(type){
         
           <button class="sub-btn"
         
-            onclick="
-              showALLTTHDetail(
+              showALLCategory(
                 'Trong hạn'
               )
             "
@@ -1757,6 +1756,172 @@ function showALLTTHDetail(status){
         ">
           <b>Thời gian tồn:</b>
           ${item.thoigian} ngày
+        </p>
+
+      </div>
+
+    `;
+
+  });
+
+  html += '</div>';
+
+  content.innerHTML = html;
+
+}
+
+function showALLCategory(status){
+
+  saveHistory();
+
+  const content =
+    document.getElementById('content');
+
+  let list =
+    DATA.filter(x =>
+
+      String(x.type)
+      .toLowerCase()
+      .includes('inos')
+
+      &&
+
+      x.danhgia == status
+
+    );
+
+  const categories =
+    [...new Set(
+      list.map(x => x.danhmuc)
+    )];
+
+  let html = `
+
+    <div class="card">
+
+      <div class="group-title">
+        InOS
+        /
+        CNCT GLI
+        /
+        ${status}
+      </div>
+
+  `;
+
+  categories.forEach(cat => {
+
+    const count =
+      list.filter(
+        x => x.danhmuc == cat
+      ).length;
+
+    html += `
+
+      <button class="sub-btn"
+
+        onclick="
+          showALLList(
+            '${status}',
+            '${cat}'
+          )
+        "
+
+      >
+
+        ${cat}
+        (${count})
+
+      </button>
+
+    `;
+
+  });
+
+  html += '</div>';
+
+  content.innerHTML = html;
+
+}
+
+function showALLList(
+  status,
+  category
+){
+
+  saveHistory();
+
+  const content =
+    document.getElementById('content');
+
+  let list =
+    DATA.filter(x =>
+
+      String(x.type)
+      .toLowerCase()
+      .includes('inos')
+
+      &&
+
+      x.danhgia == status
+
+      &&
+
+      x.danhmuc == category
+
+    );
+
+  list.sort(
+    (a,b) =>
+      a.thoigian - b.thoigian
+  );
+
+  let html = `
+
+    <div class="card">
+
+      <div class="group-title">
+
+        ${category}
+
+        /
+
+        ${status}
+
+        (${list.length})
+
+      </div>
+
+  `;
+
+  list.forEach(item => {
+
+    html += `
+
+      <div class="item">
+
+        <p>
+          <b>Trạm:</b>
+          ${item.tram}
+        </p>
+
+        <p>
+          <b>Huyện:</b>
+          ${item.tth}
+        </p>
+
+        <p class="
+          ${item.thoigian < 0
+            ? 'red'
+            : 'green'}
+        ">
+          <b>Thời gian tồn:</b>
+          ${item.thoigian} ngày
+        </p>
+
+        <p>
+          <b>Mô tả:</b>
+          ${item.mota}
         </p>
 
       </div>
