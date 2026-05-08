@@ -238,7 +238,7 @@ body{
   type="text"
   id="searchInput"
   placeholder="Tìm: Trạm, Huyện, Danh mục, Wo, Nhân viên..."
-  onkeyup="searchData()"
+  onkeyup="debounceSearch()"
   style="
     width:100%;
     box-sizing:border-box;
@@ -282,6 +282,7 @@ let DATA = [];
 
 let PAGE_HISTORY = [];
 let CURRENT_LIST = [];
+let SEARCH_TIMER;
 loadData();
 
 function saveHistory(){
@@ -1334,10 +1335,21 @@ function showTimelineDV(){
 
 }
 
+function debounceSearch(){
+
+  clearTimeout(SEARCH_TIMER);
+
+  SEARCH_TIMER =
+    setTimeout(() => {
+
+      searchData();
+
+    },300);
+
+}
+
 function searchData(){
-
-  saveHistory();
-
+  
   const keyword =
     document.getElementById('searchInput')
       .value
@@ -1400,6 +1412,10 @@ let list =
 
     );
 
+  const totalResult =
+  list.length;
+  list = list.slice(0,100);
+  
   list.sort(
     (a,b) =>
       a.thoigian - b.thoigian
@@ -1411,7 +1427,7 @@ let list =
 
       <div class="group-title">
         KẾT QUẢ TÌM KIẾM
-        (${list.length})
+        (${list.length}/${totalResult})
       </div>
 
   `;
