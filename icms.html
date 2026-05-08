@@ -789,63 +789,122 @@ function showChoCD(){
 
   let html = `
 
-    <div class="card fade-in">
-
-      <div class="group-title">
-        WO FT ĐÓNG CHỜ CD DUYỆT
-      </div>
-
-  `;
-
-  list.forEach(item => {
-
-    html += `
-
+          <div class="card fade-in">
+      
+            <div class="group-title">
+              WO FT ĐÓNG CHỜ CD DUYỆT
+            </div>
+      
+        `;
+      
+        list.forEach(item => {
+      
+          html += `
+      
       <div class="item fade-in">
-
+      
         <p>
           <b>Trạm, tuyến, tủ:</b>
           ${item.tram}
         </p>
-
-        <p>
+      
+        <p style="
+          color:
+            ${String(item.mawo)
+              .toLowerCase()
+              .includes('chưa sinh')
+              ? '#00b0f0'
+              : '#000'};
+      
+          font-weight:bold;
+        ">
+      
           <b>Mã wo:</b>
-          ${item.mawo}
+          ${item.mawo || 'Chưa sinh wo'}
+      
         </p>
-
+      
         <p>
+      
           <b>Loại công việc:</b>
+      
           <span style="
             color:
               ${String(item.type)
                 .toLowerCase()
                 .includes('inos')
                 ? '#0b5394'
-                : '#ff6600'}; 
-              font-weight:bold;
-            ">
-              ${item.type}
-            </span> 
+                : '#ff6600'};
+      
+            font-weight:bold;
+          ">
+      
+            ${item.type}
+      
+          </span>
+      
         </p>
-          
+      
+        <p>
+          <b>Huyện:</b>
+          ${item.tth}
+        </p>
+      
+        <p>
+          <b>Danh mục:</b>
+          ${item.danhmuc}
+        </p>
+      
         <p>
           <b>Đầu việc:</b>
-          ${item.dauviec}
+          ${item.dauviec || 'Đầu việc trống'}
         </p>
-
-        <p class="red">
+      
+        <p>
+          <b>Nhân viên:</b>
+          ${item.nhanvien}
+        </p>
+      
+        <p class="
+          ${item.thoigian < 0
+            ? 'red'
+            : 'green'}
+        ">
+      
           <b>Thời gian tồn:</b>
           ${item.thoigian} ngày
+      
         </p>
-
+      
+        <p>
+          <b>Mô tả:</b>
+          ${item.mota}
+        </p>
+      
         <p style="
           color:#ff9900;
           font-weight:bold;
         ">
-        <b>WO VCC:</b>
-        ${item.wo_vvc}
+      
+          <b>WO VCC:</b>
+          ${item.wo_vvc}
+      
         </p>
-
+      
+        <p>
+      
+          <b>WO VTNET:</b>
+          ${item.wo_vtnet}
+      
+        </p>
+      
+        <p>
+      
+          <b>Nhân viên tạo:</b>
+          ${item.nhanvien_tao}
+      
+        </p>
+      
       </div>
 
     `;
