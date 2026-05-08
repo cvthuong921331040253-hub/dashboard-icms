@@ -281,7 +281,7 @@ const API =
 let DATA = [];
 
 let PAGE_HISTORY = [];
-
+let CURRENT_LIST = [];
 loadData();
 
 function saveHistory(){
@@ -644,7 +644,8 @@ function showList(
       x.danhgia == status
 
     );
-
+  
+  CURRENT_LIST = list;
   list.sort(
     (a,b) =>
       a.thoigian - b.thoigian
@@ -777,7 +778,8 @@ function showChoCD(){
       .toLowerCase()
       .includes('chờ cd duyệt')
   );
-
+  
+  CURRENT_LIST = list;
   list.sort(
     (a,b) =>
       a.thoigian - b.thoigian
@@ -1353,8 +1355,14 @@ function searchData(){
 
   }
 
-  let list =
-    DATA.filter(x =>
+let source =
+
+  CURRENT_LIST.length > 0
+    ? CURRENT_LIST
+    : DATA;
+
+let list =
+  source.filter(x =>
 
       String(x.tram)
         .toLowerCase()
@@ -1515,7 +1523,8 @@ function showDVDetail(dv){
       return value == dv;
 
     });
-
+  
+  CURRENT_LIST = list;
   list.sort(
     (a,b) =>
       a.thoigian - b.thoigian
@@ -1645,7 +1654,8 @@ function showTTHDetail(
       x.danhgia == status
 
     );
-
+  
+  CURRENT_LIST = list;
   list.sort(
     (a,b) =>
       a.thoigian - b.thoigian
@@ -1806,7 +1816,8 @@ function showALLTTHDetail(status){
       x.danhgia == status
 
     );
-
+  
+  CURRENT_LIST = list;
   list.sort(
     (a,b) =>
       a.thoigian - b.thoigian
@@ -2046,7 +2057,8 @@ function showALLList(
       x.danhmuc == category
 
     );
-
+  
+  CURRENT_LIST = list;
   list.sort(
     (a,b) =>
       a.thoigian - b.thoigian
