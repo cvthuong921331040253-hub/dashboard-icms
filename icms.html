@@ -296,7 +296,8 @@ function saveHistory(){
 }
 
 function goBack(){
-
+  document.getElementById('searchInput')
+  .value = '';
   if(PAGE_HISTORY.length > 0){
 
     const lastPage =
@@ -385,7 +386,10 @@ function loadData(){
 }
 
 function reloadData(){
+  document.getElementById('searchInput')
+  .value = '';
 
+  CURRENT_LIST = [];
   DATA = [];
 
   document.getElementById('content')
@@ -1420,11 +1424,25 @@ function searchData(){
     document.getElementById('content');
 
   if(keyword == ''){
-
-    content.innerHTML = '';
-
+  
+    if(PAGE_HISTORY.length > 0){
+  
+      const last =
+        PAGE_HISTORY[
+          PAGE_HISTORY.length - 1
+        ];
+  
+      content.innerHTML =
+        last.html;
+  
+    }else{
+  
+      content.innerHTML = '';
+  
+    }
+  
     return;
-
+  
   }
 
 let source =
