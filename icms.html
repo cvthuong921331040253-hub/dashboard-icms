@@ -283,6 +283,7 @@ let DATA = [];
 let PAGE_HISTORY = [];
 let CURRENT_LIST = [];
 let SEARCH_TIMER;
+let SEARCH_LIMIT = 100;
 loadData();
 
 function saveHistory(){
@@ -1341,7 +1342,7 @@ function debounceSearch(){
 
   SEARCH_TIMER =
     setTimeout(() => {
-
+      SEARCH_LIMIT = 100;
       searchData();
 
     },300);
@@ -1414,7 +1415,7 @@ let list =
 
   const totalResult =
   list.length;
-  list = list.slice(0,100);
+  list = list.slice(0,SEARCH_LIMIT);
   
   list.sort(
     (a,b) =>
@@ -1514,7 +1515,35 @@ let list =
   });
 
   html += '</div>';
+  if(totalResult > SEARCH_LIMIT){
 
+  html += `
+
+    <button
+
+      onclick="loadMoreSearch()"
+
+      style="
+        width:100%;
+        border:none;
+        padding:10px;
+        border-radius:10px;
+        background:#0b5394;
+        color:white;
+        font-weight:bold;
+        margin-top:8px;
+      "
+
+    >
+
+      XEM THÊM
+      (${SEARCH_LIMIT}/${totalResult})
+
+    </button>
+
+  `;
+
+}
   content.innerHTML = html;
 
 }
@@ -2221,6 +2250,13 @@ function showALLList(
 
 }
 
+function loadMoreSearch(){
+
+  SEARCH_LIMIT += 100;
+
+  searchData();
+
+}
 </script>
 
 </body>
