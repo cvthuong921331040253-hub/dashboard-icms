@@ -153,15 +153,33 @@ tbody td:first-child{
   left:0;
   background:white;
   z-index:5;
-  min-width:220px;
-  max-width:220px;
+
+  min-width:140px;
+  max-width:140px;
+
+  white-space:normal;
+  word-break:break-word;
+  line-height:1.4;
+}
+
+thead th:first-child{
+  min-width:140px;
+  max-width:140px;
+
+  white-space:normal;
+  word-break:break-word;
 }
 
 th,td{
-  white-space:nowrap;
   padding:8px;
   border:1px solid #ddd;
   font-size:14px;
+  vertical-align:top;
+}
+
+th:not(:first-child),
+td:not(:first-child){
+  white-space:nowrap;
 }
 
 tr:nth-child(even){
