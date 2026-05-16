@@ -502,7 +502,7 @@ function load(){
 tableDataGlobal = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,14);
 // 👉 hiển thị
   document.getElementById("logtime").innerText =
-  log ? "🕒Logtime: " + log : "";
+  log ? "🕒Thời gian lấy báo cáo: " + log : "";
 
 // 👉 TÍNH RANK HUYỆN (ít KPI tồi = rank cao)
 let huyenRank = [...tableDataGlobal]
