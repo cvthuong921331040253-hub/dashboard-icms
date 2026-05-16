@@ -33,11 +33,11 @@ h2{
 }
 
 .reload-btn{
-  width:38px;
-  height:38px;
+  width:32px;
+  height:32px;
   border-radius:50%;
   padding:0;
-  font-size:20px;
+  font-size:16px;
   flex-shrink:0;
 }
 
@@ -79,19 +79,33 @@ button{
   padding:10px;
 }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:10px;
+.mini-stats{
+  display:flex;
+  gap:8px;
   margin-bottom:10px;
 }
 
-.stat{
+.mini-stat{
+  flex:1;
   background:white;
-  padding:15px;
   border-radius:10px;
+  padding:10px 12px;
   box-shadow:0 1px 4px rgba(0,0,0,.1);
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
+
+.mini-stat span{
+  font-size:13px;
+  color:#666;
+}
+
+.mini-stat b{
+  font-size:16px;
+}
+
 
 .stat h3{
   margin:0;
@@ -171,19 +185,21 @@ tr:nth-child(even){
     font-size:20px;
   }
 
-  .stats{
-    grid-template-columns:1fr 1fr;
+  .mini-stats{
     gap:6px;
   }
-
-  .stat{
-    padding:10px;
+  
+  .mini-stat{
+    padding:8px 10px;
   }
-
-  .stat p{
-    font-size:18px;
+  
+  .mini-stat span{
+    font-size:12px;
   }
-
+  
+  .mini-stat b{
+    font-size:15px;
+  }
 
   .topbar{
     display:grid;
@@ -247,19 +263,20 @@ tr:nth-child(even){
   <span id="lastUpdate">--</span>
 </div>
 
-<div class="stats">
+<div class="mini-stats">
 
-  <div class="stat">
-    <h3>Tổng bản ghi</h3>
-    <p id="tong">0</p>
+  <div class="mini-stat">
+    <span>Tổng bản ghi</span>
+    <b id="tong">0</b>
   </div>
 
-  <div class="stat">
-    <h3>Tổng số lượng</h3>
-    <p id="tongsl">0</p>
+  <div class="mini-stat">
+    <span>Tổng SL</span>
+    <b id="tongsl">0</b>
   </div>
 
 </div>
+
 
 <div class="card">
 
