@@ -17,7 +17,13 @@ body{
 }
 
 h2{
-  margin-top:0;
+  margin:0;
+}
+
+.update-time{
+  color:#666;
+  margin:6px 0 12px;
+  font-size:14px;
 }
 
 .topbar{
@@ -86,7 +92,7 @@ button{
 table{
   width:100%;
   border-collapse:collapse;
-  min-width:1000px;
+  min-width:800px;
 }
 
 th{
@@ -149,15 +155,9 @@ tr:nth-child(even){
 
 <h2>📦 Kho vật tư</h2>
 
-<div style="
-  color:#666;
-  margin-bottom:10px;
-  font-size:14px;
-">
+<div class="update-time">
   Cập nhật lần cuối:
-  <span id="lastUpdate">
-    --
-  </span>
+  <span id="lastUpdate">--</span>
 </div>
 
 <div class="stats">
@@ -188,49 +188,15 @@ tr:nth-child(even){
       <option value="">Tất cả huyện</option>
     </select>
 
-    <button onclick="loadData()">
+    <button onclick="reloadAll()">
       Reload
     </button>
 
   </div>
 
-  <div class="type-filters">
-
-    <button
-      class="type-btn active"
-      data-type=""
-      onclick="selectType(this)">
-      Tất cả
-    </button>
-
-    <button
-      class="type-btn"
-      data-type="Hàng mới"
-      onclick="selectType(this)">
-      Hàng mới
-    </button>
-
-    <button
-      class="type-btn"
-      data-type="Hàng UCTT"
-      onclick="selectType(this)">
-      Hàng UCTT
-    </button>
-
-    <button
-      class="type-btn"
-      data-type="Hàng triển khai"
-      onclick="selectType(this)">
-      Hàng triển khai
-    </button>
-
-    <button
-      class="type-btn"
-      data-type="Hàng thu hồi"
-      onclick="selectType(this)">
-      Hàng thu hồi
-    </button>
-
+  <div
+    class="type-filters"
+    id="loaiFilters">
   </div>
 
 </div>
@@ -283,17 +249,21 @@ async function loadData(){
 
     allData = json.data || [];
 
+    allData.reverse();
+
     renderTable(allData);
 
     renderStats(allData);
 
     renderHuyen(allData);
 
+    renderLoaiMH(allData);
+
   }catch(err){
 
     document.getElementById("tbody").innerHTML = `
       <tr>
-        <td colspan="9">
+        <td colspan="6" class="loading">
           Lỗi tải dữ liệu
         </td>
       </tr>
@@ -304,6 +274,19 @@ async function loadData(){
 }
 
 function renderTable(data){
+
+  if(data.length === 0){
+
+    document.getElementById("tbody").innerHTML = `
+      <tr>
+        <td colspan="6" class="loading">
+          Không có dữ liệu
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
 
   let html = "";
 
@@ -323,16 +306,11 @@ function renderTable(data){
 
   document.getElementById("tbody").innerHTML = html;
 
-  if(data.length > 0){
+  let last = data[0].tg || "--";
 
-    let last =
-      data[0].tg || "--";
-
-    document.getElementById("lastUpdate")
-      .innerText = last;
-  }
+  document.getElementById("lastUpdate")
+    .innerText = last;
 }
-
 
 function renderStats(data){
 
@@ -373,6 +351,39 @@ function renderHuyen(data){
 
   document.getElementById("huyenFilter").innerHTML =
     html;
+}
+
+function renderLoaiMH(data){
+
+  let arr = [...new Set(
+    data.map(i => i.loaimh).filter(Boolean)
+  )];
+
+  arr.sort();
+
+  let html = `
+    <button
+      class="type-btn active"
+      data-type=""
+      onclick="selectType(this)">
+      Tất cả
+    </button>
+  `;
+
+  arr.forEach(loai => {
+
+    html += `
+      <button
+        class="type-btn"
+        data-type="${loai}"
+        onclick="selectType(this)">
+        ${loai}
+      </button>
+    `;
+  });
+
+  document.getElementById("loaiFilters")
+    .innerHTML = html;
 }
 
 function selectType(btn){
@@ -419,6 +430,27 @@ function filterData(){
   renderTable(filtered);
 
   renderStats(filtered);
+}
+
+function reloadAll(){
+
+  currentLoaiMH = "";
+
+  document.getElementById("search").value = "";
+
+  document.getElementById("huyenFilter").value = "";
+
+  document
+    .querySelectorAll(".type-btn")
+    .forEach(b => b.classList.remove("active"));
+
+  document
+    .querySelector(".type-btn")
+    .classList.add("active");
+
+  renderTable(allData);
+
+  renderStats(allData);
 }
 
 document
