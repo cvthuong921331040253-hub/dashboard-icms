@@ -360,11 +360,33 @@ tbody tr:active{
 
   <h2>📦 KHO VẬT TƯ</h2>
 
+<div style="
+  display:flex;
+  gap:6px;
+  align-items:center;
+">
+
   <button
     class="reload-btn"
     onclick="reloadAll()">
     ↻
   </button>
+
+  <button
+    class="reload-btn"
+    onclick="downloadExcel()"
+    style="
+      width:auto;
+      border-radius:8px;
+      padding:0 10px;
+      font-size:11px;
+      background:#2e7d32;
+    "
+  >
+    Tải file excel
+  </button>
+
+</div>
 
 </div>
 
@@ -677,6 +699,14 @@ document
 
 loadData();
 
+function downloadExcel(){
+
+  const fileUrl =
+    'https://docs.google.com/spreadsheets/d/1WTP6sZGYR_dZA-KS5U_taaod3iO4GiYRdcBpnSycYjw/export?format=xlsx&gid=1589570025';
+
+  window.open(fileUrl,'_blank');
+
+}
 </script>
 
 </body>
