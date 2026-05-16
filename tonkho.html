@@ -11,7 +11,7 @@
 
 body{
   margin:0;
-  padding:10px;
+  padding:0;
   font-family:Arial;
   background:#f4f6f9;
 }
@@ -56,6 +56,14 @@ button{
   box-shadow:0 1px 4px rgba(0,0,0,.1);
 }
 
+.sticky-top{
+  position:sticky;
+  top:0;
+  z-index:999;
+  background:#f4f6f9;
+  padding:10px;
+}
+
 .stats{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -83,6 +91,7 @@ button{
 }
 
 .table-wrap{
+  height:calc(100vh - 260px);
   overflow:auto;
   background:white;
   border-radius:10px;
@@ -95,11 +104,12 @@ table{
   min-width:800px;
 }
 
-th{
+thead th{
   background:#1976d2;
   color:white;
   position:sticky;
   top:0;
+  z-index:10;
 }
 
 th,td{
@@ -135,10 +145,54 @@ tr:nth-child(even){
   color:white;
 }
 
+
 @media(max-width:768px){
 
-  body{
-    padding:5px;
+  .sticky-top{
+    padding:6px;
+  }
+
+  h2{
+    font-size:20px;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+  }
+
+  .stat{
+    padding:10px;
+  }
+
+  .stat p{
+    font-size:18px;
+  }
+
+  .topbar{
+    flex-direction:column;
+  }
+
+  input,
+  select,
+  button{
+    width:100%;
+    box-sizing:border-box;
+  }
+
+  .type-filters{
+    overflow:auto;
+    flex-wrap:nowrap;
+    padding-bottom:4px;
+  }
+
+  .type-btn{
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+
+  table{
+    min-width:700px;
   }
 
   th,td{
@@ -146,12 +200,18 @@ tr:nth-child(even){
     padding:6px;
   }
 
+  .table-wrap{
+    height:calc(100vh - 300px);
+  }
+
 }
+
 
 </style>
 </head>
 
 <body>
+<div class="sticky-top">
 
 <h2>📦 Kho vật tư</h2>
 
@@ -200,7 +260,7 @@ tr:nth-child(even){
   </div>
 
 </div>
-
+</div>
 <div class="table-wrap">
 
 <table>
