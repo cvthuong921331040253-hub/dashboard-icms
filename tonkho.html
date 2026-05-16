@@ -128,12 +128,16 @@ button{
 }
 
 table{
-  width:max-content;
+  width:auto;
   min-width:100%;
   border-collapse:collapse;
+  table-layout:auto;
 }
 
-
+th:not(:first-child),
+td:not(:first-child){
+  white-space:nowrap;
+}
 
 thead th{
   background:#1976d2;
