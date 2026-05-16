@@ -26,6 +26,21 @@ h2{
   font-size:14px;
 }
 
+.header-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.reload-btn{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  padding:0;
+  font-size:20px;
+  flex-shrink:0;
+}
+
 .topbar{
   display:flex;
   gap:10px;
@@ -169,13 +184,16 @@ tr:nth-child(even){
     font-size:18px;
   }
 
+
   .topbar{
-    flex-direction:column;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
   }
 
+
   input,
-  select,
-  button{
+  select{
     width:100%;
     box-sizing:border-box;
   }
@@ -213,10 +231,19 @@ tr:nth-child(even){
 <body>
 <div class="sticky-top">
 
-<h2>📦 Kho vật tư</h2>
+<div class="header-row">
+
+  <h2>📦 Kho vật tư</h2>
+
+  <button
+    class="reload-btn"
+    onclick="reloadAll()">
+    ↻
+  </button>
+
+</div>
 
 <div class="update-time">
-  Cập nhật lần cuối:
   <span id="lastUpdate">--</span>
 </div>
 
@@ -254,11 +281,23 @@ tr:nth-child(even){
 
   </div>
 
-  <div
-    class="type-filters"
-    id="loaiFilters">
+  <div class="topbar">
+  
+    <input
+      type="text"
+      id="search"
+      placeholder="Tìm mặt hàng..."
+    >
+  
+    <select id="huyenFilter">
+      <option value="">Tất cả huyện</option>
+    </select>
+  
+    <select id="loaiFilter">
+      <option value="">Tất cả loại MH</option>
+    </select>
+  
   </div>
-
 </div>
 </div>
 <div class="table-wrap">
@@ -413,6 +452,7 @@ function renderHuyen(data){
     html;
 }
 
+
 function renderLoaiMH(data){
 
   let arr = [...new Set(
@@ -421,43 +461,22 @@ function renderLoaiMH(data){
 
   arr.sort();
 
-  let html = `
-    <button
-      class="type-btn active"
-      data-type=""
-      onclick="selectType(this)">
-      Tất cả
-    </button>
-  `;
+  let html =
+    `<option value="">Tất cả loại MH</option>`;
 
   arr.forEach(loai => {
 
     html += `
-      <button
-        class="type-btn"
-        data-type="${loai}"
-        onclick="selectType(this)">
+      <option value="${loai}">
         ${loai}
-      </button>
+      </option>
     `;
   });
 
-  document.getElementById("loaiFilters")
+  document.getElementById("loaiFilter")
     .innerHTML = html;
 }
 
-function selectType(btn){
-
-  document
-    .querySelectorAll(".type-btn")
-    .forEach(b => b.classList.remove("active"));
-
-  btn.classList.add("active");
-
-  currentLoaiMH = btn.dataset.type;
-
-  filterData();
-}
 
 function filterData(){
 
@@ -480,9 +499,14 @@ function filterData(){
     let okHuyen =
       !huyen || i.huyen === huyen;
 
+
+    let loai =
+      document.getElementById("loaiFilter")
+      .value;
+    
     let okLoai =
-      !currentLoaiMH ||
-      i.loaimh === currentLoaiMH;
+      !loai ||
+      i.loaimh === loai;
 
     return okSearch && okHuyen && okLoai;
   });
@@ -494,24 +518,17 @@ function filterData(){
 
 function reloadAll(){
 
-  currentLoaiMH = "";
-
   document.getElementById("search").value = "";
 
   document.getElementById("huyenFilter").value = "";
 
-  document
-    .querySelectorAll(".type-btn")
-    .forEach(b => b.classList.remove("active"));
-
-  document
-    .querySelector(".type-btn")
-    .classList.add("active");
+  document.getElementById("loaiFilter").value = "";
 
   renderTable(allData);
 
   renderStats(allData);
 }
+
 
 document
 .getElementById("search")
@@ -519,6 +536,10 @@ document
 
 document
 .getElementById("huyenFilter")
+.addEventListener("change", filterData);
+  
+document
+.getElementById("loaiFilter")
 .addEventListener("change", filterData);
 
 loadData();
