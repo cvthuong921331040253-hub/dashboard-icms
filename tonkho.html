@@ -155,7 +155,6 @@ thead th:first-child{
 tbody td:first-child{
   position:sticky;
   left:0;
-  background:white;
   z-index:5;
 
   min-width:105px;
@@ -201,6 +200,15 @@ tbody tr:nth-child(even){
 tbody tr:nth-child(odd){
   background:#ffffff;
 }
+
+tbody tr:nth-child(even) td:first-child{
+  background:#eef4ff;
+}
+
+tbody tr:nth-child(odd) td:first-child{
+  background:#ffffff;
+}
+
 
 tbody tr:active{
   background:#cfe2ff;
