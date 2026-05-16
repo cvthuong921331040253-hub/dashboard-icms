@@ -190,6 +190,12 @@ body{
       onclick="showTimelineDV()">
       BIỂU ĐỒ ĐẦU VIỆC
     </button>
+
+    <button class="main-btn"
+      style="background:#d93025"
+      onclick="downloadSheet()">
+      TẢI FILE
+    </button>
   
   </div>
 
@@ -2371,6 +2377,15 @@ function loadMoreSearch(){
   SEARCH_LIMIT += 100;
 
   searchData();
+
+}
+
+function downloadSheet(){
+
+  const fileUrl =
+    'https://docs.google.com/spreadsheets/d/1WTP6sZGYR_dZA-KS5U_taaod3iO4GiYRdcBpnSycYjw/export?format=xlsx&gid=1842858948';
+
+  window.open(fileUrl,'_blank');
 
 }
 </script>
