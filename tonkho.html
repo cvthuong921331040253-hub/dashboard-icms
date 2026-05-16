@@ -273,12 +273,28 @@ tr:nth-child(even){
   }
 
   table{
-    min-width:700px;
+    min-width:100%;
   }
 
   th,td{
     font-size:12px;
     padding:6px;
+  }
+
+  tbody td:first-child{
+    min-width:90px;
+    max-width:90px;
+  
+    white-space:normal;
+    word-break:break-word;
+  }
+  
+  thead th:first-child{
+    min-width:90px;
+    max-width:90px;
+  
+    white-space:normal;
+    word-break:break-word;
   }
 
   th:nth-child(2),
