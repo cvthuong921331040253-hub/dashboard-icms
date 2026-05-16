@@ -704,7 +704,17 @@ function downloadExcel(){
   const fileUrl =
     'https://docs.google.com/spreadsheets/d/1WTP6sZGYR_dZA-KS5U_taaod3iO4GiYRdcBpnSycYjw/export?format=xlsx&gid=1589570025';
 
-  window.open(fileUrl,'_blank');
+  const a = document.createElement('a');
+
+  a.href = fileUrl;
+
+  a.download = 'KhoVatTu.xlsx';
+
+  document.body.appendChild(a);
+
+  a.click();
+
+  document.body.removeChild(a);
 
 }
 </script>
