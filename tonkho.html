@@ -128,10 +128,12 @@ button{
 }
 
 table{
-  width:100%;
+  width:max-content;
+  min-width:100%;
   border-collapse:collapse;
-  min-width:800px;
 }
+
+
 
 thead th{
   background:#1976d2;
@@ -141,7 +143,22 @@ thead th{
   z-index:10;
 }
 
+thead th:first-child{
+  left:0;
+  z-index:20;
+}
+
+tbody td:first-child{
+  position:sticky;
+  left:0;
+  background:white;
+  z-index:5;
+  min-width:220px;
+  max-width:220px;
+}
+
 th,td{
+  white-space:nowrap;
   padding:8px;
   border:1px solid #ddd;
   font-size:14px;
@@ -310,14 +327,13 @@ tr:nth-child(even){
   <th>SL</th>
   <th>Nhân viên</th>
   <th>Huyện</th>
-  <th>Loại MH</th>
 </tr>
 </thead>
 
 <tbody id="tbody">
 
 <tr>
-<td colspan="6" class="loading">
+<td colspan="5" class="loading">
 Đang tải dữ liệu...
 </td>
 </tr>
@@ -347,7 +363,12 @@ async function loadData(){
 
     allData = json.data || [];
 
-    allData.reverse();
+    allData.sort((a,b) => {
+    
+      return Number(b.sl || 0)
+           - Number(a.sl || 0);
+    
+    });
 
     renderTable(allData);
 
@@ -361,7 +382,7 @@ async function loadData(){
 
     document.getElementById("tbody").innerHTML = `
       <tr>
-        <td colspan="6" class="loading">
+        <td colspan="5" class="loading">
           Lỗi tải dữ liệu
         </td>
       </tr>
@@ -377,7 +398,7 @@ function renderTable(data){
 
     document.getElementById("tbody").innerHTML = `
       <tr>
-        <td colspan="6" class="loading">
+        <td colspan="5" class="loading">
           Không có dữ liệu
         </td>
       </tr>
@@ -397,7 +418,6 @@ function renderTable(data){
         <td>${item.sl || 0}</td>
         <td>${item.nv || ""}</td>
         <td>${item.huyen || ""}</td>
-        <td>${item.loaimh || ""}</td>
       </tr>
     `;
   });
