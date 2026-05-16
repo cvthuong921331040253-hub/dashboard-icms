@@ -398,6 +398,12 @@ tbody tr:active{
       id="search"
       placeholder="Tìm mặt hàng..."
     >
+       
+    <input
+      type="text"
+      id="searchNV"
+      placeholder="Tìm nhân viên..."
+    >
   
     <select id="huyenFilter">
       <option value="">Tất cả huyện</option>
@@ -598,6 +604,11 @@ function filterData(){
     .value
     .toLowerCase();
 
+  let keywordNV =
+    document.getElementById("searchNV")
+    .value
+    .toLowerCase();
+    
   let huyen =
     document.getElementById("huyenFilter")
     .value;
@@ -608,6 +619,11 @@ function filterData(){
       (i.mh || "")
       .toLowerCase()
       .includes(keyword);
+   
+    let okNV =
+      (i.nv || "")
+      .toLowerCase()
+      .includes(keywordNV);
 
     let okHuyen =
       !huyen || i.huyen === huyen;
@@ -621,7 +637,7 @@ function filterData(){
       !loai ||
       i.loaimh === loai;
 
-    return okSearch && okHuyen && okLoai;
+    return okSearch && okNV && okHuyen && okLoai;
   });
 
   renderTable(filtered);
@@ -632,6 +648,8 @@ function filterData(){
 function reloadAll(){
 
   document.getElementById("search").value = "";
+  
+  document.getElementById("searchNV").value = "";
 
   document.getElementById("huyenFilter").value = "";
 
@@ -645,6 +663,10 @@ function reloadAll(){
 
 document
 .getElementById("search")
+.addEventListener("input", filterData);
+
+document
+.getElementById("searchNV")
 .addEventListener("input", filterData);
 
 document
