@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -111,6 +112,24 @@ tr:nth-child(even){
   text-align:center;
 }
 
+.type-filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.type-btn{
+  background:#e0e0e0;
+  color:#333;
+  font-weight:bold;
+}
+
+.type-btn.active{
+  background:#1976d2;
+  color:white;
+}
+
 @media(max-width:768px){
 
   body{
@@ -165,6 +184,45 @@ tr:nth-child(even){
 
   </div>
 
+  <div class="type-filters">
+
+    <button
+      class="type-btn active"
+      data-type=""
+      onclick="selectType(this)">
+      Tất cả
+    </button>
+
+    <button
+      class="type-btn"
+      data-type="Hàng mới"
+      onclick="selectType(this)">
+      Hàng mới
+    </button>
+
+    <button
+      class="type-btn"
+      data-type="Hàng UCTT"
+      onclick="selectType(this)">
+      Hàng UCTT
+    </button>
+
+    <button
+      class="type-btn"
+      data-type="Hàng triển khai"
+      onclick="selectType(this)">
+      Hàng triển khai
+    </button>
+
+    <button
+      class="type-btn"
+      data-type="Hàng thu hồi"
+      onclick="selectType(this)">
+      Hàng thu hồi
+    </button>
+
+  </div>
+
 </div>
 
 <div class="table-wrap">
@@ -186,11 +244,13 @@ tr:nth-child(even){
 </thead>
 
 <tbody id="tbody">
+
 <tr>
 <td colspan="9" class="loading">
 Đang tải dữ liệu...
 </td>
 </tr>
+
 </tbody>
 
 </table>
@@ -203,6 +263,8 @@ const API_URL =
 "https://script.google.com/macros/s/AKfycbyqb1Qf8YHiaPvlFKAX872-o6sf6a_GcQCy_2l9poMeYXyePFEjKnxTtpJHImaAQ0JTVg/exec?sheet=Data%20kho";
 
 let allData = [];
+
+let currentLoaiMH = "";
 
 async function loadData(){
 
@@ -266,7 +328,9 @@ function renderStats(data){
   let tongsl = 0;
 
   data.forEach(i => {
+
     tongsl += Number(i.sl || 0);
+
   });
 
   document.getElementById("tongsl").innerText =
@@ -297,6 +361,19 @@ function renderHuyen(data){
     html;
 }
 
+function selectType(btn){
+
+  document
+    .querySelectorAll(".type-btn")
+    .forEach(b => b.classList.remove("active"));
+
+  btn.classList.add("active");
+
+  currentLoaiMH = btn.dataset.type;
+
+  filterData();
+}
+
 function filterData(){
 
   let keyword =
@@ -318,7 +395,11 @@ function filterData(){
     let okHuyen =
       !huyen || i.huyen === huyen;
 
-    return okSearch && okHuyen;
+    let okLoai =
+      !currentLoaiMH ||
+      i.loaimh === currentLoaiMH;
+
+    return okSearch && okHuyen && okLoai;
   });
 
   renderTable(filtered);
@@ -340,3 +421,4 @@ loadData();
 
 </body>
 </html>
+```
