@@ -514,12 +514,12 @@ val=`<span class="badge ${cls}">${val}</span>`;
 
 html+=`<td style="${stickyStyle}">${val}</td>`;}
 
-else if(c==="nd"){
+else if(c==="nd"||c==="nnt"||c==="nnth"){
 
-const shortText=String(val).substring(0,80);
+const shortText=String(val).substring(0,60);
 
 html+=`
-<td style="${stickyStyle}min-width:300px">
+<td style="${stickyStyle}min-width:260px">
 <div>${shortText}</div>
 <div class="nd-full" id="full_${index}">${val}</div>
 <div class="expand-btn" onclick="toggleND(${index})">Xem thêm</div>
