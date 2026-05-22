@@ -39,7 +39,7 @@ h1{font-size:28px;margin-bottom:5px;}
 
 table{width:100%;border-collapse:collapse;background:white;}
 
-th{background:#f3f4f6;position:sticky;top:0;z-index:2;}
+th{background:#f3f4f6;position:sticky;top:0;z-index:20;}
 
 th{border:1px solid #ddd;padding:8px;text-align:center;font-size:14px;vertical-align:middle;}
 
@@ -459,7 +459,31 @@ cols.forEach(c=>{
 
 let val=row[c]||"";
 
-if(c==="sc"){
+let stickyStyle="";
+
+if(c==="nv"){
+
+stickyStyle="position:sticky;left:0;background:#fff;z-index:5;min-width:140px;";
+
+}
+
+if(c==="cv"){
+
+stickyStyle="position:sticky;left:0;background:#fff;z-index:5;min-width:160px;";
+
+}
+
+if(c==="tg"){
+
+const tgValue=parseFloat(val)||0;
+
+const tgColor=tgValue>24?"#dc2626":"";
+
+html+=`<td style="${stickyStyle}color:${tgColor};font-weight:bold;">${val}</td>`;
+
+}
+
+else if(c==="sc"){
 
 let cls="gray";
 
@@ -470,38 +494,22 @@ else cls="blue";
 
 val=`<span class="badge ${cls}">${val}</span>`;
 
-}
+html+=`<td style="${stickyStyle}">${val}</td>`;}
 
-if(c==="nd"){
+else if(c==="nd"){
 
 const shortText=String(val).substring(0,80);
 
 html+=`
-<td style="min-width:300px">
+<td style="${stickyStyle}min-width:300px">
 <div>${shortText}</div>
 <div class="nd-full" id="full_${index}">${val}</div>
 <div class="expand-btn" onclick="toggleND(${index})">Xem thêm</div>
-</td>
-`;
+</td>`;}
 
-}else{
-
-if(c==="tg"){
-
-const tgValue=parseFloat(val)||0;
-
-const tgColor=tgValue>24?"#dc2626":"";
-
-html+=`<td style="color:${tgColor};font-weight:bold;">${val}</td>`;
-
-}else{
-
-html+=`<td>${val}</td>`;
-
+else{
+html+=`<td style="${stickyStyle}">${val}</td>`;
 }
-
-}
-
 });
 
 html+="</tr>";
