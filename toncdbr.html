@@ -27,19 +27,19 @@ h1{font-size:28px;margin-bottom:5px;}
 
 .hidden{display:none;}
 
-.modal-content{width:96%;height:92vh;background:white;border-radius:12px;padding:15px;overflow:auto;}
+.modal-content{width:96%;height:92vh;background:white;border-radius:12px;padding:15px;overflow:hidden;display:flex;flex-direction:column;}
 
-.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;position:sticky;top:0;z-index:101;background:#fff;padding-bottom:10px;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;background:#fff;padding-bottom:10px;}
 
 .close-btn{border:none;background:red;color:white;padding:10px 14px;border-radius:8px;cursor:pointer;}
 
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;position:sticky;top:0;z-index:100;background:#fff;padding-bottom:10px;}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;background:#fff;padding-bottom:10px;}
 
 .toolbar input,.toolbar select{padding:10px;border:1px solid #ddd;border-radius:8px;}
 
 table{width:100%;border-collapse:collapse;background:white;}
 
-th{background:#f3f4f6;position:sticky;top:110px;z-index:50;white-space:nowrap;}
+th{background:#f3f4f6;position:sticky;top:0;z-index:50;white-space:nowrap;}
 
 th{border:1px solid #ddd;padding:8px;text-align:center;font-size:14px;vertical-align:middle;}
 
@@ -150,7 +150,7 @@ th,td{padding:6px;font-size:12px;}
 
 </div>
 
-<div id="tableWrap" style="overflow:auto;width:100%;max-height:75vh;position:relative;"><div id="tableContainer"></div></div>
+<div id="tableWrap" style="overflow:auto;flex:1;position:relative;"><div id="tableContainer"></div></div>
 
 </div>
 
