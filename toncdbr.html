@@ -27,7 +27,7 @@ h1{font-size:28px;margin-bottom:5px;}
 
 .hidden{display:none;}
 
-.modal-content{width:96%;height:92vh;background:white;border-radius:12px;padding:15px;overflow:hidden;}
+.modal-content{width:96%;height:92vh;background:white;border-radius:12px;padding:15px;overflow:auto;}
 
 .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
 
@@ -150,7 +150,7 @@ th,td{padding:6px;font-size:12px;}
 
 </div>
 
-<div id="tableWrap" style="overflow:auto;width:100%;max-height:75vh;"><div id="tableContainer"></div></div>
+<div id="tableWrap" style="overflow:auto;width:100%;max-height:75vh;position:relative;"><div id="tableContainer"></div></div>
 
 </div>
 
@@ -453,13 +453,13 @@ let stickyHeader="";
 
 if(c==="nv"){
 
-stickyHeader="position:sticky;left:0;z-index:30;background:#f3f4f6;min-width:140px;";
+stickyHeader="position:sticky;left:0;top:0;z-index:60;background:#f3f4f6;min-width:140px;";
 
 }
 
 if(c==="cv"){
 
-stickyHeader="position:sticky;left:0;z-index:30;background:#f3f4f6;min-width:160px;";
+stickyHeader="position:sticky;left:0;top:0;z-index:60;background:#f3f4f6;min-width:160px;";
 
 }
 
@@ -481,13 +481,13 @@ let stickyStyle="";
 
 if(c==="nv"){
 
-stickyStyle="position:sticky;left:0;background:#fff;z-index:10;min-width:140px;";
+stickyStyle="position:sticky;left:0;background:#fff;z-index:40;min-width:140px;";
 
 }
 
 if(c==="cv"){
 
-stickyStyle="position:sticky;left:0;background:#fff;z-index:10;min-width:160px;";
+stickyStyle="position:sticky;left:0;background:#fff;z-index:40;min-width:160px;";
 
 }
 
