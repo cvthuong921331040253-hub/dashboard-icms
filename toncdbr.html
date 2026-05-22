@@ -394,7 +394,15 @@ function renderTable(data){
 if(!data.length){
 document.getElementById("tableContainer").innerHTML="Không có dữ liệu";return;}
 
-data.sort((a,b)=>{const tgA=parseDateVN(a.tg||a.tgupdate);const tgB=parseDateVN(b.tg||b.tgupdate);return tgB-tgA;});
+data.sort((a,b)=>{
+
+const tgA=parseFloat(a.tg)||0;
+
+const tgB=parseFloat(b.tg)||0;
+
+return tgB-tgA;
+
+});
 
 const cols=Object.keys(data[0]).filter(c=>c!=="thuongcv1"&&c!=="tgupdate");
 
