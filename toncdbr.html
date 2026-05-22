@@ -40,7 +40,7 @@ table{width:100%;border-collapse:collapse;background:white;}
 
 th{background:#f3f4f6;position:sticky;top:0;z-index:2;}
 
-th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:14px;vertical-align:top;}
+th,td{border:1px solid #ddd;padding:8px;text-align:center;font-size:14px;vertical-align:middle;}
 
 tr:nth-child(even){background:#fafafa;}
 
@@ -314,23 +314,51 @@ renderTable(filtered);
 
 }
 
-function renderTable(data){
+function getColumnTitle(col){
 
-if(!data.length){
+const map={
 
-document.getElementById("tableContainer").innerHTML="Không có dữ liệu";
+user:"Mã NV",
+nv:"Tên NV",
+tg:"Thời gian",
+huyen:"Huyện",
+account:"Account",
+dc:"Địa chỉ",
+ngay:"Ngày phát sinh",
+gio:"Giờ phát sinh",
+sc:"Loại sự cố",
+mdb:"Mất đồng bộ GNOC",
+gnoc:"Trạng thái GNOC",
+nd:"Nội dung PA",
 
-return;
+cv:"Loại CV",
+gline:"Gline",
+ntdn:"Ngày đấu nối",
+ntnt:"Ngày nghiệm thu",
+tt:"Trạng thái CV",
+tthen:"Trạng thái tích hẹn",
+kpi:"Tính KPI",
+nnt:"Nguyên nhân tồn",
+nnth:"Nguyên nhân tích hủy"
+
+};
+
+return map[col]||col;
 
 }
 
-data.sort((a,b)=>parseDateVN(b.tg)-parseDateVN(a.tg));
+function renderTable(data){
 
-const cols=Object.keys(data[0]);
+if(!data.length){
+document.getElementById("tableContainer").innerHTML="Không có dữ liệu";return;}
+
+data.sort((a,b)=>{const tgA=parseDateVN(a.tg||a.tgupdate);const tgB=parseDateVN(b.tg||b.tgupdate);return tgB-tgA;});
+
+const cols=Object.keys(data[0]).filter(c=>c!=="thuongcv1"&&c!=="tgupdate");
 
 let html=`<table><thead><tr>`;
 
-cols.forEach(c=>{html+=`<th>${c}</th>`;});
+cols.forEach(c=>{html+=`<th>${getColumnTitle(c)}</th>`;});
 
 html+=`</tr></thead><tbody>`;
 
