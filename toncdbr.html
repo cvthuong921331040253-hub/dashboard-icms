@@ -1,344 +1,793 @@
-```html
 <!DOCTYPE html>
 <html lang="vi">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>Kho vật tư</title>
+  <title>TỒN TÁC VỤ CĐBR</title>
 
-<style>
+  <style>
 
-body{
-  margin:0;
-  padding:10px;
-  font-family:Arial;
-  background:#f4f6f9;
-}
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-h2{
-  margin-top:0;
-}
+    body{
+      font-family:Arial,sans-serif;
+      background:#f3f4f6;
+      color:#111827;
+      padding:15px;
+    }
 
-.topbar{
-  display:flex;
-  gap:10px;
-  margin-bottom:10px;
-  flex-wrap:wrap;
-}
+    h1{
+      font-size:28px;
+      margin-bottom:5px;
+    }
 
-input,select{
-  padding:8px;
-  border:1px solid #ccc;
-  border-radius:6px;
-}
+    .update{
+      color:#6b7280;
+      margin-bottom:20px;
+      font-size:14px;
+    }
 
-button{
-  padding:8px 14px;
-  border:none;
-  background:#1976d2;
-  color:white;
-  border-radius:6px;
-  cursor:pointer;
-}
+    .section-title{
+      margin:20px 0 12px;
+      font-size:22px;
+      font-weight:bold;
+    }
 
-.card{
-  background:white;
-  border-radius:10px;
-  padding:10px;
-  margin-bottom:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
-}
+    .dashboard{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:15px;
+    }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:10px;
-  margin-bottom:10px;
-}
+    .card{
+      background:white;
+      border-radius:12px;
+      padding:18px;
+      box-shadow:0 2px 8px rgba(0,0,0,.08);
+      cursor:pointer;
+      transition:.2s;
+    }
 
-.stat{
-  background:white;
-  padding:15px;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
-}
+    .card:hover{
+      transform:translateY(-3px);
+    }
 
-.stat h3{
-  margin:0;
-  font-size:14px;
-  color:#666;
-}
+    .card-title{
+      font-size:16px;
+      margin-bottom:10px;
+      font-weight:bold;
+    }
 
-.stat p{
-  margin:8px 0 0;
-  font-size:24px;
-  font-weight:bold;
-}
+    .card-count{
+      font-size:34px;
+      font-weight:bold;
+      color:#2563eb;
+    }
 
-.table-wrap{
-  overflow:auto;
-  background:white;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
-}
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.5);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      z-index:9999;
+    }
 
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:1000px;
-}
+    .hidden{
+      display:none;
+    }
 
-th{
-  background:#1976d2;
-  color:white;
-  position:sticky;
-  top:0;
-}
+    .modal-content{
+      width:96%;
+      height:92vh;
+      background:white;
+      border-radius:12px;
+      padding:15px;
+      overflow:auto;
+    }
 
-th,td{
-  padding:8px;
-  border:1px solid #ddd;
-  font-size:14px;
-}
+    .modal-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+    }
 
-tr:nth-child(even){
-  background:#fafafa;
-}
+    .modal-header h2{
+      font-size:22px;
+    }
 
-.loading{
-  padding:30px;
-  text-align:center;
-}
+    .close-btn{
+      background:red;
+      color:white;
+      border:none;
+      padding:8px 14px;
+      border-radius:8px;
+      cursor:pointer;
+    }
 
-@media(max-width:768px){
+    .toolbar{
+      display:flex;
+      gap:10px;
+      margin-bottom:15px;
+      flex-wrap:wrap;
+    }
 
-  body{
-    padding:5px;
-  }
+    .toolbar input,
+    .toolbar select{
+      padding:10px;
+      border:1px solid #ddd;
+      border-radius:8px;
+    }
 
-  th,td{
-    font-size:12px;
-    padding:6px;
-  }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:white;
+    }
 
-}
+    th{
+      background:#f3f4f6;
+      position:sticky;
+      top:0;
+      z-index:2;
+    }
 
-</style>
+    th,td{
+      border:1px solid #ddd;
+      padding:8px;
+      font-size:14px;
+      text-align:left;
+      vertical-align:top;
+    }
+
+    tr:nth-child(even){
+      background:#fafafa;
+    }
+
+    .badge{
+      padding:4px 8px;
+      border-radius:6px;
+      font-size:12px;
+      color:white;
+      font-weight:bold;
+      display:inline-block;
+    }
+
+    .red{
+      background:#dc2626;
+    }
+
+    .orange{
+      background:#ea580c;
+    }
+
+    .blue{
+      background:#2563eb;
+    }
+
+    .green{
+      background:#16a34a;
+    }
+
+    .purple{
+      background:#7c3aed;
+    }
+
+    .gray{
+      background:#6b7280;
+    }
+
+    .expand-btn{
+      color:#2563eb;
+      cursor:pointer;
+      margin-top:5px;
+      font-size:13px;
+    }
+
+    .nd-full{
+      display:none;
+      margin-top:5px;
+      white-space:pre-wrap;
+      line-height:1.5;
+    }
+
+    .show{
+      display:block;
+    }
+
+    @media(max-width:768px){
+
+      body{
+        padding:10px;
+      }
+
+      .card-count{
+        font-size:28px;
+      }
+
+      table{
+        font-size:12px;
+      }
+
+      th,td{
+        padding:6px;
+      }
+
+    }
+
+  </style>
+
 </head>
 
 <body>
 
-<h2>📦 Kho vật tư</h2>
+  <h1>TỒN TÁC VỤ CĐBR</h1>
 
-<div class="stats">
-
-  <div class="stat">
-    <h3>Tổng bản ghi</h3>
-    <p id="tong">0</p>
+  <div class="update" id="updateTime">
+    Đang tải dữ liệu...
   </div>
 
-  <div class="stat">
-    <h3>Tổng số lượng</h3>
-    <p id="tongsl">0</p>
+  <!-- TON SC -->
+
+  <div class="section-title">
+    TỒN SỰ CỐ
   </div>
 
-</div>
+  <div class="dashboard" id="tonscDashboard"></div>
 
-<div class="card">
+  <!-- TON TKM -->
 
-  <div class="topbar">
+  <div class="section-title">
+    TỒN TRIỂN KHAI
+  </div>
 
-    <input
-      type="text"
-      id="search"
-      placeholder="Tìm mặt hàng..."
-    >
+  <div class="dashboard" id="tontkmDashboard"></div>
 
-    <select id="huyenFilter">
-      <option value="">Tất cả huyện</option>
-    </select>
+  <!-- MODAL -->
 
-    <button onclick="loadData()">
-      Reload
-    </button>
+  <div class="modal hidden" id="modal">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h2 id="modalTitle"></h2>
+
+        <button class="close-btn" onclick="closeModal()">
+          Đóng
+        </button>
+
+      </div>
+
+      <div class="toolbar">
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Tìm kiếm..."
+        >
+
+        <select id="huyenFilter">
+          <option value="">Tất cả huyện</option>
+        </select>
+
+      </div>
+
+      <div id="tableContainer"></div>
+
+    </div>
 
   </div>
 
-</div>
+  <script>
 
-<div class="table-wrap">
+    const API =
+      "https://script.google.com/macros/s/AKfycbx5pF40GAhapDMZJovrWgI0Y6N6HOMW40u2gcl4_n5wARTiJLkkK0aOGP1i4fmitTI5/exec";
 
-<table>
+    let tonsc = [];
+    let tontkm = [];
 
-<thead>
-<tr>
-  <th>MM</th>
-  <th>Mặt hàng</th>
-  <th>ĐVT</th>
-  <th>Trạng thái</th>
-  <th>SL</th>
-  <th>Nhân viên</th>
-  <th>Huyện</th>
-  <th>Loại MH</th>
-  <th>Thời gian</th>
-</tr>
-</thead>
+    let currentData = [];
 
-<tbody id="tbody">
-<tr>
-<td colspan="9" class="loading">
-Đang tải dữ liệu...
-</td>
-</tr>
-</tbody>
+    async function loadData(){
 
-</table>
+      try{
 
-</div>
+        const res = await fetch(API);
 
-<script>
+        const json = await res.json();
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbwe9SEGZcWwExfIG98_Ycd2JGHAHtd51MEUGTcVahJTQTAgLb2VIg0z2M3KdvEHFyxDZg/exec?sheet=Data%20kho";
+        tonsc = json.tonsc || [];
+        tontkm = json.tontkm || [];
 
-let allData = [];
+        document.getElementById("updateTime").innerHTML =
+          "Cập nhật: " + new Date().toLocaleString();
 
-async function loadData(){
+        renderTonSC();
 
-  try{
+        renderTonTKM();
 
-    const res = await fetch(API_URL);
+      }catch(err){
 
-    const json = await res.json();
+        console.error(err);
 
-    allData = json.data || [];
+        alert("Lỗi tải API");
 
-    renderTable(allData);
+      }
 
-    renderStats(allData);
+    }
 
-    renderHuyen(allData);
+    /* =====================
+       CARD
+    ===================== */
 
-  }catch(err){
+    function createCard(title,count,color,onClick){
 
-    document.getElementById("tbody").innerHTML = `
-      <tr>
-        <td colspan="9">
-          Lỗi tải dữ liệu
-        </td>
-      </tr>
-    `;
+      return `
+        <div
+          class="card"
+          onclick="${onClick}"
+        >
 
-    console.log(err);
-  }
-}
+          <div class="card-title">
+            ${title}
+          </div>
 
-function renderTable(data){
+          <div class="card-count" style="color:${color}">
+            ${count}
+          </div>
 
-  let html = "";
+        </div>
+      `;
 
-  data.forEach(item => {
+    }
 
-    html += `
-      <tr>
-        <td>${item.mm || ""}</td>
-        <td>${item.mh || ""}</td>
-        <td>${item.dv || ""}</td>
-        <td>${item.tt || ""}</td>
-        <td>${item.sl || 0}</td>
-        <td>${item.nv || ""}</td>
-        <td>${item.huyen || ""}</td>
-        <td>${item.loaimh || ""}</td>
-        <td>${item.tg || ""}</td>
-      </tr>
-    `;
-  });
+    /* =====================
+       TON SC
+    ===================== */
 
-  document.getElementById("tbody").innerHTML = html;
-}
+    function renderTonSC(){
 
-function renderStats(data){
+      const dashboard =
+        document.getElementById("tonscDashboard");
 
-  document.getElementById("tong").innerText =
-    data.length;
+      const socpk =
+        tonsc.filter(x =>
+          String(x["Loại sự cố"]).trim() ===
+          "SOC HOME WIFI"
+        );
 
-  let tongsl = 0;
+      const soc =
+        tonsc.filter(x => {
 
-  data.forEach(i => {
-    tongsl += Number(i.sl || 0);
-  });
+          const v =
+            String(x["Loại sự cố"]).trim();
 
-  document.getElementById("tongsl").innerText =
-    tongsl;
-}
+          return (
+            v === "SOC PORT KÉM" ||
+            v === "HÀNG LOẠT"
+          );
 
-function renderHuyen(data){
+        });
 
-  let arr = [...new Set(
-    data.map(i => i.huyen).filter(Boolean)
-  )];
+      const suco =
+        tonsc.filter(x => {
 
-  arr.sort();
+          const v =
+            String(x["Loại sự cố"]).trim();
 
-  let html =
-    `<option value="">Tất cả huyện</option>`;
+          return [
+            "SC",
+            "HT",
+            "SC HOT",
+            "HT HOT",
+            "SC VIP",
+            "HT VIP"
+          ].includes(v);
 
-  arr.forEach(h => {
+        });
 
-    html += `
-      <option value="${h}">
-        ${h}
-      </option>
-    `;
-  });
+      const chuagiao =
+        tonsc.filter(x => {
 
-  document.getElementById("huyenFilter").innerHTML =
-    html;
-}
+          const nv =
+            x["Tên NV"];
 
-function filterData(){
+          return (
+            nv === "" ||
+            nv === null ||
+            nv == 0
+          );
 
-  let keyword =
-    document.getElementById("search")
-    .value
-    .toLowerCase();
+        });
 
-  let huyen =
-    document.getElementById("huyenFilter")
-    .value;
+      window.socpkData = socpk;
+      window.socData = soc;
+      window.sucoData = suco;
+      window.chuagiaoData = chuagiao;
 
-  let filtered = allData.filter(i => {
+      dashboard.innerHTML =
 
-    let okSearch =
-      (i.mh || "")
-      .toLowerCase()
-      .includes(keyword);
+        createCard(
+          "SOC PK",
+          socpk.length,
+          "#2563eb",
+          "showTable('SOC PK',socpkData)"
+        )
 
-    let okHuyen =
-      !huyen || i.huyen === huyen;
+        +
 
-    return okSearch && okHuyen;
-  });
+        createCard(
+          "SOC",
+          soc.length,
+          "#ea580c",
+          "showTable('SOC',socData)"
+        )
 
-  renderTable(filtered);
+        +
 
-  renderStats(filtered);
-}
+        createCard(
+          "SỰ CỐ",
+          suco.length,
+          "#dc2626",
+          "showTable('SỰ CỐ',sucoData)"
+        )
 
-document
-.getElementById("search")
-.addEventListener("input", filterData);
+        +
 
-document
-.getElementById("huyenFilter")
-.addEventListener("change", filterData);
+        createCard(
+          "SC CHƯA GIAO",
+          chuagiao.length,
+          "#7c3aed",
+          "showTable('SC CHƯA GIAO',chuagiaoData)"
+        );
 
-loadData();
+    }
 
-</script>
+    /* =====================
+       TON TKM
+    ===================== */
+
+    function renderTonTKM(){
+
+      const dashboard =
+        document.getElementById("tontkmDashboard");
+
+      const groups = {};
+
+      tontkm.forEach(x => {
+
+        const kpi =
+          x["Tính KPI"] || "Khác";
+
+        if(!groups[kpi]){
+
+          groups[kpi] = [];
+
+        }
+
+        groups[kpi].push(x);
+
+      });
+
+      let html = "";
+
+      Object.keys(groups).forEach(kpi => {
+
+        window["kpi_" + kpi] =
+          groups[kpi];
+
+        html += createCard(
+
+          kpi,
+
+          groups[kpi].length,
+
+          "#16a34a",
+
+          `showTable('${kpi}',window['kpi_${kpi}'])`
+
+        );
+
+      });
+
+      const chuagiao =
+        tontkm.filter(x =>
+          String(x["Trạng thái CV"]).trim()
+          === "Đang giao tổ đội"
+        );
+
+      window.tkmchuagiao =
+        chuagiao;
+
+      html += createCard(
+
+        "TKM CHƯA GIAO",
+
+        chuagiao.length,
+
+        "#7c3aed",
+
+        "showTable('TKM CHƯA GIAO',tkmchuagiao)"
+
+      );
+
+      dashboard.innerHTML = html;
+
+    }
+
+    /* =====================
+       MODAL TABLE
+    ===================== */
+
+    function showTable(title,data){
+
+      currentData = data;
+
+      document
+        .getElementById("modal")
+        .classList.remove("hidden");
+
+      document
+        .getElementById("modalTitle")
+        .innerHTML = title;
+
+      initFilters(data);
+
+      renderTable(data);
+
+    }
+
+    function initFilters(data){
+
+      const huyenSet = new Set();
+
+      data.forEach(x => {
+
+        const h =
+          x["Huyện"];
+
+        if(h){
+
+          huyenSet.add(h);
+
+        }
+
+      });
+
+      const select =
+        document.getElementById("huyenFilter");
+
+      select.innerHTML =
+        `<option value="">Tất cả huyện</option>`;
+
+      [...huyenSet]
+        .sort()
+        .forEach(h => {
+
+          select.innerHTML +=
+            `<option value="${h}">
+              ${h}
+            </option>`;
+
+        });
+
+    }
+
+    document
+      .getElementById("searchInput")
+      .addEventListener("input",filterTable);
+
+    document
+      .getElementById("huyenFilter")
+      .addEventListener("change",filterTable);
+
+    function filterTable(){
+
+      const kw =
+        document
+          .getElementById("searchInput")
+          .value
+          .toLowerCase();
+
+      const huyen =
+        document
+          .getElementById("huyenFilter")
+          .value;
+
+      const filtered =
+        currentData.filter(row => {
+
+          const text =
+            JSON.stringify(row)
+            .toLowerCase();
+
+          const okSearch =
+            text.includes(kw);
+
+          const okHuyen =
+            !huyen ||
+            row["Huyện"] == huyen;
+
+          return okSearch && okHuyen;
+
+        });
+
+      renderTable(filtered);
+
+    }
+
+    function renderTable(data){
+
+      if(!data.length){
+
+        document
+          .getElementById("tableContainer")
+          .innerHTML =
+            "Không có dữ liệu";
+
+        return;
+
+      }
+
+      data.sort((a,b) => {
+
+        return new Date(b["Thời gian"])
+          - new Date(a["Thời gian"]);
+
+      });
+
+      const cols =
+        Object.keys(data[0]);
+
+      let html =
+        `<table>
+          <thead>
+            <tr>`;
+
+      cols.forEach(c => {
+
+        html += `<th>${c}</th>`;
+
+      });
+
+      html += `
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      data.forEach((row,index) => {
+
+        html += "<tr>";
+
+        cols.forEach(c => {
+
+          let val = row[c] || "";
+
+          /* Badge */
+
+          if(c === "Loại sự cố"){
+
+            let cls = "gray";
+
+            if(String(val).includes("HOT")){
+
+              cls = "red";
+
+            }
+            else if(String(val).includes("VIP")){
+
+              cls = "purple";
+
+            }
+            else if(String(val).includes("SOC")){
+
+              cls = "orange";
+
+            }
+            else{
+
+              cls = "blue";
+
+            }
+
+            val =
+              `<span class="badge ${cls}">
+                ${val}
+              </span>`;
+
+          }
+
+          /* Expand nội dung */
+
+          if(c === "Nội dung PA"){
+
+            const shortText =
+              String(val)
+                .substring(0,80);
+
+            html += `
+
+              <td style="min-width:300px">
+
+                <div>
+                  ${shortText}
+                </div>
+
+                <div
+                  class="nd-full"
+                  id="full_${index}"
+                >
+                  ${val}
+                </div>
+
+                <div
+                  class="expand-btn"
+                  onclick="toggleND(${index})"
+                >
+                  Xem thêm
+                </div>
+
+              </td>
+
+            `;
+
+          }else{
+
+            html += `<td>${val}</td>`;
+
+          }
+
+        });
+
+        html += "</tr>";
+
+      });
+
+      html += `
+          </tbody>
+        </table>
+      `;
+
+      document
+        .getElementById("tableContainer")
+        .innerHTML = html;
+
+    }
+
+    function toggleND(index){
+
+      const el =
+        document
+          .getElementById("full_" + index);
+
+      el.classList.toggle("show");
+
+    }
+
+    function closeModal(){
+
+      document
+        .getElementById("modal")
+        .classList.add("hidden");
+
+    }
+
+    loadData();
+
+    setInterval(loadData,30000);
+
+  </script>
 
 </body>
+
 </html>
-```
