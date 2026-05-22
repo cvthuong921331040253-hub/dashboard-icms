@@ -27,7 +27,7 @@ h1{font-size:28px;margin-bottom:5px;}
 
 .hidden{display:none;}
 
-.modal-content{width:96%;height:92vh;background:white;border-radius:12px;padding:15px;overflow:auto;}
+.modal-content{width:96%;height:92vh;background:white;border-radius:12px;padding:15px;overflow:hidden;}
 
 .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
 
@@ -39,7 +39,7 @@ h1{font-size:28px;margin-bottom:5px;}
 
 table{width:100%;border-collapse:collapse;background:white;}
 
-th{background:#f3f4f6;position:sticky;top:0;z-index:20;white-space:nowrap;}
+th{background:#f3f4f6;position:sticky;top:0;z-index:50;white-space:nowrap;}
 
 th{border:1px solid #ddd;padding:8px;text-align:center;font-size:14px;vertical-align:middle;}
 
@@ -150,7 +150,7 @@ th,td{padding:6px;font-size:12px;}
 
 </div>
 
-<div style="overflow:auto;width:100%;"><div id="tableContainer"></div></div>
+<div id="tableWrap" style="overflow:auto;width:100%;max-height:75vh;"><div id="tableContainer"></div></div>
 
 </div>
 
