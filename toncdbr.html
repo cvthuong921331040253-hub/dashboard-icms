@@ -2,8 +2,13 @@
 <html lang="vi">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <meta charset="UTF-8"/>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>TỒN TÁC VỤ CĐBR</title>
 
@@ -16,10 +21,10 @@
     }
 
     body{
-      font-family:Arial,sans-serif;
+      font-family:Arial;
       background:#f3f4f6;
-      color:#111827;
       padding:15px;
+      color:#111827;
     }
 
     h1{
@@ -30,26 +35,27 @@
     .update{
       color:#6b7280;
       margin-bottom:20px;
-      font-size:14px;
     }
 
     .section-title{
-      margin:20px 0 12px;
-      font-size:22px;
+      margin:25px 0 15px;
+      font-size:24px;
       font-weight:bold;
     }
 
     .dashboard{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+
       gap:15px;
     }
 
     .card{
       background:white;
       border-radius:12px;
-      padding:18px;
-      box-shadow:0 2px 8px rgba(0,0,0,.08);
+      padding:20px;
+      box-shadow:0 2px 10px rgba(0,0,0,.08);
       cursor:pointer;
       transition:.2s;
     }
@@ -59,24 +65,25 @@
     }
 
     .card-title{
-      font-size:16px;
-      margin-bottom:10px;
       font-weight:bold;
+      margin-bottom:12px;
+      font-size:18px;
     }
 
     .card-count{
-      font-size:34px;
+      font-size:40px;
       font-weight:bold;
-      color:#2563eb;
     }
 
     .modal{
       position:fixed;
       inset:0;
       background:rgba(0,0,0,.5);
+
       display:flex;
       justify-content:center;
       align-items:center;
+
       z-index:9999;
     }
 
@@ -85,30 +92,32 @@
     }
 
     .modal-content{
+
       width:96%;
       height:92vh;
+
       background:white;
+
       border-radius:12px;
+
       padding:15px;
+
       overflow:auto;
+
     }
 
     .modal-header{
       display:flex;
       justify-content:space-between;
       align-items:center;
-      margin-bottom:10px;
-    }
-
-    .modal-header h2{
-      font-size:22px;
+      margin-bottom:15px;
     }
 
     .close-btn{
+      border:none;
       background:red;
       color:white;
-      border:none;
-      padding:8px 14px;
+      padding:10px 14px;
       border-radius:8px;
       cursor:pointer;
     }
@@ -116,15 +125,17 @@
     .toolbar{
       display:flex;
       gap:10px;
-      margin-bottom:15px;
       flex-wrap:wrap;
+      margin-bottom:15px;
     }
 
     .toolbar input,
     .toolbar select{
+
       padding:10px;
       border:1px solid #ddd;
       border-radius:8px;
+
     }
 
     table{
@@ -143,8 +154,8 @@
     th,td{
       border:1px solid #ddd;
       padding:8px;
-      font-size:14px;
       text-align:left;
+      font-size:14px;
       vertical-align:top;
     }
 
@@ -155,8 +166,8 @@
     .badge{
       padding:4px 8px;
       border-radius:6px;
-      font-size:12px;
       color:white;
+      font-size:12px;
       font-weight:bold;
       display:inline-block;
     }
@@ -173,16 +184,16 @@
       background:#2563eb;
     }
 
-    .green{
-      background:#16a34a;
-    }
-
     .purple{
       background:#7c3aed;
     }
 
     .gray{
       background:#6b7280;
+    }
+
+    .green{
+      background:#16a34a;
     }
 
     .expand-btn{
@@ -203,26 +214,6 @@
       display:block;
     }
 
-    @media(max-width:768px){
-
-      body{
-        padding:10px;
-      }
-
-      .card-count{
-        font-size:28px;
-      }
-
-      table{
-        font-size:12px;
-      }
-
-      th,td{
-        padding:6px;
-      }
-
-    }
-
   </style>
 
 </head>
@@ -231,8 +222,11 @@
 
   <h1>TỒN TÁC VỤ CĐBR</h1>
 
-  <div class="update" id="updateTime">
-    Đang tải dữ liệu...
+  <div
+    class="update"
+    id="updateTime"
+  >
+    Đang tải...
   </div>
 
   <!-- TON SC -->
@@ -241,7 +235,10 @@
     TỒN SỰ CỐ
   </div>
 
-  <div class="dashboard" id="tonscDashboard"></div>
+  <div
+    class="dashboard"
+    id="tonscDashboard"
+  ></div>
 
   <!-- TON TKM -->
 
@@ -249,11 +246,17 @@
     TỒN TRIỂN KHAI
   </div>
 
-  <div class="dashboard" id="tontkmDashboard"></div>
+  <div
+    class="dashboard"
+    id="tontkmDashboard"
+  ></div>
 
   <!-- MODAL -->
 
-  <div class="modal hidden" id="modal">
+  <div
+    class="modal hidden"
+    id="modal"
+  >
 
     <div class="modal-content">
 
@@ -261,7 +264,10 @@
 
         <h2 id="modalTitle"></h2>
 
-        <button class="close-btn" onclick="closeModal()">
+        <button
+          class="close-btn"
+          onclick="closeModal()"
+        >
           Đóng
         </button>
 
@@ -276,7 +282,9 @@
         >
 
         <select id="huyenFilter">
-          <option value="">Tất cả huyện</option>
+          <option value="">
+            Tất cả huyện
+          </option>
         </select>
 
       </div>
@@ -290,7 +298,7 @@
   <script>
 
     const API =
-      "https://script.google.com/macros/s/AKfycbwVrZesAjkSxvey-SJSgWgNLUv-l4Ac-MuGax3HnfiEpKIzuNtlxo0lQOLbdMc3Behc/exec";
+      "YOUR_API_URL";
 
     let tonsc = [];
     let tontkm = [];
@@ -301,15 +309,34 @@
 
       try{
 
-        const res = await fetch(API);
+        const res =
+          await fetch(API);
 
-        const json = await res.json();
+        const json =
+          await res.json();
 
-        tonsc = json.tonsc || [];
-        tontkm = json.tontkm || [];
+        tonsc =
+          json.tonsc || [];
 
-        document.getElementById("updateTime").innerHTML =
-          "Cập nhật: " + new Date().toLocaleString();
+        tontkm =
+          json.tontkm || [];
+
+        console.log(
+          "TON SC:",
+          tonsc.length
+        );
+
+        console.log(
+          "TON TKM:",
+          tontkm.length
+        );
+
+        document
+          .getElementById("updateTime")
+          .innerHTML =
+            "Cập nhật: " +
+            new Date()
+            .toLocaleString();
 
         renderTonSC();
 
@@ -329,7 +356,12 @@
        CARD
     ===================== */
 
-    function createCard(title,count,color,onClick){
+    function createCard(
+      title,
+      count,
+      color,
+      onClick
+    ){
 
       return `
         <div
@@ -341,7 +373,10 @@
             ${title}
           </div>
 
-          <div class="card-count" style="color:${color}">
+          <div
+            class="card-count"
+            style="color:${color}"
+          >
             ${count}
           </div>
 
@@ -355,99 +390,112 @@
     ===================== */
 
     function renderTonSC(){
-    
+
       const dashboard =
         document.getElementById(
           "tonscDashboard"
         );
-    
+
       const socpk =
-        tonsc.filter(x =>
-          String(x.sc).trim()
-          === "SOC HOME WIFI"
-        );
-    
+        tonsc.filter(x => {
+
+          const v =
+            String(x.sc || "")
+            .trim()
+            .toUpperCase();
+
+          return v ===
+            "SOC HOME WIFI";
+
+        });
+
       const soc =
         tonsc.filter(x => {
-    
+
           const v =
-            String(x.sc).trim();
-    
+            String(x.sc || "")
+            .trim()
+            .toUpperCase();
+
           return (
             v === "SOC PORT KÉM" ||
             v === "HÀNG LOẠT"
           );
-    
+
         });
-    
+
       const suco =
         tonsc.filter(x => {
-    
+
           const v =
-            String(x.sc).trim();
-    
+            String(x.sc || "")
+            .trim()
+            .toUpperCase();
+
           return [
+
             "SC",
             "HT",
             "SC HOT",
             "HT HOT",
             "SC VIP",
             "HT VIP"
+
           ].includes(v);
-    
+
         });
-    
+
       const chuagiao =
         tonsc.filter(x => {
-    
+
           return (
             !x.nv ||
             x.nv == 0
           );
-    
+
         });
-    
+
       window.socpkData = socpk;
       window.socData = soc;
       window.sucoData = suco;
       window.chuagiaoData = chuagiao;
-    
+
       dashboard.innerHTML =
-    
+
         createCard(
           "SOC PK",
           socpk.length,
           "#2563eb",
           "showTable('SOC PK',socpkData)"
         )
-    
+
         +
-    
+
         createCard(
           "SOC",
           soc.length,
           "#ea580c",
           "showTable('SOC',socData)"
         )
-    
+
         +
-    
+
         createCard(
           "SỰ CỐ",
           suco.length,
           "#dc2626",
           "showTable('SỰ CỐ',sucoData)"
         )
-    
+
         +
-    
+
         createCard(
           "SC CHƯA GIAO",
           chuagiao.length,
           "#7c3aed",
           "showTable('SC CHƯA GIAO',chuagiaoData)"
         );
-    
+
     }
 
     /* =====================
@@ -455,77 +503,92 @@
     ===================== */
 
     function renderTonTKM(){
-    
+
       const dashboard =
         document.getElementById(
           "tontkmDashboard"
         );
-    
+
       const groups = {};
-    
+
       tontkm.forEach(x => {
-    
+
         const kpi =
-          x.kpi || "Khác";
-    
-        if(!groups[kpi]){
-    
-          groups[kpi] = [];
-    
+          String(x.kpi || "")
+          .trim();
+
+        if(!kpi){
+          return;
         }
-    
+
+        if(!groups[kpi]){
+
+          groups[kpi] = [];
+
+        }
+
         groups[kpi].push(x);
-    
+
       });
-    
+
       let html = "";
-    
-      Object.keys(groups).forEach(kpi => {
-    
-        window["kpi_" + kpi] =
-          groups[kpi];
-    
-        html += createCard(
-    
-          kpi,
-    
-          groups[kpi].length,
-    
-          "#16a34a",
-    
-          `showTable('${kpi}',window['kpi_${kpi}'])`
-    
-        );
-    
-      });
-    
+
+      Object.keys(groups)
+        .sort()
+        .forEach(kpi => {
+
+          window[
+            "kpi_" + kpi
+          ] = groups[kpi];
+
+          html += createCard(
+
+            kpi,
+
+            groups[kpi].length,
+
+            "#16a34a",
+
+            `showTable('${kpi}',window['kpi_${kpi}'])`
+
+          );
+
+        });
+
       const chuagiao =
         tontkm.filter(x =>
-          String(x.tt).trim()
-          === "Đang giao tổ đội"
+
+          String(x.tt || "")
+            .trim()
+            .toUpperCase()
+
+          ===
+
+          "ĐANG GIAO TỔ ĐỘI"
+
         );
-    
+
       window.tkmchuagiao =
         chuagiao;
-    
+
       html += createCard(
-    
+
         "TKM CHƯA GIAO",
-    
+
         chuagiao.length,
-    
+
         "#7c3aed",
-    
+
         "showTable('TKM CHƯA GIAO',tkmchuagiao)"
-    
+
       );
-    
+
       dashboard.innerHTML = html;
-    
+
     }
 
     /* =====================
-       MODAL TABLE
+       MODAL
     ===================== */
 
     function showTable(title,data){
@@ -547,222 +610,252 @@
     }
 
     function initFilters(data){
-    
-      const huyenSet = new Set();
-    
+
+      const huyenSet =
+        new Set();
+
       data.forEach(x => {
-    
-        const h = x.huyen;
-    
-        if(h){
-    
-          huyenSet.add(h);
-    
+
+        if(x.huyen){
+
+          huyenSet.add(
+            x.huyen
+          );
+
         }
-    
+
       });
-    
+
       const select =
-        document.getElementById("huyenFilter");
-    
+        document.getElementById(
+          "huyenFilter"
+        );
+
       select.innerHTML =
-        `<option value="">Tất cả huyện</option>`;
-    
+        `<option value="">
+          Tất cả huyện
+        </option>`;
+
       [...huyenSet]
         .sort()
         .forEach(h => {
-    
+
           select.innerHTML +=
             `<option value="${h}">
               ${h}
             </option>`;
-    
+
         });
-    
+
     }
 
     document
       .getElementById("searchInput")
-      .addEventListener("input",filterTable);
+      .addEventListener(
+        "input",
+        filterTable
+      );
 
     document
       .getElementById("huyenFilter")
-      .addEventListener("change",filterTable);
+      .addEventListener(
+        "change",
+        filterTable
+      );
 
     function filterTable(){
-    
+
       const kw =
         document
           .getElementById("searchInput")
           .value
           .toLowerCase();
-    
+
       const huyen =
         document
           .getElementById("huyenFilter")
           .value;
-    
+
       const filtered =
         currentData.filter(row => {
-    
+
           const text =
             JSON.stringify(row)
             .toLowerCase();
-    
+
           const okSearch =
             text.includes(kw);
-    
+
           const okHuyen =
             !huyen ||
             row.huyen == huyen;
-    
-          return okSearch && okHuyen;
-    
+
+          return okSearch &&
+            okHuyen;
+
         });
-    
+
       renderTable(filtered);
-    
+
     }
 
     function renderTable(data){
-    
+
       if(!data.length){
-    
+
         document
           .getElementById("tableContainer")
           .innerHTML =
             "Không có dữ liệu";
-    
+
         return;
-    
+
       }
-    
-      /* SORT TG DESC */
-    
+
       data.sort((a,b) => {
-    
+
         return new Date(b.tg)
           - new Date(a.tg);
-    
+
       });
-    
+
       const cols =
         Object.keys(data[0]);
-    
+
       let html =
         `<table>
           <thead>
             <tr>`;
-    
+
       cols.forEach(c => {
-    
+
         html += `<th>${c}</th>`;
-    
+
       });
-    
+
       html += `
             </tr>
           </thead>
           <tbody>
       `;
-    
+
       data.forEach((row,index) => {
-    
+
         html += "<tr>";
-    
+
         cols.forEach(c => {
-    
-          let val = row[c] || "";
-    
-          /* BADGE SC */
-    
+
+          let val =
+            row[c] || "";
+
+          /* badge sc */
+
           if(c === "sc"){
-    
+
             let cls = "gray";
-    
-            if(String(val).includes("HOT")){
-    
+
+            if(
+              String(val)
+              .includes("HOT")
+            ){
+
               cls = "red";
-    
+
             }
-            else if(String(val).includes("VIP")){
-    
+            else if(
+              String(val)
+              .includes("VIP")
+            ){
+
               cls = "purple";
-    
+
             }
-            else if(String(val).includes("SOC")){
-    
+            else if(
+              String(val)
+              .includes("SOC")
+            ){
+
               cls = "orange";
-    
+
             }
             else{
-    
+
               cls = "blue";
-    
+
             }
-    
+
             val =
               `<span class="badge ${cls}">
                 ${val}
               </span>`;
-    
+
           }
-    
-          /* EXPAND ND */
-    
+
+          /* expand nd */
+
           if(c === "nd"){
-    
+
             const shortText =
               String(val)
-                .substring(0,80);
-    
+              .substring(0,80);
+
             html += `
-    
-              <td style="min-width:300px">
-    
+              <td
+                style="min-width:300px"
+              >
+
                 <div>
                   ${shortText}
                 </div>
-    
+
                 <div
                   class="nd-full"
                   id="full_${index}"
                 >
                   ${val}
                 </div>
-    
+
                 <div
                   class="expand-btn"
                   onclick="toggleND(${index})"
                 >
                   Xem thêm
                 </div>
-    
+
               </td>
-    
             `;
-    
+
           }else{
-    
+
             html += `<td>${val}</td>`;
-    
+
           }
-    
+
         });
-    
+
         html += "</tr>";
-    
+
       });
-    
+
       html += `
           </tbody>
         </table>
       `;
-    
+
       document
         .getElementById("tableContainer")
         .innerHTML = html;
-    
+
+    }
+
+    function toggleND(index){
+
+      document
+        .getElementById(
+          "full_" + index
+        )
+        .classList.toggle("show");
+
     }
 
     function closeModal(){
@@ -775,10 +868,12 @@
 
     loadData();
 
-    setInterval(loadData,30000);
+    setInterval(
+      loadData,
+      30000
+    );
 
   </script>
 
 </body>
-
 </html>
