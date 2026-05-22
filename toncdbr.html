@@ -101,9 +101,11 @@ tr:nth-child(even){background:#fafafa;}
 <input type="text" id="searchInput" placeholder="Tìm kiếm...">
 
 <select id="huyenFilter">
-
 <option value="">Tất cả huyện</option>
+</select>
 
+<select id="typeFilter">
+<option value="">Tất cả loại</option>
 </select>
 
 </div>
@@ -240,7 +242,7 @@ let html="";
 
 window.tongtkm=tontkm;
 
-html+=createCard("TỔNG",countUniqueAccount(tontkm),"#111827","showTable('TỔNG',tongtkm)");
+html+=createCard("TỔNG TKM",countUniqueAccount(tontkm),"#111827","showTable('TỔNG TKM',tongtkm)");
 
 Object.keys(groups).sort().forEach(kpi=>{
 
@@ -285,16 +287,35 @@ renderTable(data);
 function initFilters(data){
 
 const huyenSet=new Set();
+const typeSet=new Set();
 
-data.forEach(x=>{if(x.huyen)huyenSet.add(x.huyen);});
+data.forEach(x=>{
 
-const select=document.getElementById("huyenFilter");
+if(x.huyen)huyenSet.add(x.huyen);
 
-select.innerHTML=`<option value="">Tất cả huyện</option>`;
+if(x.sc)typeSet.add(x.sc);
+
+if(x.kpi)typeSet.add(x.kpi);
+
+});
+
+const huyenSelect=document.getElementById("huyenFilter");
+
+huyenSelect.innerHTML=`<option value="">Tất cả huyện</option>`;
 
 [...huyenSet].sort().forEach(h=>{
 
-select.innerHTML+=`<option value="${h}">${h}</option>`;
+huyenSelect.innerHTML+=`<option value="${h}">${h}</option>`;
+
+});
+
+const typeSelect=document.getElementById("typeFilter");
+
+typeSelect.innerHTML=`<option value="">Tất cả loại</option>`;
+
+[...typeSet].sort().forEach(t=>{
+
+typeSelect.innerHTML+=`<option value="${t}">${t}</option>`;
 
 });
 
@@ -304,11 +325,15 @@ document.getElementById("searchInput").addEventListener("input",filterTable);
 
 document.getElementById("huyenFilter").addEventListener("change",filterTable);
 
+document.getElementById("typeFilter").addEventListener("change",filterTable);
+  
 function filterTable(){
 
 const kw=document.getElementById("searchInput").value.toLowerCase();
 
 const huyen=document.getElementById("huyenFilter").value;
+
+const type=document.getElementById("typeFilter").value;
 
 const filtered=currentData.filter(row=>{
 
@@ -318,7 +343,9 @@ const okSearch=text.includes(kw);
 
 const okHuyen=!huyen||row.huyen==huyen;
 
-return okSearch&&okHuyen;
+const okType=!type||row.sc==type||row.kpi==type;
+
+return okSearch&&okHuyen&&okType;
 
 });
 
