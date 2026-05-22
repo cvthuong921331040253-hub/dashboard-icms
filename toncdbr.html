@@ -547,39 +547,38 @@
     }
 
     function initFilters(data){
-
+    
       const huyenSet = new Set();
-
+    
       data.forEach(x => {
-
-        const h =
-          x["Huyện"];
-
+    
+        const h = x.huyen;
+    
         if(h){
-
+    
           huyenSet.add(h);
-
+    
         }
-
+    
       });
-
+    
       const select =
         document.getElementById("huyenFilter");
-
+    
       select.innerHTML =
         `<option value="">Tất cả huyện</option>`;
-
+    
       [...huyenSet]
         .sort()
         .forEach(h => {
-
+    
           select.innerHTML +=
             `<option value="${h}">
               ${h}
             </option>`;
-
+    
         });
-
+    
     }
 
     document
@@ -591,187 +590,179 @@
       .addEventListener("change",filterTable);
 
     function filterTable(){
-
+    
       const kw =
         document
           .getElementById("searchInput")
           .value
           .toLowerCase();
-
+    
       const huyen =
         document
           .getElementById("huyenFilter")
           .value;
-
+    
       const filtered =
         currentData.filter(row => {
-
+    
           const text =
             JSON.stringify(row)
             .toLowerCase();
-
+    
           const okSearch =
             text.includes(kw);
-
+    
           const okHuyen =
             !huyen ||
-            row["Huyện"] == huyen;
-
+            row.huyen == huyen;
+    
           return okSearch && okHuyen;
-
+    
         });
-
+    
       renderTable(filtered);
-
+    
     }
 
     function renderTable(data){
-
+    
       if(!data.length){
-
+    
         document
           .getElementById("tableContainer")
           .innerHTML =
             "Không có dữ liệu";
-
+    
         return;
-
+    
       }
-
+    
+      /* SORT TG DESC */
+    
       data.sort((a,b) => {
-
-        return new Date(b["Thời gian"])
-          - new Date(a["Thời gian"]);
-
+    
+        return new Date(b.tg)
+          - new Date(a.tg);
+    
       });
-
+    
       const cols =
         Object.keys(data[0]);
-
+    
       let html =
         `<table>
           <thead>
             <tr>`;
-
+    
       cols.forEach(c => {
-
+    
         html += `<th>${c}</th>`;
-
+    
       });
-
+    
       html += `
             </tr>
           </thead>
           <tbody>
       `;
-
+    
       data.forEach((row,index) => {
-
+    
         html += "<tr>";
-
+    
         cols.forEach(c => {
-
+    
           let val = row[c] || "";
-
-          /* Badge */
-
-          if(c === "Loại sự cố"){
-
+    
+          /* BADGE SC */
+    
+          if(c === "sc"){
+    
             let cls = "gray";
-
+    
             if(String(val).includes("HOT")){
-
+    
               cls = "red";
-
+    
             }
             else if(String(val).includes("VIP")){
-
+    
               cls = "purple";
-
+    
             }
             else if(String(val).includes("SOC")){
-
+    
               cls = "orange";
-
+    
             }
             else{
-
+    
               cls = "blue";
-
+    
             }
-
+    
             val =
               `<span class="badge ${cls}">
                 ${val}
               </span>`;
-
+    
           }
-
-          /* Expand nội dung */
-
-          if(c === "Nội dung PA"){
-
+    
+          /* EXPAND ND */
+    
+          if(c === "nd"){
+    
             const shortText =
               String(val)
                 .substring(0,80);
-
+    
             html += `
-
+    
               <td style="min-width:300px">
-
+    
                 <div>
                   ${shortText}
                 </div>
-
+    
                 <div
                   class="nd-full"
                   id="full_${index}"
                 >
                   ${val}
                 </div>
-
+    
                 <div
                   class="expand-btn"
                   onclick="toggleND(${index})"
                 >
                   Xem thêm
                 </div>
-
+    
               </td>
-
+    
             `;
-
+    
           }else{
-
+    
             html += `<td>${val}</td>`;
-
+    
           }
-
+    
         });
-
+    
         html += "</tr>";
-
+    
       });
-
+    
       html += `
           </tbody>
         </table>
       `;
-
+    
       document
         .getElementById("tableContainer")
         .innerHTML = html;
-
-    }
-
-    function toggleND(index){
-
-      const el =
-        document
-          .getElementById("full_" + index);
-
-      el.classList.toggle("show");
-
+    
     }
 
     function closeModal(){
