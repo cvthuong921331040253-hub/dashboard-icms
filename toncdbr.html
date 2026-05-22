@@ -1,960 +1,407 @@
-<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>TỒN TÁC VỤ CĐBR</title>
 
-<head>
+<style>
 
-  <meta charset="UTF-8"/>
+*{margin:0;padding:0;box-sizing:border-box;}
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+body{font-family:Arial;background:#f3f4f6;padding:15px;color:#111827;}
 
-  <title>TỒN TÁC VỤ CĐBR</title>
+h1{font-size:28px;margin-bottom:5px;}
 
-  <style>
+.update{color:#6b7280;margin-bottom:20px;}
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+.section-title{margin:25px 0 15px;font-size:24px;font-weight:bold;}
 
-    body{
-      font-family:Arial;
-      background:#f3f4f6;
-      padding:15px;
-      color:#111827;
-    }
+.dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;}
 
-    h1{
-      font-size:28px;
-      margin-bottom:5px;
-    }
+.card{background:white;border-radius:12px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.08);cursor:pointer;transition:.2s;}
 
-    .update{
-      color:#6b7280;
-      margin-bottom:20px;
-    }
+.card:hover{transform:translateY(-3px);}
 
-    .section-title{
-      margin:25px 0 15px;
-      font-size:24px;
-      font-weight:bold;
-    }
+.card-title{font-weight:bold;margin-bottom:12px;font-size:18px;}
 
-    .dashboard{
-      display:grid;
-      grid-template-columns:
-        repeat(auto-fit,minmax(220px,1fr));
+.card-count{font-size:40px;font-weight:bold;}
 
-      gap:15px;
-    }
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;justify-content:center;align-items:center;z-index:9999;}
 
-    .card{
-      background:white;
-      border-radius:12px;
-      padding:20px;
-      box-shadow:0 2px 10px rgba(0,0,0,.08);
-      cursor:pointer;
-      transition:.2s;
-    }
+.hidden{display:none;}
 
-    .card:hover{
-      transform:translateY(-3px);
-    }
+.modal-content{width:96%;height:92vh;background:white;border-radius:12px;padding:15px;overflow:auto;}
 
-    .card-title{
-      font-weight:bold;
-      margin-bottom:12px;
-      font-size:18px;
-    }
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
 
-    .card-count{
-      font-size:40px;
-      font-weight:bold;
-    }
+.close-btn{border:none;background:red;color:white;padding:10px 14px;border-radius:8px;cursor:pointer;}
 
-    .modal{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.5);
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;}
 
-      display:flex;
-      justify-content:center;
-      align-items:center;
+.toolbar input,.toolbar select{padding:10px;border:1px solid #ddd;border-radius:8px;}
 
-      z-index:9999;
-    }
+table{width:100%;border-collapse:collapse;background:white;}
 
-    .hidden{
-      display:none;
-    }
+th{background:#f3f4f6;position:sticky;top:0;z-index:2;}
 
-    .modal-content{
+th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:14px;vertical-align:top;}
 
-      width:96%;
-      height:92vh;
+tr:nth-child(even){background:#fafafa;}
 
-      background:white;
+.badge{padding:4px 8px;border-radius:6px;color:white;font-size:12px;font-weight:bold;display:inline-block;}
 
-      border-radius:12px;
+.red{background:#dc2626;}
 
-      padding:15px;
+.orange{background:#ea580c;}
 
-      overflow:auto;
+.blue{background:#2563eb;}
 
-    }
+.purple{background:#7c3aed;}
 
-    .modal-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:15px;
-    }
+.gray{background:#6b7280;}
 
-    .close-btn{
-      border:none;
-      background:red;
-      color:white;
-      padding:10px 14px;
-      border-radius:8px;
-      cursor:pointer;
-    }
+.green{background:#16a34a;}
 
-    .toolbar{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:15px;
-    }
+.expand-btn{color:#2563eb;cursor:pointer;margin-top:5px;font-size:13px;}
 
-    .toolbar input,
-    .toolbar select{
+.nd-full{display:none;margin-top:5px;white-space:pre-wrap;line-height:1.5;}
 
-      padding:10px;
-      border:1px solid #ddd;
-      border-radius:8px;
+.show{display:block;}
 
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      background:white;
-    }
-
-    th{
-      background:#f3f4f6;
-      position:sticky;
-      top:0;
-      z-index:2;
-    }
-
-    th,td{
-      border:1px solid #ddd;
-      padding:8px;
-      text-align:left;
-      font-size:14px;
-      vertical-align:top;
-    }
-
-    tr:nth-child(even){
-      background:#fafafa;
-    }
-
-    .badge{
-      padding:4px 8px;
-      border-radius:6px;
-      color:white;
-      font-size:12px;
-      font-weight:bold;
-      display:inline-block;
-    }
-
-    .red{
-      background:#dc2626;
-    }
-
-    .orange{
-      background:#ea580c;
-    }
-
-    .blue{
-      background:#2563eb;
-    }
-
-    .purple{
-      background:#7c3aed;
-    }
-
-    .gray{
-      background:#6b7280;
-    }
-
-    .green{
-      background:#16a34a;
-    }
-
-    .expand-btn{
-      color:#2563eb;
-      cursor:pointer;
-      margin-top:5px;
-      font-size:13px;
-    }
-
-    .nd-full{
-      display:none;
-      margin-top:5px;
-      white-space:pre-wrap;
-      line-height:1.5;
-    }
-
-    .show{
-      display:block;
-    }
-
-  </style>
+</style>
 
 </head>
 
 <body>
 
-  <h1>TỒN TÁC VỤ CĐBR</h1>
+<h1>TỒN TÁC VỤ CĐBR</h1>
 
-  <div
-    class="update"
-    id="updateTime"
-  >
-    Đang tải...
-  </div>
+<div class="update" id="updateTime">Đang tải...</div>
 
-  <!-- TON SC -->
+<div class="section-title">TỒN SỰ CỐ</div>
 
-  <div class="section-title">
-    TỒN SỰ CỐ
-  </div>
+<div class="dashboard" id="tonscDashboard"></div>
 
-  <div
-    class="dashboard"
-    id="tonscDashboard"
-  ></div>
+<div class="section-title">TỒN TRIỂN KHAI</div>
 
-  <!-- TON TKM -->
+<div class="dashboard" id="tontkmDashboard"></div>
 
-  <div class="section-title">
-    TỒN TRIỂN KHAI
-  </div>
+<div class="modal hidden" id="modal">
 
-  <div
-    class="dashboard"
-    id="tontkmDashboard"
-  ></div>
+<div class="modal-content">
 
-  <!-- MODAL -->
+<div class="modal-header">
 
-  <div
-    class="modal hidden"
-    id="modal"
-  >
+<h2 id="modalTitle"></h2>
 
-    <div class="modal-content">
+<button class="close-btn" onclick="closeModal()">Đóng</button>
 
-      <div class="modal-header">
+</div>
 
-        <h2 id="modalTitle"></h2>
+<div class="toolbar">
 
-        <button
-          class="close-btn"
-          onclick="closeModal()"
-        >
-          Đóng
-        </button>
+<input type="text" id="searchInput" placeholder="Tìm kiếm...">
 
-      </div>
+<select id="huyenFilter">
 
-      <div class="toolbar">
+<option value="">Tất cả huyện</option>
 
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Tìm kiếm..."
-        >
+</select>
 
-        <select id="huyenFilter">
-          <option value="">
-            Tất cả huyện
-          </option>
-        </select>
+</div>
 
-      </div>
+<div id="tableContainer"></div>
 
-      <div id="tableContainer"></div>
+</div>
 
-    </div>
+</div>
 
-  </div>
+<script>
 
-  <script>
+const API="https://script.google.com/macros/s/AKfycbz8k9j9KDRnEQhV6Y1568e-WSZoSamqS4p8JJZJv6wN27QOG4oSm0Oi7to7LDIDLuED/exec";
 
-    const API =
-      "https://script.google.com/macros/s/AKfycbz8k9j9KDRnEQhV6Y1568e-WSZoSamqS4p8JJZJv6wN27QOG4oSm0Oi7to7LDIDLuED/exec";
+let tonsc=[];
+let tontkm=[];
+let currentData=[];
 
-    let tonsc = [];
-    let tontkm = [];
+function countUniqueAccount(data){const set=new Set();data.forEach(x=>{const acc=String(x.account||"").replace(/\s+/g," ").trim().toUpperCase();if(acc)set.add(acc);});return set.size;}
 
-    let currentData = [];
+function parseDateVN(str){if(!str)return 0;try{const [datePart,timePart]=str.split(" ");const [d,m,y]=datePart.split("/");const [hh,mm,ss]=(timePart||"00:00:00").split(":");return new Date(Number(y),Number(m)-1,Number(d),Number(hh),Number(mm),Number(ss));}catch(err){return 0;}}
 
-    function countUniqueAccount(data){
+async function loadData(){
 
-      const set = new Set();
-    
-      data.forEach(x => {
-    
-        const acc =
-          String(x.account || "")
-            .trim()
-            .toUpperCase();
-    
-        if(acc){
-    
-          set.add(acc);
-    
-        }
-    
-      });
-    
-      return set.size;
-    
-    }
+try{
 
-    async function loadData(){
-
-      try{
-
-        const res =
-          await fetch(API);
-
-        const json =
-          await res.json();
-
-        tonsc =
-          json.tonsc || [];
-
-        tontkm =
-          json.tontkm || [];
-
-        console.log(
-          "TON SC:",
-          tonsc.length
-        );
-
-        console.log(
-          "TON TKM:",
-          tontkm.length
-        );
-
-        document
-          .getElementById("updateTime")
-          .innerHTML =
-            "Cập nhật: " +
-            new Date()
-            .toLocaleString();
-
-        renderTonSC();
-
-        renderTonTKM();
-
-      }catch(err){
-
-        console.error(err);
-
-        alert("Lỗi tải API");
-
-      }
-
-    }
-
-    /* =====================
-       CARD
-    ===================== */
-
-    function createCard(
-      title,
-      count,
-      color,
-      onClick
-    ){
-
-      return `
-        <div
-          class="card"
-          onclick="${onClick}"
-        >
-
-          <div class="card-title">
-            ${title}
-          </div>
-
-          <div
-            class="card-count"
-            style="color:${color}"
-          >
-            ${count}
-          </div>
-
-        </div>
-      `;
-
-    }
-
-    /* =====================
-       TON SC
-    ===================== */
-
-    function renderTonSC(){
-
-      const dashboard =
-        document.getElementById(
-          "tonscDashboard"
-        );
-
-      const socpk =
-        tonsc.filter(x => {
-      
-          const v =
-            String(x.sc || "")
-              .replace(/\s+/g," ")
-              .trim()
-              .toUpperCase();
-      
-          return v === "SOC PK";
-      
-        });
-      
-      const soc =
-        tonsc.filter(x => {
-      
-          const v =
-            String(x.sc || "")
-              .replace(/\s+/g," ")
-              .trim()
-              .toUpperCase();
-      
-          return v === "SOC";
-      
-        });
-
-      const suco =
-        tonsc.filter(x => {
-
-          const v =
-            String(x.sc || "")
-            .trim()
-            .toUpperCase();
-
-          return [
-
-            "SC",
-            "HT",
-            "SC HOT",
-            "HT HOT",
-            "SC VIP",
-            "HT VIP"
-
-          ].includes(v);
-
-        });
-
-      const chuagiao =
-        tonsc.filter(x => {
-
-          return (
-            !x.user || x.user == 0
-          );
-
-        });
-
-      window.socpkData = socpk;
-      window.socData = soc;
-      window.sucoData = suco;
-      window.chuagiaoData = chuagiao;
-
-window.tongsc = tonsc;
-
-  dashboard.innerHTML =
-  
-    createCard(
-      "TỔNG SC",
-      countUniqueAccount(tonsc),
-      "#111827",
-      "showTable('TỔNG SC',tongsc)"
-    )
-  
-    +
-  
-    createCard(
-      "SOC PK",
-      countUniqueAccount(socpk),
-      "#2563eb",
-      "showTable('SOC PK',socpkData)"
-    )
-  
-    +
-  
-    createCard(
-      "SOC",
-      countUniqueAccount(soc),
-      "#ea580c",
-      "showTable('SOC',socData)"
-    )
-  
-    +
-  
-    createCard(
-      "SỰ CỐ",
-      countUniqueAccount(suco),
-      "#dc2626",
-      "showTable('SỰ CỐ',sucoData)"
-    )
-  
-    +
-  
-    createCard(
-      "SC CHƯA GIAO",
-      countUniqueAccount(chuagiao),
-      "#7c3aed",
-      "showTable('SC CHƯA GIAO',chuagiaoData)"
-    );
-
-    /* =====================
-       TON TKM
-    ===================== */
-
-    function renderTonTKM(){
-    
-      const dashboard =
-        document.getElementById(
-          "tontkmDashboard"
-        );
-    
-      const groups = {};
-    
-      /* =====================
-         GROUP KPI
-      ===================== */
-    
-      tontkm.forEach(x => {
-    
-        let kpi =
-          String(x.kpi || "")
-            .replace(/\s+/g," ")
-            .trim()
-            .toUpperCase();
-    
-        /* KPI RỖNG */
-    
-        if(!kpi){
-    
-          kpi = "KHÔNG KPI";
-    
-        }
-    
-        if(!groups[kpi]){
-    
-          groups[kpi] = [];
-    
-        }
-    
-        groups[kpi].push(x);
-    
-      });
-    
-      let html = "";
-    
-      /* =====================
-         CARD TỔNG
-      ===================== */
-    
-      window.tongtkm = tontkm;
-    
-      html += createCard(
-    
-        "TỔNG",
-    
-        countUniqueAccount(tontkm),
-    
-        "#111827",
-    
-        "showTable('TỔNG',tongtkm)"
-    
-      );
-    
-      /* =====================
-         KPI CARD
-      ===================== */
-    
-      Object.keys(groups)
-    
-        .sort()
-    
-        .forEach(kpi => {
-    
-          window[
-            "kpi_" + kpi
-          ] = groups[kpi];
-    
-          html += createCard(
-    
-            kpi,
-    
-            countUniqueAccount(groups[kpi]),
-    
-            "#16a34a",
-    
-            `showTable('${kpi}',window['kpi_${kpi}'])`
-    
-          );
-    
-        });
-    
-      /* =====================
-         CHƯA GIAO
-      ===================== */
-    
-      const chuagiao =
-        tontkm.filter(x =>
-    
-          String(x.tt || "")
-            .trim()
-            .toUpperCase()
-    
-          ===
-    
-          "ĐANG GIAO TỔ ĐỘI"
-    
-        );
-    
-      window.tkmchuagiao =
-        chuagiao;
-    
-      html += createCard(
-    
-        "TKM CHƯA GIAO",
-    
-        countUniqueAccount(chuagiao),
-    
-        "#7c3aed",
-    
-        "showTable('TKM CHƯA GIAO',tkmchuagiao)"
-    
-      );
-    
-      dashboard.innerHTML = html;
-    
-      /* =====================
-         DEBUG
-      ===================== */
-    
-      console.log(
-        "TOTAL TKM:",
-        tontkm.length
-      );
-    
-      console.log(
-        "GROUPS:",
-        groups
-      );
-    
-    }
-
-    /* =====================
-       MODAL
-    ===================== */
-
-    function showTable(title,data){
-
-      currentData = data;
-
-      document
-        .getElementById("modal")
-        .classList.remove("hidden");
-
-      document
-        .getElementById("modalTitle")
-        .innerHTML = title;
-
-      initFilters(data);
-
-      renderTable(data);
-
-    }
-
-    function initFilters(data){
-
-      const huyenSet =
-        new Set();
-
-      data.forEach(x => {
-
-        if(x.huyen){
-
-          huyenSet.add(
-            x.huyen
-          );
-
-        }
-
-      });
-
-      const select =
-        document.getElementById(
-          "huyenFilter"
-        );
-
-      select.innerHTML =
-        `<option value="">
-          Tất cả huyện
-        </option>`;
-
-      [...huyenSet]
-        .sort()
-        .forEach(h => {
-
-          select.innerHTML +=
-            `<option value="${h}">
-              ${h}
-            </option>`;
-
-        });
-
-    }
-
-    document
-      .getElementById("searchInput")
-      .addEventListener(
-        "input",
-        filterTable
-      );
-
-    document
-      .getElementById("huyenFilter")
-      .addEventListener(
-        "change",
-        filterTable
-      );
-
-    function filterTable(){
-
-      const kw =
-        document
-          .getElementById("searchInput")
-          .value
-          .toLowerCase();
-
-      const huyen =
-        document
-          .getElementById("huyenFilter")
-          .value;
-
-      const filtered =
-        currentData.filter(row => {
-
-          const text =
-            JSON.stringify(row)
-            .toLowerCase();
-
-          const okSearch =
-            text.includes(kw);
-
-          const okHuyen =
-            !huyen ||
-            row.huyen == huyen;
-
-          return okSearch &&
-            okHuyen;
-
-        });
-
-      renderTable(filtered);
-
-    }
-
-    function renderTable(data){
-
-      if(!data.length){
-
-        document
-          .getElementById("tableContainer")
-          .innerHTML =
-            "Không có dữ liệu";
-
-        return;
-
-      }
-
-      data.sort((a,b) => {
-
-        return new Date(b.tg)
-          - new Date(a.tg);
-
-      });
-
-      const cols =
-        Object.keys(data[0]);
-
-      let html =
-        `<table>
-          <thead>
-            <tr>`;
-
-      cols.forEach(c => {
-
-        html += `<th>${c}</th>`;
-
-      });
-
-      html += `
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      data.forEach((row,index) => {
-
-        html += "<tr>";
-
-        cols.forEach(c => {
-
-          let val =
-            row[c] || "";
-
-          /* badge sc */
-
-          if(c === "sc"){
-
-            let cls = "gray";
-
-            if(
-              String(val)
-              .includes("HOT")
-            ){
-
-              cls = "red";
-
-            }
-            else if(
-              String(val)
-              .includes("VIP")
-            ){
-
-              cls = "purple";
-
-            }
-            else if(
-              String(val)
-              .includes("SOC")
-            ){
-
-              cls = "orange";
-
-            }
-            else{
-
-              cls = "blue";
-
-            }
-
-            val =
-              `<span class="badge ${cls}">
-                ${val}
-              </span>`;
-
-          }
-
-          /* expand nd */
-
-          if(c === "nd"){
-
-            const shortText =
-              String(val)
-              .substring(0,80);
-
-            html += `
-              <td
-                style="min-width:300px"
-              >
-
-                <div>
-                  ${shortText}
-                </div>
-
-                <div
-                  class="nd-full"
-                  id="full_${index}"
-                >
-                  ${val}
-                </div>
-
-                <div
-                  class="expand-btn"
-                  onclick="toggleND(${index})"
-                >
-                  Xem thêm
-                </div>
-
-              </td>
-            `;
-
-          }else{
-
-            html += `<td>${val}</td>`;
-
-          }
-
-        });
-
-        html += "</tr>";
-
-      });
-
-      html += `
-          </tbody>
-        </table>
-      `;
-
-      document
-        .getElementById("tableContainer")
-        .innerHTML = html;
-
-    }
-
-    function toggleND(index){
-
-      document
-        .getElementById(
-          "full_" + index
-        )
-        .classList.toggle("show");
-
-    }
-
-    function closeModal(){
-
-      document
-        .getElementById("modal")
-        .classList.add("hidden");
-
-    }
-
-    loadData();
-
-    setInterval(
-      loadData,
-      30000
-    );
-
-  </script>
+const res=await fetch(API);
+const json=await res.json();
+
+tonsc=json.tonsc||[];
+tontkm=json.tontkm||[];
+
+console.log("TON SC:",tonsc.length);
+console.log("TON TKM:",tontkm.length);
+
+document.getElementById("updateTime").innerHTML="Cập nhật: "+new Date().toLocaleString();
+
+renderTonSC();
+renderTonTKM();
+
+}catch(err){
+
+console.error(err);
+alert("Lỗi tải API");
+
+}
+
+}
+
+function createCard(title,count,color,onClick){
+
+return `
+<div class="card" onclick="${onClick}">
+<div class="card-title">${title}</div>
+<div class="card-count" style="color:${color}">${count}</div>
+</div>
+`;
+
+}
+
+/* =====================
+TON SC
+===================== */
+
+function renderTonSC(){
+
+const dashboard=document.getElementById("tonscDashboard");
+
+const socpk=tonsc.filter(x=>{const v=String(x.sc||"").replace(/\s+/g," ").trim().toUpperCase();return v==="SOC PK";});
+
+const soc=tonsc.filter(x=>{const v=String(x.sc||"").replace(/\s+/g," ").trim().toUpperCase();return v==="SOC";});
+
+const suco=tonsc.filter(x=>{const v=String(x.sc||"").replace(/\s+/g," ").trim().toUpperCase();return v.includes("SC")||v.includes("HT");});
+
+const chuagiao=tonsc.filter(x=>{return !x.user||x.user==0;});
+
+window.tongsc=tonsc;
+window.socpkData=socpk;
+window.socData=soc;
+window.sucoData=suco;
+window.chuagiaoData=chuagiao;
+
+dashboard.innerHTML=
+
+createCard("TỔNG SC",countUniqueAccount(tonsc),"#111827","showTable('TỔNG SC',tongsc)")
+
++
+
+createCard("SOC PK",countUniqueAccount(socpk),"#2563eb","showTable('SOC PK',socpkData)")
+
++
+
+createCard("SOC",countUniqueAccount(soc),"#ea580c","showTable('SOC',socData)")
+
++
+
+createCard("SỰ CỐ",countUniqueAccount(suco),"#dc2626","showTable('SỰ CỐ',sucoData)")
+
++
+
+createCard("SC CHƯA GIAO",countUniqueAccount(chuagiao),"#7c3aed","showTable('SC CHƯA GIAO',chuagiaoData)");
+
+}
+
+/* =====================
+TON TKM
+===================== */
+
+function renderTonTKM(){
+
+const dashboard=document.getElementById("tontkmDashboard");
+
+const groups={};
+
+tontkm.forEach(x=>{
+
+let kpi=String(x.kpi||"").replace(/\s+/g," ").trim().toUpperCase();
+
+if(!kpi)kpi="KHÔNG KPI";
+
+if(!groups[kpi])groups[kpi]=[];
+
+groups[kpi].push(x);
+
+});
+
+let html="";
+
+window.tongtkm=tontkm;
+
+html+=createCard("TỔNG",countUniqueAccount(tontkm),"#111827","showTable('TỔNG',tongtkm)");
+
+Object.keys(groups).sort().forEach(kpi=>{
+
+window["kpi_"+kpi]=groups[kpi];
+
+html+=createCard(kpi,countUniqueAccount(groups[kpi]),"#16a34a",`showTable('${kpi}',window['kpi_${kpi}'])`);
+
+});
+
+const chuagiao=tontkm.filter(x=>String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase()==="ĐANG GIAO TỔ ĐỘI");
+
+window.tkmchuagiao=chuagiao;
+
+html+=createCard("TKM CHƯA GIAO",countUniqueAccount(chuagiao),"#7c3aed","showTable('TKM CHƯA GIAO',tkmchuagiao)");
+
+dashboard.innerHTML=html;
+
+}
+
+/* =====================
+MODAL
+===================== */
+
+function showTable(title,data){
+
+currentData=data;
+
+document.getElementById("modal").classList.remove("hidden");
+
+document.getElementById("modalTitle").innerHTML=title;
+
+initFilters(data);
+
+renderTable(data);
+
+}
+
+function initFilters(data){
+
+const huyenSet=new Set();
+
+data.forEach(x=>{if(x.huyen)huyenSet.add(x.huyen);});
+
+const select=document.getElementById("huyenFilter");
+
+select.innerHTML=`<option value="">Tất cả huyện</option>`;
+
+[...huyenSet].sort().forEach(h=>{
+
+select.innerHTML+=`<option value="${h}">${h}</option>`;
+
+});
+
+}
+
+document.getElementById("searchInput").addEventListener("input",filterTable);
+
+document.getElementById("huyenFilter").addEventListener("change",filterTable);
+
+function filterTable(){
+
+const kw=document.getElementById("searchInput").value.toLowerCase();
+
+const huyen=document.getElementById("huyenFilter").value;
+
+const filtered=currentData.filter(row=>{
+
+const text=JSON.stringify(row).toLowerCase();
+
+const okSearch=text.includes(kw);
+
+const okHuyen=!huyen||row.huyen==huyen;
+
+return okSearch&&okHuyen;
+
+});
+
+renderTable(filtered);
+
+}
+
+function renderTable(data){
+
+if(!data.length){
+
+document.getElementById("tableContainer").innerHTML="Không có dữ liệu";
+
+return;
+
+}
+
+data.sort((a,b)=>parseDateVN(b.tg)-parseDateVN(a.tg));
+
+const cols=Object.keys(data[0]);
+
+let html=`<table><thead><tr>`;
+
+cols.forEach(c=>{html+=`<th>${c}</th>`;});
+
+html+=`</tr></thead><tbody>`;
+
+data.forEach((row,index)=>{
+
+html+="<tr>";
+
+cols.forEach(c=>{
+
+let val=row[c]||"";
+
+if(c==="sc"){
+
+let cls="gray";
+
+if(String(val).includes("HOT"))cls="red";
+else if(String(val).includes("VIP"))cls="purple";
+else if(String(val).includes("SOC"))cls="orange";
+else cls="blue";
+
+val=`<span class="badge ${cls}">${val}</span>`;
+
+}
+
+if(c==="nd"){
+
+const shortText=String(val).substring(0,80);
+
+html+=`
+<td style="min-width:300px">
+<div>${shortText}</div>
+<div class="nd-full" id="full_${index}">${val}</div>
+<div class="expand-btn" onclick="toggleND(${index})">Xem thêm</div>
+</td>
+`;
+
+}else{
+
+html+=`<td>${val}</td>`;
+
+}
+
+});
+
+html+="</tr>";
+
+});
+
+html+=`</tbody></table>`;
+
+document.getElementById("tableContainer").innerHTML=html;
+
+}
+
+function toggleND(index){
+
+document.getElementById("full_"+index).classList.toggle("show");
+
+}
+
+function closeModal(){
+
+document.getElementById("modal").classList.add("hidden");
+
+}
+
+loadData();
+
+setInterval(loadData,30000);
+
+</script>
 
 </body>
 </html>
