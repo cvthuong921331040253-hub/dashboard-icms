@@ -216,7 +216,15 @@ const dashboard=document.getElementById("tontkmDashboard");
 
 const groups={};
 
+const capnhaths=tontkm.filter(x=>String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase()==="CẬP NHẬT HỒ SƠ");
+
+window.capnhaths=capnhaths;
+
 tontkm.forEach(x=>{
+
+const tt=String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase();
+
+if(tt==="CẬP NHẬT HỒ SƠ")return;
 
 let kpi=String(x.kpi||"").replace(/\s+/g," ").trim().toUpperCase();
 
@@ -245,6 +253,8 @@ html+=createCard(kpi,countUniqueAccount(groups[kpi]),"#16a34a",`showTable('${kpi
 const chuagiao=tontkm.filter(x=>String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase()==="ĐANG GIAO TỔ ĐỘI");
 
 window.tkmchuagiao=chuagiao;
+  
+html+=createCard("TỒN CẬP NHẬT HỒ SƠ",countUniqueAccount(capnhaths),"#dc2626","showTable('TỒN CẬP NHẬT HỒ SƠ',capnhaths)");
 
 html+=createCard("TKM CHƯA GIAO",countUniqueAccount(chuagiao),"#7c3aed","showTable('TKM CHƯA GIAO',tkmchuagiao)");
 
