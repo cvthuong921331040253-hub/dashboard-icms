@@ -447,7 +447,19 @@ html+=`
 
 }else{
 
+if(c==="tg"){
+
+const tgValue=parseFloat(val)||0;
+
+const tgColor=tgValue>24?"#dc2626":"";
+
+html+=`<td style="color:${tgColor};font-weight:bold;">${val}</td>`;
+
+}else{
+
 html+=`<td>${val}</td>`;
+
+}
 
 }
 
