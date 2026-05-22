@@ -521,7 +521,9 @@
     
         let kpi =
           String(x.kpi || "")
-            .trim();
+            .replace(/\s+/g," ")
+            .trim()
+            .toUpperCase();
     
         /* KPI RỖNG */
     
