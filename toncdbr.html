@@ -305,6 +305,29 @@
 
     let currentData = [];
 
+    function countUniqueAccount(data){
+
+      const set = new Set();
+    
+      data.forEach(x => {
+    
+        const acc =
+          String(x.account || "")
+            .trim()
+            .toUpperCase();
+    
+        if(acc){
+    
+          set.add(acc);
+    
+        }
+    
+      });
+    
+      return set.size;
+    
+    }
+
     async function loadData(){
 
       try{
@@ -457,43 +480,52 @@
       window.sucoData = suco;
       window.chuagiaoData = chuagiao;
 
-      dashboard.innerHTML =
+window.tongsc = tonsc;
 
-        createCard(
-          "SOC PK",
-          socpk.length,
-          "#2563eb",
-          "showTable('SOC PK',socpkData)"
-        )
-
-        +
-
-        createCard(
-          "SOC",
-          soc.length,
-          "#ea580c",
-          "showTable('SOC',socData)"
-        )
-
-        +
-
-        createCard(
-          "SỰ CỐ",
-          suco.length,
-          "#dc2626",
-          "showTable('SỰ CỐ',sucoData)"
-        )
-
-        +
-
-        createCard(
-          "SC CHƯA GIAO",
-          chuagiao.length,
-          "#7c3aed",
-          "showTable('SC CHƯA GIAO',chuagiaoData)"
-        );
-
-    }
+  dashboard.innerHTML =
+  
+    createCard(
+      "TỔNG SC",
+      countUniqueAccount(tonsc),
+      "#111827",
+      "showTable('TỔNG SC',tongsc)"
+    )
+  
+    +
+  
+    createCard(
+      "SOC PK",
+      countUniqueAccount(socpk),
+      "#2563eb",
+      "showTable('SOC PK',socpkData)"
+    )
+  
+    +
+  
+    createCard(
+      "SOC",
+      countUniqueAccount(soc),
+      "#ea580c",
+      "showTable('SOC',socData)"
+    )
+  
+    +
+  
+    createCard(
+      "SỰ CỐ",
+      countUniqueAccount(suco),
+      "#dc2626",
+      "showTable('SỰ CỐ',sucoData)"
+    )
+  
+    +
+  
+    createCard(
+      "SC CHƯA GIAO",
+      countUniqueAccount(chuagiao),
+      "#7c3aed",
+      "showTable('SC CHƯA GIAO',chuagiaoData)"
+    );
 
     /* =====================
        TON TKM
@@ -550,7 +582,7 @@
     
         "TỔNG",
     
-        tontkm.length,
+        countUniqueAccount(tontkm),
     
         "#111827",
     
@@ -576,7 +608,7 @@
     
             kpi,
     
-            groups[kpi].length,
+            countUniqueAccount(groups[kpi]),
     
             "#16a34a",
     
@@ -610,7 +642,7 @@
     
         "TKM CHƯA GIAO",
     
-        chuagiao.length,
+        countUniqueAccount(chuagiao),
     
         "#7c3aed",
     
