@@ -65,11 +65,11 @@ tr:nth-child(even){background:#fafafa;}
 .nd-full{display:none;margin-top:5px;white-space:pre-wrap;line-height:1.5;}
 
 .show{display:block;}
-
+.toolbar button{padding:10px 14px;border:none;border-radius:8px;background:#16a34a;color:white;cursor:pointer;font-weight:bold;}
 </style>
 
 </head>
-
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <body>
 
 <h1>📊 TỒN TÁC VỤ CĐBR</h1>
@@ -97,6 +97,7 @@ tr:nth-child(even){background:#fafafa;}
 </div>
 
 <div class="toolbar">
+<button onclick="exportExcel()">Xuất Excel</button>
 
 <input type="text" id="searchInput" placeholder="Tìm kiếm...">
 
@@ -123,6 +124,7 @@ const API="https://script.google.com/macros/s/AKfycbywITVgVMxEBC3i38MtqT9lBsxFZn
 let tonsc=[];
 let tontkm=[];
 let currentData=[];
+let filteredData=[];
 
 function countUniqueAccount(data){const set=new Set();data.forEach(x=>{const acc=String(x.account||"").replace(/\s+/g," ").trim().toUpperCase();if(acc)set.add(acc);});return set.size;}
 
@@ -273,6 +275,7 @@ MODAL
 function showTable(title,data){
 
 currentData=data;
+filteredData=data;
 
 document.getElementById("modal").classList.remove("hidden");
 
@@ -348,7 +351,7 @@ const okType=!type||row.sc==type||row.kpi==type;
 return okSearch&&okHuyen&&okType;
 
 });
-
+filteredData=filtered;
 renderTable(filtered);
 
 }
@@ -468,6 +471,43 @@ loadData();
 
 setInterval(loadData,30000);
 
+function exportExcel(){
+
+if(!filteredData.length){
+
+alert("Không có dữ liệu");
+
+return;
+
+}
+
+const rows=filteredData.map(row=>{
+
+const obj={};
+
+Object.keys(row).forEach(k=>{
+
+if(k==="thuongcv1"||k==="tgupdate")return;
+
+obj[getColumnTitle(k)]=row[k];
+
+});
+
+return obj;
+
+});
+
+const ws=XLSX.utils.json_to_sheet(rows);
+
+const wb=XLSX.utils.book_new();
+
+XLSX.utils.book_append_sheet(wb,ws,"DATA");
+
+const title=document.getElementById("modalTitle").innerText||"DATA";
+
+XLSX.writeFile(wb,title+".xlsx");
+
+}
 </script>
 
 </body>
