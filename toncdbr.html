@@ -248,7 +248,9 @@ Object.keys(groups).sort().forEach(kpi=>{
 
 window["kpi_"+kpi]=groups[kpi];
 
-html+=createCard(kpi,countUniqueAccount(groups[kpi]),"#16a34a",`showTable('${kpi}',window['kpi_${kpi}'])`);
+const cardColor=(kpi==="QUÁ 24H"||kpi==="QUÁ HẸN")?"#dc2626":"#16a34a";
+
+html+=createCard(kpi,countUniqueAccount(groups[kpi]),cardColor,`showTable('${kpi}',window['kpi_${kpi}'])`);
 
 });
 
