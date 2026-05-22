@@ -139,11 +139,9 @@ tontkm=json.tontkm||[];
 console.log("TON SC:",tonsc.length);
 console.log("TON TKM:",tontkm.length);
 
-document.getElementById("updateTime").innerHTML="⏰ Thời gian lấy báo cáo: "+(tontkm[0]?.tgupdate||"");
-
 renderTonSC();
 renderTonTKM();
-
+document.getElementById("updateTime").innerHTML="⏰ Thời gian lấy báo cáo: "+(tontkm[0]?.tgupdate||"");
 }catch(err){
 
 console.error(err);
