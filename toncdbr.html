@@ -398,30 +398,33 @@
 
       const socpk =
         tonsc.filter(x => {
-
+      
           const v =
             String(x.sc || "")
-            .trim()
-            .toUpperCase();
-
-          return v ===
-            "SOC HOME WIFI";
-
+              .replace(/\s+/g," ")
+              .trim()
+              .toUpperCase();
+      
+          return v.includes(
+            "SOC HOME WIFI"
+          );
+      
         });
-
+      
       const soc =
         tonsc.filter(x => {
-
+      
           const v =
             String(x.sc || "")
-            .trim()
-            .toUpperCase();
-
+              .replace(/\s+/g," ")
+              .trim()
+              .toUpperCase();
+      
           return (
-            v === "SOC PORT KÉM" ||
-            v === "HÀNG LOẠT"
+            v.includes("SOC PORT KÉM") ||
+            v.includes("HÀNG LOẠT")
           );
-
+      
         });
 
       const suco =
@@ -449,8 +452,7 @@
         tonsc.filter(x => {
 
           return (
-            !x.nv ||
-            x.nv == 0
+            !x.user || x.user == 0
           );
 
         });
