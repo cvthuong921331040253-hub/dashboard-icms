@@ -290,7 +290,7 @@
   <script>
 
     const API =
-      "https://script.google.com/macros/s/AKfycbx5pF40GAhapDMZJovrWgI0Y6N6HOMW40u2gcl4_n5wARTiJLkkK0aOGP1i4fmitTI5/exec";
+      "https://script.google.com/macros/s/AKfycbylERsSTGNRKZ6Gq61haPTWiqNl8IP5FirGyQkd68M8ppoZvN1WLfYGMVGFXc6guz8/exec";
 
     let tonsc = [];
     let tontkm = [];
@@ -355,35 +355,37 @@
     ===================== */
 
     function renderTonSC(){
-
+    
       const dashboard =
-        document.getElementById("tonscDashboard");
-
+        document.getElementById(
+          "tonscDashboard"
+        );
+    
       const socpk =
         tonsc.filter(x =>
-          String(x["Loại sự cố"]).trim() ===
-          "SOC HOME WIFI"
+          String(x.sc).trim()
+          === "SOC HOME WIFI"
         );
-
+    
       const soc =
         tonsc.filter(x => {
-
+    
           const v =
-            String(x["Loại sự cố"]).trim();
-
+            String(x.sc).trim();
+    
           return (
             v === "SOC PORT KÉM" ||
             v === "HÀNG LOẠT"
           );
-
+    
         });
-
+    
       const suco =
         tonsc.filter(x => {
-
+    
           const v =
-            String(x["Loại sự cố"]).trim();
-
+            String(x.sc).trim();
+    
           return [
             "SC",
             "HT",
@@ -392,64 +394,60 @@
             "SC VIP",
             "HT VIP"
           ].includes(v);
-
+    
         });
-
+    
       const chuagiao =
         tonsc.filter(x => {
-
-          const nv =
-            x["Tên NV"];
-
+    
           return (
-            nv === "" ||
-            nv === null ||
-            nv == 0
+            !x.nv ||
+            x.nv == 0
           );
-
+    
         });
-
+    
       window.socpkData = socpk;
       window.socData = soc;
       window.sucoData = suco;
       window.chuagiaoData = chuagiao;
-
+    
       dashboard.innerHTML =
-
+    
         createCard(
           "SOC PK",
           socpk.length,
           "#2563eb",
           "showTable('SOC PK',socpkData)"
         )
-
+    
         +
-
+    
         createCard(
           "SOC",
           soc.length,
           "#ea580c",
           "showTable('SOC',socData)"
         )
-
+    
         +
-
+    
         createCard(
           "SỰ CỐ",
           suco.length,
           "#dc2626",
           "showTable('SỰ CỐ',sucoData)"
         )
-
+    
         +
-
+    
         createCard(
           "SC CHƯA GIAO",
           chuagiao.length,
           "#7c3aed",
           "showTable('SC CHƯA GIAO',chuagiaoData)"
         );
-
+    
     }
 
     /* =====================
@@ -457,71 +455,73 @@
     ===================== */
 
     function renderTonTKM(){
-
+    
       const dashboard =
-        document.getElementById("tontkmDashboard");
-
+        document.getElementById(
+          "tontkmDashboard"
+        );
+    
       const groups = {};
-
+    
       tontkm.forEach(x => {
-
+    
         const kpi =
-          x["Tính KPI"] || "Khác";
-
+          x.kpi || "Khác";
+    
         if(!groups[kpi]){
-
+    
           groups[kpi] = [];
-
+    
         }
-
+    
         groups[kpi].push(x);
-
+    
       });
-
+    
       let html = "";
-
+    
       Object.keys(groups).forEach(kpi => {
-
+    
         window["kpi_" + kpi] =
           groups[kpi];
-
+    
         html += createCard(
-
+    
           kpi,
-
+    
           groups[kpi].length,
-
+    
           "#16a34a",
-
+    
           `showTable('${kpi}',window['kpi_${kpi}'])`
-
+    
         );
-
+    
       });
-
+    
       const chuagiao =
         tontkm.filter(x =>
-          String(x["Trạng thái CV"]).trim()
+          String(x.tt).trim()
           === "Đang giao tổ đội"
         );
-
+    
       window.tkmchuagiao =
         chuagiao;
-
+    
       html += createCard(
-
+    
         "TKM CHƯA GIAO",
-
+    
         chuagiao.length,
-
+    
         "#7c3aed",
-
+    
         "showTable('TKM CHƯA GIAO',tkmchuagiao)"
-
+    
       );
-
+    
       dashboard.innerHTML = html;
-
+    
     }
 
     /* =====================
