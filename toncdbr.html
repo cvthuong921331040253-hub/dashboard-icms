@@ -744,45 +744,39 @@ const h=x.huyen||"Khác";
 
 const k=String(x.kpi||"").toUpperCase();
 
-if(k.includes("QUÁ 24")){
+if(k==="QUÁ 24H"){
 
     q24[h]++;
 
 }
-else if(k.includes("QUÁ 3")){
+else if(k==="QUÁ 3H, TRONG 10H"){
 
     q3_10[h]++;
 
 }
-else if(k.includes("QUÁ 10")){
+else if(k==="QUÁ 10H, TRONG 16H"){
 
     q10_16[h]++;
 
 }
-else if(k.includes("QUÁ 16")){
+else if(k==="QUÁ 16H"){
 
     q16[h]++;
 
 }
-else if(k.includes("QUÁ HẸN")){
+else if(k==="QUÁ HẸN"){
 
     qhen[h]++;
 
 }
-else if(k.includes("TRONG 3")){
+else if(k==="TRONG 3H"){
 
     t3h[h]++;
 
 }
-else if(k.includes("TRONG HẸN")){
+else if(k==="TRONG HẸN"){
 
     then[h]++;
-
-}
-
-else{
-
-then[h]++;
 
 }
 
