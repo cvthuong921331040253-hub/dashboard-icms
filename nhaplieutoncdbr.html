@@ -1215,6 +1215,11 @@ btn.innerHTML=
 "Đang lưu...";
 if(!validate()){
 
+btn.disabled=false;
+
+btn.innerHTML=
+"LƯU NHẬP LIỆU";
+
 return;
 
 }
@@ -1299,6 +1304,13 @@ btn.disabled=false;
 btn.innerHTML=
 "LƯU NHẬP LIỆU";
 }catch(err){
+
+btn.disabled=false;
+
+btn.innerHTML=
+"LƯU NHẬP LIỆU";
+
+console.error(err);
 
 alert(err);
 
