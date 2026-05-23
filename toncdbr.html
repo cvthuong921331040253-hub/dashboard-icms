@@ -435,7 +435,11 @@ const sucoKNTKM=tonsc.filter(x=>{
     return !v;
 
 });
+const chuagiao=tonsc.filter(x=>{
 
+    return !x.user || x.user==0;
+
+});
 window.tongsc=tonsc;
 window.socpkData=socpk;
 window.socData=soc;
@@ -507,9 +511,7 @@ let html="";
 
 window.tongtkm=tontkm;
 
-html+=createCard("TỔNG TKM",countUniqueAccount(tontkm),"#111827","showTable('TỔNG TKM',tongtkm)");
-
-Object.keys(groups).sort().forEach(kpi=>{
+html+=createCard("TỔNG TKM",tontkm.length,"#111827","showTable('TỔNG TKM',tongtkm)");
 
 [
     "QUÁ 24H",
@@ -547,9 +549,9 @@ const chuagiao=tontkm.filter(x=>String(x.tt||"").replace(/\s+/g," ").trim().toUp
 
 window.tkmchuagiao=chuagiao;
   
-html+=createCard("TỒN CẬP NHẬT HỒ SƠ",countUniqueAccount(capnhaths),"#dc2626","showTable('TỒN CẬP NHẬT HỒ SƠ',capnhaths)");
+html+=createCard("TỒN CẬP NHẬT HỒ SƠ",capnhaths.length,"#dc2626","showTable('TỒN CẬP NHẬT HỒ SƠ',capnhaths)");
 
-html+=createCard("TKM CHƯA GIAO",countUniqueAccount(chuagiao),"#7c3aed","showTable('TKM CHƯA GIAO',tkmchuagiao)");
+html+=createCard("TKM CHƯA GIAO",chuagiao.length,"#7c3aed","showTable('TKM CHƯA GIAO',tkmchuagiao)");
 
 dashboard.innerHTML=html;
 
