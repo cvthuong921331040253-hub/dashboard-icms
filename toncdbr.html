@@ -1464,7 +1464,8 @@ const ngayPhatSinh =
 /* =========================
 LOẠI
 ========================= */
-
+const ten_nv =
+   row.nv || "";
 const loai =
    row.cv ? "TKM" : "SC";
 
@@ -1480,7 +1481,8 @@ const url =
 
 &ngay=${encodeURIComponent(ngayPhatSinh)}
 
-&loai=${encodeURIComponent(loai)}`;
+&loai=${encodeURIComponent(loai)}
+&ten_nv=${encodeURIComponent(ten_nv)}`;
 
 window.open(url,"_blank");
 
