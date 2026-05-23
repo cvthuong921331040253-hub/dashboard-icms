@@ -575,7 +575,7 @@ const shortText=String(val).substring(0,60);
 html+=`
 <td style="${stickyStyle}white-space:normal;">
 <div>${shortText}</div>
-<div class="nd-full" id="full_${index}">${val}</div>
+<div class="nd-full" id="full_${index}" data-full="${encodeURIComponent(val)}"></div>
 <div class="expand-btn" onclick="toggleND(${index})">Xem thêm</div>
 </td>`;}
 
@@ -663,9 +663,7 @@ html+=`
 
 <div>${shortText}</div>
 
-<div class="nd-full" id="mfull_${index}">
-${nd}
-</div>
+<div class="nd-full" id="mfull_${index}" data-full="${encodeURIComponent(nd)}"></div>
 
 <div class="mobile-more" onclick="toggleMobileND(${index})">
 Xem thêm
@@ -687,9 +685,33 @@ document.getElementById("tableContainer").innerHTML=html;
 }
 
 
-function toggleMobileND(index){document.getElementById("mfull_"+index).classList.toggle("show");}
+function toggleMobileND(index){
 
-function toggleND(index){document.getElementById("full_"+index).classList.toggle("show");}
+const el=document.getElementById("mfull_"+index);
+
+if(!el.innerHTML){
+
+el.innerHTML=decodeURIComponent(el.dataset.full);
+
+}
+
+el.classList.toggle("show");
+
+}
+
+function toggleND(index){
+
+const el=document.getElementById("full_"+index);
+
+if(!el.innerHTML){
+
+el.innerHTML=decodeURIComponent(el.dataset.full);
+
+}
+
+el.classList.toggle("show");
+
+}
 
 function closeModal(){
 
