@@ -1,32 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Nhập liệu account</title>
+<title>Nhập liệu tồn CĐBR</title>
 
 <style>
 
+*{
+box-sizing:border-box;
+}
+
 body{
+
+margin:0;
+padding:20px;
 font-family:Arial;
 background:#f3f4f6;
-padding:20px;
+color:#111827;
+
 }
 
-.form{
+.container{
 
-max-width:900px;
+max-width:1100px;
 margin:auto;
-background:#fff;
-padding:20px;
-border-radius:12px;
 
 }
 
-h2{
+.card{
+
+background:#fff;
+border-radius:14px;
+padding:20px;
+margin-bottom:20px;
+box-shadow:0 2px 10px rgba(0,0,0,.05);
+
+}
+
+h1{
+
 margin-top:0;
+font-size:28px;
+
+}
+
+.section-title{
+
+font-size:20px;
+font-weight:bold;
+margin-bottom:20px;
+color:#2563eb;
+
+}
+
+.grid{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+
+}
+
+@media(max-width:768px){
+
+.grid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+.field{
+
+margin-bottom:18px;
+
+}
+
+label{
+
+display:block;
+font-weight:bold;
+margin-bottom:6px;
+
+}
+
+.note{
+
+font-size:13px;
+color:#6b7280;
+line-height:1.5;
+margin-bottom:8px;
+
+}
+
+.red-note{
+
+color:#dc2626;
+font-size:13px;
+line-height:1.6;
+margin-top:5px;
+
 }
 
 input,
@@ -34,29 +112,59 @@ textarea,
 select{
 
 width:100%;
-padding:10px;
-margin-top:5px;
-margin-bottom:15px;
-border:1px solid #ddd;
-border-radius:8px;
-box-sizing:border-box;
+padding:12px;
+border:1px solid #d1d5db;
+border-radius:10px;
+font-size:15px;
 
 }
 
 textarea{
-min-height:100px;
+
+min-height:120px;
 resize:vertical;
+
+}
+
+.readonly{
+
+background:#f3f4f6;
+
+}
+
+.file-box{
+
+border:2px dashed #d1d5db;
+padding:16px;
+border-radius:12px;
+background:#fafafa;
+
+}
+
+.preview{
+
+margin-top:10px;
+font-size:13px;
+color:#2563eb;
+
+}
+
+.required{
+
+color:red;
+
 }
 
 button{
 
 width:100%;
-padding:14px;
+padding:15px;
 background:#2563eb;
 color:#fff;
 border:none;
-border-radius:8px;
+border-radius:12px;
 font-size:16px;
+font-weight:bold;
 cursor:pointer;
 
 }
@@ -67,9 +175,15 @@ background:#1d4ed8;
 
 }
 
-.readonly{
+.error{
 
-background:#f3f4f6;
+border:2px solid red !important;
+
+}
+
+.success{
+
+background:#16a34a !important;
 
 }
 
@@ -79,19 +193,51 @@ background:#f3f4f6;
 
 <body>
 
-<div class="form">
+<div class="container">
 
-<h2>Nhập liệu account</h2>
+<div class="card">
 
-<label>Account</label>
+<h1>📋 Nhập liệu tồn CĐBR</h1>
+
+</div>
+
+<!-- THÔNG TIN -->
+
+<div class="card">
+
+<div class="section-title">
+
+Thông tin chung
+
+</div>
+
+<div class="grid">
+
+<div class="field">
+
+<label>
+Dấu thời gian
+</label>
 
 <input
-id="account"
+id="tg_nhap"
 class="readonly"
 readonly
 >
 
-<label>Ngày gốc</label>
+<div class="note">
+
+Thời gian hiện tại nếu nhập xong
+
+</div>
+
+</div>
+
+<div class="field">
+
+<label>
+Thời gian phát sinh
+</label>
 
 <input
 id="ngay_goc"
@@ -99,19 +245,341 @@ class="readonly"
 readonly
 >
 
-<label>Loại dữ liệu</label>
+<div class="note">
+
+Lấy từ dữ liệu gốc TKM/Sự cố
+
+</div>
+
+</div>
+
+<div class="field">
+
+<label>
+Nhân viên xử lý
+<span class="required">*</span>
+</label>
 
 <input
-id="loai_du_lieu"
+id="nv_xuly"
+placeholder="Nhập mã nhân viên"
+>
+
+<div class="note">
+
+Yêu cầu điền, nếu không điền không cho cập nhật
+
+</div>
+
+</div>
+
+<div class="field">
+
+<label>
+Account
+</label>
+
+<input
+id="account"
 class="readonly"
 readonly
 >
 
-<label>Nhân viên xử lý</label>
+<div class="note">
 
-<input id="nv_xuly">
+Tự link qua
 
-<label>Loại WO</label>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- NGUYÊN NHÂN -->
+
+<div class="card">
+
+<div class="section-title">
+
+Nguyên nhân bypass
+
+</div>
+
+<div class="field">
+
+<label>
+Nguyên nhân bypass
+<span class="required">*</span>
+</label>
+
+<select id="nguyen_nhan">
+
+<option value="">
+-- Chọn nguyên nhân --
+</option>
+
+<option value="HOME KÉM">
+HOME KÉM
+</option>
+
+<option value="PORT KÉM">
+PORT KÉM
+</option>
+
+</select>
+
+<div class="red-note">
+
+1. Home kém - Khách hàng không đồng ý xử lý:
+Chất lượng dịch vụ vẫn tốt, không đồng ý đi dây nổi
+(kéo dây Lan miễn phí), không đồng ý nâng cấp gói
+cước/mua thêm thiết bị (thêm vùng phủ sử dụng cho
+khách hàng, thêm thiết bị kết nối để khắc phục mức thu thấp)
+<br><br>
+
+2. Port kém - Lỗi tại nhà KH, KH không đồng ý xử lý
+(bắt buộc có biên bản)
+
+</div>
+
+</div>
+
+<div class="field">
+
+<label>
+Nguyên nhân chi tiết
+<span class="required">*</span>
+</label>
+
+<textarea
+id="chitiet_bypass"
+placeholder="Chi tiết nguyên nhân + SĐT KH"
+></textarea>
+
+<div class="note">
+
+Chi tiết nguyên nhân bất khả kháng phải bypass
+- ghi rõ nguyên nhân + SĐT KH
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FILE -->
+
+<div class="card">
+
+<div class="section-title">
+
+File đính kèm
+
+</div>
+
+<div class="grid">
+
+<!-- TOPO -->
+
+<div class="field">
+
+<label>
+Ảnh Topo
+<span class="required">*</span>
+</label>
+
+<div class="note">
+
+Ảnh topo mạng nhà KH
+(đặt tên file: 'account KH-topo')
+
+</div>
+
+<div class="file-box">
+
+<input
+type="file"
+id="file_topo"
+accept="image/*"
+>
+
+<div
+class="preview"
+id="preview_topo"
+></div>
+
+</div>
+
+</div>
+
+<!-- BIEN BAN -->
+
+<div class="field">
+
+<label>
+Ảnh biên bản
+<span class="required">*</span>
+</label>
+
+<div class="note">
+
+Ảnh biên bản XLSC
+
+</div>
+
+<div class="file-box">
+
+<input
+type="file"
+id="file_bienban"
+accept="image/*"
+>
+
+<div
+class="preview"
+id="preview_bienban"
+></div>
+
+</div>
+
+</div>
+
+<!-- CUOC GOI -->
+
+<div class="field">
+
+<label>
+Ảnh cuộc gọi
+<span class="required">*</span>
+</label>
+
+<div class="note">
+
+Hình ảnh log cuộc gọi
+
+</div>
+
+<div class="file-box">
+
+<input
+type="file"
+id="file_calllog"
+accept="image/*"
+>
+
+<div
+class="preview"
+id="preview_calllog"
+></div>
+
+</div>
+
+</div>
+
+<!-- GHI AM -->
+
+<div class="field">
+
+<label>
+File ghi âm
+<span class="required">*</span>
+</label>
+
+<div class="note">
+
+Ghi âm cuộc gọi
+
+</div>
+
+<div class="file-box">
+
+<input
+type="file"
+id="file_ghiam"
+accept="audio/*"
+>
+
+<div
+class="preview"
+id="preview_ghiam"
+></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- THIẾT BỊ -->
+
+<div class="card">
+
+<div class="section-title">
+
+Thiết bị
+
+</div>
+
+<div class="grid">
+
+<div class="field">
+
+<label>
+Thiết bị
+<span class="required">*</span>
+</label>
+
+<input
+id="thietbi"
+placeholder="ZTE/HW..."
+>
+
+<div class="note">
+
+Hãng thiết bị
+
+</div>
+
+</div>
+
+<div class="field">
+
+<label>
+Serial thiết bị HWF
+<span class="required">*</span>
+</label>
+
+<input
+id="serial_hwf"
+placeholder="Nhập serial"
+>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- LOAI WO -->
+
+<div class="card">
+
+<div class="section-title">
+
+Loại WO
+
+</div>
+
+<div class="field">
+
+<label>
+Loại WO
+<span class="required">*</span>
+</label>
 
 <select id="loai_wo">
 
@@ -119,37 +587,31 @@ readonly
 -- Chọn --
 </option>
 
-<option>
+<option value="HOME KÉM">
 HOME KÉM
 </option>
 
-<option>
+<option value="PORT KÉM">
 PORT KÉM
 </option>
 
 </select>
 
-<label>Nguyên nhân bypass</label>
+</div>
 
-<textarea id="nguyen_nhan"></textarea>
+</div>
 
-<label>Chi tiết bypass</label>
+<!-- SAVE -->
 
-<textarea id="chitiet_bypass"></textarea>
-
-<label>Thiết bị</label>
-
-<input id="thietbi">
-
-<label>Serial HWF</label>
-
-<input id="serial_hwf">
+<div class="card">
 
 <button onclick="saveData()">
 
-Lưu dữ liệu
+LƯU NHẬP LIỆU
 
 </button>
+
+</div>
 
 </div>
 
@@ -160,10 +622,10 @@ Lưu dữ liệu
 ========================= */
 
 const API =
-"YOUR_API_URL";
+"https://YOUR_API_URL";
 
 /* =========================
-   GET PARAMS
+   PARAMS
 ========================= */
 
 const params =
@@ -175,14 +637,127 @@ params.get("account") || "";
 document.getElementById("ngay_goc").value =
 params.get("ngay") || "";
 
-document.getElementById("loai_du_lieu").value =
-params.get("loai") || "";
+document.getElementById("tg_nhap").value =
+new Date().toLocaleString("vi-VN");
+
+/* =========================
+   PREVIEW FILE
+========================= */
+
+[
+"file_topo",
+"file_bienban",
+"file_calllog",
+"file_ghiam"
+]
+
+.forEach(id=>{
+
+document
+.getElementById(id)
+
+.addEventListener("change",e=>{
+
+const file =
+e.target.files[0];
+
+document.getElementById(
+"preview_" + id.split("_")[1]
+).innerHTML =
+
+file
+? "✔ " + file.name
+: "";
+
+});
+
+});
+
+/* =========================
+   VALIDATE
+========================= */
+
+function validate(){
+
+let ok=true;
+
+const required=[
+
+"nv_xuly",
+"nguyen_nhan",
+"chitiet_bypass",
+"thietbi",
+"serial_hwf",
+"loai_wo"
+
+];
+
+required.forEach(id=>{
+
+const el =
+document.getElementById(id);
+
+el.classList.remove("error");
+
+if(!el.value){
+
+el.classList.add("error");
+
+ok=false;
+
+}
+
+});
+
+[
+"file_topo",
+"file_bienban",
+"file_calllog",
+"file_ghiam"
+]
+
+.forEach(id=>{
+
+const el =
+document.getElementById(id);
+
+if(!el.files.length){
+
+el.classList.add("error");
+
+ok=false;
+
+}else{
+
+el.classList.remove("error");
+
+}
+
+});
+
+if(!ok){
+
+alert(
+"Vui lòng nhập đầy đủ dữ liệu"
+);
+
+}
+
+return ok;
+
+}
 
 /* =========================
    SAVE
 ========================= */
 
 async function saveData(){
+
+if(!validate()){
+
+return;
+
+}
 
 try{
 
@@ -198,7 +773,7 @@ ngay_goc:
 document.getElementById("ngay_goc").value,
 
 loai_du_lieu:
-document.getElementById("loai_du_lieu").value,
+params.get("loai") || "",
 
 loai_wo:
 document.getElementById("loai_wo").value,
@@ -219,7 +794,8 @@ user_update:"web"
 
 };
 
-const res = await fetch(API,{
+const res =
+await fetch(API,{
 
 method:"POST",
 
@@ -251,5 +827,4 @@ alert(err);
 </script>
 
 </body>
-
 </html>
