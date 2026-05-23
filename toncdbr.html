@@ -481,7 +481,6 @@ return map[col]||col;
 function renderTable(data){if(window.innerWidth<=768){renderMobileCards(data);return;}
 
 data.sort((a,b)=>{
-const renderData=data.slice(0,currentPage*PAGE_SIZE);
 
 const tgA=parseFloat(a.tg)||0;
 
@@ -490,6 +489,8 @@ const tgB=parseFloat(b.tg)||0;
 return tgB-tgA;
 
 });
+
+const renderData=data.slice(0,currentPage*PAGE_SIZE);
 
 let cols=[];
 
