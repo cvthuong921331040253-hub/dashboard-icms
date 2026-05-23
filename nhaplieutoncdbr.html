@@ -1156,7 +1156,13 @@ return ok;
 
 }
 async function saveData(){
+const btn =
+document.querySelector("button");
 
+btn.disabled=true;
+
+btn.innerHTML=
+"Đang lưu...";
 if(!validate()){
 
 return;
@@ -1210,6 +1216,10 @@ body:JSON.stringify(data)
 const json =
 await res.json();
 console.log(json);
+btn.disabled=false;
+
+btn.innerHTML=
+"LƯU NHẬP LIỆU";
 if(json.success){
 
 alert("Đã lưu dữ liệu");
@@ -1219,7 +1229,10 @@ alert("Đã lưu dữ liệu");
 alert(json.error || "Lỗi");
 
 }
+btn.disabled=false;
 
+btn.innerHTML=
+"LƯU NHẬP LIỆU";
 }catch(err){
 
 alert(err);
