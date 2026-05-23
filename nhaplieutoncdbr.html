@@ -30,6 +30,48 @@ max-width:1100px;
 margin:auto;
 
 }
+.top-header{
+
+position:sticky;
+top:0;
+z-index:999;
+
+background:#fff;
+
+padding:14px 20px;
+
+border-radius:0 0 16px 16px;
+
+box-shadow:
+0 4px 16px rgba(0,0,0,.08);
+
+margin-bottom:14px;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+}
+
+.header-title{
+
+font-size:28px;
+font-weight:bold;
+
+color:#111827;
+
+}
+
+.header-status{
+
+font-size:15px;
+font-weight:bold;
+
+color:#2563eb;
+
+display:none;
+
+}
 
 .card{
 
@@ -366,9 +408,22 @@ transition:.3s;
 
 <div class="container">
 
-<div class="card">
+<div class="top-header">
 
-<h1>📋 Nhập liệu tồn CĐBR</h1>
+<div class="header-title">
+
+📋 Nhập liệu tồn CĐBR
+
+</div>
+
+<div
+id="header_status"
+class="header-status"
+>
+
+Đang lưu...
+
+</div>
 
 </div>
 
@@ -866,18 +921,7 @@ PORT KÉM
 <!-- SAVE -->
 
 <div class="card">
-<div
-id="upload_status"
-style="
-display:none;
-margin-bottom:12px;
-font-size:14px;
-font-weight:bold;
-color:#2563eb;
-"
->
-Đang tải lên 0%
-</div>
+
 <button onclick="saveData()">
 
 LƯU NHẬP LIỆU
@@ -1252,9 +1296,8 @@ btn.innerHTML=
 "Đang lưu...";
 const status =
 document.getElementById(
-"upload_status"
+"header_status"
 );
-
 status.style.display="block";
 status.innerHTML=
 "Đang tải lên 10%";
