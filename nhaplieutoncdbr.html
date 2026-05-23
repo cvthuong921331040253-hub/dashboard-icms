@@ -1155,6 +1155,56 @@ alert(
 return ok;
 
 }
+
+async function filesToBase64(inputId){
+
+const input =
+document.getElementById(inputId);
+
+const files =
+Array.from(input.files);
+
+const result=[];
+
+for(const file of files){
+
+const base64 =
+await toBase64(file);
+
+result.push({
+
+name:file.name,
+
+type:file.type,
+
+data:base64
+
+});
+
+}
+
+return result;
+
+}
+
+function toBase64(file){
+
+return new Promise((resolve,reject)=>{
+
+const reader =
+new FileReader();
+
+reader.readAsDataURL(file);
+
+reader.onload=()=>
+resolve(reader.result);
+
+reader.onerror=error=>
+reject(error);
+
+});
+
+}
 async function saveData(){
 const btn =
 document.querySelector("button");
