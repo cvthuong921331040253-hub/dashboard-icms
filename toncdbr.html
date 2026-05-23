@@ -39,7 +39,7 @@ h1{font-size:28px;margin-bottom:5px;}
 
 .toolbar input,.toolbar select{padding:10px;border:1px solid #ddd;border-radius:8px;}
 
-table{width:100%;border-collapse:collapse;background:white;}
+table{width:max-content;min-width:100%;border-collapse:collapse;background:white;table-layout:auto;}
 
 th{background:#f3f4f6;position:sticky;top:0;z-index:50;white-space:nowrap;}
 
@@ -108,7 +108,7 @@ h1{font-size:16px;font-weight:700;margin-bottom:2px;}
 
 #tableWrap{border-radius:10px;background:#fff;border:1px solid #e5e7eb;}
 
-table{min-width:unset;width:max-content;font-size:10px;border-collapse:separate;border-spacing:0;}
+table{width:max-content;min-width:100%;font-size:10px;border-collapse:separate;border-spacing:0;table-layout:auto;}
 
 th{font-size:10px;padding:6px 8px;line-height:1.2;}
 
@@ -474,7 +474,7 @@ let stickyHeader="";
 
 if(c==="nv"){
 
-stickyHeader="position:sticky;left:0;top:0;z-index:60;background:#f3f4f6;min-width:90px;max-width:90px;";
+stickyHeader="position:sticky;left:0;top:0;z-index:60;background:#f3f4f6;width:90px;";
 
 }
 
@@ -502,7 +502,7 @@ let stickyStyle="";
 
 if(c==="nv"){
 
-stickyStyle="position:sticky;left:0;background:#fff;z-index:40;min-width:90px;max-width:90px;";
+stickyStyle="position:sticky;left:0;background:#fff;z-index:40;width:90px;";
 
 }
 
@@ -540,7 +540,7 @@ else if(c==="nd"||c==="nnt"||c==="nnth"){
 const shortText=String(val).substring(0,60);
 
 html+=`
-<td style="${stickyStyle}min-width:180px;max-width:180px;word-break:break-word;white-space:normal;">
+<td style="${stickyStyle}max-width:180px;word-break:break-word;white-space:normal;">
 <div>${shortText}</div>
 <div class="nd-full" id="full_${index}">${val}</div>
 <div class="expand-btn" onclick="toggleND(${index})">Xem thêm</div>
