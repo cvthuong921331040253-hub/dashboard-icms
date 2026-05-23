@@ -796,6 +796,78 @@ ${row.ntnt}
 `;
 }
 
+if(row.ngay){
+
+html+=`
+<div class="mobile-row">
+<span class="mobile-label">Ngày phát sinh:</span>
+${row.ngay}
+</div>
+`;
+
+}
+
+if(row.gio){
+
+html+=`
+<div class="mobile-row">
+<span class="mobile-label">Giờ phát sinh:</span>
+${row.gio}
+</div>
+`;
+
+}
+
+if(row.mdb){
+
+html+=`
+<div class="mobile-row">
+<span class="mobile-label">MĐB GNOC:</span>
+${row.mdb}
+</div>
+`;
+
+}
+
+if(row.gnoc){
+
+html+=`
+<div class="mobile-row">
+<span class="mobile-label">TT GNOC:</span>
+${row.gnoc}
+</div>
+`;
+
+}
+
+if(row.cv){
+
+html+=`
+<div class="mobile-row">
+<span class="mobile-label">Loại CV:</span>
+${row.cv}
+</div>
+`;
+
+}
+
+if(row.nnth){
+
+html+=`
+<div class="mobile-content">
+
+<div class="text-preview">
+${String(row.nnth).substring(0,120)}
+</div>
+
+<div class="mobile-more" onclick="openTextModal('${encodeURIComponent(row.nnth)}')">
+Xem tích hủy
+</div>
+
+</div>
+`;
+
+}
 const nd=row.nd||row.nnt||row.nnth||"";
 
 if(nd){
