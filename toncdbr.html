@@ -580,9 +580,97 @@ document.getElementById("tableContainer").innerHTML=html;
 
 }
 
-function renderMobileCards(data){let html=`<div class="mobile-list">`;data.forEach((row,index)=>{const tg=parseFloat(row.tg)||0;const loai=row.sc||row.kpi||"";let badgeColor="#6b7280";if(String(loai).includes("SOC"))badgeColor="#ea580c";if(String(loai).includes("SC"))badgeColor="#2563eb";if(String(loai).includes("HOT"))badgeColor="#dc2626";html+=`<div class="mobile-card"><div class="mobile-head"><div class="mobile-account">${row.account||""}</div><div class="mobile-tg ${tg>24?'mobile-red':''}">${row.tg||0}h</div></div><div class="mobile-row"><span class="mobile-label">NV:</span> ${row.nv||""}</div><div class="mobile-row"><span class="mobile-label">Huyện:</span> ${row.huyen||""}</div><div class="mobile-row"><span class="mobile-label">Loại:</span> <span class="mobile-badge" style="background:${badgeColor}">${loai}</span></div><div class="mobile-row"><span class="mobile-label">Địa chỉ:</span> ${row.dc||""}</div>`;const nd=row.nd||row.nnt||row.nnth||"";if(nd){const shortText=String(nd).substring(0,80);html+=`<div class="mobile-content"><div>${shortText}</div><div class="nd-full" id="mfull_${index}">${nd}</div><div class="mobile-more" onclick="toggleMobileND(${index})">Xem thêm</div></div>`;}html+=`</div>`;});html+=`</div>`;document.getElementById("tableContainer").innerHTML=html;}
+function renderMobileCards(data){
 
-function toggleND(index){
+data.sort((a,b)=>(parseFloat(b.tg)||0)-(parseFloat(a.tg)||0));
+
+let html=`<div class="mobile-list">`;
+
+data.forEach((row,index)=>{
+
+const tg=parseFloat(row.tg)||0;
+
+const loai=row.sc||row.kpi||"";
+
+let badgeColor="#6b7280";
+
+if(String(loai).includes("SOC"))badgeColor="#ea580c";
+if(String(loai).includes("SC"))badgeColor="#2563eb";
+if(String(loai).includes("HOT"))badgeColor="#dc2626";
+
+html+=`
+<div class="mobile-card">
+
+<div class="mobile-head">
+
+<div class="mobile-account">
+${row.account||""}
+</div>
+
+<div class="mobile-tg ${tg>24?'mobile-red':''}">
+${row.tg||0}h
+</div>
+
+</div>
+
+<div class="mobile-row">
+<span class="mobile-label">NV:</span>
+${row.nv||""}
+</div>
+
+<div class="mobile-row">
+<span class="mobile-label">Huyện:</span>
+${row.huyen||""}
+</div>
+
+<div class="mobile-row">
+<span class="mobile-label">Loại:</span>
+
+<span class="mobile-badge" style="background:${badgeColor}">
+${loai}
+</span>
+
+</div>
+
+<div class="mobile-row">
+<span class="mobile-label">Địa chỉ:</span>
+${row.dc||""}
+</div>
+`;
+
+const nd=row.nd||row.nnt||row.nnth||"";
+
+if(nd){
+
+const shortText=String(nd).substring(0,80);
+
+html+=`
+<div class="mobile-content">
+
+<div>${shortText}</div>
+
+<div class="nd-full" id="mfull_${index}">
+${nd}
+</div>
+
+<div class="mobile-more" onclick="toggleMobileND(${index})">
+Xem thêm
+</div>
+
+</div>
+`;
+
+}
+
+html+=`</div>`;
+
+});
+
+html+=`</div>`;
+
+document.getElementById("tableContainer").innerHTML=html;
+
+}
 
 document.getElementById("full_"+index).classList.toggle("show");
 
