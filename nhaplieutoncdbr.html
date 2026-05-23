@@ -1176,6 +1176,9 @@ const data={
 nv_xuly:
 document.getElementById("nv_xuly").value,
 
+ten_nv:
+document.getElementById("ten_nv").value,
+
 account:
 document.getElementById("account").value,
 
@@ -1200,7 +1203,19 @@ document.getElementById("thietbi").value,
 serial_hwf:
 document.getElementById("serial_hwf").value,
 
-user_update:"web"
+user_update:"web",
+
+file_topo:
+await filesToBase64("file_topo"),
+
+file_bienban:
+await filesToBase64("file_bienban"),
+
+file_calllog:
+await filesToBase64("file_calllog"),
+
+file_ghiam:
+await filesToBase64("file_ghiam")
 
 };
 console.log(data);
