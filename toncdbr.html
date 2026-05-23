@@ -39,13 +39,13 @@ h1{font-size:28px;margin-bottom:5px;}
 
 .toolbar input,.toolbar select{padding:10px;border:1px solid #ddd;border-radius:8px;}
 
-table{width:max-content;min-width:100%;border-collapse:collapse;background:white;table-layout:auto;}
+table{width:100%;border-collapse:collapse;background:white;table-layout:fixed;}
 
 th{background:#f3f4f6;position:sticky;top:0;z-index:50;white-space:nowrap;}
 
-th{border:1px solid #ddd;padding:8px;text-align:center;font-size:14px;vertical-align:middle;}
+th{border:1px solid #ddd;padding:8px;text-align:center;font-size:14px;vertical-align:middle;word-break:break-word;}
 
-td{border:1px solid #ddd;padding:8px;text-align:left;font-size:14px;vertical-align:middle;}
+td{border:1px solid #ddd;padding:8px;text-align:left;font-size:14px;vertical-align:middle;word-break:break-word;}
 
 tr:nth-child(even){background:#fafafa;}
 
@@ -573,7 +573,7 @@ else if(c==="nd"||c==="nnt"||c==="nnth"){
 const shortText=String(val).substring(0,60);
 
 html+=`
-<td style="${stickyStyle}max-width:180px;word-break:break-word;white-space:normal;">
+<td style="${stickyStyle}white-space:normal;">
 <div>${shortText}</div>
 <div class="nd-full" id="full_${index}">${val}</div>
 <div class="expand-btn" onclick="toggleND(${index})">Xem thêm</div>
