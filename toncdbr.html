@@ -480,7 +480,16 @@ const dashboard=document.getElementById("tontkmDashboard");
 
 const groups={};
 
-const capnhaths=tontkm.filter(x=>String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase()==="CẬP NHẬT HỒ SƠ");
+const capnhaths=tontkm.filter(x=>{
+
+    const tt=String(x.tt||"")
+        .replace(/\s+/g," ")
+        .trim()
+        .toUpperCase();
+
+    return tt==="CẬP NHẬT HỒ SƠ";
+
+});
 
 window.capnhaths=capnhaths;
 
@@ -488,7 +497,6 @@ tontkm.forEach(x=>{
 
 const tt=String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase();
 
-if(tt==="CẬP NHẬT HỒ SƠ")return;
 
 let kpi=String(x.kpi||"")
     .replace(/\s+/g," ")
@@ -749,7 +757,14 @@ tontkm.forEach(x=>{
 
 const h=x.huyen||"Khác";
 
-const k=String(x.kpi||"").toUpperCase();
+const k=String(x.kpi||"")
+
+    .replace(/\u00A0/g," ")
+    .replace(/\n/g," ")
+    .replace(/\s+/g," ")
+    .trim()
+    .toUpperCase()
+    .replace(/\s*,\s*/g,", ");
 
 if(k==="QUÁ 24H"){
 
