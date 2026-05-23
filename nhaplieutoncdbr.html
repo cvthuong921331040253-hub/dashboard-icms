@@ -1086,7 +1086,75 @@ new Event("change")
 /* =========================
    SAVE
 ========================= */
+function validate(){
 
+let ok=true;
+
+const required=[
+
+"nv_xuly",
+"nguyen_nhan",
+"chitiet_bypass",
+"thietbi",
+"serial_hwf",
+"loai_wo"
+
+];
+
+required.forEach(id=>{
+
+const el =
+document.getElementById(id);
+
+if(!el)return;
+
+el.classList.remove("error");
+
+if(!el.value){
+
+el.classList.add("error");
+
+ok=false;
+
+}
+
+});
+
+/* FILE CHECK */
+
+[
+"file_topo",
+"file_bienban",
+"file_calllog",
+"file_ghiam"
+]
+
+.forEach(id=>{
+
+const el =
+document.getElementById(id);
+
+if(!el)return;
+
+if(!el.files.length){
+
+ok=false;
+
+}
+
+});
+
+if(!ok){
+
+alert(
+"Vui lòng nhập đầy đủ dữ liệu"
+);
+
+}
+
+return ok;
+
+}
 async function saveData(){
 
 if(!validate()){
