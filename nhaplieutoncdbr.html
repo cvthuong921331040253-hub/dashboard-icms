@@ -429,12 +429,6 @@ id="nv_xuly"
 placeholder="Nhập mã nhân viên"
 >
 
-<div class="note">
-
-Yêu cầu điền, nếu không điền không cho cập nhật
-
-</div>
-
 </div>
 
 <div class="field">
@@ -845,7 +839,6 @@ PORT KÉM
 <!-- SAVE -->
 
 <div class="card">
-if(saved)return;
 <div
 id="upload_status"
 style="
@@ -1325,10 +1318,35 @@ if(
 checkType = "TKM";
 
 }
+status.innerHTML=
+"Đang tải ảnh topo 30%";
+
+const topo =
+await filesToBase64("file_topo");
+
+status.innerHTML=
+"Đang tải biên bản 50%";
+
+const bienban =
+await filesToBase64("file_bienban");
+
+status.innerHTML=
+"Đang tải cuộc gọi 70%";
+
+const calllog =
+await filesToBase64("file_calllog");
+
+status.innerHTML=
+"Đang tải ghi âm 90%";
+
+const ghiam =
+await filesToBase64("file_ghiam");
+
 const data={
+
 check:
 checkType,
-   
+
 nv_xuly:
 document.getElementById("nv_xuly").value,
 
@@ -1361,22 +1379,14 @@ document.getElementById("serial_hwf").value,
 
 user_update:"web",
 
-file_topo:
-await filesToBase64("file_topo"),
-status.innerHTML=
-"Đang tải ảnh topo 30%";
-file_bienban:
-await filesToBase64("file_bienban"),
-status.innerHTML=
-"Đang tải biên bản 50%";
-file_calllog:
-await filesToBase64("file_calllog"),
-status.innerHTML=
-"Đang tải cuộc gọi 70%";
-file_ghiam:
-await filesToBase64("file_ghiam")
-status.innerHTML=
-"Đang tải ghi âm 90%";
+file_topo:topo,
+
+file_bienban:bienban,
+
+file_calllog:calllog,
+
+file_ghiam:ghiam
+
 };
 console.log(data);
 const res =
