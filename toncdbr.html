@@ -124,6 +124,16 @@ h1{font-size:20px;font-weight:700;margin-bottom:4px;}
 
 .toolbar button{font-weight:600;}
 
+.chart-grid{
+grid-template-columns:1fr;
+gap:10px;
+}
+
+.chart-box{
+height:260px;
+padding:10px;
+border-radius:12px;
+}
 #tableWrap{border-radius:10px;background:#fff;border:1px solid #e5e7eb;}
 
 table{display:none;}
@@ -137,6 +147,26 @@ td{font-size:10px;padding:5px 8px;line-height:1.3;white-space:nowrap;}
 .expand-btn{font-size:9px;margin-top:2px;}
 }
 
+.chart-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:15px;
+margin-top:20px;
+}
+
+.chart-box{
+background:#fff;
+border-radius:14px;
+padding:15px;
+border:1px solid #e5e7eb;
+height:320px;
+overflow:hidden;
+}
+
+.chart-box canvas{
+width:100%!important;
+height:100%!important;
+}
 table{contain:layout paint;}
 
 #tableWrap{-webkit-overflow-scrolling:touch;contain:strict;}
@@ -169,10 +199,35 @@ overflow:hidden;
 line-height:1.4;
 word-break:break-word;
 }
+
+
+/* BIỂU ĐỒ */
+.chart-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.chart-box{
+background:#fff;
+border-radius:14px;
+padding:15px;
+border:1px solid #e5e7eb;
+height:320px;
+}
+
+.chart-box canvas{
+width:100%!important;
+height:100%!important;
+}
+/* BIỂU ĐỒ */
 </style>
 
 </head>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <body>
 
 <h1>📊 TỒN TÁC VỤ CĐBR</h1>
@@ -186,6 +241,24 @@ word-break:break-word;
 <div class="section-title">🔥TỒN TRIỂN KHAI</div>
 
 <div class="dashboard" id="tontkmDashboard"></div>
+
+<div class="section-title">📊 BIỂU ĐỒ THỐNG KÊ</div>
+
+<div class="chart-grid">
+
+<div class="chart-box">
+<canvas id="scHuyenChart"></canvas>
+</div>
+
+<div class="chart-box">
+<canvas id="tkmHuyenChart"></canvas>
+</div>
+
+<div class="chart-box">
+<canvas id="kpiChart"></canvas>
+</div>
+
+</div>
 
 <div class="modal hidden" id="modal">
 
@@ -275,11 +348,12 @@ console.log("TON TKM:",tontkm.length);
 
 renderTonSC();
 renderTonTKM();
+renderCharts();
 document.getElementById("updateTime").innerHTML="⏰ Thời gian lấy báo cáo: "+(tontkm[0]?.tgupdate||"");
 }catch(err){
 
 console.error(err);
-alert("Lỗi tải API");
+document.getElementById("updateTime").innerHTML="⚠️ Không tải được dữ liệu API";
 
 }
 
@@ -398,6 +472,113 @@ dashboard.innerHTML=html;
 
 }
 
+function renderCharts(){
+
+renderSCHuyen();
+
+renderTKMHuyen();
+
+renderKPIChart();
+
+}
+
+function renderSCHuyen(){
+
+const map={};
+
+tonsc.forEach(x=>{
+
+const h=x.huyen||"Khác";
+
+map[h]=(map[h]||0)+1;
+
+});
+
+new Chart(document.getElementById("scHuyenChart"),{
+
+type:"bar",
+
+data:{
+labels:Object.keys(map),
+datasets:[{
+label:"Tồn sự cố",
+data:Object.values(map)
+}]
+},
+
+options:{
+responsive:true,
+maintainAspectRatio:false
+}
+
+});
+
+}
+
+function renderTKMHuyen(){
+
+const map={};
+
+tontkm.forEach(x=>{
+
+const h=x.huyen||"Khác";
+
+map[h]=(map[h]||0)+1;
+
+});
+
+new Chart(document.getElementById("tkmHuyenChart"),{
+
+type:"bar",
+
+data:{
+labels:Object.keys(map),
+datasets:[{
+label:"Tồn TKM",
+data:Object.values(map)
+}]
+},
+
+options:{
+responsive:true,
+maintainAspectRatio:false
+}
+
+});
+
+}
+
+function renderKPIChart(){
+
+const map={};
+
+tontkm.forEach(x=>{
+
+const k=x.kpi||"Khác";
+
+map[k]=(map[k]||0)+1;
+
+});
+
+new Chart(document.getElementById("kpiChart"),{
+
+type:"doughnut",
+
+data:{
+labels:Object.keys(map),
+datasets:[{
+data:Object.values(map)
+}]
+},
+
+options:{
+responsive:true,
+maintainAspectRatio:false
+}
+
+});
+
+}
 /* =====================
 MODAL
 ===================== */
@@ -522,7 +703,7 @@ return map[col]||col;
 }
 
 function renderTable(data){if(window.innerWidth<=768){renderMobileCards(data);return;}
-
+data=[...data];
 data.sort((a,b)=>{
 
 const tgA=parseFloat(a.tg)||0;
