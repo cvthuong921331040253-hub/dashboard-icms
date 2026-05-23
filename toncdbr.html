@@ -70,6 +70,28 @@ tr:nth-child(even){background:#fafafa;}
 .show{display:block;}
 .toolbar button{padding:0 10px;height:36px;border:none;border-radius:8px;background:#16a34a;color:white;cursor:pointer;font-weight:600;font-size:11px;}
 
+.mobile-list{display:flex;flex-direction:column;gap:8px;}
+
+.mobile-card{background:#fff;border-radius:12px;padding:10px;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+
+.mobile-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;}
+
+.mobile-account{font-size:13px;font-weight:700;color:#111827;word-break:break-word;line-height:1.4;}
+
+.mobile-tg{font-size:12px;font-weight:700;white-space:nowrap;}
+
+.mobile-red{color:#dc2626;}
+
+.mobile-row{font-size:11px;line-height:1.5;margin-bottom:4px;word-break:break-word;}
+
+.mobile-label{font-weight:700;color:#6b7280;}
+
+.mobile-badge{display:inline-block;padding:2px 6px;border-radius:5px;font-size:10px;font-weight:700;color:#fff;}
+
+.mobile-content{margin-top:6px;padding-top:6px;border-top:1px dashed #d1d5db;font-size:11px;line-height:1.5;word-break:break-word;}
+
+.mobile-more{font-size:10px;color:#2563eb;margin-top:4px;cursor:pointer;}
+  
 @media(max-width:768px){
 
 body{padding:6px;background:#f1f5f9;}
@@ -449,10 +471,7 @@ return map[col]||col;
 
 }
 
-function renderTable(data){
-
-if(!data.length){
-document.getElementById("tableContainer").innerHTML="Không có dữ liệu";return;}
+function renderTable(data){if(window.innerWidth<=768){renderMobileCards(data);return;}
 
 data.sort((a,b)=>{
 
@@ -561,11 +580,15 @@ document.getElementById("tableContainer").innerHTML=html;
 
 }
 
+function renderMobileCards(data){let html=`<div class="mobile-list">`;data.forEach((row,index)=>{const tg=parseFloat(row.tg)||0;const loai=row.sc||row.kpi||"";let badgeColor="#6b7280";if(String(loai).includes("SOC"))badgeColor="#ea580c";if(String(loai).includes("SC"))badgeColor="#2563eb";if(String(loai).includes("HOT"))badgeColor="#dc2626";html+=`<div class="mobile-card"><div class="mobile-head"><div class="mobile-account">${row.account||""}</div><div class="mobile-tg ${tg>24?'mobile-red':''}">${row.tg||0}h</div></div><div class="mobile-row"><span class="mobile-label">NV:</span> ${row.nv||""}</div><div class="mobile-row"><span class="mobile-label">Huyện:</span> ${row.huyen||""}</div><div class="mobile-row"><span class="mobile-label">Loại:</span> <span class="mobile-badge" style="background:${badgeColor}">${loai}</span></div><div class="mobile-row"><span class="mobile-label">Địa chỉ:</span> ${row.dc||""}</div>`;const nd=row.nd||row.nnt||row.nnth||"";if(nd){const shortText=String(nd).substring(0,80);html+=`<div class="mobile-content"><div>${shortText}</div><div class="nd-full" id="mfull_${index}">${nd}</div><div class="mobile-more" onclick="toggleMobileND(${index})">Xem thêm</div></div>`;}html+=`</div>`;});html+=`</div>`;document.getElementById("tableContainer").innerHTML=html;}
+
 function toggleND(index){
 
 document.getElementById("full_"+index).classList.toggle("show");
 
 }
+
+function toggleMobileND(index){document.getElementById("mfull_"+index).classList.toggle("show");}
 
 function closeModal(){
 
