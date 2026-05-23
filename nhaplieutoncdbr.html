@@ -871,6 +871,11 @@ params.get("ngay") || "";
 document.getElementById("tg_nhap").value =
 new Date().toLocaleString("vi-VN");
 
+document.getElementById("ten_nv").value =
+decodeURIComponent(
+   params.get("ten_nv") || ""
+);
+
 const uploadInputs = [
 
 "file_topo",
