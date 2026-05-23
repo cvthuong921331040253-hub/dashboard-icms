@@ -38,7 +38,7 @@ h1{font-size:28px;margin-bottom:5px;}
 
 .toolbar input,.toolbar select{padding:10px;border:1px solid #ddd;border-radius:8px;}
 
-table{width:100%;border-collapse:collapse;background:white;table-layout:fixed;}
+table{width:max-content;min-width:100%;border-collapse:collapse;background:white;table-layout:auto;}
 
 th{background:#f3f4f6;position:sticky;top:0;z-index:50;white-space:normal;}
 
@@ -64,7 +64,7 @@ tr:nth-child(even){background:#fafafa;}
 
 .expand-btn{color:#2563eb;cursor:pointer;margin-top:5px;font-size:13px;}
 
-.nd-full{display:none;margin-top:5px;white-space:pre-wrap;line-height:1.5;max-width:420px;overflow:auto;}
+.nd-full{display:none;margin-top:5px;white-space:pre-wrap;line-height:1.5;max-width:700px;overflow:auto;}
 
 .show{display:block;}
 .toolbar button{padding:0 10px;height:36px;border:none;border-radius:8px;background:#16a34a;color:white;cursor:pointer;font-weight:600;font-size:11px;}
@@ -211,7 +211,7 @@ let tontkm=[];
 let currentData=[];
 let filteredData=[];
 let currentPage=1;
-const PAGE_SIZE=200;
+const PAGE_SIZE=500;
 
 function countUniqueAccount(data){const set=new Set();data.forEach(x=>{const acc=String(x.account||"").replace(/\s+/g," ").trim().toUpperCase();if(acc)set.add(acc);});return set.size;}
 
@@ -582,7 +582,7 @@ else if(c==="nd"||c==="nnt"||c==="nnth"){
 const shortText=String(val).slice(0,40);
 
 html+=`
-<td style="${stickyStyle}width:420px;min-width:420px;max-width:420px;vertical-align:top;">
+<td style="${stickyStyle}width:700px;min-width:700px;vertical-align:top;">
 <div>${shortText}</div>
 <div class="nd-full" id="full_${index}" data-full="${encodeURIComponent(val)}"></div>
 <div class="expand-btn" onclick="toggleND(${index})">Xem thêm</div>
