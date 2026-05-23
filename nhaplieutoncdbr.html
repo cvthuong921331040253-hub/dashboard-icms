@@ -1225,9 +1225,85 @@ return;
 }
 
 try{
+const rawLoai =
 
+String(
+params.get("loai") || ""
+)
+
+.toUpperCase()
+
+.trim();
+
+let checkType = "";
+
+/* =========================
+SC
+========================= */
+
+if(
+
+[
+"SC",
+"HT",
+"SC HOT",
+"HT HOT",
+"SC VIP",
+"HT VIP"
+
+]
+
+.includes(rawLoai)
+
+){
+
+checkType = "SC";
+
+}
+
+/* =========================
+SOC
+========================= */
+
+if(rawLoai==="SOC"){
+
+checkType = "SOC";
+
+}
+
+/* =========================
+SOC HOME
+========================= */
+
+if(rawLoai==="SOC HOME"){
+
+checkType = "SOC HOME";
+
+}
+
+/* =========================
+TKM
+========================= */
+
+if(
+
+[
+"TKM",
+"LĐTB"
+
+]
+
+.includes(rawLoai)
+
+){
+
+checkType = "TKM";
+
+}
 const data={
-
+check:
+checkType,
+   
 nv_xuly:
 document.getElementById("nv_xuly").value,
 
