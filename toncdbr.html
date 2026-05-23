@@ -484,13 +484,43 @@ renderKPIChart();
 
 function renderSCHuyen(){
 
-const map={};
+const labels=[...new Set(tonsc.map(x=>x.huyen||"Khác"))];
+
+const socHome={};
+const soc={};
+const suco={};
+
+labels.forEach(h=>{
+
+socHome[h]=0;
+soc[h]=0;
+suco[h]=0;
+
+});
 
 tonsc.forEach(x=>{
 
 const h=x.huyen||"Khác";
 
-map[h]=(map[h]||0)+1;
+const loai=String(x.sc||"").toUpperCase();
+
+if(loai.includes("SOC HOME")){
+
+socHome[h]++;
+
+}
+
+else if(loai==="SOC"){
+
+soc[h]++;
+
+}
+
+else{
+
+suco[h]++;
+
+}
 
 });
 
@@ -499,11 +529,28 @@ new Chart(document.getElementById("scHuyenChart"),{
 type:"bar",
 
 data:{
-labels:Object.keys(map),
-datasets:[{
-label:"Tồn sự cố",
-data:Object.values(map)
-}]
+
+labels:labels,
+
+datasets:[
+
+{
+label:"SOC HOME",
+data:labels.map(h=>socHome[h])
+},
+
+{
+label:"SOC",
+data:labels.map(h=>soc[h])
+},
+
+{
+label:"SỰ CỐ",
+data:labels.map(h=>suco[h])
+}
+
+]
+
 },
 
 options:{
@@ -550,25 +597,86 @@ maintainAspectRatio:false
 
 function renderKPIChart(){
 
-const map={};
+const labels=[...new Set(tontkm.map(x=>x.huyen||"Khác"))];
+
+const q24={};
+const qhen={};
+const t3h={};
+const then={};
+
+labels.forEach(h=>{
+
+q24[h]=0;
+qhen[h]=0;
+t3h[h]=0;
+then[h]=0;
+
+});
 
 tontkm.forEach(x=>{
 
-const k=x.kpi||"Khác";
+const h=x.huyen||"Khác";
 
-map[k]=(map[k]||0)+1;
+const k=String(x.kpi||"").toUpperCase();
+
+if(k.includes("QUÁ 24")){
+
+q24[h]++;
+
+}
+
+else if(k.includes("QUÁ HẸN")){
+
+qhen[h]++;
+
+}
+
+else if(k.includes("TRONG 3")){
+
+t3h[h]++;
+
+}
+
+else{
+
+then[h]++;
+
+}
 
 });
 
 new Chart(document.getElementById("kpiChart"),{
 
-type:"doughnut",
+type:"bar",
 
 data:{
-labels:Object.keys(map),
-datasets:[{
-data:Object.values(map)
-}]
+
+labels:labels,
+
+datasets:[
+
+{
+label:"Quá 24h",
+data:labels.map(h=>q24[h])
+},
+
+{
+label:"Quá hẹn",
+data:labels.map(h=>qhen[h])
+},
+
+{
+label:"Trong 3h",
+data:labels.map(h=>t3h[h])
+},
+
+{
+label:"Trong hẹn",
+data:labels.map(h=>then[h])
+}
+
+]
+
 },
 
 options:{
