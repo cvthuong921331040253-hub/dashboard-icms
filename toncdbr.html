@@ -483,7 +483,21 @@ return tgB-tgA;
 
 });
 
-const cols=Object.keys(data[0]).filter(c=>c!=="user"&&c!=="thuongcv1"&&c!=="tgupdate");
+let cols=[];
+
+const isTKM=data[0]?.cv!==undefined;
+
+if(isTKM){
+
+cols=["nv","tg","huyen","account","kpi","tt","tthen","ntdn","ntnt","nnt","nnth"];
+
+}else{
+
+cols=["nv","tg","huyen","account","dc","ngay","gio","sc","mdb","gnoc","nd"];
+
+}
+
+cols=cols.filter(c=>data[0][c]!==undefined);
 
 let html=`<table><thead><tr>`;
 
