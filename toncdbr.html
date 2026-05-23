@@ -594,8 +594,8 @@ const loai=row.sc||row.kpi||"";
 
 let badgeColor="#6b7280";
 
-if(String(loai).includes("SOC"))badgeColor="#ea580c";
-if(String(loai).includes("SC"))badgeColor="#2563eb";
+if(String(loai).toUpperCase().includes("SOC"))badgeColor="#ea580c";
+if(String(loai).toUpperCase().includes("SC"))badgeColor="#2563eb";
 if(String(loai).includes("HOT"))badgeColor="#dc2626";
 
 html+=`
@@ -672,11 +672,10 @@ document.getElementById("tableContainer").innerHTML=html;
 
 }
 
-document.getElementById("full_"+index).classList.toggle("show");
-
-}
 
 function toggleMobileND(index){document.getElementById("mfull_"+index).classList.toggle("show");}
+
+document.getElementById("full_"+index).classList.toggle("show");}
 
 function closeModal(){
 
