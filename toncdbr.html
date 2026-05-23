@@ -385,7 +385,7 @@ const socpk=tonsc.filter(x=>{
         .trim()
         .toUpperCase();
 
-    return v.includes("SOC HOME");
+    return v==="SOC HOME";
 
 });
 
@@ -396,14 +396,7 @@ const soc=tonsc.filter(x=>{
         .trim()
         .toUpperCase();
 
-    return (
-        (
-            v.includes("SOC") ||
-            v.includes("HT")
-        )
-        &&
-        !v.includes("SOC HOME")
-    );
+    return v==="SOC";
 
 });
 
@@ -415,8 +408,8 @@ const suco=tonsc.filter(x=>{
         .toUpperCase();
 
     return [
-        "SC",
         "HT",
+        "SC",
         "SC HOT",
         "HT HOT",
         "SC VIP",
@@ -591,15 +584,12 @@ const h=x.huyen||"Khác";
 
 const loai=String(x.sc||"").toUpperCase();
 
-if(loai.includes("SOC HOME")){
+if(loai==="SOC HOME"){
 
     socHome[h]++;
 
 }
-else if(
-    loai.includes("SOC") ||
-    loai.includes("HT")
-){
+else if(loai==="SOC"){
 
     soc[h]++;
 
@@ -611,8 +601,8 @@ else if(!loai){
 }
 else if(
     [
-        "SC",
         "HT",
+        "SC",
         "SC HOT",
         "HT HOT",
         "SC VIP",
