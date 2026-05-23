@@ -490,7 +490,12 @@ const tt=String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase();
 
 if(tt==="CẬP NHẬT HỒ SƠ")return;
 
-let kpi=String(x.kpi||"").replace(/\s+/g," ").trim().toUpperCase();
+let kpi=String(x.kpi||"")
+    .replace(/\s+/g," ")
+    .trim()
+    .toUpperCase();
+
+kpi = kpi.replace(/\s*,\s*/g,", ");
 
 if(!kpi)kpi="KHÔNG KPI";
 
@@ -513,7 +518,8 @@ html+=createCard("TỔNG TKM",tontkm.length,"#111827","showTable('TỔNG TKM',to
     "QUÁ 16H",
     "QUÁ HẸN",
     "TRONG 3H",
-    "TRONG HẸN"
+    "TRONG HẸN",
+    "KHÔNG KPI"
 ].forEach(kpi=>{
 
     if(!groups[kpi]) groups[kpi]=[];
@@ -524,7 +530,8 @@ html+=createCard("TỔNG TKM",tontkm.length,"#111827","showTable('TỔNG TKM',to
         (
             kpi==="QUÁ 24H" ||
             kpi==="QUÁ HẸN" ||
-            kpi==="QUÁ 16H"
+            kpi==="QUÁ 16H" ||
+            kpi==="KHÔNG KPI"
         )
         ? "#dc2626"
         : "#16a34a";
