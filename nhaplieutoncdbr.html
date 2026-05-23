@@ -1,344 +1,255 @@
-```html
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Kho vật tư</title>
+<meta charset="UTF-8">
+
+<title>Nhập liệu account</title>
 
 <style>
 
 body{
-  margin:0;
-  padding:10px;
-  font-family:Arial;
-  background:#f4f6f9;
+font-family:Arial;
+background:#f3f4f6;
+padding:20px;
+}
+
+.form{
+
+max-width:900px;
+margin:auto;
+background:#fff;
+padding:20px;
+border-radius:12px;
+
 }
 
 h2{
-  margin-top:0;
+margin-top:0;
 }
 
-.topbar{
-  display:flex;
-  gap:10px;
-  margin-bottom:10px;
-  flex-wrap:wrap;
+input,
+textarea,
+select{
+
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:15px;
+border:1px solid #ddd;
+border-radius:8px;
+box-sizing:border-box;
+
 }
 
-input,select{
-  padding:8px;
-  border:1px solid #ccc;
-  border-radius:6px;
+textarea{
+min-height:100px;
+resize:vertical;
 }
 
 button{
-  padding:8px 14px;
-  border:none;
-  background:#1976d2;
-  color:white;
-  border-radius:6px;
-  cursor:pointer;
+
+width:100%;
+padding:14px;
+background:#2563eb;
+color:#fff;
+border:none;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+
 }
 
-.card{
-  background:white;
-  border-radius:10px;
-  padding:10px;
-  margin-bottom:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
+button:hover{
+
+background:#1d4ed8;
+
 }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:10px;
-  margin-bottom:10px;
-}
+.readonly{
 
-.stat{
-  background:white;
-  padding:15px;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
-}
-
-.stat h3{
-  margin:0;
-  font-size:14px;
-  color:#666;
-}
-
-.stat p{
-  margin:8px 0 0;
-  font-size:24px;
-  font-weight:bold;
-}
-
-.table-wrap{
-  overflow:auto;
-  background:white;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:1000px;
-}
-
-th{
-  background:#1976d2;
-  color:white;
-  position:sticky;
-  top:0;
-}
-
-th,td{
-  padding:8px;
-  border:1px solid #ddd;
-  font-size:14px;
-}
-
-tr:nth-child(even){
-  background:#fafafa;
-}
-
-.loading{
-  padding:30px;
-  text-align:center;
-}
-
-@media(max-width:768px){
-
-  body{
-    padding:5px;
-  }
-
-  th,td{
-    font-size:12px;
-    padding:6px;
-  }
+background:#f3f4f6;
 
 }
 
 </style>
+
 </head>
 
 <body>
 
-<h2>📦 Kho vật tư</h2>
+<div class="form">
 
-<div class="stats">
+<h2>Nhập liệu account</h2>
 
-  <div class="stat">
-    <h3>Tổng bản ghi</h3>
-    <p id="tong">0</p>
-  </div>
+<label>Account</label>
 
-  <div class="stat">
-    <h3>Tổng số lượng</h3>
-    <p id="tongsl">0</p>
-  </div>
+<input
+id="account"
+class="readonly"
+readonly
+>
 
-</div>
+<label>Ngày gốc</label>
 
-<div class="card">
+<input
+id="ngay_goc"
+class="readonly"
+readonly
+>
 
-  <div class="topbar">
+<label>Loại dữ liệu</label>
 
-    <input
-      type="text"
-      id="search"
-      placeholder="Tìm mặt hàng..."
-    >
+<input
+id="loai_du_lieu"
+class="readonly"
+readonly
+>
 
-    <select id="huyenFilter">
-      <option value="">Tất cả huyện</option>
-    </select>
+<label>Nhân viên xử lý</label>
 
-    <button onclick="loadData()">
-      Reload
-    </button>
+<input id="nv_xuly">
 
-  </div>
+<label>Loại WO</label>
 
-</div>
+<select id="loai_wo">
 
-<div class="table-wrap">
+<option value="">
+-- Chọn --
+</option>
 
-<table>
+<option>
+HOME KÉM
+</option>
 
-<thead>
-<tr>
-  <th>MM</th>
-  <th>Mặt hàng</th>
-  <th>ĐVT</th>
-  <th>Trạng thái</th>
-  <th>SL</th>
-  <th>Nhân viên</th>
-  <th>Huyện</th>
-  <th>Loại MH</th>
-  <th>Thời gian</th>
-</tr>
-</thead>
+<option>
+PORT KÉM
+</option>
 
-<tbody id="tbody">
-<tr>
-<td colspan="9" class="loading">
-Đang tải dữ liệu...
-</td>
-</tr>
-</tbody>
+</select>
 
-</table>
+<label>Nguyên nhân bypass</label>
+
+<textarea id="nguyen_nhan"></textarea>
+
+<label>Chi tiết bypass</label>
+
+<textarea id="chitiet_bypass"></textarea>
+
+<label>Thiết bị</label>
+
+<input id="thietbi">
+
+<label>Serial HWF</label>
+
+<input id="serial_hwf">
+
+<button onclick="saveData()">
+
+Lưu dữ liệu
+
+</button>
 
 </div>
 
 <script>
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbwe9SEGZcWwExfIG98_Ycd2JGHAHtd51MEUGTcVahJTQTAgLb2VIg0z2M3KdvEHFyxDZg/exec?sheet=Data%20kho";
+/* =========================
+   API
+========================= */
 
-let allData = [];
+const API =
+"YOUR_API_URL";
 
-async function loadData(){
+/* =========================
+   GET PARAMS
+========================= */
 
-  try{
+const params =
+new URLSearchParams(location.search);
 
-    const res = await fetch(API_URL);
+document.getElementById("account").value =
+params.get("account") || "";
 
-    const json = await res.json();
+document.getElementById("ngay_goc").value =
+params.get("ngay") || "";
 
-    allData = json.data || [];
+document.getElementById("loai_du_lieu").value =
+params.get("loai") || "";
 
-    renderTable(allData);
+/* =========================
+   SAVE
+========================= */
 
-    renderStats(allData);
+async function saveData(){
 
-    renderHuyen(allData);
+try{
 
-  }catch(err){
+const data={
 
-    document.getElementById("tbody").innerHTML = `
-      <tr>
-        <td colspan="9">
-          Lỗi tải dữ liệu
-        </td>
-      </tr>
-    `;
+nv_xuly:
+document.getElementById("nv_xuly").value,
 
-    console.log(err);
-  }
+account:
+document.getElementById("account").value,
+
+ngay_goc:
+document.getElementById("ngay_goc").value,
+
+loai_du_lieu:
+document.getElementById("loai_du_lieu").value,
+
+loai_wo:
+document.getElementById("loai_wo").value,
+
+nguyen_nhan:
+document.getElementById("nguyen_nhan").value,
+
+chitiet_bypass:
+document.getElementById("chitiet_bypass").value,
+
+thietbi:
+document.getElementById("thietbi").value,
+
+serial_hwf:
+document.getElementById("serial_hwf").value,
+
+user_update:"web"
+
+};
+
+const res = await fetch(API,{
+
+method:"POST",
+
+body:JSON.stringify(data)
+
+});
+
+const json =
+await res.json();
+
+if(json.success){
+
+alert("Đã lưu dữ liệu");
+
+}else{
+
+alert(json.error || "Lỗi");
+
 }
 
-function renderTable(data){
+}catch(err){
 
-  let html = "";
+alert(err);
 
-  data.forEach(item => {
-
-    html += `
-      <tr>
-        <td>${item.mm || ""}</td>
-        <td>${item.mh || ""}</td>
-        <td>${item.dv || ""}</td>
-        <td>${item.tt || ""}</td>
-        <td>${item.sl || 0}</td>
-        <td>${item.nv || ""}</td>
-        <td>${item.huyen || ""}</td>
-        <td>${item.loaimh || ""}</td>
-        <td>${item.tg || ""}</td>
-      </tr>
-    `;
-  });
-
-  document.getElementById("tbody").innerHTML = html;
 }
 
-function renderStats(data){
-
-  document.getElementById("tong").innerText =
-    data.length;
-
-  let tongsl = 0;
-
-  data.forEach(i => {
-    tongsl += Number(i.sl || 0);
-  });
-
-  document.getElementById("tongsl").innerText =
-    tongsl;
 }
-
-function renderHuyen(data){
-
-  let arr = [...new Set(
-    data.map(i => i.huyen).filter(Boolean)
-  )];
-
-  arr.sort();
-
-  let html =
-    `<option value="">Tất cả huyện</option>`;
-
-  arr.forEach(h => {
-
-    html += `
-      <option value="${h}">
-        ${h}
-      </option>
-    `;
-  });
-
-  document.getElementById("huyenFilter").innerHTML =
-    html;
-}
-
-function filterData(){
-
-  let keyword =
-    document.getElementById("search")
-    .value
-    .toLowerCase();
-
-  let huyen =
-    document.getElementById("huyenFilter")
-    .value;
-
-  let filtered = allData.filter(i => {
-
-    let okSearch =
-      (i.mh || "")
-      .toLowerCase()
-      .includes(keyword);
-
-    let okHuyen =
-      !huyen || i.huyen === huyen;
-
-    return okSearch && okHuyen;
-  });
-
-  renderTable(filtered);
-
-  renderStats(filtered);
-}
-
-document
-.getElementById("search")
-.addEventListener("input", filterData);
-
-document
-.getElementById("huyenFilter")
-.addEventListener("change", filterData);
-
-loadData();
 
 </script>
 
 </body>
+
 </html>
-```
