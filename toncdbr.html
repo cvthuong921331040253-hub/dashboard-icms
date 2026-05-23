@@ -210,6 +210,8 @@ let tonsc=[];
 let tontkm=[];
 let currentData=[];
 let filteredData=[];
+let currentPage=1;
+const PAGE_SIZE=50;
 
 function countUniqueAccount(data){const set=new Set();data.forEach(x=>{const acc=String(x.account||"").replace(/\s+/g," ").trim().toUpperCase();if(acc)set.add(acc);});return set.size;}
 
@@ -368,6 +370,7 @@ document.getElementById("modalTitle").innerHTML=title;
 
 initFilters(data);
 
+currentPage=1;
 renderTable(data);
 
 }
@@ -437,6 +440,7 @@ return okSearch&&okHuyen&&okType;
 
 });
 filteredData=filtered;
+currentPage=1;
 renderTable(filtered);
 
 }
@@ -477,6 +481,7 @@ return map[col]||col;
 function renderTable(data){if(window.innerWidth<=768){renderMobileCards(data);return;}
 
 data.sort((a,b)=>{
+const renderData=data.slice(0,currentPage*PAGE_SIZE);
 
 const tgA=parseFloat(a.tg)||0;
 
@@ -526,7 +531,7 @@ html+=`<th style="${stickyHeader}">${getColumnTitle(c)}</th>`;
 
 html+=`</tr></thead><tbody>`;
 
-data.forEach((row,index)=>{
+renderData.forEach((row,index)=>{
 
 html+="<tr>";
 
@@ -593,10 +598,27 @@ html+="</tr>";
 
 html+=`</tbody></table>`;
 
-document.getElementById("tableContainer").innerHTML=html;
+if(data.length>renderData.length){
+
+html+=`
+<div style="padding:15px;text-align:center;">
+
+<button onclick="loadMore()" style="padding:10px 16px;border:none;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer;">
+Xem thêm dữ liệu
+</button>
+
+</div>
+`;
 
 }
+                        
+function loadMore(){
 
+currentPage++;
+
+renderTable(filteredData);
+
+}
 function renderMobileCards(data){
 
 data.sort((a,b)=>(parseFloat(b.tg)||0)-(parseFloat(a.tg)||0));
