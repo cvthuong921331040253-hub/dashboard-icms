@@ -186,7 +186,147 @@ border:2px solid red !important;
 background:#16a34a !important;
 
 }
+.upload-box{
 
+border:2px dashed #cbd5e1;
+border-radius:16px;
+padding:24px;
+background:#f8fafc;
+cursor:pointer;
+transition:.2s;
+
+}
+
+.upload-box:hover{
+
+border-color:#2563eb;
+background:#eff6ff;
+
+}
+
+.upload-box.drag{
+
+border-color:#2563eb;
+background:#dbeafe;
+
+}
+
+.upload-content{
+
+text-align:center;
+
+}
+
+.upload-icon{
+
+font-size:42px;
+margin-bottom:10px;
+
+}
+
+.upload-text{
+
+font-weight:bold;
+font-size:15px;
+margin-bottom:6px;
+
+}
+
+.upload-sub{
+
+font-size:13px;
+color:#6b7280;
+
+}
+
+.preview-grid{
+
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+gap:12px;
+margin-top:16px;
+
+}
+
+.preview-item{
+
+position:relative;
+border-radius:12px;
+overflow:hidden;
+background:#fff;
+border:1px solid #e5e7eb;
+
+}
+
+.preview-item img{
+
+width:100%;
+height:120px;
+object-fit:cover;
+display:block;
+
+}
+
+.preview-name{
+
+padding:8px;
+font-size:12px;
+word-break:break-word;
+
+}
+
+.remove-btn{
+
+position:absolute;
+top:6px;
+right:6px;
+background:red;
+color:#fff;
+border:none;
+width:24px;
+height:24px;
+border-radius:50%;
+cursor:pointer;
+font-size:12px;
+
+}
+
+.audio-list{
+
+margin-top:16px;
+display:flex;
+flex-direction:column;
+gap:12px;
+
+}
+
+.audio-item{
+
+background:#fff;
+border:1px solid #e5e7eb;
+border-radius:12px;
+padding:12px;
+
+}
+
+.progress{
+
+height:8px;
+background:#e5e7eb;
+border-radius:999px;
+overflow:hidden;
+margin-top:8px;
+
+}
+
+.progress-bar{
+
+height:100%;
+width:0%;
+background:#2563eb;
+transition:.3s;
+
+}
 </style>
 
 </head>
@@ -417,24 +557,49 @@ File đính kèm
 <div class="note">
 
 Ảnh topo mạng nhà KH
-(đặt tên file: 'account KH-topo')
 
 </div>
 
-<div class="file-box">
+<div
+class="upload-box"
+data-input="file_topo"
+>
 
 <input
 type="file"
 id="file_topo"
 accept="image/*"
+multiple
+hidden
 >
 
-<div
-class="preview"
-id="preview_topo"
-></div>
+<div class="upload-content">
+
+<div class="upload-icon">
+📷
+</div>
+
+<div class="upload-text">
+
+Kéo thả ảnh vào đây
+hoặc bấm để chọn
 
 </div>
+
+<div class="upload-sub">
+
+Hỗ trợ nhiều ảnh
+
+</div>
+
+</div>
+
+</div>
+
+<div
+class="preview-grid"
+id="preview_file_topo"
+></div>
 
 </div>
 
@@ -447,30 +612,44 @@ id="preview_topo"
 <span class="required">*</span>
 </label>
 
-<div class="note">
-
-Ảnh biên bản XLSC
-
-</div>
-
-<div class="file-box">
+<div
+class="upload-box"
+data-input="file_bienban"
+>
 
 <input
 type="file"
 id="file_bienban"
 accept="image/*"
+multiple
+hidden
 >
 
+<div class="upload-content">
+
+<div class="upload-icon">
+📝
+</div>
+
+<div class="upload-text">
+
+Kéo thả ảnh vào đây
+hoặc bấm để chọn
+
+</div>
+
+</div>
+
+</div>
+
 <div
-class="preview"
-id="preview_bienban"
+class="preview-grid"
+id="preview_file_bienban"
 ></div>
 
 </div>
 
-</div>
-
-<!-- CUOC GOI -->
+<!-- CALL LOG -->
 
 <div class="field">
 
@@ -479,30 +658,44 @@ id="preview_bienban"
 <span class="required">*</span>
 </label>
 
-<div class="note">
-
-Hình ảnh log cuộc gọi
-
-</div>
-
-<div class="file-box">
+<div
+class="upload-box"
+data-input="file_calllog"
+>
 
 <input
 type="file"
 id="file_calllog"
 accept="image/*"
+multiple
+hidden
 >
 
+<div class="upload-content">
+
+<div class="upload-icon">
+📞
+</div>
+
+<div class="upload-text">
+
+Kéo thả ảnh vào đây
+hoặc bấm để chọn
+
+</div>
+
+</div>
+
+</div>
+
 <div
-class="preview"
-id="preview_calllog"
+class="preview-grid"
+id="preview_file_calllog"
 ></div>
 
 </div>
 
-</div>
-
-<!-- GHI AM -->
+<!-- AUDIO -->
 
 <div class="field">
 
@@ -511,26 +704,40 @@ File ghi âm
 <span class="required">*</span>
 </label>
 
-<div class="note">
-
-Ghi âm cuộc gọi
-
-</div>
-
-<div class="file-box">
+<div
+class="upload-box"
+data-input="file_ghiam"
+>
 
 <input
 type="file"
 id="file_ghiam"
 accept="audio/*"
+multiple
+hidden
 >
 
-<div
-class="preview"
-id="preview_ghiam"
-></div>
+<div class="upload-content">
+
+<div class="upload-icon">
+🎧
+</div>
+
+<div class="upload-text">
+
+Kéo thả audio vào đây
+hoặc bấm để chọn
 
 </div>
+
+</div>
+
+</div>
+
+<div
+class="audio-list"
+id="preview_file_ghiam"
+></div>
 
 </div>
 
@@ -664,113 +871,213 @@ params.get("ngay") || "";
 document.getElementById("tg_nhap").value =
 new Date().toLocaleString("vi-VN");
 
-/* =========================
-   PREVIEW FILE
-========================= */
+const uploadInputs = [
 
-[
 "file_topo",
 "file_bienban",
 "file_calllog",
 "file_ghiam"
-]
-
-.forEach(id=>{
-
-document
-.getElementById(id)
-
-.addEventListener("change",e=>{
-
-const file =
-e.target.files[0];
-
-document.getElementById(
-"preview_" + id.split("_")[1]
-).innerHTML =
-
-file
-? "✔ " + file.name
-: "";
-
-});
-
-});
-
-/* =========================
-   VALIDATE
-========================= */
-
-function validate(){
-
-let ok=true;
-
-const required=[
-
-"nv_xuly",
-"nguyen_nhan",
-"chitiet_bypass",
-"thietbi",
-"serial_hwf",
-"loai_wo"
 
 ];
 
-required.forEach(id=>{
+uploadInputs.forEach(id=>{
 
-const el =
+const input =
 document.getElementById(id);
 
-el.classList.remove("error");
+const box =
+document.querySelector(
+`[data-input="${id}"]`
+);
 
-if(!el.value){
+const preview =
+document.getElementById(
+`preview_${id}`
+);
 
-el.classList.add("error");
+/* CLICK */
 
-ok=false;
+box.addEventListener("click",()=>{
+
+input.click();
+
+});
+
+/* DRAG */
+
+box.addEventListener("dragover",e=>{
+
+e.preventDefault();
+
+box.classList.add("drag");
+
+});
+
+box.addEventListener("dragleave",()=>{
+
+box.classList.remove("drag");
+
+});
+
+box.addEventListener("drop",e=>{
+
+e.preventDefault();
+
+box.classList.remove("drag");
+
+input.files = e.dataTransfer.files;
+
+renderPreview();
+
+});
+
+/* CHANGE */
+
+input.addEventListener("change",()=>{
+
+renderPreview();
+
+});
+
+/* PREVIEW */
+
+function renderPreview(){
+
+preview.innerHTML="";
+
+const files =
+Array.from(input.files);
+
+files.forEach((file,index)=>{
+
+/* IMAGE */
+
+if(file.type.startsWith("image/")){
+
+const reader =
+new FileReader();
+
+reader.onload=e=>{
+
+const div =
+document.createElement("div");
+
+div.className =
+"preview-item";
+
+div.innerHTML=`
+
+<button
+class="remove-btn"
+onclick="removeFile('${id}',${index})"
+>
+✕
+</button>
+
+<img src="${e.target.result}">
+
+<div class="preview-name">
+${file.name}
+</div>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+style="width:100%"
+></div>
+
+</div>
+
+`;
+
+preview.appendChild(div);
+
+};
+
+reader.readAsDataURL(file);
+
+}
+
+/* AUDIO */
+
+else if(file.type.startsWith("audio/")){
+
+const div =
+document.createElement("div");
+
+div.className =
+"audio-item";
+
+div.innerHTML=`
+
+<div>
+
+🎧 ${file.name}
+
+</div>
+
+<audio controls
+style="width:100%;margin-top:10px;">
+
+<source
+src="${URL.createObjectURL(file)}"
+type="${file.type}"
+>
+
+</audio>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+style="width:100%"
+></div>
+
+</div>
+
+`;
+
+preview.appendChild(div);
 
 }
 
 });
 
-[
-"file_topo",
-"file_bienban",
-"file_calllog",
-"file_ghiam"
-]
+}
 
-.forEach(id=>{
+});
 
-const el =
-document.getElementById(id);
+/* REMOVE */
 
-if(!el.files.length){
+function removeFile(inputId,index){
 
-el.classList.add("error");
+const input =
+document.getElementById(inputId);
 
-ok=false;
+const dt =
+new DataTransfer();
 
-}else{
+Array.from(input.files)
 
-el.classList.remove("error");
+.forEach((file,i)=>{
+
+if(i!==index){
+
+dt.items.add(file);
 
 }
 
 });
 
-if(!ok){
+input.files =
+dt.files;
 
-alert(
-"Vui lòng nhập đầy đủ dữ liệu"
+input.dispatchEvent(
+new Event("change")
 );
 
 }
-
-return ok;
-
-}
-
 /* =========================
    SAVE
 ========================= */
