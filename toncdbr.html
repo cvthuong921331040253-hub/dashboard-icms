@@ -730,11 +730,71 @@ ${loai}
 
 </div>
 
+if(row.dc){
+
+html+=`
 <div class="mobile-row">
 <span class="mobile-label">Địa chỉ:</span>
-${row.dc||""}
+${row.dc}
 </div>
 `;
+
+}
+
+if(row.kpi){
+
+html+=`
+<div class="mobile-row">
+<span class="mobile-label">KPI:</span>
+${row.kpi}
+</div>
+`;
+
+}
+
+if(row.tt){
+
+html+=`
+<div class="mobile-row">
+<span class="mobile-label">Trạng thái:</span>
+${row.tt}
+</div>
+`;
+
+}
+
+if(row.tthen){
+
+html+=`
+<div class="mobile-row">
+<span class="mobile-label">Tích hẹn:</span>
+${row.tthen}
+</div>
+`;
+
+}
+
+if(row.ntdn){
+
+html+=`
+<div class="mobile-row">
+<span class="mobile-label">Ngày đấu nối:</span>
+${row.ntdn}
+</div>
+`;
+
+}
+
+if(row.ntnt){
+
+html+=`
+<div class="mobile-row">
+<span class="mobile-label">Ngày nghiệm thu:</span>
+${row.ntnt}
+</div>
+`;
+
+}
 
 const nd=row.nd||row.nnt||row.nnth||"";
 
