@@ -251,7 +251,7 @@ height:100%!important;
 </div>
 
 <div class="chart-box">
-<canvas id="tkmHuyenChart"></canvas>
+<canvas id="hsChart"></canvas>
 </div>
 
 <div class="chart-box">
@@ -476,7 +476,7 @@ function renderCharts(){
 
 renderSCHuyen();
 
-renderTKMHuyen();
+renderHSChart();
 
 renderKPIChart();
 
@@ -562,28 +562,49 @@ maintainAspectRatio:false
 
 }
 
-function renderTKMHuyen(){
+function renderHSChart(){
 
-const map={};
+const labels=[...new Set(tontkm.map(x=>x.huyen||"Khác"))];
+
+const hs={};
+
+labels.forEach(h=>{
+
+hs[h]=0;
+
+});
 
 tontkm.forEach(x=>{
 
 const h=x.huyen||"Khác";
 
-map[h]=(map[h]||0)+1;
+const tt=String(x.tt||"").toUpperCase();
+
+if(tt.includes("CẬP NHẬT HỒ SƠ")){
+
+hs[h]++;
+
+}
 
 });
 
-new Chart(document.getElementById("tkmHuyenChart"),{
+new Chart(document.getElementById("hsChart"),{
 
 type:"bar",
 
 data:{
-labels:Object.keys(map),
-datasets:[{
-label:"Tồn TKM",
-data:Object.values(map)
-}]
+
+labels:labels,
+
+datasets:[
+
+{
+label:"Cập nhật hồ sơ",
+data:labels.map(h=>hs[h])
+}
+
+]
+
 },
 
 options:{
