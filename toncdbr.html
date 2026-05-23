@@ -211,7 +211,7 @@ let tontkm=[];
 let currentData=[];
 let filteredData=[];
 let currentPage=1;
-const PAGE_SIZE=50;
+const PAGE_SIZE=200;
 
 function countUniqueAccount(data){const set=new Set();data.forEach(x=>{const acc=String(x.account||"").replace(/\s+/g," ").trim().toUpperCase();if(acc)set.add(acc);});return set.size;}
 
