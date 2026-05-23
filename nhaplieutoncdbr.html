@@ -1129,7 +1129,7 @@ document.getElementById("serial_hwf").value,
 user_update:"web"
 
 };
-
+console.log(data);
 const res =
 await fetch(API,{
 
@@ -1141,7 +1141,7 @@ body:JSON.stringify(data)
 
 const json =
 await res.json();
-
+console.log(json);
 if(json.success){
 
 alert("Đã lưu dữ liệu");
