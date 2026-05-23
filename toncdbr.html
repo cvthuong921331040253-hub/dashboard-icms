@@ -38,7 +38,7 @@ h1{font-size:28px;margin-bottom:5px;}
 
 .toolbar input,.toolbar select{padding:10px;border:1px solid #ddd;border-radius:8px;}
 
-table{width:max-content;min-width:100%;border-collapse:collapse;background:white;table-layout:auto;}
+table{width:100%;border-collapse:collapse;background:white;table-layout:fixed;}
 
 th{background:#f3f4f6;position:sticky;top:0;z-index:50;white-space:normal;}
 
@@ -64,7 +64,7 @@ tr:nth-child(even){background:#fafafa;}
 
 .expand-btn{color:#2563eb;cursor:pointer;margin-top:5px;font-size:13px;}
 
-.nd-full{display:none;margin-top:5px;white-space:pre-wrap;line-height:1.5;max-width:700px;overflow:auto;}
+.nd-full{display:none;margin-top:5px;white-space:pre-wrap;line-height:1.5;max-width:480px;overflow:auto;}
 
 .show{display:block;}
 .toolbar button{padding:0 10px;height:36px;border:none;border-radius:8px;background:#16a34a;color:white;cursor:pointer;font-weight:600;font-size:11px;}
@@ -589,14 +589,24 @@ else if(c==="nd"||c==="nnt"||c==="nnth"){
 const shortText=String(val).slice(0,120);
 
 html+=`
-<td style="${stickyStyle}width:320px;min-width:320px;max-width:320px;vertical-align:top;">
+<td style="${stickyStyle}width:480px;min-width:480px;max-width:480px;vertical-align:top;">
 <div class="text-preview">${shortText}</div>
 <div class="nd-full" id="full_${index}" data-full="${encodeURIComponent(val)}"></div>
 <div class="expand-btn" onclick="toggleND(${index})">Xem thêm</div>
 </td>`;}
 
 else{
-html+=`<td style="${stickyStyle}">${val}</td>`;
+
+let colStyle=stickyStyle;
+
+if(c==="dc"){
+
+colStyle+="width:240px;min-width:240px;max-width:240px;word-break:break-word;";
+
+}
+
+html+=`<td style="${colStyle}">${val}</td>`;
+
 }
 });
 
