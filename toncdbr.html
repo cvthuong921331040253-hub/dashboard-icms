@@ -41,7 +41,7 @@ h1{font-size:28px;margin-bottom:5px;}
 
 table{width:100%;border-collapse:collapse;background:white;table-layout:fixed;}
 
-th{background:#f3f4f6;position:sticky;top:0;z-index:50;white-space:nowrap;}
+th{background:#f3f4f6;white-space:normal;}
 
 th{border:1px solid #ddd;padding:8px;text-align:center;font-size:14px;vertical-align:middle;word-break:break-word;}
 
@@ -507,13 +507,13 @@ let stickyHeader="";
 
 if(c==="nv"){
 
-stickyHeader="position:sticky;left:0;top:0;z-index:60;background:#f3f4f6;width:90px;";
+stickyHeader="";
 
 }
 
 if(c==="cv"){
 
-stickyHeader="position:sticky;left:0;top:0;z-index:60;background:#f3f4f6;min-width:70px;";
+stickyHeader="";
 
 }
 
@@ -535,13 +535,13 @@ let stickyStyle="";
 
 if(c==="nv"){
 
-stickyStyle="position:sticky;left:0;background:#fff;z-index:40;width:90px;";
+stickyStyle="";
 
 }
 
 if(c==="cv"){
 
-stickyStyle="position:sticky;left:0;background:#fff;z-index:40;min-width:70px;";
+stickyStyle="";
 
 }
 
