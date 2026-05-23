@@ -1127,6 +1127,27 @@ colStyle+="width:240px;min-width:240px;max-width:240px;word-break:break-word;";
 
 }
 
+/* =========================
+ACCOUNT CLICK
+========================= */
+
+if(c==="account"){
+
+val=`
+<span
+style="
+color:#2563eb;
+cursor:pointer;
+font-weight:bold;
+"
+onclick='openInput(${JSON.stringify(row)})'
+>
+${val}
+</span>
+`;
+
+}
+
 html+=`<td style="${colStyle}">${val}</td>`;
 
 }
@@ -1187,8 +1208,17 @@ html+=`
 
 <div class="mobile-head">
 
-<div class="mobile-account">
+<div
+class="mobile-account"
+style="
+color:#2563eb;
+cursor:pointer;
+"
+onclick='openInput(${JSON.stringify(row)})'
+>
+
 ${row.account||""}
+
 </div>
 
 <div class="mobile-tg ${tg>24?'mobile-red':''}">
@@ -1408,6 +1438,53 @@ document.getElementById("textModal").classList.add("hidden");
 
 }
 
+function openInput(row){
+
+/* =========================
+ACCOUNT
+========================= */
+
+const account =
+   row.account || "";
+
+/* =========================
+THỜI GIAN PHÁT SINH
+========================= */
+
+const ngayPhatSinh =
+
+   row.ntdn ||
+
+   row["Ngày phát sinh"] ||
+
+   row.ngay ||
+
+   "";
+
+/* =========================
+LOẠI
+========================= */
+
+const loai =
+   row.cv ? "TKM" : "SC";
+
+/* =========================
+URL
+========================= */
+
+const url =
+
+`https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html
+
+?account=${encodeURIComponent(account)}
+
+&ngay=${encodeURIComponent(ngayPhatSinh)}
+
+&loai=${encodeURIComponent(loai)}`;
+
+window.open(url,"_blank");
+
+}
 loadData();
 
 function exportExcel(){
