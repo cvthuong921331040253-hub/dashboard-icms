@@ -997,6 +997,23 @@ return tgB-tgA;
 });
 
 const renderData=data.slice(0,currentPage*PAGE_SIZE);
+if(!data || !data.length){
+
+document.getElementById("tableContainer").innerHTML=
+`
+<div style="
+padding:30px;
+text-align:center;
+color:#6b7280;
+font-size:16px;
+">
+Không tìm thấy dữ liệu
+</div>
+`;
+
+return;
+
+}
 
 let cols=[];
 
