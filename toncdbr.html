@@ -378,39 +378,98 @@ function renderTonSC(){
 
 const dashboard=document.getElementById("tonscDashboard");
 
-const socpk=tonsc.filter(x=>{const v=String(x.sc||"").replace(/\s+/g," ").trim().toUpperCase();return v==="SOC HOME";});
+const socpk=tonsc.filter(x=>{
 
-const soc=tonsc.filter(x=>{const v=String(x.sc||"").replace(/\s+/g," ").trim().toUpperCase();return v==="SOC";});
+    const v=String(x.sc||"")
+        .replace(/\s+/g," ")
+        .trim()
+        .toUpperCase();
 
-const suco=tonsc.filter(x=>{const v=String(x.sc||"").replace(/\s+/g," ").trim().toUpperCase();return v.includes("SC")||v.includes("HT");});
+    return v.includes("SOC HOME");
 
-const chuagiao=tonsc.filter(x=>{return !x.user||x.user==0;});
+});
+
+const soc=tonsc.filter(x=>{
+
+    const v=String(x.sc||"")
+        .replace(/\s+/g," ")
+        .trim()
+        .toUpperCase();
+
+    return (
+        (
+            v.includes("SOC") ||
+            v.includes("HT")
+        )
+        &&
+        !v.includes("SOC HOME")
+    );
+
+});
+
+const suco=tonsc.filter(x=>{
+
+    const v=String(x.sc||"")
+        .replace(/\s+/g," ")
+        .trim()
+        .toUpperCase();
+
+    return [
+        "SC",
+        "HT",
+        "SC HOT",
+        "HT HOT",
+        "SC VIP",
+        "HT VIP"
+    ].includes(v);
+
+});
+
+const sucoKNTKM=tonsc.filter(x=>{
+
+    const v=String(x.sc||"")
+        .replace(/\s+/g," ")
+        .trim()
+        .toUpperCase();
+
+    return !v;
+
+});
 
 window.tongsc=tonsc;
 window.socpkData=socpk;
 window.socData=soc;
 window.sucoData=suco;
+window.sucoKNTKM=sucoKNTKM;
 window.chuagiaoData=chuagiao;
 
 dashboard.innerHTML=
 
-createCard("TỔNG SC",countUniqueAccount(tonsc),"#111827","showTable('TỔNG SC',tongsc)")
+createCard("TỔNG SC",tonsc.length,"#111827","showTable('TỔNG SC',tongsc)")
 
 +
 
-createCard("SOC HOME KÉM",countUniqueAccount(socpk),"#2563eb","showTable('SOC HOME KÉM',socpkData)")
+createCard("SOC HOME KÉM",socpk.length,"#2563eb","showTable('SOC HOME KÉM',socpkData)")
 
 +
 
-createCard("SOC HT, SOC PORT KÉM",countUniqueAccount(soc),"#ea580c","showTable('SOC HT, SOC PORT KÉM',socData)")
+createCard("SOC HT, SOC PORT KÉM",soc.length,"#ea580c","showTable('SOC HT, SOC PORT KÉM',socData)")
 
 +
 
-createCard("SỰ CỐ",countUniqueAccount(suco),"#dc2626","showTable('SỰ CỐ',sucoData)")
+createCard("SỰ CỐ",suco.length,"#dc2626","showTable('SỰ CỐ',sucoData)")
 
 +
-
-createCard("SỰ CỐ CHƯA GIAO",countUniqueAccount(chuagiao),"#7c3aed","showTable('SỰ CỐ CHƯA GIAO',chuagiaoData)");
+createCard(
+    "SỰ CỐ KN TKM",
+    sucoKNTKM.length,
+    "#9333ea",
+    "showTable('SỰ CỐ KN TKM',sucoKNTKM)"
+)
+  
++
+  
+createCard("SỰ CỐ CHƯA GIAO",chuagiao.length,"#7c3aed","showTable('SỰ CỐ CHƯA GIAO',chuagiaoData)");
 
 }
 
@@ -452,11 +511,35 @@ html+=createCard("TỔNG TKM",countUniqueAccount(tontkm),"#111827","showTable('T
 
 Object.keys(groups).sort().forEach(kpi=>{
 
-window["kpi_"+kpi]=groups[kpi];
+[
+    "QUÁ 24H",
+    "QUÁ 3H, TRONG 10H",
+    "QUÁ 10H, TRONG 16H",
+    "QUÁ 16H",
+    "QUÁ HẸN",
+    "TRONG 3H",
+    "TRONG HẸN"
+].forEach(kpi=>{
 
-const cardColor=(kpi==="QUÁ 24H"||kpi==="QUÁ HẸN")?"#dc2626":"#16a34a";
+    if(!groups[kpi]) groups[kpi]=[];
 
-html+=createCard(kpi,countUniqueAccount(groups[kpi]),cardColor,`showTable('${kpi}',window['kpi_${kpi}'])`);
+    window["kpi_"+kpi]=groups[kpi];
+
+    const cardColor=
+        (
+            kpi==="QUÁ 24H" ||
+            kpi==="QUÁ HẸN" ||
+            kpi==="QUÁ 16H"
+        )
+        ? "#dc2626"
+        : "#16a34a";
+
+    html+=createCard(
+        kpi,
+        groups[kpi].length,
+        cardColor,
+        `showTable('${kpi}',window['kpi_${kpi}'])`
+    );
 
 });
 
@@ -489,12 +572,14 @@ const labels=[...new Set(tonsc.map(x=>x.huyen||"Khác"))];
 const socHome={};
 const soc={};
 const suco={};
+const sucoKNTKM={};
 
 labels.forEach(h=>{
 
 socHome[h]=0;
 soc[h]=0;
 suco[h]=0;
+sucoKNTKM[h]=0;
 
 });
 
@@ -506,19 +591,34 @@ const loai=String(x.sc||"").toUpperCase();
 
 if(loai.includes("SOC HOME")){
 
-socHome[h]++;
+    socHome[h]++;
 
 }
+else if(
+    loai.includes("SOC") ||
+    loai.includes("HT")
+){
 
-else if(loai==="SOC"){
-
-soc[h]++;
+    soc[h]++;
 
 }
+else if(!loai){
 
-else{
+    sucoKNTKM[h]++;
 
-suco[h]++;
+}
+else if(
+    [
+        "SC",
+        "HT",
+        "SC HOT",
+        "HT HOT",
+        "SC VIP",
+        "HT VIP"
+    ].includes(loai)
+){
+
+    suco[h]++;
 
 }
 
@@ -547,6 +647,12 @@ data:labels.map(h=>soc[h])
 {
 label:"SỰ CỐ",
 data:labels.map(h=>suco[h])
+}
+
+,
+{
+label:"SC KN TKM",
+data:labels.map(h=>sucoKNTKM[h])
 }
 
 ]
@@ -621,16 +727,22 @@ function renderKPIChart(){
 const labels=[...new Set(tontkm.map(x=>x.huyen||"Khác"))];
 
 const q24={};
+const q3_10={};
+const q10_16={};
+const q16={};
 const qhen={};
 const t3h={};
 const then={};
 
 labels.forEach(h=>{
 
-q24[h]=0;
-qhen[h]=0;
-t3h[h]=0;
-then[h]=0;
+    q24[h]=0;
+    q3_10[h]=0;
+    q10_16[h]=0;
+    q16[h]=0;
+    qhen[h]=0;
+    t3h[h]=0;
+    then[h]=0;
 
 });
 
@@ -642,19 +754,37 @@ const k=String(x.kpi||"").toUpperCase();
 
 if(k.includes("QUÁ 24")){
 
-q24[h]++;
+    q24[h]++;
 
 }
+else if(k.includes("QUÁ 3")){
 
+    q3_10[h]++;
+
+}
+else if(k.includes("QUÁ 10")){
+
+    q10_16[h]++;
+
+}
+else if(k.includes("QUÁ 16")){
+
+    q16[h]++;
+
+}
 else if(k.includes("QUÁ HẸN")){
 
-qhen[h]++;
+    qhen[h]++;
 
 }
-
 else if(k.includes("TRONG 3")){
 
-t3h[h]++;
+    t3h[h]++;
+
+}
+else if(k.includes("TRONG HẸN")){
+
+    then[h]++;
 
 }
 
@@ -677,23 +807,38 @@ labels:labels,
 datasets:[
 
 {
-label:"Quá 24h",
-data:labels.map(h=>q24[h])
+    label:"Quá 24h",
+    data:labels.map(h=>q24[h])
 },
 
 {
-label:"Quá hẹn",
-data:labels.map(h=>qhen[h])
+    label:"Quá 3h, Trong 10h",
+    data:labels.map(h=>q3_10[h])
 },
 
 {
-label:"Trong 3h",
-data:labels.map(h=>t3h[h])
+    label:"Quá 10h, Trong 16h",
+    data:labels.map(h=>q10_16[h])
 },
 
 {
-label:"Trong hẹn",
-data:labels.map(h=>then[h])
+    label:"Quá 16h",
+    data:labels.map(h=>q16[h])
+},
+
+{
+    label:"Quá hẹn",
+    data:labels.map(h=>qhen[h])
+},
+
+{
+    label:"Trong 3h",
+    data:labels.map(h=>t3h[h])
+},
+
+{
+    label:"Trong hẹn",
+    data:labels.map(h=>then[h])
 }
 
 ]
@@ -893,6 +1038,12 @@ cols.forEach(c=>{
 
 let val=row[c]||"";
 
+if(c==="sc" && !val){
+
+    val="SỰ CỐ KN TKM";
+
+}
+
 let stickyStyle="";
 
 if(c==="nv"){
@@ -998,7 +1149,7 @@ data.forEach((row,index)=>{
 
 const tg=parseFloat(row.tg)||0;
 
-const loai=row.sc||row.kpi||"";
+const loai=row.sc || row.kpi || "SỰ CỐ KN TKM";
 
 let badgeColor="#6b7280";
 
