@@ -612,7 +612,11 @@ Xem thêm dữ liệu
 `;
 
 }
-                        
+
+document.getElementById("tableContainer").innerHTML=html;
+
+}
+
 function loadMore(){
 
 currentPage++;
@@ -620,6 +624,7 @@ currentPage++;
 renderTable(filteredData);
 
 }
+
 function renderMobileCards(data){
 
 data.sort((a,b)=>(parseFloat(b.tg)||0)-(parseFloat(a.tg)||0));
