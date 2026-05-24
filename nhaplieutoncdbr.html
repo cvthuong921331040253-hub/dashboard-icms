@@ -2088,22 +2088,22 @@ d.loai_wo || "";
 }
 
 renderOldFiles(
-d.topo,
+d.file_topo,
 "old_topo"
 );
 
 renderOldFiles(
-d.bienban,
+d.file_bienban,
 "old_bienban"
 );
 
 renderOldFiles(
-d.calllog,
+d.file_calllog,
 "old_calllog"
 );
 
 renderOldFiles(
-d.ghiam,
+d.file_ghiam,
 "old_ghiam"
 );
 
@@ -2167,6 +2167,18 @@ margin-top:8px;
 
 }
 
+const fileId =
+
+link.match(/\/d\/(.*?)\//)?.[1];
+
+const preview =
+
+fileId
+
+? `https://drive.google.com/thumbnail?id=${fileId}`
+
+: link;
+
 return `
 
 <a
@@ -2175,7 +2187,22 @@ target="_blank"
 >
 
 <img
-src="${link}"
+src="${preview}"
+style="
+width:78px;
+height:78px;
+object-fit:cover;
+border-radius:10px;
+margin-top:8px;
+margin-right:8px;
+border:1px solid #ddd;
+"
+/>
+
+</a>
+
+`;
+   
 style="
 width:78px;
 height:78px;
