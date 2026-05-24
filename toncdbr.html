@@ -503,7 +503,9 @@ createCard(
 +
   
 createCard("SỰ CỐ CHƯA GIAO",chuagiao.length,"#7c3aed","showTable('SỰ CỐ CHƯA GIAO',chuagiaoData)");
-
++
+  
+html+=createCard("ACCOUNT ĐÃ NHẬP BYPASS",allAccounts.length,"#059669","showAccountManager()");
 }
 
 /* =====================
@@ -597,7 +599,6 @@ html+=createCard("TỒN CẬP NHẬT HỒ SƠ",capnhaths.length,"#dc2626","showT
 
 html+=createCard("TKM CHƯA GIAO",chuagiao.length,"#7c3aed","showTable('TKM CHƯA GIAO',tkmchuagiao)");
 
-html+=createCard("ACCOUNT ĐÃ NHẬP BYPASS",allAccounts.length,"#0f766e","showAccountManager()");
 
 dashboard.innerHTML=html;
 
