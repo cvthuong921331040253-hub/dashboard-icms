@@ -2382,19 +2382,29 @@ cursor:pointer;
 
 }
 
+function removeOldFile(id,link){
+
+if(!confirm("Xóa file cũ này?")){
+return;
+}
+
 const wrap =
 document.getElementById(id);
 
-const arr =
+if(!wrap)return;
+
+const items =
 Array.from(
-wrap.querySelectorAll("a")
+wrap.children
 );
 
-arr.forEach(a=>{
+items.forEach(item=>{
 
-if(a.href===link){
+if(
+item.innerHTML.includes(link)
+){
 
-a.parentElement.remove();
+item.remove();
 
 }
 
