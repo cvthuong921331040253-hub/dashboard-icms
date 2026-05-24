@@ -2280,43 +2280,6 @@ AUDIO
 
 if(isAudio){
 
-return `
-
-<div
-style="
-position:relative;
-margin-top:8px;
-"
->
-
-<button
-onclick="removeOldFile('${id}','${link}')"
-style="
-position:absolute;
-top:6px;
-right:6px;
-z-index:2;
-
-width:24px;
-height:24px;
-
-border:none;
-border-radius:999px;
-
-background:#fff;
-color:red;
-
-font-weight:bold;
-cursor:pointer;
-
-box-shadow:0 0 4px rgba(0,0,0,.2);
-"
->
-
-✕
-
-if(isAudio){
-
 const audioId =
 
 link.match(/\/d\/(.*?)\//)?.[1];
