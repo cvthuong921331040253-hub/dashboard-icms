@@ -1640,7 +1640,18 @@ const ten_nv =
 
    "";
 const loai =
-   row.cv ? "TKM" : "SC";
+
+row.cv
+
+? "TKM"
+
+: (
+
+row.sc ||
+
+"SC"
+
+);
 
 /* =========================
 URL
