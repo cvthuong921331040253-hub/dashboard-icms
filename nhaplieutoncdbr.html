@@ -305,9 +305,13 @@ color:#6b7280;
 
 .preview-grid{
 
-.preview-grid{
-grid-template-columns:repeat(auto-fill,minmax(78px,1fr));
+display:grid;
+
+grid-template-columns:
+repeat(auto-fill,minmax(78px,1fr));
+
 gap:12px;
+
 margin-top:16px;
 
 }
@@ -764,7 +768,6 @@ data-input="file_topo"
 type="file"
 id="file_topo"
 accept="image/*"
-capture="environment"
 style="display:none"
 >
 
@@ -815,9 +818,8 @@ data-input="file_bienban"
 
 <input
 type="file"
-id="file_topo"
+id="file_bienban"
 accept="image/*"
-capture="environment"
 style="display:none"
 >
 
@@ -860,9 +862,8 @@ data-input="file_calllog"
 
 <input
 type="file"
-id="file_topo"
+id="file_calllog"
 accept="image/*"
-capture="environment"
 style="display:none"
 >
 
@@ -907,8 +908,7 @@ data-input="file_ghiam"
 <input
 type="file"
 id="file_ghiam"
-accept="audio/*"
-multiple
+accept="audio/*,.mp3,.wav,.m4a"
 hidden
 >
 
