@@ -1206,6 +1206,28 @@ html+=`<td style="${stickyStyle}color:${tgColor};font-weight:bold;">${val}</td>`
 
 }
 
+else if(c==="bypass"){
+
+if(val){
+
+val=`
+<span
+class="badge green"
+style="
+font-size:11px;
+padding:4px 8px;
+"
+>
+${val}
+</span>
+`;
+
+}
+
+html+=`<td style="${stickyStyle}">${val}</td>`;
+
+}
+  
 else if(c==="sc"){
 
 let cls="gray";
