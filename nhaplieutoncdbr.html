@@ -1625,7 +1625,77 @@ status.innerHTML=
 
 const ghiam =
 await filesToBase64("file_ghiam");
+/* =========================
+CHECK DUPLICATE
+========================= */
 
+status.innerHTML =
+"Kiểm tra dữ liệu trùng...";
+
+const checkUrl =
+
+API +
+
+"?action=getInput"
+
++
+
+"&account=" +
+
+encodeURIComponent(
+document.getElementById("account").value
+)
+
++
+
+"&check=" +
+
+encodeURIComponent(checkType);
+
+console.log(checkUrl);
+
+const checkRes =
+await fetch(checkUrl);
+
+const checkJson =
+await checkRes.json();
+
+console.log(checkJson);
+
+/* =========================
+DUPLICATE
+========================= */
+
+if(
+
+Array.isArray(checkJson)
+
+&&
+
+checkJson.length > 0
+
+){
+
+status.style.opacity="0";
+
+btn.disabled=false;
+
+btn.innerHTML=
+"LƯU NHẬP LIỆU";
+
+alert(
+
+"Account này đã nhập liệu " +
+
+checkType +
+
+" rồi"
+
+);
+
+return;
+
+}
 const data={
 
 check:
