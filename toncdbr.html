@@ -1006,7 +1006,7 @@ sc:"Loại sự cố",
 mdb:"Mất đồng bộ GNOC",
 gnoc:"Trạng thái GNOC",
 nd:"Nội dung",
-
+bypass:"Bypass",
 cv:"Loại cv",
 gline:"Gline",
 ntdn:"Ngày đấu nối",
@@ -1060,11 +1060,40 @@ const isTKM=data[0]?.cv!==undefined;
 
 if(isTKM){
 
-cols=["nv","tg","huyen","account","kpi","cv","tt","tthen","ntdn","ntnt","nnt","nnth"];
+if(isTKM){
+
+cols=[
+"nv",
+"tg",
+"huyen",
+"account",
+"bypass",
+"kpi",
+"cv",
+"tt",
+"tthen",
+"ntdn",
+"ntnt",
+"nnt",
+"nnth"
+];
 
 }else{
 
-cols=["nv","tg","huyen","account","dc","ngay","gio","sc","mdb","gnoc","nd"];
+cols=[
+"nv",
+"tg",
+"huyen",
+"account",
+"bypass",
+"dc",
+"ngay",
+"gio",
+"sc",
+"mdb",
+"gnoc",
+"nd"
+];
 
 }
 
@@ -1096,6 +1125,52 @@ html+=`</tr></thead><tbody>`;
 
 renderData.forEach((row,index)=>{
 
+const daBypass =
+allAccounts.some(n=>{
+
+const acc1 =
+String(n.account||"")
+.trim()
+.toUpperCase();
+
+const acc2 =
+String(row.account||"")
+.trim()
+.toUpperCase();
+
+const check =
+String(n.check||"")
+.trim()
+.toUpperCase();
+
+const sc =
+String(row.sc||"")
+.trim()
+.toUpperCase();
+
+return (
+acc1===acc2
+&&
+(
+check==="SOC"
+||
+check==="SOC HOME"
+)
+&&
+(
+sc==="SOC"
+||
+sc==="SOC HOME"
+)
+);
+
+});
+
+row.bypass =
+daBypass
+? "ĐÃ BYPASS"
+: "";
+  
 html+="<tr>";
 
 cols.forEach(c=>{
