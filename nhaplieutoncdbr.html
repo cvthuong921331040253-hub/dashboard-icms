@@ -69,7 +69,15 @@ font-weight:bold;
 
 color:#2563eb;
 
-display:none;
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
+opacity:0;
+
+transition:.2s;
 
 }
 
@@ -939,7 +947,7 @@ LƯU NHẬP LIỆU
 ========================= */
 
 const API =
-"https://https://script.google.com/macros/s/AKfycbxb4hOLwh6flwKBVXUuttwMkYJzsfkdLR-s5ZORP8x-J9wJj5KZmMYceKzQ8rD5Wbnz/exec";
+"https://script.google.com/macros/s/AKfycbxb4hOLwh6flwKBVXUuttwMkYJzsfkdLR-s5ZORP8x-J9wJj5KZmMYceKzQ8rD5Wbnz/exec";
 
 /* =========================
    PARAMS
@@ -1504,7 +1512,7 @@ const status =
 document.getElementById(
 "header_status"
 );
-status.style.display="block";
+status.style.opacity="1";
 status.innerHTML=
 "Đang tải lên 10%";
 if(!validate()){
@@ -1684,6 +1692,8 @@ btn.innerHTML=
 if(json.success){
 status.innerHTML=
 "Hoàn tất 100%";
+status.style.color=
+"#16a34a";
 saved=true;
 alert("Đã lưu dữ liệu");
 setTimeout(()=>{
@@ -1703,7 +1713,7 @@ btn.disabled=false;
 btn.innerHTML=
 "LƯU NHẬP LIỆU";
 }catch(err){
-status.style.display="none";
+status.style.opacity="0";
 btn.disabled=false;
 
 btn.innerHTML=
