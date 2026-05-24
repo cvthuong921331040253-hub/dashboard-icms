@@ -489,7 +489,7 @@ style="
 display:none;
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.9);
+background:rgba(0,0,0,.72);
 z-index:999999;
 
 align-items:center;
@@ -2270,7 +2270,7 @@ const preview =
 
 fileId
 
-? `https://drive.google.com/thumbnail?id=${fileId}`
+? `https://drive.google.com/uc?export=view&id=${fileId}`
 
 : link;
 
@@ -2288,7 +2288,7 @@ const audioSrc =
 
 audioId
 
-? `https://drive.google.com/uc?export=open&id=${audioId}`
+? `https://drive.google.com/uc?export=view&id=${audioId}`
 
 : link;
 
@@ -2346,7 +2346,7 @@ margin-top:10px;
 
 <source
 src="${audioSrc}"
-type="audio/mpeg"
+type="audio/*"
 >
 
 </audio>
