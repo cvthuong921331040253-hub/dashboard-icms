@@ -1068,6 +1068,10 @@ const API =
 
 const params =
 new URLSearchParams(location.search);
+const account =
+params.get("account") || "";
+
+loadOldData();
 
 document.getElementById("account").value =
 params.get("account") || "";
@@ -1953,6 +1957,70 @@ function closeViewer(){
 document.getElementById(
 "image_viewer"
 ).style.display="none";
+
+}
+
+async function loadOldData(){
+
+try{
+
+if(!account)return;
+
+const res = await fetch(
+
+API_URL +
+
+"?action=detail&account=" +
+
+encodeURIComponent(account)
+
+);
+
+const json = await res.json();
+
+if(!json.success)return;
+
+const d = json.data;
+
+/* =====================
+FILL INPUT
+===================== */
+
+document.getElementById(
+"account"
+).value =
+d.account || "";
+
+document.getElementById(
+"nguyen_nhan"
+).value =
+d.nguyen_nhan || "";
+
+document.getElementById(
+"chitiet_bypass"
+).value =
+d.chitiet_bypass || "";
+
+document.getElementById(
+"thietbi"
+).value =
+d.thietbi || "";
+
+document.getElementById(
+"serial_hwf"
+).value =
+d.serial_hwf || "";
+
+document.getElementById(
+"loai_wo"
+).value =
+d.loai_wo || "";
+
+}catch(err){
+
+console.log(err);
+
+}
 
 }
 </script>
