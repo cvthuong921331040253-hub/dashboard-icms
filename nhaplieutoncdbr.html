@@ -802,8 +802,9 @@ hoặc bấm để chọn
 <div
 class="preview-grid"
 id="preview_file_topo"
-></div>
 
+></div>
+<div id="old_topo"></div>
 </div>
 
 <!-- BIEN BAN -->
@@ -856,7 +857,7 @@ hoặc bấm để chọn
 class="preview-grid"
 id="preview_file_bienban"
 ></div>
-
+<div id="old_bienban"></div>
 </div>
 
 <!-- CALL LOG -->
@@ -901,7 +902,7 @@ hoặc bấm để chọn
 class="preview-grid"
 id="preview_file_calllog"
 ></div>
-
+<div id="old_calllog"></div>
 </div>
 
 <!-- AUDIO -->
@@ -945,7 +946,7 @@ hoặc bấm để chọn
 class="audio-list"
 id="preview_file_ghiam"
 ></div>
-
+<div id="old_ghiam"></div>
 </div>
 
 </div>
@@ -1767,13 +1768,11 @@ encodeURIComponent(checkType);
 
 console.log(checkUrl);
 
-const checkRes =
-await fetch(checkUrl);
+if(!account){
+
 
 const checkJson =
 await checkRes.json();
-
-console.log(checkJson);
 
 /* =========================
 DUPLICATE
@@ -1788,6 +1787,7 @@ Array.isArray(checkJson)
 checkJson.length > 0
 
 ){
+
 document.getElementById(
 "loading_overlay"
 ).style.display="none";
@@ -1810,6 +1810,10 @@ checkType +
 );
 
 return;
+
+}
+
+}
 
 }
 status.innerHTML=
@@ -1836,6 +1840,14 @@ status.innerHTML=
 const ghiam =
 await filesToBase64("file_ghiam");
 const data={
+
+mode:
+
+account
+
+? "update"
+
+: "insert",
 
 check:
 checkType,
@@ -1968,7 +1980,7 @@ if(!account)return;
 
 const res = await fetch(
 
-API_URL +
+API +
 
 "?action=detail&account=" +
 
@@ -2016,11 +2028,111 @@ document.getElementById(
 ).value =
 d.loai_wo || "";
 
+renderOldFiles(
+d.topo,
+"old_topo"
+);
+
+renderOldFiles(
+d.bienban,
+"old_bienban"
+);
+
+renderOldFiles(
+d.calllog,
+"old_calllog"
+);
+
+renderOldFiles(
+d.ghiam,
+"old_ghiam"
+);
+
 }catch(err){
 
 console.log(err);
 
 }
+
+}
+
+function renderOldFiles(text,id){
+
+const wrap =
+document.getElementById(id);
+
+if(!wrap)return;
+
+if(!text){
+
+wrap.innerHTML="";
+
+return;
+
+}
+
+const arr =
+String(text)
+.split(",");
+
+wrap.innerHTML =
+
+arr.map(link=>{
+
+link = link.trim();
+
+if(!link)return "";
+
+const isAudio =
+
+link.includes(".mp3")
+||
+link.includes(".wav")
+||
+link.includes(".m4a");
+
+if(isAudio){
+
+return `
+
+<audio
+controls
+src="${link}"
+style="
+width:100%;
+margin-top:8px;
+">
+</audio>
+
+`;
+
+}
+
+return `
+
+<a
+href="${link}"
+target="_blank"
+>
+
+<img
+src="${link}"
+style="
+width:78px;
+height:78px;
+object-fit:cover;
+border-radius:10px;
+margin-top:8px;
+margin-right:8px;
+border:1px solid #ddd;
+"
+/>
+
+</a>
+
+`;
+
+}).join("");
 
 }
 </script>
