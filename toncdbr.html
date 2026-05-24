@@ -353,7 +353,14 @@ String(row.account||"")
 .trim()
 .toUpperCase();
 
+const check =
+
+String(row.check||"")
+.trim();
+
 if(!acc)return;
+
+if(!check)return;
 
 if(!mapAcc[acc]){
 
