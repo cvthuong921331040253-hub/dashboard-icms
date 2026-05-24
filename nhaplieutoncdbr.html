@@ -1078,7 +1078,7 @@ params.get("acc")
 ||
 "";
 
-// loadOldData();
+loadOldData();
 
 document.getElementById("account").value =
 
@@ -2032,35 +2032,60 @@ const d = json.data;
 FILL INPUT
 ===================== */
 
-document.getElementById(
-"account"
-).value =
-d.account || "";
+if(!document.getElementById(
+"nguyen_nhan"
+).value){
 
 document.getElementById(
 "nguyen_nhan"
 ).value =
 d.nguyen_nhan || "";
 
+}
+
+if(!document.getElementById(
+"chitiet_bypass"
+).value){
+
 document.getElementById(
 "chitiet_bypass"
 ).value =
 d.chitiet_bypass || "";
+
+}
+
+if(!document.getElementById(
+"thietbi"
+).value){
 
 document.getElementById(
 "thietbi"
 ).value =
 d.thietbi || "";
 
+}
+
+if(!document.getElementById(
+"serial_hwf"
+).value){
+
 document.getElementById(
 "serial_hwf"
 ).value =
 d.serial_hwf || "";
 
+}
+
+if(!document.getElementById(
+"loai_wo"
+).value){
+
 document.getElementById(
 "loai_wo"
 ).value =
 d.loai_wo || "";
+
+}
 
 renderOldFiles(
 d.topo,
