@@ -1487,11 +1487,13 @@ THỜI GIAN PHÁT SINH
 
 const ngayPhatSinh =
 
+   row.ngay_goc ||
+
+   row.ngay ||
+
    row.ntdn ||
 
    row["Ngày phát sinh"] ||
-
-   row.ngay ||
 
    "";
 
@@ -1499,7 +1501,12 @@ const ngayPhatSinh =
 LOẠI
 ========================= */
 const ten_nv =
-   row.nv || "";
+
+   row.ten_nv ||
+
+   row.nv ||
+
+   "";
 const loai =
    row.cv ? "TKM" : "SC";
 
