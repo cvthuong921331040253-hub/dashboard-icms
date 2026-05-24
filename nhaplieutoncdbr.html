@@ -765,7 +765,7 @@ type="file"
 id="file_topo"
 accept="image/*"
 capture="environment"
-hidden
+style="display:none"
 >
 
 <div class="upload-content">
@@ -780,13 +780,6 @@ Kéo thả ảnh vào đây
 hoặc bấm để chọn
 
 </div>
-
-<div class="upload-sub">
-
-Hỗ trợ nhiều ảnh
-
-</div>
-
 </div>
 
 </div>
@@ -822,10 +815,10 @@ data-input="file_bienban"
 
 <input
 type="file"
-id="file_bienban"
+id="file_topo"
 accept="image/*"
 capture="environment"
-hidden
+style="display:none"
 >
 
 <div class="upload-content">
@@ -867,11 +860,12 @@ data-input="file_calllog"
 
 <input
 type="file"
-id="file_calllog"
+id="file_topo"
 accept="image/*"
 capture="environment"
-hidden
+style="display:none"
 >
+
 
 <div class="upload-content">
 
@@ -1104,6 +1098,8 @@ document.getElementById(
 /* CLICK */
 
 box.addEventListener("click",()=>{
+
+input.value="";
 
 input.click();
 
