@@ -1485,7 +1485,7 @@ const account =
 THỜI GIAN PHÁT SINH
 ========================= */
 
-const ngayPhatSinh =
+let ngayPhatSinh =
 
    row.ngay_goc ||
 
@@ -1496,6 +1496,30 @@ const ngayPhatSinh =
    row["Ngày phát sinh"] ||
 
    "";
+
+if(ngayPhatSinh){
+
+const d = new Date(ngayPhatSinh);
+
+if(!isNaN(d)){
+
+const dd =
+String(d.getDate())
+.padStart(2,"0");
+
+const mm =
+String(d.getMonth()+1)
+.padStart(2,"0");
+
+const yyyy =
+d.getFullYear();
+
+ngayPhatSinh =
+`${dd}/${mm}/${yyyy}`;
+
+}
+
+}
 
 /* =========================
 LOẠI
