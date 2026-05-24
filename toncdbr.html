@@ -1916,12 +1916,17 @@ unique[acc]=x;
 let data =
 Object.values(unique);
 
+const input = document.getElementById("searchInput");
+
+input.oninput = ()=>{
+
+showAccountManager();
+
+};
+
 const keyword =
 
-(
-document.getElementById("searchInput")
-?.value || ""
-)
+(input.value || "")
 .toLowerCase()
 .trim();
 
@@ -1941,6 +1946,8 @@ return acc.includes(keyword)
 || ten.includes(keyword);
 
 });
+
+}
 
 }
 
@@ -2032,9 +2039,6 @@ document.getElementById(
 "tableContainer"
 ).innerHTML = html;
 
-document.getElementById(
-"searchInput"
-).oninput = showAccountManager;  
 }
 
 loadData();
