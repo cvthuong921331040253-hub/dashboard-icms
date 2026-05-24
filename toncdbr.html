@@ -343,12 +343,35 @@ const json=await res.json();
 
 tonsc=json.tonsc||[];
 tontkm=json.tontkm||[];
-allAccounts = [
+const mapAcc = {};
 
-...tonsc,
-...tontkm
+[...tonsc,...tontkm].forEach(row=>{
 
-].filter(x=>x.account);
+const acc =
+
+String(row.account||"")
+.trim()
+.toUpperCase();
+
+const check =
+
+String(row.check||"")
+.trim();
+
+if(!acc)return;
+
+if(!check)return;
+
+if(!mapAcc[acc]){
+
+mapAcc[acc]=row;
+
+}
+
+});
+
+allAccounts =
+Object.values(mapAcc);
 console.log("TON SC:",tonsc.length);
 console.log("TON TKM:",tontkm.length);
 
