@@ -1095,33 +1095,7 @@ cols=[
 
 }
 
-cols=cols.filter(c=>data[0][c]!==undefined);
-
-let html=`<table><thead><tr>`;
-
-cols.forEach(c=>{
-
-let stickyHeader="";
-
-if(c==="nv"){
-
-stickyHeader="";
-
-}
-
-if(c==="cv"){
-
-stickyHeader="";
-
-}
-
-html+=`<th style="${stickyHeader}">${getColumnTitle(c)}</th>`;
-
-});
-
-html+=`</tr></thead><tbody>`;
-
-renderData.forEach((row,index)=>{
+renderData.forEach(row=>{
 
 const daBypass =
 allAccounts.some(n=>{
@@ -1168,6 +1142,40 @@ row.bypass =
 daBypass
 ? "ĐÃ BYPASS"
 : "";
+
+});
+
+cols=cols.filter(c=>
+c==="bypass"
+||
+data[0][c]!==undefined
+);
+
+let html=`<table><thead><tr>`;
+
+cols.forEach(c=>{
+
+let stickyHeader="";
+
+if(c==="nv"){
+
+stickyHeader="";
+
+}
+
+if(c==="cv"){
+
+stickyHeader="";
+
+}
+
+html+=`<th style="${stickyHeader}">${getColumnTitle(c)}</th>`;
+
+});
+
+html+=`</tr></thead><tbody>`;
+
+renderData.forEach((row,index)=>{
   
 html+="<tr>";
 
