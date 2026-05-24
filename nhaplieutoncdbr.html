@@ -305,7 +305,7 @@ border:1px solid #e5e7eb;
 .preview-item img{
 
 width:100%;
-height:120px;
+height:90px;
 object-fit:cover;
 display:block;
 
@@ -1066,14 +1066,44 @@ onclick="removeFile('${id}',${index})"
 </button>
 
 <img src="${e.target.result}">
+<div
+style="
+padding:8px;
+font-size:12px;
+line-height:1.5;
+color:#374151;
+background:#f9fafb;
+"
+>
 
+<div>
 
-<div class="progress">
+Gốc:
+<b>
+
+${(
+file.size
+/
+1024
+/
+1024
+).toFixed(2)}
+
+MB
+
+</b>
+
+</div>
 
 <div
-class="progress-bar"
-style="width:100%"
-></div>
+class="compressed-size"
+data-size="${id}_${index}"
+>
+
+Sau nén:
+...
+
+</div>
 
 </div>
 
@@ -1114,16 +1144,6 @@ type="${file.type}"
 >
 
 </audio>
-
-<div class="progress">
-
-<div
-class="progress-bar"
-style="width:100%"
-></div>
-
-</div>
-
 `;
 
 preview.appendChild(div);
@@ -1246,10 +1266,37 @@ Array.from(input.files);
 
 const result=[];
 
-for(const file of files){
+for(const [index,file] of files.entries()){
 
-const base64 =
+let base64="";
+
+/* =========================
+IMAGE
+========================= */
+
+if(
+file.type.startsWith("image/")
+){
+
+base64 =
+await compressImage(
+file,
+inputId,
+index
+);
+
+}
+
+/* =========================
+OTHER
+========================= */
+
+else{
+
+base64 =
 await toBase64(file);
+
+}
 
 result.push({
 
@@ -1266,7 +1313,167 @@ data:base64
 return result;
 
 }
+async function compressImage(
+file,
+inputId,
+index
+){
 
+return new Promise((resolve)=>{
+
+const reader =
+new FileReader();
+
+reader.readAsDataURL(file);
+
+reader.onload = e=>{
+
+const img =
+new Image();
+
+img.src =
+e.target.result;
+
+img.onload = ()=>{
+
+let width =
+img.width;
+
+let height =
+img.height;
+
+/* =========================
+MAX WIDTH
+========================= */
+
+const maxWidth = 1400;
+
+if(width > maxWidth){
+
+height =
+height *
+(maxWidth / width);
+
+width =
+maxWidth;
+
+}
+
+const canvas =
+document.createElement("canvas");
+
+canvas.width =
+width;
+
+canvas.height =
+height;
+
+const ctx =
+canvas.getContext("2d");
+
+/* =========================
+HIGH QUALITY
+========================= */
+
+ctx.imageSmoothingEnabled = true;
+
+ctx.imageSmoothingQuality = "high";
+
+ctx.drawImage(
+img,
+0,
+0,
+width,
+height
+);
+
+/* =========================
+COMPRESS
+========================= */
+console.log(
+
+"Ảnh gốc:",
+
+(
+file.size
+/
+1024
+/
+1024
+).toFixed(2)
+
++
+
+" MB"
+
+);
+const compressed =
+canvas.toDataURL(
+"image/jpeg",
+0.88
+);
+
+const compressedMB =
+
+(
+compressed.length
+/
+1024
+/
+1024
+).toFixed(2);
+
+setTimeout(()=>{
+
+const el =
+
+document.querySelector(
+
+`.compressed-size[data-size="${inputId}_${index}"]`
+
+);
+
+if(el){
+
+el.innerHTML =
+
+`Sau nén:
+<b style="color:#16a34a">
+
+${compressedMB} MB
+
+</b>`;
+
+}
+
+},100);
+   
+console.log(
+
+"Ảnh sau nén:",
+
+(
+compressed.length
+/
+1024
+/
+1024
+).toFixed(2)
+
++
+
+" MB"
+
+);
+resolve(compressed);
+
+};
+
+};
+
+});
+
+}
 function toBase64(file){
 
 return new Promise((resolve,reject)=>{
@@ -1287,6 +1494,7 @@ reject(error);
 }
 let saved=false;
 async function saveData(){
+if(saved)return;
 const btn =
 document.querySelector("button");
 
