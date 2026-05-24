@@ -1113,7 +1113,23 @@ typeSelect.innerHTML+=`<option value="${t}">${t}</option>`;
 
 }
 
-document.getElementById("searchInput").addEventListener("input",filterTable);
+document.getElementById("searchInput")
+.addEventListener("input",()=>{
+
+if(
+document.getElementById("modalTitle")
+.innerText.includes("ACCOUNT")
+){
+
+showAccountManager();
+
+}else{
+
+filterTable();
+
+}
+
+});
 
 document.getElementById("huyenFilter").addEventListener("change",filterTable);
 
@@ -1918,11 +1934,6 @@ Object.values(unique);
 
 const input = document.getElementById("searchInput");
 
-input.oninput = ()=>{
-
-showAccountManager();
-
-};
 
 const keyword =
 
@@ -1946,8 +1957,6 @@ return acc.includes(keyword)
 || ten.includes(keyword);
 
 });
-
-}
 
 }
 
