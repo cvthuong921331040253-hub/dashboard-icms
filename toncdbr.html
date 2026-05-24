@@ -280,7 +280,12 @@ height:100%!important;
 
 <div class="toolbar">
 
-<input type="text" id="searchInput" placeholder="Tìm kiếm...">
+<input
+type="text"
+id="searchInput"
+placeholder="Tìm kiếm..."
+oninput="showAccountManager()"
+>
 
 <select id="huyenFilter">
 <option value="">Tất cả huyện</option>
@@ -1553,6 +1558,60 @@ window.open(url,"_blank");
 
 }
 
+function formatDate(v){
+
+if(!v)return "";
+
+const d = new Date(v);
+
+if(isNaN(d)) return v;
+
+const dd =
+String(d.getDate())
+.padStart(2,"0");
+
+const mm =
+String(d.getMonth()+1)
+.padStart(2,"0");
+
+const yyyy =
+d.getFullYear();
+
+return `${dd}/${mm}/${yyyy}`;
+
+}
+
+function formatDateTime(v){
+
+if(!v)return "";
+
+const d = new Date(v);
+
+if(isNaN(d)) return v;
+
+const dd =
+String(d.getDate())
+.padStart(2,"0");
+
+const mm =
+String(d.getMonth()+1)
+.padStart(2,"0");
+
+const yyyy =
+d.getFullYear();
+
+const hh =
+String(d.getHours())
+.padStart(2,"0");
+
+const mi =
+String(d.getMinutes())
+.padStart(2,"0");
+
+return `${hh}:${mi} ${dd}/${mm}/${yyyy}`;
+
+}
+  
 function showAccountManager(){
 
 const modal =
@@ -1583,8 +1642,36 @@ unique[acc]=x;
 
 });
 
-const data =
+let data =
 Object.values(unique);
+
+const keyword =
+
+(
+document.getElementById("searchInput")
+?.value || ""
+)
+.toLowerCase()
+.trim();
+
+if(keyword){
+
+data = data.filter(x=>{
+
+const acc =
+String(x.account||"")
+.toLowerCase();
+
+const ten =
+String(x.ten_nv||"")
+.toLowerCase();
+
+return acc.includes(keyword)
+|| ten.includes(keyword);
+
+});
+
+}
 
 let html = `
 <div style="
@@ -1628,18 +1715,19 @@ ${row.account||""}
 
 <div style="margin-top:4px;font-size:13px;">
 🕒 TG nhập dữ liệu:
-${row.tg_nhap||""}
+${formatDateTime(row.tg_nhap)}
 </div>
 
 <div style="margin-top:4px;font-size:13px;">
 📅 TG phát sinh SC:
-${row.ngay_goc||""}
+${formatDate(row.ngay_goc)}
 </div>
 
 <div style="margin-top:4px;font-size:13px;">
 ✅ Loại sự cố (check):
 ${row.check||""}
 </div>
+
 
 <div style="margin-top:12px;">
 
