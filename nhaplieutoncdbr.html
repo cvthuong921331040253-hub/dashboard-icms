@@ -2280,76 +2280,31 @@ AUDIO
 
 if(isAudio){
 
-const audioId =
-
-link.match(/\/d\/(.*?)\//)?.[1];
-
-const audioSrc =
-
-audioId
-
-? `https://drive.google.com/uc?export=download&id=${audioId}`
-
-: link;
-
 return `
 
 <div
 style="
-position:relative;
-margin-top:8px;
-"
->
-
-<button
-onclick="removeOldFile('${id}','${link}')"
-style="
-position:absolute;
-top:6px;
-right:6px;
-z-index:2;
-
-width:24px;
-height:24px;
-
-border:none;
-border-radius:999px;
-
-background:#fff;
-color:red;
-
-font-weight:bold;
-cursor:pointer;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-line-height:1;
-padding:0;
-
-box-shadow:0 0 4px rgba(0,0,0,.2);
-"
->
-
-✕
-
-</button>
-
-<audio
-controls
-style="
-width:100%;
 margin-top:10px;
 "
 >
 
-<source
-src="${audioSrc}"
-type="audio/mp3"
+<a
+href="${link}"
+target="_blank"
+style="
+display:inline-block;
+padding:10px 14px;
+background:#1976d2;
+color:#fff;
+border-radius:8px;
+text-decoration:none;
+font-size:14px;
+"
 >
 
-</audio>
+🎧 Nghe file ghi âm
+
+</a>
 
 </div>
 
