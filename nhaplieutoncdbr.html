@@ -1078,7 +1078,7 @@ params.get("acc")
 ||
 "";
 
-loadOldData();
+// loadOldData();
 
 document.getElementById("account").value =
 
@@ -1164,7 +1164,19 @@ e.preventDefault();
 
 box.classList.remove("drag");
 
-input.files = e.dataTransfer.files;
+const dt =
+new DataTransfer();
+
+Array
+.from(e.dataTransfer.files)
+
+.forEach(file=>{
+
+dt.items.add(file);
+
+});
+
+input.files = dt.files;
 
 renderPreview();
 
@@ -1860,13 +1872,7 @@ const ghiam =
 await filesToBase64("file_ghiam");
 const data={
 
-mode:
-
-account
-
-? "update"
-
-: "insert",
+mode:"insert",
 
 check:
 checkType,
