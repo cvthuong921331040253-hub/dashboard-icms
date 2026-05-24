@@ -214,7 +214,7 @@ background:#fff;
 border-radius:14px;
 padding:15px;
 border:1px solid #e5e7eb;
-height:320px;
+height:420px;
 }
 
 .chart-box canvas{
@@ -783,7 +783,23 @@ data:labels.map(h=>sucoKNTKM[h])
 
 options:{
 responsive:true,
-maintainAspectRatio:false
+maintainAspectRatio:false,
+
+layout:{
+padding:{
+bottom:20
+}
+},
+
+scales:{
+x:{
+ticks:{
+maxRotation:45,
+minRotation:45
+}
+}
+}
+
 }
 
 });
@@ -837,7 +853,23 @@ data:labels.map(h=>hs[h])
 
 options:{
 responsive:true,
-maintainAspectRatio:false
+maintainAspectRatio:false,
+
+layout:{
+padding:{
+bottom:20
+}
+},
+
+scales:{
+x:{
+ticks:{
+maxRotation:45,
+minRotation:45
+}
+}
+}
+
 }
 
 });
@@ -970,7 +1002,23 @@ datasets:[
 
 options:{
 responsive:true,
-maintainAspectRatio:false
+maintainAspectRatio:false,
+
+layout:{
+padding:{
+bottom:20
+}
+},
+
+scales:{
+x:{
+ticks:{
+maxRotation:45,
+minRotation:45
+}
+}
+}
+
 }
 
 });
