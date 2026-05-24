@@ -284,7 +284,6 @@ height:100%!important;
 type="text"
 id="searchInput"
 placeholder="Tìm kiếm..."
-oninput="showAccountManager()"
 >
 
 <select id="huyenFilter">
@@ -1857,6 +1856,9 @@ document.getElementById(
 "tableContainer"
 ).innerHTML = html;
 
+document.getElementById(
+"searchInput"
+).oninput = showAccountManager;  
 }
 
 loadData();
