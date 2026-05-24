@@ -1979,9 +1979,11 @@ btn.disabled=false;
 btn.innerHTML=
 "LƯU NHẬP LIỆU";
 if(json.success){
+   
 document.getElementById(
 "loading_overlay"
 ).style.display="none";
+   
 status.innerHTML=
 "Hoàn tất 100%";
 status.style.color=
@@ -2041,13 +2043,16 @@ document.getElementById(
 }
 
 async function loadOldData(){
+
+if(!account){
+return;
+}
+
 document.getElementById(
 "loading_overlay"
 ).style.display="flex";
    
 try{
-
-if(!account)return;
 
 const res = await fetch(
 
@@ -2167,12 +2172,12 @@ d.file_ghiam,
 document.getElementById(
 "loading_overlay"
 ).style.display="none";
+   
+}catch(err){
 
 document.getElementById(
 "loading_overlay"
 ).style.display="none";
-   
-}catch(err){
 
 console.log(err);
 
