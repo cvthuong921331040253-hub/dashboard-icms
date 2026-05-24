@@ -535,9 +535,18 @@ onclick="closeViewer()"
 <img
 id="viewer_img"
 style="
-max-width:95%;
-max-height:95%;
+width:auto;
+height:auto;
+
+max-width:98vw;
+max-height:98vh;
+
+object-fit:contain;
+
 border-radius:12px;
+
+box-shadow:
+0 0 30px rgba(0,0,0,.45);
 "
 />
 
@@ -2306,15 +2315,77 @@ box-shadow:0 0 4px rgba(0,0,0,.2);
 
 ✕
 
+if(isAudio){
+
+const audioId =
+
+link.match(/\/d\/(.*?)\//)?.[1];
+
+const audioSrc =
+
+audioId
+
+? `https://drive.google.com/uc?export=download&id=${audioId}`
+
+: link;
+
+return `
+
+<div
+style="
+position:relative;
+margin-top:8px;
+"
+>
+
+<button
+onclick="removeOldFile('${id}','${link}')"
+style="
+position:absolute;
+top:6px;
+right:6px;
+z-index:2;
+
+width:24px;
+height:24px;
+
+border:none;
+border-radius:999px;
+
+background:#fff;
+color:red;
+
+font-weight:bold;
+cursor:pointer;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+line-height:1;
+padding:0;
+
+box-shadow:0 0 4px rgba(0,0,0,.2);
+"
+>
+
+✕
+
 </button>
 
 <audio
 controls
-src="${link}"
 style="
 width:100%;
+margin-top:10px;
 "
 >
+
+<source
+src="${audioSrc}"
+type="audio/mpeg"
+>
+
 </audio>
 
 </div>
@@ -2366,7 +2437,7 @@ box-shadow:0 0 4px rgba(0,0,0,.2);
 
 <img
 src="${preview}"
-onclick="openViewer('${preview}')"
+onclick="openViewer('${link}')"
 style="
 width:140px;
 height:140px;
