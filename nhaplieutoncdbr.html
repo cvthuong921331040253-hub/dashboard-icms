@@ -2066,9 +2066,27 @@ encodeURIComponent(account)
 
 const json = await res.json();
 
-if(!json.success)return;
+if(!json.success){
+
+document.getElementById(
+"loading_overlay"
+).style.display="none";
+
+return;
+
+}
 
 const d = json.data;
+
+if(!d){
+
+document.getElementById(
+"loading_overlay"
+).style.display="none";
+
+return;
+
+}
 
 /* =====================
 FILL INPUT
