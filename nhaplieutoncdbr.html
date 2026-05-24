@@ -14,10 +14,22 @@
 box-sizing:border-box;
 }
 
+@keyframes spin{
+
+0%{
+transform:rotate(0deg);
+}
+
+100%{
+transform:rotate(360deg);
+}
+
+}
+
 body{
 
 margin:0;
-padding:20px;
+padding:10px;
 font-family:Arial;
 background:#f3f4f6;
 color:#111827;
@@ -55,7 +67,7 @@ justify-content:space-between;
 
 .header-title{
 
-font-size:28px;
+font-size:22px;
 font-weight:bold;
 
 color:#111827;
@@ -85,7 +97,7 @@ transition:.2s;
 
 background:#fff;
 border-radius:14px;
-padding:14px;
+padding:10px;
 margin-bottom:12px;
 box-shadow:0 2px 10px rgba(0,0,0,.05);
 
@@ -100,7 +112,7 @@ font-size:28px;
 
 .section-title{
 
-font-size:20px;
+font-size:17px;
 font-weight:bold;
 margin-bottom:20px;
 color:#2563eb;
@@ -162,7 +174,7 @@ textarea,
 select{
 
 width:100%;
-padding:12px;
+padding:10px;
 border:1px solid #d1d5db;
 border-radius:10px;
 font-size:15px;
@@ -294,7 +306,7 @@ color:#6b7280;
 .preview-grid{
 
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(95px,1fr));
 gap:12px;
 margin-top:16px;
 
@@ -413,7 +425,102 @@ transition:.3s;
 </head>
 
 <body>
+<div
+id="loading_overlay"
+style="
+position:fixed;
+inset:0;
+background:rgba(255,255,255,.85);
+z-index:99999;
 
+display:none;
+
+align-items:center;
+justify-content:center;
+flex-direction:column;
+
+backdrop-filter:blur(4px);
+"
+>
+
+<div
+style="
+width:70px;
+height:70px;
+border:6px solid #dbeafe;
+border-top:6px solid #2563eb;
+border-radius:50%;
+
+animation:spin 1s linear infinite;
+"
+></div>
+
+<div
+style="
+margin-top:20px;
+font-size:18px;
+font-weight:bold;
+color:#2563eb;
+"
+>
+
+Đang tải dữ liệu...
+
+</div>
+
+</div>
+
+<div
+id="image_viewer"
+style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.9);
+z-index:999999;
+
+align-items:center;
+justify-content:center;
+"
+onclick="closeViewer()"
+>
+<button
+style="
+position:absolute;
+top:20px;
+right:20px;
+
+width:50px;
+height:50px;
+
+border:none;
+border-radius:999px;
+
+background:#fff;
+color:#111;
+
+font-size:28px;
+font-weight:bold;
+
+z-index:2;
+"
+
+onclick="closeViewer()"
+>
+
+✕
+
+</button>
+<img
+id="viewer_img"
+style="
+max-width:95%;
+max-height:95%;
+border-radius:12px;
+"
+/>
+
+</div>
 <div class="container">
 
 <div class="top-header">
@@ -657,6 +764,7 @@ data-input="file_topo"
 type="file"
 id="file_topo"
 accept="image/*"
+capture="environment"
 multiple
 hidden
 >
@@ -717,6 +825,7 @@ data-input="file_bienban"
 type="file"
 id="file_bienban"
 accept="image/*"
+capture="environment"
 multiple
 hidden
 >
@@ -762,6 +871,7 @@ data-input="file_calllog"
 type="file"
 id="file_calllog"
 accept="image/*"
+capture="environment"
 multiple
 hidden
 >
@@ -1073,7 +1183,10 @@ onclick="removeFile('${id}',${index})"
 ✕
 </button>
 
-<img src="${e.target.result}">
+<img
+src="${e.target.result}"
+onclick="openViewer(this.src)"
+>
 <div
 style="
 padding:8px;
@@ -1118,7 +1231,11 @@ Sau nén:
 `;
 
 preview.appendChild(div);
-
+compressImage(
+file,
+id,
+index
+);
 };
 
 reader.readAsDataURL(file);
@@ -1513,9 +1630,18 @@ document.getElementById(
 "header_status"
 );
 status.style.opacity="1";
+document.getElementById(
+"loading_overlay"
+).style.display="flex";
 status.innerHTML=
 "Đang tải lên 10%";
 if(!validate()){
+
+document.getElementById(
+"loading_overlay"
+).style.display="none";
+
+status.style.opacity="0";
 
 btn.disabled=false;
 
@@ -1761,6 +1887,9 @@ btn.disabled=false;
 btn.innerHTML=
 "LƯU NHẬP LIỆU";
 if(json.success){
+document.getElementById(
+"loading_overlay"
+).style.display="none";
 status.innerHTML=
 "Hoàn tất 100%";
 status.style.color=
@@ -1769,9 +1898,8 @@ saved=true;
 alert("Đã lưu dữ liệu");
 setTimeout(()=>{
 
-window.close();
-
-location.href="about:blank";
+location.href =
+"https://cvthuong921331040253-hub.github.io/dashboard-icms/";
 
 },800);
 }else{
@@ -1784,6 +1912,9 @@ btn.disabled=false;
 btn.innerHTML=
 "LƯU NHẬP LIỆU";
 }catch(err){
+document.getElementById(
+"loading_overlay"
+).style.display="none";
 status.style.opacity="0";
 btn.disabled=false;
 
@@ -1797,7 +1928,25 @@ alert(err);
 }
 
 }
+function openViewer(src){
 
+document.getElementById(
+"image_viewer"
+).style.display="flex";
+
+document.getElementById(
+"viewer_img"
+).src=src;
+
+}
+
+function closeViewer(){
+
+document.getElementById(
+"image_viewer"
+).style.display="none";
+
+}
 </script>
 
 </body>
