@@ -1501,7 +1501,7 @@ document.querySelector("button");
 btn.disabled=true;
 
 btn.innerHTML=
-"Đang lưu...";
+"⏳ Đang lưu...";
 const status =
 document.getElementById(
 "header_status"
@@ -1705,7 +1705,7 @@ btn.disabled=false;
 btn.innerHTML=
 "LƯU NHẬP LIỆU";
 }catch(err){
-
+status.style.display="none";
 btn.disabled=false;
 
 btn.innerHTML=
