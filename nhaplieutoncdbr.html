@@ -1602,29 +1602,7 @@ if(
 checkType = "TKM";
 
 }
-status.innerHTML=
-"Đang tải ảnh topo 30%";
 
-const topo =
-await filesToBase64("file_topo");
-
-status.innerHTML=
-"Đang tải biên bản 50%";
-
-const bienban =
-await filesToBase64("file_bienban");
-
-status.innerHTML=
-"Đang tải cuộc gọi 70%";
-
-const calllog =
-await filesToBase64("file_calllog");
-
-status.innerHTML=
-"Đang tải ghi âm 90%";
-
-const ghiam =
-await filesToBase64("file_ghiam");
 /* =========================
 CHECK DUPLICATE
 ========================= */
@@ -1696,6 +1674,29 @@ checkType +
 return;
 
 }
+status.innerHTML=
+"Đang tải ảnh topo 30%";
+
+const topo =
+await filesToBase64("file_topo");
+
+status.innerHTML=
+"Đang tải biên bản 50%";
+
+const bienban =
+await filesToBase64("file_bienban");
+
+status.innerHTML=
+"Đang tải cuộc gọi 70%";
+
+const calllog =
+await filesToBase64("file_calllog");
+
+status.innerHTML=
+"Đang tải ghi âm 90%";
+
+const ghiam =
+await filesToBase64("file_ghiam");
 const data={
 
 check:
