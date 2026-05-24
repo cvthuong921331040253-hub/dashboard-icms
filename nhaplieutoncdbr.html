@@ -2270,9 +2270,9 @@ const preview =
 
 fileId
 
-? `https://drive.google.com/uc?export=view&id=${fileId}`
+? `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`
 
-: link;;
+: link;
 
 /* =========================
 AUDIO
@@ -2355,7 +2355,7 @@ box-shadow:0 0 4px rgba(0,0,0,.2);
 
 <img
 src="${preview}"
-onclick="openViewer('${preview}')"
+onclick="openViewer('https://drive.google.com/uc?export=view&id=${fileId}')"
 style="
 width:140px;
 height:140px;
