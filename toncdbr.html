@@ -327,6 +327,7 @@ let tontkm=[];
 let currentData=[];
 let filteredData=[];
 let currentPage=1;
+let allAccounts=[];
 const PAGE_SIZE=300;
 
 function countUniqueAccount(data){const set=new Set();data.forEach(x=>{const acc=String(x.account||"").replace(/\s+/g," ").trim().toUpperCase();if(acc)set.add(acc);});return set.size;}
@@ -342,7 +343,12 @@ const json=await res.json();
 
 tonsc=json.tonsc||[];
 tontkm=json.tontkm||[];
+allAccounts = [
 
+...tonsc,
+...tontkm
+
+].filter(x=>x.account);
 console.log("TON SC:",tonsc.length);
 console.log("TON TKM:",tontkm.length);
 
@@ -560,6 +566,15 @@ window.tkmchuagiao=chuagiao;
 html+=createCard("TỒN CẬP NHẬT HỒ SƠ",capnhaths.length,"#dc2626","showTable('TỒN CẬP NHẬT HỒ SƠ',capnhaths)");
 
 html+=createCard("TKM CHƯA GIAO",chuagiao.length,"#7c3aed","showTable('TKM CHƯA GIAO',tkmchuagiao)");
+
++
+
+createCard(
+"ACCOUNT ĐÃ NHẬP BYPASS",
+allAccounts.length,
+"#0f766e",
+"showAccountManager()"
+)
 
 dashboard.innerHTML=html;
 
@@ -1487,6 +1502,118 @@ const url =
 window.open(url,"_blank");
 
 }
+
+function showAccountManager(){
+
+const modal =
+document.getElementById("modal");
+
+modal.classList.remove("hidden");
+
+document.getElementById(
+"modalTitle"
+).innerHTML =
+"📁 ACCOUNT ĐÃ NHẬP";
+
+const unique = {};
+
+allAccounts.forEach(x=>{
+
+const acc =
+String(x.account||"")
+.trim();
+
+if(!acc)return;
+
+if(!unique[acc]){
+
+unique[acc]=x;
+
+}
+
+});
+
+const data =
+Object.values(unique);
+
+let html = `
+<div style="
+padding:10px;
+display:grid;
+grid-template-columns:
+repeat(auto-fill,minmax(280px,1fr));
+gap:12px;
+">
+`;
+
+data.forEach(row=>{
+
+html += `
+
+<div
+style="
+background:#fff;
+border:1px solid #ddd;
+border-radius:12px;
+padding:14px;
+"
+>
+
+<div
+style="
+font-size:16px;
+font-weight:bold;
+color:#2563eb;
+word-break:break-word;
+"
+>
+
+${row.account||""}
+
+</div>
+
+<div style="margin-top:8px;font-size:13px;">
+👤 ${row.nv||""}
+</div>
+
+<div style="margin-top:4px;font-size:13px;">
+🕒 ${row.ngay||row.ntdn||""}
+</div>
+
+<div style="margin-top:12px;">
+
+<button
+onclick='openInput(${JSON.stringify(row)})'
+style="
+border:none;
+background:#2563eb;
+color:#fff;
+padding:8px 12px;
+border-radius:8px;
+cursor:pointer;
+"
+>
+
+Mở chỉnh sửa
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+html += "</div>";
+
+document.getElementById(
+"tableContainer"
+).innerHTML = html;
+
+}
+
 loadData();
 
 function exportExcel(){
