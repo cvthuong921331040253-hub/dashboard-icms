@@ -343,9 +343,12 @@ const json=await res.json();
 
 tonsc=json.tonsc||[];
 tontkm=json.tontkm||[];
+const nhaplieu =
+json.nhaplieu || [];
+
 const mapAcc = {};
 
-[...tonsc,...tontkm].forEach(row=>{
+nhaplieu.forEach(row=>{
 
 const acc =
 
