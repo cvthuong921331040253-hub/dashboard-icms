@@ -2373,9 +2373,19 @@ const res = await fetch(
 
 API +
 
-"?action=detail&account=" +
+"?action=detail"
+
++
+
+"&account=" +
 
 encodeURIComponent(account)
+
++
+
+"&id_check=" +
+
+encodeURIComponent(editId || "")
 
 );
 
