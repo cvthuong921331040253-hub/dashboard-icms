@@ -413,12 +413,13 @@ gap:12px;
 }
 
 .audio-item{
-
+position:relative;
 background:#fff;
 border:1px solid #e5e7eb;
 border-radius:12px;
 padding:12px;
-
+padding-top:16px;
+overflow:hidden;
 }
 
 .progress{
@@ -1258,14 +1259,46 @@ div.className =
 
 div.innerHTML=`
 
-<div>
+<button
+type="button"
+class="remove-btn"
+onclick="removeFile('${id}',${index})"
+style="
+position:absolute;
+
+top:8px;
+right:8px;
+
+z-index:10;
+"
+>
+✕
+</button>
+
+<div
+style="
+padding-right:36px;
+
+font-size:13px;
+font-weight:600;
+
+line-height:1.5;
+
+word-break:break-word;
+"
+>
 
 🎧 ${file.name}
 
 </div>
 
-<audio controls
-style="width:100%;margin-top:10px;">
+<audio
+controls
+style="
+width:100%;
+margin-top:10px;
+"
+>
 
 <source
 src="${URL.createObjectURL(file)}"
@@ -1273,6 +1306,7 @@ type="${file.type}"
 >
 
 </audio>
+
 `;
 
 preview.appendChild(div);
