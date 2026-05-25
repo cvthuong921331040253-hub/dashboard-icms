@@ -1484,7 +1484,18 @@ else if(c==="nd"||c==="nnt"||c==="nnth"){
 const shortText=String(val).slice(0,120);
 
 html+=`
-<td style="${stickyStyle}width:260px;min-width:260px;max-width:260px;vertical-align:top;">
+<td style="
+${stickyStyle}
+
+width:220px;
+min-width:220px;
+max-width:220px;
+
+vertical-align:top;
+text-align:left;
+
+padding-top:8px;
+">
 <div class="text-preview">${shortText}</div>
 <div class="nd-full" id="full_${index}" data-full="${encodeURIComponent(val)}"></div>
 <div class="expand-btn" onclick="openTextModal('${encodeURIComponent(val)}')">Xem thêm</div>
@@ -1497,9 +1508,9 @@ let colStyle=stickyStyle;
 if(c==="dc"){
 
 colStyle+=`
-width:220px;
-min-width:220px;
-max-width:220px;
+width:180px;
+min-width:180px;
+max-width:180px;
 
 overflow:hidden;
 text-overflow:ellipsis;
@@ -1574,6 +1585,8 @@ font-size:11px;
 display:block;
 
 white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 
 line-height:1.3;
 "
@@ -1587,11 +1600,13 @@ ${val}
 `;
 
 colStyle+=`
-width:300px;
-min-width:300px;
-max-width:300px;
-`;
+width:220px;
+min-width:220px;
+max-width:220px;
 
+text-align:left;
+overflow:hidden;
+`;
 }
 
 html+=`<td style="${colStyle}">${val}</td>`;
