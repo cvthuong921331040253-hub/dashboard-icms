@@ -1564,38 +1564,12 @@ String(row.sc||"")
 .toUpperCase();
 
 return (
-
 acc1===acc2
-
 &&
-
-(
-
-(
-
-check==="HOME KÉM"
-
-&&
-
-sc==="SOC HOME"
-
-)
-
-||
-
-(
-
-check==="PORT KÉM"
-
-&&
-
-sc==="SOC"
-
-)
-
-)
-
+check===sc
 );
+
+});
 
 row.bypass =
 daBypass
