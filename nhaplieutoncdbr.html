@@ -811,11 +811,22 @@ id="bienban_note"
 -Ảnh biên bản XLSC HOME, PORT KÉM.
 Nếu không gặp được khách hàng:
 ký với kinh doanh địa bàn.
+
 <br>
+
 -Nếu port kém do trục nhánh:
 chụp màn hình mã WO báo hỏng.
-<br>
+
+</div>
+
+<div
+id="bkk_upload_note"
+class="red-note"
+style="display:none;"
+>
+
 -Tương tự BKK SC và TKM up ảnh chứng minh
+
 </div>
 <div
 class="upload-box"
@@ -1030,10 +1041,10 @@ SC
 </option>
 
 <option
-value="PTM"
-id="opt_ptm"
+value="TKM"
+id="opt_tkm"
 >
-PTM
+TKM
 </option>
    
 </select>
@@ -1157,6 +1168,9 @@ document.getElementById("nguyennhan_bkk")
 document.getElementById("bkk_note")
 .style.display="block";
 
+document.getElementById("bkk_upload_note")
+.style.display="block";
+
 }else{
 
 /* HIỆN */
@@ -1191,6 +1205,9 @@ document.getElementById("nguyennhan_bkk")
 .style.display="none";
 
 document.getElementById("bkk_note")
+.style.display="none";
+
+document.getElementById("bkk_upload_note")
 .style.display="none";
 
 }
