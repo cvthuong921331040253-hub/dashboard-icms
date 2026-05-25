@@ -327,6 +327,70 @@ width:100%!important;
 height:100%!important;
 }
 /* BIỂU ĐỒ */
+
+.manual-card{
+
+background:
+linear-gradient(
+135deg,
+#ff7b00,
+#ff4d00
+);
+
+border:none;
+
+box-shadow:
+0 8px 20px rgba(255,100,0,.25);
+
+transition:.25s;
+
+}
+
+.manual-card .card-title{
+
+color:#fff;
+
+font-size:18px;
+
+font-weight:700;
+
+line-height:1.4;
+
+text-align:center;
+
+margin:0;
+
+}
+
+.manual-card:hover{
+
+transform:translateY(-2px);
+
+box-shadow:
+0 12px 24px rgba(255,100,0,.35);
+
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+.manual-card{
+
+padding:12px;
+
+border-radius:14px;
+
+}
+
+.manual-card .card-title{
+
+font-size:13px;
+
+line-height:1.35;
+
+}
+
+}
 </style>
 
 </head>
@@ -681,12 +745,20 @@ chuagiao.length,
 )
 +
 
-createCard(
-"📝 NHẬP SC & TKM BKK",
-"",
-"#0f766e",
-"openManualInput()"
-)
+`
+<div
+class="card manual-card"
+onclick="openManualInput()"
+>
+
+<div class="card-title">
+
+📝 NHẬP SC & TKM BKK
+
+</div>
+
+</div>
+`
   
 +
 
