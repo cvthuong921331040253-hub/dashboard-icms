@@ -2524,11 +2524,6 @@ ${formatDateTime(row.tg_nhap)}
 </div>
 
 <div style="margin-top:4px;font-size:13px;">
-📅 TG phát sinh SC:
-${formatDate(row.ngay_goc)}
-</div>
-
-<div style="margin-top:4px;font-size:13px;">
 ✅ Loại sự cố:
 ${row.loai_wo||""}
 </div>
@@ -2536,7 +2531,7 @@ ${row.loai_wo||""}
 <div style="margin-top:12px;">
 
 <button
-onclick='openInput(${JSON.stringify(row)})'
+onclick='openManualEdit(${JSON.stringify(row)})'
 style="
 border:none;
 background:#2563eb;
@@ -2567,6 +2562,37 @@ document.getElementById(
 
 }
 
+function openManualEdit(row){
+
+const account =
+row.account || "";
+
+const ten_nv =
+
+row.ten_nv ||
+row.nv ||
+"";
+
+const loai =
+
+row.loai_wo || "";
+
+const url =
+
+`https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html
+
+?manual=1
+
+&account=${encodeURIComponent(account)}
+
+&ten_nv=${encodeURIComponent(ten_nv)}
+
+&loai=${encodeURIComponent(loai)}`;
+
+window.open(url,"_blank");
+
+}
+  
 function openManualInput(){
 
 const url =
