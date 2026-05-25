@@ -1203,9 +1203,6 @@ document.getElementById("opt_tkm")
 .style.display="block";
 
 document.getElementById("loai_wo").value="";
-
-document.getElementById("check_wrap")
-.style.display="none";
    
 document.getElementById("ngay_goc")
 .parentElement.style.display="none";
@@ -1269,9 +1266,6 @@ document.getElementById("opt_tkm")
 .style.display="none";
 
 document.getElementById("loai_wo").value="";
-
-document.getElementById("check_wrap")
-.style.display="block";
 
 document.getElementById("ngay_goc")
 .parentElement.style.display="block";
@@ -1655,10 +1649,6 @@ if(!isManual){
 required.push(
 "thietbi",
 "serial_hwf"
-);
-
-required.push(
-"check_type"
 );
    
 }
@@ -2067,13 +2057,9 @@ document.getElementById("account").value
 
 "&check=" +
 
-encodeURIComponent(
+"&check=" +
 
-document.getElementById(
-"check_type"
-).value
-
-);
+encodeURIComponent(autoCheck);
 
 console.log(checkUrl);
 
@@ -2110,7 +2096,7 @@ alert(
 
 "Account này đã nhập liệu " +
 
-checkType +
+autoCheck +
 
 " rồi"
 
