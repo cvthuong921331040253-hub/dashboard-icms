@@ -1897,19 +1897,26 @@ const ten_nv =
    row.nv ||
 
    "";
-const loai =
+let loai = "";
 
-row.cv
+if(row.cv){
 
-? "TKM"
+loai = "TKM";
 
-: (
+}else{
 
-row.sc ||
+loai = String(
+row.sc || ""
+)
+.trim();
 
-"SC"
+if(!loai){
 
-);
+loai = "SC";
+
+}
+
+}
 
 /* =========================
 URL
