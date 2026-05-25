@@ -570,6 +570,11 @@ Tự động link từ dữ liệu
 
 <label>
 Tên nhân viên
+
+<span class="required">
+*
+</span>
+
 </label>
 
 <input
@@ -601,6 +606,11 @@ placeholder="Nhập mã nhân viên"
 
 <label>
 Account
+
+<span class="required">
+*
+</span>
+
 </label>
 
 <input
@@ -716,7 +726,10 @@ File đính kèm
 
 <!-- TOPO -->
 
-<div class="field">
+<div
+class="field"
+id="topo_wrap"
+>
 
 <label>
 Ảnh Topo
@@ -1086,10 +1099,16 @@ if(isManual){
 document.getElementById("ngay_goc")
 .parentElement.style.display="none";
 
+document.getElementById("topo_wrap")
+.style.display="none";
+
 }else{
 
 document.getElementById("ngay_goc")
 .parentElement.style.display="block";
+
+document.getElementById("topo_wrap")
+.style.display="block";
 
 }
 
