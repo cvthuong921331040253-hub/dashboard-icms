@@ -575,7 +575,6 @@ Tên nhân viên
 <input
 id="ten_nv"
 class="readonly"
-readonly
 >
 
 <div class="note">
@@ -1045,6 +1044,16 @@ loadOldData();
 
 document.getElementById("account").value =
 
+if(isManual){
+
+document.getElementById("account")
+.removeAttribute("readonly");
+
+document.getElementById("account")
+.classList.remove("readonly");
+
+}
+
 params.get("account")
 ||
 params.get("acc")
@@ -1060,7 +1069,15 @@ params.get("time")
 "";
 
 document.getElementById("ten_nv").value =
+if(isManual){
 
+document.getElementById("ten_nv")
+.removeAttribute("readonly");
+
+document.getElementById("ten_nv")
+.classList.remove("readonly");
+
+}
 decodeURIComponent(
 
 params.get("ten_nv")
@@ -1079,7 +1096,11 @@ new Date()
 .toLocaleString(
 "vi-VN"
 );
+   
+const isManual =
 
+params.get("manual")==="1";
+   
 const uploadInputs = [
 
 "file_topo",
