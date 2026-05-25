@@ -2189,7 +2189,9 @@ const url =
 
 `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html
 
-?account=${encodeURIComponent(account)}
+?id_check=${encodeURIComponent(row.id_check || "")}
+
+&account=${encodeURIComponent(account)}
 
 &ngay=${encodeURIComponent(ngayPhatSinh)}
 
