@@ -1030,6 +1030,8 @@ const API =
 ========================= */
 
 const params =
+const params =
+const params =
 new URLSearchParams(location.search);
 
 const account =
@@ -1040,8 +1042,9 @@ params.get("acc")
 ||
 "";
 
-const isManual =
+let isManual = false;
 
+isManual =
 params.get("manual")==="1";
 
 loadOldData();
