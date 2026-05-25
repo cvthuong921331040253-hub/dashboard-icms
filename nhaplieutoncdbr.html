@@ -1040,6 +1040,10 @@ params.get("acc")
 ||
 "";
 
+const isManual =
+
+params.get("manual")==="1";
+
 loadOldData();
 
 document.getElementById("account").value =
@@ -1099,9 +1103,6 @@ new Date()
 "vi-VN"
 );
    
-const isManual =
-
-params.get("manual")==="1";
    
 const uploadInputs = [
 
