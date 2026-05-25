@@ -1030,8 +1030,6 @@ const API =
 ========================= */
 
 const params =
-const params =
-const params =
 new URLSearchParams(location.search);
 
 const account =
@@ -1042,20 +1040,22 @@ params.get("acc")
 ||
 "";
 
-let isManual = false;
+const isManual =
 
-isManual =
 params.get("manual")==="1";
+
+/* =========================
+LOAD OLD DATA
+========================= */
 
 loadOldData();
 
-document.getElementById("account").value =
+/* =========================
+ACCOUNT
+========================= */
 
-params.get("account")
-||
-params.get("acc")
-||
-"";
+document.getElementById("account").value =
+account;
 
 if(isManual){
 
@@ -1069,6 +1069,10 @@ document.getElementById("account").value="";
 
 }
 
+/* =========================
+NGÀY PHÁT SINH
+========================= */
+
 document.getElementById("ngay_goc").value =
 
 params.get("ngay")
@@ -1076,6 +1080,22 @@ params.get("ngay")
 params.get("time")
 ||
 "";
+
+if(isManual){
+
+document.getElementById("ngay_goc")
+.parentElement.style.display="none";
+
+}else{
+
+document.getElementById("ngay_goc")
+.parentElement.style.display="block";
+
+}
+
+/* =========================
+TÊN NHÂN VIÊN
+========================= */
 
 document.getElementById("ten_nv").value =
 
@@ -1100,6 +1120,10 @@ document.getElementById("ten_nv").value="";
 
 }
 
+/* =========================
+THỜI GIAN NHẬP
+========================= */
+
 document.getElementById(
 "tg_nhap"
 ).value =
@@ -1109,7 +1133,6 @@ new Date()
 .toLocaleString(
 "vi-VN"
 );
-   
    
 const uploadInputs = [
 
@@ -1406,6 +1429,15 @@ const required=[
 "loai_wo"
 
 ];
+
+if(isManual){
+
+required.push(
+"account",
+"ten_nv"
+);
+
+}
 
 required.forEach(id=>{
 
