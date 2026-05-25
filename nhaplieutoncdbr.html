@@ -654,13 +654,18 @@ Bắt buộc chọn (yêu cầu chọn đúng hạng mục nguyên nhân)
 -- Chọn nguyên nhân --
 </option>
 
-<option value="Home kém - Khách hàng không đồng ý xử lý: Chất lượng dịch vụ vẫn tốt, không đồng ý đi dây nổi (kéo dây Lan miễn phí), không đồng ý nâng cấp gói cước/mua thêm thiết bị (thêm vùng phủ sử dụng cho khách hàng, thêm thiết bị kết nối để khắc phục mức thu thấp)">
+<option
+id="nguyennhan_home"
+value="Home kém - Khách hàng không đồng ý xử lý: Chất lượng dịch vụ vẫn tốt, không đồng ý đi dây nổi (kéo dây Lan miễn phí), không đồng ý nâng cấp gói cước/mua thêm thiết bị (thêm vùng phủ sử dụng cho khách hàng, thêm thiết bị kết nối để khắc phục mức thu thấp)">
 
 1. Home kém - KH không đồng ý xử lý
 
 </option>
 
-<option value="Port kém - Lỗi tại nhà KH, KH không đồng ý xử lý (bắt buộc có biên bản)">
+
+<option
+id="nguyennhan_port"
+value="Port kém - Lỗi tại nhà KH, KH không đồng ý xử lý (bắt buộc có biên bản)">
 
 2. Port kém - KH không đồng ý xử lý
 
@@ -676,7 +681,10 @@ id="nguyennhan_bkk"
 </option>
 </select>
 
-<div class="red-note">
+<div
+class="red-note"
+id="home_port_note"
+>
 
 1. Home kém - Khách hàng không đồng ý xử lý:
 Chất lượng dịch vụ vẫn tốt, không đồng ý đi dây nổi
@@ -708,7 +716,10 @@ id="chitiet_bypass"
 placeholder="Chi tiết nguyên nhân + SĐT KH"
 ></textarea>
 
-<div class="note">
+<div
+class="note"
+id="bypass_note"
+>
 
 Chi tiết nguyên nhân bất khả kháng phải bypass
 - ghi rõ nguyên nhân + SĐT KH
@@ -1012,25 +1023,19 @@ Loại công việc
 </option>
 
 <option
-value="HOME KÉM"
-id="opt_home"
+value="SC"
+id="opt_sc"
 >
-HOME KÉM
+SC
 </option>
 
 <option
-value="PORT KÉM"
-id="opt_port"
+value="PTM"
+id="opt_ptm"
 >
-PORT KÉM
+PTM
 </option>
-
-<option
-value="BKK SC TKM"
-id="opt_bkk"
->
-BKK SC TKM
-</option>
+   
 </select>
 
 </div>
@@ -1129,29 +1134,33 @@ document.getElementById("topo_wrap")
 document.getElementById("thietbi_wrap")
 .style.display="none";
 
-document.getElementById("opt_home")
-.style.display="none";
-
-document.getElementById("opt_port")
-.style.display="none";
-
 document.getElementById("bienban_note")
+.style.display="none";
+
+document.getElementById("home_port_note")
+.style.display="none";
+
+document.getElementById("bypass_note")
+.style.display="none";
+
+document.getElementById("nguyennhan_home")
+.style.display="none";
+
+document.getElementById("nguyennhan_port")
 .style.display="none";
 
 /* HIỆN */
 
-document.getElementById("opt_bkk")
-.style.display="block";
-   
 document.getElementById("nguyennhan_bkk")
 .style.display="block";
-   
+
 document.getElementById("bkk_note")
 .style.display="block";
 
 }else{
 
 /* HIỆN */
+
 document.getElementById("ngay_goc")
 .parentElement.style.display="block";
 
@@ -1161,23 +1170,26 @@ document.getElementById("topo_wrap")
 document.getElementById("thietbi_wrap")
 .style.display="block";
 
-document.getElementById("opt_home")
-.style.display="block";
-
-document.getElementById("opt_port")
-.style.display="block";
-
 document.getElementById("bienban_note")
+.style.display="block";
+
+document.getElementById("home_port_note")
+.style.display="block";
+
+document.getElementById("bypass_note")
+.style.display="block";
+
+document.getElementById("nguyennhan_home")
+.style.display="block";
+
+document.getElementById("nguyennhan_port")
 .style.display="block";
 
 /* ẨN */
 
-document.getElementById("opt_bkk")
-.style.display="none";
-
 document.getElementById("nguyennhan_bkk")
 .style.display="none";
-   
+
 document.getElementById("bkk_note")
 .style.display="none";
 
