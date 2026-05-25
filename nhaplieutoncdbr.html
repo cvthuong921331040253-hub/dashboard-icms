@@ -556,7 +556,10 @@ class="readonly"
 readonly
 >
 
-<div class="note">
+<div
+class="note"
+id="account_note"
+>
 
 Tự động link từ dữ liệu
 
@@ -1152,6 +1155,11 @@ if(isManual){
 
 /* ẨN */
 
+document.getElementById("account_note")
+.innerHTML=
+
+'Yêu cầu nhập chuẩn account sai sẽ loại luôn (vd: g059_gftth_thuongcv1...) nên copy và dán vào';
+   
 document.getElementById("opt_homekem")
 .style.display="none";
 
@@ -1205,6 +1213,11 @@ document.getElementById("bkk_upload_note")
 
 /* HIỆN */
 
+document.getElementById("account_note")
+.innerHTML=
+
+'Tự động link từ dữ liệu';
+   
 document.getElementById("opt_homekem")
 .style.display="block";
 
