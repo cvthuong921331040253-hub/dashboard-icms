@@ -679,7 +679,15 @@ chuagiao.length,
 "#7c3aed",
 "showTable('SỰ CỐ CHƯA GIAO',chuagiaoData)"
 )
++
 
+createCard(
+"📝 NHẬP SC & TKM BKK",
+"",
+"#0f766e",
+"openManualInput()"
+)
+  
 +
 
 `
@@ -708,7 +716,7 @@ letter-spacing:.2px;
 "
 >
 
-📁 ACCOUNT ĐÃ NHẬP BYPASS
+📁 ĐÃ NHẬP BYPASS VÀ BKK
 
 </div>
 
@@ -728,6 +736,7 @@ ${allAccounts.length}
 </div>
 `
 }
+
 /* =====================
 TON TKM
 ===================== */
@@ -2273,6 +2282,16 @@ html += "</div>";
 document.getElementById(
 "tableContainer"
 ).innerHTML = html;
+
+}
+
+function openManualInput(){
+
+const url =
+
+"https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1";
+
+window.open(url,"_blank");
 
 }
 
