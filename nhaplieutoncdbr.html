@@ -2201,14 +2201,20 @@ isEdit
 check:
 
 (
-document.getElementById("loai_wo").value==="SC"
-||
-document.getElementById("loai_wo").value==="TKM"
+document.getElementById("loai_wo").value==="HOME KÉM"
 )
 
-? ""
+? "SOC HOME"
 
-: checkType,
+:
+
+(
+document.getElementById("loai_wo").value==="PORT KÉM"
+)
+
+? "SOC"
+
+: "",
 
 nv_xuly:
 document.getElementById("nv_xuly").value,
