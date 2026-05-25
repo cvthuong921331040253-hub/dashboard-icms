@@ -1450,10 +1450,12 @@ html+=`<td style="${stickyStyle}color:${tgColor};font-weight:bold;">${val}</td>`
 else if(c==="bypass"){
 
 stickyStyle+=`
-width:90px;
-min-width:90px;
-max-width:90px;
+width:78px;
+min-width:78px;
+max-width:78px;
+
 text-align:center;
+padding:4px;
 `;
 
 if(val){
@@ -1463,8 +1465,18 @@ val=`
 class="badge green"
 style="
 font-size:10px;
-padding:3px 6px;
+
+padding:2px 5px;
+
+border-radius:6px;
+
 white-space:nowrap;
+
+display:inline-block;
+
+line-height:1.2;
+
+font-weight:700;
 "
 >
 ${val}
