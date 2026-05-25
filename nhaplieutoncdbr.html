@@ -684,7 +684,11 @@ khách hàng, thêm thiết bị kết nối để khắc phục mức thu thấ
 2. Port kém - Lỗi tại nhà KH, KH không đồng ý xử lý
 (bắt buộc có biên bản)
 <br>
+<div id="bkk_note">
+
 3. Giảm trừ sự cố và TKM bất khả kháng phải có sở cứ rõ ràng bất khả kháng CD duyệt chốt ok cuối tháng sẽ đưa vào bảng chấm điểm KPI TTH
+
+</div>
 </div>
 
 </div>
@@ -785,7 +789,10 @@ id="preview_file_topo"
 <label>
 Ảnh biên bản
 </label>
-<div class="red-note">
+<div
+class="red-note"
+id="bienban_note"
+>
 
 -Ảnh biên bản XLSC HOME, PORT KÉM.
 Nếu không gặp được khách hàng:
@@ -927,7 +934,10 @@ id="preview_file_ghiam"
 
 <!-- THIẾT BỊ -->
 
-<div class="card">
+<div
+class="card"
+id="thietbi_wrap"
+>
 
 <div class="section-title">
 
@@ -998,15 +1008,24 @@ Loại công việc
 -- Chọn --
 </option>
 
-<option value="HOME KÉM">
+<option
+value="HOME KÉM"
+id="opt_home"
+>
 HOME KÉM
 </option>
 
-<option value="PORT KÉM">
+<option
+value="PORT KÉM"
+id="opt_port"
+>
 PORT KÉM
 </option>
 
-<option value="BKK SC TKM">
+<option
+value="BKK SC TKM"
+id="opt_bkk"
+>
 BKK SC TKM
 </option>
 </select>
@@ -1096,13 +1115,65 @@ params.get("time")
 
 if(isManual){
 
+/* ẨN */
+
 document.getElementById("ngay_goc")
 .parentElement.style.display="none";
 
 document.getElementById("topo_wrap")
 .style.display="none";
 
+document.getElementById("thietbi_wrap")
+.style.display="none";
+
+document.getElementById("opt_home")
+.style.display="none";
+
+document.getElementById("opt_port")
+.style.display="none";
+
+document.getElementById("bienban_note")
+.style.display="none";
+
+/* HIỆN */
+
+document.getElementById("opt_bkk")
+.style.display="block";
+
+document.getElementById("bkk_note")
+.style.display="block";
+
 }else{
+
+/* HIỆN */
+
+document.getElementById("ngay_goc")
+.parentElement.style.display="block";
+
+document.getElementById("topo_wrap")
+.style.display="block";
+
+document.getElementById("thietbi_wrap")
+.style.display="block";
+
+document.getElementById("opt_home")
+.style.display="block";
+
+document.getElementById("opt_port")
+.style.display="block";
+
+document.getElementById("bienban_note")
+.style.display="block";
+
+/* ẨN */
+
+document.getElementById("opt_bkk")
+.style.display="none";
+
+document.getElementById("bkk_note")
+.style.display="none";
+
+}
 
 document.getElementById("ngay_goc")
 .parentElement.style.display="block";
