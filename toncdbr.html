@@ -566,6 +566,8 @@ json.nhaplieu || [];
 
 const mapAcc = {};
 
+const mapAcc = {};
+
 nhaplieu.forEach(row=>{
 
 const acc =
@@ -574,14 +576,16 @@ String(row.account||"")
 .trim()
 .toUpperCase();
 
+if(!acc)return;
+
+/* BYPASS */
+
 const check =
 
 String(row.check||"")
 .trim();
 
-if(!acc)return;
-
-if(!check)return;
+if(check){
 
 if(!mapAcc[acc]){
 
@@ -589,10 +593,34 @@ mapAcc[acc]=row;
 
 }
 
+}
+
 });
+
+/* CARD BYPASS */
 
 allAccounts =
 Object.values(mapAcc);
+
+/* CARD SC/TKM */
+
+window.scTkmAccounts =
+
+nhaplieu.filter(x=>{
+
+const loai =
+
+String(x.loai_wo || "")
+.trim()
+.toUpperCase();
+
+return (
+loai==="SC"
+||
+loai==="TKM"
+);
+
+});
 
 window.scTkmAccounts =
 
