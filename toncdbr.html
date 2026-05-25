@@ -486,7 +486,24 @@
   
   <div style="display:flex;gap:6px;align-items:center;">
   
-  <button class="excel-btn" onclick="exportExcel()">Excel</button>
+  <button
+  class="excel-btn"
+  onclick="exportExcel()"
+  >
+  
+  Excel
+  
+  </button>
+  
+  <button
+  class="excel-btn"
+  style="background:#dc2626;"
+  onclick="deleteScTkmAll()"
+  >
+  
+  🗑 XÓA SC/TKM
+  
+  </button>
   
   <button class="close-btn" onclick="closeModal()">Đóng</button>
   
@@ -2672,6 +2689,81 @@ const url =
   XLSX.writeFile(wb,title+".xlsx");
   
   }
+
+  /* =========================
+  XÓA TOÀN BỘ SC/TKM
+  ========================= */
+  
+  async function deleteScTkmAll(){
+  
+  /* PASSWORD */
+  
+  const password = prompt(
+  "Nhập mật khẩu quản trị"
+  );
+  
+  if(!password){
+  return;
+  }
+  
+  /* CONFIRM */
+  
+  const ok = confirm(
+  
+  "XÁC NHẬN XÓA TOÀN BỘ SC/TKM ?"
+  
+  );
+  
+  if(!ok){
+  return;
+  }
+  
+  try{
+  
+  const res = await fetch(API,{
+  
+  method:"POST",
+  
+  body:JSON.stringify({
+  
+  action:"deleteScTkmAll",
+  
+  password:password
+  
+  })
+  
+  });
+  
+  const json = await res.json();
+  
+  if(json.success){
+  
+  alert(
+  
+  `Đã xóa ${json.deleted} dữ liệu`
+  
+  );
+  
+  location.reload();
+  
+  }else{
+  
+  alert(
+  json.error || "Có lỗi"
+  );
+  
+  }
+  
+  }catch(err){
+  
+  console.log(err);
+  
+  alert(err);
+  
+  }
+  
+  }
+    
   </script>
   
   </body>
