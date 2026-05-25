@@ -622,7 +622,10 @@ class="readonly"
 readonly
 >
 
-<div class="note">
+<div
+class="note"
+id="account_input_note"
+>
 
 Tự động link từ dữ liệu
 
@@ -692,19 +695,25 @@ id="home_port_note"
 1. Home kém - Khách hàng không đồng ý xử lý:
 Chất lượng dịch vụ vẫn tốt, không đồng ý đi dây nổi
 (kéo dây Lan miễn phí), không đồng ý nâng cấp gói
-cước/mua thêm thiết bị (thêm vùng phủ sử dụng cho
-khách hàng, thêm thiết bị kết nối để khắc phục mức thu thấp)
+cước/mua thêm thiết bị.
+
 <br>
-2. Port kém - Lỗi tại nhà KH, KH không đồng ý xử lý
+
+2. Port kém - Lỗi tại nhà KH,
+KH không đồng ý xử lý
 (bắt buộc có biên bản)
-<br>
-<div id="bkk_note">
+
+</div>
+
+<div
+class="red-note"
+id="bkk_note"
+style="display:none;"
+>
 
 3. Giảm trừ sự cố và TKM bất khả kháng phải có sở cứ rõ ràng bất khả kháng CD duyệt chốt ok cuối tháng sẽ đưa vào bảng chấm điểm KPI TTH
 
 </div>
-</div>
-
 </div>
 
 <div class="field">
@@ -1159,6 +1168,11 @@ document.getElementById("account_note")
 .innerHTML=
 
 'Yêu cầu nhập chuẩn account sai sẽ loại luôn (vd: g059_gftth_thuongcv1...) nên copy và dán vào';
+
+document.getElementById("account_input_note")
+.innerHTML=
+
+'Yêu cầu nhập chuẩn account sai sẽ loại luôn (vd: g059_gftth_thuongcv1...) nên copy và dán vào';
    
 document.getElementById("opt_homekem")
 .style.display="none";
@@ -1214,6 +1228,11 @@ document.getElementById("bkk_upload_note")
 /* HIỆN */
 
 document.getElementById("account_note")
+.innerHTML=
+
+'Tự động link từ dữ liệu';
+
+document.getElementById("account_input_note")
 .innerHTML=
 
 'Tự động link từ dữ liệu';
