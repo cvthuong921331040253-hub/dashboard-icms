@@ -585,9 +585,21 @@ id="ten_nv"
 class="readonly"
 >
 
-<div class="note">
+<div
+class="note"
+id="ten_nv_note"
+>
 
 Tự động link từ dữ liệu
+
+<br>
+
+<span style="color:#dc2626;font-weight:600;">
+
+Nhập đúng tên không ghi tắt
+(ví dụ: Cao Văn Thưởng)
+
+</span>
 
 </div>
 
@@ -1179,6 +1191,12 @@ if(isManual){
 
 /* ẨN */
 
+document.getElementById(
+"ten_nv_note"
+).innerHTML =
+'Nhập đúng tên không ghi tắt \
+(ví dụ: Cao Văn Thưởng)';
+   
 document.getElementById("account_note")
 .innerHTML=
 
