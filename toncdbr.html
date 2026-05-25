@@ -1412,18 +1412,40 @@ Vui lòng click vào
   document.getElementById("searchInput")
   .addEventListener("input",()=>{
   
+  const title =
+  
+  document.getElementById(
+  "modalTitle"
+  )
+  .innerText;
+  
+  /* ACCOUNT BYPASS */
+  
   if(
-  document.getElementById("modalTitle")
-  .innerText.includes("ACCOUNT")
+  title.includes("ACCOUNT")
   ){
   
   showAccountManager();
   
-  }else{
-  
-  filterTable();
+  return;
   
   }
+  
+  /* SC + TKM */
+  
+  if(
+  title.includes("SC VÀ TKM")
+  ){
+  
+  showScTkmManager();
+  
+  return;
+  
+  }
+  
+  /* TABLE THƯỜNG */
+  
+  filterTable();
   
   });
   
