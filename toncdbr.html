@@ -2254,21 +2254,8 @@ Vui lòng click vào
   URL
   ========================= */
   
-  const url =
-  
-  `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html
-  
-  ?id_check=${encodeURIComponent(row.id_check || "")}
-  
-  &account=${encodeURIComponent(account)}
-  
-  &ngay=${encodeURIComponent(ngayPhatSinh)}
-  
-  &loai=${encodeURIComponent(loai)}
-  
-  &check=${encodeURIComponent(check)}
-  
-  &ten_nv=${encodeURIComponent(ten_nv)}`;
+const url =
+`https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}`;
   
   window.open(url,"_blank");
   
@@ -2631,22 +2618,7 @@ Vui lòng click vào
   row.tg_nhap || "";
   
   const url =
-  
-  `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html
-  
-  ?manual=1
-  
-  &id_check=${encodeURIComponent(row.id_check || "")}
-  
-  &account=${encodeURIComponent(account)}
-  
-  &ten_nv=${encodeURIComponent(ten_nv)}
-  
-  &loai=${encodeURIComponent(loai)}
-  
-  &tg_nhap=${encodeURIComponent(tg_nhap)}
-  
-  &edit=1`;
+  `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1&id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ten_nv=${encodeURIComponent(ten_nv)}&loai=${encodeURIComponent(loai)}&tg_nhap=${encodeURIComponent(tg_nhap)}&edit=1`;
   
   window.open(url,"_blank");
   
@@ -2655,7 +2627,6 @@ Vui lòng click vào
   function openManualInput(){
   
   const url =
-  
   "https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1";
   
   window.open(url,"_blank");
