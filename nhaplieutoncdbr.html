@@ -1034,8 +1034,23 @@ Loại công việc
 </option>
 
 <option
+value="HOME KÉM"
+id="opt_homekem"
+>
+HOME KÉM
+</option>
+
+<option
+value="PORT KÉM"
+id="opt_portkem"
+>
+PORT KÉM
+</option>
+
+<option
 value="SC"
 id="opt_sc"
+style="display:none;"
 >
 SC
 </option>
@@ -1043,10 +1058,11 @@ SC
 <option
 value="TKM"
 id="opt_tkm"
+style="display:none;"
 >
 TKM
 </option>
-   
+
 </select>
 
 </div>
@@ -1136,6 +1152,18 @@ if(isManual){
 
 /* ẨN */
 
+document.getElementById("opt_homekem")
+.style.display="none";
+
+document.getElementById("opt_portkem")
+.style.display="none";
+
+document.getElementById("opt_sc")
+.style.display="block";
+
+document.getElementById("opt_tkm")
+.style.display="block";
+   
 document.getElementById("ngay_goc")
 .parentElement.style.display="none";
 
@@ -1174,6 +1202,18 @@ document.getElementById("bkk_upload_note")
 }else{
 
 /* HIỆN */
+
+document.getElementById("opt_homekem")
+.style.display="block";
+
+document.getElementById("opt_portkem")
+.style.display="block";
+
+document.getElementById("opt_sc")
+.style.display="none";
+
+document.getElementById("opt_tkm")
+.style.display="none";
 
 document.getElementById("ngay_goc")
 .parentElement.style.display="block";
