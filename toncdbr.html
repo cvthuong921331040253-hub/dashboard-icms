@@ -593,6 +593,25 @@ mapAcc[acc]=row;
 
 allAccounts =
 Object.values(mapAcc);
+
+window.scTkmAccounts =
+
+allAccounts.filter(x=>{
+
+const loai =
+
+String(x.loai_wo||"")
+.trim()
+.toUpperCase();
+
+return (
+loai==="SC"
+||
+loai==="TKM"
+);
+
+});
+  
 console.log("TON SC:",tonsc.length);
 console.log("TON TKM:",tontkm.length);
 
@@ -766,6 +785,54 @@ onclick="openManualInput()"
 <div
 class="card"
 onclick="showAccountManager()"
+</div>
+`
++
+
+`
+<div
+class="card"
+onclick="showScTkmManager()"
+style="
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+
+border:1px solid #60a5fa;
+
+box-shadow:none;
+
+padding:10px;
+"
+>
+
+<div
+class="card-title"
+style="
+color:#fff;
+font-size:11px;
+font-weight:700;
+line-height:1.25;
+letter-spacing:.2px;
+"
+>
+
+📁 ĐÃ NHẬP SC VÀ TKM
+
+</div>
+
+<div
+class="card-count"
+style="
+color:#fff;
+font-size:20px;
+"
+>
+
+${window.scTkmAccounts.length}
+
+</div>
+
+</div>
+`
 style="
 background:linear-gradient(135deg,#059669,#10b981);
 
@@ -788,7 +855,7 @@ letter-spacing:.2px;
 "
 >
 
-📁 ĐÃ NHẬP BYPASS VÀ BKK
+📁 ĐÃ NHẬP BYPASS PORT KÉM, HOME KÉM
 
 </div>
 
@@ -2322,6 +2389,141 @@ ${formatDate(row.ngay_goc)}
 ${row.check||""}
 </div>
 
+
+<div style="margin-top:12px;">
+
+<button
+onclick='openInput(${JSON.stringify(row)})'
+style="
+border:none;
+background:#2563eb;
+color:#fff;
+padding:8px 12px;
+border-radius:8px;
+cursor:pointer;
+"
+>
+
+Mở chỉnh sửa
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+html += "</div>";
+
+document.getElementById(
+"tableContainer"
+).innerHTML = html;
+
+}
+
+function showScTkmManager(){
+
+const modal =
+document.getElementById("modal");
+
+modal.classList.remove("hidden");
+
+document.getElementById(
+"modalTitle"
+).innerHTML =
+"📁 ĐÃ NHẬP BKK SC VÀ TKM";
+
+let data =
+window.scTkmAccounts || [];
+
+const input =
+document.getElementById("searchInput");
+
+const keyword =
+
+(input.value || "")
+.toLowerCase()
+.trim();
+
+if(keyword){
+
+data = data.filter(x=>{
+
+const acc =
+String(x.account||"")
+.toLowerCase();
+
+const ten =
+String(x.ten_nv||"")
+.toLowerCase();
+
+return (
+acc.includes(keyword)
+||
+ten.includes(keyword)
+);
+
+});
+
+}
+
+let html = `
+<div style="
+padding:10px;
+display:grid;
+grid-template-columns:
+repeat(auto-fill,minmax(280px,1fr));
+gap:12px;
+">
+`;
+
+data.forEach(row=>{
+
+html += `
+
+<div
+style="
+background:#fff;
+border:1px solid #ddd;
+border-radius:12px;
+padding:14px;
+"
+>
+
+<div
+style="
+font-size:16px;
+font-weight:bold;
+color:#2563eb;
+word-break:break-word;
+"
+>
+
+${row.account||""}
+
+</div>
+
+<div style="margin-top:8px;font-size:13px;">
+👤 ${row.ten_nv||""}
+</div>
+
+<div style="margin-top:4px;font-size:13px;">
+🕒 TG nhập dữ liệu:
+${formatDateTime(row.tg_nhap)}
+</div>
+
+<div style="margin-top:4px;font-size:13px;">
+📅 TG phát sinh SC:
+${formatDate(row.ngay_goc)}
+</div>
+
+<div style="margin-top:4px;font-size:13px;">
+✅ Loại công việc:
+${row.loai_wo||""}
+</div>
 
 <div style="margin-top:12px;">
 
