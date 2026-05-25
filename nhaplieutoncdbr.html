@@ -1126,7 +1126,7 @@ const isEdit =
 params.get("edit");
 
 const editId =
-params.get("id");
+params.get("id_check");
 /* =========================
 LOAD OLD DATA
 ========================= */
@@ -2188,7 +2188,7 @@ status.innerHTML=
 const ghiam =
 await filesToBase64("file_ghiam");
 const data={
-id: editId || "",
+id_check: editId || "",
 
 mode:
 
