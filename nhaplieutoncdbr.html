@@ -1077,42 +1077,6 @@ TKM
 
 </select>
 
-<div
-id="check_wrap"
-style="margin-top:12px;"
->
-
-<label>
-Loại bypass
-<span class="required">*</span>
-</label>
-
-<select id="check_type">
-
-<option value="">
--- Chọn --
-</option>
-
-<option value="SOC">
-SOC
-</option>
-
-<option value="SOC HOME">
-SOC HOME
-</option>
-
-</select>
-
-<div class="note">
-
-SOC = PORT KÉM
-
-<br>
-
-SOC HOME = HOME KÉM
-
-</div>
-
 </div>
    
 </div>
@@ -1154,6 +1118,12 @@ const account =
 params.get("account")
 ||
 params.get("acc")
+||
+"";
+
+const autoCheck =
+
+params.get("check")
 ||
 "";
 
@@ -2196,9 +2166,7 @@ document.getElementById("loai_wo").value==="TKM"
 
 ? ""
 
-:
-
-document.getElementById("check_type").value,
+: autoCheck,
 
 nv_xuly:
 document.getElementById("nv_xuly").value,
