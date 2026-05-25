@@ -78,10 +78,13 @@ background:#fff;
 }
 
 table{
-width:100%;
+width:max-content;
+min-width:100%;
+
 border-collapse:collapse;
 background:white;
-table-layout:fixed;
+
+table-layout:auto;
 }
 
 th{background:#f3f4f6;position:sticky;top:0;z-index:50;white-space:normal;}
@@ -1446,14 +1449,22 @@ html+=`<td style="${stickyStyle}color:${tgColor};font-weight:bold;">${val}</td>`
 
 else if(c==="bypass"){
 
+stickyStyle+=`
+width:90px;
+min-width:90px;
+max-width:90px;
+text-align:center;
+`;
+
 if(val){
 
 val=`
 <span
 class="badge green"
 style="
-font-size:11px;
-padding:4px 8px;
+font-size:10px;
+padding:3px 6px;
+white-space:nowrap;
 "
 >
 ${val}
@@ -1465,7 +1476,8 @@ ${val}
 html+=`<td style="${stickyStyle}">${val}</td>`;
 
 }
-  
+
+
 else if(c==="sc"){
 
 let cls="gray";
@@ -1599,9 +1611,8 @@ ${val}
 `;
 
 colStyle+=`
-width:280px;
-min-width:280px;
-max-width:280px;
+width:340px;
+min-width:340px;
 
 text-align:left;
 `;
