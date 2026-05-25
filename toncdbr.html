@@ -77,7 +77,12 @@ background:#fff;
 
 }
 
-table{width:100%;border-collapse:collapse;background:white;table-layout:fixed;}
+table{
+width:max-content;
+min-width:100%;
+border-collapse:collapse;
+background:white;
+}
 
 th{background:#f3f4f6;position:sticky;top:0;z-index:50;white-space:normal;}
 
@@ -1491,10 +1496,13 @@ let colStyle=stickyStyle;
 
 if(c==="dc"){
 
-colStyle+="width:240px;min-width:240px;max-width:240px;word-break:break-word;";
+colStyle+=`
+min-width:260px;
+max-width:320px;
+word-break:break-word;
+`;
 
 }
-
 /* =========================
 ACCOUNT CLICK
 ========================= */
@@ -1526,7 +1534,6 @@ ${val}
 `;
 
 colStyle+=`
-width:190px;
 min-width:190px;
 `;
 
