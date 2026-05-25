@@ -1044,6 +1044,12 @@ loadOldData();
 
 document.getElementById("account").value =
 
+params.get("account")
+||
+params.get("acc")
+||
+"";
+
 if(isManual){
 
 document.getElementById("account")
@@ -1053,12 +1059,6 @@ document.getElementById("account")
 .classList.remove("readonly");
 
 }
-
-params.get("account")
-||
-params.get("acc")
-||
-"";
 
 document.getElementById("ngay_goc").value =
 
@@ -1069,6 +1069,16 @@ params.get("time")
 "";
 
 document.getElementById("ten_nv").value =
+
+decodeURIComponent(
+
+params.get("ten_nv")
+||
+params.get("nv")
+||
+""
+);
+
 if(isManual){
 
 document.getElementById("ten_nv")
@@ -1078,14 +1088,6 @@ document.getElementById("ten_nv")
 .classList.remove("readonly");
 
 }
-decodeURIComponent(
-
-params.get("ten_nv")
-||
-params.get("nv")
-||
-""
-);
 
 document.getElementById(
 "tg_nhap"
