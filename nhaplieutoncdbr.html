@@ -1617,6 +1617,12 @@ reject(error);
 
 }
 let saved=false;
+const removedOldFiles={
+old_topo:[],
+old_bienban:[],
+old_calllog:[],
+old_ghiam:[]
+};
 async function saveData(){
 if(saved)return;
 const btn =
@@ -1905,7 +1911,9 @@ file_bienban:bienban,
 file_calllog:calllog,
 
 file_ghiam:ghiam
-
+,
+removed_old_files:
+removedOldFiles
 };
 console.log(data);
 const res =
@@ -2401,21 +2409,19 @@ if(!confirm("Xóa file cũ này?")){
 return;
 }
 
-const wrap =
+removedOldFiles[id].push(link);
+
+const wrap=
 document.getElementById(id);
 
 if(!wrap)return;
 
-const items =
-Array.from(
-wrap.children
-);
+const items=
+Array.from(wrap.children);
 
 items.forEach(item=>{
 
-if(
-item.innerHTML.includes(link)
-){
+if(item.innerHTML.includes(link)){
 
 item.remove();
 
