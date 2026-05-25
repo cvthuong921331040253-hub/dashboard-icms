@@ -2122,13 +2122,34 @@ document.getElementById("textModal").classList.add("hidden");
 
 function openInput(row){
 
-/* =========================
-ACCOUNT
-========================= */
-
 const account =
    row.account || "";
+  
+const scType =
 
+String(
+row.sc || ""
+)
+
+.trim()
+
+.toUpperCase();
+
+/* CHỈ CHO SOC */
+
+if(
+scType !== "SOC"
+&&
+scType !== "SOC HOME"
+){
+
+alert(
+"Account này không thuộc SOC hoặc SOC HOME"
+);
+
+return;
+
+}
 /* =========================
 THỜI GIAN PHÁT SINH
 ========================= */
