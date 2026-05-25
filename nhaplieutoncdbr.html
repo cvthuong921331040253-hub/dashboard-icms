@@ -2398,6 +2398,41 @@ document.getElementById(
 d.updated_at;
 
 }
+
+let ngayGoc = d.ngay_goc || "";
+
+if(
+typeof ngayGoc === "string"
+&&
+ngayGoc.includes("T")
+){
+
+const dateObj =
+new Date(ngayGoc);
+
+if(!isNaN(dateObj)){
+
+const dd =
+String(dateObj.getDate())
+.padStart(2,"0");
+
+const mm =
+String(dateObj.getMonth()+1)
+.padStart(2,"0");
+
+const yyyy =
+dateObj.getFullYear();
+
+ngayGoc =
+`${dd}/${mm}/${yyyy}`;
+
+}
+
+}
+
+document.getElementById(
+"ngay_goc"
+).value = ngayGoc;
    
 if(!document.getElementById(
 "nguyen_nhan"
