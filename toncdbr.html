@@ -600,14 +600,14 @@ allAccounts.filter(x=>{
 
 const loai =
 
-String(x.loai_wo||"")
+String(x.loai_wo || "")
 .trim()
 .toUpperCase();
 
 return (
-loai==="SC"
+loai === "SC"
 ||
-loai==="TKM"
+loai === "TKM"
 );
 
 });
@@ -2433,7 +2433,7 @@ modal.classList.remove("hidden");
 document.getElementById(
 "modalTitle"
 ).innerHTML =
-"📁 ĐÃ NHẬP BKK SC VÀ TKM";
+"📁 ĐÃ NHẬP SC VÀ TKM";
 
 let data =
 window.scTkmAccounts || [];
@@ -2520,7 +2520,7 @@ ${formatDate(row.ngay_goc)}
 </div>
 
 <div style="margin-top:4px;font-size:13px;">
-✅ Loại công việc:
+✅ Loại sự cố:
 ${row.loai_wo||""}
 </div>
 
