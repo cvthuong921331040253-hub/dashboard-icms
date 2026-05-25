@@ -2187,18 +2187,23 @@ loai = "TKM";
 
 }else{
 
-loai = String(
-row.sc || ""
-)
-.trim();
-
-if(!loai){
-
 loai = "SC";
 
 }
 
-}
+/* =========================
+CHECK FIX CỨNG
+========================= */
+
+const check =
+
+String(
+row.sc || ""
+)
+
+.trim()
+
+.toUpperCase();
 
 /* =========================
 URL
@@ -2213,6 +2218,9 @@ const url =
 &ngay=${encodeURIComponent(ngayPhatSinh)}
 
 &loai=${encodeURIComponent(loai)}
+
+&check=${encodeURIComponent(check)}
+
 &ten_nv=${encodeURIComponent(ten_nv)}`;
 
 window.open(url,"_blank");
