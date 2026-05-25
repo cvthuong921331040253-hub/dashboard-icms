@@ -622,23 +622,6 @@ loai==="TKM"
 
 });
 
-window.scTkmAccounts =
-
-allAccounts.filter(x=>{
-
-const loai =
-
-String(x.loai_wo || "")
-.trim()
-.toUpperCase();
-
-return (
-loai === "SC"
-||
-loai === "TKM"
-);
-
-});
   
 console.log("TON SC:",tonsc.length);
 console.log("TON TKM:",tontkm.length);
