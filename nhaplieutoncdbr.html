@@ -666,7 +666,10 @@ Bắt buộc chọn (yêu cầu chọn đúng hạng mục nguyên nhân)
 
 </option>
 
-<option value="Giảm trừ KPI SC TKM có nguyên nhân BKK">
+<option
+value="Giảm trừ KPI SC TKM có nguyên nhân BKK"
+id="nguyennhan_bkk"
+>
 
 3. Sở cứ giảm trừ KPI SC TKM có nguyên nhân BKK
 
@@ -1139,14 +1142,16 @@ document.getElementById("bienban_note")
 
 document.getElementById("opt_bkk")
 .style.display="block";
-
+   
+document.getElementById("nguyennhan_bkk")
+.style.display="block";
+   
 document.getElementById("bkk_note")
 .style.display="block";
 
 }else{
 
 /* HIỆN */
-
 document.getElementById("ngay_goc")
 .parentElement.style.display="block";
 
@@ -1170,18 +1175,14 @@ document.getElementById("bienban_note")
 document.getElementById("opt_bkk")
 .style.display="none";
 
+document.getElementById("nguyennhan_bkk")
+.style.display="none";
+   
 document.getElementById("bkk_note")
 .style.display="none";
 
 }
 
-document.getElementById("ngay_goc")
-.parentElement.style.display="block";
-
-document.getElementById("topo_wrap")
-.style.display="block";
-
-}
 
 /* =========================
 TÊN NHÂN VIÊN
@@ -1514,11 +1515,18 @@ const required=[
 "nv_xuly",
 "nguyen_nhan",
 "chitiet_bypass",
-"thietbi",
-"serial_hwf",
 "loai_wo"
 
 ];
+
+if(!isManual){
+
+required.push(
+"thietbi",
+"serial_hwf"
+);
+
+}
 
 if(isManual){
 
@@ -1548,7 +1556,7 @@ ok=false;
 
 });
 
-if(!account){
+if(!isManual){
 
 [
 "file_topo"
