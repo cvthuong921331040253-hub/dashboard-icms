@@ -1724,10 +1724,15 @@ ok=false;
 
 });
 
+/* =========================
+HOME / PORT
+========================= */
+
 if(!isManual){
 
 [
-"file_topo"
+"file_topo",
+"file_bienban"
 ]
 
 .forEach(id=>{
@@ -1737,17 +1742,19 @@ document.getElementById(id);
 
 if(!el)return;
 
-/* FILE MỚI */
-
 const hasNew =
 el.files.length > 0;
-
-/* FILE CŨ */
 
 const oldWrap =
 
 document.getElementById(
-"old_topo"
+
+id==="file_topo"
+
+? "old_topo"
+
+: "old_bienban"
+
 );
 
 const hasOld =
@@ -1758,8 +1765,6 @@ oldWrap
 
 oldWrap.innerHTML
 .trim() !== "";
-
-/* KHÔNG CÓ FILE */
 
 if(
 !hasNew
@@ -1773,6 +1778,48 @@ ok=false;
 
 });
 
+}
+
+/* =========================
+SC / TKM
+========================= */
+
+if(isManual){
+
+const el =
+document.getElementById(
+"file_bienban"
+);
+
+const hasNew =
+el.files.length > 0;
+
+const oldWrap =
+
+document.getElementById(
+"old_bienban"
+);
+
+const hasOld =
+
+oldWrap
+
+&&
+
+oldWrap.innerHTML
+.trim() !== "";
+
+if(
+!hasNew
+&&
+!hasOld
+){
+
+ok=false;
+
+}
+
+}
 }
 
 if(!ok){
