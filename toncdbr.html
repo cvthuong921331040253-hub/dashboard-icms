@@ -1734,13 +1734,18 @@ Vui lòng click vào
   
   border-radius:6px;
   
-  white-space:nowrap;
+  white-space:normal;
+  word-break:break-word;
   
   display:inline-block;
+  
+  max-width:68px;
   
   line-height:1.2;
   
   font-weight:700;
+  
+  text-align:center;
   "
   >
   ${val}
@@ -1985,7 +1990,9 @@ Vui lòng click vào
   </div>
   
   <div class="mobile-row">
-  <span class="mobile-label">Loại sự cố:</span>
+  <span class="mobile-label">
+  ${row.kpi ? "Đánh giá KPI:" : "Loại sự cố:"}
+  </span>
   
   <span class="mobile-badge" style="background:${badgeColor}">
   ${loai}
