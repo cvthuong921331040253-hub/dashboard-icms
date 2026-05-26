@@ -228,6 +228,17 @@
   
   .toolbar button{font-weight:600;}
   
+  .chart-grid{
+  grid-template-columns:1fr;
+  gap:10px;
+  }
+  
+  .chart-box{
+  height:340px;
+  padding:10px;
+  border-radius:12px;
+  overflow-x:auto;
+  }
   #tableWrap{border-radius:10px;background:#fff;border:1px solid #e5e7eb;}
   
   table{display:none;}
@@ -240,66 +251,30 @@
   
   .expand-btn{font-size:9px;margin-top:2px;}
   }
-
+  
   .chart-grid{
-  
   display:grid;
-  
-  grid-template-columns:
-  repeat(3,minmax(0,1fr));
-  
-  gap:14px;
-  
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:15px;
   margin-top:20px;
-  
-  align-items:stretch;
-  
-  width:100%;
-  
   }
   
-  
   .chart-box{
-  
-  position:relative;
-  
-  width:100%;
-  
-  min-width:0;
-  
   background:#fff;
-  
   border-radius:14px;
-  
-  padding:12px;
-  
+  padding:15px;
   border:1px solid #e5e7eb;
-  
-  height:340px;
-  
+  height:320px;
   overflow:hidden;
-  
-  display:flex;
-  flex-direction:column;
-  
   }
   
   .chart-box canvas{
-  
-  display:block;
-  
   width:100%!important;
-  
-  max-width:100%!important;
-  
   height:100%!important;
-  
   }
+  table{contain:layout paint;}
   
-  
-  #tableWrap{
-  -webkit-overflow-scrolling:touch;
-  }
+  #tableWrap{-webkit-overflow-scrolling:touch;contain:strict;}
   .text-modal-box{
   width:90%;
   max-width:900px;
@@ -331,260 +306,28 @@
   }
   
   
-  /* =========================
-  HUYỆN DASHBOARD
-  ========================= */
-  
-  .huyen-dashboard{
-  
-  display:grid;
-  
-  grid-template-columns:
-  repeat(3,minmax(0,1fr));
-  
-  gap:16px;
-  
-  margin-top:16px;
-  
-  width:100%;
-  
-  align-items:stretch;
-  
-  grid-auto-rows:1fr;
-  
-  }
-  
-  .huyen-card{
-  
-  background:#fff;
-  
-  border-radius:18px;
-  
-  padding:18px;
-  
-  border:1px solid #e5e7eb;
-  
-  box-shadow:
-  0 2px 10px rgba(0,0,0,.06);
-  
-  width:100%;
-  
-  min-width:0;
-  
-  overflow:hidden;
-  
-  display:flex;
-  
-  flex-direction:column;
-  
-  height:100%;
-  
-  align-self:stretch;
-  
-  }
-  
-  .huyen-top{
-  
-  display:flex;
-  
-  justify-content:space-between;
-  
-  align-items:flex-start;
-  
-  flex-wrap:wrap;
-  
-  gap:8px;
-  
-  margin-bottom:14px;
-  
-  }
-  
-  .huyen-name{
-  
-  font-size:20px;
-  
-  font-weight:700;
-  
-  color:#111827;
-  
-  word-break:break-word;
-  
-  overflow-wrap:break-word;
-  
-  }
-  
-  .huyen-level{
-  
-  padding:6px 10px;
-  
-  border-radius:999px;
-  
-  font-size:11px;
-  
-  font-weight:700;
-  
-  color:#fff;
-  
-  white-space:nowrap;
-  
-  flex-shrink:0;
-  
-  }
-  
-  .level-low{
-  background:#16a34a;
-  }
-  
-  .level-mid{
-  background:#ea580c;
-  }
-  
-  .level-high{
-  background:#dc2626;
-  }
-  
-  .huyen-mini-grid{
-  
-  display:grid;
-  
-  grid-template-columns:
-  repeat(2,1fr);
-  
-  gap:10px;
-  
-  margin-bottom:14px;
-  
-  }
-  
-  .huyen-mini{
-  
-  background:#f8fafc;
-  
-  border-radius:12px;
-  
-  padding:10px;
-  
-  }
-  
-  .huyen-mini-label{
-  
-  font-size:11px;
-  
-  color:#6b7280;
-  
-  margin-bottom:6px;
-  
-  font-weight:700;
-  
-  line-height:1.3;
-  
-  }
-  
-  .huyen-mini-value{
-  
-  font-size:22px;
-  
-  font-weight:700;
-  
-  line-height:1;
-  
-  }
-  
-  .huyen-section{
-  
-  margin-top:12px;
-  
-  width:100%;
-  
-  overflow:hidden;
-  
-  flex:1;
-  
-  display:flex;
-  
-  flex-direction:column;
-  
-  }
-  
-  .huyen-section-title{
-  
-  font-size:13px;
-  
-  font-weight:700;
-  
-  margin-bottom:6px;
-  
-  color:#111827;
-  
-  }
-  
-  .huyen-list{
-  
-  font-size:12px;
-  
-  line-height:1.7;
-  
-  color:#374151;
-  
-  word-break:break-word;
-  
-  overflow-wrap:break-word;
-  
-  white-space:normal;
-  
-  overflow-y:auto;
-  
-  padding-right:4px;
-  
-  }
-  
-  .huyen-list::-webkit-scrollbar{
-  width:6px;
-  }
-  
-  .huyen-list::-webkit-scrollbar-thumb{
-  background:#d1d5db;
-  border-radius:999px;
-  }
-
   /* BIỂU ĐỒ */
-  /* =========================
-  MOBILE CHART
-  ========================= */
-  
-  @media(max-width:768px){
-  
-  .chart-grid > *{
-  min-width:0;
+  .chart-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:15px;
+  margin-bottom:20px;
   }
   
   .chart-box{
-  
-  width:100% !important;
-  
-  max-width:100% !important;
-  
-  height:320px !important;
-  
-  padding:10px;
-  
-  overflow:hidden;
-  
+  background:#fff;
+  border-radius:14px;
+  padding:15px;
+  border:1px solid #e5e7eb;
+  height:420px;
   }
   
   .chart-box canvas{
-  
-  width:100% !important;
-  
-  max-width:100% !important;
-  
-  height:260px !important;
-  
-  display:block;
-  
+  width:100%!important;
+  height:100%!important;
   }
+  /* BIỂU ĐỒ */
   
-  }
   .manual-card{
   
   background:
@@ -630,88 +373,26 @@
   
   }
   
-    /* MOBILE */
-    @media(max-width:768px){
-    
-    .manual-card{
-    
-    padding:10px;
-    
-    border-radius:12px;
-    
-    }
-    
-    .manual-card .card-title{
-    
-    font-size:11px;
-    
-    line-height:1.25;
-    
-    }
-    
-    }
-  
-  
+  /* MOBILE */
   @media(max-width:768px){
   
-  .huyen-dashboard{
+  .manual-card{
   
-  grid-template-columns:1fr;
+  padding:10px;
   
-  gap:12px;
-  
-  }
-  
-  .huyen-card{
-  
-  padding:14px;
-  
-  border-radius:14px;
+  border-radius:12px;
   
   }
   
-  .huyen-name{
-  
-  font-size:16px;
-  
-  }
-  
-  .huyen-mini-grid{
-  
-  grid-template-columns:1fr 1fr;
-  
-  gap:8px;
-  
-  }
-  
-  .huyen-mini{
-  
-  padding:8px;
-  
-  }
-  
-  .huyen-mini-value{
-  
-  font-size:18px;
-  
-  }
-  
-  .huyen-section-title{
-  
-  font-size:12px;
-  
-  }
-  
-  .huyen-list{
+  .manual-card .card-title{
   
   font-size:11px;
   
-  line-height:1.6;
+  line-height:1.25;
   
   }
   
   }
-    
   </style>
   
   </head>
@@ -795,15 +476,6 @@
   
   </div>
   
-  <div class="section-title">
-  📍 TỔNG QUAN HUYỆN
-  </div>
-  
-  <div
-  id="huyenDashboard"
-  class="huyen-dashboard"
-  ></div>
-  
   <div class="modal hidden" id="modal">
   
   <div class="modal-content">
@@ -863,9 +535,29 @@
   
   </div>
   
+  <div class="modal hidden" id="textModal">
+  
+  <div class="text-modal-box">
+  
+  <div class="text-modal-header">
+  
+  <h3>Chi tiết nội dung</h3>
+  
+  <button class="close-btn" onclick="closeTextModal()">
+  Đóng
+  </button>
+  
+  </div>
+  
+  <div class="text-modal-content" id="textModalContent"></div>
+  
+  </div>
+  
+  </div>
+  
   <script>
   
-  const API="https://script.google.com/macros/s/AKfycbwgfs5YlUtNgvMrwjFcYLVzqHTAWv39kzB4Q6lwAcR5XE0ZSn6P2Cntyqd30AF_lrxx/exec";
+  const API="https://script.google.com/macros/s/AKfycbz-Dt1VnJXqZCnfpi_GE0QDaFbO2Ns6UJxypaX-Vt1pp5zwpP3JkWZrT4wP_LfZ1VsC/exec";
   
   let tonsc=[];
   let tontkm=[];
@@ -874,10 +566,7 @@
   let currentPage=1;
   let allAccounts=[];
   const PAGE_SIZE=300;
-  let chartSCInstance=null;
-  let chartCNHSInstance=null;
-  let chartTKMInstance=null;
-    
+  
   function countUniqueAccount(data){const set=new Set();data.forEach(x=>{const acc=String(x.account||"").replace(/\s+/g," ").trim().toUpperCase();if(acc)set.add(acc);});return set.size;}
   
   function parseDateVN(str){if(!str)return 0;try{const [datePart,timePart]=str.split(" ");const [d,m,y]=datePart.split("/");const [hh,mm,ss]=(timePart||"00:00:00").split(":");return new Date(Number(y),Number(m)-1,Number(d),Number(hh),Number(mm),Number(ss));}catch(err){return 0;}}
@@ -886,19 +575,7 @@
   
   try{
   
-  const controller = new AbortController();
-
-  setTimeout(()=>{
-  controller.abort();
-  },15000);
-  
-  const res = await fetch(API,{
-  signal:controller.signal
-  });
-  
-  if(!res.ok){
-  throw new Error("API lỗi");
-  }
+  const res=await fetch(API);
   const json=await res.json();
   
   tonsc=json.tonsc||[];
@@ -969,7 +646,6 @@
   renderTonSC();
   renderTonTKM();
   renderCharts();
-  renderHuyenDashboard();
   document.getElementById("updateTime").innerHTML="⏰ Thời gian lấy báo cáo: "+(tontkm[0]?.tgupdate||"");
   }catch(err){
   
@@ -1122,37 +798,37 @@
   onclick="openManualInput()"
   >
   
-  <div
-  class="card-title"
-  style="
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  text-align:center;
-  "
-  >
-  
-  <div>
-  
-  📝 NHẬP SC & TKM BKK
-  
-  </div>
-  
-  <div
-  style="
-  font-size:10px;
-  font-weight:500;
-  opacity:.95;
-  "
-  >
-  
-  Vui lòng click vào
-  
-  </div>
-  
-  </div>
+<div
+class="card-title"
+style="
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:4px;
+text-align:center;
+"
+>
+
+<div>
+
+📝 NHẬP SC & TKM BKK
+
+</div>
+
+<div
+style="
+font-size:10px;
+font-weight:500;
+opacity:.95;
+"
+>
+
+Vui lòng click vào
+
+</div>
+
+</div>
   
   </div>
   `
@@ -1343,13 +1019,7 @@
   html+=createCard("TỒN CẬP NHẬT HỒ SƠ",capnhaths.length,"#dc2626","showTable('TỒN CẬP NHẬT HỒ SƠ',capnhaths)");
   
   html+=createCard("TKM CHƯA GIAO",chuagiao.length,"#7c3aed","showTable('TKM CHƯA GIAO',tkmchuagiao)");
-
-  html += createCard(
-  "📋 BÁO CÁO KPI",
-  0,
-  "#0f766e",
-  "showBaoCaoTongHop()"
-  );
+  
   
   dashboard.innerHTML=html;
   
@@ -1421,11 +1091,7 @@
   
   });
   
-  if(chartSCInstance){
-  chartSCInstance.destroy();
-  }
-  
-  chartSCInstance = new Chart(document.getElementById("chartSC"),{
+  new Chart(document.getElementById("chartSC"),{
   
   type:"bar",
   
@@ -1463,7 +1129,6 @@
   options:{
   responsive:true,
   maintainAspectRatio:false,
-  resizeDelay:200,
   
   layout:{
   padding:{
@@ -1512,11 +1177,7 @@
   
   });
   
-  if(chartCNHSInstance){
-  chartCNHSInstance.destroy();
-  }
-  
-  chartCNHSInstance = new Chart(document.getElementById("chartCNHS"),{
+  new Chart(document.getElementById("chartCNHS"),{
   
   type:"bar",
   
@@ -1538,7 +1199,6 @@
   options:{
   responsive:true,
   maintainAspectRatio:false,
-  resizeDelay:200,
   
   layout:{
   padding:{
@@ -1636,11 +1296,7 @@
   
   });
   
-  if(chartTKMInstance){
-  chartTKMInstance.destroy();
-  }
-  
-  chartTKMInstance = new Chart(document.getElementById("chartTKM"),{
+  new Chart(document.getElementById("chartTKM"),{
   
   type:"bar",
   
@@ -1692,7 +1348,6 @@
   options:{
   responsive:true,
   maintainAspectRatio:false,
-  resizeDelay:200,
   
   layout:{
   padding:{
@@ -1714,12 +1369,10 @@
   });
   
   }
-    
   /* =====================
   MODAL
   ===================== */
-
-    
+  
   function showTable(title,data){
   
   currentData=data;
@@ -1827,14 +1480,7 @@
   
   const filtered=currentData.filter(row=>{
   
-  const text = `
-  ${row.account||""}
-  ${row.nv||""}
-  ${row.huyen||""}
-  ${row.sc||""}
-  ${row.kpi||""}
-  ${row.dc||""}
-  `.toLowerCase();
+  const text=JSON.stringify(row).toLowerCase();
   
   const okSearch=text.includes(kw);
   
@@ -2297,7 +1943,7 @@
   
   let html=`<div class="mobile-list">`;
   
-  data.slice(0,150).forEach((row,index)=>{
+  data.forEach((row,index)=>{
   
   const tg=parseFloat(row.tg)||0;
   
@@ -2307,7 +1953,6 @@
   
   if(String(loai).toUpperCase().includes("SOC"))badgeColor="#ea580c";
   if(String(loai).toUpperCase().includes("SC"))badgeColor="#2563eb";
-  if(String(loai).toUpperCase().includes("VIP"))badgeColor="#7c3aed";
   if(String(loai).toUpperCase().includes("HOT"))badgeColor="#dc2626";
   
   html+=`
@@ -2858,45 +2503,33 @@ const url =
   window.scTkmAccounts || [];
   
   const input =
-  const searchInput =
   document.getElementById("searchInput");
   
-  searchInput.oninput = ()=>{
+  const keyword =
   
-  const title =
-  document.getElementById(
-  "modalTitle"
-  ).innerText;
+  (input.value || "")
+  .toLowerCase()
+  .trim();
   
-  /* ACCOUNT BYPASS */
+  if(keyword){
   
-  if(
-  title.includes("ACCOUNT")
-  ){
+  data = data.filter(x=>{
   
-  showAccountManager();
+  const acc =
+  String(x.account||"")
+  .toLowerCase();
   
-  return;
+  const ten =
+  String(x.ten_nv||"")
+  .toLowerCase();
   
-  }
+  return (
+  acc.includes(keyword)
+  ||
+  ten.includes(keyword)
+  );
   
-  /* SC + TKM */
-  
-  if(
-  title.includes("SC VÀ TKM")
-  ){
-  
-  showScTkmManager();
-  
-  return;
-  
-  }
-  
-  /* TABLE THƯỜNG */
-  
-  filterTable();
-  
-  };
+  });
   
   }
   
@@ -3134,1049 +2767,8 @@ const url =
   }
   
   }
-  
-  /* =========================
-  TOP NHÂN VIÊN
-  ========================= */
-  
-  function topNhanVienChiTiet(data,type){
-  
-  const map = {};
-  
-  data.forEach(x=>{
-  
-  const nv = String(
-  x.nv || x.ten_nv || "Chưa rõ"
-  ).trim();
-  
-  if(!nv)return;
-  
-  if(!map[nv]){
-  
-  map[nv]={
-  count:0,
-  labels:new Set()
-  };
-  
-  }
-  
-  map[nv].count++;
-  
-  if(type){
-  
-  map[nv].labels.add(type);
-  
-  }
-  
-  });
-  
-  return Object.entries(map)
-  
-  .sort((a,b)=>b[1].count-a[1].count)
-  
-  .slice(0,3)
-  
-  .map(([ten,obj])=>({
-  
-  ten,
-  
-  count:obj.count,
-  
-  label:[...obj.labels].join(", ")
-  
-  }));
-  
-  }
-
-  function renderHuyenDashboard(){
-  
-  const wrap =
-  document.getElementById(
-  "huyenDashboard"
-  );
-  
-  if(!wrap)return;
-  
-  const allHuyen = [
-  
-  ...new Set([
-  
-  ...tonsc.map(x=>x.huyen||"Khác"),
-  
-  ...tontkm.map(x=>x.huyen||"Khác")
-  
-  ])
-  
-  ].sort();
-  
-  let html = "";
-  
-  allHuyen.forEach(huyen=>{
-  
-  const socHome = tonsc.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.sc||"")
-  .toUpperCase()
-  .includes("SOC HOME")
-  
-  );
-  
-  const socPort = tonsc.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.sc||"")
-  .trim()
-  .toUpperCase()==="SOC"
-  
-  );
-  
-  const sc24 = tonsc.filter(x=>{
-  
-  const loai =
-  
-  String(x.sc||"")
-  .trim()
-  .toUpperCase();
-  
-  return(
-  
-  x.huyen===huyen
-  
-  &&
-  
-  parseFloat(x.tg||0) > 24
-  
-  &&
-  
-  [
-  "HT",
-  "HT HOT",
-  "HT VIP",
-  "VIP",
-  "SC",
-  "HOT"
-  ]
-  
-  .includes(loai)
-  
-  );
-  
-  });
-  
-  const tkm24 = tontkm.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.kpi||"")
-  .toUpperCase()
-  .includes("QUÁ 24H")
-  
-  );
-  
-  const quaHen = tontkm.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.kpi||"")
-  .toUpperCase()
-  .includes("QUÁ HẸN")
-  
-  );
-  
-  const hoSo = tontkm.filter(x=>{
-  
-  if(x.huyen!==huyen){
-  return false;
-  }
-  
-  const tt =
-  String(x.tt||"")
-  .toUpperCase();
-  
-  /* CHỈ LẤY HỒ SƠ */
-  
-  return tt.includes(
-  "CẬP NHẬT HỒ SƠ"
-  );
-  
-  });
-  
-  const tong =
-  socHome.length
-  +
-  socPort.length
-  +
-  sc24.length
-  +
-  tkm24.length
-  +
-  quaHen.length
-  +
-  hoSo.length;
-  
-  let levelClass = "level-low";
-  let levelText = "ỔN";
-  
-  if(tong >= 80){
-  
-  levelClass = "level-high";
-  levelText = "RẤT CAO";
-  
-  }
-  else if(tong >= 30){
-  
-  levelClass = "level-mid";
-  levelText = "CAO";
-  
-  }
-  
-  const topSOC = [
-  
-  ...topNhanVienChiTiet(
-  socHome,
-  "HOME WIFI KÉM"
-  ),
-  
-  ...topNhanVienChiTiet(
-  socPort,
-  "HIỆN TƯỢNG, PORT KÉM"
-  )
-  
-  ]
-  
-  .sort((a,b)=>b.count-a.count)
-  
-  .slice(0,3);
-  
-  const topKPI = [
-  
-  ...topNhanVienChiTiet(
-  sc24,
-  "SC >24H"
-  ),
-  
-  ...topNhanVienChiTiet(
-  tkm24,
-  "TKM >24H"
-  ),
-  
-  ...topNhanVienChiTiet(
-  quaHen,
-  "QUÁ HẸN"
-  ),
-  
-  ...topNhanVienChiTiet(
-  hoSo,
-  "CẬP NHẬT HỒ SƠ"
-  )
-  
-  ]
-  
-  .sort((a,b)=>b.count-a.count)
-  
-  .slice(0,3);
-    
-  html += `
-  
-  <div class="huyen-card">
-  
-  <div class="huyen-top">
-  
-  <div class="huyen-name">
-  📍 ${huyen}
-  </div>
-  
-  <div class="huyen-level ${levelClass}">
-  ${levelText}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-mini-grid">
-  
-  <div class="huyen-mini">
-  
-  <div class="huyen-mini-label">
-  HOME WIFI KÉM
-  </div>
-  
-  <div
-  class="huyen-mini-value"
-  style="color:#2563eb;"
-  >
-  ${socHome.length}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-mini">
-  
-  <div class="huyen-mini-label">
-  HIỆN TƯỢNG, PORT KÉM
-  </div>
-  
-  <div
-  class="huyen-mini-value"
-  style="color:#ea580c;"
-  >
-  ${socPort.length}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-mini">
-  
-  <div class="huyen-mini-label">
-  SC >24H
-  </div>
-  
-  <div
-  class="huyen-mini-value"
-  style="color:#dc2626;"
-  >
-  ${sc24.length}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-mini">
-  
-  <div class="huyen-mini-label">
-  TKM >24H
-  </div>
-  
-  <div
-  class="huyen-mini-value"
-  style="color:#7c3aed;"
-  >
-  ${tkm24.length}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-mini">
-  
-  <div class="huyen-mini-label">
-  QUÁ HẸN
-  </div>
-  
-  <div
-  class="huyen-mini-value"
-  style="color:#dc2626;"
-  >
-  ${quaHen.length}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-mini">
-  
-  <div class="huyen-mini-label">
-  CN HỒ SƠ
-  </div>
-  
-  <div
-  class="huyen-mini-value"
-  style="color:#059669;"
-  >
-  ${hoSo.length}
-  </div>
-  
-  </div>
-  
-  </div>
-  
-  <div class="huyen-section">
-  
-  <div class="huyen-section-title">
-  📋 ĐÁNH GIÁ TTH
-  </div>
-  
-  <div class="huyen-list">
-  
-  ${socHome.length > 10 ? `<div>• HOME WIFI KÉM TỒN: ${socHome.length}</div>` : ""}
-  
-  ${socPort.length > 10 ? `<div>• HIỆN TƯỢNG, PORT KÉM TỒN: ${socPort.length}</div>` : ""}
-  
-  ${sc24.length ? `<div>• SC quá 24h: ${sc24.length}</div>` : ""}
-  
-  ${tkm24.length ? `<div>• TKM quá 24h: ${tkm24.length}</div>` : ""}
-  
-  ${quaHen.length ? `<div>• Quá hẹn triển khai: ${quaHen.length}</div>` : ""}
-  
-  ${hoSo.length ? `<div>• Cập nhật hồ sơ: ${hoSo.length}</div>` : ""}
-  
-  </div>
-  
-  </div>
-  
-  <div class="huyen-section">
-  
-  <div class="huyen-section-title">
-  🔥 TOP NHÂN VIÊN TỒN SOC
-  </div>
-  
-  <div class="huyen-list">
-  
-  ${topSOC.map((x,i)=>`
-  
-  <div>
-  
-  ${i+1}. ${x.ten} - ${x.count} (${x.label})
-  
-  </div>
-  
-  `).join("")}
-  
-  </div>
-  
-  </div>
-  
-  <div class="huyen-section">
-  
-  <div class="huyen-section-title">
-  📋 TOP NHÂN VIÊN TỒI KPI
-  </div>
-  
-  <div class="huyen-list">
-  
-  ${topKPI.map((x,i)=>`
-  
-  <div>
-  
-   ${i+1}. ${x.ten} - ${x.count} (${x.label})
-  
-  </div>
-  
-  `).join("")}
-  
-  </div>
-  
-  </div>
-  
-  </div>
-  
-  `;
-  
-  });
-  
-  wrap.innerHTML = html;
-  
-  }
-    
-  /* =========================
-  BÁO CÁO
-  ========================= */
-  
-  function showBaoCaoTongHop(){
-  
-  const modal =
-  document.getElementById("textModal");
-  
-  modal.classList.remove("hidden");
-  
-  const wrap =
-  document.getElementById(
-  "textModalContent"
-  );
-  
-  /* =========================
-  HUYỆN
-  ========================= */
-  
-  const allHuyen = [
-  
-  ...new Set([
-  
-  ...tonsc.map(x=>x.huyen||"Khác"),
-  
-  ...tontkm.map(x=>x.huyen||"Khác")
-  
-  ])
-  
-  ].sort();
-  
-  let text = "";
-  
-  /* =====================================================
-  PHẦN 1 — TỔNG QUAN 13 HUYỆN
-  ===================================================== */
-  
-  text +=
-  "==============================\n";
-  
-  text +=
-  "📍 TỔNG QUAN 13 HUYỆN\n";
-  
-  text +=
-  "==============================\n\n";
-  
-  allHuyen.forEach(huyen=>{
-  
-  /* =========================
-  SOC HOME
-  ========================= */
-  
-  const socHome =
-  
-  tonsc.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.sc||"")
-  .toUpperCase()
-  .includes("SOC HOME")
-  
-  );
-  
-  /* =========================
-  SOC
-  ========================= */
-  
-  const socPort =
-  
-  tonsc.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.sc||"")
-  .toUpperCase()==="SOC"
-  
-  );
-  
-  /* =========================
-  SC >24H
-  CHỈ HT/SC/HOT/VIP
-  ========================= */
-  
-  const sc24 =
-  
-  tonsc.filter(x=>{
-  
-  const loai =
-  
-  String(x.sc||"")
-  .trim()
-  .toUpperCase();
-  
-  return(
-  
-  x.huyen===huyen
-  
-  &&
-  
-  parseFloat(x.tg||0) > 24
-  
-  &&
-  
-  [
-  "HT",
-  "HT HOT",
-  "HT VIP",
-  "VIP",
-  "SC",
-  "HOT"
-  ]
-  
-  .includes(loai)
-  
-  );
-  
-  });
-  
-  /* =========================
-  TKM >24H
-  ========================= */
-  
-  const tkm24 =
-  
-  tontkm.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.kpi||"")
-  .toUpperCase()
-  .includes("QUÁ 24H")
-  
-  );
-  
-  /* =========================
-  QUÁ 16H
-  ========================= */
-  
-  const qua16 =
-  
-  tontkm.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.kpi||"")
-  .toUpperCase()
-  .includes("QUÁ 16H")
-  
-  );
-  
-  /* =========================
-  QUÁ HẸN
-  ========================= */
-  
-  const quaHen =
-  
-  tontkm.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.kpi||"")
-  .toUpperCase()
-  .includes("QUÁ HẸN")
-  
-  );
-  
-  /* =========================
-  HỒ SƠ
-  KHÔNG LẤY KPI
-  ========================= */
-  
-  const hoSo =
-  
-  tontkm.filter(x=>{
-  
-  if(x.huyen!==huyen){
-  return false;
-  }
-  
-  const kpi =
-  
-  String(x.kpi||"")
-  .trim();
-  
-  const tt =
-  
-  String(x.tt||"")
-  .toUpperCase();
-  
-  if(kpi){
-  return false;
-  }
-  
-  return tt.includes(
-  "CẬP NHẬT HỒ SƠ"
-  );
-  
-  });
-  
-  /* =========================
-  TEXT
-  ========================= */
-  
-  text += `📍 ${huyen}\n\n`;
-  
-  /* SOC HOME */
-  
-  if(socHome.length > 10){
-  
-  text +=
-  `- SOC HOME KÉM còn tồn nhiều: ${socHome.length}\n`;
-  
-  }
-  
-  /* SOC */
-  
-  if(socPort.length > 10){
-  
-  text +=
-  `- SOC HT, SOC PORT KÉM còn cao: ${socPort.length}\n`;
-  
-  }
-  
-  /* NV SOC */
-  
-  if(
-  socHome.length
-  ||
-  socPort.length
-  ){
-  
-  text +=
-  "\n- Nhân viên tồn SOC, SOC HOME kém nhiều:\n";
-  
-  topNhanVien([
-  ...socHome,
-  ...socPort
-  ])
-  
-  .forEach(x=>{
-  
-  text +=
-  `+ ${x.ten}: ${x.count}\n`;
-  
-  });
-  
-  }
-  
-  /* SC24 */
-  
-  if(sc24.length){
-  
-  text +=
-  "\n- SỰ CỐ QUÁ 24H:\n";
-  
-  topNhanVien(sc24)
-  
-  .forEach(x=>{
-  
-  text +=
-  `+ ${x.ten}: ${x.count}\n`;
-  
-  });
-  
-  }
-  
-  /* TKM24 */
-  
-  if(tkm24.length){
-  
-  text +=
-  "\n- TKM QUÁ 24H:\n";
-  
-  topNhanVien(tkm24)
-  
-  .forEach(x=>{
-  
-  text +=
-  `+ ${x.ten}: ${x.count}\n`;
-  
-  });
-  
-  }
-  
-  /* QUÁ 16 */
-  
-  if(qua16.length){
-  
-  text +=
-  "\n- TKM QUÁ 16H:\n";
-  
-  topNhanVien(qua16)
-  
-  .forEach(x=>{
-  
-  text +=
-  `+ ${x.ten}: ${x.count}\n`;
-  
-  });
-  
-  }
-  
-  /* QUÁ HẸN */
-  
-  if(quaHen.length){
-  
-  text +=
-  "\n- QUÁ HẸN TRIỂN KHAI:\n";
-  
-  topNhanVien(quaHen)
-  
-  .forEach(x=>{
-  
-  text +=
-  `+ ${x.ten}: ${x.count}\n`;
-  
-  });
-  
-  }
-  
-  /* HỒ SƠ */
-  
-  if(hoSo.length){
-  
-  text +=
-  "\n- TỒN CẬP NHẬT HỒ SƠ:\n";
-  
-  topNhanVien(hoSo)
-  
-  .forEach(x=>{
-  
-  text +=
-  `+ ${x.ten}: ${x.count}\n`;
-  
-  });
-  
-  }
-  
-  text += "\n\n";
-  
-  });
-  
-  /* =====================================================
-  PHẦN 2 — TỔNG QUAN NHÂN VIÊN
-  ===================================================== */
-  
-  text +=
-  "==============================\n";
-  
-  text +=
-  "👤 TỔNG QUAN NHÂN VIÊN\n";
-  
-  text +=
-  "==============================\n\n";
-  
-  /* ALL DATA */
-  
-  const allData = [
-  
-  ...tonsc,
-  ...tontkm
-  
-  ];
-  
-  /* GROUP NV */
-  
-  const mapNV = {};
-  
-  allData.forEach(x=>{
-  
-  const nv =
-  
-  String(
-  x.nv ||
-  x.ten_nv ||
-  "Chưa rõ"
-  ).trim();
-  
-  if(!nv)return;
-  
-  if(!mapNV[nv]){
-  
-  mapNV[nv]={
-  
-  soc:0,
-  sc24:0,
-  tkm24:0,
-  q16:0,
-  qhen:0,
-  hoso:0,
-  
-  huyen:
-  x.huyen||"Khác"
-  
-  };
-  
-  }
-  
-  /* SOC */
-  
-  if(
-  String(x.sc||"")
-  .toUpperCase()
-  .includes("SOC")
-  ){
-  
-  mapNV[nv].soc++;
-  
-  }
-  
-  /* SC24 */
-  
-  const loai =
-  
-  String(x.sc||"")
-  .trim()
-  .toUpperCase();
-  
-  if(
-  
-  parseFloat(x.tg||0) > 24
-  
-  &&
-  
-  [
-  "HT",
-  "HT HOT",
-  "HT VIP",
-  "VIP",
-  "SC",
-  "HOT"
-  ]
-  
-  .includes(loai)
-  
-  ){
-  
-  mapNV[nv].sc24++;
-  
-  }
-  
-  /* KPI */
-  
-  const kpi =
-  
-  String(x.kpi||"")
-  .toUpperCase();
-  
-  if(
-  kpi.includes("QUÁ 24H")
-  ){
-  mapNV[nv].tkm24++;
-  }
-  
-  if(
-  kpi.includes("QUÁ 16H")
-  ){
-  mapNV[nv].q16++;
-  }
-  
-  if(
-  kpi.includes("QUÁ HẸN")
-  ){
-  mapNV[nv].qhen++;
-  }
-  
-  /* HỒ SƠ */
-  
-  const tt =
-  
-  String(x.tt||"")
-  .toUpperCase();
-  
-  if(
-  !kpi
-  &&
-  tt.includes("CẬP NHẬT HỒ SƠ")
-  ){
-  
-  mapNV[nv].hoso++;
-  
-  }
-  
-  });
-  
-  /* SORT */
-  
-  Object.entries(mapNV)
-  
-  .sort((a,b)=>{
-  
-  const ta = Object.values(a[1])
-  .filter(v=>typeof v==="number")
-  .reduce((s,v)=>s+v,0);
-  
-  const tb = Object.values(b[1])
-  .filter(v=>typeof v==="number")
-  .reduce((s,v)=>s+v,0);
-  
-  return tb-ta;
-  
-  })
-  
-  .forEach(([nv,v])=>{
-  
-  text +=
-  `👤 ${nv} - ${v.huyen}\n`;
-  
-  if(v.soc){
-  
-  text +=
-  `- SOC/SOC HOME: ${v.soc}\n`;
-  
-  }
-  
-  if(v.sc24){
-  
-  text +=
-  `- SC >24H: ${v.sc24}\n`;
-  
-  }
-  
-  if(v.tkm24){
-  
-  text +=
-  `- TKM >24H: ${v.tkm24}\n`;
-  
-  }
-  
-  if(v.q16){
-  
-  text +=
-  `- QUÁ 16H: ${v.q16}\n`;
-  
-  }
-  
-  if(v.qhen){
-  
-  text +=
-  `- QUÁ HẸN: ${v.qhen}\n`;
-  
-  }
-  
-  if(v.hoso){
-  
-  text +=
-  `- CẬP NHẬT HỒ SƠ: ${v.hoso}\n`;
-  
-  }
-  
-  text += "\n";
-  
-  });
-  
-  /* SHOW */
-  
-  wrap.innerText = text;
-  
-  }
     
   </script>
-  <!-- =========================
-  BÁO CÁO TEXT
-  ========================= -->
-  
-  <div class="modal hidden" id="textModal">
-  
-  <div class="text-modal-box">
-  
-  <div class="text-modal-header">
-  
-  <h3>📋 BÁO CÁO KPI</h3>
-  
-  <button
-  class="close-btn"
-  onclick="closeTextModal()"
-  >
-  Đóng
-  </button>
-  
-  </div>
-  
-  <div
-  id="textModalContent"
-  class="text-modal-content"
-  ></div>
-  
-  </div>
-  
-  </div>
   
   </body>
   </html>
