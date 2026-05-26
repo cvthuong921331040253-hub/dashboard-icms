@@ -279,6 +279,9 @@
   
   overflow:hidden;
   
+  display:flex;
+  flex-direction:column;
+  
   }
   
   .chart-box canvas{
@@ -549,16 +552,8 @@
   
   @media(max-width:768px){
   
-  .chart-grid{
-  
-  display:grid !important;
-  
-  grid-template-columns:1fr !important;
-  
-  gap:14px;
-  
-  width:100%;
-  
+  .chart-grid > *{
+  min-width:0;
   }
   
   .chart-box{
@@ -579,7 +574,9 @@
   
   width:100% !important;
   
-  height:100% !important;
+  max-width:100% !important;
+  
+  height:260px !important;
   
   display:block;
   
