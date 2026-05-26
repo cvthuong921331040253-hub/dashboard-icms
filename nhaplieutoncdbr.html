@@ -1163,7 +1163,7 @@ account;
 if(
 isManual
 &&
-!account
+!document.getElementById("account").value
 ){
 
 document.getElementById("account")
@@ -1332,6 +1332,16 @@ TÊN NHÂN VIÊN
 
 document.getElementById("ten_nv").value =
 
+if(account){
+
+document.getElementById("ten_nv")
+.setAttribute("readonly",true);
+
+document.getElementById("ten_nv")
+.classList.add("readonly");
+
+}
+
 decodeURIComponent(
 
 params.get("ten_nv")
@@ -1344,7 +1354,7 @@ params.get("nv")
 if(
 isManual
 &&
-!account
+!document.getElementById("account").value
 ){
 
 document.getElementById("ten_nv")
