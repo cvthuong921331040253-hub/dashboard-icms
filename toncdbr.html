@@ -3373,103 +3373,35 @@ const url =
   }
     
   </script>
-
   <!-- =========================
   BÁO CÁO TEXT
   ========================= -->
   
-  <div
-  id="textModal"
-  class="hidden"
-  style="
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.5);
-  z-index:999999;
-  
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  
-  padding:12px;
-  "
-  >
-  
-  <div
-  style="
-  background:#fff;
-  width:100%;
-  max-width:900px;
-  max-height:90vh;
-  
-  overflow:auto;
-  
-  border-radius:16px;
-  
-  padding:16px;
-  "
-  >
-  
-  <div
-  style="
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  
-  margin-bottom:12px;
-  "
-  >
-  
-  <h3>
-  📋 BÁO CÁO KPI
-  </h3>
-  
-  <button
-  onclick="
-  document
-  .getElementById('textModal')
-  .classList.add('hidden')
-  "
-  >
-  
-  Đóng
-  
-  </button>
-  
-  </div>
-  
-  <pre
-  id="textModalContent"
-  style="
-  white-space:pre-wrap;
-  font-size:13px;
-  line-height:1.6;
-  "
-  ></pre>
-  
-  </div>
-  
-  </div>
-
   <div class="modal hidden" id="textModal">
   
   <div class="text-modal-box">
   
   <div class="text-modal-header">
   
-  <h3>Chi tiết nội dung</h3>
+  <h3>📋 BÁO CÁO KPI</h3>
   
-  <button class="close-btn" onclick="closeTextModal()">
+  <button
+  class="close-btn"
+  onclick="closeTextModal()"
+  >
   Đóng
   </button>
   
   </div>
   
-  <div class="text-modal-content" id="textModalContent"></div>
+  <div
+  id="textModalContent"
+  class="text-modal-content"
+  ></div>
   
   </div>
   
   </div>
-    
+  
   </body>
   </html>
