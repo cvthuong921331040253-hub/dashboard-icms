@@ -1160,7 +1160,11 @@ ACCOUNT
 document.getElementById("account").value =
 account;
 
-if(isManual){
+if(
+isManual
+&&
+!account
+){
 
 document.getElementById("account")
 .removeAttribute("readonly");
@@ -1337,7 +1341,11 @@ params.get("nv")
 ""
 );
 
-if(isManual){
+if(
+isManual
+&&
+!account
+){
 
 document.getElementById("ten_nv")
 .removeAttribute("readonly");
