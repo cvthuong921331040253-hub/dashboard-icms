@@ -336,13 +336,17 @@
   display:grid;
   
   grid-template-columns:
-  repeat(auto-fit,minmax(380px,1fr));
+  repeat(auto-fit,minmax(320px,1fr));
   
   gap:16px;
   
   margin-top:16px;
   
   align-items:start;
+  
+  width:100%;
+  
+  overflow:hidden;
   
   }
   
@@ -351,6 +355,10 @@
   width:100%;
   
   min-width:0;
+  
+  max-width:100%;
+  
+  overflow:hidden;
   
   background:#fff;
   
@@ -388,6 +396,10 @@
   font-weight:700;
   
   color:#111827;
+  
+  word-break:break-word;
+  
+  overflow-wrap:break-word;
   
   }
   
