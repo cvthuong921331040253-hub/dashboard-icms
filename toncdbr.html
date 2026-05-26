@@ -1136,23 +1136,30 @@ Vui lòng click vào
   
   {
   label:"SOC HOME",
-  data:labels.map(h=>socHome[h])
+  data:labels.map(h=>socHome[h]),
+  backgroundColor:"#2563eb",
+  borderRadius:6
   },
   
   {
   label:"SOC",
-  data:labels.map(h=>soc[h])
+  data:labels.map(h=>soc[h]),
+  backgroundColor:"#f97316",
+  borderRadius:6
   },
   
   {
   label:"SỰ CỐ",
-  data:labels.map(h=>suco[h])
-  }
+  data:labels.map(h=>suco[h]),
+  backgroundColor:"#dc2626",
+  borderRadius:6
+  },
   
-  ,
   {
   label:"SC KN TKM",
-  data:labels.map(h=>sucoKNTKM[h])
+  data:labels.map(h=>sucoKNTKM[h]),
+  backgroundColor:"#16a34a",
+  borderRadius:6
   }
   
   ]
@@ -1340,38 +1347,52 @@ Vui lòng click vào
   datasets:[
   
   {
-      label:"Quá 24h",
-      data:labels.map(h=>q24[h])
+  label:"Quá 24h",
+  data:labels.map(h=>q24[h]),
+  backgroundColor:"#dc2626",
+  borderRadius:6
   },
   
   {
-      label:"Quá 3h, Trong 10h",
-      data:labels.map(h=>q3_10[h])
+  label:"Quá 3h, Trong 10h",
+  data:labels.map(h=>q3_10[h]),
+  backgroundColor:"#f97316",
+  borderRadius:6
   },
   
   {
-      label:"Quá 10h, Trong 16h",
-      data:labels.map(h=>q10_16[h])
+  label:"Quá 10h, Trong 16h",
+  data:labels.map(h=>q10_16[h]),
+  backgroundColor:"#eab308",
+  borderRadius:6
   },
   
   {
-      label:"Quá 16h",
-      data:labels.map(h=>q16[h])
+  label:"Quá 16h",
+  data:labels.map(h=>q16[h]),
+  backgroundColor:"#7c3aed",
+  borderRadius:6
   },
   
   {
-      label:"Quá hẹn",
-      data:labels.map(h=>qhen[h])
+  label:"Quá hẹn",
+  data:labels.map(h=>qhen[h]),
+  backgroundColor:"#b91c1c",
+  borderRadius:6
   },
   
   {
-      label:"Trong 3h",
-      data:labels.map(h=>t3h[h])
+  label:"Trong 3h",
+  data:labels.map(h=>t3h[h]),
+  backgroundColor:"#22c55e",
+  borderRadius:6
   },
   
   {
-      label:"Trong hẹn",
-      data:labels.map(h=>then[h])
+  label:"Trong hẹn",
+  data:labels.map(h=>then[h]),
+  backgroundColor:"#0ea5e9",
+  borderRadius:6
   }
   
   ]
@@ -1473,21 +1494,18 @@ Vui lòng click vào
   label:"TỔNG",
   data:labels.map(h=>tongTKM[h]),
   backgroundColor:"#2563eb",
-  borderRadius:6
   },
   
   {
   label:"Đường dây mới",
   data:labels.map(h=>duongDayMoi[h]),
   backgroundColor:"#16a34a",
-  borderRadius:6
   },
   
   {
   label:"Đường dây có sẵn",
   data:labels.map(h=>duongDayCoSan[h]),
   backgroundColor:"#ea580c",
-  borderRadius:6
   }
   
   ]
