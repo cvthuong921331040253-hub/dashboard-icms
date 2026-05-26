@@ -1019,7 +1019,13 @@ Vui lòng click vào
   html+=createCard("TỒN CẬP NHẬT HỒ SƠ",capnhaths.length,"#dc2626","showTable('TỒN CẬP NHẬT HỒ SƠ',capnhaths)");
   
   html+=createCard("TKM CHƯA GIAO",chuagiao.length,"#7c3aed","showTable('TKM CHƯA GIAO',tkmchuagiao)");
-  
+
+  html += createCard(
+  "📋 BÁO CÁO KPI",
+  0,
+  "#0f766e",
+  "showBaoCaoTongHop()"
+  );
   
   dashboard.innerHTML=html;
   
@@ -1372,7 +1378,363 @@ Vui lòng click vào
   /* =====================
   MODAL
   ===================== */
+
+  /* =========================
+  TOP NHÂN VIÊN
+  ========================= */
   
+  function topNhanVien(data){
+  
+  const map = {};
+  
+  data.forEach(x=>{
+  
+  const nv =
+  
+  String(
+  x.nv ||
+  x.ten_nv ||
+  "Chưa rõ"
+  ).trim();
+  
+  if(!nv)return;
+  
+  if(!map[nv]){
+  map[nv]=0;
+  }
+  
+  map[nv]++;
+  
+  });
+  
+  return Object.entries(map)
+  
+  .sort((a,b)=>b[1]-a[1])
+  
+  .slice(0,5)
+  
+  .map(([ten,count])=>({
+  
+  ten,
+  count
+  
+  }));
+  
+  }
+  
+  /* =========================
+  BÁO CÁO TỔNG HỢP
+  ========================= */
+  
+  function showBaoCaoTongHop(){
+  
+  const modal =
+  document.getElementById("textModal");
+  
+  modal.classList.remove("hidden");
+  
+  const wrap =
+  document.getElementById(
+  "textModalContent"
+  );
+  
+  const allHuyen = [
+  
+  ...new Set([
+  
+  ...tonsc.map(x=>x.huyen||"Khác"),
+  
+  ...tontkm.map(x=>x.huyen||"Khác")
+  
+  ])
+  
+  ].sort();
+  
+  let text = "";
+  
+  /* =========================
+  LOOP HUYỆN
+  ========================= */
+  
+  allHuyen.forEach(huyen=>{
+  
+  /* SC */
+  
+  const socHome =
+  
+  tonsc.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.sc||"")
+  .toUpperCase()
+  .includes("SOC HOME")
+  
+  );
+  
+  const socPort =
+  
+  tonsc.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.sc||"")
+  .toUpperCase()==="SOC"
+  
+  );
+  
+  const sc24 =
+  
+  tonsc.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  parseFloat(x.tg||0) > 24
+  
+  );
+  
+  /* TKM */
+  
+  const tkm24 =
+  
+  tontkm.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.kpi||"")
+  .toUpperCase()
+  .includes("QUÁ 24H")
+  
+  );
+  
+  const qua16 =
+  
+  tontkm.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.kpi||"")
+  .toUpperCase()
+  .includes("QUÁ 16H")
+  
+  );
+  
+  const quaHen =
+  
+  tontkm.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.kpi||"")
+  .toUpperCase()
+  .includes("QUÁ HẸN")
+  
+  );
+  
+  const hoSo =
+  
+  tontkm.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.tt||"")
+  .toUpperCase()
+  .includes("CẬP NHẬT HỒ SƠ")
+  
+  );
+  
+  /* =========================
+  BẮT ĐẦU TEXT
+  ========================= */
+  
+  let huyenText =
+  
+  `📍 ${huyen}\n\n`;
+  
+  let hasData = false;
+  
+  /* =========================
+  SOC HOME
+  ========================= */
+  
+  if(socHome.length > 10){
+  
+  huyenText +=
+  "- SOC HOME KÉM còn tồn nhiều.\n";
+  
+  hasData = true;
+  
+  }
+  
+  /* =========================
+  SOC PORT
+  ========================= */
+  
+  if(socPort.length > 10){
+  
+  huyenText +=
+  "- SOC HT, SOC PORT KÉM còn cao.\n";
+  
+  hasData = true;
+  
+  }
+  
+  /* =========================
+  SC >24H
+  ========================= */
+  
+  if(sc24.length){
+  
+  hasData = true;
+  
+  huyenText +=
+  "\n- SỰ CỐ QUÁ 24H:\n";
+  
+  topNhanVien(sc24)
+  
+  .forEach(x=>{
+  
+  huyenText +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* =========================
+  TKM >24H
+  ========================= */
+  
+  if(tkm24.length){
+  
+  hasData = true;
+  
+  huyenText +=
+  "\n- TKM QUÁ 24H:\n";
+  
+  topNhanVien(tkm24)
+  
+  .forEach(x=>{
+  
+  huyenText +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* =========================
+  QUÁ 16H
+  ========================= */
+  
+  if(qua16.length){
+  
+  hasData = true;
+  
+  huyenText +=
+  "\n- TKM QUÁ 16H:\n";
+  
+  topNhanVien(qua16)
+  
+  .forEach(x=>{
+  
+  huyenText +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* =========================
+  QUÁ HẸN
+  ========================= */
+  
+  if(quaHen.length){
+  
+  hasData = true;
+  
+  huyenText +=
+  "\n- QUÁ HẸN TRIỂN KHAI:\n";
+  
+  topNhanVien(quaHen)
+  
+  .forEach(x=>{
+  
+  huyenText +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* =========================
+  HỒ SƠ
+  ========================= */
+  
+  if(hoSo.length){
+  
+  hasData = true;
+  
+  huyenText +=
+  "\n- TỒN CẬP NHẬT HỒ SƠ:\n";
+  
+  topNhanVien(hoSo)
+  
+  .forEach(x=>{
+  
+  huyenText +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* =========================
+  ADD
+  ========================= */
+  
+  if(hasData){
+  
+  text +=
+  huyenText + "\n\n";
+  
+  }
+  
+  });
+  
+  /* =========================
+  KHÔNG DATA
+  ========================= */
+  
+  if(!text){
+  
+  text =
+  "Không có dữ liệu đánh giá";
+  
+  }
+  
+  /* =========================
+  SHOW
+  ========================= */
+  
+  wrap.innerText = text;
+  
+  }
+    
   function showTable(title,data){
   
   currentData=data;
