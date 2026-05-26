@@ -1,344 +1,4134 @@
-```html
-<!DOCTYPE html>
-<html lang="vi">
-
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Kho vật tư</title>
-
-<style>
-
-body{
-  margin:0;
-  padding:10px;
+  <!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1,user-scalable=no"/>
+  <title>TỒN TÁC VỤ CĐBR</title>
+  
+  <style>
+  
+  *{margin:0;padding:0;box-sizing:border-box;}
+  
+  body{
   font-family:Arial;
-  background:#f4f6f9;
-}
-
-h2{
-  margin-top:0;
-}
-
-.topbar{
-  display:flex;
-  gap:10px;
-  margin-bottom:10px;
-  flex-wrap:wrap;
-}
-
-input,select{
-  padding:8px;
-  border:1px solid #ccc;
-  border-radius:6px;
-}
-
-button{
-  padding:8px 14px;
-  border:none;
-  background:#1976d2;
-  color:white;
-  border-radius:6px;
+  background:#f3f4f6;
+  padding:12px;
+  color:#111827;
+  font-size:13px;
+  }
+  
+  h1{
+  font-size:22px;
+  margin-bottom:4px;
+  font-weight:700;
+  }
+  
+  .update{color:#6b7280;margin-bottom:20px;font-size:13px;font-weight:500;}
+  
+  .section-title{margin:25px 0 15px;font-size:24px;font-weight:bold;}
+  
+  .dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;}
+  
+  .card{
+  background:white;
+  border-radius:12px;
+  padding:14px;
+  border:1px solid #e5e7eb;
   cursor:pointer;
-}
-
-.card{
-  background:white;
-  border-radius:10px;
-  padding:10px;
-  margin-bottom:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:10px;
-  margin-bottom:10px;
-}
-
-.stat{
-  background:white;
-  padding:15px;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
-}
-
-.stat h3{
-  margin:0;
+  transition:.2s;
+  }
+  
+  
+  .card-title{
+  font-weight:700;
+  margin-bottom:8px;
   font-size:14px;
-  color:#666;
-}
-
-.stat p{
-  margin:8px 0 0;
-  font-size:24px;
-  font-weight:bold;
-}
-
-.table-wrap{
-  overflow:auto;
-  background:white;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
-}
-
-table{
-  width:100%;
+  line-height:1.4;
+  }
+  
+  .card-count{
+  font-size:28px;
+  font-weight:700;
+  line-height:1.1;
+  }
+  
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.25);display:flex;justify-content:center;align-items:center;z-index:9999;}
+  
+  .hidden{display:none;}
+  
+  .modal-content{width:96%;height:92vh;background:white;border-radius:12px;padding:15px;overflow:hidden;display:flex;flex-direction:column;}
+  
+  .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;background:#fff;padding-bottom:10px;}
+  
+  .close-btn{border:none;background:red;color:white;padding:10px 14px;border-radius:8px;cursor:pointer;}
+  
+  .excel-btn{border:none;background:#16a34a;color:white;padding:10px 12px;border-radius:8px;cursor:pointer;font-weight:600;}
+  
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;background:#fff;padding-bottom:10px;}
+  
+  .toolbar input,
+  .toolbar select{
+  
+  height:36px;
+  padding:0 10px;
+  
+  border:1px solid #d1d5db;
+  border-radius:8px;
+  
+  font-size:13px;
+  
+  background:#fff;
+  
+  }
+  
+  table{
+  width:max-content;
+  min-width:100%;
+  
   border-collapse:collapse;
-  min-width:1000px;
-}
+  background:white;
+  
+  table-layout:auto;
+  }
+  
+  th{background:#f3f4f6;position:sticky;top:0;z-index:50;white-space:normal;}
+  
+  th{
+  border:1px solid #e5e7eb;
+  padding:6px 8px;
+  text-align:center;
+  font-size:12px;
+  vertical-align:middle;
+  line-height:1.3;
+  }
+  
+  td{
+  border:1px solid #e5e7eb;
+  padding:6px 8px;
+  text-align:left;
+  font-size:12px;
+  vertical-align:middle;
+  line-height:1.45;
+  }
+  
+  tr:nth-child(even){background:#fafafa;}
+  
+  .badge{padding:4px 8px;border-radius:6px;color:white;font-size:12px;font-weight:bold;display:inline-block;}
+  
+  .red{background:#dc2626;}
+  
+  .orange{background:#ea580c;}
+  
+  .blue{background:#2563eb;}
+  
+  .purple{background:#7c3aed;}
+  
+  .gray{background:#6b7280;}
+  
+  .green{background:#16a34a;}
+  
+  .expand-btn{color:#2563eb;cursor:pointer;margin-top:5px;font-size:13px;}
+  
+  .toolbar button{padding:0 10px;height:36px;border:none;border-radius:8px;background:#16a34a;color:white;cursor:pointer;font-weight:600;font-size:11px;}
+  
+  .mobile-list{display:flex;flex-direction:column;gap:8px;}
+  
+  .mobile-card{background:#fff;border-radius:16px;padding:14px;border:1px solid #e5e7eb;gap:6px;}
+  
+  .mobile-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;}
+  
+  .mobile-account{font-size:15px;font-weight:700;color:#111827;word-break:break-word;line-height:1.5;}
+  
+  .mobile-tg{font-size:12px;font-weight:700;white-space:nowrap;}
+  
+  .mobile-red{color:#dc2626;}
+  
+  .mobile-row{font-size:13px;line-height:1.6;margin-bottom:6px;word-break:break-word;font-size:12px;line-height:1.45;}
+  
+  .mobile-label{font-weight:700;color:#6b7280;}
+  
+  .mobile-badge{
+  
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  
+  padding:2px 6px;
+  
+  border-radius:6px;
+  
+  font-size:10px;
+  font-weight:700;
+  
+  line-height:1.2;
+  
+  white-space:nowrap;
+  
+  max-width:max-content;
+  
+  }
+  
+  .mobile-content{margin-top:6px;padding-top:6px;border-top:1px dashed #d1d5db;font-size:11px;line-height:1.5;word-break:break-word;}
+  
+  .mobile-more{font-size:12px;color:#2563eb;margin-top:6px;cursor:pointer;font-weight:600;}
+    
+  @media(max-width:768px){
+  
+  body{padding:10px;background:#f1f5f9;}
+  
+  h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+  
+  .update{font-size:11px;margin-bottom:10px;line-height:1.5;}
+  
+  .section-title{font-size:18px;margin:16px 0 10px;}
+  
+  .dashboard{grid-template-columns:repeat(2,1fr);gap:6px;}
+  
+  .card{
+  padding:10px;
+  
+  border-radius:12px;
+  
+  border:1px solid #e5e7eb;
+  
+  background:#fff;
+  }
+  
+  .card-title{
+  
+  font-size:11px;
+  
+  margin-bottom:4px;
+  
+  line-height:1.35;
+  
+  font-weight:700;
+  }
+  
+  .card-count{
+  
+  font-size:22px;
+  
+  line-height:1.05;
+  
+  font-weight:700;
+  }
+  
+  .modal-content{width:100%;height:100vh;border-radius:0;padding:6px;background:#f8fafc;}
+  
+  .modal-header{margin-bottom:8px;padding-bottom:6px;}
+  
+  .modal-header h2{font-size:14px;font-weight:700;}
+  
+  .close-btn{padding:5px 8px;font-size:10px;border-radius:6px;}
+  
+  .excel-btn{padding:5px 8px;font-size:10px;border-radius:6px;}
+  
+  .toolbar{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;}
+  
+  .toolbar input{grid-column:1/3;}
+  
+  .toolbar button,.toolbar select,.toolbar input{height:36px;font-size:11px;padding:0 10px;border-radius:8px;}
+  
+  .toolbar button{font-weight:600;}
+  
+  #tableWrap{border-radius:10px;background:#fff;border:1px solid #e5e7eb;}
+  
+  table{display:none;}
+  
+  th{font-size:10px;padding:6px 8px;line-height:1.2;}
+  
+  td{font-size:10px;padding:5px 8px;line-height:1.3;white-space:nowrap;}
+  
+  .badge{font-size:8px;padding:2px 4px;border-radius:4px;}
+  
+  .expand-btn{font-size:9px;margin-top:2px;}
+  }
 
-th{
-  background:#1976d2;
-  color:white;
-  position:sticky;
-  top:0;
-}
-
-th,td{
-  padding:8px;
-  border:1px solid #ddd;
+  .chart-grid{
+  
+  display:grid;
+  
+  grid-template-columns:
+  repeat(3,minmax(0,1fr));
+  
+  gap:14px;
+  
+  margin-top:20px;
+  
+  align-items:stretch;
+  
+  width:100%;
+  
+  }
+  
+  
+  .chart-box{
+  
+  position:relative;
+  
+  width:100%;
+  
+  min-width:0;
+  
+  background:#fff;
+  
+  border-radius:14px;
+  
+  padding:12px;
+  
+  border:1px solid #e5e7eb;
+  
+  height:340px;
+  
+  overflow:hidden;
+  
+  display:flex;
+  flex-direction:column;
+  
+  }
+  
+  .chart-box canvas{
+  
+  display:block;
+  
+  width:100%!important;
+  
+  max-width:100%!important;
+  
+  height:100%!important;
+  
+  }
+  
+  
+  #tableWrap{-webkit-overflow-scrolling:touch;contain:strict;}
+  .text-modal-box{
+  width:90%;
+  max-width:900px;
+  max-height:85vh;
+  background:#fff;
+  border-radius:12px;
+  padding:20px;
+  overflow:auto;
+  }
+  
+  .text-modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+  }
+  
+  .text-modal-content{
+  white-space:pre-wrap;
+  line-height:1.7;
   font-size:14px;
-}
+  word-break:break-word;
+  }
+  .text-preview{
+  max-height:42px;
+  overflow:hidden;
+  line-height:1.4;
+  word-break:break-word;
+  }
+  
+  
+  /* =========================
+  HUYỆN DASHBOARD
+  ========================= */
+  
+  .huyen-dashboard{
+  
+  display:grid;
+  
+  grid-template-columns:
+  repeat(3,minmax(0,1fr));
+  
+  gap:16px;
+  
+  margin-top:16px;
+  
+  width:100%;
+  
+  align-items:stretch;
+  
+  grid-auto-rows:1fr;
+  
+  }
+  
+  .huyen-card{
+  
+  background:#fff;
+  
+  border-radius:18px;
+  
+  padding:18px;
+  
+  border:1px solid #e5e7eb;
+  
+  box-shadow:
+  0 2px 10px rgba(0,0,0,.06);
+  
+  width:100%;
+  
+  min-width:0;
+  
+  overflow:hidden;
+  
+  display:flex;
+  
+  flex-direction:column;
+  
+  height:100%;
+  
+  align-self:stretch;
+  
+  }
+  
+  .huyen-top{
+  
+  display:flex;
+  
+  justify-content:space-between;
+  
+  align-items:flex-start;
+  
+  flex-wrap:wrap;
+  
+  gap:8px;
+  
+  margin-bottom:14px;
+  
+  }
+  
+  .huyen-name{
+  
+  font-size:20px;
+  
+  font-weight:700;
+  
+  color:#111827;
+  
+  word-break:break-word;
+  
+  overflow-wrap:break-word;
+  
+  }
+  
+  .huyen-level{
+  
+  padding:6px 10px;
+  
+  border-radius:999px;
+  
+  font-size:11px;
+  
+  font-weight:700;
+  
+  color:#fff;
+  
+  white-space:nowrap;
+  
+  flex-shrink:0;
+  
+  }
+  
+  .level-low{
+  background:#16a34a;
+  }
+  
+  .level-mid{
+  background:#ea580c;
+  }
+  
+  .level-high{
+  background:#dc2626;
+  }
+  
+  .huyen-mini-grid{
+  
+  display:grid;
+  
+  grid-template-columns:
+  repeat(2,1fr);
+  
+  gap:10px;
+  
+  margin-bottom:14px;
+  
+  }
+  
+  .huyen-mini{
+  
+  background:#f8fafc;
+  
+  border-radius:12px;
+  
+  padding:10px;
+  
+  }
+  
+  .huyen-mini-label{
+  
+  font-size:11px;
+  
+  color:#6b7280;
+  
+  margin-bottom:6px;
+  
+  font-weight:700;
+  
+  line-height:1.3;
+  
+  }
+  
+  .huyen-mini-value{
+  
+  font-size:22px;
+  
+  font-weight:700;
+  
+  line-height:1;
+  
+  }
+  
+  .huyen-section{
+  
+  margin-top:12px;
+  
+  width:100%;
+  
+  overflow:hidden;
+  
+  flex:1;
+  
+  display:flex;
+  
+  flex-direction:column;
+  
+  }
+  
+  .huyen-section-title{
+  
+  font-size:13px;
+  
+  font-weight:700;
+  
+  margin-bottom:6px;
+  
+  color:#111827;
+  
+  }
+  
+  .huyen-list{
+  
+  font-size:12px;
+  
+  line-height:1.7;
+  
+  color:#374151;
+  
+  word-break:break-word;
+  
+  overflow-wrap:break-word;
+  
+  white-space:normal;
+  
+  overflow-y:auto;
+  
+  padding-right:4px;
+  
+  }
+  
+  .huyen-list::-webkit-scrollbar{
+  width:6px;
+  }
+  
+  .huyen-list::-webkit-scrollbar-thumb{
+  background:#d1d5db;
+  border-radius:999px;
+  }
 
-tr:nth-child(even){
-  background:#fafafa;
-}
+  /* BIỂU ĐỒ */
+  /* =========================
+  MOBILE CHART
+  ========================= */
+  
+  @media(max-width:768px){
+  
+  .chart-grid > *{
+  min-width:0;
+  }
+  
+  .chart-box{
+  
+  width:100% !important;
+  
+  max-width:100% !important;
+  
+  height:320px !important;
+  
+  padding:10px;
+  
+  overflow:hidden;
+  
+  }
+  
+  .chart-box canvas{
+  
+  width:100% !important;
+  
+  max-width:100% !important;
+  
+  height:260px !important;
+  
+  display:block;
+  
+  }
+  
+  }
+  .manual-card{
+  
+  background:
+  linear-gradient(
+  135deg,
+  #16a34a,
+  #22c55e
+  );
+  
+  border:none;
+  
+  box-shadow:
+  0 8px 20px rgba(34,197,94,.22);
+  
+  transition:.25s;
+  
+  }
+  
+  .manual-card .card-title{
+  
+  color:#fff;
+  
+  font-size:11px;
+  
+  font-weight:700;
+  
+  line-height:1.25;
+  
+  letter-spacing:.2px;
+  
+  text-align:center;
+  
+  margin:0;
+  
+  }
+  
+  .manual-card:hover{
+  
+  transform:translateY(-2px);
+  
+  box-shadow:
+  0 12px 24px rgba(34,197,94,.32);
+  
+  }
+  
+    /* MOBILE */
+    @media(max-width:768px){
+    
+    .manual-card{
+    
+    padding:10px;
+    
+    border-radius:12px;
+    
+    }
+    
+    .manual-card .card-title{
+    
+    font-size:11px;
+    
+    line-height:1.25;
+    
+    }
+    
+    }
+  
+  
+  @media(max-width:768px){
+  
+  .huyen-dashboard{
+  
+  grid-template-columns:1fr;
+  
+  gap:12px;
+  
+  }
+  
+  .huyen-card{
+  
+  padding:14px;
+  
+  border-radius:14px;
+  
+  }
+  
+  .huyen-name{
+  
+  font-size:16px;
+  
+  }
+  
+  .huyen-mini-grid{
+  
+  grid-template-columns:1fr 1fr;
+  
+  gap:8px;
+  
+  }
+  
+  .huyen-mini{
+  
+  padding:8px;
+  
+  }
+  
+  .huyen-mini-value{
+  
+  font-size:18px;
+  
+  }
+  
+  .huyen-section-title{
+  
+  font-size:12px;
+  
+  }
+  
+  .huyen-list{
+  
+  font-size:11px;
+  
+  line-height:1.6;
+  
+  }
+  
+  }
+    
+  </style>
+  
+  </head>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <body>
+  
+  <h1>📊 TỒN TÁC VỤ CĐBR</h1>
+  
+  <div class="update" id="updateTime">⏳ Đang tải dữ liệu...</div>
+  
+  <div class="section-title">🔥TỒN SỰ CỐ</div>
+  
+  <div class="dashboard" id="tonscDashboard"></div>
+  
+  <div class="section-title">🔥TỒN TRIỂN KHAI</div>
+  
+  <div class="dashboard" id="tontkmDashboard"></div>
+  
+  <div class="section-title">📊 BIỂU ĐỒ THỐNG KÊ</div>
+  
+  <div class="chart-grid">
+  
+  <div class="chart-box">
+  
+  <div
+  style="
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:12px;
+  color:#111827;
+  "
+  >
+  
+  📊 BIỂU ĐỒ SC
+  
+  </div>
+  
+  <canvas id="chartSC"></canvas>
+  
+  </div>
+  
+  <div class="chart-box">
+  
+  <div
+  style="
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:12px;
+  color:#111827;
+  "
+  >
+  
+  📊 BIỂU ĐỒ CNHS
+  
+  </div>
+  
+  <canvas id="chartCNHS"></canvas>
+  
+  </div>
+  
+  <div class="chart-box">
+  
+  <div
+  style="
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:12px;
+  color:#111827;
+  "
+  >
+  
+  📊 BIỂU ĐỒ TKM
+  
+  </div>
+  
+  <canvas id="chartTKM"></canvas>
+  
+  </div>
+  
+  </div>
+  
+  <div class="section-title">
+  📍 TỔNG QUAN HUYỆN
+  </div>
+  
+  <div
+  id="huyenDashboard"
+  class="huyen-dashboard"
+  ></div>
+  
+  <div class="modal hidden" id="modal">
+  
+  <div class="modal-content">
+  
+  <div class="modal-header">
+  
+  <h2 id="modalTitle"></h2>
+  
+  <div style="display:flex;gap:6px;align-items:center;">
+  
+  <button
+  class="excel-btn"
+  onclick="exportExcel()"
+  >
+  
+  Excel
+  
+  </button>
+  
+  <button
+  class="excel-btn"
+  style="background:#dc2626;"
+  onclick="deleteScTkmAll()"
+  >
+  
+  🗑 XÓA SC/TKM
+  
+  </button>
+  
+  <button class="close-btn" onclick="closeModal()">Đóng</button>
+  
+  </div>
+  
+  </div>
+  
+  <div class="toolbar">
+  
+  <input
+  type="text"
+  id="searchInput"
+  placeholder="Tìm kiếm..."
+  >
+  
+  <select id="huyenFilter">
+  <option value="">Tất cả huyện</option>
+  </select>
+  
+  <select id="typeFilter">
+  <option value="">Tất cả loại</option>
+  </select>
+  
+  </div>
+  
+  <div id="tableWrap" style="overflow:auto;flex:1;position:relative;"><div id="tableContainer"></div></div>
+  
+  </div>
+  
+  </div>
+  
+  <script>
+  
+  const API="https://script.google.com/macros/s/AKfycbwgfs5YlUtNgvMrwjFcYLVzqHTAWv39kzB4Q6lwAcR5XE0ZSn6P2Cntyqd30AF_lrxx/exec";
+  
+  let tonsc=[];
+  let tontkm=[];
+  let currentData=[];
+  let filteredData=[];
+  let currentPage=1;
+  let allAccounts=[];
+  const PAGE_SIZE=300;
+  
+  function countUniqueAccount(data){const set=new Set();data.forEach(x=>{const acc=String(x.account||"").replace(/\s+/g," ").trim().toUpperCase();if(acc)set.add(acc);});return set.size;}
+  
+  function parseDateVN(str){if(!str)return 0;try{const [datePart,timePart]=str.split(" ");const [d,m,y]=datePart.split("/");const [hh,mm,ss]=(timePart||"00:00:00").split(":");return new Date(Number(y),Number(m)-1,Number(d),Number(hh),Number(mm),Number(ss));}catch(err){return 0;}}
+  
+  async function loadData(){
+  
+  try{
+  
+  const res=await fetch(API);
+  const json=await res.json();
+  
+  tonsc=json.tonsc||[];
+  tontkm=json.tontkm||[];
+  const nhaplieu =
+  json.nhaplieu || [];
+  
+  const mapAcc = {};
+  
+  nhaplieu.forEach(row=>{
+  
+  const acc =
+  
+  String(row.account||"")
+  .trim()
+  .toUpperCase();
+  
+  if(!acc)return;
+  
+  /* BYPASS */
+  
+  const check =
+  
+  String(row.check||"")
+  .trim();
+  
+  if(check){
+  
+  if(!mapAcc[acc]){
+  
+  mapAcc[acc]=row;
+  
+  }
+  
+  }
+  
+  });
+  
+  /* CARD BYPASS */
+  
+  allAccounts =
+  Object.values(mapAcc);
+  
+  /* CARD SC/TKM */
+  
+  window.scTkmAccounts =
+  
+  nhaplieu.filter(x=>{
+  
+  const loai =
+  
+  String(x.loai_wo || "")
+  .trim()
+  .toUpperCase();
+  
+  return (
+  loai==="SC"
+  ||
+  loai==="TKM"
+  );
+  
+  });
+  
+    
+  console.log("TON SC:",tonsc.length);
+  console.log("TON TKM:",tontkm.length);
+  
+  renderTonSC();
+  renderTonTKM();
+  renderCharts();
+  renderHuyenDashboard();
+  document.getElementById("updateTime").innerHTML="⏰ Thời gian lấy báo cáo: "+(tontkm[0]?.tgupdate||"");
+  }catch(err){
+  
+  console.error(err);
+  document.getElementById("updateTime").innerHTML="⚠️ Không tải được dữ liệu API";
+  
+  }
+  
+  }
+  
+  function createCard(title,count,color,onClick){
+  
+  return `
+  <div class="card" onclick="${onClick}">
+  <div class="card-title">${title}</div>
+  <div class="card-count" style="color:${color}">${count}</div>
+  </div>
+  `;
+  
+  }
+  
+  /* =====================
+  TON SC
+  ===================== */
+  
+  function renderTonSC(){
+  
+  const dashboard=document.getElementById("tonscDashboard");
+  
+  const socpk=tonsc.filter(x=>{
+  
+      const v=String(x.sc||"")
+          .replace(/\s+/g," ")
+          .trim()
+          .toUpperCase();
+  
+      return v==="SOC HOME";
+  
+  });
+  
+  const soc=tonsc.filter(x=>{
+  
+      const v=String(x.sc||"")
+          .replace(/\s+/g," ")
+          .trim()
+          .toUpperCase();
+  
+      return v==="SOC";
+  
+  });
+  
+  const suco=tonsc.filter(x=>{
+  
+      const v=String(x.sc||"")
+          .replace(/\s+/g," ")
+          .trim()
+          .toUpperCase();
+  
+      return [
+          "HT",
+          "SC",
+          "SC HOT",
+          "HT HOT",
+          "SC VIP",
+          "HT VIP"
+      ].includes(v);
+  
+  });
+  
+  const sucoKNTKM=tonsc.filter(x=>{
+  
+      const v=String(x.sc||"")
+          .replace(/\s+/g," ")
+          .trim()
+          .toUpperCase();
+  
+      return !v;
+  
+  });
+  const chuagiao=tonsc.filter(x=>{
+  
+      return !x.user || x.user==0;
+  
+  });
+  window.tongsc=tonsc;
+  window.socpkData=socpk;
+  window.socData=soc;
+  window.sucoData=suco;
+  window.sucoKNTKM=sucoKNTKM;
+  window.chuagiaoData=chuagiao;
+  
+  dashboard.innerHTML=
+  
+  createCard(
+  "TỔNG SC",
+  tonsc.length,
+  "#111827",
+  "showTable('TỔNG SC',tongsc)"
+  )
+  
+  +
+  
+  createCard(
+  "SOC HOME KÉM",
+  socpk.length,
+  "#2563eb",
+  "showTable('SOC HOME KÉM',socpkData)"
+  )
+  
+  +
+  
+  createCard(
+  "SOC HT, SOC PORT KÉM",
+  soc.length,
+  "#ea580c",
+  "showTable('SOC HT, SOC PORT KÉM',socData)"
+  )
+  
+  +
+  
+  createCard(
+  "SỰ CỐ",
+  suco.length,
+  "#dc2626",
+  "showTable('SỰ CỐ',sucoData)"
+  )
+  
+  +
+  
+  createCard(
+  "SỰ CỐ KN TKM",
+  sucoKNTKM.length,
+  "#9333ea",
+  "showTable('SỰ CỐ KN TKM',sucoKNTKM)"
+  )
+  
+  +
+  
+  createCard(
+  "SỰ CỐ CHƯA GIAO",
+  chuagiao.length,
+  "#7c3aed",
+  "showTable('SỰ CỐ CHƯA GIAO',chuagiaoData)"
+  )
+  +
+  
+  `
+  <div
+  class="card manual-card"
+  onclick="openManualInput()"
+  >
+  
+<div
+class="card-title"
+style="
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:4px;
+text-align:center;
+"
+>
 
-.loading{
+<div>
+
+📝 NHẬP SC & TKM BKK
+
+</div>
+
+<div
+style="
+font-size:10px;
+font-weight:500;
+opacity:.95;
+"
+>
+
+Vui lòng click vào
+
+</div>
+
+</div>
+  
+  </div>
+  `
+    
+  +
+  
+  `
+  <div
+  class="card"
+  onclick="showAccountManager()"
+  style="
+  background:linear-gradient(135deg,#059669,#10b981);
+  
+  border:1px solid #34d399;
+  
+  box-shadow:none;
+  
+  padding:10px;
+  "
+  >
+  
+  <div
+  class="card-title"
+  style="
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.25;
+  letter-spacing:.2px;
+  "
+  >
+  
+  📁 ĐÃ NHẬP BYPASS PORT KÉM, HOME KÉM
+  
+  </div>
+  
+  <div
+  class="card-count"
+  style="
+  color:#fff;
+  font-size:20px;
+  text-shadow:none;
+  "
+  >
+  
+  ${allAccounts.length}
+  
+  </div>
+  
+  </div>
+  `
+  
+  +
+  
+  `
+  <div
+  class="card"
+  onclick="showScTkmManager()"
+  style="
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  
+  border:1px solid #60a5fa;
+  
+  box-shadow:none;
+  
+  padding:10px;
+  "
+  >
+  
+  <div
+  class="card-title"
+  style="
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.25;
+  letter-spacing:.2px;
+  "
+  >
+  
+  📁 ĐÃ NHẬP SC VÀ TKM
+  
+  </div>
+  
+  <div
+  class="card-count"
+  style="
+  color:#fff;
+  font-size:20px;
+  "
+  >
+  
+  ${window.scTkmAccounts.length}
+  
+  </div>
+  
+  </div>
+  `
+  }
+  
+  /* =====================
+  TON TKM
+  ===================== */
+  
+  function renderTonTKM(){
+  
+  const dashboard=document.getElementById("tontkmDashboard");
+  
+  const groups={};
+  
+  const capnhaths=tontkm.filter(x=>{
+  
+      const tt=String(x.tt||"")
+          .replace(/\s+/g," ")
+          .trim()
+          .toUpperCase();
+  
+      return tt==="CẬP NHẬT HỒ SƠ";
+  
+  });
+  
+  window.capnhaths=capnhaths;
+  
+  tontkm.forEach(x=>{
+  
+  const tt=String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase();
+  
+  
+  let kpi=String(x.kpi||"")
+      .replace(/\s+/g," ")
+      .trim()
+      .toUpperCase();
+  
+  kpi = kpi.replace(/\s*,\s*/g,", ");
+  
+  if(!kpi)kpi="KHÔNG KPI";
+  
+  if(!groups[kpi])groups[kpi]=[];
+  
+  groups[kpi].push(x);
+  
+  });
+  
+  let html="";
+  
+  window.tongtkm=tontkm;
+  
+  html+=createCard("TỔNG TKM",tontkm.length,"#111827","showTable('TỔNG TKM',tongtkm)");
+  
+  [
+      "QUÁ 24H",
+      "QUÁ 3H, TRONG 10H",
+      "QUÁ 10H, TRONG 16H",
+      "QUÁ 16H",
+      "QUÁ HẸN",
+      "TRONG 3H",
+      "TRONG HẸN",
+      "KHÔNG KPI"
+  ].forEach(kpi=>{
+  
+      if(!groups[kpi]) groups[kpi]=[];
+  
+      window["kpi_"+kpi]=groups[kpi];
+  
+      const cardColor=
+          (
+              kpi==="QUÁ 24H" ||
+              kpi==="QUÁ HẸN" ||
+              kpi==="QUÁ 16H" ||
+              kpi==="KHÔNG KPI"
+          )
+          ? "#dc2626"
+          : "#16a34a";
+  
+      html+=createCard(
+          kpi,
+          groups[kpi].length,
+          cardColor,
+          `showTable('${kpi}',window['kpi_${kpi}'])`
+      );
+  
+  });
+  
+  const chuagiao=tontkm.filter(x=>String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase()==="ĐANG GIAO TỔ ĐỘI");
+  
+  window.tkmchuagiao=chuagiao;
+    
+  html+=createCard("TỒN CẬP NHẬT HỒ SƠ",capnhaths.length,"#dc2626","showTable('TỒN CẬP NHẬT HỒ SƠ',capnhaths)");
+  
+  html+=createCard("TKM CHƯA GIAO",chuagiao.length,"#7c3aed","showTable('TKM CHƯA GIAO',tkmchuagiao)");
+
+  html += createCard(
+  "📋 BÁO CÁO KPI",
+  0,
+  "#0f766e",
+  "showBaoCaoTongHop()"
+  );
+  
+  dashboard.innerHTML=html;
+  
+  }
+  
+  function renderCharts(){
+  
+  renderSCHuyen();
+  
+  renderHSChart();
+  
+  renderKPIChart();
+  
+  }
+  
+  function renderSCHuyen(){
+  
+  const labels=[...new Set(tonsc.map(x=>x.huyen||"Khác"))];
+  
+  const socHome={};
+  const soc={};
+  const suco={};
+  const sucoKNTKM={};
+  
+  labels.forEach(h=>{
+  
+  socHome[h]=0;
+  soc[h]=0;
+  suco[h]=0;
+  sucoKNTKM[h]=0;
+  
+  });
+  
+  tonsc.forEach(x=>{
+  
+  const h=x.huyen||"Khác";
+  
+  const loai=String(x.sc||"").toUpperCase();
+  
+  if(loai==="SOC HOME"){
+  
+      socHome[h]++;
+  
+  }
+  else if(loai==="SOC"){
+  
+      soc[h]++;
+  
+  }
+  else if(!loai){
+  
+      sucoKNTKM[h]++;
+  
+  }
+  else if(
+      [
+          "HT",
+          "SC",
+          "SC HOT",
+          "HT HOT",
+          "SC VIP",
+          "HT VIP"
+      ].includes(loai)
+  ){
+  
+      suco[h]++;
+  
+  }
+  
+  });
+  
+  new Chart(document.getElementById("chartSC"),{
+  
+  type:"bar",
+  
+  data:{
+  
+  labels:labels,
+  
+  datasets:[
+  
+  {
+  label:"SOC HOME",
+  data:labels.map(h=>socHome[h])
+  },
+  
+  {
+  label:"SOC",
+  data:labels.map(h=>soc[h])
+  },
+  
+  {
+  label:"SỰ CỐ",
+  data:labels.map(h=>suco[h])
+  }
+  
+  ,
+  {
+  label:"SC KN TKM",
+  data:labels.map(h=>sucoKNTKM[h])
+  }
+  
+  ]
+  
+  },
+  
+  options:{
+  responsive:true,
+  maintainAspectRatio:false,
+  resizeDelay:200,
+  
+  layout:{
+  padding:{
+  bottom:20
+  }
+  },
+  
+  scales:{
+  x:{
+  ticks:{
+  maxRotation:90,
+  minRotation:90
+  }
+  }
+  }
+  
+  }
+  
+  });
+  
+  }
+  
+  function renderHSChart(){
+  
+  const labels=[...new Set(tontkm.map(x=>x.huyen||"Khác"))];
+  
+  const hs={};
+  
+  labels.forEach(h=>{
+  
+  hs[h]=0;
+  
+  });
+  
+  tontkm.forEach(x=>{
+  
+  const h=x.huyen||"Khác";
+  
+  const tt=String(x.tt||"").toUpperCase();
+  
+  if(tt.includes("CẬP NHẬT HỒ SƠ")){
+  
+  hs[h]++;
+  
+  }
+  
+  });
+  
+  new Chart(document.getElementById("chartCNHS"),{
+  
+  type:"bar",
+  
+  data:{
+  
+  labels:labels,
+  
+  datasets:[
+  
+  {
+  label:"Cập nhật hồ sơ",
+  data:labels.map(h=>hs[h])
+  }
+  
+  ]
+  
+  },
+  
+  options:{
+  responsive:true,
+  maintainAspectRatio:false,
+  resizeDelay:200,
+  
+  layout:{
+  padding:{
+  bottom:20
+  }
+  },
+  
+  scales:{
+  x:{
+  ticks:{
+  maxRotation:90,
+  minRotation:90
+  }
+  }
+  }
+  
+  }
+  
+  });
+  
+  }
+  
+  function renderKPIChart(){
+  
+  const labels=[...new Set(tontkm.map(x=>x.huyen||"Khác"))];
+  
+  const q24={};
+  const q3_10={};
+  const q10_16={};
+  const q16={};
+  const qhen={};
+  const t3h={};
+  const then={};
+  
+  labels.forEach(h=>{
+  
+      q24[h]=0;
+      q3_10[h]=0;
+      q10_16[h]=0;
+      q16[h]=0;
+      qhen[h]=0;
+      t3h[h]=0;
+      then[h]=0;
+  
+  });
+  
+  tontkm.forEach(x=>{
+  
+  const h=x.huyen||"Khác";
+  
+  const k=String(x.kpi||"")
+  
+      .replace(/\u00A0/g," ")
+      .replace(/\n/g," ")
+      .replace(/\s+/g," ")
+      .trim()
+      .toUpperCase()
+      .replace(/\s*,\s*/g,", ");
+  
+  if(k==="QUÁ 24H"){
+  
+      q24[h]++;
+  
+  }
+  else if(k==="QUÁ 3H, TRONG 10H"){
+  
+      q3_10[h]++;
+  
+  }
+  else if(k==="QUÁ 10H, TRONG 16H"){
+  
+      q10_16[h]++;
+  
+  }
+  else if(k==="QUÁ 16H"){
+  
+      q16[h]++;
+  
+  }
+  else if(k==="QUÁ HẸN"){
+  
+      qhen[h]++;
+  
+  }
+  else if(k==="TRONG 3H"){
+  
+      t3h[h]++;
+  
+  }
+  else if(k==="TRONG HẸN"){
+  
+      then[h]++;
+  
+  }
+  
+  });
+  
+  new Chart(document.getElementById("chartTKM"),{
+  
+  type:"bar",
+  
+  data:{
+  
+  labels:labels,
+  
+  datasets:[
+  
+  {
+      label:"Quá 24h",
+      data:labels.map(h=>q24[h])
+  },
+  
+  {
+      label:"Quá 3h, Trong 10h",
+      data:labels.map(h=>q3_10[h])
+  },
+  
+  {
+      label:"Quá 10h, Trong 16h",
+      data:labels.map(h=>q10_16[h])
+  },
+  
+  {
+      label:"Quá 16h",
+      data:labels.map(h=>q16[h])
+  },
+  
+  {
+      label:"Quá hẹn",
+      data:labels.map(h=>qhen[h])
+  },
+  
+  {
+      label:"Trong 3h",
+      data:labels.map(h=>t3h[h])
+  },
+  
+  {
+      label:"Trong hẹn",
+      data:labels.map(h=>then[h])
+  }
+  
+  ]
+  
+  },
+  
+  options:{
+  responsive:true,
+  maintainAspectRatio:false,
+  resizeDelay:200,
+  
+  layout:{
+  padding:{
+  bottom:20
+  }
+  },
+  
+  scales:{
+  x:{
+  ticks:{
+  maxRotation:90,
+  minRotation:90
+  }
+  }
+  }
+  
+  }
+  
+  });
+  
+  }
+    
+  /* =====================
+  MODAL
+  ===================== */
+
+    
+  function showTable(title,data){
+  
+  currentData=data;
+  filteredData=data;
+  
+  document.getElementById("modal").classList.remove("hidden");
+  
+  document.getElementById("modalTitle").innerHTML=title;
+  
+  initFilters(data);
+  
+  currentPage=1;
+  renderTable(data);
+  
+  }
+  
+  function initFilters(data){
+  
+  const huyenSet=new Set();
+  const typeSet=new Set();
+  
+  data.forEach(x=>{
+  
+  if(x.huyen)huyenSet.add(x.huyen);
+  
+  if(x.sc)typeSet.add(x.sc);
+  
+  if(x.kpi)typeSet.add(x.kpi);
+  
+  });
+  
+  const huyenSelect=document.getElementById("huyenFilter");
+  
+  huyenSelect.innerHTML=`<option value="">Tất cả huyện</option>`;
+  
+  [...huyenSet].sort().forEach(h=>{
+  
+  huyenSelect.innerHTML+=`<option value="${h}">${h}</option>`;
+  
+  });
+  
+  const typeSelect=document.getElementById("typeFilter");
+  
+  typeSelect.innerHTML=`<option value="">Tất cả loại</option>`;
+  
+  [...typeSet].sort().forEach(t=>{
+  
+  typeSelect.innerHTML+=`<option value="${t}">${t}</option>`;
+  
+  });
+  
+  }
+  
+  document.getElementById("searchInput")
+  .addEventListener("input",()=>{
+  
+  const title =
+  
+  document.getElementById(
+  "modalTitle"
+  )
+  .innerText;
+  
+  /* ACCOUNT BYPASS */
+  
+  if(
+  title.includes("ACCOUNT")
+  ){
+  
+  showAccountManager();
+  
+  return;
+  
+  }
+  
+  /* SC + TKM */
+  
+  if(
+  title.includes("SC VÀ TKM")
+  ){
+  
+  showScTkmManager();
+  
+  return;
+  
+  }
+  
+  /* TABLE THƯỜNG */
+  
+  filterTable();
+  
+  });
+  
+  document.getElementById("huyenFilter").addEventListener("change",filterTable);
+  
+  document.getElementById("typeFilter").addEventListener("change",filterTable);
+    
+  function filterTable(){
+  
+  const kw=document.getElementById("searchInput").value.toLowerCase();
+  
+  const huyen=document.getElementById("huyenFilter").value;
+  
+  const type=document.getElementById("typeFilter").value;
+  
+  const filtered=currentData.filter(row=>{
+  
+  const text=JSON.stringify(row).toLowerCase();
+  
+  const okSearch=text.includes(kw);
+  
+  const okHuyen=!huyen||row.huyen==huyen;
+  
+  const okType=!type||row.sc==type||row.kpi==type;
+  
+  return okSearch&&okHuyen&&okType;
+  
+  });
+  filteredData=filtered;
+  currentPage=1;
+  renderTable(filtered);
+  
+  }
+  
+  function getColumnTitle(col){
+  
+  const map={
+  
+  user:"Mã nv",
+  nv:"Tên nv",
+  tg:"Thời gian",
+  huyen:"Huyện",
+  account:"Account",
+  dc:"Địa chỉ",
+  ngay:"Ngày phát sinh",
+  gio:"Giờ phát sinh",
+  sc:"Loại sự cố",
+  mdb:"Mất đồng bộ GNOC",
+  gnoc:"Trạng thái GNOC",
+  nd:"Nội dung",
+  bypass:"Bypass",
+  cv:"Loại cv",
+  gline:"Gline",
+  ntdn:"Ngày đấu nối",
+  ntnt:"Ngày nghiệm thu",
+  tt:"Trạng thái cv",
+  tthen:"Trạng thái tích hẹn",
+  kpi:"Tính KPI",
+  nnt:"Nguyên nhân tồn",
+  nnth:"Nguyên nhân tích hủy"
+  
+  };
+  
+  return map[col]||col;
+  
+  }
+  
+  function renderTable(data){if(window.innerWidth<=768){renderMobileCards(data);return;}
+  data=[...data];
+  data.sort((a,b)=>{
+  
+  const tgA=parseFloat(a.tg)||0;
+  
+  const tgB=parseFloat(b.tg)||0;
+  
+  return tgB-tgA;
+  
+  });
+  
+  const renderData=data.slice(0,currentPage*PAGE_SIZE);
+  if(!data || !data.length){
+  
+  document.getElementById("tableContainer").innerHTML=
+  `
+  <div style="
   padding:30px;
   text-align:center;
-}
-
-@media(max-width:768px){
-
-  body{
-    padding:5px;
+  color:#6b7280;
+  font-size:16px;
+  ">
+  Không tìm thấy dữ liệu
+  </div>
+  `;
+  
+  return;
+  
+  }
+  
+  let cols=[];
+  
+  const isTKM=data[0]?.cv!==undefined;
+  
+  
+  if(isTKM){
+  
+  cols=[
+  "nv",
+  "tg",
+  "huyen",
+  "account",
+  "bypass",
+  "kpi",
+  "cv",
+  "tt",
+  "tthen",
+  "ntdn",
+  "ntnt",
+  "nnt",
+  "nnth"
+  ];
+  
+  }else{
+  
+  cols=[
+  "nv",
+  "tg",
+  "huyen",
+  "account",
+  "bypass",
+  "dc",
+  "ngay",
+  "gio",
+  "sc",
+  "mdb",
+  "gnoc",
+  "nd"
+  ];
+  
+  }
+  
+  renderData.forEach(row=>{
+  
+  const daBypass =
+  allAccounts.some(n=>{
+  
+  const acc1 =
+  String(n.account||"")
+  .trim()
+  .toUpperCase();
+  
+  const acc2 =
+  String(row.account||"")
+  .trim()
+  .toUpperCase();
+  
+  const check =
+  String(n.check||"")
+  .trim()
+  .toUpperCase();
+  
+  const sc =
+  String(row.sc||"")
+  .trim()
+  .toUpperCase();
+  
+  return (
+  acc1===acc2
+  &&
+  check===sc
+  );
+  
+  });
+  
+  row.bypass =
+  daBypass
+  ? "NV đã nhập bypass"
+  : "";
+  
+  });
+  
+  cols=cols.filter(c=>
+  c==="bypass"
+  ||
+  data[0][c]!==undefined
+  );
+  
+  let html=`<table><thead><tr>`;
+  
+  cols.forEach(c=>{
+  
+  let stickyHeader="";
+  
+  if(c==="nv"){
+  
+  stickyHeader="";
+  
+  }
+  
+  if(c==="cv"){
+  
+  stickyHeader="";
+  
+  }
+  
+  html+=`<th style="${stickyHeader}">${getColumnTitle(c)}</th>`;
+  
+  });
+  
+  html+=`</tr></thead><tbody>`;
+  
+  renderData.forEach((row,index)=>{
+    
+  html+="<tr>";
+  
+  cols.forEach(c=>{
+  
+  let val=row[c]||"";
+  
+  if(c==="sc" && !val){
+  
+      val="SỰ CỐ KN TKM";
+  
+  }
+  
+  let stickyStyle="";
+  
+  if(c==="nv"){
+  
+  stickyStyle="";
+  
+  }
+  
+  if(c==="cv"){
+  
+  stickyStyle="";
+  
+  }
+  
+  if(c==="tg"){
+  
+  const tgValue=parseFloat(val)||0;
+  
+  const tgColor=tgValue>24?"#dc2626":"";
+  
+  html+=`<td style="${stickyStyle}color:${tgColor};font-weight:bold;">${val}</td>`;
+  
+  }
+  
+  else if(c==="bypass"){
+  
+  stickyStyle+=`
+  width:78px;
+  min-width:78px;
+  max-width:78px;
+  
+  text-align:center;
+  padding:4px;
+  `;
+  
+  if(val){
+  
+  val=`
+  <span
+  class="badge green"
+  style="
+  font-size:10px;
+  
+  padding:2px 5px;
+  
+  border-radius:6px;
+  
+  white-space:normal;
+  word-break:break-word;
+  
+  display:inline-block;
+  
+  max-width:68px;
+  
+  line-height:1.2;
+  
+  font-weight:700;
+  
+  text-align:center;
+  "
+  >
+  ${val}
+  </span>
+  `;
+  
+  }
+  
+  html+=`<td style="${stickyStyle}">${val}</td>`;
+  
+  }
+  
+  
+  else if(c==="sc"){
+  
+  let cls="gray";
+  
+  if(String(val).includes("HOT"))cls="red";
+  else if(String(val).includes("VIP"))cls="purple";
+  else if(String(val).includes("SOC"))cls="orange";
+  else cls="blue";
+  
+  val=`<span class="badge ${cls}">${val}</span>`;
+  
+  html+=`<td style="${stickyStyle}">${val}</td>`;}
+  
+  else if(c==="nd"||c==="nnt"||c==="nnth"){
+  
+  const shortText=String(val).slice(0,120);
+  
+  html+=`
+  <td style="
+  ${stickyStyle}
+  
+  width:180px;
+  min-width:180px;
+  max-width:180px;
+  
+  vertical-align:top;
+  text-align:left;
+  
+  padding-top:8px;
+  ">
+  <div class="text-preview">${shortText}</div>
+  <div class="nd-full" id="full_${index}" data-full="${encodeURIComponent(val)}"></div>
+  <div class="expand-btn" onclick="openTextModal('${encodeURIComponent(val)}')">Xem thêm</div>
+  </td>`;}
+  
+  else{
+  
+  let colStyle=stickyStyle;
+  
+  if(c==="dc"){
+  
+  colStyle+=`
+  width:150px;
+  min-width:150px;
+  max-width:150px;
+  
+  word-break:break-word;
+  `;
+  
+  }
+  
+  if(c==="ngay"){
+  
+  colStyle+=`
+  width:78px;
+  min-width:78px;
+  max-width:78px;
+  
+  font-size:11px;
+  text-align:center;
+  `;
+  
+  }
+  
+  if(c==="gio"){
+  
+  colStyle+=`
+  width:72px;
+  min-width:72px;
+  max-width:72px;
+  
+  font-size:11px;
+  text-align:center;
+  `;
+  
+  }
+  
+  if(c==="mdb"){
+  
+  colStyle+=`
+  width:95px;
+  min-width:95px;
+  max-width:95px;
+  
+  font-size:11px;
+  line-height:1.3;
+  `;
+  
+  }
+  
+  if(c==="gnoc"){
+  
+  colStyle+=`
+  width:105px;
+  min-width:105px;
+  max-width:105px;
+  
+  font-size:11px;
+  line-height:1.2;
+  `;
+  
+  }
+  /* =========================
+  ACCOUNT CLICK
+  ========================= */
+  
+  if(c==="account"){
+  
+  val=`
+  <span
+  style="
+  color:#2563eb;
+  cursor:pointer;
+  
+  font-weight:700;
+  font-size:13px;
+  
+  display:block;
+  
+  white-space:nowrap;
+  
+  line-height:1.3;
+  "
+  
+  title="${row[c]||''}"
+  
+  onclick='openInput(${JSON.stringify(row)})'
+  >
+  ${val}
+  </span>
+  `;
+  
+  colStyle+=`
+  width:240px;
+  min-width:240px;
+  
+  text-align:left;
+  `;
+  
+  }
+  
+  html+=`<td style="${colStyle}">${val}</td>`;
+  
+  }
+  });
+  
+  html+="</tr>";
+  
+  });
+  
+  html+=`</tbody></table>`;
+  
+  if(data.length>renderData.length){
+  
+  html+=`
+  <div style="padding:15px;text-align:center;">
+  
+  <button onclick="loadMore()" style="padding:10px 16px;border:none;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer;">
+  Xem thêm dữ liệu
+  </button>
+  
+  </div>
+  `;
+  
+  }
+  
+  document.getElementById("tableContainer").innerHTML=html;
+  
+  }
+  
+  function loadMore(){
+  
+  currentPage++;
+  
+  renderTable(filteredData);
+  
+  }
+  
+  function renderMobileCards(data){
+  
+  data.sort((a,b)=>(parseFloat(b.tg)||0)-(parseFloat(a.tg)||0));
+  
+  let html=`<div class="mobile-list">`;
+  
+  data.forEach((row,index)=>{
+  
+  const tg=parseFloat(row.tg)||0;
+  
+  const loai=row.sc || row.kpi || "SỰ CỐ KN TKM";
+  
+  let badgeColor="#6b7280";
+  
+  if(String(loai).toUpperCase().includes("SOC"))badgeColor="#ea580c";
+  if(String(loai).toUpperCase().includes("SC"))badgeColor="#2563eb";
+  if(String(loai).toUpperCase().includes("VIP"))badgeColor="#7c3aed";
+  if(String(loai).toUpperCase().includes("HOT"))badgeColor="#dc2626";
+  
+  html+=`
+  <div class="mobile-card">
+  
+  <div class="mobile-head">
+  
+  <div
+  class="mobile-account"
+  style="
+  color:#2563eb;
+  cursor:pointer;
+  "
+  onclick='openInput(${JSON.stringify(row)})'
+  >
+  
+  ${row.account||""}
+  
+  </div>
+  
+  <div class="mobile-tg ${tg>24?'mobile-red':''}">
+  ${row.tg||0}h
+  </div>
+  
+  </div>
+  
+  <div class="mobile-row">
+  <span class="mobile-label">Nhân viên:</span>
+  ${row.nv||""}
+  </div>
+  
+  <div class="mobile-row">
+  <span class="mobile-label">Huyện:</span>
+  ${row.huyen||""}
+  </div>
+  
+  <div class="mobile-row">
+  <span class="mobile-label">
+  ${row.kpi ? "Đánh giá KPI:" : "Loại sự cố:"}
+  </span>
+  
+  <span class="mobile-badge" style="background:${badgeColor}">
+  ${loai}
+  </span>
+  
+  </div>
+  `;
+  
+  if(row.dc){
+  
+  html+=`
+  <div class="mobile-row">
+  <span class="mobile-label">Địa chỉ:</span>
+  ${row.dc}
+  </div>
+  `;
+  
+  }
+  
+  if(row.kpi){
+  
+  html+=`
+  <div class="mobile-row">
+  <span class="mobile-label">KPI:</span>
+  ${row.kpi}
+  </div>
+  `;
+  
+  }
+  
+  if(row.tt){
+  
+  html+=`
+  <div class="mobile-row">
+  <span class="mobile-label">Trạng thái:</span>
+  ${row.tt}
+  </div>
+  `;
+  
+  }
+  
+  if(row.tthen){
+  
+  html+=`
+  <div class="mobile-row">
+  <span class="mobile-label">Tích hẹn:</span>
+  ${row.tthen}
+  </div>
+  `;
+  
+  }
+  
+  if(row.ntdn){
+  
+  html+=`
+  <div class="mobile-row">
+  <span class="mobile-label">Ngày đấu nối:</span>
+  ${row.ntdn}
+  </div>
+  `;
+  
+  }
+  
+  if(row.ntnt){
+  
+  html+=`
+  <div class="mobile-row">
+  <span class="mobile-label">Ngày nghiệm thu:</span>
+  ${row.ntnt}
+  </div>
+  `;
+  }
+  
+  if(row.ngay){
+  
+  html+=`
+  <div class="mobile-row">
+  <span class="mobile-label">Ngày phát sinh:</span>
+  ${row.ngay}
+  </div>
+  `;
+  
+  }
+  
+  if(row.gio){
+  
+  html+=`
+  <div class="mobile-row">
+  <span class="mobile-label">Giờ phát sinh:</span>
+  ${row.gio}
+  </div>
+  `;
+  
+  }
+  
+  if(row.mdb){
+  
+  html+=`
+  <div class="mobile-row">
+  <span class="mobile-label">Mất đồng bộ gnoc:</span>
+  ${row.mdb}
+  </div>
+  `;
+  
+  }
+  
+  if(row.gnoc){
+  
+  html+=`
+  <div class="mobile-row">
+  <span class="mobile-label">Trạng thái gnoc:</span>
+  ${row.gnoc}
+  </div>
+  `;
+  
+  }
+  
+  if(row.cv){
+  
+  html+=`
+  <div class="mobile-row">
+  <span class="mobile-label">Loại công việc:</span>
+  ${row.cv}
+  </div>
+  `;
+  
+  }
+  
+  if(row.nnth){
+  
+  html+=`
+  <div class="mobile-content">
+  
+  <div class="text-preview">
+  ${String(row.nnth).substring(0,120)}
+  </div>
+  
+  <div class="mobile-more" onclick="openTextModal('${encodeURIComponent(row.nnth)}')">
+  Xem tích hủy
+  </div>
+  
+  </div>
+  `;
+  
+  }
+  const nd=row.nd||row.nnt||row.nnth||"";
+  
+  if(nd){
+  
+  const shortText=String(nd).substring(0,120);
+  
+  html+=`
+  <div class="mobile-content">
+  
+  <div class="text-preview">${shortText}</div>
+  
+  <div class="nd-full" id="mfull_${index}" data-full="${encodeURIComponent(nd)}"></div>
+  
+  <div class="mobile-more" onclick="openTextModal('${encodeURIComponent(nd)}')">
+  Xem thêm
+  </div>
+  
+  </div>
+  `;
+  
+  }
+  
+  html+=`</div>`;
+  
+  });
+  
+  html+=`</div>`;
+  
+  document.getElementById("tableContainer").innerHTML=html;
+  
+  }
+  
+  
+  function closeModal(){
+  
+  document.getElementById("modal").classList.add("hidden");
+  
+  }
+  
+  function openTextModal(text){
+  
+  document.getElementById("textModal").classList.remove("hidden");
+  
+  document.getElementById("textModalContent").innerHTML=
+  decodeURIComponent(text);
+  
+  }
+  
+  function closeTextModal(){
+  
+  document.getElementById("textModal").classList.add("hidden");
+  
+  }
+  
+  function openInput(row){
+  
+  const account =
+     row.account || "";
+    
+  const scType =
+  
+  String(
+  row.sc || row.check || ""
+  )
+  
+  .trim()
+  
+  .toUpperCase();
+  
+  /* CHỈ CHO SOC */
+  
+  if(
+  scType !== "SOC"
+  &&
+  scType !== "SOC HOME"
+  ){
+  
+  alert(
+  "Account này không thuộc SOC hoặc SOC HOME"
+  );
+  
+  return;
+  
+  }
+  /* =========================
+  THỜI GIAN PHÁT SINH
+  ========================= */
+  
+  let ngayPhatSinh =
+  
+     row.ngay_goc ||
+  
+     row.ngay ||
+  
+     row.ntdn ||
+  
+     row["Ngày phát sinh"] ||
+  
+     "";
+  
+  /* =========================
+  LOẠI
+  ========================= */
+  const ten_nv =
+  
+     row.ten_nv ||
+  
+     row.nv ||
+  
+     "";
+  let loai = "";
+  
+  if(row.cv){
+  
+  loai = "TKM";
+  
+  }else{
+  
+  loai = "SC";
+  
+  }
+  
+  /* =========================
+  CHECK FIX CỨNG
+  ==========String(String(=============== */
+  
+  const check =
+  String(
+  row.sc || row.check || ""
+  )
+  .trim()
+  .toUpperCase();
+  
+  /* =========================
+  URL
+  ========================= */
+  
+const url =
+`https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}`;
+  
+  window.open(url,"_blank");
+  
+  }
+  
+  function formatDate(v){
+  
+  if(!v)return "";
+  
+  const d = new Date(v);
+  
+  if(isNaN(d)) return v;
+  
+  const dd =
+  String(d.getDate())
+  .padStart(2,"0");
+  
+  const mm =
+  String(d.getMonth()+1)
+  .padStart(2,"0");
+  
+  const yyyy =
+  d.getFullYear();
+  
+  return `${dd}/${mm}/${yyyy}`;
+  
+  }
+  
+  function formatDateTime(v){
+  
+  if(!v)return "";
+  
+  const d = new Date(v);
+  
+  if(isNaN(d)) return v;
+  
+  const dd =
+  String(d.getDate())
+  .padStart(2,"0");
+  
+  const mm =
+  String(d.getMonth()+1)
+  .padStart(2,"0");
+  
+  const yyyy =
+  d.getFullYear();
+  
+  const hh =
+  String(d.getHours())
+  .padStart(2,"0");
+  
+  const mi =
+  String(d.getMinutes())
+  .padStart(2,"0");
+  
+  return `${hh}:${mi} ${dd}/${mm}/${yyyy}`;
+  
+  }
+    
+  function showAccountManager(){
+  
+  const modal =
+  document.getElementById("modal");
+  
+  modal.classList.remove("hidden");
+  
+  document.getElementById(
+  "modalTitle"
+  ).innerHTML =
+  "📁 ACCOUNT ĐÃ NHẬP";
+  
+  const unique = {};
+  
+  allAccounts.forEach(x=>{
+  
+  const acc =
+  String(x.account||"")
+  .trim();
+  
+  if(!acc)return;
+  
+  if(!unique[acc]){
+  
+  unique[acc]=x;
+  
+  }
+  
+  });
+  
+  let data =
+  Object.values(unique);
+  
+  const input = document.getElementById("searchInput");
+  
+  
+  const keyword =
+  
+  (input.value || "")
+  .toLowerCase()
+  .trim();
+  
+  if(keyword){
+  
+  data = data.filter(x=>{
+  
+  const acc =
+  String(x.account||"")
+  .toLowerCase();
+  
+  const ten =
+  String(x.ten_nv||"")
+  .toLowerCase();
+  
+  return acc.includes(keyword)
+  || ten.includes(keyword);
+  
+  });
+  
+  }
+  
+  let html = `
+  <div style="
+  padding:10px;
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fill,minmax(280px,1fr));
+  gap:12px;
+  ">
+  `;
+  
+  data.forEach(row=>{
+  
+  html += `
+  
+  <div
+  style="
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:14px;
+  "
+  >
+  
+  <div
+  style="
+  font-size:16px;
+  font-weight:bold;
+  color:#2563eb;
+  word-break:break-word;
+  "
+  >
+  
+  ${row.account||""}
+  
+  </div>
+  
+  <div style="margin-top:8px;font-size:13px;">
+  👤 ${row.ten_nv||""}
+  </div>
+  
+  <div style="margin-top:4px;font-size:13px;">
+  🕒 TG nhập dữ liệu:
+  ${formatDateTime(row.tg_nhap)}
+  </div>
+  
+  <div style="margin-top:4px;font-size:13px;">
+  📅 TG phát sinh SC:
+  ${formatDate(row.ngay_goc)}
+  </div>
+  
+  <div style="margin-top:4px;font-size:13px;">
+  ✅ Loại sự cố (check):
+  ${row.check||""}
+  </div>
+  
+  
+  <div style="margin-top:12px;">
+  
+  <button
+  onclick='openInput(${JSON.stringify(row)})'
+  style="
+  border:none;
+  background:#2563eb;
+  color:#fff;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  "
+  >
+  
+  Mở chỉnh sửa
+  
+  </button>
+  
+  </div>
+  
+  </div>
+  
+  `;
+  
+  });
+  
+  html += "</div>";
+  
+  document.getElementById(
+  "tableContainer"
+  ).innerHTML = html;
+  
+  }
+  
+  function showScTkmManager(){
+  
+  const modal =
+  document.getElementById("modal");
+  
+  modal.classList.remove("hidden");
+  
+  document.getElementById(
+  "modalTitle"
+  ).innerHTML =
+  "📁 ĐÃ NHẬP SC VÀ TKM";
+  
+  let data =
+  window.scTkmAccounts || [];
+  
+  const input =
+  document.getElementById("searchInput");
+  
+  const keyword =
+  
+  (input.value || "")
+  .toLowerCase()
+  .trim();
+  
+  if(keyword){
+  
+  data = data.filter(x=>{
+  
+  const acc =
+  String(x.account||"")
+  .toLowerCase();
+  
+  const ten =
+  String(x.ten_nv||"")
+  .toLowerCase();
+  
+  return (
+  acc.includes(keyword)
+  ||
+  ten.includes(keyword)
+  );
+  
+  });
+  
+  }
+  
+  let html = `
+  <div style="
+  padding:10px;
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fill,minmax(280px,1fr));
+  gap:12px;
+  ">
+  `;
+  
+  data.forEach(row=>{
+  
+  html += `
+  
+  <div
+  style="
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:14px;
+  "
+  >
+  
+  <div
+  style="
+  font-size:16px;
+  font-weight:bold;
+  color:#2563eb;
+  word-break:break-word;
+  "
+  >
+  
+  ${row.account||""}
+  
+  </div>
+  
+  <div style="margin-top:8px;font-size:13px;">
+  👤 ${row.ten_nv||""}
+  </div>
+  
+  <div style="margin-top:4px;font-size:13px;">
+  🕒 TG nhập dữ liệu:
+  ${formatDateTime(row.tg_nhap)}
+  </div>
+  
+  <div style="margin-top:4px;font-size:13px;">
+  ✅ Loại SC/PTM:
+  ${row.loai_wo||""}
+  </div>
+  
+  <div style="margin-top:12px;">
+  
+  <button
+  onclick='openManualEdit(${JSON.stringify(row)})'
+  style="
+  border:none;
+  background:#2563eb;
+  color:#fff;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  "
+  >
+  
+  Mở chỉnh sửa
+  
+  </button>
+  
+  </div>
+  
+  </div>
+  
+  `;
+  
+  });
+  
+  html += "</div>";
+  
+  document.getElementById(
+  "tableContainer"
+  ).innerHTML = html;
+  
+  }
+  
+  function openManualEdit(row){
+  
+  const account =
+  row.account || "";
+  
+  const ten_nv =
+  
+  row.ten_nv ||
+  row.nv ||
+  "";
+  
+  const loai =
+  
+  row.loai_wo || "";
+  
+  const id =
+  row.id || "";
+  
+  const tg_nhap =
+  row.tg_nhap || "";
+  
+  const url =
+  `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1&id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ten_nv=${encodeURIComponent(ten_nv)}&loai=${encodeURIComponent(loai)}&tg_nhap=${encodeURIComponent(tg_nhap)}&edit=1`;
+  
+  window.open(url,"_blank");
+  
+  }
+    
+  function openManualInput(){
+  
+  const url =
+  "https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1";
+  
+  window.open(url,"_blank");
+  
+  }
+  
+  loadData();
+  
+  function exportExcel(){
+  
+  if(!filteredData.length){
+  
+  alert("Không có dữ liệu");
+  
+  return;
+  
+  }
+  
+  const rows=filteredData.map(row=>{
+  
+  const obj={};
+  
+  Object.keys(row).forEach(k=>{
+  
+  if(k==="thuongcv1"||k==="tgupdate")return;
+  
+  obj[getColumnTitle(k)]=row[k];
+  
+  });
+  
+  return obj;
+  
+  });
+  
+  const ws=XLSX.utils.json_to_sheet(rows);
+  
+  const wb=XLSX.utils.book_new();
+  
+  XLSX.utils.book_append_sheet(wb,ws,"DATA");
+  
+  const title=document.getElementById("modalTitle").innerText||"DATA";
+  
+  XLSX.writeFile(wb,title+".xlsx");
+  
   }
 
-  th,td{
-    font-size:12px;
-    padding:6px;
+  /* =========================
+  XÓA TOÀN BỘ SC/TKM
+  ========================= */
+  
+  async function deleteScTkmAll(){
+  
+  /* PASSWORD */
+  
+  const password = prompt(
+  "Nhập mật khẩu quản trị"
+  );
+  
+  if(!password){
+  return;
   }
-
-}
-
-</style>
-</head>
-
-<body>
-
-<h2>📦 Kho vật tư</h2>
-
-<div class="stats">
-
-  <div class="stat">
-    <h3>Tổng bản ghi</h3>
-    <p id="tong">0</p>
-  </div>
-
-  <div class="stat">
-    <h3>Tổng số lượng</h3>
-    <p id="tongsl">0</p>
-  </div>
-
-</div>
-
-<div class="card">
-
-  <div class="topbar">
-
-    <input
-      type="text"
-      id="search"
-      placeholder="Tìm mặt hàng..."
-    >
-
-    <select id="huyenFilter">
-      <option value="">Tất cả huyện</option>
-    </select>
-
-    <button onclick="loadData()">
-      Reload
-    </button>
-
-  </div>
-
-</div>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-<tr>
-  <th>MM</th>
-  <th>Mặt hàng</th>
-  <th>ĐVT</th>
-  <th>Trạng thái</th>
-  <th>SL</th>
-  <th>Nhân viên</th>
-  <th>Huyện</th>
-  <th>Loại MH</th>
-  <th>Thời gian</th>
-</tr>
-</thead>
-
-<tbody id="tbody">
-<tr>
-<td colspan="9" class="loading">
-Đang tải dữ liệu...
-</td>
-</tr>
-</tbody>
-
-</table>
-
-</div>
-
-<script>
-
-const API_URL =
-"https://script.google.com/macros/s/AKfycbwe9SEGZcWwExfIG98_Ycd2JGHAHtd51MEUGTcVahJTQTAgLb2VIg0z2M3KdvEHFyxDZg/exec?sheet=Data%20kho";
-
-let allData = [];
-
-async function loadData(){
-
+  
+  /* CONFIRM */
+  
+  const ok = confirm(
+  
+  "XÁC NHẬN XÓA TOÀN BỘ SC/TKM ?"
+  
+  );
+  
+  if(!ok){
+  return;
+  }
+  
   try{
-
-    const res = await fetch(API_URL);
-
-    const json = await res.json();
-
-    allData = json.data || [];
-
-    renderTable(allData);
-
-    renderStats(allData);
-
-    renderHuyen(allData);
-
-  }catch(err){
-
-    document.getElementById("tbody").innerHTML = `
-      <tr>
-        <td colspan="9">
-          Lỗi tải dữ liệu
-        </td>
-      </tr>
-    `;
-
-    console.log(err);
+  
+  const res = await fetch(API,{
+  
+  method:"POST",
+  
+  body:JSON.stringify({
+  
+  action:"deleteScTkmAll",
+  
+  password:password
+  
+  })
+  
+  });
+  
+  const json = await res.json();
+  
+  if(json.success){
+  
+  alert(
+  
+  `Đã xóa ${json.deleted} dữ liệu`
+  
+  );
+  
+  location.reload();
+  
+  }else{
+  
+  alert(
+  json.error || "Có lỗi"
+  );
+  
   }
-}
+  
+  }catch(err){
+  
+  console.log(err);
+  
+  alert(err);
+  
+  }
+  
+  }
+  
+  /* =========================
+  TOP NHÂN VIÊN
+  ========================= */
+  
+  function topNhanVienChiTiet(data,type){
+  
+  const map = {};
+  
+  data.forEach(x=>{
+  
+  const nv = String(
+  x.nv || x.ten_nv || "Chưa rõ"
+  ).trim();
+  
+  if(!nv)return;
+  
+  if(!map[nv]){
+  
+  map[nv]={
+  count:0,
+  labels:new Set()
+  };
+  
+  }
+  
+  map[nv].count++;
+  
+  if(type){
+  
+  map[nv].labels.add(type);
+  
+  }
+  
+  });
+  
+  return Object.entries(map)
+  
+  .sort((a,b)=>b[1].count-a[1].count)
+  
+  .slice(0,3)
+  
+  .map(([ten,obj])=>({
+  
+  ten,
+  
+  count:obj.count,
+  
+  label:[...obj.labels].join(", ")
+  
+  }));
+  
+  }
 
-function renderTable(data){
-
+  function renderHuyenDashboard(){
+  
+  const wrap =
+  document.getElementById(
+  "huyenDashboard"
+  );
+  
+  if(!wrap)return;
+  
+  const allHuyen = [
+  
+  ...new Set([
+  
+  ...tonsc.map(x=>x.huyen||"Khác"),
+  
+  ...tontkm.map(x=>x.huyen||"Khác")
+  
+  ])
+  
+  ].sort();
+  
   let html = "";
-
-  data.forEach(item => {
-
-    html += `
-      <tr>
-        <td>${item.mm || ""}</td>
-        <td>${item.mh || ""}</td>
-        <td>${item.dv || ""}</td>
-        <td>${item.tt || ""}</td>
-        <td>${item.sl || 0}</td>
-        <td>${item.nv || ""}</td>
-        <td>${item.huyen || ""}</td>
-        <td>${item.loaimh || ""}</td>
-        <td>${item.tg || ""}</td>
-      </tr>
-    `;
+  
+  allHuyen.forEach(huyen=>{
+  
+  const socHome = tonsc.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.sc||"")
+  .toUpperCase()
+  .includes("SOC HOME")
+  
+  );
+  
+  const socPort = tonsc.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.sc||"")
+  .trim()
+  .toUpperCase()==="SOC"
+  
+  );
+  
+  const sc24 = tonsc.filter(x=>{
+  
+  const loai =
+  
+  String(x.sc||"")
+  .trim()
+  .toUpperCase();
+  
+  return(
+  
+  x.huyen===huyen
+  
+  &&
+  
+  parseFloat(x.tg||0) > 24
+  
+  &&
+  
+  [
+  "HT",
+  "HT HOT",
+  "HT VIP",
+  "VIP",
+  "SC",
+  "HOT"
+  ]
+  
+  .includes(loai)
+  
+  );
+  
   });
-
-  document.getElementById("tbody").innerHTML = html;
-}
-
-function renderStats(data){
-
-  document.getElementById("tong").innerText =
-    data.length;
-
-  let tongsl = 0;
-
-  data.forEach(i => {
-    tongsl += Number(i.sl || 0);
+  
+  const tkm24 = tontkm.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.kpi||"")
+  .toUpperCase()
+  .includes("QUÁ 24H")
+  
+  );
+  
+  const quaHen = tontkm.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.kpi||"")
+  .toUpperCase()
+  .includes("QUÁ HẸN")
+  
+  );
+  
+  const hoSo = tontkm.filter(x=>{
+  
+  if(x.huyen!==huyen){
+  return false;
+  }
+  
+  const tt =
+  String(x.tt||"")
+  .toUpperCase();
+  
+  /* CHỈ LẤY HỒ SƠ */
+  
+  return tt.includes(
+  "CẬP NHẬT HỒ SƠ"
+  );
+  
   });
-
-  document.getElementById("tongsl").innerText =
-    tongsl;
-}
-
-function renderHuyen(data){
-
-  let arr = [...new Set(
-    data.map(i => i.huyen).filter(Boolean)
-  )];
-
-  arr.sort();
-
-  let html =
-    `<option value="">Tất cả huyện</option>`;
-
-  arr.forEach(h => {
-
-    html += `
-      <option value="${h}">
-        ${h}
-      </option>
-    `;
+  
+  const tong =
+  socHome.length
+  +
+  socPort.length
+  +
+  sc24.length
+  +
+  tkm24.length
+  +
+  quaHen.length
+  +
+  hoSo.length;
+  
+  let levelClass = "level-low";
+  let levelText = "ỔN";
+  
+  if(tong >= 80){
+  
+  levelClass = "level-high";
+  levelText = "RẤT CAO";
+  
+  }
+  else if(tong >= 30){
+  
+  levelClass = "level-mid";
+  levelText = "CAO";
+  
+  }
+  
+  const topSOC = [
+  
+  ...topNhanVienChiTiet(
+  socHome,
+  "HOME WIFI KÉM"
+  ),
+  
+  ...topNhanVienChiTiet(
+  socPort,
+  "HIỆN TƯỢNG, PORT KÉM"
+  )
+  
+  ]
+  
+  .sort((a,b)=>b.count-a.count)
+  
+  .slice(0,3);
+  
+  const topKPI = [
+  
+  ...topNhanVienChiTiet(
+  sc24,
+  "SC >24H"
+  ),
+  
+  ...topNhanVienChiTiet(
+  tkm24,
+  "TKM >24H"
+  ),
+  
+  ...topNhanVienChiTiet(
+  quaHen,
+  "QUÁ HẸN"
+  ),
+  
+  ...topNhanVienChiTiet(
+  hoSo,
+  "CẬP NHẬT HỒ SƠ"
+  )
+  
+  ]
+  
+  .sort((a,b)=>b.count-a.count)
+  
+  .slice(0,3);
+    
+  html += `
+  
+  <div class="huyen-card">
+  
+  <div class="huyen-top">
+  
+  <div class="huyen-name">
+  📍 ${huyen}
+  </div>
+  
+  <div class="huyen-level ${levelClass}">
+  ${levelText}
+  </div>
+  
+  </div>
+  
+  <div class="huyen-mini-grid">
+  
+  <div class="huyen-mini">
+  
+  <div class="huyen-mini-label">
+  HOME WIFI KÉM
+  </div>
+  
+  <div
+  class="huyen-mini-value"
+  style="color:#2563eb;"
+  >
+  ${socHome.length}
+  </div>
+  
+  </div>
+  
+  <div class="huyen-mini">
+  
+  <div class="huyen-mini-label">
+  HIỆN TƯỢNG, PORT KÉM
+  </div>
+  
+  <div
+  class="huyen-mini-value"
+  style="color:#ea580c;"
+  >
+  ${socPort.length}
+  </div>
+  
+  </div>
+  
+  <div class="huyen-mini">
+  
+  <div class="huyen-mini-label">
+  SC >24H
+  </div>
+  
+  <div
+  class="huyen-mini-value"
+  style="color:#dc2626;"
+  >
+  ${sc24.length}
+  </div>
+  
+  </div>
+  
+  <div class="huyen-mini">
+  
+  <div class="huyen-mini-label">
+  TKM >24H
+  </div>
+  
+  <div
+  class="huyen-mini-value"
+  style="color:#7c3aed;"
+  >
+  ${tkm24.length}
+  </div>
+  
+  </div>
+  
+  <div class="huyen-mini">
+  
+  <div class="huyen-mini-label">
+  QUÁ HẸN
+  </div>
+  
+  <div
+  class="huyen-mini-value"
+  style="color:#dc2626;"
+  >
+  ${quaHen.length}
+  </div>
+  
+  </div>
+  
+  <div class="huyen-mini">
+  
+  <div class="huyen-mini-label">
+  CN HỒ SƠ
+  </div>
+  
+  <div
+  class="huyen-mini-value"
+  style="color:#059669;"
+  >
+  ${hoSo.length}
+  </div>
+  
+  </div>
+  
+  </div>
+  
+  <div class="huyen-section">
+  
+  <div class="huyen-section-title">
+  📋 ĐÁNH GIÁ TTH
+  </div>
+  
+  <div class="huyen-list">
+  
+  ${socHome.length > 10 ? `<div>• HOME WIFI KÉM TỒN: ${socHome.length}</div>` : ""}
+  
+  ${socPort.length > 10 ? `<div>• HIỆN TƯỢNG, PORT KÉM TỒN: ${socPort.length}</div>` : ""}
+  
+  ${sc24.length ? `<div>• SC quá 24h: ${sc24.length}</div>` : ""}
+  
+  ${tkm24.length ? `<div>• TKM quá 24h: ${tkm24.length}</div>` : ""}
+  
+  ${quaHen.length ? `<div>• Quá hẹn triển khai: ${quaHen.length}</div>` : ""}
+  
+  ${hoSo.length ? `<div>• Cập nhật hồ sơ: ${hoSo.length}</div>` : ""}
+  
+  </div>
+  
+  </div>
+  
+  <div class="huyen-section">
+  
+  <div class="huyen-section-title">
+  🔥 TOP NHÂN VIÊN TỒN SOC
+  </div>
+  
+  <div class="huyen-list">
+  
+  ${topSOC.map((x,i)=>`
+  
+  <div>
+  
+  ${i+1}. ${x.ten} - ${x.count} (${x.label})
+  
+  </div>
+  
+  `).join("")}
+  
+  </div>
+  
+  </div>
+  
+  <div class="huyen-section">
+  
+  <div class="huyen-section-title">
+  📋 TOP NHÂN VIÊN TỒI KPI
+  </div>
+  
+  <div class="huyen-list">
+  
+  ${topKPI.map((x,i)=>`
+  
+  <div>
+  
+   ${i+1}. ${x.ten} - ${x.count} (${x.label})
+  
+  </div>
+  
+  `).join("")}
+  
+  </div>
+  
+  </div>
+  
+  </div>
+  
+  `;
+  
   });
-
-  document.getElementById("huyenFilter").innerHTML =
-    html;
-}
-
-function filterData(){
-
-  let keyword =
-    document.getElementById("search")
-    .value
-    .toLowerCase();
-
-  let huyen =
-    document.getElementById("huyenFilter")
-    .value;
-
-  let filtered = allData.filter(i => {
-
-    let okSearch =
-      (i.mh || "")
-      .toLowerCase()
-      .includes(keyword);
-
-    let okHuyen =
-      !huyen || i.huyen === huyen;
-
-    return okSearch && okHuyen;
+  
+  wrap.innerHTML = html;
+  
+  }
+    
+  /* =========================
+  BÁO CÁO
+  ========================= */
+  
+  function showBaoCaoTongHop(){
+  
+  const modal =
+  document.getElementById("textModal");
+  
+  modal.classList.remove("hidden");
+  
+  const wrap =
+  document.getElementById(
+  "textModalContent"
+  );
+  
+  /* =========================
+  HUYỆN
+  ========================= */
+  
+  const allHuyen = [
+  
+  ...new Set([
+  
+  ...tonsc.map(x=>x.huyen||"Khác"),
+  
+  ...tontkm.map(x=>x.huyen||"Khác")
+  
+  ])
+  
+  ].sort();
+  
+  let text = "";
+  
+  /* =====================================================
+  PHẦN 1 — TỔNG QUAN 13 HUYỆN
+  ===================================================== */
+  
+  text +=
+  "==============================\n";
+  
+  text +=
+  "📍 TỔNG QUAN 13 HUYỆN\n";
+  
+  text +=
+  "==============================\n\n";
+  
+  allHuyen.forEach(huyen=>{
+  
+  /* =========================
+  SOC HOME
+  ========================= */
+  
+  const socHome =
+  
+  tonsc.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.sc||"")
+  .toUpperCase()
+  .includes("SOC HOME")
+  
+  );
+  
+  /* =========================
+  SOC
+  ========================= */
+  
+  const socPort =
+  
+  tonsc.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.sc||"")
+  .toUpperCase()==="SOC"
+  
+  );
+  
+  /* =========================
+  SC >24H
+  CHỈ HT/SC/HOT/VIP
+  ========================= */
+  
+  const sc24 =
+  
+  tonsc.filter(x=>{
+  
+  const loai =
+  
+  String(x.sc||"")
+  .trim()
+  .toUpperCase();
+  
+  return(
+  
+  x.huyen===huyen
+  
+  &&
+  
+  parseFloat(x.tg||0) > 24
+  
+  &&
+  
+  [
+  "HT",
+  "HT HOT",
+  "HT VIP",
+  "VIP",
+  "SC",
+  "HOT"
+  ]
+  
+  .includes(loai)
+  
+  );
+  
   });
-
-  renderTable(filtered);
-
-  renderStats(filtered);
-}
-
-document
-.getElementById("search")
-.addEventListener("input", filterData);
-
-document
-.getElementById("huyenFilter")
-.addEventListener("change", filterData);
-
-loadData();
-
-</script>
-
-</body>
-</html>
-```
+  
+  /* =========================
+  TKM >24H
+  ========================= */
+  
+  const tkm24 =
+  
+  tontkm.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.kpi||"")
+  .toUpperCase()
+  .includes("QUÁ 24H")
+  
+  );
+  
+  /* =========================
+  QUÁ 16H
+  ========================= */
+  
+  const qua16 =
+  
+  tontkm.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.kpi||"")
+  .toUpperCase()
+  .includes("QUÁ 16H")
+  
+  );
+  
+  /* =========================
+  QUÁ HẸN
+  ========================= */
+  
+  const quaHen =
+  
+  tontkm.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.kpi||"")
+  .toUpperCase()
+  .includes("QUÁ HẸN")
+  
+  );
+  
+  /* =========================
+  HỒ SƠ
+  KHÔNG LẤY KPI
+  ========================= */
+  
+  const hoSo =
+  
+  tontkm.filter(x=>{
+  
+  if(x.huyen!==huyen){
+  return false;
+  }
+  
+  const kpi =
+  
+  String(x.kpi||"")
+  .trim();
+  
+  const tt =
+  
+  String(x.tt||"")
+  .toUpperCase();
+  
+  if(kpi){
+  return false;
+  }
+  
+  return tt.includes(
+  "CẬP NHẬT HỒ SƠ"
+  );
+  
+  });
+  
+  /* =========================
+  TEXT
+  ========================= */
+  
+  text += `📍 ${huyen}\n\n`;
+  
+  /* SOC HOME */
+  
+  if(socHome.length > 10){
+  
+  text +=
+  `- SOC HOME KÉM còn tồn nhiều: ${socHome.length}\n`;
+  
+  }
+  
+  /* SOC */
+  
+  if(socPort.length > 10){
+  
+  text +=
+  `- SOC HT, SOC PORT KÉM còn cao: ${socPort.length}\n`;
+  
+  }
+  
+  /* NV SOC */
+  
+  if(
+  socHome.length
+  ||
+  socPort.length
+  ){
+  
+  text +=
+  "\n- Nhân viên tồn SOC, SOC HOME kém nhiều:\n";
+  
+  topNhanVien([
+  ...socHome,
+  ...socPort
+  ])
+  
+  .forEach(x=>{
+  
+  text +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* SC24 */
+  
+  if(sc24.length){
+  
+  text +=
+  "\n- SỰ CỐ QUÁ 24H:\n";
+  
+  topNhanVien(sc24)
+  
+  .forEach(x=>{
+  
+  text +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* TKM24 */
+  
+  if(tkm24.length){
+  
+  text +=
+  "\n- TKM QUÁ 24H:\n";
+  
+  topNhanVien(tkm24)
+  
+  .forEach(x=>{
+  
+  text +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* QUÁ 16 */
+  
+  if(qua16.length){
+  
+  text +=
+  "\n- TKM QUÁ 16H:\n";
+  
+  topNhanVien(qua16)
+  
+  .forEach(x=>{
+  
+  text +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* QUÁ HẸN */
+  
+  if(quaHen.length){
+  
+  text +=
+  "\n- QUÁ HẸN TRIỂN KHAI:\n";
+  
+  topNhanVien(quaHen)
+  
+  .forEach(x=>{
+  
+  text +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* HỒ SƠ */
+  
+  if(hoSo.length){
+  
+  text +=
+  "\n- TỒN CẬP NHẬT HỒ SƠ:\n";
+  
+  topNhanVien(hoSo)
+  
+  .forEach(x=>{
+  
+  text +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  text += "\n\n";
+  
+  });
+  
+  /* =====================================================
+  PHẦN 2 — TỔNG QUAN NHÂN VIÊN
+  ===================================================== */
+  
+  text +=
+  "==============================\n";
+  
+  text +=
+  "👤 TỔNG QUAN NHÂN VIÊN\n";
+  
+  text +=
+  "==============================\n\n";
+  
+  /* ALL DATA */
+  
+  const allData = [
+  
+  ...tonsc,
+  ...tontkm
+  
+  ];
+  
+  /* GROUP NV */
+  
+  const mapNV = {};
+  
+  allData.forEach(x=>{
+  
+  const nv =
+  
+  String(
+  x.nv ||
+  x.ten_nv ||
+  "Chưa rõ"
+  ).trim();
+  
+  if(!nv)return;
+  
+  if(!mapNV[nv]){
+  
+  mapNV[nv]={
+  
+  soc:0,
+  sc24:0,
+  tkm24:0,
+  q16:0,
+  qhen:0,
+  hoso:0,
+  
+  huyen:
+  x.huyen||"Khác"
+  
+  };
+  
+  }
+  
+  /* SOC */
+  
+  if(
+  String(x.sc||"")
+  .toUpperCase()
+  .includes("SOC")
+  ){
+  
+  mapNV[nv].soc++;
+  
+  }
+  
+  /* SC24 */
+  
+  const loai =
+  
+  String(x.sc||"")
+  .trim()
+  .toUpperCase();
+  
+  if(
+  
+  parseFloat(x.tg||0) > 24
+  
+  &&
+  
+  [
+  "HT",
+  "HT HOT",
+  "HT VIP",
+  "VIP",
+  "SC",
+  "HOT"
+  ]
+  
+  .includes(loai)
+  
+  ){
+  
+  mapNV[nv].sc24++;
+  
+  }
+  
+  /* KPI */
+  
+  const kpi =
+  
+  String(x.kpi||"")
+  .toUpperCase();
+  
+  if(
+  kpi.includes("QUÁ 24H")
+  ){
+  mapNV[nv].tkm24++;
+  }
+  
+  if(
+  kpi.includes("QUÁ 16H")
+  ){
+  mapNV[nv].q16++;
+  }
+  
+  if(
+  kpi.includes("QUÁ HẸN")
+  ){
+  mapNV[nv].qhen++;
+  }
+  
+  /* HỒ SƠ */
+  
+  const tt =
+  
+  String(x.tt||"")
+  .toUpperCase();
+  
+  if(
+  !kpi
+  &&
+  tt.includes("CẬP NHẬT HỒ SƠ")
+  ){
+  
+  mapNV[nv].hoso++;
+  
+  }
+  
+  });
+  
+  /* SORT */
+  
+  Object.entries(mapNV)
+  
+  .sort((a,b)=>{
+  
+  const ta = Object.values(a[1])
+  .filter(v=>typeof v==="number")
+  .reduce((s,v)=>s+v,0);
+  
+  const tb = Object.values(b[1])
+  .filter(v=>typeof v==="number")
+  .reduce((s,v)=>s+v,0);
+  
+  return tb-ta;
+  
+  })
+  
+  .forEach(([nv,v])=>{
+  
+  text +=
+  `👤 ${nv} - ${v.huyen}\n`;
+  
+  if(v.soc){
+  
+  text +=
+  `- SOC/SOC HOME: ${v.soc}\n`;
+  
+  }
+  
+  if(v.sc24){
+  
+  text +=
+  `- SC >24H: ${v.sc24}\n`;
+  
+  }
+  
+  if(v.tkm24){
+  
+  text +=
+  `- TKM >24H: ${v.tkm24}\n`;
+  
+  }
+  
+  if(v.q16){
+  
+  text +=
+  `- QUÁ 16H: ${v.q16}\n`;
+  
+  }
+  
+  if(v.qhen){
+  
+  text +=
+  `- QUÁ HẸN: ${v.qhen}\n`;
+  
+  }
+  
+  if(v.hoso){
+  
+  text +=
+  `- CẬP NHẬT HỒ SƠ: ${v.hoso}\n`;
+  
+  }
+  
+  text += "\n";
+  
+  });
+  
+  /* SHOW */
+  
+  wrap.innerText = text;
+  
+  }
+    
+  </script>
+  <!-- =========================
+  BÁO CÁO TEXT
+  ========================= -->
+  
+  <div class="modal hidden" id="textModal">
+  
+  <div class="text-modal-box">
+  
+  <div class="text-modal-header">
+  
+  <h3>📋 BÁO CÁO KPI</h3>
+  
+  <button
+  class="close-btn"
+  onclick="closeTextModal()"
+  >
+  Đóng
+  </button>
+  
+  </div>
+  
+  <div
+  id="textModalContent"
+  class="text-modal-content"
+  ></div>
+  
+  </div>
+  
+  </div>
+  
+  </body>
+  </html>
