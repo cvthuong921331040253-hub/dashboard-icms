@@ -371,7 +371,11 @@
   
   justify-content:space-between;
   
-  align-items:center;
+  align-items:flex-start;
+  
+  flex-wrap:wrap;
+  
+  gap:8px;
   
   margin-bottom:14px;
   
@@ -398,6 +402,10 @@
   font-weight:700;
   
   color:#fff;
+  
+  white-space:nowrap;
+  
+  flex-shrink:0;
   
   }
   
@@ -539,26 +547,87 @@
   
   }
   
-  /* MOBILE */
-  @media(max-width:768px){
+    /* MOBILE */
+    @media(max-width:768px){
+    
+    .manual-card{
+    
+    padding:10px;
+    
+    border-radius:12px;
+    
+    }
+    
+    .manual-card .card-title{
+    
+    font-size:11px;
+    
+    line-height:1.25;
+    
+    }
+    
+    }
   
-  .manual-card{
+    @media(max-width:768px){
   
-  padding:10px;
+  .huyen-dashboard{
   
-  border-radius:12px;
+  grid-template-columns:1fr;
+  
+  gap:12px;
   
   }
   
-  .manual-card .card-title{
+  .huyen-card{
+  
+  padding:14px;
+  
+  border-radius:14px;
+  
+  }
+  
+  .huyen-name{
+  
+  font-size:16px;
+  
+  }
+  
+  .huyen-mini-grid{
+  
+  grid-template-columns:1fr 1fr;
+  
+  gap:8px;
+  
+  }
+  
+  .huyen-mini{
+  
+  padding:8px;
+  
+  }
+  
+  .huyen-mini-value{
+  
+  font-size:18px;
+  
+  }
+  
+  .huyen-section-title{
+  
+  font-size:12px;
+  
+  }
+  
+  .huyen-list{
   
   font-size:11px;
   
-  line-height:1.25;
+  line-height:1.6;
   
   }
   
   }
+    
   </style>
   
   </head>
