@@ -551,7 +551,9 @@
   overflow-y:auto;
   
   padding-right:4px;
-
+  
+  }
+  
   .huyen-list::-webkit-scrollbar{
   width:6px;
   }
@@ -560,9 +562,26 @@
   background:#d1d5db;
   border-radius:999px;
   }
-    
+
+   @media(max-width:768px){
+
+  .chart-grid{
+  
+  display:flex !important;
+  
+  flex-direction:column !important;
+  
   }
-    
+  
+  .chart-box{
+  
+  width:100% !important;
+  
+  height:320px !important;
+  
+  }
+  
+  } 
   /* BIỂU ĐỒ */
   
   .manual-card{
