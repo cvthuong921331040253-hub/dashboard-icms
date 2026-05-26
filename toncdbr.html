@@ -471,7 +471,28 @@
   </div>
   
   <canvas id="chartTKM"></canvas>
+
+  </div>
   
+  <div class="chart-box">
+  
+  <div
+  style="
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:12px;
+  color:#111827;
+  "
+  >
+  
+  📊 TỔNG TKM THEO HUYỆN
+  
+  </div>
+  
+  <canvas id="chartTongTKM"></canvas>
+  
+  </div>
+    
   </div>
   
   </div>
@@ -1033,6 +1054,8 @@ Vui lòng click vào
   
   renderKPIChart();
   
+  renderTongTKMChart();
+  
   }
   
   function renderSCHuyen(){
@@ -1369,6 +1392,97 @@ Vui lòng click vào
   });
   
   }
+
+  function renderTongTKMChart(){
+  const labels=[
+  ...new Set(
+  tontkm.map(x=>x.huyen||"Khác")
+  )
+  ];
+  
+  const tongTKM={};
+  
+  labels.forEach(h=>{
+      tongTKM[h]=0;
+  });
+  
+  tontkm.forEach(x=>{
+  
+      const h=x.huyen||"Khác";
+  
+      const tt=String(x.tt||"")
+      .replace(/\s+/g," ")
+      .trim()
+      .toUpperCase();
+  
+      /* BỎ CẬP NHẬT HỒ SƠ */
+      if(tt.includes("CẬP NHẬT HỒ SƠ")){
+          return;
+      }
+  
+      tongTKM[h]++;
+  
+  });
+  
+  new Chart(
+  document.getElementById("chartTongTKM"),
+  {
+  
+  type:"bar",
+  
+  data:{
+  
+  labels:labels,
+  
+  datasets:[
+  
+  {
+  label:"TỔNG TKM",
+  data:labels.map(h=>tongTKM[h]),
+  backgroundColor:"#2563eb",
+  borderRadius:6
+  }
+  
+  ]
+  
+  },
+  
+  options:{
+  
+  responsive:true,
+  
+  maintainAspectRatio:false,
+  
+  layout:{
+  padding:{
+  bottom:20
+  }
+  },
+  
+  plugins:{
+  legend:{
+  display:true
+  }
+  },
+  
+  scales:{
+  x:{
+  ticks:{
+  maxRotation:90,
+  minRotation:90
+  }
+  },
+  y:{
+  beginAtZero:true
+  }
+  }
+  
+  }
+  
+  });
+  
+  }
+    
   /* =====================
   MODAL
   ===================== */
