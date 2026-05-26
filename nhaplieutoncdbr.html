@@ -1191,7 +1191,11 @@ params.get("time")
 ||
 "";
 
-if(isManual){
+if(
+isManual
+&&
+!account
+){
 
 /* ẨN */
 
@@ -1332,6 +1336,20 @@ TÊN NHÂN VIÊN
 
 document.getElementById("ten_nv").value =
 
+decodeURIComponent(
+
+params.get("ten_nv")
+||
+params.get("nv")
+||
+""
+
+);
+
+/* =========================
+KHÓA KHI LINK ACCOUNT
+========================= */
+
 if(account){
 
 document.getElementById("ten_nv")
@@ -1341,15 +1359,6 @@ document.getElementById("ten_nv")
 .classList.add("readonly");
 
 }
-
-decodeURIComponent(
-
-params.get("ten_nv")
-||
-params.get("nv")
-||
-""
-);
 
 if(
 isManual
