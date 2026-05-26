@@ -228,31 +228,6 @@
   
   .toolbar button{font-weight:600;}
   
-  .chart-grid{
-  
-  display:flex;
-  
-  flex-direction:column;
-  
-  gap:10px;
-  
-  width:100%;
-  
-  }
-  
-  .chart-box{
-  
-  height:300px;
-  
-  padding:10px;
-  
-  border-radius:12px;
-  
-  overflow:hidden;
-  
-  min-width:0;
-  
-  }
   #tableWrap{border-radius:10px;background:#fff;border:1px solid #e5e7eb;}
   
   table{display:none;}
@@ -266,7 +241,7 @@
   .expand-btn{font-size:9px;margin-top:2px;}
   }
 
-   .chart-grid{
+  .chart-grid{
   
   display:grid;
   
@@ -280,6 +255,30 @@
   align-items:start;
   
   width:100%;
+  
+  }
+  
+  @media(max-width:768px){
+  
+  .chart-grid{
+  
+  display:flex;
+  
+  flex-direction:column;
+  
+  gap:10px;
+  
+  }
+  
+  .chart-box{
+  
+  height:300px;
+  
+  width:100%;
+  
+  min-width:0;
+  
+  }
   
   }
   
