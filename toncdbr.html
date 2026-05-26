@@ -3084,16 +3084,11 @@ const url =
   return false;
   }
   
-  const kpi =
-  String(x.kpi||"").trim();
-  
   const tt =
   String(x.tt||"")
   .toUpperCase();
   
-  if(kpi){
-  return false;
-  }
+  /* CHỈ LẤY HỒ SƠ */
   
   return tt.includes(
   "CẬP NHẬT HỒ SƠ"
@@ -3130,13 +3125,15 @@ const url =
   
   }
   
-  const topNV = topNhanVien([
-  
+  const topSOC = topNhanVien([
   ...socHome,
-  ...socPort,
-  ...sc24,
-  ...tkm24
+  ...socPort
+  ]).slice(0,3);
   
+  const topKPI = topNhanVien([
+  ...sc24,
+  ...tkm24,
+  ...quaHen
   ]).slice(0,3);
   
   html += `
@@ -3276,12 +3273,12 @@ const url =
   <div class="huyen-section">
   
   <div class="huyen-section-title">
-  🔥 TOP NHÂN VIÊN
+  🔥 TOP NHÂN VIÊN SOC
   </div>
   
   <div class="huyen-list">
   
-  ${topNV.map((x,i)=>`
+  ${topSOC.map((x,i)=>`
   
   <div>
   
@@ -3293,6 +3290,27 @@ const url =
   `).join("")}
   
   </div>
+  
+  </div>
+  
+  <div class="huyen-section">
+  
+  <div class="huyen-section-title">
+  📋 TOP NHÂN VIÊN KPI
+  </div>
+  
+  <div class="huyen-list">
+  
+  ${topKPI.map((x,i)=>`
+  
+  <div>
+  
+  ${i+1}. ${x.ten}
+  - ${x.count}
+  
+  </div>
+  
+  `).join("")}
   
   </div>
   
