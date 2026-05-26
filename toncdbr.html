@@ -1394,6 +1394,7 @@ Vui lòng click vào
   }
 
   function renderTongTKMChart(){
+
   const labels=[
   ...new Set(
   tontkm.map(x=>x.huyen||"Khác")
@@ -1401,9 +1402,15 @@ Vui lòng click vào
   ];
   
   const tongTKM={};
+  const duongDayMoi={};
+  const duongDayCoSan={};
   
   labels.forEach(h=>{
+  
       tongTKM[h]=0;
+      duongDayMoi[h]=0;
+      duongDayCoSan[h]=0;
+  
   });
   
   tontkm.forEach(x=>{
@@ -1420,7 +1427,23 @@ Vui lòng click vào
           return;
       }
   
+      const cv=String(x.cv||"")
+      .replace(/\s+/g," ")
+      .trim()
+      .toUpperCase();
+  
+      /* TỔNG */
       tongTKM[h]++;
+  
+      /* ĐƯỜNG DÂY MỚI */
+      if(cv.includes("TKM")){
+          duongDayMoi[h]++;
+      }
+  
+      /* ĐƯỜNG DÂY CÓ SẴN */
+      if(cv.includes("LĐTB")){
+          duongDayCoSan[h]++;
+      }
   
   });
   
@@ -1437,9 +1460,23 @@ Vui lòng click vào
   datasets:[
   
   {
-  label:"TỔNG TKM",
+  label:"TỔNG",
   data:labels.map(h=>tongTKM[h]),
   backgroundColor:"#2563eb",
+  borderRadius:6
+  },
+  
+  {
+  label:"Đường dây mới",
+  data:labels.map(h=>duongDayMoi[h]),
+  backgroundColor:"#16a34a",
+  borderRadius:6
+  },
+  
+  {
+  label:"Đường dây có sẵn",
+  data:labels.map(h=>duongDayCoSan[h]),
+  backgroundColor:"#ea580c",
   borderRadius:6
   }
   
