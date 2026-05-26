@@ -297,7 +297,9 @@
   }
   
   
-  #tableWrap{-webkit-overflow-scrolling:touch;contain:strict;}
+  #tableWrap{
+  -webkit-overflow-scrolling:touch;
+  }
   .text-modal-box{
   width:90%;
   max-width:900px;
@@ -872,7 +874,10 @@
   let currentPage=1;
   let allAccounts=[];
   const PAGE_SIZE=300;
-  
+  let chartSCInstance=null;
+  let chartCNHSInstance=null;
+  let chartTKMInstance=null;
+    
   function countUniqueAccount(data){const set=new Set();data.forEach(x=>{const acc=String(x.account||"").replace(/\s+/g," ").trim().toUpperCase();if(acc)set.add(acc);});return set.size;}
   
   function parseDateVN(str){if(!str)return 0;try{const [datePart,timePart]=str.split(" ");const [d,m,y]=datePart.split("/");const [hh,mm,ss]=(timePart||"00:00:00").split(":");return new Date(Number(y),Number(m)-1,Number(d),Number(hh),Number(mm),Number(ss));}catch(err){return 0;}}
@@ -881,7 +886,19 @@
   
   try{
   
-  const res=await fetch(API);
+  const controller = new AbortController();
+
+  setTimeout(()=>{
+  controller.abort();
+  },15000);
+  
+  const res = await fetch(API,{
+  signal:controller.signal
+  });
+  
+  if(!res.ok){
+  throw new Error("API lỗi");
+  }
   const json=await res.json();
   
   tonsc=json.tonsc||[];
@@ -1105,37 +1122,37 @@
   onclick="openManualInput()"
   >
   
-<div
-class="card-title"
-style="
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-gap:4px;
-text-align:center;
-"
->
-
-<div>
-
-📝 NHẬP SC & TKM BKK
-
-</div>
-
-<div
-style="
-font-size:10px;
-font-weight:500;
-opacity:.95;
-"
->
-
-Vui lòng click vào
-
-</div>
-
-</div>
+  <div
+  class="card-title"
+  style="
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  text-align:center;
+  "
+  >
+  
+  <div>
+  
+  📝 NHẬP SC & TKM BKK
+  
+  </div>
+  
+  <div
+  style="
+  font-size:10px;
+  font-weight:500;
+  opacity:.95;
+  "
+  >
+  
+  Vui lòng click vào
+  
+  </div>
+  
+  </div>
   
   </div>
   `
@@ -1404,7 +1421,11 @@ Vui lòng click vào
   
   });
   
-  new Chart(document.getElementById("chartSC"),{
+  if(chartSCInstance){
+  chartSCInstance.destroy();
+  }
+  
+  chartSCInstance = new Chart(document.getElementById("chartSC"),{
   
   type:"bar",
   
@@ -1491,7 +1512,11 @@ Vui lòng click vào
   
   });
   
-  new Chart(document.getElementById("chartCNHS"),{
+  if(chartCNHSInstance){
+  chartCNHSInstance.destroy();
+  }
+  
+  chartCNHSInstance = new Chart(document.getElementById("chartCNHS"),{
   
   type:"bar",
   
@@ -1611,7 +1636,11 @@ Vui lòng click vào
   
   });
   
-  new Chart(document.getElementById("chartTKM"),{
+  if(chartTKMInstance){
+  chartTKMInstance.destroy();
+  }
+  
+  chartTKMInstance = new Chart(document.getElementById("chartTKM"),{
   
   type:"bar",
   
@@ -1798,7 +1827,14 @@ Vui lòng click vào
   
   const filtered=currentData.filter(row=>{
   
-  const text=JSON.stringify(row).toLowerCase();
+  const text = `
+  ${row.account||""}
+  ${row.nv||""}
+  ${row.huyen||""}
+  ${row.sc||""}
+  ${row.kpi||""}
+  ${row.dc||""}
+  `.toLowerCase();
   
   const okSearch=text.includes(kw);
   
@@ -2261,7 +2297,7 @@ Vui lòng click vào
   
   let html=`<div class="mobile-list">`;
   
-  data.forEach((row,index)=>{
+  data.slice(0,150).forEach((row,index)=>{
   
   const tg=parseFloat(row.tg)||0;
   
@@ -2822,33 +2858,45 @@ const url =
   window.scTkmAccounts || [];
   
   const input =
+  const searchInput =
   document.getElementById("searchInput");
   
-  const keyword =
+  searchInput.oninput = ()=>{
   
-  (input.value || "")
-  .toLowerCase()
-  .trim();
+  const title =
+  document.getElementById(
+  "modalTitle"
+  ).innerText;
   
-  if(keyword){
+  /* ACCOUNT BYPASS */
   
-  data = data.filter(x=>{
+  if(
+  title.includes("ACCOUNT")
+  ){
   
-  const acc =
-  String(x.account||"")
-  .toLowerCase();
+  showAccountManager();
   
-  const ten =
-  String(x.ten_nv||"")
-  .toLowerCase();
+  return;
   
-  return (
-  acc.includes(keyword)
-  ||
-  ten.includes(keyword)
-  );
+  }
   
-  });
+  /* SC + TKM */
+  
+  if(
+  title.includes("SC VÀ TKM")
+  ){
+  
+  showScTkmManager();
+  
+  return;
+  
+  }
+  
+  /* TABLE THƯỜNG */
+  
+  filterTable();
+  
+  };
   
   }
   
