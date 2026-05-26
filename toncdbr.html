@@ -1323,7 +1323,17 @@ Vui lòng click vào
   tontkm.forEach(x=>{
   
   const h=x.huyen||"Khác";
-  
+
+  const tt=String(x.tt||"")
+      .replace(/\s+/g," ")
+      .trim()
+      .toUpperCase();
+      
+      /* BỎ CẬP NHẬT HỒ SƠ */
+      if(tt.includes("CẬP NHẬT HỒ SƠ")){
+          return;
+      }
+    
   const k=String(x.kpi||"")
   
       .replace(/\u00A0/g," ")
