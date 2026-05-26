@@ -273,174 +273,7 @@
   height:100%!important;
   }
   table{contain:layout paint;}
-
-  /* BIỂU ĐỒ HUYEN NV*/
-  .huyen-grid{
-
-  display:grid;
   
-  grid-template-columns:
-  repeat(auto-fit,minmax(320px,1fr));
-  
-  gap:16px;
-  
-  margin-top:18px;
-  
-  }
-  
-  .huyen-card{
-  
-  background:#fff;
-  
-  border-radius:20px;
-  
-  padding:18px;
-  
-  border:1px solid #e5e7eb;
-  
-  box-shadow:
-  0 4px 14px rgba(0,0,0,.04);
-  
-  }
-  
-  .huyen-head{
-  
-  display:flex;
-  
-  justify-content:space-between;
-  
-  align-items:center;
-  
-  margin-bottom:16px;
-  
-  }
-  
-  .huyen-title{
-  
-  font-size:16px;
-  
-  font-weight:800;
-  
-  color:#111827;
-  
-  }
-  
-  .huyen-level{
-  
-  padding:4px 10px;
-  
-  border-radius:999px;
-  
-  font-size:11px;
-  
-  font-weight:700;
-  
-  color:#fff;
-  
-  }
-  
-  .level-high{
-  
-  background:#dc2626;
-  
-  }
-  
-  .level-medium{
-  
-  background:#f97316;
-  
-  }
-  
-  .level-low{
-  
-  background:#16a34a;
-  
-  }
-  
-  .huyen-mini-grid{
-  
-  display:grid;
-  
-  grid-template-columns:1fr 1fr;
-  
-  gap:10px;
-  
-  margin-bottom:16px;
-  
-  }
-  
-  .huyen-mini{
-  
-  background:#f3f4f6;
-  
-  border-radius:12px;
-  
-  padding:10px;
-  
-  }
-  
-  .huyen-mini-label{
-  
-  font-size:11px;
-  
-  font-weight:700;
-  
-  color:#6b7280;
-  
-  margin-bottom:6px;
-  
-  }
-  
-  .huyen-mini-value{
-  
-  font-size:32px;
-  
-  font-weight:800;
-  
-  line-height:1;
-  
-  }
-  
-  .huyen-note{
-  
-  font-size:13px;
-  
-  line-height:1.7;
-  
-  margin-top:8px;
-  
-  }
-  
-  .huyen-top{
-  
-  margin-top:14px;
-  
-  padding-top:12px;
-  
-  border-top:1px dashed #d1d5db;
-  
-  }
-  
-  .huyen-top-title{
-  
-  font-size:14px;
-  
-  font-weight:800;
-  
-  margin-bottom:8px;
-  
-  }
-  
-  .huyen-top-item{
-  
-  font-size:13px;
-  
-  line-height:1.8;
-  
-  } 
-  /* BIỂU ĐỒ HUYEN NV*/
-  
-    
   #tableWrap{-webkit-overflow-scrolling:touch;contain:strict;}
   .text-modal-box{
   width:90%;
@@ -560,6 +393,262 @@
   }
   
   }
+
+  .huyen-dashboard{
+  
+  display:grid;
+  
+  grid-template-columns:
+  repeat(auto-fit,minmax(340px,1fr));
+  
+  gap:16px;
+  
+  margin-top:20px;
+  
+  }
+  
+  .huyen-card{
+  
+  background:#fff;
+  
+  border-radius:22px;
+  
+  padding:18px;
+  
+  border:1px solid #e5e7eb;
+  
+  box-shadow:
+  0 4px 14px rgba(0,0,0,.05);
+  
+  transition:.2s;
+  
+  }
+  
+  .huyen-card:hover{
+  
+  transform:translateY(-2px);
+  
+  box-shadow:
+  0 10px 24px rgba(0,0,0,.08);
+  
+  }
+  
+  .huyen-header{
+  
+  display:flex;
+  
+  justify-content:space-between;
+  
+  align-items:center;
+  
+  margin-bottom:16px;
+  
+  }
+  
+  .huyen-name{
+  
+  font-size:28px;
+  
+  font-weight:800;
+  
+  color:#111827;
+  
+  }
+  
+  .huyen-badge{
+  
+  padding:5px 12px;
+  
+  border-radius:999px;
+  
+  font-size:11px;
+  
+  font-weight:800;
+  
+  color:#fff;
+  
+  }
+  
+  .badge-high{
+  background:#dc2626;
+  }
+  
+  .badge-medium{
+  background:#f97316;
+  }
+  
+  .badge-low{
+  background:#16a34a;
+  }
+  
+  .huyen-grid{
+  
+  display:grid;
+  
+  grid-template-columns:1fr 1fr;
+  
+  gap:10px;
+  
+  margin-bottom:18px;
+  
+  }
+  
+  .huyen-box{
+  
+  background:#f3f4f6;
+  
+  border-radius:14px;
+  
+  padding:12px;
+  
+  }
+  
+  .huyen-label{
+  
+  font-size:12px;
+  
+  font-weight:700;
+  
+  color:#6b7280;
+  
+  margin-bottom:6px;
+  
+  }
+  
+  .huyen-value{
+  
+  font-size:38px;
+  
+  font-weight:800;
+  
+  line-height:1;
+  
+  }
+  
+  .blue{
+  color:#2563eb;
+  }
+  
+  .orange{
+  color:#ea580c;
+  }
+  
+  .red{
+  color:#dc2626;
+  }
+  
+  .purple{
+  color:#7c3aed;
+  }
+  
+  .green{
+  color:#16a34a;
+  }
+  
+  .huyen-section{
+  
+  margin-top:14px;
+  
+  }
+  
+  .huyen-section-title{
+  
+  font-size:15px;
+  
+  font-weight:800;
+  
+  margin-bottom:8px;
+  
+  color:#111827;
+  
+  }
+  
+  .huyen-line{
+  
+  font-size:14px;
+  
+  line-height:1.8;
+  
+  color:#1f2937;
+  
+  }
+  
+  .top-list{
+  
+  margin-top:8px;
+  
+  }
+  
+  .top-item{
+  
+  font-size:14px;
+  
+  line-height:1.9;
+  
+  }
+  
+  /* MOBILE */
+  
+  @media(max-width:768px){
+  
+  .huyen-dashboard{
+  
+  grid-template-columns:1fr;
+  
+  gap:12px;
+  
+  }
+  
+  .huyen-card{
+  
+  padding:14px;
+  
+  border-radius:18px;
+  
+  }
+  
+  .huyen-name{
+  
+  font-size:18px;
+  
+  }
+  
+  .huyen-grid{
+  
+  gap:8px;
+  
+  }
+  
+  .huyen-box{
+  
+  padding:10px;
+  
+  }
+  
+  .huyen-value{
+  
+  font-size:30px;
+  
+  }
+  
+  .huyen-line{
+  
+  font-size:13px;
+  
+  line-height:1.7;
+  
+  }
+  
+  .top-item{
+  
+  font-size:13px;
+  
+  line-height:1.7;
+  
+  }
+  
+  }
+    
   </style>
   
   </head>
@@ -587,16 +676,15 @@
   <div
 
   <div class="section-title">
-    
-  📍 THỐNG KÊ THEO HUYỆN
+  📍 THỐNG KÊ 13 HUYỆN
   </div>
   
   <div
-  id="huyenStats"
-  class="huyen-grid"
+  id="huyenDashboard"
+  class="huyen-dashboard"
   >
-  </div>  
-    
+  </div>
+      
   style="
   font-size:18px;
   font-weight:bold;
@@ -822,296 +910,8 @@
   
   renderTonSC();
   renderTonTKM();
+  renderHuyenDashboard();
   renderCharts();
-  renderHuyenStats();
-    
-  function renderHuyenStats(){
-  const wrap =
-  document.getElementById(
-  "huyenStats"
-  );
-  
-  const stats={};
-  
-  tonsc.forEach(x=>{
-  
-  const h =
-  x.huyen || "Khác";
-  
-  if(!stats[h]){
-  
-  stats[h]={
-  socHome:0,
-  soc:0,
-  suco24:0,
-  tkm24:0,
-  hoso:0,
-  nv:{}
-  };
-  
-  }
-  
-  const loai =
-  String(x.sc||"")
-  .trim()
-  .toUpperCase();
-  
-  const tg =
-  parseFloat(x.tg)||0;
-  
-  if(loai==="SOC HOME"){
-  
-  stats[h].socHome++;
-  
-  }
-  
-  else if(loai==="SOC"){
-  
-  stats[h].soc++;
-  
-  }
-  
-  if(tg>24){
-  
-  stats[h].suco24++;
-  
-  }
-  
-  const nv =
-  x.nv || "Chưa rõ";
-  
-  if(!stats[h].nv[nv]){
-  
-  stats[h].nv[nv]=0;
-  
-  }
-  
-  stats[h].nv[nv]++;
-  
-  });
-  
-  /* TKM */
-  
-  tontkm.forEach(x=>{
-  
-  const h =
-  x.huyen || "Khác";
-  
-  if(!stats[h]) return;
-  
-  const kpi =
-  String(x.kpi||"")
-  .toUpperCase();
-  
-  const tt =
-  String(x.tt||"")
-  .toUpperCase();
-  
-  if(
-  kpi.includes("24H")
-  ){
-  
-  stats[h].tkm24++;
-  
-  }
-  
-  if(
-  tt.includes("CẬP NHẬT HỒ SƠ")
-  ){
-  
-  stats[h].hoso++;
-  
-  }
-  
-  });
-  
-  let html="";
-  
-  Object.entries(stats).forEach(([h,v])=>{
-  
-  const tong =
-  v.socHome +
-  v.soc +
-  v.suco24 +
-  v.tkm24;
-  
-  let level="THẤP";
-  let levelClass="level-low";
-  
-  if(tong>=50){
-  
-  level="RẤT CAO";
-  levelClass="level-high";
-  
-  }
-  else if(tong>=20){
-  
-  level="CAO";
-  levelClass="level-medium";
-  
-  }
-  
-  const topNV =
-  Object.entries(v.nv)
-  .sort((a,b)=>b[1]-a[1])
-  .slice(0,3);
-  
-  html+=`
-  
-  <div class="huyen-card">
-  
-  <div class="huyen-head">
-  
-  <div class="huyen-title">
-  📍 ${h}
-  </div>
-  
-  <div class="huyen-level ${levelClass}">
-  ${level}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-mini-grid">
-  
-  <div class="huyen-mini">
-  
-  <div class="huyen-mini-label">
-  SOC HOME
-  </div>
-  
-  <div
-  class="huyen-mini-value"
-  style="color:#2563eb;"
-  >
-  ${v.socHome}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-mini">
-  
-  <div class="huyen-mini-label">
-  SOC PORT
-  </div>
-  
-  <div
-  class="huyen-mini-value"
-  style="color:#ea580c;"
-  >
-  ${v.soc}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-mini">
-  
-  <div class="huyen-mini-label">
-  SC >24H
-  </div>
-  
-  <div
-  class="huyen-mini-value"
-  style="color:#dc2626;"
-  >
-  ${v.suco24}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-mini">
-  
-  <div class="huyen-mini-label">
-  TKM >24H
-  </div>
-  
-  <div
-  class="huyen-mini-value"
-  style="color:#7c3aed;"
-  >
-  ${v.tkm24}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-mini">
-  
-  <div class="huyen-mini-label">
-  QUÁ HẸN
-  </div>
-  
-  <div
-  class="huyen-mini-value"
-  style="color:#dc2626;"
-  >
-  ${v.suco24}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-mini">
-  
-  <div class="huyen-mini-label">
-  HỒ SƠ
-  </div>
-  
-  <div
-  class="huyen-mini-value"
-  style="color:#16a34a;"
-  >
-  ${v.hoso}
-  </div>
-  
-  </div>
-  
-  </div>
-  
-  <div class="huyen-note">
-  
-  <div>
-  📝 <b>ĐÁNH GIÁ</b>
-  </div>
-  
-  <div>
-  • SOC HOME còn nhiều:
-  ${v.socHome}
-  </div>
-  
-  <div>
-  • SOC PORT còn cao:
-  ${v.soc}
-  </div>
-  
-  <div>
-  • TKM quá 24h:
-  ${v.tkm24}
-  </div>
-  
-  </div>
-  
-  <div class="huyen-top">
-  
-  <div class="huyen-top-title">
-  🔥 TOP NHÂN VIÊN
-  </div>
-  
-  ${topNV.map((n,i)=>`
-  <div class="huyen-top-item">
-  ${i+1}. ${n[0]} - ${n[1]}
-  </div>
-  `).join("")}
-  
-  </div>
-  
-  </div>
-  `;
-  
-  });
-  
-  wrap.innerHTML=html;
-  
-  }
-    
   document.getElementById("updateTime").innerHTML="⏰ Thời gian lấy báo cáo: "+(tontkm[0]?.tgupdate||"");
   }catch(err){
   
@@ -1490,6 +1290,302 @@ Vui lòng click vào
   dashboard.innerHTML=html;
   
   }
+
+  function renderHuyenDashboard(){
+  
+  const wrap =
+  document.getElementById(
+  "huyenDashboard"
+  );
+  
+  const stats={};
+  
+  /* INIT 13 HUYỆN */
+  
+  [
+  "An Khê",
+  "Ayun Pa",
+  "Chư Păh",
+  "Chư Prông",
+  "Chư Sê",
+  "Đăk Đoa",
+  "Đăk Pơ",
+  "Đức Cơ",
+  "Ia Grai",
+  "Ia Pa",
+  "Kbang",
+  "Krông Pa",
+  "Mang Yang",
+  "Phú Thiện",
+  "Pleiku"
+  ].forEach(h=>{
+  
+  stats[h]={
+  
+  socHome:0,
+  soc:0,
+  sc24:0,
+  tkm24:0,
+  quaHen:0,
+  hoso:0,
+  nv:{}
+  
+  };
+  
+  });
+  
+  /* SC */
+  
+  tonsc.forEach(x=>{
+  
+  const h=x.huyen;
+  
+  if(!stats[h]) return;
+  
+  const loai =
+  String(x.sc||"")
+  .trim()
+  .toUpperCase();
+  
+  const tg =
+  parseFloat(x.tg)||0;
+  
+  if(loai==="SOC HOME"){
+  
+  stats[h].socHome++;
+  
+  }
+  
+  if(loai==="SOC"){
+  
+  stats[h].soc++;
+  
+  }
+  
+  if(tg>24){
+  
+  stats[h].sc24++;
+  
+  stats[h].quaHen++;
+  
+  }
+  
+  const nv =
+  x.nv || "Chưa rõ";
+  
+  if(!stats[h].nv[nv]){
+  
+  stats[h].nv[nv]=0;
+  
+  }
+  
+  stats[h].nv[nv]++;
+  
+  });
+  
+  /* TKM */
+  
+  tontkm.forEach(x=>{
+  
+  const h=x.huyen;
+  
+  if(!stats[h]) return;
+  
+  const kpi =
+  String(x.kpi||"")
+  .toUpperCase();
+  
+  const tt =
+  String(x.tt||"")
+  .toUpperCase();
+  
+  if(kpi.includes("24H")){
+  
+  stats[h].tkm24++;
+  
+  }
+  
+  if(tt.includes("CẬP NHẬT HỒ SƠ")){
+  
+  stats[h].hoso++;
+  
+  }
+  
+  });
+  
+  let html="";
+  
+  /* SORT */
+  
+  const sorted =
+  Object.entries(stats)
+  .sort((a,b)=>{
+  
+  const totalA =
+  a[1].socHome +
+  a[1].soc;
+  
+  const totalB =
+  b[1].socHome +
+  b[1].soc;
+  
+  return totalB-totalA;
+  
+  });
+  
+  sorted.forEach(([h,v])=>{
+  
+  const total =
+  v.socHome +
+  v.soc +
+  v.sc24 +
+  v.tkm24;
+  
+  let level="THẤP";
+  let cls="badge-low";
+  
+  if(total>=50){
+  
+  level="RẤT CAO";
+  cls="badge-high";
+  
+  }
+  else if(total>=20){
+  
+  level="CAO";
+  cls="badge-medium";
+  
+  }
+  
+  const topNV =
+  Object.entries(v.nv)
+  .sort((a,b)=>b[1]-a[1])
+  .slice(0,3);
+  
+  html+=`
+  
+  <div class="huyen-card">
+  
+  <div class="huyen-header">
+  
+  <div class="huyen-name">
+  📍 ${h}
+  </div>
+  
+  <div class="huyen-badge ${cls}">
+  ${level}
+  </div>
+  
+  </div>
+  
+  <div class="huyen-grid">
+  
+  <div class="huyen-box">
+  <div class="huyen-label">
+  SOC HOME
+  </div>
+  <div class="huyen-value blue">
+  ${v.socHome}
+  </div>
+  </div>
+  
+  <div class="huyen-box">
+  <div class="huyen-label">
+  SOC PORT
+  </div>
+  <div class="huyen-value orange">
+  ${v.soc}
+  </div>
+  </div>
+  
+  <div class="huyen-box">
+  <div class="huyen-label">
+  SC >24H
+  </div>
+  <div class="huyen-value red">
+  ${v.sc24}
+  </div>
+  </div>
+  
+  <div class="huyen-box">
+  <div class="huyen-label">
+  TKM >24H
+  </div>
+  <div class="huyen-value purple">
+  ${v.tkm24}
+  </div>
+  </div>
+  
+  <div class="huyen-box">
+  <div class="huyen-label">
+  QUÁ HẸN
+  </div>
+  <div class="huyen-value red">
+  ${v.quaHen}
+  </div>
+  </div>
+  
+  <div class="huyen-box">
+  <div class="huyen-label">
+  HỒ SƠ
+  </div>
+  <div class="huyen-value green">
+  ${v.hoso}
+  </div>
+  </div>
+  
+  </div>
+  
+  <div class="huyen-section">
+  
+  <div class="huyen-section-title">
+  📝 ĐÁNH GIÁ
+  </div>
+  
+  <div class="huyen-line">
+  • SOC HOME còn nhiều:
+  ${v.socHome}
+  </div>
+  
+  <div class="huyen-line">
+  • SOC PORT còn cao:
+  ${v.soc}
+  </div>
+  
+  <div class="huyen-line">
+  • TKM quá 24h:
+  ${v.tkm24}
+  </div>
+  
+  </div>
+  
+  <div class="huyen-section">
+  
+  <div class="huyen-section-title">
+  🔥 TOP NHÂN VIÊN
+  </div>
+  
+  <div class="top-list">
+  
+  ${topNV.map((n,i)=>`
+  <div class="top-item">
+  ${i+1}. ${n[0]} - ${n[1]}
+  </div>
+  `).join("")}
+  
+  </div>
+  
+  </div>
+  
+  </div>
+  `;
+  
+  });
+  
+  wrap.innerHTML=html;
+  
+  }
+    
   
   function renderCharts(){
   
