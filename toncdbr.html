@@ -1375,365 +1375,11 @@ Vui lòng click vào
   });
   
   }
+    
   /* =====================
   MODAL
   ===================== */
 
-  /* =========================
-  TOP NHÂN VIÊN
-  ========================= */
-  
-  function topNhanVien(data){
-  
-  const map = {};
-  
-  data.forEach(x=>{
-  
-  const nv =
-  
-  String(
-  x.nv ||
-  x.ten_nv ||
-  "Chưa rõ"
-  ).trim();
-  
-  if(!nv)return;
-  
-  if(!map[nv]){
-  map[nv]=0;
-  }
-  
-  map[nv]++;
-  
-  });
-  
-  return Object.entries(map)
-  
-  .sort((a,b)=>b[1]-a[1])
-  
-  .slice(0,5)
-  
-  .map(([ten,count])=>({
-  
-  ten,
-  count
-  
-  }));
-  
-  }
-  
-  /* =========================
-  BÁO CÁO TỔNG HỢP
-  ========================= */
-  
-  function showBaoCaoTongHop(){
-  
-  const modal =
-  document.getElementById("textModal");
-  
-  modal.classList.remove("hidden");
-  
-  const wrap =
-  document.getElementById(
-  "textModalContent"
-  );
-  
-  const allHuyen = [
-  
-  ...new Set([
-  
-  ...tonsc.map(x=>x.huyen||"Khác"),
-  
-  ...tontkm.map(x=>x.huyen||"Khác")
-  
-  ])
-  
-  ].sort();
-  
-  let text = "";
-  
-  /* =========================
-  LOOP HUYỆN
-  ========================= */
-  
-  allHuyen.forEach(huyen=>{
-  
-  /* SC */
-  
-  const socHome =
-  
-  tonsc.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.sc||"")
-  .toUpperCase()
-  .includes("SOC HOME")
-  
-  );
-  
-  const socPort =
-  
-  tonsc.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.sc||"")
-  .toUpperCase()==="SOC"
-  
-  );
-  
-  const sc24 =
-  
-  tonsc.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  parseFloat(x.tg||0) > 24
-  
-  );
-  
-  /* TKM */
-  
-  const tkm24 =
-  
-  tontkm.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.kpi||"")
-  .toUpperCase()
-  .includes("QUÁ 24H")
-  
-  );
-  
-  const qua16 =
-  
-  tontkm.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.kpi||"")
-  .toUpperCase()
-  .includes("QUÁ 16H")
-  
-  );
-  
-  const quaHen =
-  
-  tontkm.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.kpi||"")
-  .toUpperCase()
-  .includes("QUÁ HẸN")
-  
-  );
-  
-  const hoSo =
-  
-  tontkm.filter(x=>
-  
-  x.huyen===huyen
-  
-  &&
-  
-  String(x.tt||"")
-  .toUpperCase()
-  .includes("CẬP NHẬT HỒ SƠ")
-  
-  );
-  
-  /* =========================
-  BẮT ĐẦU TEXT
-  ========================= */
-  
-  let huyenText =
-  
-  `📍 ${huyen}\n\n`;
-  
-  let hasData = false;
-  
-  /* =========================
-  SOC HOME
-  ========================= */
-  
-  if(socHome.length > 10){
-  
-  huyenText +=
-  "- SOC HOME KÉM còn tồn nhiều.\n";
-  
-  hasData = true;
-  
-  }
-  
-  /* =========================
-  SOC PORT
-  ========================= */
-  
-  if(socPort.length > 10){
-  
-  huyenText +=
-  "- SOC HT, SOC PORT KÉM còn cao.\n";
-  
-  hasData = true;
-  
-  }
-  
-  /* =========================
-  SC >24H
-  ========================= */
-  
-  if(sc24.length){
-  
-  hasData = true;
-  
-  huyenText +=
-  "\n- SỰ CỐ QUÁ 24H:\n";
-  
-  topNhanVien(sc24)
-  
-  .forEach(x=>{
-  
-  huyenText +=
-  `+ ${x.ten}: ${x.count}\n`;
-  
-  });
-  
-  }
-  
-  /* =========================
-  TKM >24H
-  ========================= */
-  
-  if(tkm24.length){
-  
-  hasData = true;
-  
-  huyenText +=
-  "\n- TKM QUÁ 24H:\n";
-  
-  topNhanVien(tkm24)
-  
-  .forEach(x=>{
-  
-  huyenText +=
-  `+ ${x.ten}: ${x.count}\n`;
-  
-  });
-  
-  }
-  
-  /* =========================
-  QUÁ 16H
-  ========================= */
-  
-  if(qua16.length){
-  
-  hasData = true;
-  
-  huyenText +=
-  "\n- TKM QUÁ 16H:\n";
-  
-  topNhanVien(qua16)
-  
-  .forEach(x=>{
-  
-  huyenText +=
-  `+ ${x.ten}: ${x.count}\n`;
-  
-  });
-  
-  }
-  
-  /* =========================
-  QUÁ HẸN
-  ========================= */
-  
-  if(quaHen.length){
-  
-  hasData = true;
-  
-  huyenText +=
-  "\n- QUÁ HẸN TRIỂN KHAI:\n";
-  
-  topNhanVien(quaHen)
-  
-  .forEach(x=>{
-  
-  huyenText +=
-  `+ ${x.ten}: ${x.count}\n`;
-  
-  });
-  
-  }
-  
-  /* =========================
-  HỒ SƠ
-  ========================= */
-  
-  if(hoSo.length){
-  
-  hasData = true;
-  
-  huyenText +=
-  "\n- TỒN CẬP NHẬT HỒ SƠ:\n";
-  
-  topNhanVien(hoSo)
-  
-  .forEach(x=>{
-  
-  huyenText +=
-  `+ ${x.ten}: ${x.count}\n`;
-  
-  });
-  
-  }
-  
-  /* =========================
-  ADD
-  ========================= */
-  
-  if(hasData){
-  
-  text +=
-  huyenText + "\n\n";
-  
-  }
-  
-  });
-  
-  /* =========================
-  KHÔNG DATA
-  ========================= */
-  
-  if(!text){
-  
-  text =
-  "Không có dữ liệu đánh giá";
-  
-  }
-  
-  /* =========================
-  SHOW
-  ========================= */
-  
-  wrap.innerText = text;
-  
-  }
     
   function showTable(title,data){
   
@@ -2315,6 +1961,7 @@ Vui lòng click vào
   
   if(String(loai).toUpperCase().includes("SOC"))badgeColor="#ea580c";
   if(String(loai).toUpperCase().includes("SC"))badgeColor="#2563eb";
+  if(String(loai).toUpperCase().includes("VIP"))badgeColor="#7c3aed";
   if(String(loai).toUpperCase().includes("HOT"))badgeColor="#dc2626";
   
   html+=`
@@ -3129,8 +2776,700 @@ const url =
   }
   
   }
+  
+  /* =========================
+  TOP NHÂN VIÊN
+  ========================= */
+  
+  function topNhanVien(data){
+  
+  const map = {};
+  
+  data.forEach(x=>{
+  
+  const nv =
+  
+  String(
+  x.nv ||
+  x.ten_nv ||
+  "Chưa rõ"
+  ).trim();
+  
+  if(!nv)return;
+  
+  if(!map[nv]){
+  map[nv]=0;
+  }
+  
+  map[nv]++;
+  
+  });
+  
+  return Object.entries(map)
+  
+  .sort((a,b)=>b[1]-a[1])
+  
+  .slice(0,10)
+  
+  .map(([ten,count])=>({
+  
+  ten,
+  count
+  
+  }));
+  
+  }
+  
+  /* =========================
+  BÁO CÁO
+  ========================= */
+  
+  function showBaoCaoTongHop(){
+  
+  const modal =
+  document.getElementById("textModal");
+  
+  modal.classList.remove("hidden");
+  
+  const wrap =
+  document.getElementById(
+  "textModalContent"
+  );
+  
+  /* =========================
+  HUYỆN
+  ========================= */
+  
+  const allHuyen = [
+  
+  ...new Set([
+  
+  ...tonsc.map(x=>x.huyen||"Khác"),
+  
+  ...tontkm.map(x=>x.huyen||"Khác")
+  
+  ])
+  
+  ].sort();
+  
+  let text = "";
+  
+  /* =====================================================
+  PHẦN 1 — TỔNG QUAN 13 HUYỆN
+  ===================================================== */
+  
+  text +=
+  "==============================\n";
+  
+  text +=
+  "📍 TỔNG QUAN 13 HUYỆN\n";
+  
+  text +=
+  "==============================\n\n";
+  
+  allHuyen.forEach(huyen=>{
+  
+  /* =========================
+  SOC HOME
+  ========================= */
+  
+  const socHome =
+  
+  tonsc.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.sc||"")
+  .toUpperCase()
+  .includes("SOC HOME")
+  
+  );
+  
+  /* =========================
+  SOC
+  ========================= */
+  
+  const socPort =
+  
+  tonsc.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.sc||"")
+  .toUpperCase()==="SOC"
+  
+  );
+  
+  /* =========================
+  SC >24H
+  CHỈ HT/SC/HOT/VIP
+  ========================= */
+  
+  const sc24 =
+  
+  tonsc.filter(x=>{
+  
+  const loai =
+  
+  String(x.sc||"")
+  .trim()
+  .toUpperCase();
+  
+  return(
+  
+  x.huyen===huyen
+  
+  &&
+  
+  parseFloat(x.tg||0) > 24
+  
+  &&
+  
+  [
+  "HT",
+  "HT HOT",
+  "HT VIP",
+  "VIP",
+  "SC",
+  "HOT"
+  ]
+  
+  .includes(loai)
+  
+  );
+  
+  });
+  
+  /* =========================
+  TKM >24H
+  ========================= */
+  
+  const tkm24 =
+  
+  tontkm.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.kpi||"")
+  .toUpperCase()
+  .includes("QUÁ 24H")
+  
+  );
+  
+  /* =========================
+  QUÁ 16H
+  ========================= */
+  
+  const qua16 =
+  
+  tontkm.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.kpi||"")
+  .toUpperCase()
+  .includes("QUÁ 16H")
+  
+  );
+  
+  /* =========================
+  QUÁ HẸN
+  ========================= */
+  
+  const quaHen =
+  
+  tontkm.filter(x=>
+  
+  x.huyen===huyen
+  
+  &&
+  
+  String(x.kpi||"")
+  .toUpperCase()
+  .includes("QUÁ HẸN")
+  
+  );
+  
+  /* =========================
+  HỒ SƠ
+  KHÔNG LẤY KPI
+  ========================= */
+  
+  const hoSo =
+  
+  tontkm.filter(x=>{
+  
+  if(x.huyen!==huyen){
+  return false;
+  }
+  
+  const kpi =
+  
+  String(x.kpi||"")
+  .trim();
+  
+  const tt =
+  
+  String(x.tt||"")
+  .toUpperCase();
+  
+  if(kpi){
+  return false;
+  }
+  
+  return tt.includes(
+  "CẬP NHẬT HỒ SƠ"
+  );
+  
+  });
+  
+  /* =========================
+  TEXT
+  ========================= */
+  
+  text += `📍 ${huyen}\n\n`;
+  
+  /* SOC HOME */
+  
+  if(socHome.length > 10){
+  
+  text +=
+  `- SOC HOME KÉM còn tồn nhiều: ${socHome.length}\n`;
+  
+  }
+  
+  /* SOC */
+  
+  if(socPort.length > 10){
+  
+  text +=
+  `- SOC HT, SOC PORT KÉM còn cao: ${socPort.length}\n`;
+  
+  }
+  
+  /* NV SOC */
+  
+  if(
+  socHome.length
+  ||
+  socPort.length
+  ){
+  
+  text +=
+  "\n- Nhân viên tồn SOC, SOC HOME kém nhiều:\n";
+  
+  topNhanVien([
+  ...socHome,
+  ...socPort
+  ])
+  
+  .forEach(x=>{
+  
+  text +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* SC24 */
+  
+  if(sc24.length){
+  
+  text +=
+  "\n- SỰ CỐ QUÁ 24H:\n";
+  
+  topNhanVien(sc24)
+  
+  .forEach(x=>{
+  
+  text +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* TKM24 */
+  
+  if(tkm24.length){
+  
+  text +=
+  "\n- TKM QUÁ 24H:\n";
+  
+  topNhanVien(tkm24)
+  
+  .forEach(x=>{
+  
+  text +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* QUÁ 16 */
+  
+  if(qua16.length){
+  
+  text +=
+  "\n- TKM QUÁ 16H:\n";
+  
+  topNhanVien(qua16)
+  
+  .forEach(x=>{
+  
+  text +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* QUÁ HẸN */
+  
+  if(quaHen.length){
+  
+  text +=
+  "\n- QUÁ HẸN TRIỂN KHAI:\n";
+  
+  topNhanVien(quaHen)
+  
+  .forEach(x=>{
+  
+  text +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  /* HỒ SƠ */
+  
+  if(hoSo.length){
+  
+  text +=
+  "\n- TỒN CẬP NHẬT HỒ SƠ:\n";
+  
+  topNhanVien(hoSo)
+  
+  .forEach(x=>{
+  
+  text +=
+  `+ ${x.ten}: ${x.count}\n`;
+  
+  });
+  
+  }
+  
+  text += "\n\n";
+  
+  });
+  
+  /* =====================================================
+  PHẦN 2 — TỔNG QUAN NHÂN VIÊN
+  ===================================================== */
+  
+  text +=
+  "==============================\n";
+  
+  text +=
+  "👤 TỔNG QUAN NHÂN VIÊN\n";
+  
+  text +=
+  "==============================\n\n";
+  
+  /* ALL DATA */
+  
+  const allData = [
+  
+  ...tonsc,
+  ...tontkm
+  
+  ];
+  
+  /* GROUP NV */
+  
+  const mapNV = {};
+  
+  allData.forEach(x=>{
+  
+  const nv =
+  
+  String(
+  x.nv ||
+  x.ten_nv ||
+  "Chưa rõ"
+  ).trim();
+  
+  if(!nv)return;
+  
+  if(!mapNV[nv]){
+  
+  mapNV[nv]={
+  
+  soc:0,
+  sc24:0,
+  tkm24:0,
+  q16:0,
+  qhen:0,
+  hoso:0,
+  
+  huyen:
+  x.huyen||"Khác"
+  
+  };
+  
+  }
+  
+  /* SOC */
+  
+  if(
+  String(x.sc||"")
+  .toUpperCase()
+  .includes("SOC")
+  ){
+  
+  mapNV[nv].soc++;
+  
+  }
+  
+  /* SC24 */
+  
+  const loai =
+  
+  String(x.sc||"")
+  .trim()
+  .toUpperCase();
+  
+  if(
+  
+  parseFloat(x.tg||0) > 24
+  
+  &&
+  
+  [
+  "HT",
+  "HT HOT",
+  "HT VIP",
+  "VIP",
+  "SC",
+  "HOT"
+  ]
+  
+  .includes(loai)
+  
+  ){
+  
+  mapNV[nv].sc24++;
+  
+  }
+  
+  /* KPI */
+  
+  const kpi =
+  
+  String(x.kpi||"")
+  .toUpperCase();
+  
+  if(
+  kpi.includes("QUÁ 24H")
+  ){
+  mapNV[nv].tkm24++;
+  }
+  
+  if(
+  kpi.includes("QUÁ 16H")
+  ){
+  mapNV[nv].q16++;
+  }
+  
+  if(
+  kpi.includes("QUÁ HẸN")
+  ){
+  mapNV[nv].qhen++;
+  }
+  
+  /* HỒ SƠ */
+  
+  const tt =
+  
+  String(x.tt||"")
+  .toUpperCase();
+  
+  if(
+  !kpi
+  &&
+  tt.includes("CẬP NHẬT HỒ SƠ")
+  ){
+  
+  mapNV[nv].hoso++;
+  
+  }
+  
+  });
+  
+  /* SORT */
+  
+  Object.entries(mapNV)
+  
+  .sort((a,b)=>{
+  
+  const ta = Object.values(a[1])
+  .filter(v=>typeof v==="number")
+  .reduce((s,v)=>s+v,0);
+  
+  const tb = Object.values(b[1])
+  .filter(v=>typeof v==="number")
+  .reduce((s,v)=>s+v,0);
+  
+  return tb-ta;
+  
+  })
+  
+  .forEach(([nv,v])=>{
+  
+  text +=
+  `👤 ${nv} - ${v.huyen}\n`;
+  
+  if(v.soc){
+  
+  text +=
+  `- SOC/SOC HOME: ${v.soc}\n`;
+  
+  }
+  
+  if(v.sc24){
+  
+  text +=
+  `- SC >24H: ${v.sc24}\n`;
+  
+  }
+  
+  if(v.tkm24){
+  
+  text +=
+  `- TKM >24H: ${v.tkm24}\n`;
+  
+  }
+  
+  if(v.q16){
+  
+  text +=
+  `- QUÁ 16H: ${v.q16}\n`;
+  
+  }
+  
+  if(v.qhen){
+  
+  text +=
+  `- QUÁ HẸN: ${v.qhen}\n`;
+  
+  }
+  
+  if(v.hoso){
+  
+  text +=
+  `- CẬP NHẬT HỒ SƠ: ${v.hoso}\n`;
+  
+  }
+  
+  text += "\n";
+  
+  });
+  
+  /* SHOW */
+  
+  wrap.innerText = text;
+  
+  }
     
   </script>
+
+  <!-- =========================
+  BÁO CÁO TEXT
+  ========================= -->
   
+  <div
+  id="textModal"
+  class="hidden"
+  style="
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  z-index:999999;
+  
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  
+  padding:12px;
+  "
+  >
+  
+  <div
+  style="
+  background:#fff;
+  width:100%;
+  max-width:900px;
+  max-height:90vh;
+  
+  overflow:auto;
+  
+  border-radius:16px;
+  
+  padding:16px;
+  "
+  >
+  
+  <div
+  style="
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  
+  margin-bottom:12px;
+  "
+  >
+  
+  <h3>
+  📋 BÁO CÁO KPI
+  </h3>
+  
+  <button
+  onclick="
+  document
+  .getElementById('textModal')
+  .classList.add('hidden')
+  "
+  >
+  
+  Đóng
+  
+  </button>
+  
+  </div>
+  
+  <pre
+  id="textModalContent"
+  style="
+  white-space:pre-wrap;
+  font-size:13px;
+  line-height:1.6;
+  "
+  ></pre>
+  
+  </div>
+  
+  </div>
+    
   </body>
   </html>
