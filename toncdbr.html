@@ -258,29 +258,6 @@
   
   }
   
-  @media(max-width:768px){
-  
-  .chart-grid{
-  
-  display:flex;
-  
-  flex-direction:column;
-  
-  gap:10px;
-  
-  }
-  
-  .chart-box{
-  
-  height:300px;
-  
-  width:100%;
-  
-  min-width:0;
-  
-  }
-  
-  }
   
   .chart-box{
   
@@ -563,13 +540,22 @@
   border-radius:999px;
   }
 
-   @media(max-width:768px){
-
+  /* BIỂU ĐỒ */
+  /* =========================
+  MOBILE CHART
+  ========================= */
+  
+  @media(max-width:768px){
+  
   .chart-grid{
   
-  display:flex !important;
+  display:grid !important;
   
-  flex-direction:column !important;
+  grid-template-columns:1fr !important;
+  
+  gap:14px;
+  
+  width:100%;
   
   }
   
@@ -577,13 +563,27 @@
   
   width:100% !important;
   
+  max-width:100% !important;
+  
   height:320px !important;
+  
+  padding:10px;
+  
+  overflow:hidden;
   
   }
   
-  } 
-  /* BIỂU ĐỒ */
+  .chart-box canvas{
   
+  width:100% !important;
+  
+  height:100% !important;
+  
+  display:block;
+  
+  }
+  
+  }
   .manual-card{
   
   background:
@@ -3092,40 +3092,50 @@ const url =
   TOP NHÂN VIÊN
   ========================= */
   
-  function topNhanVien(data){
+  function topNhanVienChiTiet(data,type){
   
   const map = {};
   
   data.forEach(x=>{
   
-  const nv =
-  
-  String(
-  x.nv ||
-  x.ten_nv ||
-  "Chưa rõ"
+  const nv = String(
+  x.nv || x.ten_nv || "Chưa rõ"
   ).trim();
   
   if(!nv)return;
   
   if(!map[nv]){
-  map[nv]=0;
+  
+  map[nv]={
+  count:0,
+  labels:new Set()
+  };
+  
   }
   
-  map[nv]++;
+  map[nv].count++;
+  
+  if(type){
+  
+  map[nv].labels.add(type);
+  
+  }
   
   });
   
   return Object.entries(map)
   
-  .sort((a,b)=>b[1]-a[1])
+  .sort((a,b)=>b[1].count-a[1].count)
   
-  .slice(0,10)
+  .slice(0,3)
   
-  .map(([ten,count])=>({
+  .map(([ten,obj])=>({
   
   ten,
-  count
+  
+  count:obj.count,
+  
+  label:[...obj.labels].join(", ")
   
   }));
   
@@ -3284,17 +3294,52 @@ const url =
   
   }
   
-  const topSOC = topNhanVien([
-  ...socHome,
-  ...socPort
-  ]).slice(0,3);
+  const topSOC = [
   
-  const topKPI = topNhanVien([
-  ...sc24,
-  ...tkm24,
-  ...quaHen
-  ]).slice(0,3);
+  ...topNhanVienChiTiet(
+  socHome,
+  "HOME WIFI KÉM"
+  ),
   
+  ...topNhanVienChiTiet(
+  socPort,
+  "HIỆN TƯỢNG, PORT KÉM"
+  )
+  
+  ]
+  
+  .sort((a,b)=>b.count-a.count)
+  
+  .slice(0,3);
+  
+  const topKPI = [
+  
+  ...topNhanVienChiTiet(
+  sc24,
+  "SC >24H"
+  ),
+  
+  ...topNhanVienChiTiet(
+  tkm24,
+  "TKM >24H"
+  ),
+  
+  ...topNhanVienChiTiet(
+  quaHen,
+  "QUÁ HẸN"
+  ),
+  
+  ...topNhanVienChiTiet(
+  hoSo,
+  "CẬP NHẬT HỒ SƠ"
+  )
+  
+  ]
+  
+  .sort((a,b)=>b.count-a.count)
+  
+  .slice(0,3);
+    
   html += `
   
   <div class="huyen-card">
@@ -3441,8 +3486,7 @@ const url =
   
   <div>
   
-  ${i+1}. ${x.ten}
-  - ${x.count}
+  ${i+1}. ${x.ten} - ${x.count} (${x.label})
   
   </div>
   
@@ -3464,8 +3508,7 @@ const url =
   
   <div>
   
-  ${i+1}. ${x.ten}
-  - ${x.count}
+   ${i+1}. ${x.ten} - ${x.count} (${x.label})
   
   </div>
   
