@@ -126,6 +126,22 @@
   .expand-btn{color:#2563eb;cursor:pointer;margin-top:5px;font-size:13px;}
   
   .toolbar button{padding:0 10px;height:36px;border:none;border-radius:8px;background:#16a34a;color:white;cursor:pointer;font-weight:600;font-size:11px;}
+
+  .account-action-btn{
+
+  width:auto !important;
+  
+  display:inline-flex;
+  
+  align-items:center;
+  
+  justify-content:center;
+  
+  white-space:nowrap;
+  
+  flex:none;
+  
+  }
   
   .mobile-list{display:flex;flex-direction:column;gap:8px;}
   
@@ -3009,27 +3025,18 @@ const url =
   </div>
   
   
-  <div style="margin-top:12px;">
-  
-  <div
+   <div
   style="
   display:flex;
-  gap:8px;
+  gap:10px;
   margin-top:12px;
   flex-wrap:wrap;
-  "
-  >
-  
-  <div
-  style="
-  display:flex;
-  gap:8px;
-  margin-top:12px;
-  flex-wrap:wrap;
+  align-items:center;
   "
   >
   
   <button
+  class="account-action-btn"
   onclick='viewInput(${JSON.stringify(row)})'
   style="
   border:none;
@@ -3046,6 +3053,7 @@ const url =
   </button>
   
   <button
+  class="account-action-btn"
   onclick='openInput(${JSON.stringify(row)})'
   style="
   border:none;
@@ -3062,6 +3070,7 @@ const url =
   </button>
   
   <button
+  class="account-action-btn"
   onclick='unlockEdit(${JSON.stringify(row)})'
   style="
   border:none;
@@ -3073,17 +3082,11 @@ const url =
   font-weight:700;
   "
   >
-  
   🔓 BYPASS 1 LẦN
-  
   </button>
-  
   </div>
-  
   </div>
-  
   `;
-  
   });
   
   html += "</div>";
