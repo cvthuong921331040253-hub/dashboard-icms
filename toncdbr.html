@@ -239,17 +239,20 @@
   -webkit-box-orient:vertical;
   
   }
+
+  .card-mini-count{
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+  opacity:.9;
+  flex:none;
+  }
   
   .card-count{
-  
   font-size:22px;
-  
   line-height:1.05;
-  
   font-weight:700;
-  
   margin-top:auto;
-  
   padding-top:6px;
   
   }
@@ -656,22 +659,6 @@
   ${count}
   </span>
   
-  </div>
-  
-  <div
-  class="card-count"
-  style="color:${color}"
-  >
-  ${count}
-  </div>
-  
-  </div>
-  `;
-  
-  }
-  
-  <div class="card-title">
-  ${title}
   </div>
   
   <div
@@ -1626,7 +1613,11 @@
   if(month){
   
   const ngay =
-  String(row.ngay || "");
+  String(
+  row.ngay ||
+  row.ntdn ||
+  ""
+  );
   
   if(ngay.includes("/")){
   
@@ -3240,7 +3231,11 @@ const url =
   if(month){
   
   const ngay =
-  String(row.ngay || "");
+  String(
+  row.ngay ||
+  row.ntdn ||
+  ""
+  );
   
   if(ngay.includes("/")){
   
