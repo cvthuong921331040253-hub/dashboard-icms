@@ -278,10 +278,10 @@
   }
   
   .chart-box{
-  height:340px;
+  height:300px;
   padding:10px;
   border-radius:12px;
-  overflow-x:auto;
+  overflow:hidden;
   }
   #tableWrap{border-radius:10px;background:#fff;border:1px solid #e5e7eb;}
   
@@ -352,6 +352,7 @@
   .chart-box canvas{
   width:100%!important;
   height:100%!important;
+  max-width:100%!important;
   }
   /* BIỂU ĐỒ */
 
@@ -633,7 +634,7 @@
   
   }
   
- function createCard(title,count,color,onClick,bg=""){
+  function createCard(title,count,color,onClick,bg=""){
   
   return `
   <div
@@ -641,6 +642,33 @@
   onclick="${onClick}"
   style="${bg}"
   >
+  
+  <div class="card-title">
+  
+  <span>
+  ${title}
+  </span>
+  
+  <span
+  class="card-mini-count"
+  style="color:${color}"
+  >
+  ${count}
+  </span>
+  
+  </div>
+  
+  <div
+  class="card-count"
+  style="color:${color}"
+  >
+  ${count}
+  </div>
+  
+  </div>
+  `;
+  
+  }
   
   <div class="card-title">
   ${title}
