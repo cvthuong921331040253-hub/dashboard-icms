@@ -266,7 +266,38 @@
   grid-template-columns:1fr;
   gap:10px;
   }
+
+  /* =========================
+  STAFF GRID
+  ========================= */
+
+  .staff-grid{
   
+  display:grid;
+  
+  grid-template-columns:
+  repeat(auto-fit,minmax(420px,1fr));
+  
+  gap:18px;
+  
+  align-items:start;
+  
+  }
+  
+  /* MOBILE */
+  
+  @media(max-width:768px){
+  
+  .staff-grid{
+  
+  grid-template-columns:1fr;
+  
+  gap:12px;
+  
+  }
+  
+  }
+    
   .chart-box{
   height:300px;
   padding:10px;
@@ -275,9 +306,10 @@
   }
 
   .staff-box{
+  
   width:100%;
-
   min-width:0;
+  
   background:#ffffff;
   
   border-radius:18px;
@@ -291,7 +323,10 @@
   
   min-height:420px;
   
-  overflow:auto;
+  max-height:760px;
+  
+  overflow-y:auto;
+  overflow-x:hidden;
   
   transition:.2s;
   
@@ -752,10 +787,11 @@
   </div>
   
   <div
+  <div
   id="staffRankingGrid"
-  class="chart-grid"
+  class="staff-grid"
   ></div>
-    
+      
   </div>
   
   <div class="modal hidden" id="modal">
