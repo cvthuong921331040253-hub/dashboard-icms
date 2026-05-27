@@ -2703,6 +2703,62 @@ const url =
   window.open(url,"_blank");
   
   }
+
+  async function unlockEdit(row){
+  
+  const ok = confirm(
+  
+  `Mở khóa sửa 1 lần?\n\n${row.account}`
+  
+  );
+  
+  if(!ok){
+  return;
+  }
+  
+  try{
+  
+  const res = await fetch(API,{
+  
+  method:"POST",
+  
+  body:JSON.stringify({
+  
+  action:"unlock_edit",
+  
+  account:row.account,
+  
+  check:row.check
+  
+  })
+  
+  });
+  
+  const json = await res.json();
+  
+  if(json.success){
+  
+  alert(
+  "Đã mở khóa sửa 1 lần"
+  );
+  
+  loadData();
+  
+  }else{
+  
+  alert(json.error || "Có lỗi");
+  
+  }
+  
+  }catch(err){
+  
+  console.log(err);
+  
+  alert(err);
+  
+  }
+  
+  }
   
   function formatDate(v){
   
@@ -2880,6 +2936,15 @@ const url =
   
   <div style="margin-top:12px;">
   
+  <div
+  style="
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+  flex-wrap:wrap;
+  "
+  >
+  
   <button
   onclick='openInput(${JSON.stringify(row)})'
   style="
@@ -2895,6 +2960,25 @@ const url =
   Mở chỉnh sửa
   
   </button>
+  
+  <button
+  onclick='unlockEdit(${JSON.stringify(row)})'
+  style="
+  border:none;
+  background:#16a34a;
+  color:#fff;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+  "
+  >
+  
+  🔓 BYPASS 1 LẦN
+  
+  </button>
+  
+  </div>
   
   </div>
   
