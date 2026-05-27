@@ -2500,12 +2500,35 @@ Vui lòng click vào
   )
   .trim()
   .toUpperCase();
-
+  
   /* =========================
-  CHECK SOC / SOC HOME CŨ
+  LẤY SC HIỆN TẠI TỪ BÁO CÁO
   ========================= */
   
-  const currentSc = check;
+  const reportRow = tonsc.find(x=>{
+  
+  const acc1 =
+  String(x.account||"")
+  .trim()
+  .toUpperCase();
+  
+  const acc2 =
+  String(account||"")
+  .trim()
+  .toUpperCase();
+  
+  return acc1===acc2;
+  
+  });
+  
+  const currentSc =
+  String(
+  reportRow?.sc ||
+  check ||
+  ""
+  )
+  .trim()
+  .toUpperCase();
 
   
   /* TÌM ACCOUNT ĐÃ NHẬP KHÁC LOẠI */
