@@ -1124,9 +1124,6 @@ const API =
 const params =
 new URLSearchParams(location.search);
 
-const mode =
-params.get("mode") || "create";
-
 const account =
 
 params.get("account")
@@ -2717,35 +2714,6 @@ renderOldFiles(
 d.file_ghiam,
 "old_ghiam"
 );
-
-/* =========================
-VIEW MODE
-========================= */
-
-if(mode==="view"){
-
-document
-.querySelectorAll(
-"input, textarea, select"
-)
-.forEach(el=>{
-
-el.disabled = true;
-
-});
-
-/* ẨN NÚT LƯU */
-
-const btn =
-document.querySelector("button");
-
-if(btn){
-
-btn.style.display="none";
-
-}
-
-}
 
 document.getElementById(
 "loading_overlay"
