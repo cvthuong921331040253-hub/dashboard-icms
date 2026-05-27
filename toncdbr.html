@@ -610,41 +610,27 @@
   const nhaplieu =
   json.nhaplieu || [];
   
-  const mapAcc = {};
+  /* =========================
+  LOAD ALL ACCOUNT BYPASS
+  ========================= */
   
-  nhaplieu.forEach(row=>{
+  allAccounts =
+  
+  nhaplieu.filter(row=>{
   
   const acc =
   
   String(row.account||"")
-  .trim()
-  .toUpperCase();
-  
-  if(!acc)return;
-  
-  /* BYPASS */
+  .trim();
   
   const check =
   
   String(row.check||"")
   .trim();
   
-  if(check){
-  
-  if(!mapAcc[acc]){
-  
-  mapAcc[acc]=row;
-  
-  }
-  
-  }
+  return acc && check;
   
   });
-  
-  /* CARD BYPASS */
-  
-  allAccounts =
-  Object.values(mapAcc);
   
   /* CARD SC/TKM */
   
@@ -2679,9 +2665,12 @@ const url =
   
   if(!acc)return;
   
-  if(!unique[acc]){
+  const key =
+  acc + "_" + x.check;
   
-  unique[acc]=x;
+  if(!unique[key]){
+  
+  unique[key]=x;
   
   }
   
