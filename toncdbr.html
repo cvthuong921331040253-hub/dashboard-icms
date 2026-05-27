@@ -1866,10 +1866,38 @@ Vui lòng click vào
   
   });
   
+  const bypassList =
+  
+  allAccounts
+  .filter(n=>{
+  
+  const acc1 =
+  String(n.account||"")
+  .trim()
+  .toUpperCase();
+  
+  const acc2 =
+  String(row.account||"")
+  .trim()
+  .toUpperCase();
+  
+  return acc1===acc2;
+  
+  })
+  .map(n=>
+  
+  String(n.check||"")
+  .trim()
+  .toUpperCase()
+  
+  )
+  .filter(Boolean);
+  
+  /* TEXT */
+  
   row.bypass =
-  daBypass
-  ? "NV đã nhập bypass"
-  : "";
+  
+  bypassList.join(" | ");
   
   });
   
@@ -2495,6 +2523,72 @@ Vui lòng click vào
   ==========String(String(=============== */
   
   const check =
+    /* =========================
+  CHECK ĐÃ NHẬP BYPASS
+  ========================= */
+  
+  const daNhap =
+  
+  allAccounts.some(n=>{
+  
+  const acc1 =
+  String(n.account||"")
+  .trim()
+  .toUpperCase();
+  
+  const acc2 =
+  String(account||"")
+  .trim()
+  .toUpperCase();
+  
+  const checkOld =
+  String(n.check||"")
+  .trim()
+  .toUpperCase();
+  
+  return (
+  
+  acc1===acc2
+  
+  &&
+  
+  checkOld===check
+  
+  );
+  
+  });
+  
+  /* ĐÃ NHẬP → KHÓA */
+  
+  if(daNhap){
+  
+  const pass = prompt(
+  
+  "Account này đã nhập bypass.\n\nNhập mật khẩu để chỉnh sửa:"
+    <br>
+  "Liên hệ quản trị viên thuongcv1 để hỗ trợ"
+  );
+  
+  /* KHÔNG NHẬP */
+  
+  if(!pass){
+  
+  return;
+  
+  }
+  
+  /* PASSWORD */
+  
+  if(pass!=="26664aA@!!"){
+  
+  alert("Sai mật khẩu");
+  
+  return;
+  
+  }
+  
+  }
+    
   String(
   row.sc || row.check || ""
   )
@@ -2529,83 +2623,6 @@ Vui lòng click vào
   )
   .trim()
   .toUpperCase();
-
-  
-  /* TÌM ACCOUNT ĐÃ NHẬP KHÁC LOẠI */
-  
-  const oldInput =
-  allAccounts.find(n=>{
-  
-  const acc =
-  String(n.account||"")
-  .trim()
-  .toUpperCase();
-  
-  const oldCheck =
-  String(n.check||"")
-  .trim()
-  .toUpperCase();
-  
-  return (
-  
-  acc ===
-  String(account)
-  .trim()
-  .toUpperCase()
-  
-  &&
-  
-  oldCheck
-  
-  &&
-  
-  oldCheck !== currentSc
-  
-  );
-  
-  });
-  
-  if(oldInput){
-  
-  const oldCheck =
-  String(oldInput.check || "")
-  .trim()
-  .toUpperCase();
-  
-  const oldText =
-  
-  oldCheck === "SOC"
-  
-  ? "SOC PORT KÉM"
-  
-  : "SOC HOME WIFI";
-  
-  const newText =
-  
-  currentSc === "SOC"
-  
-  ? "SOC PORT KÉM"
-  
-  : "SOC HOME WIFI";
-  
-  const ok = confirm(
-  
-  `Account này đã nhập bypass ${oldText}.\n\n` +
-  
-  `Hiện tại báo cáo của bạn đang chuyển sang ${newText}.\n\n` +
-  
-  `Bạn có muốn cập nhật sang ${newText} không?`
-  
-  );
-  
-  /* KHÔNG UPDATE */
-  
-  if(!ok){
-  
-  return;
-  
-  }
-  
   }
     
   /* =========================
