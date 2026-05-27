@@ -2196,6 +2196,40 @@ Vui lòng click vào
   }
   
   function renderMobileCards(data){
+
+  data.forEach(row=>{
+  
+  const bypassList =
+  
+  allAccounts
+  .filter(n=>{
+  
+  const acc1 =
+  String(n.account||"")
+  .trim()
+  .toUpperCase();
+  
+  const acc2 =
+  String(row.account||"")
+  .trim()
+  .toUpperCase();
+  
+  return acc1===acc2;
+  
+  })
+  .map(n=>
+  
+  String(n.check||"")
+  .trim()
+  .toUpperCase()
+  
+  )
+  .filter(Boolean);
+  
+  row.bypass =
+  bypassList.join(" | ");
+  
+  });
   
   data.sort((a,b)=>(parseFloat(b.tg)||0)-(parseFloat(a.tg)||0));
   
@@ -2555,12 +2589,6 @@ Vui lòng click vào
   /* =========================
   CHECK FIX CỨNG
   ========================= */
-  
-  const check =
-  
-  String(
-  row.sc || row.check || ""
-  )
   .trim()
   .toUpperCase();
   
@@ -2658,8 +2686,6 @@ Vui lòng click vào
   return;
   
   }
-  
-  }
     
   String(
   row.sc || row.check || ""
@@ -2687,14 +2713,6 @@ Vui lòng click vào
   
   });
   
-  const currentSc =
-  String(
-  reportRow?.sc ||
-  check ||
-  ""
-  )
-  .trim()
-  .toUpperCase();
     
   /* =========================
   URL
