@@ -1146,6 +1146,9 @@ const isEdit =
 
 const editId =
 params.get("id_check");
+
+const mode =
+params.get("mode") || "";
 /* =========================
 LOAD OLD DATA
 ========================= */
@@ -2715,6 +2718,47 @@ d.file_ghiam,
 "old_ghiam"
 );
 
+/* =========================
+VIEW MODE
+========================= */
+
+if(mode==="view"){
+
+/* KHÓA INPUT */
+
+document
+.querySelectorAll(
+"input, textarea, select"
+)
+.forEach(el=>{
+
+el.disabled = true;
+
+});
+
+/* ẨN NÚT LƯU */
+
+document
+.querySelectorAll("button")
+.forEach(btn=>{
+
+const text =
+
+(btn.innerText || "")
+.toLowerCase();
+
+if(
+text.includes("lưu")
+){
+
+btn.style.display="none";
+
+}
+
+});
+
+}
+   
 document.getElementById(
 "loading_overlay"
 ).style.display="none";
