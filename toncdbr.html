@@ -2506,8 +2506,9 @@ Vui lòng click vào
   ========================= */
   
   const currentSc = check;
+
   
-  /* TÌM ACCOUNT ĐÃ NHẬP */
+  /* TÌM ACCOUNT ĐÃ NHẬP KHÁC LOẠI */
   
   const oldInput =
   allAccounts.find(n=>{
@@ -2517,11 +2518,26 @@ Vui lòng click vào
   .trim()
   .toUpperCase();
   
+  const oldCheck =
+  String(n.check||"")
+  .trim()
+  .toUpperCase();
+  
   return (
+  
   acc ===
   String(account)
   .trim()
   .toUpperCase()
+  
+  &&
+  
+  oldCheck
+  
+  &&
+  
+  oldCheck !== currentSc
+  
   );
   
   });
@@ -2532,13 +2548,6 @@ Vui lòng click vào
   String(oldInput.check || "")
   .trim()
   .toUpperCase();
-  
-  /* KHÁC LOẠI */
-  
-  if(
-  oldCheck &&
-  oldCheck !== currentSc
-  ){
   
   const oldText =
   
