@@ -284,238 +284,6 @@
   
   }
   
-  /* MOBILE */
-  
-  @media(max-width:768px){
-  
-  .staff-grid{
-  
-  grid-template-columns:1fr;
-  
-  gap:12px;
-  
-  }
-  
-  }
-    
-  .chart-box{
-  height:300px;
-  padding:10px;
-  border-radius:12px;
-  overflow:hidden;
-  }
-
-  .staff-box{
-  
-  width:100%;
-  min-width:0;
-  
-  background:#ffffff;
-  
-  border-radius:18px;
-  
-  padding:16px;
-  
-  border:1px solid #dbe3ee;
-  
-  box-shadow:
-  0 2px 10px rgba(0,0,0,.04);
-  
-  min-height:420px;
-  
-  max-height:760px;
-  
-  overflow-y:auto;
-  overflow-x:hidden;
-  
-  transition:.2s;
-  
-  }
-  
-  .staff-box:hover{
-  
-  transform:translateY(-2px);
-  
-  box-shadow:
-  0 6px 18px rgba(0,0,0,.08);
-  
-  }
-  
-  .staff-title{
-  
-  font-size:18px;
-  
-  font-weight:800;
-  
-  margin-bottom:16px;
-  
-  display:flex;
-  
-  align-items:center;
-  
-  gap:8px;
-  
-  line-height:1.4;
-  
-  }
-  
-  .staff-list{
-  
-  display:flex;
-  
-  flex-direction:column;
-  
-  gap:10px;
-  
-  }
-  
-  .staff-item{
-  
-  display:flex;
-  
-  align-items:center;
-  
-  justify-content:space-between;
-  
-  gap:12px;
-  
-  padding:10px 12px;
-  
-  border-radius:12px;
-  
-  background:#f8fafc;
-  
-  border:1px solid #e5e7eb;
-  
-  transition:.15s;
-  
-  }
-  
-  .staff-item:hover{
-  
-  background:#f1f5f9;
-  
-  }
-  
-  .staff-left{
-  
-  display:flex;
-  
-  align-items:center;
-  
-  gap:10px;
-  
-  min-width:0;
-  
-  }
-  
-  .staff-rank{
-  
-  width:28px;
-  height:28px;
-  
-  border-radius:50%;
-  
-  background:#e5e7eb;
-  
-  display:flex;
-  
-  align-items:center;
-  
-  justify-content:center;
-  
-  font-size:12px;
-  
-  font-weight:700;
-  
-  color:#374151;
-  
-  flex:none;
-  
-  }
-  
-  .staff-item.top1 .staff-rank{
-  
-  background:#f59e0b;
-  
-  color:#fff;
-  
-  }
-  
-  .staff-item.top2 .staff-rank{
-  
-  background:#9ca3af;
-  
-  color:#fff;
-  
-  }
-  
-  .staff-item.top3 .staff-rank{
-  
-  background:#b45309;
-  
-  color:#fff;
-  
-  }
-  
-  .staff-name{
-  
-  font-size:14px;
-  
-  font-weight:700;
-  
-  color:#111827;
-  
-  white-space:nowrap;
-  
-  overflow:hidden;
-  
-  text-overflow:ellipsis;
-  
-  }
-  
-  .staff-count{
-  
-  background:#dc2626;
-  
-  color:#fff;
-  
-  min-width:46px;
-  
-  height:32px;
-  
-  padding:0 10px;
-  
-  border-radius:10px;
-  
-  display:flex;
-  
-  align-items:center;
-  
-  justify-content:center;
-  
-  font-size:14px;
-  
-  font-weight:800;
-  
-  flex:none;
-  
-  box-shadow:
-  0 2px 6px rgba(220,38,38,.25);
-  
-  }
-  
-  .staff-empty{
-  
-  padding:30px 10px;
-  
-  text-align:center;
-  
-  color:#6b7280;
-  
-  font-size:14px;
-  
-  }
   
   /* MOBILE */
   
@@ -622,7 +390,238 @@
   word-break:break-word;
   }
   
+  /* =========================
+  STAFF GRID
+  ========================= */
   
+  .staff-grid{
+  
+  display:grid;
+  
+  grid-template-columns:
+  repeat(auto-fit,minmax(420px,1fr));
+  
+  gap:18px;
+  
+  align-items:start;
+  
+  }
+  
+  .staff-box{
+  
+  width:100%;
+  min-width:0;
+  
+  background:#ffffff;
+  
+  border-radius:18px;
+  
+  padding:16px;
+  
+  border:1px solid #dbe3ee;
+  
+  box-shadow:
+  0 2px 10px rgba(0,0,0,.04);
+  
+  min-height:420px;
+  
+  max-height:760px;
+  
+  overflow-y:auto;
+  overflow-x:hidden;
+  
+  transition:.2s;
+  
+  }
+  
+  .staff-title{
+  
+  font-size:18px;
+  
+  font-weight:800;
+  
+  margin-bottom:16px;
+  
+  display:flex;
+  
+  align-items:center;
+  
+  gap:8px;
+  
+  line-height:1.4;
+  
+  }
+  
+  .staff-list{
+  
+  display:flex;
+  
+  flex-direction:column;
+  
+  gap:10px;
+  
+  }
+  
+  .staff-item{
+  
+  display:flex;
+  
+  align-items:center;
+  
+  justify-content:space-between;
+  
+  gap:12px;
+  
+  padding:10px 12px;
+  
+  border-radius:12px;
+  
+  background:#f8fafc;
+  
+  border:1px solid #e5e7eb;
+  
+  }
+  
+  .staff-left{
+  
+  display:flex;
+  
+  align-items:center;
+  
+  gap:10px;
+  
+  min-width:0;
+  
+  }
+  
+  .staff-rank{
+  
+  width:28px;
+  height:28px;
+  
+  border-radius:50%;
+  
+  background:#e5e7eb;
+  
+  display:flex;
+  
+  align-items:center;
+  
+  justify-content:center;
+  
+  font-size:12px;
+  
+  font-weight:700;
+  
+  color:#374151;
+  
+  flex:none;
+  
+  }
+  
+  .staff-item.top1 .staff-rank{
+  background:#f59e0b;
+  color:#fff;
+  }
+  
+  .staff-item.top2 .staff-rank{
+  background:#9ca3af;
+  color:#fff;
+  }
+  
+  .staff-item.top3 .staff-rank{
+  background:#b45309;
+  color:#fff;
+  }
+  
+  .staff-name{
+  
+  font-size:14px;
+  
+  font-weight:700;
+  
+  color:#111827;
+  
+  white-space:nowrap;
+  
+  overflow:hidden;
+  
+  text-overflow:ellipsis;
+  
+  }
+  
+  .staff-count{
+  
+  background:#dc2626;
+  
+  color:#fff;
+  
+  min-width:46px;
+  
+  height:32px;
+  
+  padding:0 10px;
+  
+  border-radius:10px;
+  
+  display:flex;
+  
+  align-items:center;
+  
+  justify-content:center;
+  
+  font-size:14px;
+  
+  font-weight:800;
+  
+  flex:none;
+  
+  }
+  
+  /* MOBILE */
+  
+  @media(max-width:768px){
+  
+  .staff-grid{
+  grid-template-columns:1fr;
+  gap:12px;
+  }
+  
+  .staff-box{
+  min-height:auto;
+  padding:12px;
+  border-radius:14px;
+  }
+  
+  .staff-title{
+  font-size:15px;
+  margin-bottom:12px;
+  }
+  
+  .staff-item{
+  padding:8px 10px;
+  border-radius:10px;
+  }
+  
+  .staff-name{
+  font-size:13px;
+  }
+  
+  .staff-count{
+  min-width:40px;
+  height:28px;
+  font-size:13px;
+  }
+  
+  .staff-rank{
+  width:24px;
+  height:24px;
+  font-size:11px;
+  }
+  
+  }
+  
+    
   /* BIỂU ĐỒ */
   .chart-grid{
   
@@ -787,12 +786,9 @@
   </div>
   
   <div
-  <div
   id="staffRankingGrid"
   class="staff-grid"
   ></div>
-      
-  </div>
   
   <div class="modal hidden" id="modal">
   
