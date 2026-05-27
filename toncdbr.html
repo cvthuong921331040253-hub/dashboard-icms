@@ -1635,18 +1635,22 @@ Vui lòng click vào
   filteredData=data;
   
   document.getElementById("modal").classList.remove("hidden");
-
   document.getElementById(
+  "searchInput"
+  ).placeholder =
+  "Tìm account hoặc nhân viên";
+
+   document.getElementById(
   "huyenFilter"
-  ).style.display="";
+  ).style.display="none";
   
   document.getElementById(
   "typeFilter"
-  ).style.display="";
+  ).style.display="none";
   
   document.getElementById(
   "filter_month"
-  ).style.display="";
+  ).style.display="none";
   
   document.getElementById("modalTitle").innerHTML=title;
   
@@ -2978,7 +2982,7 @@ const url =
   document.getElementById(
   "searchInput"
   ).placeholder =
-  "Tìm account hoặc nhân viên...";
+  "Tìm account hoặc nhân viên";
     
   document.getElementById(
   "huyenFilter"
