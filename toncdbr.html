@@ -268,29 +268,12 @@
   .expand-btn{font-size:9px;margin-top:2px;}
   }
   
-  .chart-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:15px;
-  margin-top:20px;
-  }
-  
-  .chart-box{
-  background:#fff;
-  border-radius:14px;
-  padding:15px;
-  border:1px solid #e5e7eb;
-  height:320px;
-  overflow:hidden;
-  }
-  
-  .chart-box canvas{
-  width:100%!important;
-  height:100%!important;
-  }
   table{contain:layout paint;}
   
-  #tableWrap{-webkit-overflow-scrolling:touch;contain:strict;}
+  #tableWrap{
+  -webkit-overflow-scrolling:touch;
+  overflow:auto;
+  }
   .text-modal-box{
   width:90%;
   max-width:900px;
@@ -444,8 +427,6 @@
   
   </div>
     
-  </div>
-  
   </div>
   
   <div class="modal hidden" id="modal">
@@ -644,15 +625,6 @@
   ${count}
   </div>
   
-  </div>
-  `;
-  
-  }
-  
-  return `
-  <div class="card" onclick="${onClick}">
-  <div class="card-title">${title}</div>
-  <div class="card-count" style="color:${color}">${count}</div>
   </div>
   `;
   
