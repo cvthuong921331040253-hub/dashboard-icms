@@ -2569,9 +2569,51 @@ Vui lòng click vào
   ========================= */
   
   const daNhap =
+    
+  allAccounts.some(n=>{
+  /* =========================
+  CHECK MỞ KHÓA
+  ========================= */
+  
+  const duocMoKhoa =
   
   allAccounts.some(n=>{
   
+  const acc1 =
+  String(n.account||"")
+  .trim()
+  .toUpperCase();
+  
+  const acc2 =
+  String(account||"")
+  .trim()
+  .toUpperCase();
+  
+  const checkOld =
+  String(n.check||"")
+  .trim()
+  .toUpperCase();
+  
+  const unlock =
+  String(n.unlock_edit||"")
+  .trim()
+  .toLowerCase();
+  
+  return (
+  
+  acc1===acc2
+  
+  &&
+  
+  checkOld===check
+  
+  &&
+  
+  unlock==="true"
+  
+  );
+  
+  });
   const acc1 =
   String(n.account||"")
   .trim()
@@ -2601,20 +2643,16 @@ Vui lòng click vào
   
   /* ĐÃ NHẬP → KHÓA */
   
-  if(daNhap){
+  if(daNhap && !duocMoKhoa){
   
-  const pass = prompt(
+  alert(
   
-  "Account này đã nhập bypass.\n\nNhập mật khẩu để chỉnh sửa.\n\nLiên hệ quản trị viên thuongcv1 để hỗ trợ"
+  "Account này đã bypass.\n\nLiên hệ quản trị viên thuongcv1 & hoangtd1 để mở khóa chỉnh sửa."
   
   );
   
-  /* KHÔNG NHẬP */
-  
-  if(!pass){
-  
   return;
-  
+    
   }
   
   /* PASSWORD */
