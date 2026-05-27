@@ -624,7 +624,30 @@
   
   }
   
-  function createCard(title,count,color,onClick){
+ function createCard(title,count,color,onClick,bg=""){
+  
+  return `
+  <div
+  class="card"
+  onclick="${onClick}"
+  style="${bg}"
+  >
+  
+  <div class="card-title">
+  ${title}
+  </div>
+  
+  <div
+  class="card-count"
+  style="color:${color}"
+  >
+  ${count}
+  </div>
+  
+  </div>
+  `;
+  
+  }
   
   return `
   <div class="card" onclick="${onClick}">
@@ -759,108 +782,34 @@
   "showTable('SỰ CỐ CHƯA GIAO',chuagiaoData)"
   )
   +
-  
-  `
-  <div
-  class="card"
-  onclick="openManualInput()"
-  style="
-  background:linear-gradient(135deg,#16a34a,#22c55e);
-  color:#fff;
-  "
-  >
-  
-  <div
-  style="
-  text-align:center;
-  color:#fff;
-  "
-  >
 
-  <div>
-  📝 NHẬP SC & TKM BẤT KHẢ KHÁNG GT KPI
-  </div>
-  
-  <div>
-  Vui lòng click vào
-  </div>
-  </div>
-  
-  </div>
-  `
+  createCard(
+  "📝 NHẬP SC & TKM BẤT KHẢ KHÁNG GT KPI",
+  "",
+  "#fff",
+  "openManualInput()",
+  "background:linear-gradient(135deg,#16a34a,#22c55e);"
+  )
     
   +
-  
-  `
-  <div
-  class="card"
-  onclick="showAccountManager()"
-  style="
-  background:linear-gradient(135deg,#059669,#10b981);
-  color:#fff;
-  "
-  >
-  
-  <div
-  class="card-title"
-  style="
-  color:#fff;
-  text-align:center;
-  "
-  >
-  
-  📁 ĐÃ NHẬP BYPASS PORT KÉM, HOME KÉM
-  
-  </div>
-  
-  <div
-  class="card-count"
-   style="
-  color:#fff;
-  "
-  >
-  
-  ${allAccounts.length}
-  
-  </div>
-  
-  </div>
-  `
+
+  createCard(
+  "📁 ĐÃ NHẬP BYPASS PORT KÉM, HOME KÉM",
+  allAccounts.length,
+  "#fff",
+  "showAccountManager()",
+  "background:linear-gradient(135deg,#059669,#10b981);"
+  )
   
   +
-  
-  `
-  <div
-  class="card"
-  onclick="showScTkmManager()"
-  style="
-  text-align:center;
-  color:#fff;
-  "
-  >
-  
-  <div
-  class="card-title"
-  style="
-  color:#fff;
-  text-align:center;
-  "
-  >
-  📁 ĐÃ NHẬP SC VÀ TKM BKK
-  
-  </div>
-  
-  <div
-  class="card-count"
-  style="
-  color:#fff;
-  "
-  >
-  ${window.scTkmAccounts.length}
-  </div>
-  
-  </div>
-  `
+
+  createCard(
+  "📁 ĐÃ NHẬP SC VÀ TKM BKK",
+  window.scTkmAccounts.length,
+  "#fff",
+  "showScTkmManager()",
+  "background:linear-gradient(135deg,#2563eb,#1d4ed8);"
+  )
   }
   
   /* =====================
