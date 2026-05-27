@@ -2705,7 +2705,23 @@ const url =
   }
 
   async function unlockEdit(row){
+
+  /* =========================
+  PASSWORD ADMIN
+  ========================= */
   
+  const pass = prompt(
+  "Nhập mật khẩu quản trị"
+  );
+  
+  if(pass!=="26664aA@!!"){
+  
+  alert("Sai mật khẩu");
+  
+  return;
+  
+  }
+    
   const ok = confirm(
   
   `Mở khóa sửa 1 lần?\n\n${row.account}`
