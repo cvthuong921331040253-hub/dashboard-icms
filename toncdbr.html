@@ -3173,7 +3173,76 @@ const url =
   
   function exportExcel(){
   
-  if(!filteredData.length){
+  const kw =
+  document.getElementById("searchInput")
+  .value
+  .toLowerCase();
+  
+  const huyen =
+  document.getElementById("huyenFilter")
+  .value;
+  
+  const type =
+  document.getElementById("typeFilter")
+  .value;
+  
+  const month =
+  document.getElementById("filter_month")
+  .value;
+  
+  /* FILTER LẠI TRỰC TIẾP */
+  
+  const exportData = currentData.filter(row=>{
+  
+  const text =
+  JSON.stringify(row)
+  .toLowerCase();
+  
+  const okSearch =
+  text.includes(kw);
+  
+  const okHuyen =
+  !huyen || row.huyen==huyen;
+  
+  const okType =
+  !type || row.sc==type || row.kpi==type;
+  
+  let okMonth = true;
+  
+  if(month){
+  
+  const ngay =
+  String(row.ngay || "");
+  
+  if(ngay.includes("/")){
+  
+  const parts =
+  ngay.split("/");
+  
+  if(parts.length===3){
+  
+  const rowMonth =
+  `${parts[2]}-${parts[1]}`;
+  
+  okMonth =
+  rowMonth===month;
+  
+  }
+  
+  }
+  
+  }
+  
+  return (
+  okSearch
+  && okHuyen
+  && okType
+  && okMonth
+  );
+  
+  });
+  
+  if(!exportData.length){
   
   alert("Không có dữ liệu");
   
@@ -3181,15 +3250,20 @@ const url =
   
   }
   
-  const rows=filteredData.map(row=>{
+  const rows=exportData.map(row=>{
   
   const obj={};
   
   Object.keys(row).forEach(k=>{
   
-  if(k==="thuongcv1"||k==="tgupdate")return;
+  if(
+  k==="thuongcv1"
+  ||
+  k==="tgupdate"
+  )return;
   
-  obj[getColumnTitle(k)]=row[k];
+  obj[getColumnTitle(k)] =
+  row[k];
   
   });
   
@@ -3197,15 +3271,28 @@ const url =
   
   });
   
-  const ws=XLSX.utils.json_to_sheet(rows);
+  const ws =
+  XLSX.utils.json_to_sheet(rows);
   
-  const wb=XLSX.utils.book_new();
+  const wb =
+  XLSX.utils.book_new();
   
-  XLSX.utils.book_append_sheet(wb,ws,"DATA");
+  XLSX.utils.book_append_sheet(
+  wb,
+  ws,
+  "DATA"
+  );
   
-  const title=document.getElementById("modalTitle").innerText||"DATA";
+  const title =
+  document.getElementById("modalTitle")
+  .innerText
+  ||
+  "DATA";
   
-  XLSX.writeFile(wb,title+".xlsx");
+  XLSX.writeFile(
+  wb,
+  title+".xlsx"
+  );
   
   }
 
