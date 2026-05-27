@@ -2246,6 +2246,36 @@ Vui lòng click vào
   <span class="mobile-label">Huyện:</span>
   ${row.huyen||""}
   </div>
+
+  ${
+  row.bypass
+  ?
+  
+  `
+  <div class="mobile-row">
+  
+  <span class="mobile-label">
+  Bypass:
+  </span>
+  
+  <span
+  style="
+  color:#16a34a;
+  font-weight:700;
+  "
+  >
+  
+  ${row.bypass}
+  
+  </span>
+  
+  </div>
+  `
+  
+  :
+  
+  ""
+  }
   
   <div class="mobile-row">
   <span class="mobile-label">
@@ -2522,8 +2552,19 @@ Vui lòng click vào
   CHECK FIX CỨNG
   ==========String(String(=============== */
   
+  /* =========================
+  CHECK FIX CỨNG
+  ========================= */
+  
   const check =
-    /* =========================
+  
+  String(
+  row.sc || row.check || ""
+  )
+  .trim()
+  .toUpperCase();
+  
+  /* =========================
   CHECK ĐÃ NHẬP BYPASS
   ========================= */
   
@@ -2564,9 +2605,8 @@ Vui lòng click vào
   
   const pass = prompt(
   
-  "Account này đã nhập bypass.\n\nNhập mật khẩu để chỉnh sửa:"
-    <br>
-  "Liên hệ quản trị viên thuongcv1 để hỗ trợ"
+  "Account này đã nhập bypass.\n\nNhập mật khẩu để chỉnh sửa.\n\nLiên hệ quản trị viên thuongcv1 để hỗ trợ"
+  
   );
   
   /* KHÔNG NHẬP */
@@ -2623,7 +2663,6 @@ Vui lòng click vào
   )
   .trim()
   .toUpperCase();
-  }
     
   /* =========================
   URL
