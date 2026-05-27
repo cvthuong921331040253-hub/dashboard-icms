@@ -665,16 +665,25 @@
   style="${bg}"
   >
   
-  <div class="card-title">
+  <div
+  class="card-title"
+  style="
+  color:#374151;
+  "
+  >
   
   <span>
   ${title}
   </span>
+  
   </div>
   
   <div
   class="card-count"
-  style="color:${color}"
+  style="
+  color:${color};
+  font-weight:700;
+  "
   >
   ${count}
   </div>
@@ -814,7 +823,7 @@
   "&nbsp;",
   "#fff",
   "openManualInput()",
-  "background:linear-gradient(135deg,#16a34a,#22c55e);"
+  "background:#ecfdf5;border:1px solid #bbf7d0;"
   )
     
   +
@@ -824,7 +833,7 @@
   allAccounts.length,
   "#fff",
   "showAccountManager()",
-  "background:linear-gradient(135deg,#059669,#10b981);"
+  "background:#f0fdfa;border:1px solid #99f6e4;"
   )
   
   +
@@ -834,7 +843,7 @@
   window.scTkmAccounts.length,
   "#fff",
   "showScTkmManager()",
-  "background:linear-gradient(135deg,#2563eb,#1d4ed8);"
+  "background:#eff6ff;border:1px solid #bfdbfe;"
   )
   }
   
