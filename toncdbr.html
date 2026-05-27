@@ -2581,15 +2581,15 @@ Vui lòng click vào
   loai = "SC";
   
   }
+
+  const check =
   
-  /* =========================
-  CHECK FIX CỨNG
-  ==========String(String(=============== */
+  String(
+  row.sc || row.check || ""
+  )
   
-  /* =========================
-  CHECK FIX CỨNG
-  ========================= */
   .trim()
+  
   .toUpperCase();
   
   /* =========================
@@ -2692,28 +2692,7 @@ Vui lòng click vào
   )
   .trim()
   .toUpperCase();
-  
-  /* =========================
-  LẤY SC HIỆN TẠI TỪ BÁO CÁO
-  ========================= */
-  
-  const reportRow = tonsc.find(x=>{
-  
-  const acc1 =
-  String(x.account||"")
-  .trim()
-  .toUpperCase();
-  
-  const acc2 =
-  String(account||"")
-  .trim()
-  .toUpperCase();
-  
-  return acc1===acc2;
-  
-  });
-  
-    
+
   /* =========================
   URL
   ========================= */
