@@ -486,6 +486,24 @@
   id="searchInput"
   placeholder="Tìm kiếm..."
   >
+  <div
+  style="
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  "
+  >
+  
+  <label
+  style="
+  font-size:11px;
+  color:#6b7280;
+  font-weight:600;
+  "
+  >
+  THÁNG/NĂM
+  </label>
+  
   <input
   type="month"
   id="filter_month"
@@ -495,8 +513,13 @@
   border:1px solid #d1d5db;
   border-radius:8px;
   font-size:13px;
+  color:#374151;
+  background:#fff;
   "
-  >
+  onchange="filterTable()"
+  />
+  
+  </div>
   <select id="huyenFilter">
   <option value="">Tất cả huyện</option>
   </select>
@@ -775,7 +798,7 @@
   +
 
   createCard(
-  "📝 NHẬP SC & TKM BẤT KHẢ KHÁNG GT KPI",
+  "📝 NHẬP BKK SC & TKM",
   "&nbsp;",
   "#fff",
   "openManualInput()",
@@ -785,7 +808,7 @@
   +
 
   createCard(
-  "📁 ĐÃ NHẬP BYPASS PORT KÉM, HOME KÉM",
+  "📁 ĐÃ NHẬP BYPASS PORT, HOME KÉM",
   allAccounts.length,
   "#fff",
   "showAccountManager()",
