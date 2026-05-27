@@ -197,11 +197,13 @@
   .dashboard{
   display:grid;
   
-  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-columns:1fr 1fr;
   
   gap:6px;
   
   align-items:start;
+  
+  grid-auto-rows:min-content;
   }
 
   .dashboard .card{
@@ -218,7 +220,12 @@
   
   background:#fff;
   }
-  
+
+  .card{
+  min-height:auto !important;
+  height:auto !important;
+  }
+    
   .card-title{
   
   font-size:11px;
@@ -893,17 +900,11 @@ Vui lòng click vào
   onclick="showAccountManager()"
   style="
   background:linear-gradient(135deg,#059669,#10b981);
-  
   border:1px solid #34d399;
-  
   box-shadow:none;
-  
   padding:10px;
-  
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  min-height:78px;
+  display:block;
+  min-height:auto;
   height:auto;
   "
   >
@@ -961,10 +962,8 @@ Vui lòng click vào
   
   padding:10px;
   
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
-  min-height:78px;
+  display:block;
+  min-height:auto;
   height:auto;
   "
   >
@@ -975,12 +974,10 @@ Vui lòng click vào
   color:#fff;
   font-size:12px;
   font-weight:700;
-  line-height:1.45;
+  line-height:1.35;
   letter-spacing:.2px;
   text-align:center;
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;
+  display:block;
   "
   >
   📁 ĐÃ NHẬP SC VÀ TKM BKK
@@ -991,7 +988,7 @@ Vui lòng click vào
   class="card-count"
   style="
   color:#fff;
-  font-size:24px;
+  font-size:20px;
   text-align:center;
   margin-top:6px;
   "
