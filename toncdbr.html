@@ -556,6 +556,7 @@
   
   let tonsc=[];
   let tontkm=[];
+  let currentTitle="";
   let currentData=[];
   let filteredData=[];
   let currentPage=1;
@@ -1466,7 +1467,7 @@
   ===================== */
   
   function showTable(title,data){
-  
+  currentTitle = title;
   currentData=data;
   filteredData=data;
   
@@ -1488,7 +1489,11 @@
   "filter_month"
   ).style.display="";
   
-  document.getElementById("modalTitle").innerHTML=title;
+  document.getElementById(
+  "modalTitle"
+  ).innerHTML =
+  
+  `${title} (${data.length})`;
   
   initFilters(data);
   
@@ -1647,7 +1652,11 @@
   filteredData=filtered;
   currentPage=1;
   renderTable(filtered);
+  document.getElementById(
+  "modalTitle"
+  ).innerHTML =
   
+  `${currentTitle} (${filtered.length})`;
   }
   
   function getColumnTitle(col){
