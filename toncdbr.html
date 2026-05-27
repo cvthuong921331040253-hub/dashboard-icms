@@ -343,78 +343,7 @@
   height:100%!important;
   }
   /* BIỂU ĐỒ */
-  
-  .manual-card{
-  
-  background:
-  linear-gradient(
-  135deg,
-  #16a34a,
-  #22c55e
-  );
-  
-  border:none;
-  
-  box-shadow:
-  0 8px 20px rgba(34,197,94,.22);
-  
-  transition:.25s;
-  
-  }
-  
-  .manual-card .card-title{
-  
-  color:#fff;
-  
-  font-size:11px;
-  
-  font-weight:700;
-  
-  line-height:1.25;
-  
-  letter-spacing:.2px;
-  
-  text-align:center;
-  
-  margin:0;
-  
-  }
-  
-  .manual-card:hover{
-  
-  transform:translateY(-2px);
-  
-  box-shadow:
-  0 12px 24px rgba(34,197,94,.32);
-  
-  }
-  
-  /* MOBILE */
-  @media(max-width:768px){
-  .manual-card{
-  padding:10px;
-  border-radius:12px;
-  }
-  .manual-card .card-title{
-  font-size:11px;
-  line-height:1.25;
-  }
-  }
 
-  .card.sc-tkm-card{
-  min-height:78px !important;
-  padding:10px !important;
-  }
-  .card.sc-tkm-card .card-title{
-  font-size:11px !important;
-  min-height:auto !important;
-  line-height:1.3 !important;
-  margin-bottom:6px;
-  }
-  .card.sc-tkm-card .card-count{
-  font-size:20px !important;
-  margin-top:0 !important;
-  }
   </style>
   
   </head>
@@ -833,41 +762,29 @@
   
   `
   <div
-  class="card manual-card"
+  class="card"
   onclick="openManualInput()"
+  style="
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  color:#fff;
+  "
   >
   
-<div
-class="card-title"
-style="
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-gap:4px;
-text-align:center;
-"
->
+  <div
+  style="
+  text-align:center;
+  color:#fff;
+  "
+  >
 
-<div>
-
-📝 NHẬP SC & TKM BẤT KHẢ KHÁNG GT KPI
-
-</div>
-
-<div
-style="
-font-size:10px;
-font-weight:500;
-opacity:.95;
-"
->
-
-Vui lòng click vào
-
-</div>
-
-</div>
+  <div>
+  📝 NHẬP SC & TKM BẤT KHẢ KHÁNG GT KPI
+  </div>
+  
+  <div>
+  Vui lòng click vào
+  </div>
+  </div>
   
   </div>
   `
@@ -880,18 +797,7 @@ Vui lòng click vào
   onclick="showAccountManager()"
   style="
   background:linear-gradient(135deg,#059669,#10b981);
-  
-  border:1px solid #34d399;
-  
-  box-shadow:none;
-  
-  padding:12px;
-  
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  
-  min-height:108px;
+  color:#fff;
   "
   >
   
@@ -899,15 +805,7 @@ Vui lòng click vào
   class="card-title"
   style="
   color:#fff;
-  font-size:12px;
-  font-weight:700;
-  line-height:1.45;
-  letter-spacing:.2px;
   text-align:center;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-height:42px;
   "
   >
   
@@ -917,12 +815,8 @@ Vui lòng click vào
   
   <div
   class="card-count"
-  style="
+   style="
   color:#fff;
-  font-size:24px;
-  text-align:center;
-  margin-top:6px;
-  text-shadow:none;
   "
   >
   
@@ -937,22 +831,11 @@ Vui lòng click vào
   
   `
   <div
-  class="card sc-tkm-card"
+  class="card"
   onclick="showScTkmManager()"
   style="
-  background:linear-gradient(135deg,#2563eb,#1d4ed8);
-  
-  border:1px solid #60a5fa;
-  
-  box-shadow:none;
-  
-  padding:12px;
-  
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  
-  min-height:108px;
+  text-align:center;
+  color:#fff;
   "
   >
   
@@ -960,15 +843,7 @@ Vui lòng click vào
   class="card-title"
   style="
   color:#fff;
-  font-size:12px;
-  font-weight:700;
-  line-height:1.45;
-  letter-spacing:.2px;
   text-align:center;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-height:42px;
   "
   >
   📁 ĐÃ NHẬP SC VÀ TKM BKK
@@ -979,9 +854,6 @@ Vui lòng click vào
   class="card-count"
   style="
   color:#fff;
-  font-size:24px;
-  text-align:center;
-  margin-top:6px;
   "
   >
   ${window.scTkmAccounts.length}
