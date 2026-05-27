@@ -210,6 +210,10 @@
   height:auto !important;
   align-self:start;
   }
+
+  .dashboard .card{
+  display:block !important;
+  }
     
   .card{
   padding:10px;
@@ -860,11 +864,7 @@
 <div
 class="card-title"
 style="
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-gap:4px;
+display:block;
 text-align:center;
 "
 >
@@ -913,15 +913,14 @@ Vui lòng click vào
   class="card-title"
   style="
   color:#fff;
-  font-size:12px;
+  font-size:11px;
   font-weight:700;
-  line-height:1.45;
-  letter-spacing:.2px;
+  line-height:1.25;
+  letter-spacing:.1px;
   text-align:center;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-height:auto;
+  display:block;
+  margin:0;
+  padding:0;
   "
   >
   
@@ -933,12 +932,13 @@ Vui lòng click vào
   class="card-count"
   style="
   color:#fff;
-  font-size:20px;
+  font-size:18px;
+  line-height:1;
   text-align:center;
-  margin-top:6px;
+  margin-top:4px;
   text-shadow:none;
   "
-  >
+>
   
   ${allAccounts.length}
   
