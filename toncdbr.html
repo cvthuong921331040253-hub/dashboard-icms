@@ -1976,8 +1976,9 @@
   
   }
   
-  /* SOC */
-  const socData =
+  /* HOME KÉM + HT + PORT KÉM */
+  
+  const homeKemData =
   tonsc.filter(x=>{
   
   const v =
@@ -1985,28 +1986,48 @@
   .trim()
   .toUpperCase();
   
-  return v==="SOC";
-  
-  });
-  
-  /* SOC HOME */
-  const socHomeData =
-  tonsc.filter(x=>{
-  
-  const v =
-  String(x.sc||"")
-  .trim()
-  .toUpperCase();
-  
-  return v==="SOC HOME";
+  return (
+  v==="SOC"
+  ||
+  v==="SOC HOME"
+  );
   
   });
   
   /* SC > 24H */
+  
   const sc24h =
-  tonsc.filter(x=>
-  (parseFloat(x.tg)||0)>24
-  );
+  tonsc.filter(x=>{
+  
+  const tg =
+  parseFloat(x.tg)||0;
+  
+  if(tg<=24){
+  return false;
+  }
+  
+  const loai =
+  String(x.sc||"")
+  .trim()
+  .toUpperCase();
+  
+  /* BỎ SOC + SOC HOME + KN TKM */
+  
+  if(
+  loai==="SOC"
+  ||
+  loai==="SOC HOME"
+  ||
+  !loai
+  ){
+  return false;
+  }
+  
+  /* CHỈ TÍNH SC THỰC */
+  
+  return true;
+  
+  });
   
   /* TKM QUÁ HẸN */
   const tkmQuaHen =
@@ -2052,18 +2073,9 @@
   wrap.innerHTML =
   
   buildRanking(
-  socData,
-  "📶 NHÂN VIÊN TỒN SOC",
+  homeKemData,
+  "🏠 NHÂN VIÊN TỒN HOME KÉM, HT, PORT KÉM",
   "#ea580c",
-  5
-  )
-  
-  +
-  
-  buildRanking(
-  socHomeData,
-  "🏠 NHÂN VIÊN TỒN SOC HOME",
-  "#2563eb",
   5
   )
   
