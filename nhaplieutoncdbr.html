@@ -2569,7 +2569,25 @@ encodeURIComponent(autoCheck)
 const json = await res.json();
 
 if(!json.success){
+document.getElementById(
+"chitiet_bypass"
+).value = "";
 
+document.getElementById(
+"old_topo"
+).innerHTML = "";
+
+document.getElementById(
+"old_bienban"
+).innerHTML = "";
+
+document.getElementById(
+"old_calllog"
+).innerHTML = "";
+
+document.getElementById(
+"old_ghiam"
+).innerHTML = "";
 document.getElementById(
 "loading_overlay"
 ).style.display="none";
