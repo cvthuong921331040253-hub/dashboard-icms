@@ -269,6 +269,86 @@
   border-radius:12px;
   overflow:hidden;
   }
+
+    .staff-box{
+  
+  background:#fff;
+  
+  border-radius:14px;
+  
+  padding:14px;
+  
+  border:1px solid #e5e7eb;
+  
+  min-height:320px;
+  
+  overflow:auto;
+  
+  }
+  
+  .staff-title{
+  
+  font-size:16px;
+  
+  font-weight:700;
+  
+  margin-bottom:12px;
+  
+  color:#111827;
+  
+  }
+  
+  .staff-item{
+  
+  display:flex;
+  
+  justify-content:space-between;
+  
+  align-items:center;
+  
+  padding:8px 10px;
+  
+  border-bottom:1px dashed #e5e7eb;
+  
+  gap:10px;
+  
+  }
+  
+  .staff-item:last-child{
+  border-bottom:none;
+  }
+  
+  .staff-name{
+  
+  font-weight:600;
+  
+  font-size:13px;
+  
+  color:#374151;
+  
+  word-break:break-word;
+  
+  }
+  
+  .staff-count{
+  
+  background:#dc2626;
+  
+  color:#fff;
+  
+  padding:4px 8px;
+  
+  border-radius:8px;
+  
+  font-size:12px;
+  
+  font-weight:700;
+  
+  min-width:42px;
+  
+  text-align:center;
+  
+  }
   #tableWrap{border-radius:10px;background:#fff;border:1px solid #e5e7eb;}
   
   table{display:none;}
@@ -441,6 +521,16 @@
   <canvas id="chartTongTKM"></canvas>
   
   </div>
+
+  </div>
+  <div class="section-title">
+  🏆 NHÂN VIÊN TỒN NHIỀU
+  </div>
+  
+  <div
+  id="staffRankingGrid"
+  class="chart-grid"
+  ></div>
     
   </div>
   
@@ -952,6 +1042,8 @@
   renderKPIChart();
   
   renderTongTKMChart();
+  
+  renderStaffRanking();
   
   }
   
@@ -1478,6 +1570,234 @@
   }
   
   });
+  
+  }
+
+
+  function renderStaffRanking(){
+  
+  const wrap =
+  document.getElementById(
+  "staffRankingGrid"
+  );
+  
+  function buildRanking(data, title, color="#dc2626", min=5){
+  
+  const map = {};
+  
+  data.forEach(x=>{
+  
+  const nv =
+  String(x.nv || "Không rõ")
+  .trim();
+  
+  if(!nv)return;
+  
+  if(!map[nv]){
+  map[nv]=0;
+  }
+  
+  map[nv]++;
+  
+  });
+  
+  let arr =
+  Object.entries(map)
+  .map(([nv,count])=>({
+  nv,
+  count
+  }));
+  
+  /* FILTER */
+  if(min!==0){
+  
+  arr =
+  arr.filter(x=>x.count>=min);
+  
+  }
+  
+  /* SORT DESC */
+  arr.sort((a,b)=>
+  b.count-a.count
+  );
+  
+  let html = `
+  <div class="staff-box">
+  
+  <div
+  class="staff-title"
+  style="color:${color}"
+  >
+  ${title}
+  </div>
+  `;
+  
+  if(!arr.length){
+  
+  html += `
+  <div style="
+  color:#6b7280;
+  font-size:13px;
+  padding:10px 0;
+  ">
+  Không có dữ liệu
+  </div>
+  `;
+  
+  }else{
+  
+  arr.forEach((x,index)=>{
+  
+  html += `
+  <div class="staff-item">
+  
+  <div class="staff-name">
+  ${index+1}. ${x.nv}
+  </div>
+  
+  <div class="staff-count">
+  ${x.count}
+  </div>
+  
+  </div>
+  `;
+  
+  });
+  
+  }
+  
+  html += `</div>`;
+  
+  return html;
+  
+  }
+  
+  /* SOC */
+  const socData =
+  tonsc.filter(x=>{
+  
+  const v =
+  String(x.sc||"")
+  .trim()
+  .toUpperCase();
+  
+  return v==="SOC";
+  
+  });
+  
+  /* SOC HOME */
+  const socHomeData =
+  tonsc.filter(x=>{
+  
+  const v =
+  String(x.sc||"")
+  .trim()
+  .toUpperCase();
+  
+  return v==="SOC HOME";
+  
+  });
+  
+  /* SC > 24H */
+  const sc24h =
+  tonsc.filter(x=>
+  (parseFloat(x.tg)||0)>24
+  );
+  
+  /* TKM QUÁ HẸN */
+  const tkmQuaHen =
+  tontkm.filter(x=>{
+  
+  const k =
+  String(x.kpi||"")
+  .trim()
+  .toUpperCase();
+  
+  return k==="QUÁ HẸN";
+  
+  });
+  
+  /* TKM QUÁ 24H */
+  const tkm24h =
+  tontkm.filter(x=>{
+  
+  const k =
+  String(x.kpi||"")
+  .trim()
+  .toUpperCase();
+  
+  return k==="QUÁ 24H";
+  
+  });
+  
+  /* CẬP NHẬT HỒ SƠ */
+  const cnHoSo =
+  tontkm.filter(x=>{
+  
+  const tt =
+  String(x.tt||"")
+  .trim()
+  .toUpperCase();
+  
+  return tt.includes(
+  "CẬP NHẬT HỒ SƠ"
+  );
+  
+  });
+  
+  wrap.innerHTML =
+  
+  buildRanking(
+  socData,
+  "📶 NHÂN VIÊN TỒN SOC",
+  "#ea580c",
+  5
+  )
+  
+  +
+  
+  buildRanking(
+  socHomeData,
+  "🏠 NHÂN VIÊN TỒN SOC HOME",
+  "#2563eb",
+  5
+  )
+  
+  +
+  
+  buildRanking(
+  sc24h,
+  "🚨 SỰ CỐ > 24H",
+  "#dc2626",
+  0
+  )
+  
+  +
+  
+  buildRanking(
+  tkmQuaHen,
+  "⏰ TKM QUÁ HẸN",
+  "#7c3aed",
+  0
+  )
+  
+  +
+  
+  buildRanking(
+  tkm24h,
+  "🔥 TKM QUÁ 24H",
+  "#b91c1c",
+  0
+  )
+  
+  +
+  
+  buildRanking(
+  cnHoSo,
+  "📋 TỒN CẬP NHẬT HỒ SƠ",
+  "#16a34a",
+  0
+  );
   
   }
     
