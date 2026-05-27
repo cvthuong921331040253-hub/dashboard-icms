@@ -1,0 +1,344 @@
+```html
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Kho vật tư</title>
+
+<style>
+
+body{
+  margin:0;
+  padding:10px;
+  font-family:Arial;
+  background:#f4f6f9;
+}
+
+h2{
+  margin-top:0;
+}
+
+.topbar{
+  display:flex;
+  gap:10px;
+  margin-bottom:10px;
+  flex-wrap:wrap;
+}
+
+input,select{
+  padding:8px;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+
+button{
+  padding:8px 14px;
+  border:none;
+  background:#1976d2;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.card{
+  background:white;
+  border-radius:10px;
+  padding:10px;
+  margin-bottom:10px;
+  box-shadow:0 1px 4px rgba(0,0,0,.1);
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.stat{
+  background:white;
+  padding:15px;
+  border-radius:10px;
+  box-shadow:0 1px 4px rgba(0,0,0,.1);
+}
+
+.stat h3{
+  margin:0;
+  font-size:14px;
+  color:#666;
+}
+
+.stat p{
+  margin:8px 0 0;
+  font-size:24px;
+  font-weight:bold;
+}
+
+.table-wrap{
+  overflow:auto;
+  background:white;
+  border-radius:10px;
+  box-shadow:0 1px 4px rgba(0,0,0,.1);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:1000px;
+}
+
+th{
+  background:#1976d2;
+  color:white;
+  position:sticky;
+  top:0;
+}
+
+th,td{
+  padding:8px;
+  border:1px solid #ddd;
+  font-size:14px;
+}
+
+tr:nth-child(even){
+  background:#fafafa;
+}
+
+.loading{
+  padding:30px;
+  text-align:center;
+}
+
+@media(max-width:768px){
+
+  body{
+    padding:5px;
+  }
+
+  th,td{
+    font-size:12px;
+    padding:6px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>📦 Kho vật tư</h2>
+
+<div class="stats">
+
+  <div class="stat">
+    <h3>Tổng bản ghi</h3>
+    <p id="tong">0</p>
+  </div>
+
+  <div class="stat">
+    <h3>Tổng số lượng</h3>
+    <p id="tongsl">0</p>
+  </div>
+
+</div>
+
+<div class="card">
+
+  <div class="topbar">
+
+    <input
+      type="text"
+      id="search"
+      placeholder="Tìm mặt hàng..."
+    >
+
+    <select id="huyenFilter">
+      <option value="">Tất cả huyện</option>
+    </select>
+
+    <button onclick="loadData()">
+      Reload
+    </button>
+
+  </div>
+
+</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+  <th>MM</th>
+  <th>Mặt hàng</th>
+  <th>ĐVT</th>
+  <th>Trạng thái</th>
+  <th>SL</th>
+  <th>Nhân viên</th>
+  <th>Huyện</th>
+  <th>Loại MH</th>
+  <th>Thời gian</th>
+</tr>
+</thead>
+
+<tbody id="tbody">
+<tr>
+<td colspan="9" class="loading">
+Đang tải dữ liệu...
+</td>
+</tr>
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwe9SEGZcWwExfIG98_Ycd2JGHAHtd51MEUGTcVahJTQTAgLb2VIg0z2M3KdvEHFyxDZg/exec?sheet=Data%20kho";
+
+let allData = [];
+
+async function loadData(){
+
+  try{
+
+    const res = await fetch(API_URL);
+
+    const json = await res.json();
+
+    allData = json.data || [];
+
+    renderTable(allData);
+
+    renderStats(allData);
+
+    renderHuyen(allData);
+
+  }catch(err){
+
+    document.getElementById("tbody").innerHTML = `
+      <tr>
+        <td colspan="9">
+          Lỗi tải dữ liệu
+        </td>
+      </tr>
+    `;
+
+    console.log(err);
+  }
+}
+
+function renderTable(data){
+
+  let html = "";
+
+  data.forEach(item => {
+
+    html += `
+      <tr>
+        <td>${item.mm || ""}</td>
+        <td>${item.mh || ""}</td>
+        <td>${item.dv || ""}</td>
+        <td>${item.tt || ""}</td>
+        <td>${item.sl || 0}</td>
+        <td>${item.nv || ""}</td>
+        <td>${item.huyen || ""}</td>
+        <td>${item.loaimh || ""}</td>
+        <td>${item.tg || ""}</td>
+      </tr>
+    `;
+  });
+
+  document.getElementById("tbody").innerHTML = html;
+}
+
+function renderStats(data){
+
+  document.getElementById("tong").innerText =
+    data.length;
+
+  let tongsl = 0;
+
+  data.forEach(i => {
+    tongsl += Number(i.sl || 0);
+  });
+
+  document.getElementById("tongsl").innerText =
+    tongsl;
+}
+
+function renderHuyen(data){
+
+  let arr = [...new Set(
+    data.map(i => i.huyen).filter(Boolean)
+  )];
+
+  arr.sort();
+
+  let html =
+    `<option value="">Tất cả huyện</option>`;
+
+  arr.forEach(h => {
+
+    html += `
+      <option value="${h}">
+        ${h}
+      </option>
+    `;
+  });
+
+  document.getElementById("huyenFilter").innerHTML =
+    html;
+}
+
+function filterData(){
+
+  let keyword =
+    document.getElementById("search")
+    .value
+    .toLowerCase();
+
+  let huyen =
+    document.getElementById("huyenFilter")
+    .value;
+
+  let filtered = allData.filter(i => {
+
+    let okSearch =
+      (i.mh || "")
+      .toLowerCase()
+      .includes(keyword);
+
+    let okHuyen =
+      !huyen || i.huyen === huyen;
+
+    return okSearch && okHuyen;
+  });
+
+  renderTable(filtered);
+
+  renderStats(filtered);
+}
+
+document
+.getElementById("search")
+.addEventListener("input", filterData);
+
+document
+.getElementById("huyenFilter")
+.addEventListener("change", filterData);
+
+loadData();
+
+</script>
+
+</body>
+</html>
+```
