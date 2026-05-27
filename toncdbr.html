@@ -2514,7 +2514,84 @@ Vui lòng click vào
   )
   .trim()
   .toUpperCase();
+
+  /* =========================
+  CHECK SOC / SOC HOME CŨ
+  ========================= */
   
+  const currentSc = check;
+  
+  /* TÌM ACCOUNT ĐÃ NHẬP */
+  
+  const oldInput =
+  allAccounts.find(n=>{
+  
+  const acc =
+  String(n.account||"")
+  .trim()
+  .toUpperCase();
+  
+  return (
+  acc ===
+  String(account)
+  .trim()
+  .toUpperCase()
+  );
+  
+  });
+  
+  if(oldInput){
+  
+  const oldCheck =
+  String(oldInput.check || "")
+  .trim()
+  .toUpperCase();
+  
+  /* KHÁC LOẠI */
+  
+  if(
+  oldCheck &&
+  oldCheck !== currentSc
+  ){
+  
+  const oldText =
+  
+  oldCheck === "SOC"
+  
+  ? "SOC PORT KÉM"
+  
+  : "SOC HOME WIFI";
+  
+  const newText =
+  
+  currentSc === "SOC"
+  
+  ? "SOC PORT KÉM"
+  
+  : "SOC HOME WIFI";
+  
+  const ok = confirm(
+  
+  `Account này đã nhập bypass ${oldText}.\n\n` +
+  
+  `Hiện tại báo cáo của bạn đang chuyển sang ${newText}.\n\n` +
+  
+  `Bạn có muốn cập nhật sang ${newText} không?`
+  
+  );
+  
+  /* KHÔNG UPDATE */
+  
+  if(!ok){
+  
+  return;
+  
+  }
+  
+  }
+  
+  }
+    
   /* =========================
   URL
   ========================= */
