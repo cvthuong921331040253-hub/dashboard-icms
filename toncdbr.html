@@ -197,6 +197,7 @@
   .dashboard{grid-template-columns:repeat(2,1fr);gap:6px;}
   
   .card{
+  
   padding:10px;
   
   border-radius:12px;
@@ -204,17 +205,35 @@
   border:1px solid #e5e7eb;
   
   background:#fff;
+  
+  display:flex;
+  
+  flex-direction:column;
+  
+  justify-content:space-between;
+  
+  min-height:92px;
+  
   }
   
   .card-title{
   
   font-size:11px;
   
-  margin-bottom:4px;
-  
   line-height:1.35;
   
   font-weight:700;
+  
+  height:32px;
+  
+  overflow:hidden;
+  
+  display:-webkit-box;
+  
+  -webkit-line-clamp:2;
+  
+  -webkit-box-orient:vertical;
+  
   }
   
   .card-count{
@@ -224,6 +243,11 @@
   line-height:1.05;
   
   font-weight:700;
+  
+  margin-top:auto;
+  
+  padding-top:6px;
+  
   }
   
   .modal-content{width:100%;height:100vh;border-radius:0;padding:6px;background:#f8fafc;}
@@ -757,7 +781,7 @@
 
   createCard(
   "📝 NHẬP SC & TKM BẤT KHẢ KHÁNG GT KPI",
-  "",
+  "&nbsp;",
   "#fff",
   "openManualInput()",
   "background:linear-gradient(135deg,#16a34a,#22c55e);"
