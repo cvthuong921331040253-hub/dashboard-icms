@@ -2675,15 +2675,25 @@ Vui lòng click vào
   ĐÃ NHẬP + CHƯA MỞ KHÓA
   ========================= */
   
-  if(daNhap && !duocMoKhoa){
+  /* =========================
+  MODE
+  ========================= */
   
-  alert(
+  let mode = "create";
   
-  "Account này đã bypass.\n\nLiên hệ quản trị viên thuongcv1 & hoangtd1 để mở khóa chỉnh sửa."
+  /* ĐÃ NHẬP */
   
-  );
+  if(daNhap){
   
-  return;
+  mode = "view";
+  
+  }
+  
+  /* ĐƯỢC MỞ KHÓA */
+  
+  if(daNhap && duocMoKhoa){
+  
+  mode = "edit";
   
   }
     
@@ -2698,7 +2708,7 @@ Vui lòng click vào
   ========================= */
   
 const url =
-`https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}`;
+`https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}&mode=${encodeURIComponent(mode)}`;
   
   window.open(url,"_blank");
   
