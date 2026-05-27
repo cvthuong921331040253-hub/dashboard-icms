@@ -561,7 +561,17 @@
   id="searchInput"
   placeholder="Tìm kiếm..."
   >
-  
+  <input
+  type="month"
+  id="filter_month"
+  style="
+  height:36px;
+  padding:0 10px;
+  border:1px solid #d1d5db;
+  border-radius:8px;
+  font-size:13px;
+  "
+  >
   <select id="huyenFilter">
   <option value="">Tất cả huyện</option>
   </select>
@@ -1715,6 +1725,13 @@ Vui lòng click vào
   document.getElementById("huyenFilter").addEventListener("change",filterTable);
   
   document.getElementById("typeFilter").addEventListener("change",filterTable);
+
+  document.getElementById(
+  "filter_month"
+  ).addEventListener(
+  "change",
+  filterTable
+  );
     
   function filterTable(){
   
@@ -1723,6 +1740,11 @@ Vui lòng click vào
   const huyen=document.getElementById("huyenFilter").value;
   
   const type=document.getElementById("typeFilter").value;
+
+  const month =
+  document.getElementById(
+  "filter_month"
+  ).value;
   
   const filtered=currentData.filter(row=>{
   
@@ -1733,8 +1755,37 @@ Vui lòng click vào
   const okHuyen=!huyen||row.huyen==huyen;
   
   const okType=!type||row.sc==type||row.kpi==type;
+
+  let okMonth = true;
   
-  return okSearch&&okHuyen&&okType;
+  if(month){
+  
+  const ngay =
+  String(row.ngay || "");
+  
+  if(ngay.includes("/")){
+  
+  const parts =
+  ngay.split("/");
+  
+  if(parts.length===3){
+  
+  const rowMonth =
+  `${parts[2]}-${parts[1]}`;
+  
+  okMonth =
+  rowMonth===month;
+  
+  }
+  
+  }
+  
+  }
+    
+  return okSearch
+  && okHuyen
+  && okType
+  && okMonth;
   
   });
   filteredData=filtered;
