@@ -1149,7 +1149,8 @@ params.get("id_check");
 
 const mode =
 params.get("mode") || "";
-function toggleThietBiByLoaiWO(){
+
+function toggleThietBi(){
 
 const loaiWO =
 String(
@@ -1180,11 +1181,7 @@ isSCorTKM
 LOAD OLD DATA
 ========================= */
 
-loadOldData().then(()=>{
-
-toggleThietBiByLoaiWO();
-
-});
+loadOldData();
 
 /* =========================
 ACCOUNT
@@ -1260,11 +1257,7 @@ document.getElementById("opt_sc")
 document.getElementById("opt_tkm")
 .style.display="block";
 
-if(!isEdit){
-
 document.getElementById("loai_wo").value="";
-
-}
    
 document.getElementById("ngay_goc")
 .parentElement.style.display="none";
@@ -1327,11 +1320,7 @@ document.getElementById("opt_sc")
 document.getElementById("opt_tkm")
 .style.display="none";
 
-if(!isEdit){
-
 document.getElementById("loai_wo").value="";
-
-}
 
 document.getElementById("ngay_goc")
 .parentElement.style.display="block";
@@ -1729,25 +1718,13 @@ const required=[
 
 ];
 
-const loaiWO =
-String(
-document.getElementById("loai_wo").value || ""
-)
-.toUpperCase()
-.trim();
-
-const isSCorTKM =
-loaiWO==="SC"
-||
-loaiWO==="TKM";
-
-if(!isSCorTKM){
+if(!isManual){
 
 required.push(
 "thietbi",
 "serial_hwf"
 );
-
+   
 }
 
 if(isManual){
@@ -2772,7 +2749,7 @@ document.getElementById(
 d.loai_wo || "";
 
 }
-
+toggleThietBi();
 renderOldFiles(
 d.file_topo,
 "old_topo"
@@ -3072,19 +3049,12 @@ item.remove();
 
 }
 
-}
-
-/* =========================
-ẨN HIỆN THIẾT BỊ THEO LOẠI WO
-========================= */
-
 document
 .getElementById("loai_wo")
 .addEventListener(
 "change",
-toggleThietBiByLoaiWO
+toggleThietBi
 );
-
 </script>
 
 </body>
