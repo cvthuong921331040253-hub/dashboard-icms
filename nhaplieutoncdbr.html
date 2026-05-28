@@ -622,7 +622,6 @@ Account
 <input
 id="account"
 class="readonly"
-readonly
 >
 
 <div
@@ -1161,7 +1160,23 @@ ACCOUNT
 
 document.getElementById("account").value =
 account;
+if(
+isEdit
+&&
+(
+params.get("loai")==="SC"
+||
+params.get("loai")==="TKM"
+)
+){
 
+document.getElementById("account")
+.removeAttribute("readonly");
+
+document.getElementById("account")
+.classList.remove("readonly");
+
+}
 if(
 isManual
 &&
@@ -1229,7 +1244,11 @@ document.getElementById("opt_sc")
 document.getElementById("opt_tkm")
 .style.display="block";
 
+if(!isEdit){
+
 document.getElementById("loai_wo").value="";
+
+}
    
 document.getElementById("ngay_goc")
 .parentElement.style.display="none";
@@ -1292,7 +1311,11 @@ document.getElementById("opt_sc")
 document.getElementById("opt_tkm")
 .style.display="none";
 
+if(!isEdit){
+
 document.getElementById("loai_wo").value="";
+
+}
 
 document.getElementById("ngay_goc")
 .parentElement.style.display="block";
@@ -1352,7 +1375,19 @@ params.get("nv")
 KHÓA KHI LINK ACCOUNT
 ========================= */
 
-if(account){
+if(
+account
+&&
+!(
+isEdit
+&&
+(
+document.getElementById("loai_wo").value==="SC"
+||
+document.getElementById("loai_wo").value==="TKM"
+)
+)
+){
 
 document.getElementById("ten_nv")
 .setAttribute("readonly",true);
@@ -2719,6 +2754,44 @@ document.getElementById(
 "loai_wo"
 ).value =
 d.loai_wo || "";
+
+}
+
+if(
+d.loai_wo==="SC"
+||
+d.loai_wo==="TKM"
+){
+
+document.getElementById("topo_wrap")
+.style.display="none";
+
+document.getElementById("thietbi_wrap")
+.style.display="none";
+
+document.getElementById("bienban_note")
+.style.display="none";
+
+document.getElementById("home_port_note")
+.style.display="none";
+
+document.getElementById("bypass_note")
+.style.display="none";
+
+document.getElementById("nguyennhan_home")
+.style.display="none";
+
+document.getElementById("nguyennhan_port")
+.style.display="none";
+
+document.getElementById("nguyennhan_bkk")
+.style.display="block";
+
+document.getElementById("bkk_note")
+.style.display="block";
+
+document.getElementById("bkk_upload_note")
+.style.display="block";
 
 }
 
