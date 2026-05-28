@@ -1149,11 +1149,42 @@ params.get("id_check");
 
 const mode =
 params.get("mode") || "";
+function toggleThietBiByLoaiWO(){
+
+const loaiWO =
+String(
+document.getElementById("loai_wo").value || ""
+)
+.trim()
+.toUpperCase();
+
+const isSCorTKM =
+loaiWO==="SC"
+||
+loaiWO==="TKM";
+
+document.getElementById("thietbi_wrap")
+.style.display =
+isSCorTKM
+? "none"
+: "block";
+
+document.getElementById("topo_wrap")
+.style.display =
+isSCorTKM
+? "none"
+: "block";
+
+}
 /* =========================
 LOAD OLD DATA
 ========================= */
 
-loadOldData();
+loadOldData().then(()=>{
+
+toggleThietBiByLoaiWO();
+
+});
 
 /* =========================
 ACCOUNT
@@ -3020,6 +3051,20 @@ item.remove();
 });
 
 }
+
+}
+
+/* =========================
+ẨN HIỆN THIẾT BỊ THEO LOẠI WO
+========================= */
+
+document
+.getElementById("loai_wo")
+.addEventListener(
+"change",
+toggleThietBiByLoaiWO
+);
+
 </script>
 
 </body>
