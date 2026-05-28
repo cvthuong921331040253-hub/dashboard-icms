@@ -622,7 +622,6 @@ Account
 <input
 id="account"
 class="readonly"
-readonly
 >
 
 <div
@@ -2727,6 +2726,18 @@ d.loai_wo==="SC"
 ||
 d.loai_wo==="TKM"
 ){
+
+document.getElementById("account")
+.removeAttribute("readonly");
+
+document.getElementById("account")
+.classList.remove("readonly");
+
+document.getElementById("ten_nv")
+.removeAttribute("readonly");
+
+document.getElementById("ten_nv")
+.classList.remove("readonly");
 
 document.getElementById("topo_wrap")
 .style.display="none";
