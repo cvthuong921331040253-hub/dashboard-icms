@@ -2267,9 +2267,24 @@
   
   const filtered=currentData.filter(row=>{
   
-  const text=JSON.stringify(row).toLowerCase();
+  const text = `
+  ${row.account || ""}
+  ${row.nv || ""}
+  ${row.huyen || ""}
+  ${row.sc || ""}
+  ${row.kpi || ""}
+  ${row.cv || ""}
+  ${row.bypass || ""}
+  ${row.mdb || ""}
+  ${row.tt || ""}
+  ${row.nd || ""}
+  ${row.nnt || ""}
+  ${row.nnth || ""}
+  `
+  .toLowerCase();
   
-  const okSearch=text.includes(kw);
+  const okSearch =
+  !kw || text.includes(kw);
   
   const okHuyen=!huyen||row.huyen==huyen;
   
