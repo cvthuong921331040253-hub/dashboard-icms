@@ -1160,23 +1160,7 @@ ACCOUNT
 
 document.getElementById("account").value =
 account;
-if(
-isEdit
-&&
-(
-params.get("loai")==="SC"
-||
-params.get("loai")==="TKM"
-)
-){
 
-document.getElementById("account")
-.removeAttribute("readonly");
-
-document.getElementById("account")
-.classList.remove("readonly");
-
-}
 if(
 isManual
 &&
@@ -1374,20 +1358,27 @@ params.get("nv")
 /* =========================
 KHÓA KHI LINK ACCOUNT
 ========================= */
+if(!account){
 
-if(
-account
-&&
-!(
-isEdit
-&&
-(
-document.getElementById("loai_wo").value==="SC"
-||
-document.getElementById("loai_wo").value==="TKM"
-)
-)
-){
+document.getElementById("account")
+.removeAttribute("readonly");
+
+document.getElementById("account")
+.classList.remove("readonly");
+
+document.getElementById("ten_nv")
+.removeAttribute("readonly");
+
+document.getElementById("ten_nv")
+.classList.remove("readonly");
+
+}else{
+
+document.getElementById("account")
+.setAttribute("readonly",true);
+
+document.getElementById("account")
+.classList.add("readonly");
 
 document.getElementById("ten_nv")
 .setAttribute("readonly",true);
@@ -1396,7 +1387,6 @@ document.getElementById("ten_nv")
 .classList.add("readonly");
 
 }
-
 if(
 isManual
 &&
@@ -2762,6 +2752,18 @@ d.loai_wo==="SC"
 ||
 d.loai_wo==="TKM"
 ){
+
+document.getElementById("account")
+.removeAttribute("readonly");
+
+document.getElementById("account")
+.classList.remove("readonly");
+
+document.getElementById("ten_nv")
+.removeAttribute("readonly");
+
+document.getElementById("ten_nv")
+.classList.remove("readonly");
 
 document.getElementById("topo_wrap")
 .style.display="none";
