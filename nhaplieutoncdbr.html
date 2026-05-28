@@ -1260,7 +1260,11 @@ document.getElementById("opt_sc")
 document.getElementById("opt_tkm")
 .style.display="block";
 
+if(!isEdit){
+
 document.getElementById("loai_wo").value="";
+
+}
    
 document.getElementById("ngay_goc")
 .parentElement.style.display="none";
@@ -1323,7 +1327,11 @@ document.getElementById("opt_sc")
 document.getElementById("opt_tkm")
 .style.display="none";
 
+if(!isEdit){
+
 document.getElementById("loai_wo").value="";
+
+}
 
 document.getElementById("ngay_goc")
 .parentElement.style.display="block";
@@ -1721,13 +1729,25 @@ const required=[
 
 ];
 
-if(!isManual){
+const loaiWO =
+String(
+document.getElementById("loai_wo").value || ""
+)
+.toUpperCase()
+.trim();
+
+const isSCorTKM =
+loaiWO==="SC"
+||
+loaiWO==="TKM";
+
+if(!isSCorTKM){
 
 required.push(
 "thietbi",
 "serial_hwf"
 );
-   
+
 }
 
 if(isManual){
