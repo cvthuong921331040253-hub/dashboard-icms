@@ -2265,22 +2265,9 @@
   "filter_month"
   ).value;
   
-  const text = `
-  ${row.account || ""}
-  ${row.nv || ""}
-  ${row.huyen || ""}
-  ${row.sc || ""}
-  ${row.kpi || ""}
-  ${row.cv || ""}
-  ${row.bypass || ""}
-  ${row.mdb || ""}
-  ${row.tt || ""}
-  ${row.nd || ""}
-  `
-  .toLowerCase();
+  const filtered=currentData.filter(row=>{
   
-  const okSearch =
-  !kw || text.includes(kw);
+  const text=JSON.stringify(row).toLowerCase();
   
   const okSearch=text.includes(kw);
   
