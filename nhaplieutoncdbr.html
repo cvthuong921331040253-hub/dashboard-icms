@@ -1149,34 +1149,6 @@ params.get("id_check");
 
 const mode =
 params.get("mode") || "";
-
-function toggleThietBi(){
-
-const loaiWO =
-String(
-document.getElementById("loai_wo").value || ""
-)
-.trim()
-.toUpperCase();
-
-const isSCorTKM =
-loaiWO==="SC"
-||
-loaiWO==="TKM";
-
-document.getElementById("thietbi_wrap")
-.style.display =
-isSCorTKM
-? "none"
-: "block";
-
-document.getElementById("topo_wrap")
-.style.display =
-isSCorTKM
-? "none"
-: "block";
-
-}
 /* =========================
 LOAD OLD DATA
 ========================= */
@@ -2749,7 +2721,7 @@ document.getElementById(
 d.loai_wo || "";
 
 }
-toggleThietBi();
+
 renderOldFiles(
 d.file_topo,
 "old_topo"
@@ -3048,7 +3020,6 @@ item.remove();
 });
 
 }
-
 </script>
 
 </body>
