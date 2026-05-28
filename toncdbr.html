@@ -960,6 +960,7 @@
   let filteredData=[];
   let currentPage=1;
   let allAccounts=[];
+  let searchCache = new WeakMap();
   const PAGE_SIZE=300;
   
   function countUniqueAccount(data){const set=new Set();data.forEach(x=>{const acc=String(x.account||"").replace(/\s+/g," ").trim().toUpperCase();if(acc)set.add(acc);});return set.size;}
@@ -2201,8 +2202,53 @@
   
   }
   
+  let searchTimer;
+  
   document.getElementById("searchInput")
   .addEventListener("input",()=>{
+  
+  clearTimeout(searchTimer);
+  
+  searchTimer = setTimeout(()=>{
+  
+  const title =
+  
+  document.getElementById(
+  "modalTitle"
+  )
+  .innerText;
+  
+  /* ACCOUNT BYPASS */
+  
+  if(
+  title.includes("ACCOUNT")
+  ){
+  
+  showAccountManager();
+  
+  return;
+  
+  }
+  
+  /* SC + TKM */
+  
+  if(
+  title.includes("SC VÀ TKM")
+  ){
+  
+  showScTkmManager();
+  
+  return;
+  
+  }
+  
+  /* TABLE */
+  
+  filterTable();
+  
+  },250);
+  
+  });
   
   const title =
   
@@ -2267,9 +2313,29 @@
   
   const filtered=currentData.filter(row=>{
   
-  const text=JSON.stringify(row).toLowerCase();
+  let text = searchCache.get(row);
   
-  const okSearch=text.includes(kw);
+  if(!text){
+  
+  text = `
+  ${row.account || ""}
+  ${row.nv || ""}
+  ${row.huyen || ""}
+  ${row.sc || ""}
+  ${row.kpi || ""}
+  ${row.cv || ""}
+  ${row.nd || ""}
+  ${row.nnt || ""}
+  ${row.nnth || ""}
+  `
+  .toLowerCase();
+  
+  searchCache.set(row,text);
+  
+  }
+  
+  const okSearch =
+  !kw || text.includes(kw);
   
   const okHuyen=!huyen||row.huyen==huyen;
   
