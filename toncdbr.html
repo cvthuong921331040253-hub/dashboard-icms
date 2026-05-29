@@ -3426,46 +3426,16 @@ const url =
   });
   
   const json = await res.json();
-  
   if(json.success){
   
   alert(
   "Đã mở khóa sửa 1 lần"
   );
   
-  window.addEventListener(
-  "load",
-  ()=>{
-  
-  const oldScroll =
-  
-  sessionStorage.getItem(
-  "dashboardScroll"
-  );
-  
-  /* KHÔI PHỤC VỊ TRÍ */
-  
-  if(oldScroll){
-  
-  setTimeout(()=>{
-  
-  window.scrollTo(
-  0,
-  parseInt(oldScroll)
-  );
-  
-  },200);
-  
-  }
-  
-  /* LOAD DỮ LIỆU */
-  
   loadData();
   
   }
-  );
 
-  
   }else{
   
   alert(
@@ -4190,8 +4160,67 @@ const url =
   
   }
 
+  function openViewer(src){
+
+  document.getElementById(
+  "viewerModal"
+  ).style.display="block";
+  
+  document.getElementById(
+  "viewerImg"
+  ).src = src;
+  
+  }
+  
+  function closeViewer(){
+  
+  document.getElementById(
+  "viewerModal"
+  ).style.display="none";
+  
+  }
     
   </script>
+
+  <div
+  id="viewerModal"
+  style="
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.9);
+  z-index:999999;
+  "
+  >
   
+  <div
+  onclick="closeViewer()"
+  style="
+  position:absolute;
+  top:10px;
+  right:15px;
+  font-size:32px;
+  color:#fff;
+  cursor:pointer;
+  z-index:2;
+  "
+  >
+  ✕
+  </div>
+  
+  <img
+  id="viewerImg"
+  style="
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  "
+  />
+  
+  </div>
+    
   </body>
   </html>
