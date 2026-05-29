@@ -3369,14 +3369,8 @@ const url =
   
   `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}&mode=view`;
   
-  sessionStorage.setItem(
-  "dashboardScroll",
-  window.scrollY
-  );
-  
-  location.href = url;
+  openViewer(url);
 
-  
   }
     
   async function unlockEdit(row){
@@ -4136,29 +4130,6 @@ const url =
   }
 
   function openViewer(src){
-  
-  /* =========================
-  CHỈ XEM ẢNH/FILE
-  → KHÔNG RELOAD DASHBOARD
-  ========================= */
-  
-  sessionStorage.setItem(
-  "skipReload",
-  "1"
-  );
-  
-  /* =========================
-  MỞ ẢNH/FILE
-  ========================= */
-  
-  window.open(
-  src,
-  "_blank"
-  );
-  
-  }
-
-  function openViewer(src){
 
   document.getElementById(
   "viewerModal"
@@ -4189,7 +4160,7 @@ const url =
   left:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,.9);
+  background:rgba(0,0,0,.92);
   z-index:999999;
   "
   >
@@ -4198,25 +4169,27 @@ const url =
   onclick="closeViewer()"
   style="
   position:absolute;
-  top:10px;
-  right:15px;
-  font-size:32px;
+  top:12px;
+  right:18px;
+  font-size:34px;
   color:#fff;
   cursor:pointer;
   z-index:2;
+  font-weight:bold;
   "
   >
   ✕
   </div>
   
-  <img
-  id="viewerImg"
+  <iframe
+  id="viewerFrame"
   style="
   width:100%;
   height:100%;
-  object-fit:contain;
+  border:none;
+  background:#fff;
   "
-  />
+  ></iframe>
   
   </div>
     
