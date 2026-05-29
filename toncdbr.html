@@ -3307,7 +3307,13 @@
 const url =
 `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}`;
   
-  window.open(url,"_blank");
+  sessionStorage.setItem(
+  "dashboardScroll",
+  window.scrollY
+  );
+  
+  location.href = url;
+
   
   }
 
@@ -3363,10 +3369,13 @@ const url =
   
   `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}&mode=view`;
   
-  window.open(
-  url,
-  "_blank"
+  sessionStorage.setItem(
+  "dashboardScroll",
+  window.scrollY
   );
+  
+  location.href = url;
+
   
   }
     
@@ -3424,7 +3433,38 @@ const url =
   "Đã mở khóa sửa 1 lần"
   );
   
+  window.addEventListener(
+  "load",
+  ()=>{
+  
+  const oldScroll =
+  
+  sessionStorage.getItem(
+  "dashboardScroll"
+  );
+  
+  /* KHÔI PHỤC VỊ TRÍ */
+  
+  if(oldScroll){
+  
+  setTimeout(()=>{
+  
+  window.scrollTo(
+  0,
+  parseInt(oldScroll)
+  );
+  
+  },200);
+  
+  }
+  
+  /* LOAD DỮ LIỆU */
+  
   loadData();
+  
+  }
+  );
+
   
   }else{
   
