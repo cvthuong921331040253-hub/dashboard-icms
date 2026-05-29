@@ -3864,7 +3864,12 @@ const url =
   const url =
   `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1&id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ten_nv=${encodeURIComponent(ten_nv)}&loai=${encodeURIComponent(loai)}&tg_nhap=${encodeURIComponent(tg_nhap)}&edit=1`;
   
-  window.open(url,"_blank");
+  sessionStorage.setItem(
+  "dashboardScroll",
+  window.scrollY
+  );
+  
+  location.href = url;
   
   }
     
@@ -3873,12 +3878,52 @@ const url =
   const url =
   "https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1";
   
-  window.open(url,"_blank");
+  sessionStorage.setItem(
+  "dashboardScroll",
+  window.scrollY
+  );
+  
+  location.href = url;
   
   }
   
+  window.addEventListener(
+  "load",
+  ()=>{
+  
+  const oldScroll =
+  
+  sessionStorage.getItem(
+  "dashboardScroll"
+  );
+  
+  /* =========================
+  KHÔI PHỤC VỊ TRÍ CŨ
+  ========================= */
+  
+  if(oldScroll){
+  
+  setTimeout(()=>{
+  
+  window.scrollTo(
+  0,
+  parseInt(oldScroll)
+  );
+  
+  },200);
+  
+  }
+  
+  /* =========================
+  LOAD DỮ LIỆU
+  ========================= */
+  
   loadData();
   
+  }
+  );
+  
+    
   function exportExcel(){
   
   const kw =
