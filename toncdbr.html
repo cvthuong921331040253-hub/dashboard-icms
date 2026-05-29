@@ -3424,21 +3424,40 @@ const url =
   "Đã mở khóa sửa 1 lần"
   );
   
+  const skipReload =
+  
+  sessionStorage.getItem(
+  "skipReload"
+  );
+  
+  /* =========================
+  CHỈ XEM ẢNH
+  → KHÔNG RELOAD
+  ========================= */
+  
+  if(skipReload==="1"){
+  
+  sessionStorage.removeItem(
+  "skipReload"
+  );
+  
+  console.log(
+  "Không reload dashboard"
+  );
+  
+  }
+  
+  /* =========================
+  NHẬP LIỆU / CHỈNH SỬA
+  → RELOAD BÌNH THƯỜNG
+  ========================= */
+  
+  else{
+  
   loadData();
   
-  }else{
-  
-  alert(json.error || "Có lỗi");
-  
   }
-  
-  }catch(err){
-  
-  console.log(err);
-  
-  alert(err);
-  
-  }
+
   
   }
   
@@ -4076,6 +4095,30 @@ const url =
   }
   
   }
+
+  function openViewer(src){
+  
+  /* =========================
+  CHỈ XEM ẢNH/FILE
+  → KHÔNG RELOAD DASHBOARD
+  ========================= */
+  
+  sessionStorage.setItem(
+  "skipReload",
+  "1"
+  );
+  
+  /* =========================
+  MỞ ẢNH/FILE
+  ========================= */
+  
+  window.open(
+  src,
+  "_blank"
+  );
+  
+  }
+
     
   </script>
   
