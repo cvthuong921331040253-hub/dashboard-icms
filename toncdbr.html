@@ -3371,7 +3371,7 @@ const url =
   }
     
   async function unlockEdit(row){
-
+  
   /* =========================
   PASSWORD ADMIN
   ========================= */
@@ -3387,7 +3387,7 @@ const url =
   return;
   
   }
-    
+  
   const ok = confirm(
   
   `Mở khóa sửa 1 lần?\n\n${row.account}`
@@ -3424,21 +3424,28 @@ const url =
   "Đã mở khóa sửa 1 lần"
   );
   
+  loadData();
+  
+  }else{
+  
+  alert(
+  json.message || "Mở khóa thất bại"
+  );
+  
   }
   
-  /* =========================
-  NHẬP LIỆU / CHỈNH SỬA
-  → RELOAD BÌNH THƯỜNG
-  ========================= */
+  }catch(err){
   
-  else{
+  console.error(err);
   
-  loadData();
+  alert(
+  "Lỗi kết nối API"
+  );
+  
+  }
   
   }
 
-  
-  }
   
   function formatDate(v){
   
