@@ -686,8 +686,28 @@ id="nguyennhan_bkk"
 >
 
 3. Sở cứ giảm trừ KPI SC TKM có nguyên nhân BKK
-
 </option>
+
+<option
+value="Nguyên nhân khác"
+id="nguyennhan_khac"
+>
+4. Nguyên nhân khác
+</option>
+
+<option
+value="Sai thông tin KH (sai tên KH, số ĐT KH, địa chỉ...) -> trường hợp này phối hợp VT tỉnh cập nhật lại -> tiếp tục xử lý"
+id="nguyennhan_stt"
+>
+5. Sai thông tin KH
+</option>
+
+<option
+value="Port kém - Lỗi cáp trục/cáp nhánh -> yêu cầu cập nhật mã WO báo hỏng"
+id="nguyennhan_ctcn"
+>
+6. Port kém - lỗi cáp trục/cáp nhánh
+</option>  
 </select>
 
 <div
@@ -710,6 +730,37 @@ KH không đồng ý xử lý
 
 <div
 class="red-note"
+id="nguyennhan_khac_note"
+>
+
+4. Nguyên nhân khác:
+ghi rõ nguyên nhân xử lý của nguyên nhân khác + SĐT KH
+
+</div>
+
+
+<div
+class="red-note"
+id="nguyennhan_stt_note"
+>
+
+5. Sai thông tin KH (sai tên KH, số ĐT KH, địa chỉ...) -> trường hợp này phối hợp VT tỉnh cập nhật lại -> tiếp tục xử lý
+
+</div>
+
+
+<div
+class="red-note"
+id="nguyennhan_ctcn_note"
+>
+
+6. Port kém - lỗi cáp trục/cáp nhánh:
+ghi rõ mã WO báo hỏng hoặc tuyến cáp lỗi
+
+</div>
+   
+<div
+class="red-note"
 id="bkk_note"
 style="display:none;"
 >
@@ -717,6 +768,8 @@ style="display:none;"
 3. Giảm trừ sự cố và TKM bất khả kháng phải có sở cứ rõ ràng bất khả kháng CD duyệt chốt ok cuối tháng sẽ đưa vào bảng chấm điểm KPI TTH
 
 </div>
+
+   
 </div>
 
 <div class="field">
@@ -1199,7 +1252,7 @@ isManual
 !account
 ){
 
-/* ẨN */
+/* SC/TKM MANUAL - ẨN CÁC PHẦN SOC/SOC HOME */
 
 document.getElementById(
 "ten_nv_note"
@@ -1255,7 +1308,14 @@ document.getElementById("nguyennhan_home")
 document.getElementById("nguyennhan_port")
 .style.display="none";
 
-/* HIỆN */
+document.getElementById("nguyennhan_khac_note")
+.style.display="none";
+
+document.getElementById("nguyennhan_stt_note")
+.style.display="none";
+
+document.getElementById("nguyennhan_ctcn_note")
+.style.display="none";
 
 document.getElementById("nguyennhan_bkk")
 .style.display="block";
@@ -1268,7 +1328,7 @@ document.getElementById("bkk_upload_note")
 
 }else{
 
-/* HIỆN */
+/* SOC/SOC HOME - HIỆN CÁC PHẦN SOC */
 
 document.getElementById("account_note")
 .innerHTML=
@@ -1318,7 +1378,14 @@ document.getElementById("nguyennhan_home")
 document.getElementById("nguyennhan_port")
 .style.display="block";
 
-/* ẨN */
+document.getElementById("nguyennhan_khac_note")
+.style.display="block";
+
+document.getElementById("nguyennhan_stt_note")
+.style.display="block";
+
+document.getElementById("nguyennhan_ctcn_note")
+.style.display="block";
 
 document.getElementById("nguyennhan_bkk")
 .style.display="none";
