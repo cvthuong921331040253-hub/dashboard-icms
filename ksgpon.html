@@ -341,11 +341,29 @@ html,body{
     />
 
     <select id="pointType" class="input">
-        <option value="ODF">🟦 Cột điện lực</option>
-        <option value="ODP">🟩 Cột viettel</option>
-        <option value="TAPDIEM">🟨 Tủ cáp</option>
-        <option value="KH">🏠 Trạm</option>
+    
+        <option value="ODF">
+            🟦 Cột điện lực
+        </option>
+    
+        <option value="ODP">
+            🟩 Cột viettel
+        </option>
+    
+        <option value="TU_DL">
+            🟨 Tủ điện lực
+        </option>
+    
+        <option value="TU_VT">
+            🟧 Tủ viettel
+        </option>
+    
+        <option value="KH">
+            🏠 Trạm
+        </option>
+    
     </select>
+
 
     <div
         style="
@@ -712,7 +730,57 @@ function savePoint(){
 
     }
 
-    const name=document.getElementById('pointName').value || 'Không tên';
+    let inputName=
+    document.getElementById(
+        'pointName'
+    ).value.trim();
+    
+    const type=
+    document.getElementById(
+        'pointType'
+    ).value;
+    
+    let prefix='';
+    
+    if(type==='ODF'){
+    
+        prefix=
+        currentProject+'_DL_';
+    
+    }
+    
+    if(type==='ODP'){
+    
+        prefix=
+        currentProject+'_VT_';
+    
+    }
+    
+    if(type==='TU_DL'){
+    
+        prefix=
+        currentProject+'_DL_Tủ_';
+    
+    }
+    
+    if(type==='TU_VT'){
+    
+        prefix=
+        currentProject+'_VT_Tủ_';
+    
+    }
+    
+    if(type==='KH'){
+    
+        prefix=
+        'Trạm_'+currentProject+'_';
+    
+    }
+    
+    const name=
+    inputName
+    ? prefix+inputName
+    : prefix;
 
     const type=document.getElementById('pointType').value;
 
