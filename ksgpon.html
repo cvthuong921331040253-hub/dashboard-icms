@@ -783,6 +783,7 @@ function updateProjectList(){
         s.value='ALL_PROJECTS';
     
     }
+    }
 
 function changeProject(name){
 
@@ -956,12 +957,6 @@ function openProjectManager(){
     ).value=currentProject;
     
     loadLocal();
-    
-    document.getElementById(
-        'projectSelect'
-    ).value=currentProject;
-    
-    loadLocal();
 
     alert(
         'Đã chuyển sang công trình: '+
@@ -1069,11 +1064,9 @@ function importSurveyFile(event){
             note:'',
             lat:lat,
             lng:lng,
-            image:''
             });
             }
         }
-        updateStats();
         tempImportPoints.forEach(p=>{
         const mk=L.circleMarker(
             [p.lat,p.lng],
@@ -1180,8 +1173,6 @@ function loadAllProjects(){
     
         }
     
-    }
-
     projects.forEach(project=>{
 
         const raw=
