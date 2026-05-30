@@ -1043,6 +1043,16 @@ function importSurveyFile(event){
 
     reader.onload=function(e){
 
+        tempImportPoints=[];
+        
+        mapMarkers.forEach(m=>{
+        
+            map.removeLayer(m);
+        
+        });
+        
+        mapMarkers=[];
+
         const text=e.target.result;
 
         const parser=new DOMParser();
