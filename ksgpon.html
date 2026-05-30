@@ -46,30 +46,31 @@ html,body{
 
 .gps-info{ font-size:9px; margin-top:2px; color:#9ca3af; }
 
+
 .tools{
     position:fixed;
-    bottom:14px;
+    bottom:10px;
     left:50%;
     transform:translateX(-50%);
     z-index:9999;
     display:flex;
-    gap:8px;
-    background:rgba(10,15,20,.95);
+    gap:6px;
+    background:rgba(10,15,20,.92);
     border:1px solid #1f2937;
-    border-radius:18px;
-    padding:7px;
+    border-radius:16px;
+    padding:6px;
     backdrop-filter:blur(8px);
     box-shadow:0 4px 20px rgba(0,0,0,.35);
 }
 
 .tool-btn{
-    width:38px;
-    height:38px;
+    width:36px;
+    height:36px;
     border:none;
-    border-radius:12px;
+    border-radius:10px;
     color:white;
     background:#111827;
-    font-size:16px;
+    font-size:14px;
     cursor:pointer;
     transition:.2s;
 }
@@ -273,7 +274,7 @@ html,body{
     style="
         margin-top:5px;
         width:100%;
-        padding:7px;
+        padding:6px;
         border-radius:10px;
         background:#111827;
         color:white;
@@ -339,11 +340,10 @@ html,body{
     />
 
     <select id="pointType" class="input">
-        <option value="ODF">🟦 ODF</option>
-        <option value="ODP">🟩 ODP</option>
-        <option value="TAPDIEM">🟨 Tập điểm</option>
+        <option value="ODF">🟦 Cột điện lực</option>
+        <option value="ODP">🟩 Cột viettel</option>
+        <option value="TAPDIEM">🟨 Tủ cáp</option>
         <option value="KH">🏠 Trạm</option>
-        <option value="SC">🔴 Sự cố</option>
     </select>
 
     <div
@@ -388,38 +388,63 @@ html,body{
 
 <div class="tools">
 
+    <!-- THÊM ĐIỂM -->
+    <button
+        class="tool-btn green"
+        onclick="createDraggableMarker()"
+    >
+        <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <!-- GPS -->
+    <button
+        class="tool-btn blue"
+        onclick="goGPS()"
+    >
+        <i class="fa-solid fa-location-dot"></i>
+    </button>
+
+    <!-- GPS LOCK -->
+    <button
+        class="tool-btn blue"
+        onclick="toggleGPSLock()"
+    >
+        <i class="fa-solid fa-satellite"></i>
+    </button>
+
+    <!-- IMPORT -->
+    <button
+        class="tool-btn yellow"
+        onclick="
+            document
+            .getElementById('importFile')
+            .click()
+        "
+    >
+        <i class="fa-solid fa-folder-open"></i>
+    </button>
+
+    <!-- PROJECT -->
+    <button
+        class="tool-btn purple"
+        onclick="openProjectManager()"
+    >
+        <i class="fa-solid fa-folder"></i>
+    </button>
+
+    <!-- SHARE -->
     <button
         class="tool-btn purple"
         onclick="shareProject()"
     >
         <i class="fa-solid fa-share-nodes"></i>
     </button>
-    
-    <button class="tool-btn blue" onclick="document.getElementById('importFile').click()">
-        <i class="fa-solid fa-folder-open"></i>
-    </button>
-    
-    <button class="tool-btn purple" onclick="openProjectManager()">
-        <i class="fa-solid fa-folder"></i>
-    </button>
-    
-    <button class="tool-btn blue" onclick="goGPS()">
-        <i class="fa-solid fa-location-crosshairs"></i>
-    </button>
 
-
-    <button class="tool-btn blue" onclick="toggleGPSLock()">
-        <i class="fa-solid fa-satellite"></i>
-    </button>
-
-
-
-    <button class="tool-btn green" onclick="createDraggableMarker()">
-
-        <i class="fa-solid fa-plus"></i>
-    </button>
-
-    <button class="tool-btn orange" onclick="clearAllData()">
+    <!-- DELETE -->
+    <button
+        class="tool-btn orange"
+        onclick="clearAllData()"
+    >
         <i class="fa-solid fa-trash"></i>
     </button>
 
@@ -547,7 +572,7 @@ function createDraggableMarker(){
     ).addTo(map);
 
     draggableMarker.bindPopup(
-        '📍 Kéo đến vị trí cần khảo sát<br><br>Bấm marker để nhập thông tin'
+        '📍 Kéo đến vị trí cần khảo sát<br>Bấm marker để nhập thông tin'
     );
 
     draggableMarker.on('click',function(){
