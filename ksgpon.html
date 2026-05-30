@@ -1025,13 +1025,18 @@ function importSurveyFile(event){
 
         tempImportPoints=[];
         
-        mapMarkers.forEach(m=>{
-        
+    mapMarkers.forEach(m=>{
+    
+        if(m.isTempImport){
+    
             map.removeLayer(m);
-        
-        });
-        
-        mapMarkers=[];
+    
+        }
+    
+    });
+    
+    mapMarkers=
+    mapMarkers.filter(m=>!m.isTempImport);
 
         const text=e.target.result;
 
@@ -1159,12 +1164,17 @@ function editPoint(index){
 function loadAllProjects(){
 
     mapMarkers.forEach(m=>{
-
-        map.removeLayer(m);
-
+    
+        if(!m.isTempImport){
+    
+            map.removeLayer(m);
+    
+        }
+    
     });
-
-    mapMarkers=[];
+    
+    mapMarkers=
+    mapMarkers.filter(m=>m.isTempImport);
 
     let projects=[];
     
@@ -1272,13 +1282,17 @@ function loadAllProjects(){
     }
 
     mapMarkers.forEach(m=>{
-
-        map.removeLayer(m);
-
+    
+        if(!m.isTempImport){
+    
+            map.removeLayer(m);
+    
+        }
+    
     });
-
-    mapMarkers=[];
-
+    
+    mapMarkers=
+    mapMarkers.filter(m=>m.isTempImport);
 
     let sourcePoints=[];
     
