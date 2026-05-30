@@ -103,7 +103,7 @@ html,body{
     border-top:1px solid #1f2937;
     padding:18px;
     transition:.35s ease;
-    max-height:52vh;
+    max-height:42vh;
     overflow:auto;
     box-shadow:0 -10px 30px rgba(0,0,0,.45);
 }
@@ -168,6 +168,19 @@ html,body{
     font-size:10px !important;
 }
 
+.map-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.35);
+    z-index:9990;
+    display:none;
+}
+
+.map-overlay.active{
+    display:block;
+}
+
+    
 .bottom-stats{
     position:fixed;
     left:10px;
@@ -218,6 +231,8 @@ html,body{
 <body>
 
 <div id="map"></div>
+
+<div class="map-overlay" id="mapOverlay"></div>
 
 <div class="bottom-stats" id="bottomStats">
     📍 0 điểm | 📏 0m
@@ -431,7 +446,12 @@ function initMap(){
             tempPoint=e.latlng;
 
             document.getElementById('pointPanel').classList.add('active');
-
+            
+            document
+            .getElementById('mapOverlay')
+            .classList
+            .add('active');
+    
         }
 
     });
@@ -780,6 +800,9 @@ function saveLocal(){
 
 function loadLocal(){
 
+    surveyPoints=[];
+    surveyLines=[];
+
     const raw=localStorage.getItem(
     'ksgpon_'+currentProject
     );
@@ -1001,8 +1024,9 @@ function clearAllData(){
 
     if(!confirm('Xóa toàn bộ dữ liệu khảo sát?')) return;
 
-    localStorage.removeItem('ksgpon_data');
-
+    localStorage.removeItem(
+        'ksgpon_'+currentProject
+    );
     location.reload();
 
 }
