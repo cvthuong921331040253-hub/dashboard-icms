@@ -93,21 +93,20 @@ html,body{
 
 .panel{
     position:fixed;
-    left:0;
-    right:0;
+    width:340px;
+    max-width:92vw;
+    left:50%;
+    transform:translateX(-50%);
     display:none;
-    top:70px;
-    bottom:auto;
-    max-height:75vh;
+    top:75px;
+    max-height:62vh;
     z-index:99999;
     background:rgba(10,15,20,.98);
-    border-top-left-radius:24px;
-    border-top-right-radius:24px;
-    border-top:1px solid #1f2937;
-    padding:18px;
-    transition:.35s ease;
+    border-radius:22px;
+    border:1px solid #1f2937;
+    padding:14px;
     overflow:auto;
-    box-shadow:0 -10px 30px rgba(0,0,0,.45);
+    box-shadow:0 10px 30px rgba(0,0,0,.45);
 }
 
 .panel.active{ display:block; }
@@ -122,20 +121,20 @@ html,body{
 
 .panel h3{
     margin-top:0;
-    margin-bottom:14px;
-    font-size:18px;
+    margin-bottom:10px;
+    font-size:15px;
 }
 
 .input{
     width:100%;
-    padding:11px 12px;
-    margin-bottom:10px;
+    padding:9px 10px;
+    margin-bottom:8px;
     background:#0f172a;
     border:1px solid #273244;
-    border-radius:12px;
+    border-radius:10px;
     color:white;
     box-sizing:border-box;
-    font-size:14px;
+    font-size:13px;
 }
 
 .input:focus{
@@ -145,13 +144,13 @@ html,body{
 
 .save-btn{
     width:100%;
-    padding:13px;
+    padding:10px;
     border:none;
-    border-radius:14px;
+    border-radius:12px;
     background:#2563eb;
     color:white;
     font-weight:700;
-    font-size:15px;
+    font-size:14px;
 }
 
 .leaflet-popup-content-wrapper{
@@ -379,6 +378,7 @@ html,body{
 
     <textarea
         id="pointNote"
+        style="min-height:55px;"
         class="input"
         rows="2"
         placeholder="Ghi chú"
