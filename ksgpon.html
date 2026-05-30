@@ -254,6 +254,21 @@ html,body{
     <div class="gps-info" id="gpsInfo">
         Đang lấy GPS...
     </div>
+<select
+    id="projectSelect"
+
+    onchange="changeProject(this.value)"
+
+    style="
+        margin-top:8px;
+        width:100%;
+        padding:10px;
+        border-radius:10px;
+        background:#111827;
+        color:white;
+        border:1px solid #374151;
+    "
+></select>
 </div>
 
 <div class="panel" id="pointPanel">
@@ -395,7 +410,7 @@ html,body{
         <i class="fa-solid fa-wave-square"></i>
     </button>
 
-    <button class="tool-btn purple" onclick="saveLocal()">
+    <button class="tool-btn purple" onclick="exportKML()">
         <i class="fa-solid fa-floppy-disk"></i>
     </button>
 
@@ -433,6 +448,8 @@ let tempPolyline=null;
 
 let draggableMarker=null;
 
+let mapMarkers=[];
+
 let gpsLock=false;
 let currentProject='TRAM_MOI';
 
@@ -452,6 +469,7 @@ function initMap(){
     ).addTo(map);
 
     loadLocal();
+    updateProjectList();
 
     initGPS();
 
@@ -715,8 +733,10 @@ function savePoint(){
         marker.bindPopup(popup);
 
         saveLocal();
+        exportKML();
 
         updateStats();
+        loadLocal();
 
         document.getElementById('pointName').value='';
 
@@ -829,10 +849,56 @@ function saveLocal(){
 
 }
 
+function updateProjectList(){
+
+    const s=
+    document.getElementById('projectSelect');
+
+    s.innerHTML='';
+
+    for(let i=0;i<localStorage.length;i++){
+
+        const key=localStorage.key(i);
+
+        if(key.startsWith('ksgpon_')){
+
+            const name=
+            key.replace('ksgpon_','');
+
+            s.innerHTML+=`
+                <option value="${name}">
+                    ${name}
+                </option>
+            `;
+        }
+
+    }
+
+    s.value=currentProject;
+
+}
+
+function changeProject(name){
+
+    currentProject=name;
+
+    loadLocal();
+
+}
+
 function loadLocal(){
 
     surveyPoints=[];
     surveyLines=[];
+
+
+    mapMarkers.forEach(m=>{
+    
+        map.removeLayer(m);
+    
+    });
+    
+    mapMarkers=[];
 
     const raw=localStorage.getItem(
     'ksgpon_'+currentProject
@@ -969,6 +1035,7 @@ function openProjectManager(){
     if(!name) return;
 
     currentProject=name;
+    updateProjectList();
 
     loadLocal();
 
@@ -1031,21 +1098,14 @@ function exportKML(){
     </kml>
     `;
 
-    const blob=new Blob(
-        [kml],
-        {
-            type:'application/vnd.google-earth.kml+xml'
-        }
+    Android.saveKMLFile(
+    
+        currentProject+'.kml',
+    
+        kml
+    
     );
-
-Android.saveKMLFile(
-
-    currentProject+'.kml',
-
-    kml
-
-);
-
+    
 }
 
 function importSurveyFile(event){
@@ -1123,7 +1183,11 @@ function importSurveyFile(event){
 
         saveLocal();
 
-        location.reload();
+        loadLocal();
+        
+        updateStats();
+        
+        alert('Đã import KML');
 
     };
 
@@ -1161,6 +1225,7 @@ function editPoint(index){
     .getElementById('pointPanel')
     .classList
     .add('active');
+    document .getElementById('mapOverlay') .classList .add('active');
 
 }
 
