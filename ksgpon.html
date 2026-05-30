@@ -1038,17 +1038,13 @@ function exportKML(){
         }
     );
 
-    const a=document.createElement('a');
+Android.saveKMLFile(
 
-    a.href=URL.createObjectURL(blob);
+    currentProject+'.kml',
 
-    a.download= currentProject+ '_'+ new Date().getTime()+ '.kml';
+    kml
 
-
-    a.click();
-
-    URL.revokeObjectURL(a.href);
-
+);
 
 }
 
