@@ -602,6 +602,17 @@ function createDraggableMarker(){
 
     draggableMarker.on('click',function(){
 
+        editingIndex=-1;
+        
+        document.getElementById(
+            'pointNote'
+        ).value='';
+        
+        document.getElementById(
+            'pointType'
+        ).value='ODF';
+        updatePointPrefix();
+
         const pos=draggableMarker.getLatLng();
 
         tempPoint={
@@ -749,11 +760,12 @@ function togglePanel(){
         }
     
         if(type==='TU_DL'){
-    
+        
             prefix=
-            currentProject+'_DL_Tủ_';
-    
+            currentProject+'_DL_';
+        
         }
+
     
         if(type==='TU_VT'){
     
@@ -812,12 +824,14 @@ function savePoint(){
     
     }
     
+   
     if(type==='TU_DL'){
     
         prefix=
-        currentProject+'_DL_Tủ_';
+        currentProject+'_DL_';
     
     }
+
     
     if(type==='TU_VT'){
     
