@@ -1014,24 +1014,10 @@ if(surveyPoints.length>0){
 
 function updateStats(){
 
-    let totalDistance=0;
-
-    let textDistance='0m';
-
-    if(totalDistance>1000){
-
-        textDistance=
-        (totalDistance/1000).toFixed(2)+' km';
-
-    }else{
-
-        textDistance=
-        Math.round(totalDistance)+' m';
-
-    }
-
-    document.getElementById('bottomStats').innerHTML=
-    `📍 ${surveyPoints.length} điểm | 📏 ${textDistance}`;
+    document.getElementById(
+        'bottomStats'
+    ).innerHTML=
+    `📍 ${surveyPoints.length} điểm`;
 
 }
 
