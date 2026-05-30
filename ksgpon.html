@@ -28,57 +28,60 @@ html,body{
 
 .topbar{
     position:fixed;
-    top:10px;
-    left:10px;
-    right:10px;
+    top:8px;
+    left:8px;
+    right:8px;
     z-index:9999;
     background:rgba(10,15,20,.92);
     border:1px solid #1f2937;
-    border-radius:16px;
-    padding:12px;
+    border-radius:14px;
+    padding:10px 14px;
     color:#fff;
     backdrop-filter:blur(8px);
+    box-shadow:0 4px 20px rgba(0,0,0,.35);
 }
 
 .title{
-    font-size:18px;
-    font-weight:bold;
+    font-size:15px;
+    font-weight:700;
 }
 
 .gps-info{
-    font-size:12px;
-    margin-top:5px;
+    font-size:11px;
+    margin-top:4px;
     color:#9ca3af;
 }
 
 .tools{
     position:fixed;
-    bottom:18px;
+    bottom:14px;
     left:50%;
     transform:translateX(-50%);
     z-index:9999;
     display:flex;
-    gap:10px;
+    gap:8px;
     background:rgba(10,15,20,.95);
     border:1px solid #1f2937;
     border-radius:18px;
-    padding:12px;
+    padding:10px;
     backdrop-filter:blur(8px);
+    box-shadow:0 4px 20px rgba(0,0,0,.35);
 }
 
 .tool-btn{
-    width:54px;
-    height:54px;
+    width:42px;
+    height:42px;
     border:none;
-    border-radius:14px;
+    border-radius:12px;
     color:white;
     background:#111827;
-    font-size:20px;
+    font-size:16px;
     cursor:pointer;
+    transition:.2s;
 }
 
 .tool-btn:active{
-    transform:scale(.95);
+    transform:scale(.92);
 }
 
 .blue{border:1px solid #2563eb;}
@@ -90,66 +93,122 @@ html,body{
 
 .panel{
     position:fixed;
-    top:95px;
-    right:10px;
-    width:300px;
-    max-height:70vh;
+    left:0;
+    right:0;
+    bottom:-100%;
+    z-index:99999;
+    background:rgba(10,15,20,.98);
+    border-top-left-radius:24px;
+    border-top-right-radius:24px;
+    border-top:1px solid #1f2937;
+    padding:18px;
+    transition:.35s ease;
+    max-height:68vh;
     overflow:auto;
-    background:rgba(10,15,20,.96);
-    border:1px solid #1f2937;
-    border-radius:16px;
-    padding:14px;
-    z-index:9999;
-    color:white;
-    display:none;
+    box-shadow:0 -10px 30px rgba(0,0,0,.45);
+}
+
+.panel.active{
+    bottom:0;
+}
+
+.drag-bar{
+    width:60px;
+    height:5px;
+    border-radius:20px;
+    background:#374151;
+    margin:0 auto 14px;
 }
 
 .panel h3{
     margin-top:0;
+    margin-bottom:14px;
+    font-size:18px;
 }
 
 .input{
     width:100%;
-    padding:10px;
+    padding:11px 12px;
     margin-bottom:10px;
-    background:#111827;
-    border:1px solid #374151;
-    border-radius:10px;
+    background:#0f172a;
+    border:1px solid #273244;
+    border-radius:12px;
     color:white;
     box-sizing:border-box;
+    font-size:14px;
+}
+
+.input:focus{
+    outline:none;
+    border-color:#2563eb;
 }
 
 .save-btn{
     width:100%;
-    padding:12px;
+    padding:13px;
     border:none;
-    border-radius:12px;
+    border-radius:14px;
     background:#2563eb;
     color:white;
-    font-weight:bold;
+    font-weight:700;
+    font-size:15px;
 }
 
 .leaflet-popup-content-wrapper{
     background:#111827;
     color:white;
+    border-radius:14px;
 }
 
 .leaflet-popup-tip{
     background:#111827;
 }
 
+.leaflet-control-attribution{
+    font-size:10px !important;
+}
+
+.bottom-stats{
+    position:fixed;
+    left:10px;
+    bottom:82px;
+    z-index:9999;
+    background:rgba(10,15,20,.9);
+    border:1px solid #1f2937;
+    border-radius:14px;
+    padding:8px 12px;
+    color:white;
+    font-size:11px;
+    backdrop-filter:blur(6px);
+}
+
 @media(max-width:768px){
 
+.topbar{
+    padding:9px 12px;
+}
+
+.title{
+    font-size:14px;
+}
+
+.gps-info{
+    font-size:10px;
+}
+
 .panel{
-    width:calc(100% - 20px);
-    left:10px;
-    right:10px;
+    padding:16px;
 }
 
 .tool-btn{
-    width:48px;
-    height:48px;
-    font-size:18px;
+    width:40px;
+    height:40px;
+    font-size:15px;
+}
+
+.tools{
+    gap:6px;
+    padding:8px;
 }
 
 }
@@ -169,6 +228,8 @@ html,body{
 
 <div class="panel" id="pointPanel">
 
+    <div class="drag-bar"></div>
+
     <h3>➕ Điểm khảo sát</h3>
 
     <input id="pointName" class="input" placeholder="Tên điểm"/>
@@ -177,11 +238,16 @@ html,body{
         <option value="ODF">🟦 ODF</option>
         <option value="ODP">🟩 ODP</option>
         <option value="TAPDIEM">🟨 Tập điểm</option>
-        <option value="KH">🏠 Khách hàng</option>
+        <option value="KH">🏠 Trạm</option>
         <option value="SC">🔴 Sự cố</option>
     </select>
 
-    <textarea id="pointNote" class="input" placeholder="Ghi chú"></textarea>
+    <textarea
+        id="pointNote"
+        class="input"
+        rows="3"
+        placeholder="Ghi chú"
+    ></textarea>
 
     <input
         type="file"
@@ -274,7 +340,7 @@ function initMap(){
 
             tempPoint=e.latlng;
 
-            document.getElementById('pointPanel').style.display='block';
+            document.getElementById('pointPanel').classList.add('active');
 
         }
 
@@ -446,7 +512,7 @@ function savePoint(){
 
         document.getElementById('pointImage').value='';
 
-        document.getElementById('pointPanel').style.display='none';
+        document.getElementById('pointPanel').classList.remove('active');
 
         alert('Đã lưu điểm khảo sát');
 
