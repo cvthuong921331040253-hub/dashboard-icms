@@ -108,9 +108,7 @@ html,body{
     box-shadow:0 -10px 30px rgba(0,0,0,.45);
 }
 
-.panel.active{
-    bottom:0;
-}
+.panel.active{ display:block; }
 
 .drag-bar{
     width:60px;
@@ -384,14 +382,6 @@ html,body{
         placeholder="Ghi chú"
     ></textarea>
 
-    <input
-        type="file"
-        accept="image/*"
-        capture="environment"
-        id="pointImage"
-        class="input"
-    />
-
     <button
         class="save-btn"
         onclick="savePoint()"
@@ -434,10 +424,6 @@ html,body{
         <i class="fa-solid fa-plus"></i>
     </button>
 
-    <button class="tool-btn yellow" onclick="toggleLineMode()">
-        <i class="fa-solid fa-wave-square"></i>
-    </button>
-
     <button class="tool-btn orange" onclick="clearAllData()">
         <i class="fa-solid fa-trash"></i>
     </button>
@@ -454,25 +440,16 @@ let currentLocation=null;
 
 let surveyPoints=[];
 
-let surveyLines=[];
-
 let tempPoint=null;
 
 let editingIndex=-1;
-
-let lineMode=false;
-
-let linePoints=[];
-
-let tempPolyline=null;
 
 let draggableMarker=null;
 
 let mapMarkers=[];
 
 let gpsLock=false;
-let currentProject='TRAM_MOI';
-
+let currentProject='GLI';
 initMap();
 
 function initMap(){
@@ -494,15 +471,7 @@ function initMap(){
 
 map.on('click',function(e){
 
-    if(lineMode){
-
-        addLinePoint(e.latlng);
-
-    }
-
 });
-
-
 }
 
 function initGPS(){
@@ -660,8 +629,6 @@ function savePoint(){
 
     const note=document.getElementById('pointNote').value;
 
-    const imageInput=document.getElementById('pointImage');
-
     let color='#22c55e';
 
     if(type==='ODF') color='#3b82f6';
@@ -687,23 +654,10 @@ function savePoint(){
             fillOpacity:1
         }
     ).addTo(map);
-
-    let imageData='';
-
-    if(imageInput.files[0]){
-
-        const reader=new FileReader();
-
-        reader.onload=function(e){
-
-            imageData=e.target.result;
-
             finishSave();
-
         };
 
         reader.readAsDataURL(imageInput.files[0]);
-
     }else{
 
         finishSave();
@@ -720,8 +674,6 @@ function savePoint(){
 
             lat:tempPoint.lat,
             lng:tempPoint.lng,
-
-            image:imageData
 
         };
 
@@ -741,19 +693,6 @@ function savePoint(){
             ${type}<br>
             ${note}
         `;
-
-        if(imageData){
-
-            popup+=`
-            <br><br>
-            <img
-                src="${imageData}"
-                style="
-                    width:180px;
-                    border-radius:10px;
-                "
-            />
-            `;
         }
 
         marker.bindPopup(popup);
@@ -768,8 +707,6 @@ function savePoint(){
 
         document.getElementById('pointNote').value='';
 
-        document.getElementById('pointImage').value='';
-
         document.getElementById('pointPanel').classList.remove('active');
 
     
@@ -782,84 +719,6 @@ function savePoint(){
         
 
     }
-
-}
-
-function toggleLineMode(){
-
-    lineMode=!lineMode;
-
-    if(lineMode){
-
-        linePoints=[];
-
-        alert('Đã bật chế độ vẽ tuyến');
-
-    }else{
-
-        if(linePoints.length>1){
-
-            createLine(linePoints);
-
-        }
-
-        alert('Đã tắt chế độ vẽ tuyến');
-
-    }
-
-}
-
-function addLinePoint(latlng){
-
-    linePoints.push(latlng);
-
-    L.circleMarker(
-        [latlng.lat,latlng.lng],
-        {
-            radius:5,
-            color:'#fff',
-            weight:1,
-            fillColor:'#f59e0b',
-            fillOpacity:1
-        }
-    ).addTo(map);
-
-    if(tempPolyline){
-
-        map.removeLayer(tempPolyline);
-
-    }
-
-    tempPolyline=L.polyline(
-        linePoints,
-        {
-            color:'#00e5ff',
-            weight:4
-        }
-    ).addTo(map);
-
-}
-
-function createLine(points){
-
-    L.polyline(
-        points,
-        {
-            color:'#00e5ff',
-            weight:4
-        }
-    ).addTo(map);
-
-    surveyLines.push(
-        points.map(p=>({
-            lat:p.lat,
-            lng:p.lng
-        }))
-    );
-
-    saveLocal();
-
-    updateStats();
 
 }
 
@@ -885,6 +744,11 @@ function updateProjectList(){
 
     s.innerHTML='';
 
+    s.innerHTML+=`
+        <option value="ALL_PROJECTS">
+            📂 TẤT CẢ CÔNG TRÌNH
+        </option>
+    `; 
     let projects=[];
 
     try{
@@ -929,6 +793,14 @@ if(projects.length>0){
 function changeProject(name){
 
     currentProject=name;
+
+    if(name==='ALL_PROJECTS'){
+
+        loadAllProjects();
+
+        return;
+
+    }
 
     loadLocal();
 
@@ -1312,6 +1184,74 @@ function editPoint(index){
 
 }
 
+function loadAllProjects(){
+
+    mapMarkers.forEach(m=>{
+
+        map.removeLayer(m);
+
+    });
+
+    mapMarkers=[];
+
+    let projects=[];
+
+    try{
+
+        projects=
+        JSON.parse(
+            Android.getProjectList()
+        );
+
+    }catch(e){
+
+        projects=[];
+
+    }
+
+    projects.forEach(project=>{
+
+        const raw=
+        localStorage.getItem(
+            'ksgpon_'+project
+        );
+
+        if(!raw) return;
+
+        const data=JSON.parse(raw);
+
+        (data.points||[]).forEach(p=>{
+
+            let color='#22c55e';
+
+            if(p.type==='ODF') color='#3b82f6';
+            if(p.type==='ODP') color='#22c55e';
+            if(p.type==='TAPDIEM') color='#eab308';
+            if(p.type==='KH') color='#f97316';
+            if(p.type==='SC') color='#ef4444';
+
+            const mk=L.circleMarker(
+                [p.lat,p.lng],
+                {
+                    radius:7,
+                    color:'#fff',
+                    weight:2,
+                    fillColor:color,
+                    fillOpacity:1
+                }
+            )
+            .addTo(map)
+            .bindPopup(
+                '<b>'+project+'</b><br>'+p.name
+            );
+
+            mapMarkers.push(mk);
+
+        });
+
+    });
+
+}
 
 function searchPoint(){
 
