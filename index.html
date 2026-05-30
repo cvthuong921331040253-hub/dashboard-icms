@@ -315,13 +315,17 @@ function calcScore(r){
   let ratio = 0;
 
   if(type === "down"){
-    // KPI càng thấp càng tốt
-    if(value <= target){
-      ratio = 1; // đạt → full điểm
-    }else{
-      ratio = 0; // fail → mất sạch
-    }
+
+  // 0% = full điểm
+  // tăng dần tới target thì giảm điểm dần
+  // >= target thì 0 điểm
+
+  if(value >= target){
+    ratio = 0;
   }else{
+    ratio = 1 - (value / target);
+  }
+}else{
     // KPI bình thường
     if(value < target){
       ratio = 0; // dưới target → mất sạch
