@@ -846,13 +846,25 @@ function updateProjectList(){
     });
 
     if(currentProject){
-
+    
         s.value=currentProject;
-
+    
     }else{
-
-        s.value='ALL_PROJECTS';
-
+    
+        if(projects.length>0){
+    
+            currentProject=projects[0];
+    
+            s.value=currentProject;
+    
+            loadLocal();
+    
+        }else{
+    
+            s.value='ALL_PROJECTS';
+    
+        }
+    
     }
 
 }
@@ -1116,7 +1128,7 @@ function openProjectManager(){
     if(!name) return;
 
     currentProject=name;
-
+    exportKML();
     updateProjectList();
 
     document.getElementById(
@@ -1587,12 +1599,17 @@ function clearAllData(){
     surveyPoints=[];
 
     mapMarkers.forEach(m=>{
-
-        map.removeLayer(m);
-
+    
+        if(!m.isTempImport){
+    
+            map.removeLayer(m);
+    
+        }
+    
     });
-
-    mapMarkers=[];
+    
+    mapMarkers=
+    mapMarkers.filter(m=>m.isTempImport);
    
     currentProject='';
     
