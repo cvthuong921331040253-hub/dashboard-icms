@@ -95,7 +95,10 @@ html,body{
     position:fixed;
     left:0;
     right:0;
-    bottom:-100%;
+    display:none;
+    top:70px;
+    bottom:auto;
+    max-height:75vh;
     z-index:99999;
     background:rgba(10,15,20,.98);
     border-top-left-radius:24px;
@@ -103,7 +106,6 @@ html,body{
     border-top:1px solid #1f2937;
     padding:18px;
     transition:.35s ease;
-    max-height:42vh;
     overflow:auto;
     box-shadow:0 -10px 30px rgba(0,0,0,.45);
 }
@@ -656,15 +658,7 @@ function savePoint(){
             fillOpacity:1
         }
     ).addTo(map);
-            finishSave();
-        };
-
-        reader.readAsDataURL(imageInput.files[0]);
-    }else{
-
-        finishSave();
-
-    }
+    finishSave();
 
     function finishSave(){
 
@@ -695,7 +689,6 @@ function savePoint(){
             ${type}<br>
             ${note}
         `;
-        }
 
         marker.bindPopup(popup);
         mapMarkers.push(marker);
@@ -875,20 +868,6 @@ function loadLocal(){
             
             `;
 
-        if(p.image){
-
-            popup+=`
-            <br><br>
-            <img
-                src="${p.image}"
-                style="
-                    width:180px;
-                    border-radius:10px;
-                "
-            />
-            `;
-        }
-
     const mk=L.circleMarker( [p.lat,p.lng], { radius:8, color:'#fff', weight:2, fillColor:color, fillOpacity:1 } ) .addTo(map) .bindPopup(popup); mapMarkers.push(mk);
 
     });
@@ -899,7 +878,7 @@ if(surveyPoints.length>0){
 
     const bounds=[];
 
-    tempImportPoints.forEach(p=>{
+    surveyPoints.forEach(p=>{
 
         bounds.push([
             p.lat,
@@ -996,28 +975,6 @@ function exportKML(){
 
     });
 
-    surveyLines.forEach(line=>{
-
-        kml+=`
-        <Placemark>
-            <LineString>
-                <coordinates>
-        `;
-
-        line.forEach(p=>{
-
-            kml+=`${p.lng},${p.lat},0 `;
-
-        });
-
-        kml+=`
-                </coordinates>
-            </LineString>
-        </Placemark>
-        `;
-
-    });
-
     kml+=`
     </Document>
     </kml>
@@ -1065,67 +1022,82 @@ function importSurveyFile(event){
         const placemarks=
         xml.getElementsByTagName('Placemark');
 
-        surveyPoints=[];
 
         placemarksLoop:
         for(let i=0;i<placemarks.length;i++){
-
-            const pm=placemarks[i];
-
-            const point=
-            pm.getElementsByTagName('Point')[0];
-
-            if(point){
-
-                const coord=
-                point
-                .getElementsByTagName('coordinates')[0]
-                .textContent
-                .trim();
-
-                const arr=coord.split(',');
-
-                const lng=parseFloat(arr[0]);
-
-                const lat=parseFloat(arr[1]);
-
-                const nameNode=
-                pm.getElementsByTagName('name')[0];
-
-                const name=
-                nameNode
-                ? nameNode.textContent
-                : 'Điểm';
-
-                tempImportPoints.push({
-
-                    name:name,
-                    type:'ODP',
-                    note:'',
-
-                    lat:lat,
-                    lng:lng,
-
-                    image:''
-
-                });
-
+        const pm=placemarks[i];
+        const point=
+         pm.getElementsByTagName('Point')[0];
+        if(point){
+        const coord=
+            point
+            .getElementsByTagName('coordinates')[0]
+            .textContent
+            .trim();
+        const arr=coord.split(',');
+        const lng=parseFloat(arr[0]);
+        const lat=parseFloat(arr[1]);
+        const nameNode=
+        pm.getElementsByTagName('name')[0];
+        const name=
+            nameNode
+            ? nameNode.textContent
+            : 'Điểm';
+            tempImportPoints.push({
+            name:name,
+            type:'ODP',
+            note:'',
+            lat:lat,
+            lng:lng,
+            image:''
+            });
             }
-
         }
-
-        saveLocal();
-
-        loadLocal();
-        
         updateStats();
+        tempImportPoints.forEach(p=>{
+        const mk=L.circleMarker(
+            [p.lat,p.lng],
+            {
+            radius:7,
+            color:'#fff',
+            weight:2,
+            fillColor:'#eab308',
+            fillOpacity:1
+            }
+            )
+            .addTo(map)
+            .bindPopup(
+                '<b>FILE TẠM</b><br>'+p.name
+            );
         
+            mapMarkers.push(mk);
+        });
+    
+        if(tempImportPoints.length>0){
+        
+            const bounds=[];
+        
+            tempImportPoints.forEach(p=>{
+        
+                bounds.push([
+                    p.lat,
+                    p.lng
+                ]);
+        
+            });
+        
+            map.fitBounds(
+                bounds,
+                {
+                    padding:[40,40]
+                }
+            );
+        
+        }
         alert('Đã import KML');
-
     };
 
     reader.readAsText(file);
-
 }
 
 function editPoint(index){
@@ -1229,7 +1201,26 @@ function loadAllProjects(){
 
     });
 
-}
+    if(mapMarkers.length>0){
+    
+        const bounds=[];
+    
+        mapMarkers.forEach(m=>{
+    
+            bounds.push(
+                m.getLatLng()
+            );
+    
+        });
+    
+        map.fitBounds(
+            bounds,
+            {
+                padding:[40,40]
+            }
+        );
+    }
+    }
 
 function searchPoint(){
 
@@ -1240,11 +1231,19 @@ function searchPoint(){
     .toLowerCase();
 
     if(!kw){
-
-        loadLocal();
-
+    
+        if(currentProject==='ALL_PROJECTS'){
+    
+            loadAllProjects();
+    
+        }else{
+    
+            loadLocal();
+    
+        }
+    
         return;
-
+    
     }
 
     mapMarkers.forEach(m=>{
@@ -1255,12 +1254,18 @@ function searchPoint(){
 
     mapMarkers=[];
 
-    surveyPoints.forEach((p,index)=>{
+    const sourcePoints=
+    currentProject==='ALL_PROJECTS'
+    ? tempImportPoints.length>0
+        ? tempImportPoints
+        : surveyPoints
+    : surveyPoints;
+    
+    sourcePoints.forEach((p,index)=>{
 
         if(
             p.name.toLowerCase().includes(kw)
         ){
-
             const mk=L.circleMarker(
                 [p.lat,p.lng],
                 {
@@ -1349,6 +1354,7 @@ function clearAllData(){
     });
 
     mapMarkers=[];
+    currentProject='ALL_PROJECTS';
 
     updateProjectList();
 
