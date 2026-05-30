@@ -334,6 +334,10 @@ html,body{
 
 <div class="tools">
 
+    <button class="tool-btn blue" onclick="document.getElementById('importFile').click()">
+        <i class="fa-solid fa-folder-open"></i>
+    </button>
+    
     <button class="tool-btn purple" onclick="openProjectManager()">
         <i class="fa-solid fa-folder"></i>
     </button>
@@ -395,7 +399,7 @@ let tempPolyline=null;
 let draggableMarker=null;
 
 let gpsLock=false;
-let currentProject='DEFAULT';
+let currentProject='TRAM_MOI';
 
 initMap();
 
@@ -968,10 +972,28 @@ function exportKML(){
 
     a.href=URL.createObjectURL(blob);
 
-    a.download=currentProject+'.kml';
+    a.download= currentProject+ '_'+ new Date().getTime()+ '.kml';
 
 
     a.click();
+
+}
+
+function importSurveyFile(event){
+
+    const file=event.target.files[0];
+
+    if(!file) return;
+
+    alert(
+        'Đã chọn file: '+
+        file.name
+    );
+
+    currentProject=
+    file.name
+    .replace('.kml','')
+    .replace('.kmz','');
 
 }
 
@@ -986,6 +1008,14 @@ function clearAllData(){
 }
 
 </script>
+
+<input
+    type="file"
+    id="importFile"
+    accept=".kml,.kmz"
+    style="display:none"
+    onchange="importSurveyFile(event)"
+/>
 
 </body>
 </html>
