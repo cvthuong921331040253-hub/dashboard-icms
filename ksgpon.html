@@ -423,6 +423,8 @@ let surveyLines=[];
 
 let tempPoint=null;
 
+let editingIndex=-1;
+
 let lineMode=false;
 
 let linePoints=[];
@@ -689,7 +691,16 @@ function savePoint(){
 
         };
 
-        surveyPoints.push(pointData);
+        
+        if(editingIndex>=0){
+        
+            surveyPoints[editingIndex]=pointData;
+        
+        }else{
+        
+            surveyPoints.push(pointData);
+        
+        }
 
         let popup=`
             <b>${name}</b><br>
@@ -731,7 +742,9 @@ function savePoint(){
         .classList
         .remove('active');
 
-        alert('Đã lưu điểm khảo sát');
+        editingIndex=-1;
+        
+        location.reload();
 
     }
 
@@ -845,7 +858,7 @@ function loadLocal(){
 
     surveyLines=data.lines || [];
 
-    surveyPoints.forEach(p=>{
+    surveyPoints.forEach((p,index)=>{
 
         let color='#22c55e';
 
@@ -859,7 +872,23 @@ function loadLocal(){
             <b>${p.name}</b><br>
             ${p.type}<br>
             ${p.note}
-        `;
+            
+            <br><br>
+            
+            <button
+                onclick="editPoint(${index})"
+                style="
+                    border:none;
+                    padding:6px 10px;
+                    border-radius:8px;
+                    background:#2563eb;
+                    color:white;
+                "
+            >
+                ✏️ Sửa
+            </button>
+            
+            `;
 
         if(p.image){
 
@@ -1114,6 +1143,39 @@ function importSurveyFile(event){
     };
 
     reader.readAsText(file);
+
+}
+
+function editPoint(index){
+
+    const p=surveyPoints[index];
+
+    editingIndex=index;
+
+    tempPoint={
+        lat:p.lat,
+        lng:p.lng
+    };
+
+    document.getElementById('pointName').value=
+    p.name;
+
+    document.getElementById('pointType').value=
+    p.type;
+
+    document.getElementById('pointNote').value=
+    p.note;
+
+    document.getElementById('pointLat').value=
+    p.lat;
+
+    document.getElementById('pointLng').value=
+    p.lng;
+
+    document
+    .getElementById('pointPanel')
+    .classList
+    .add('active');
 
 }
 
