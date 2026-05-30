@@ -440,6 +440,8 @@ let currentLocation=null;
 
 let surveyPoints=[];
 
+let tempImportPoints=[];
+
 let tempPoint=null;
 
 let editingIndex=-1;
@@ -728,7 +730,6 @@ function saveLocal(){
         'ksgpon_'+currentProject,
         JSON.stringify({
             points:surveyPoints,
-            lines:surveyLines
         })
     );
 
@@ -809,9 +810,6 @@ function changeProject(name){
 function loadLocal(){
 
     surveyPoints=[];
-    surveyLines=[];
-
-
     mapMarkers.forEach(m=>{
     
         map.removeLayer(m);
@@ -830,8 +828,6 @@ function loadLocal(){
     const data=JSON.parse(raw);
 
     surveyPoints=data.points || [];
-
-    surveyLines=data.lines || [];
 
     surveyPoints.forEach((p,index)=>{
 
@@ -897,24 +893,13 @@ function loadLocal(){
 
     });
 
-    surveyLines.forEach(line=>{
-
-        L.polyline(
-            line.map(p=>[p.lat,p.lng]),
-            {
-                color:'#00e5ff',
-                weight:4
-            }
-        ).addTo(map);
-
-    });
 updateStats();
 
 if(surveyPoints.length>0){
 
     const bounds=[];
 
-    surveyPoints.forEach(p=>{
+    tempImportPoints.forEach(p=>{
 
         bounds.push([
             p.lat,
@@ -938,19 +923,6 @@ if(surveyPoints.length>0){
 function updateStats(){
 
     let totalDistance=0;
-
-    surveyLines.forEach(line=>{
-
-        for(let i=1;i<line.length;i++){
-
-            totalDistance+=map.distance(
-                [line[i-1].lat,line[i-1].lng],
-                [line[i].lat,line[i].lng]
-            );
-
-        }
-
-    });
 
     let textDistance='0m';
 
@@ -1064,8 +1036,6 @@ function exportKML(){
 function importSurveyFile(event){
 
     const file=event.target.files[0];
-
-    currentProject= file.name.replace('.kml','');
     
     if(!file) return;
 
@@ -1086,8 +1056,6 @@ function importSurveyFile(event){
         xml.getElementsByTagName('Placemark');
 
         surveyPoints=[];
-
-        surveyLines=[];
 
         placemarksLoop:
         for(let i=0;i<placemarks.length;i++){
@@ -1119,7 +1087,7 @@ function importSurveyFile(event){
                 ? nameNode.textContent
                 : 'Điểm';
 
-                surveyPoints.push({
+                tempImportPoints.push({
 
                     name:name,
                     type:'ODP',
@@ -1363,7 +1331,6 @@ function clearAllData(){
     );
 
     surveyPoints=[];
-    surveyLines=[];
 
     mapMarkers.forEach(m=>{
 
