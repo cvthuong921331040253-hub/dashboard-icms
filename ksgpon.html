@@ -751,12 +751,12 @@ function togglePanel(){
             currentProject+'_DL_';
     
         }
-    
+        
         if(type==='ODP'){
-    
+        
             prefix=
-            currentProject+'_VT_';
-    
+            currentProject+'_VT';
+        
         }
     
         if(type==='TU_DL'){
@@ -775,12 +775,12 @@ function togglePanel(){
         }
     
         if(type==='KH'){
-    
+        
             prefix=
-            'Trạm_'+currentProject+'_';
-    
+            'Trạm_'+currentProject;
+        
         }
-    
+
         document.getElementById(
             'pointName'
         ).value=prefix;
@@ -817,13 +817,13 @@ function savePoint(){
     
     }
     
+   
     if(type==='ODP'){
     
         prefix=
-        currentProject+'_VT_';
+        currentProject+'_VT';
     
     }
-    
    
     if(type==='TU_DL'){
     
@@ -840,10 +840,11 @@ function savePoint(){
     
     }
     
+ 
     if(type==='KH'){
     
         prefix=
-        'Trạm_'+currentProject+'_';
+        'Trạm_'+currentProject;
     
     }
     
@@ -1104,23 +1105,69 @@ function updateProjectList(){
                     'description'
                 )[0];
     
+        
                 points.push({
-    
+                
                     name:nameNode
                     ? nameNode.textContent
                     : 'Điểm',
-    
-                    type:'ODP',
-    
-                    note:noteNode
-                    ? noteNode.textContent
-                    : '',
-    
+                
+                    type:(()=>{
+                
+                        if(!noteNode){
+                
+                            return 'ODP';
+                
+                        }
+                
+                        const text=
+                        noteNode.textContent;
+                
+                        if(text.includes('TYPE=ODF'))
+                            return 'ODF';
+                
+                        if(text.includes('TYPE=ODP'))
+                            return 'ODP';
+                
+                        if(text.includes('TYPE=TU_DL'))
+                            return 'TU_DL';
+                
+                        if(text.includes('TYPE=TU_VT'))
+                            return 'TU_VT';
+                
+                        if(text.includes('TYPE=KH'))
+                            return 'KH';
+                
+                        return 'ODP';
+                
+                    })(),
+                
+                    note:(()=>{
+                
+                        if(!noteNode){
+                
+                            return '';
+                
+                        }
+                
+                        const text=
+                        noteNode.textContent;
+                
+                        if(text.includes('||NOTE=')){
+                
+                            return text.split('||NOTE=')[1];
+                
+                        }
+                
+                        return text;
+                
+                    })(),
+                
                     lat:lat,
                     lng:lng
-    
+                
                 });
-    
+                 
             }
     
             return points;
