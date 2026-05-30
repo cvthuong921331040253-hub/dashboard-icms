@@ -662,6 +662,13 @@ function savePoint(){
     if(type==='TAPDIEM') color='#eab308';
     if(type==='KH') color='#f97316';
     if(type==='SC') color='#ef4444';
+    if(editingIndex>=0){
+    
+        map.removeLayer(
+            mapMarkers[editingIndex]
+        );
+    
+    }
 
     const marker=L.circleMarker(
         [tempPoint.lat,tempPoint.lng],
@@ -743,7 +750,7 @@ function savePoint(){
         }
 
         marker.bindPopup(popup);
-
+        mapMarkers.push(marker);
         saveLocal();
         exportKML();
 
