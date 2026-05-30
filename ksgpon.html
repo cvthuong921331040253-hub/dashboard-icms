@@ -1027,6 +1027,9 @@ function exportKML(){
 
     a.click();
 
+    URL.revokeObjectURL(a.href);
+
+
 }
 
 function importSurveyFile(event){
@@ -1035,15 +1038,80 @@ function importSurveyFile(event){
 
     if(!file) return;
 
-    alert(
-        'Đã chọn file: '+
-        file.name
-    );
+    const reader=new FileReader();
 
-    currentProject=
-    file.name
-    .replace('.kml','')
-    .replace('.kmz','');
+    reader.onload=function(e){
+
+        const text=e.target.result;
+
+        const parser=new DOMParser();
+
+        const xml=parser.parseFromString(
+            text,
+            'text/xml'
+        );
+
+        const placemarks=
+        xml.getElementsByTagName('Placemark');
+
+        surveyPoints=[];
+
+        surveyLines=[];
+
+        placemarksLoop:
+        for(let i=0;i<placemarks.length;i++){
+
+            const pm=placemarks[i];
+
+            const point=
+            pm.getElementsByTagName('Point')[0];
+
+            if(point){
+
+                const coord=
+                point
+                .getElementsByTagName('coordinates')[0]
+                .textContent
+                .trim();
+
+                const arr=coord.split(',');
+
+                const lng=parseFloat(arr[0]);
+
+                const lat=parseFloat(arr[1]);
+
+                const nameNode=
+                pm.getElementsByTagName('name')[0];
+
+                const name=
+                nameNode
+                ? nameNode.textContent
+                : 'Điểm';
+
+                surveyPoints.push({
+
+                    name:name,
+                    type:'ODP',
+                    note:'',
+
+                    lat:lat,
+                    lng:lng,
+
+                    image:''
+
+                });
+
+            }
+
+        }
+
+        saveLocal();
+
+        location.reload();
+
+    };
+
+    reader.readAsText(file);
 
 }
 
