@@ -232,7 +232,18 @@ html,body{
 
 <div id="map"></div>
 
-<div class="map-overlay" id="mapOverlay"></div>
+<div
+    class="map-overlay"
+    id="mapOverlay"
+    onclick="
+        document
+        .getElementById('pointPanel')
+        .classList
+        .remove('active');
+
+        this.classList.remove('active');
+    "
+></div>
 
 <div class="bottom-stats" id="bottomStats">
     📍 0 điểm | 📏 0m
@@ -267,13 +278,18 @@ html,body{
             ➕ Điểm khảo sát
         </h3>
 
-        <button
-            onclick="
-                document
-                .getElementById('pointPanel')
-                .classList
-                .remove('active')
-            "
+        onclick="
+            document
+            .getElementById('pointPanel')
+            .classList
+            .remove('active');
+        
+            document
+            .getElementById('mapOverlay')
+            .classList
+            .remove('active');
+        "
+
             style="
                 background:none;
                 border:none;
@@ -552,6 +568,11 @@ function createDraggableMarker(){
             .classList
             .add('active');
 
+        document
+        .getElementById('mapOverlay')
+        .classList
+        .add('active');
+
     });
 
 }
@@ -701,6 +722,12 @@ function savePoint(){
         document.getElementById('pointImage').value='';
 
         document.getElementById('pointPanel').classList.remove('active');
+
+    
+        document
+        .getElementById('mapOverlay')
+        .classList
+        .remove('active');
 
         alert('Đã lưu điểm khảo sát');
 
