@@ -1495,6 +1495,20 @@ function deletePoint(index){
 function clearAllData(){
 
     if(
+        currentProject==='ALL_PROJECTS'
+        ||
+        !currentProject
+    ){
+    
+        alert(
+            'Hãy chọn 1 công trình cụ thể để xóa'
+        );
+    
+        return;
+    
+    }
+
+    if(
         !confirm(
             'Xóa công trình '+currentProject+' ?'
         )
