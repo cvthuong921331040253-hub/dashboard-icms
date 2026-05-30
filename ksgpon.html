@@ -1254,13 +1254,51 @@ function searchPoint(){
 
     mapMarkers=[];
 
-    const sourcePoints=
-    currentProject==='ALL_PROJECTS'
-    ? tempImportPoints.length>0
-        ? tempImportPoints
-        : surveyPoints
-    : surveyPoints;
+
+    let sourcePoints=[];
     
+    if(currentProject==='ALL_PROJECTS'){
+    
+        let projects=[];
+    
+        try{
+    
+            projects=
+            JSON.parse(
+                Android.getProjectList()
+            );
+    
+        }catch(e){
+    
+            projects=[];
+    
+        }
+    
+        projects.forEach(project=>{
+    
+            const raw=
+            localStorage.getItem(
+                'ksgpon_'+project
+            );
+    
+            if(!raw) return;
+    
+            const data=JSON.parse(raw);
+    
+            (data.points||[]).forEach(p=>{
+    
+                sourcePoints.push(p);
+    
+            });
+    
+        });
+    
+    }else{
+    
+        sourcePoints=surveyPoints;
+    
+    }
+        
     sourcePoints.forEach((p,index)=>{
 
         if(
