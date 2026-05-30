@@ -234,9 +234,48 @@ html,body{
 
     <div class="drag-bar"></div>
 
-    <h3>➕ Điểm khảo sát</h3>
+    <div
+        style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:10px;
+        "
+    >
 
-    <input id="pointName" class="input" placeholder="Tên điểm"/>
+        <h3
+            style="
+                margin:0;
+                font-size:16px;
+            "
+        >
+            ➕ Điểm khảo sát
+        </h3>
+
+        <button
+            onclick="
+                document
+                .getElementById('pointPanel')
+                .classList
+                .remove('active')
+            "
+            style="
+                background:none;
+                border:none;
+                color:white;
+                font-size:20px;
+            "
+        >
+            ✕
+        </button>
+
+    </div>
+
+    <input
+        id="pointName"
+        class="input"
+        placeholder="Tên điểm"
+    />
 
     <select id="pointType" class="input">
         <option value="ODF">🟦 ODF</option>
@@ -246,10 +285,33 @@ html,body{
         <option value="SC">🔴 Sự cố</option>
     </select>
 
+    <div
+        style="
+            display:flex;
+            gap:8px;
+        "
+    >
+
+        <input
+            id="pointLat"
+            class="input"
+            placeholder="Vĩ độ"
+            readonly
+        />
+
+        <input
+            id="pointLng"
+            class="input"
+            placeholder="Kinh độ"
+            readonly
+        />
+
+    </div>
+
     <textarea
         id="pointNote"
         class="input"
-        rows="3"
+        rows="2"
         placeholder="Ghi chú"
     ></textarea>
 
@@ -261,7 +323,10 @@ html,body{
         class="input"
     />
 
-    <button class="save-btn" onclick="savePoint()">
+    <button
+        class="save-btn"
+        onclick="savePoint()"
+    >
         Lưu điểm khảo sát
     </button>
 
@@ -269,6 +334,10 @@ html,body{
 
 <div class="tools">
 
+    <button class="tool-btn purple" onclick="openProjectManager()">
+        <i class="fa-solid fa-folder"></i>
+    </button>
+    
     <button class="tool-btn blue" onclick="goGPS()">
         <i class="fa-solid fa-location-crosshairs"></i>
     </button>
@@ -326,7 +395,7 @@ let tempPolyline=null;
 let draggableMarker=null;
 
 let gpsLock=false;
-
+let currentProject='DEFAULT';
 
 initMap();
 
@@ -448,6 +517,12 @@ function createDraggableMarker(){
             lng:pos.lng
         };
 
+        document.getElementById('pointLat').value=
+        pos.lat.toFixed(6);
+        
+        document.getElementById('pointLng').value=
+        pos.lng.toFixed(6);
+        
         document
             .getElementById('pointPanel')
             .classList
@@ -690,7 +765,7 @@ function createLine(points){
 function saveLocal(){
 
     localStorage.setItem(
-        'ksgpon_data',
+        'ksgpon_'+currentProject,
         JSON.stringify({
             points:surveyPoints,
             lines:surveyLines
@@ -701,7 +776,10 @@ function saveLocal(){
 
 function loadLocal(){
 
-    const raw=localStorage.getItem('ksgpon_data');
+    const raw=localStorage.getItem(
+    'ksgpon_'+currentProject
+    );
+
 
     if(!raw) return;
 
@@ -807,6 +885,25 @@ function updateStats(){
 
 }
 
+function openProjectManager(){
+
+    const name=prompt(
+        'Nhập mã trạm / công trình',
+        currentProject
+    );
+
+    if(!name) return;
+
+    currentProject=name;
+
+    loadLocal();
+
+    alert(
+        'Đã chuyển sang công trình: '+
+        currentProject
+    );
+
+}
     
 function exportKML(){
 
@@ -871,7 +968,8 @@ function exportKML(){
 
     a.href=URL.createObjectURL(blob);
 
-    a.download='ksgpon_survey.kml';
+    a.download=currentProject+'.kml';
+
 
     a.click();
 
