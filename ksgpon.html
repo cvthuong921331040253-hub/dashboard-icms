@@ -443,6 +443,11 @@ let draggableMarker=null;
 let mapMarkers=[];
 
 let gpsLock=false;
+
+let measurePoints=[];
+    
+let measureLine=null;
+ 
 let currentProject='';
 initMap();
 
@@ -570,6 +575,65 @@ function createDraggableMarker(){
     });
 
 }
+
+    function measureDistance(lat,lng){
+    
+        measurePoints.push([lat,lng]);
+    
+        if(measurePoints.length===1){
+    
+            alert('Đã chọn điểm đầu');
+    
+            return;
+    
+        }
+    
+        if(measurePoints.length===2){
+    
+            if(measureLine){
+    
+                map.removeLayer(measureLine);
+    
+            }
+    
+            measureLine=L.polyline(
+                measurePoints,
+                {
+                    color:'#00e0ff',
+                    weight:3,
+                    dashArray:'6,6'
+                }
+            ).addTo(map);
+    
+            const p1=L.latLng(measurePoints[0]);
+            const p2=L.latLng(measurePoints[1]);
+    
+            const d=
+            p1.distanceTo(p2);
+    
+            let text='';
+    
+            if(d>1000){
+    
+                text=
+                (d/1000).toFixed(2)+' km';
+    
+            }else{
+    
+                text=
+                Math.round(d)+' m';
+    
+            }
+    
+            measureLine.bindPopup(
+                '📏 '+text
+            ).openPopup();
+    
+            measurePoints=[];
+    
+        }
+    
+    }
 
 function goGPS(){
 
@@ -867,9 +931,31 @@ function loadLocal(){
             
             `;
 
-    const mk=L.circleMarker( [p.lat,p.lng], { radius:8, color:'#fff', weight:2, fillColor:color, fillOpacity:1 } ) .addTo(map) .bindPopup(popup); mapMarkers.push(mk);
 
+    const mk=L.circleMarker(
+        [p.lat,p.lng],
+        {
+            radius:8,
+            color:'#fff',
+            weight:2,
+            fillColor:color,
+            fillOpacity:1
+        }
+    )
+    .addTo(map)
+    .bindPopup(popup);
+    
+    mapMarkers.push(mk);
+    
+    mk.on('click',function(){
+    
+        measureDistance(
+            p.lat,
+            p.lng
+        );
+    
     });
+ });
 
 updateStats();
 
