@@ -241,7 +241,7 @@ html,body{
 ></div>
 
 <div class="bottom-stats" id="bottomStats">
-    📍 0 điểm | 📏 0m
+    📍 0 điểm
 </div>
 
 <div class="topbar">
@@ -800,16 +800,9 @@ function savePoint(){
 
 }
 
-function saveLocal(){
 
-    localStorage.setItem(
-        'ksgpon_'+currentProject,
-        JSON.stringify({
-            points:surveyPoints,
-        })
-    );
-
-}
+    function saveLocal(){
+    }
 
 
 function updateProjectList(){
@@ -825,26 +818,22 @@ function updateProjectList(){
         <option value="ALL_PROJECTS">
             📂 TẤT CẢ CÔNG TRÌNH
         </option>
-    `; 
-   
-    let projects=[];
-    
-    for(let i=0;i<localStorage.length;i++){
-    
-        const key=localStorage.key(i);
-    
-        if(
-            key.startsWith('ksgpon_')
-        ){
-    
-            projects.push(
-                key.replace('ksgpon_','')
-            );
-    
-        }
-    
-    }
+    `;
 
+    let projects=[];
+
+    try{
+
+        projects=
+        JSON.parse(
+            Android.getProjectList()
+        );
+
+    }catch(e){
+
+        projects=[];
+
+    }
 
     projects.forEach(name=>{
 
@@ -856,18 +845,17 @@ function updateProjectList(){
 
     });
 
-
     if(currentProject){
-    
+
         s.value=currentProject;
-    
+
     }else{
-    
+
         s.value='ALL_PROJECTS';
-    
+
     }
-    
-    }
+
+}
     
     function changeProject(name){
 
@@ -886,6 +874,108 @@ function updateProjectList(){
 
 }
 
+
+    function loadProjectFromKML(name){
+    
+        try{
+    
+            const text=
+            Android.readProjectKML(name);
+    
+            if(!text){
+    
+                return [];
+    
+            }
+    
+            const parser=
+            new DOMParser();
+    
+            const xml=
+            parser.parseFromString(
+                text,
+                'text/xml'
+            );
+    
+            const placemarks=
+            xml.getElementsByTagName(
+                'Placemark'
+            );
+    
+            let points=[];
+    
+            for(
+                let i=0;
+                i<placemarks.length;
+                i++
+            ){
+    
+                const pm=
+                placemarks[i];
+    
+                const point=
+                pm.getElementsByTagName(
+                    'Point'
+                )[0];
+    
+                if(!point) continue;
+    
+                const coord=
+                point
+                .getElementsByTagName(
+                    'coordinates'
+                )[0]
+                .textContent
+                .trim();
+    
+                const arr=
+                coord.split(',');
+    
+                const lng=
+                parseFloat(arr[0]);
+    
+                const lat=
+                parseFloat(arr[1]);
+    
+                const nameNode=
+                pm.getElementsByTagName(
+                    'name'
+                )[0];
+    
+                const noteNode=
+                pm.getElementsByTagName(
+                    'description'
+                )[0];
+    
+                points.push({
+    
+                    name:nameNode
+                    ? nameNode.textContent
+                    : 'Điểm',
+    
+                    type:'ODP',
+    
+                    note:noteNode
+                    ? noteNode.textContent
+                    : '',
+    
+                    lat:lat,
+                    lng:lng
+    
+                });
+    
+            }
+    
+            return points;
+    
+        }catch(e){
+    
+            return [];
+    
+        }
+    
+    }
+    
 function loadLocal(){
 
     surveyPoints=[];
@@ -903,16 +993,10 @@ function loadLocal(){
     mapMarkers=
     mapMarkers.filter(m=>m.isTempImport);
 
-    const raw=localStorage.getItem(
-    'ksgpon_'+currentProject
+    surveyPoints=
+    loadProjectFromKML(
+        currentProject
     );
-
-
-    if(!raw) return;
-
-    const data=JSON.parse(raw);
-
-    surveyPoints=data.points || [];
 
     surveyPoints.forEach((p,index)=>{
 
@@ -1031,30 +1115,14 @@ function openProjectManager(){
 
     if(!name) return;
 
-
     currentProject=name;
-    
-    if(
-        !localStorage.getItem(
-            'ksgpon_'+currentProject
-        )
-    ){
-    
-        localStorage.setItem(
-            'ksgpon_'+currentProject,
-            JSON.stringify({
-                points:[]
-            })
-        );
-    
-    }
-    
+
     updateProjectList();
-    
+
     document.getElementById(
         'projectSelect'
     ).value=currentProject;
-    
+
     loadLocal();
 
     alert(
@@ -1269,34 +1337,26 @@ function loadAllProjects(){
 
     let projects=[];
     
-    for(let i=0;i<localStorage.length;i++){
+    try{
     
-        const key=localStorage.key(i);
+        projects=
+        JSON.parse(
+            Android.getProjectList()
+        );
     
-        if(
-            key.startsWith('ksgpon_')
-        ){
+    }catch(e){
     
-            projects.push(
-                key.replace('ksgpon_','')
-            );
+        projects=[];
     
-        }
-        }
-    
+    }
+
     projects.forEach(project=>{
 
-        const raw=
-        localStorage.getItem(
-            'ksgpon_'+project
-        );
-
-        if(!raw) return;
-
-        const data=JSON.parse(raw);
-
-        (data.points||[]).forEach(p=>{
-
+    const data=
+    loadProjectFromKML(
+        project
+    );
+    (data||[]).forEach(p=>{
             let color='#22c55e';
 
             if(p.type==='ODF') color='#3b82f6';
@@ -1349,117 +1409,115 @@ function loadAllProjects(){
     }
     
     function searchPoint(){
-
-    const kw=
-    document
-    .getElementById('searchPoint')
-    .value
-    .toLowerCase();
-
-    if(!kw){
     
-        if(currentProject==='ALL_PROJECTS'){
+        const kw=
+        document
+        .getElementById('searchPoint')
+        .value
+        .toLowerCase();
     
-            loadAllProjects();
+        if(!kw){
     
-        }else{
+            if(currentProject==='ALL_PROJECTS'){
     
-            loadLocal();
+                loadAllProjects();
     
-        }
+            }else{
     
-        return;
+                loadLocal();
     
-    }
-
-    mapMarkers.forEach(m=>{
+            }
     
-        if(!m.isTempImport){
-    
-            map.removeLayer(m);
+            return;
     
         }
     
-    });
+        mapMarkers.forEach(m=>{
     
-    mapMarkers=
-    mapMarkers.filter(m=>m.isTempImport);
-
-    let sourcePoints=[];
+            if(!m.isTempImport){
     
-    if(currentProject==='ALL_PROJECTS'){
+                map.removeLayer(m);
     
-    let projects=[];
-    
-    for(let i=0;i<localStorage.length;i++){
-    
-        const key=localStorage.key(i);
-    
-        if(
-            key.startsWith('ksgpon_')
-        ){
-    
-            projects.push(
-                key.replace('ksgpon_','')
-            );
-    
-        }
-    
-    }
-    
-    projects.forEach(project=>{
-    
-            const raw=
-            localStorage.getItem(
-                'ksgpon_'+project
-            );
-    
-            if(!raw) return;
-    
-            const data=JSON.parse(raw);
-    
-            (data.points||[]).forEach(p=>{
-    
-                sourcePoints.push(p);
-    
-            });
+            }
     
         });
     
-    }else{
+        mapMarkers=
+        mapMarkers.filter(m=>m.isTempImport);
     
-        sourcePoints=surveyPoints;
+        let sourcePoints=[];
+    
+        if(currentProject==='ALL_PROJECTS'){
+    
+            let projects=[];
+    
+            try{
+    
+                projects=
+                JSON.parse(
+                    Android.getProjectList()
+                );
+    
+            }catch(e){
+    
+                projects=[];
+    
+            }
+    
+            projects.forEach(project=>{
+    
+                const data=
+                loadProjectFromKML(
+                    project
+                );
+    
+                (data||[]).forEach(p=>{
+    
+                    sourcePoints.push(p);
+    
+                });
+    
+            });
+    
+        }else{
+    
+            sourcePoints=surveyPoints;
+    
+        }
+    
+        sourcePoints.forEach(p=>{
+    
+            if(
+                p.name.toLowerCase().includes(kw)
+            ){
+    
+                const mk=L.circleMarker(
+                    [p.lat,p.lng],
+                    {
+                        radius:10,
+                        color:'#fff',
+                        weight:2,
+                        fillColor:'#ff0000',
+                        fillOpacity:1
+                    }
+                )
+                .addTo(map)
+                .bindPopup(p.name);
+    
+                mapMarkers.push(mk);
+    
+                map.setView(
+                    [p.lat,p.lng],
+                    20
+                );
+    
+                mk.openPopup();
+    
+            }
+    
+        });
     
     }
-        
-    sourcePoints.forEach((p,index)=>{
-
-        if(
-            p.name.toLowerCase().includes(kw)
-        ){
-            const mk=L.circleMarker(
-                [p.lat,p.lng],
-                {
-                    radius:10,
-                    color:'#fff',
-                    weight:2,
-                    fillColor:'#ff0000',
-                    fillOpacity:1
-                }
-            )
-            .addTo(map)
-            .bindPopup(p.name);
-
-            mapMarkers.push(mk);
-            
-            map.setView(
-                [p.lat,p.lng],
-                20
-            );
-            mk.openPopup();
-        }
-    });
-}
 
 function shareProject(){
 
@@ -1525,10 +1583,6 @@ function clearAllData(){
         alert(e);
 
     }
-
-    localStorage.removeItem(
-        'ksgpon_'+currentProject
-    );
 
     surveyPoints=[];
 
