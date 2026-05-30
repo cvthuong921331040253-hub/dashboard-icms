@@ -340,7 +340,11 @@ html,body{
         placeholder="Tên điểm"
     />
 
-    <select id="pointType" class="input">
+    <select
+        id="pointType"
+        class="input"
+        onchange="updatePointPrefix()"
+    >
     
         <option value="ODF">
             🟦 Cột điện lực
@@ -718,6 +722,58 @@ function togglePanel(){
     p.classList.toggle('active');
 
 }
+    
+    function updatePointPrefix(){
+    
+        if(editingIndex>=0) return;
+    
+        const type=
+        document.getElementById(
+            'pointType'
+        ).value;
+    
+        let prefix='';
+    
+        if(type==='ODF'){
+    
+            prefix=
+            currentProject+'_DL_';
+    
+        }
+    
+        if(type==='ODP'){
+    
+            prefix=
+            currentProject+'_VT_';
+    
+        }
+    
+        if(type==='TU_DL'){
+    
+            prefix=
+            currentProject+'_DL_Tủ_';
+    
+        }
+    
+        if(type==='TU_VT'){
+    
+            prefix=
+            currentProject+'_VT_Tủ_';
+    
+        }
+    
+        if(type==='KH'){
+    
+            prefix=
+            'Trạm_'+currentProject+'_';
+    
+        }
+    
+        document.getElementById(
+            'pointName'
+        ).value=prefix;
+    
+    }
 
 
 function savePoint(){
@@ -778,18 +834,7 @@ function savePoint(){
     }
     
 
-    let name=inputName || prefix;
-    
-    if(
-        editingIndex<0
-    ){
-    
-        name=
-        inputName
-        ? prefix+inputName
-        : prefix;
-    
-    }
+    const name=inputName;
 
     const note=document.getElementById('pointNote').value;
 
