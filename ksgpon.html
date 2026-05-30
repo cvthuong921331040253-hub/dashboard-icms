@@ -252,12 +252,28 @@ html,body{
 <div class="topbar">
     <div class="title">📡 KSGPON SURVEY</div>
     <div class="gps-info" id="gpsInfo">
-    <div id="currentProjectInfo" style=" margin-top:6px; font-size:12px; color:#22c55e; font-weight:bold; " > 📂 Công trình: TRAM_MOI </div>
         Đang lấy GPS...
     </div>
 <select
     id="projectSelect"
 
+    <input
+        id="searchPoint"
+        placeholder="🔍 Tìm điểm khảo sát"
+    
+        oninput="searchPoint()"
+    
+        style="
+            margin-top:8px;
+            width:100%;
+            padding:10px;
+            border-radius:10px;
+            background:#111827;
+            color:white;
+            border:1px solid #374151;
+            box-sizing:border-box;
+        "
+    />
     onchange="changeProject(this.value)"
 
     style="
@@ -870,14 +886,6 @@ function updateProjectList(){
 
 }
 
-function changeProject(name){
-    document.getElementById( 'currentProjectInfo' ).innerHTML= '📂 Công trình: '+currentProject;
-
-    currentProject=name;
-
-    loadLocal();
-
-}
 
 function loadLocal(){
 
@@ -935,6 +943,20 @@ function loadLocal(){
             >
                 ✏️ Sửa
             </button>
+
+            <button
+                onclick="deletePoint(${index})"
+                style="
+                    border:none;
+                    padding:6px 10px;
+                    border-radius:8px;
+                    background:#dc2626;
+                    color:white;
+                    margin-left:6px;
+                "
+            >
+                🗑 Xóa
+            </button>
             
             `;
 
@@ -968,6 +990,29 @@ function loadLocal(){
 
     });
 updateStats();
+
+if(surveyPoints.length>0){
+
+    const bounds=[];
+
+    surveyPoints.forEach(p=>{
+
+        bounds.push([
+            p.lat,
+            p.lng
+        ]);
+
+    });
+
+    map.fitBounds(
+        bounds,
+        {
+            padding:[40,40]
+        }
+    );
+
+}
+ 
 }
 
 
@@ -1017,7 +1062,7 @@ function openProjectManager(){
     if(!name) return;
 
     currentProject=name;
-    document.getElementById( 'currentProjectInfo' ).innerHTML= '📂 Công trình: '+currentProject;
+
     updateProjectList();
 
     loadLocal();
@@ -1211,6 +1256,75 @@ function editPoint(index){
     document .getElementById('mapOverlay') .classList .add('active');
 
 }
+
+
+function searchPoint(){
+
+    const kw=
+    document
+    .getElementById('searchPoint')
+    .value
+    .toLowerCase();
+
+    if(!kw){
+
+        loadLocal();
+
+        return;
+
+    }
+
+    mapMarkers.forEach(m=>{
+
+        map.removeLayer(m);
+
+    });
+
+    mapMarkers=[];
+
+    surveyPoints.forEach((p,index)=>{
+
+        if(
+            p.name.toLowerCase().includes(kw)
+        ){
+
+            const mk=L.circleMarker(
+                [p.lat,p.lng],
+                {
+                    radius:10,
+                    color:'#fff',
+                    weight:2,
+                    fillColor:'#ff0000',
+                    fillOpacity:1
+                }
+            )
+            .addTo(map)
+            .bindPopup(p.name);
+
+            mapMarkers.push(mk);
+
+        }
+
+    });
+
+}
+
+
+function deletePoint(index){
+
+    if(!confirm('Xóa điểm này?'))
+        return;
+
+    surveyPoints.splice(index,1);
+
+    saveLocal();
+
+    exportKML();
+
+    loadLocal();
+
+}
+
 
 function clearAllData(){
 
