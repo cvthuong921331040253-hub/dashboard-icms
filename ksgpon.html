@@ -494,7 +494,9 @@ function initMap(){
     ).addTo(map);
 
     updateProjectList();
-
+    
+    loadAllProjects();
+    
     initGPS();
 
 map.on('click',function(e){
@@ -1128,7 +1130,28 @@ function openProjectManager(){
     if(!name) return;
 
     currentProject=name;
+    
+    /* RESET DỮ LIỆU */
+    
+    surveyPoints=[];
+    
+    mapMarkers.forEach(m=>{
+    
+        if(!m.isTempImport){
+    
+            map.removeLayer(m);
+    
+        }
+    
+    });
+    
+    mapMarkers=
+    mapMarkers.filter(m=>m.isTempImport);
+    
+    /* TẠO FILE MỚI */
+    
     exportKML();
+
     updateProjectList();
 
     document.getElementById(
