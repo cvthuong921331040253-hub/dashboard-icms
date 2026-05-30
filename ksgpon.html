@@ -743,20 +743,25 @@ function updateProjectList(){
             📂 TẤT CẢ CÔNG TRÌNH
         </option>
     `; 
+   
     let projects=[];
-
-    try{
-
-        projects=
-        JSON.parse(
-            Android.getProjectList()
-        );
-
-    }catch(e){
-
-        projects=[];
-
+    
+    for(let i=0;i<localStorage.length;i++){
+    
+        const key=localStorage.key(i);
+    
+        if(
+            key.startsWith('ksgpon_')
+        ){
+    
+            projects.push(
+                key.replace('ksgpon_','')
+            );
+    
+        }
+    
     }
+
 
     projects.forEach(name=>{
 
@@ -1145,18 +1150,21 @@ function loadAllProjects(){
     mapMarkers=[];
 
     let projects=[];
-
-    try{
-
-        projects=
-        JSON.parse(
-            Android.getProjectList()
-        );
-
-    }catch(e){
-
-        projects=[];
-
+    
+    for(let i=0;i<localStorage.length;i++){
+    
+        const key=localStorage.key(i);
+    
+        if(
+            key.startsWith('ksgpon_')
+        ){
+    
+            projects.push(
+                key.replace('ksgpon_','')
+            );
+    
+        }
+    
     }
 
     projects.forEach(project=>{
@@ -1259,20 +1267,23 @@ function searchPoint(){
     
     if(currentProject==='ALL_PROJECTS'){
     
-        let projects=[];
+    let projects=[];
     
-        try{
+    for(let i=0;i<localStorage.length;i++){
     
-            projects=
-            JSON.parse(
-                Android.getProjectList()
+        const key=localStorage.key(i);
+    
+        if(
+            key.startsWith('ksgpon_')
+        ){
+    
+            projects.push(
+                key.replace('ksgpon_','')
             );
     
-        }catch(e){
-    
-            projects=[];
-    
         }
+    
+    }
     
         projects.forEach(project=>{
     
