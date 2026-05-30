@@ -269,7 +269,8 @@ html,body{
         <i class="fa-solid fa-location-crosshairs"></i>
     </button>
 
-    <button class="tool-btn green" onclick="togglePanel()">
+    <button class="tool-btn green" onclick="createDraggableMarker()">
+
         <i class="fa-solid fa-plus"></i>
     </button>
 
@@ -310,6 +311,9 @@ let lineMode=false;
 let linePoints=[];
 
 let tempPolyline=null;
+
+let draggableMarker=null;
+
 
 initMap();
 
@@ -394,6 +398,46 @@ function goGPS(){
     .bindPopup('📍 Vị trí hiện tại');
 
 }
+
+function createDraggableMarker(){
+
+    if(draggableMarker){
+
+        map.removeLayer(draggableMarker);
+
+    }
+
+    const center=map.getCenter();
+
+    draggableMarker=L.marker(
+        [center.lat,center.lng],
+        {
+            draggable:true
+        }
+    ).addTo(map);
+
+    draggableMarker.bindPopup(
+        '📍 Kéo đến vị trí cần khảo sát<br><br>Bấm marker để nhập thông tin'
+    );
+
+    draggableMarker.on('click',function(){
+
+        const pos=draggableMarker.getLatLng();
+
+        tempPoint={
+            lat:pos.lat,
+            lng:pos.lng
+        };
+
+        document
+            .getElementById('pointPanel')
+            .classList
+            .add('active');
+
+    });
+
+}
+
 
 function togglePanel(){
 
