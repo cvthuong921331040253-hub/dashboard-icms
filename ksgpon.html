@@ -1,344 +1,698 @@
-```html
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>Kho vật tư</title>
+<title>KSGPON SURVEY</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
 <style>
 
-body{
-  margin:0;
-  padding:10px;
-  font-family:Arial;
-  background:#f4f6f9;
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#0b0f14;
+    font-family:Arial,sans-serif;
 }
 
-h2{
-  margin-top:0;
+#map{
+    width:100%;
+    height:100%;
 }
 
 .topbar{
-  display:flex;
-  gap:10px;
-  margin-bottom:10px;
-  flex-wrap:wrap;
+    position:fixed;
+    top:10px;
+    left:10px;
+    right:10px;
+    z-index:9999;
+    background:rgba(10,15,20,.92);
+    border:1px solid #1f2937;
+    border-radius:16px;
+    padding:12px;
+    color:#fff;
+    backdrop-filter:blur(8px);
 }
 
-input,select{
-  padding:8px;
-  border:1px solid #ccc;
-  border-radius:6px;
+.title{
+    font-size:18px;
+    font-weight:bold;
 }
 
-button{
-  padding:8px 14px;
-  border:none;
-  background:#1976d2;
-  color:white;
-  border-radius:6px;
-  cursor:pointer;
+.gps-info{
+    font-size:12px;
+    margin-top:5px;
+    color:#9ca3af;
 }
 
-.card{
-  background:white;
-  border-radius:10px;
-  padding:10px;
-  margin-bottom:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
+.tools{
+    position:fixed;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:9999;
+    display:flex;
+    gap:10px;
+    background:rgba(10,15,20,.95);
+    border:1px solid #1f2937;
+    border-radius:18px;
+    padding:12px;
+    backdrop-filter:blur(8px);
 }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:10px;
-  margin-bottom:10px;
+.tool-btn{
+    width:54px;
+    height:54px;
+    border:none;
+    border-radius:14px;
+    color:white;
+    background:#111827;
+    font-size:20px;
+    cursor:pointer;
 }
 
-.stat{
-  background:white;
-  padding:15px;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
+.tool-btn:active{
+    transform:scale(.95);
 }
 
-.stat h3{
-  margin:0;
-  font-size:14px;
-  color:#666;
+.blue{border:1px solid #2563eb;}
+.green{border:1px solid #16a34a;}
+.yellow{border:1px solid #ca8a04;}
+.purple{border:1px solid #9333ea;}
+.red{border:1px solid #dc2626;}
+.orange{border:1px solid #ea580c;}
+
+.panel{
+    position:fixed;
+    top:95px;
+    right:10px;
+    width:300px;
+    max-height:70vh;
+    overflow:auto;
+    background:rgba(10,15,20,.96);
+    border:1px solid #1f2937;
+    border-radius:16px;
+    padding:14px;
+    z-index:9999;
+    color:white;
+    display:none;
 }
 
-.stat p{
-  margin:8px 0 0;
-  font-size:24px;
-  font-weight:bold;
+.panel h3{
+    margin-top:0;
 }
 
-.table-wrap{
-  overflow:auto;
-  background:white;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
+.input{
+    width:100%;
+    padding:10px;
+    margin-bottom:10px;
+    background:#111827;
+    border:1px solid #374151;
+    border-radius:10px;
+    color:white;
+    box-sizing:border-box;
 }
 
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:1000px;
+.save-btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:#2563eb;
+    color:white;
+    font-weight:bold;
 }
 
-th{
-  background:#1976d2;
-  color:white;
-  position:sticky;
-  top:0;
+.leaflet-popup-content-wrapper{
+    background:#111827;
+    color:white;
 }
 
-th,td{
-  padding:8px;
-  border:1px solid #ddd;
-  font-size:14px;
-}
-
-tr:nth-child(even){
-  background:#fafafa;
-}
-
-.loading{
-  padding:30px;
-  text-align:center;
+.leaflet-popup-tip{
+    background:#111827;
 }
 
 @media(max-width:768px){
 
-  body{
-    padding:5px;
-  }
+.panel{
+    width:calc(100% - 20px);
+    left:10px;
+    right:10px;
+}
 
-  th,td{
-    font-size:12px;
-    padding:6px;
-  }
+.tool-btn{
+    width:48px;
+    height:48px;
+    font-size:18px;
+}
 
 }
 
 </style>
 </head>
-
 <body>
 
-<h2>📦 Kho vật tư</h2>
+<div id="map"></div>
 
-<div class="stats">
-
-  <div class="stat">
-    <h3>Tổng bản ghi</h3>
-    <p id="tong">0</p>
-  </div>
-
-  <div class="stat">
-    <h3>Tổng số lượng</h3>
-    <p id="tongsl">0</p>
-  </div>
-
+<div class="topbar">
+    <div class="title">📡 KSGPON SURVEY</div>
+    <div class="gps-info" id="gpsInfo">
+        Đang lấy GPS...
+    </div>
 </div>
 
-<div class="card">
+<div class="panel" id="pointPanel">
 
-  <div class="topbar">
+    <h3>➕ Điểm khảo sát</h3>
 
-    <input
-      type="text"
-      id="search"
-      placeholder="Tìm mặt hàng..."
-    >
+    <input id="pointName" class="input" placeholder="Tên điểm"/>
 
-    <select id="huyenFilter">
-      <option value="">Tất cả huyện</option>
+    <select id="pointType" class="input">
+        <option value="ODF">🟦 ODF</option>
+        <option value="ODP">🟩 ODP</option>
+        <option value="TAPDIEM">🟨 Tập điểm</option>
+        <option value="KH">🏠 Khách hàng</option>
+        <option value="SC">🔴 Sự cố</option>
     </select>
 
-    <button onclick="loadData()">
-      Reload
+    <textarea id="pointNote" class="input" placeholder="Ghi chú"></textarea>
+
+    <input
+        type="file"
+        accept="image/*"
+        capture="environment"
+        id="pointImage"
+        class="input"
+    />
+
+    <button class="save-btn" onclick="savePoint()">
+        Lưu điểm khảo sát
     </button>
 
-  </div>
+</div>
+
+<div class="tools">
+
+    <button class="tool-btn blue" onclick="goGPS()">
+        <i class="fa-solid fa-location-crosshairs"></i>
+    </button>
+
+    <button class="tool-btn green" onclick="togglePanel()">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <button class="tool-btn yellow" onclick="toggleLineMode()">
+        <i class="fa-solid fa-wave-square"></i>
+    </button>
+
+    <button class="tool-btn purple" onclick="saveLocal()">
+        <i class="fa-solid fa-floppy-disk"></i>
+    </button>
+
+    <button class="tool-btn red" onclick="exportKML()">
+        <i class="fa-solid fa-earth-asia"></i>
+    </button>
+
+    <button class="tool-btn orange" onclick="clearAllData()">
+        <i class="fa-solid fa-trash"></i>
+    </button>
 
 </div>
 
-<div class="table-wrap">
-
-<table>
-
-<thead>
-<tr>
-  <th>MM</th>
-  <th>Mặt hàng</th>
-  <th>ĐVT</th>
-  <th>Trạng thái</th>
-  <th>SL</th>
-  <th>Nhân viên</th>
-  <th>Huyện</th>
-  <th>Loại MH</th>
-  <th>Thời gian</th>
-</tr>
-</thead>
-
-<tbody id="tbody">
-<tr>
-<td colspan="9" class="loading">
-Đang tải dữ liệu...
-</td>
-</tr>
-</tbody>
-
-</table>
-
-</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbwe9SEGZcWwExfIG98_Ycd2JGHAHtd51MEUGTcVahJTQTAgLb2VIg0z2M3KdvEHFyxDZg/exec?sheet=Data%20kho";
+let map;
 
-let allData = [];
+let currentLocation=null;
 
-async function loadData(){
+let surveyPoints=[];
 
-  try{
+let surveyLines=[];
 
-    const res = await fetch(API_URL);
+let tempPoint=null;
 
-    const json = await res.json();
+let lineMode=false;
 
-    allData = json.data || [];
+let linePoints=[];
 
-    renderTable(allData);
+let tempPolyline=null;
 
-    renderStats(allData);
+initMap();
 
-    renderHuyen(allData);
+function initMap(){
 
-  }catch(err){
+    map=L.map('map',{
+        zoomControl:false
+    }).setView([13.9833,108.0000],16);
 
-    document.getElementById("tbody").innerHTML = `
-      <tr>
-        <td colspan="9">
-          Lỗi tải dữ liệu
-        </td>
-      </tr>
+    L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            attribution:'© OpenStreetMap'
+        }
+    ).addTo(map);
+
+    loadLocal();
+
+    initGPS();
+
+    map.on('click',function(e){
+
+        if(lineMode){
+
+            addLinePoint(e.latlng);
+
+        }else{
+
+            tempPoint=e.latlng;
+
+            document.getElementById('pointPanel').style.display='block';
+
+        }
+
+    });
+
+}
+
+function initGPS(){
+
+    navigator.geolocation.watchPosition(pos=>{
+
+        currentLocation={
+            lat:pos.coords.latitude,
+            lng:pos.coords.longitude
+        };
+
+        document.getElementById('gpsInfo').innerHTML=
+        `📍 ${currentLocation.lat.toFixed(6)}, ${currentLocation.lng.toFixed(6)}
+        | Accuracy ${Math.round(pos.coords.accuracy)}m`;
+
+    },err=>{
+
+        alert('Không lấy được GPS');
+
+    },{
+        enableHighAccuracy:true
+    });
+
+}
+
+function goGPS(){
+
+    if(!currentLocation) return;
+
+    map.setView(
+        [currentLocation.lat,currentLocation.lng],
+        18
+    );
+
+    L.circleMarker(
+        [currentLocation.lat,currentLocation.lng],
+        {
+            radius:8,
+            color:'#fff',
+            weight:2,
+            fillColor:'#00d4ff',
+            fillOpacity:1
+        }
+    )
+    .addTo(map)
+    .bindPopup('📍 Vị trí hiện tại');
+
+}
+
+function togglePanel(){
+
+    const p=document.getElementById('pointPanel');
+
+    p.style.display=
+    p.style.display==='block'
+    ? 'none'
+    : 'block';
+
+}
+
+function savePoint(){
+
+    if(!tempPoint){
+
+        alert('Hãy chọn vị trí');
+
+        return;
+
+    }
+
+    const name=document.getElementById('pointName').value || 'Không tên';
+
+    const type=document.getElementById('pointType').value;
+
+    const note=document.getElementById('pointNote').value;
+
+    const imageInput=document.getElementById('pointImage');
+
+    let color='#22c55e';
+
+    if(type==='ODF') color='#3b82f6';
+    if(type==='ODP') color='#22c55e';
+    if(type==='TAPDIEM') color='#eab308';
+    if(type==='KH') color='#f97316';
+    if(type==='SC') color='#ef4444';
+
+    const marker=L.circleMarker(
+        [tempPoint.lat,tempPoint.lng],
+        {
+            radius:8,
+            color:'#fff',
+            weight:2,
+            fillColor:color,
+            fillOpacity:1
+        }
+    ).addTo(map);
+
+    let imageData='';
+
+    if(imageInput.files[0]){
+
+        const reader=new FileReader();
+
+        reader.onload=function(e){
+
+            imageData=e.target.result;
+
+            finishSave();
+
+        };
+
+        reader.readAsDataURL(imageInput.files[0]);
+
+    }else{
+
+        finishSave();
+
+    }
+
+    function finishSave(){
+
+        const pointData={
+
+            name,
+            type,
+            note,
+
+            lat:tempPoint.lat,
+            lng:tempPoint.lng,
+
+            image:imageData
+
+        };
+
+        surveyPoints.push(pointData);
+
+        let popup=`
+            <b>${name}</b><br>
+            ${type}<br>
+            ${note}
+        `;
+
+        if(imageData){
+
+            popup+=`
+            <br><br>
+            <img
+                src="${imageData}"
+                style="
+                    width:180px;
+                    border-radius:10px;
+                "
+            />
+            `;
+        }
+
+        marker.bindPopup(popup);
+
+        saveLocal();
+
+        document.getElementById('pointName').value='';
+
+        document.getElementById('pointNote').value='';
+
+        document.getElementById('pointImage').value='';
+
+        document.getElementById('pointPanel').style.display='none';
+
+        alert('Đã lưu điểm khảo sát');
+
+    }
+
+}
+
+function toggleLineMode(){
+
+    lineMode=!lineMode;
+
+    if(lineMode){
+
+        linePoints=[];
+
+        alert('Đã bật chế độ vẽ tuyến');
+
+    }else{
+
+        if(linePoints.length>1){
+
+            createLine(linePoints);
+
+        }
+
+        alert('Đã tắt chế độ vẽ tuyến');
+
+    }
+
+}
+
+function addLinePoint(latlng){
+
+    linePoints.push(latlng);
+
+    L.circleMarker(
+        [latlng.lat,latlng.lng],
+        {
+            radius:5,
+            color:'#fff',
+            weight:1,
+            fillColor:'#f59e0b',
+            fillOpacity:1
+        }
+    ).addTo(map);
+
+    if(tempPolyline){
+
+        map.removeLayer(tempPolyline);
+
+    }
+
+    tempPolyline=L.polyline(
+        linePoints,
+        {
+            color:'#00e5ff',
+            weight:4
+        }
+    ).addTo(map);
+
+}
+
+function createLine(points){
+
+    L.polyline(
+        points,
+        {
+            color:'#00e5ff',
+            weight:4
+        }
+    ).addTo(map);
+
+    surveyLines.push(
+        points.map(p=>({
+            lat:p.lat,
+            lng:p.lng
+        }))
+    );
+
+    saveLocal();
+
+}
+
+function saveLocal(){
+
+    localStorage.setItem(
+        'ksgpon_data',
+        JSON.stringify({
+            points:surveyPoints,
+            lines:surveyLines
+        })
+    );
+
+}
+
+function loadLocal(){
+
+    const raw=localStorage.getItem('ksgpon_data');
+
+    if(!raw) return;
+
+    const data=JSON.parse(raw);
+
+    surveyPoints=data.points || [];
+
+    surveyLines=data.lines || [];
+
+    surveyPoints.forEach(p=>{
+
+        let color='#22c55e';
+
+        if(p.type==='ODF') color='#3b82f6';
+        if(p.type==='ODP') color='#22c55e';
+        if(p.type==='TAPDIEM') color='#eab308';
+        if(p.type==='KH') color='#f97316';
+        if(p.type==='SC') color='#ef4444';
+
+        let popup=`
+            <b>${p.name}</b><br>
+            ${p.type}<br>
+            ${p.note}
+        `;
+
+        if(p.image){
+
+            popup+=`
+            <br><br>
+            <img
+                src="${p.image}"
+                style="
+                    width:180px;
+                    border-radius:10px;
+                "
+            />
+            `;
+        }
+
+        L.circleMarker(
+            [p.lat,p.lng],
+            {
+                radius:8,
+                color:'#fff',
+                weight:2,
+                fillColor:color,
+                fillOpacity:1
+            }
+        )
+        .addTo(map)
+        .bindPopup(popup);
+
+    });
+
+    surveyLines.forEach(line=>{
+
+        L.polyline(
+            line.map(p=>[p.lat,p.lng]),
+            {
+                color:'#00e5ff',
+                weight:4
+            }
+        ).addTo(map);
+
+    });
+
+}
+
+function exportKML(){
+
+    let kml=`<?xml version="1.0" encoding="UTF-8"?>`;
+
+    kml+=`
+    <kml xmlns="http://www.opengis.net/kml/2.2">
+    <Document>
     `;
 
-    console.log(err);
-  }
-}
+    surveyPoints.forEach(p=>{
 
-function renderTable(data){
+        kml+=`
+        <Placemark>
+            <name>${p.name}</name>
+            <description>${p.note}</description>
+            <Point>
+                <coordinates>
+                    ${p.lng},${p.lat},0
+                </coordinates>
+            </Point>
+        </Placemark>
+        `;
 
-  let html = "";
+    });
 
-  data.forEach(item => {
+    surveyLines.forEach(line=>{
 
-    html += `
-      <tr>
-        <td>${item.mm || ""}</td>
-        <td>${item.mh || ""}</td>
-        <td>${item.dv || ""}</td>
-        <td>${item.tt || ""}</td>
-        <td>${item.sl || 0}</td>
-        <td>${item.nv || ""}</td>
-        <td>${item.huyen || ""}</td>
-        <td>${item.loaimh || ""}</td>
-        <td>${item.tg || ""}</td>
-      </tr>
+        kml+=`
+        <Placemark>
+            <LineString>
+                <coordinates>
+        `;
+
+        line.forEach(p=>{
+
+            kml+=`${p.lng},${p.lat},0 `;
+
+        });
+
+        kml+=`
+                </coordinates>
+            </LineString>
+        </Placemark>
+        `;
+
+    });
+
+    kml+=`
+    </Document>
+    </kml>
     `;
-  });
 
-  document.getElementById("tbody").innerHTML = html;
+    const blob=new Blob(
+        [kml],
+        {
+            type:'application/vnd.google-earth.kml+xml'
+        }
+    );
+
+    const a=document.createElement('a');
+
+    a.href=URL.createObjectURL(blob);
+
+    a.download='ksgpon_survey.kml';
+
+    a.click();
+
 }
 
-function renderStats(data){
+function clearAllData(){
 
-  document.getElementById("tong").innerText =
-    data.length;
+    if(!confirm('Xóa toàn bộ dữ liệu khảo sát?')) return;
 
-  let tongsl = 0;
+    localStorage.removeItem('ksgpon_data');
 
-  data.forEach(i => {
-    tongsl += Number(i.sl || 0);
-  });
+    location.reload();
 
-  document.getElementById("tongsl").innerText =
-    tongsl;
 }
-
-function renderHuyen(data){
-
-  let arr = [...new Set(
-    data.map(i => i.huyen).filter(Boolean)
-  )];
-
-  arr.sort();
-
-  let html =
-    `<option value="">Tất cả huyện</option>`;
-
-  arr.forEach(h => {
-
-    html += `
-      <option value="${h}">
-        ${h}
-      </option>
-    `;
-  });
-
-  document.getElementById("huyenFilter").innerHTML =
-    html;
-}
-
-function filterData(){
-
-  let keyword =
-    document.getElementById("search")
-    .value
-    .toLowerCase();
-
-  let huyen =
-    document.getElementById("huyenFilter")
-    .value;
-
-  let filtered = allData.filter(i => {
-
-    let okSearch =
-      (i.mh || "")
-      .toLowerCase()
-      .includes(keyword);
-
-    let okHuyen =
-      !huyen || i.huyen === huyen;
-
-    return okSearch && okHuyen;
-  });
-
-  renderTable(filtered);
-
-  renderStats(filtered);
-}
-
-document
-.getElementById("search")
-.addEventListener("input", filterData);
-
-document
-.getElementById("huyenFilter")
-.addEventListener("change", filterData);
-
-loadData();
 
 </script>
 
 </body>
 </html>
-```
