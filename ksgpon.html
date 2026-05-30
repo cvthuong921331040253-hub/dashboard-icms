@@ -453,7 +453,7 @@ let draggableMarker=null;
 let mapMarkers=[];
 
 let gpsLock=false;
-let currentProject='GLI';
+let currentProject='';
 initMap();
 
 function initMap(){
@@ -773,21 +773,16 @@ function updateProjectList(){
 
     });
 
-if(projects.length>0){
 
-    if(
-        !projects.includes(currentProject)
-    ){
-
-        currentProject=projects[0];
-
+    if(currentProject){
+    
+        s.value=currentProject;
+    
+    }else{
+    
+        s.value='ALL_PROJECTS';
+    
     }
-
-    s.value=currentProject;
-
-}
-
-}
 
 function changeProject(name){
 
@@ -936,11 +931,31 @@ function openProjectManager(){
 
     if(!name) return;
 
-    currentProject=name;
 
-    exportKML();
+    currentProject=name;
+    
+    if(
+        !localStorage.getItem(
+            'ksgpon_'+currentProject
+        )
+    ){
+    
+        localStorage.setItem(
+            'ksgpon_'+currentProject,
+            JSON.stringify({
+                points:[]
+            })
+        );
+    
+    }
     
     updateProjectList();
+    
+    document.getElementById(
+        'projectSelect'
+    ).value=currentProject;
+    
+    loadLocal();
     
     document.getElementById(
         'projectSelect'
@@ -1403,11 +1418,12 @@ function clearAllData(){
     });
 
     mapMarkers=[];
-    currentProject='ALL_PROJECTS';
-
+   
+    currentProject='';
+    
     updateProjectList();
-
-    loadLocal();
+    
+    loadAllProjects();
 
     alert('Đã xóa công trình');
 
