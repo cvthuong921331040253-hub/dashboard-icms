@@ -783,8 +783,11 @@ function updateProjectList(){
         s.value='ALL_PROJECTS';
     
     }
+    
+    }
+    
+    function changeProject(name){
 
-function changeProject(name){
 
     currentProject=name;
 
@@ -1226,16 +1229,18 @@ function loadAllProjects(){
             );
     
         });
-    
-        map.fitBounds(
-            bounds,
-            {
-                padding:[40,40]
-            }
-        );
-    }
 
-function searchPoint(){
+    map.fitBounds(
+        bounds,
+        {
+            padding:[40,40]
+        }
+    );
+    }
+    
+    }
+    
+    function searchPoint(){
 
     const kw=
     document
