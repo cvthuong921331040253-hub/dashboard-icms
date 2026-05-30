@@ -806,13 +806,19 @@ function updateProjectList(){
 function loadLocal(){
 
     surveyPoints=[];
+  
     mapMarkers.forEach(m=>{
     
-        map.removeLayer(m);
+        if(!m.isTempImport){
+    
+            map.removeLayer(m);
+    
+        }
     
     });
     
-    mapMarkers=[];
+    mapMarkers=
+    mapMarkers.filter(m=>m.isTempImport);
 
     const raw=localStorage.getItem(
     'ksgpon_'+currentProject
@@ -1084,7 +1090,8 @@ function importSurveyFile(event){
             .bindPopup(
                 '<b>FILE TẠM</b><br>'+p.name
             );
-        
+          
+            mk.isTempImport=true;
             mapMarkers.push(mk);
         });
     
