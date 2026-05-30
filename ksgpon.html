@@ -1371,7 +1371,9 @@ function exportKML(){
         kml+=`
         <Placemark>
             <name>${p.name}</name>
-            <description>${p.note}</description>
+            <description>
+            TYPE=${p.type}||NOTE=${p.note}
+            </description>
             <Point>
                 <coordinates>
                     ${p.lng},${p.lat},0
