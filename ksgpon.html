@@ -277,29 +277,31 @@ html,body{
         >
             ➕ Điểm khảo sát
         </h3>
-
-        onclick="
-            document
-            .getElementById('pointPanel')
-            .classList
-            .remove('active');
         
-            document
-            .getElementById('mapOverlay')
-            .classList
-            .remove('active');
-        "
-
+        <button
+            onclick="
+                document
+                .getElementById('pointPanel')
+                .classList
+                .remove('active');
+        
+                document
+                .getElementById('mapOverlay')
+                .classList
+                .remove('active');
+            "
+        
             style="
                 background:none;
                 border:none;
                 color:white;
                 font-size:20px;
+                cursor:pointer;
             "
         >
             ✕
         </button>
-
+        
     </div>
 
     <input
