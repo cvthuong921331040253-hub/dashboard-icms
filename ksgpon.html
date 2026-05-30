@@ -1110,9 +1110,13 @@ function openProjectManager(){
 
     currentProject=name;
 
-    updateProjectList();
-
     exportKML();
+    
+    updateProjectList();
+    
+    document.getElementById(
+        'projectSelect'
+    ).value=currentProject;
     
     loadLocal();
 
@@ -1363,6 +1367,22 @@ function searchPoint(){
     });
 }
 
+function shareProject(){
+
+    if(!currentProject){
+
+        alert('Chưa chọn công trình');
+
+        return;
+
+    }
+
+    Android.shareProject(
+        currentProject
+    );
+
+}
+    
 function deletePoint(index){
 
     if(!confirm('Xóa điểm này?'))
@@ -1378,15 +1398,46 @@ function deletePoint(index){
 
 }
 
-
 function clearAllData(){
 
-    if(!confirm('Xóa toàn bộ dữ liệu khảo sát?')) return;
+    if(
+        !confirm(
+            'Xóa công trình '+currentProject+' ?'
+        )
+    ) return;
+
+    try{
+
+        Android.deleteProject(
+            currentProject
+        );
+
+    }catch(e){
+
+        alert(e);
+
+    }
 
     localStorage.removeItem(
         'ksgpon_'+currentProject
     );
-    location.reload();
+
+    surveyPoints=[];
+    surveyLines=[];
+
+    mapMarkers.forEach(m=>{
+
+        map.removeLayer(m);
+
+    });
+
+    mapMarkers=[];
+
+    updateProjectList();
+
+    loadLocal();
+
+    alert('Đã xóa công trình');
 
 }
 
