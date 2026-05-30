@@ -1223,30 +1223,7 @@ function importSurveyFile(event){
 
     const reader=new FileReader();
 
-    
-    const fileName=
-    file.name.replace(
-        '.kml',
-        ''
-    );
-    
-    currentProject=fileName;
-    
-    surveyPoints=[];
-    
-    mapMarkers.forEach(m=>{
-    
-        if(!m.isTempImport){
-    
-            map.removeLayer(m);
-    
-        }
-    
-    });
-    
-    mapMarkers=[];
-    
-    updateProjectList();
+    reader.onload=function(e){
 
         tempImportPoints=[];
         
@@ -1296,7 +1273,7 @@ function importSurveyFile(event){
             nameNode
             ? nameNode.textContent
             : 'Điểm';
-            surveyPoints.push({
+            tempImportPoints.push({
             name:name,
             type:'ODP',
             note:'',
@@ -1305,7 +1282,7 @@ function importSurveyFile(event){
             });
             }
         }
-        surveyPoints.forEach(p=>{
+        tempImportPoints.forEach(p=>{
         const mk=L.circleMarker(
             [p.lat,p.lng],
             {
@@ -1321,6 +1298,7 @@ function importSurveyFile(event){
                 '<b>FILE TẠM</b><br>'+p.name
             );
           
+            mk.isTempImport=true;
             mapMarkers.push(mk);
         });
     
@@ -1345,12 +1323,6 @@ function importSurveyFile(event){
             );
         
         }
-
-
-        exportKML();
-        
-        loadLocal();
-
         alert('Đã import KML');
     };
 
