@@ -403,6 +403,20 @@ html,body{
 
 <div class="tools">
 
+    <button
+        class="tool-btn purple"
+        onclick="shareProject()"
+    >
+        <i class="fa-solid fa-share-nodes"></i>
+    </button>
+    
+    <button
+        class="tool-btn red"
+        onclick="deleteProject()"
+    >
+        <i class="fa-solid fa-folder-minus"></i>
+    </button>
+    
     <button class="tool-btn blue" onclick="document.getElementById('importFile').click()">
         <i class="fa-solid fa-folder-open"></i>
     </button>
@@ -903,13 +917,19 @@ function updateProjectList(){
 
     });
 
-    if(projects.length>0){
+if(projects.length>0){
+
+    if(
+        !projects.includes(currentProject)
+    ){
 
         currentProject=projects[0];
 
-        s.value=currentProject;
-
     }
+
+    s.value=currentProject;
+
+}
 
 }
 
@@ -1340,13 +1360,15 @@ function searchPoint(){
             .bindPopup(p.name);
 
             mapMarkers.push(mk);
-
+            
+            map.setView(
+                [p.lat,p.lng],
+                20
+            );
+            mk.openPopup();
         }
-
     });
-
 }
-
 
 function deletePoint(index){
 
