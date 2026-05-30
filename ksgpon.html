@@ -254,26 +254,10 @@ html,body{
     <div class="gps-info" id="gpsInfo">
         Đang lấy GPS...
     </div>
+
 <select
     id="projectSelect"
 
-    <input
-        id="searchPoint"
-        placeholder="🔍 Tìm điểm khảo sát"
-    
-        oninput="searchPoint()"
-    
-        style="
-            margin-top:8px;
-            width:100%;
-            padding:10px;
-            border-radius:10px;
-            background:#111827;
-            color:white;
-            border:1px solid #374151;
-            box-sizing:border-box;
-        "
-    />
     onchange="changeProject(this.value)"
 
     style="
@@ -286,6 +270,26 @@ html,body{
         border:1px solid #374151;
     "
 ></select>
+
+<input
+    id="searchPoint"
+
+    placeholder="🔍 Tìm điểm khảo sát"
+
+    oninput="searchPoint()"
+
+    style="
+        margin-top:8px;
+        width:100%;
+        padding:10px;
+        border-radius:10px;
+        background:#111827;
+        color:white;
+        border:1px solid #374151;
+        box-sizing:border-box;
+    "
+/>
+
 </div>
 
 <div class="panel" id="pointPanel">
@@ -857,35 +861,58 @@ function saveLocal(){
 
 }
 
+
 function updateProjectList(){
 
     const s=
-    document.getElementById('projectSelect');
+    document.getElementById(
+        'projectSelect'
+    );
 
     s.innerHTML='';
 
-    for(let i=0;i<localStorage.length;i++){
+    let projects=[];
 
-        const key=localStorage.key(i);
+    try{
 
-        if(key.startsWith('ksgpon_')){
+        projects=
+        JSON.parse(
+            Android.getProjectList()
+        );
 
-            const name=
-            key.replace('ksgpon_','');
+    }catch(e){
 
-            s.innerHTML+=`
-                <option value="${name}">
-                    ${name}
-                </option>
-            `;
-        }
+        projects=[];
 
     }
 
-    s.value=currentProject;
+    projects.forEach(name=>{
+
+        s.innerHTML+=`
+            <option value="${name}">
+                ${name}
+            </option>
+        `;
+
+    });
+
+    if(projects.length>0){
+
+        currentProject=projects[0];
+
+        s.value=currentProject;
+
+    }
 
 }
 
+function changeProject(name){
+
+    currentProject=name;
+
+    loadLocal();
+
+}
 
 function loadLocal(){
 
@@ -1065,6 +1092,8 @@ function openProjectManager(){
 
     updateProjectList();
 
+    exportKML();
+    
     loadLocal();
 
     alert(
@@ -1140,6 +1169,8 @@ function importSurveyFile(event){
 
     const file=event.target.files[0];
 
+    currentProject= file.name.replace('.kml','');
+    
     if(!file) return;
 
     const reader=new FileReader();
