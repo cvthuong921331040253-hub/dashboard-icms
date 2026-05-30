@@ -219,6 +219,10 @@ html,body{
 
 <div id="map"></div>
 
+<div class="bottom-stats" id="bottomStats">
+    📍 0 điểm | 📏 0m
+</div>
+
 <div class="topbar">
     <div class="title">📡 KSGPON SURVEY</div>
     <div class="gps-info" id="gpsInfo">
@@ -269,6 +273,13 @@ html,body{
         <i class="fa-solid fa-location-crosshairs"></i>
     </button>
 
+
+    <button class="tool-btn blue" onclick="toggleGPSLock()">
+        <i class="fa-solid fa-satellite"></i>
+    </button>
+
+
+
     <button class="tool-btn green" onclick="createDraggableMarker()">
 
         <i class="fa-solid fa-plus"></i>
@@ -313,6 +324,8 @@ let linePoints=[];
 let tempPolyline=null;
 
 let draggableMarker=null;
+
+let gpsLock=false;
 
 
 initMap();
@@ -361,6 +374,17 @@ function initGPS(){
             lng:pos.coords.longitude
         };
 
+      
+        if(gpsLock && draggableMarker){
+        
+            draggableMarker.setLatLng([
+                currentLocation.lat,
+                currentLocation.lng
+            ]);
+        
+        }
+
+        
         document.getElementById('gpsInfo').innerHTML=
         `📍 ${currentLocation.lat.toFixed(6)}, ${currentLocation.lng.toFixed(6)}
         | Accuracy ${Math.round(pos.coords.accuracy)}m`;
@@ -375,29 +399,24 @@ function initGPS(){
 
 }
 
-function goGPS(){
 
-    if(!currentLocation) return;
 
-    map.setView(
-        [currentLocation.lat,currentLocation.lng],
-        18
-    );
+function toggleGPSLock(){
 
-    L.circleMarker(
-        [currentLocation.lat,currentLocation.lng],
-        {
-            radius:8,
-            color:'#fff',
-            weight:2,
-            fillColor:'#00d4ff',
-            fillOpacity:1
-        }
-    )
-    .addTo(map)
-    .bindPopup('📍 Vị trí hiện tại');
+    gpsLock=!gpsLock;
+
+    if(gpsLock){
+
+        alert('Đã bật GPS LOCK');
+
+    }else{
+
+        alert('Đã tắt GPS LOCK');
+
+    }
 
 }
+
 
 function createDraggableMarker(){
 
@@ -437,6 +456,32 @@ function createDraggableMarker(){
     });
 
 }
+
+function goGPS(){
+
+    if(!currentLocation) return;
+
+    map.setView(
+        [currentLocation.lat,currentLocation.lng],
+        18
+    );
+
+    L.circleMarker(
+        [currentLocation.lat,currentLocation.lng],
+        {
+            radius:8,
+            color:'#fff',
+            weight:2,
+            fillColor:'#00d4ff',
+            fillOpacity:1
+        }
+    )
+    .addTo(map)
+    .bindPopup('📍 Vị trí hiện tại');
+
+}
+
+
 
 
 function togglePanel(){
@@ -548,6 +593,8 @@ function savePoint(){
 
         saveLocal();
 
+        updateStats();
+
         document.getElementById('pointName').value='';
 
         document.getElementById('pointNote').value='';
@@ -636,6 +683,8 @@ function createLine(points){
 
     saveLocal();
 
+    updateStats();
+
 }
 
 function saveLocal(){
@@ -718,9 +767,47 @@ function loadLocal(){
         ).addTo(map);
 
     });
+updateStats();
+}
+
+
+function updateStats(){
+
+    let totalDistance=0;
+
+    surveyLines.forEach(line=>{
+
+        for(let i=1;i<line.length;i++){
+
+            totalDistance+=map.distance(
+                [line[i-1].lat,line[i-1].lng],
+                [line[i].lat,line[i].lng]
+            );
+
+        }
+
+    });
+
+    let textDistance='0m';
+
+    if(totalDistance>1000){
+
+        textDistance=
+        (totalDistance/1000).toFixed(2)+' km';
+
+    }else{
+
+        textDistance=
+        Math.round(totalDistance)+' m';
+
+    }
+
+    document.getElementById('bottomStats').innerHTML=
+    `📍 ${surveyPoints.length} điểm | 📏 ${textDistance}`;
 
 }
 
+    
 function exportKML(){
 
     let kml=`<?xml version="1.0" encoding="UTF-8"?>`;
