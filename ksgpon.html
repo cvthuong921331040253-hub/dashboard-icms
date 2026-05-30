@@ -252,6 +252,7 @@ html,body{
 <div class="topbar">
     <div class="title">📡 KSGPON SURVEY</div>
     <div class="gps-info" id="gpsInfo">
+    <div id="currentProjectInfo" style=" margin-top:6px; font-size:12px; color:#22c55e; font-weight:bold; " > 📂 Công trình: TRAM_MOI </div>
         Đang lấy GPS...
     </div>
 <select
@@ -408,14 +409,6 @@ html,body{
 
     <button class="tool-btn yellow" onclick="toggleLineMode()">
         <i class="fa-solid fa-wave-square"></i>
-    </button>
-
-    <button class="tool-btn purple" onclick="exportKML()">
-        <i class="fa-solid fa-floppy-disk"></i>
-    </button>
-
-    <button class="tool-btn red" onclick="exportKML()">
-        <i class="fa-solid fa-earth-asia"></i>
     </button>
 
     <button class="tool-btn orange" onclick="clearAllData()">
@@ -879,6 +872,7 @@ function updateProjectList(){
 }
 
 function changeProject(name){
+    document.getElementById( 'currentProjectInfo' ).innerHTML= '📂 Công trình: '+currentProject;
 
     currentProject=name;
 
@@ -959,18 +953,7 @@ function loadLocal(){
             `;
         }
 
-        L.circleMarker(
-            [p.lat,p.lng],
-            {
-                radius:8,
-                color:'#fff',
-                weight:2,
-                fillColor:color,
-                fillOpacity:1
-            }
-        )
-        .addTo(map)
-        .bindPopup(popup);
+    const mk=L.circleMarker( [p.lat,p.lng], { radius:8, color:'#fff', weight:2, fillColor:color, fillOpacity:1 } ) .addTo(map) .bindPopup(popup); mapMarkers.push(mk);
 
     });
 
@@ -1035,6 +1018,7 @@ function openProjectManager(){
     if(!name) return;
 
     currentProject=name;
+    document.getElementById( 'currentProjectInfo' ).innerHTML= '📂 Công trình: '+currentProject;
     updateProjectList();
 
     loadLocal();
