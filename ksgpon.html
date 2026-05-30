@@ -876,6 +876,14 @@ function updateProjectList(){
 
     currentProject=name;
 
+    measurePoints=[];
+    
+    if(measureLine){
+    
+        map.removeLayer(measureLine);
+    
+    }
+
     if(name==='ALL_PROJECTS'){
 
         loadAllProjects();
@@ -1421,11 +1429,17 @@ function loadAllProjects(){
 
     });
 
-    if(mapMarkers.length>0){
+     
+    const realMarkers=
+    mapMarkers.filter(
+        m=>!m.isTempImport
+    );
+    
+    if(realMarkers.length>0){
     
         const bounds=[];
     
-        mapMarkers.forEach(m=>{
+        realMarkers.forEach(m=>{
     
             bounds.push(
                 m.getLatLng()
