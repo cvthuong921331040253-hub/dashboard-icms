@@ -777,12 +777,19 @@ function savePoint(){
     
     }
     
-    const name=
-    inputName
-    ? prefix+inputName
-    : prefix;
 
-    const type=document.getElementById('pointType').value;
+    let name=inputName || prefix;
+    
+    if(
+        editingIndex<0
+    ){
+    
+        name=
+        inputName
+        ? prefix+inputName
+        : prefix;
+    
+    }
 
     const note=document.getElementById('pointNote').value;
 
@@ -790,7 +797,8 @@ function savePoint(){
 
     if(type==='ODF') color='#3b82f6';
     if(type==='ODP') color='#22c55e';
-    if(type==='TAPDIEM') color='#eab308';
+    if(type==='TU_DL') color='#eab308';
+    if(type==='TU_VT') color='#f59e0b';
     if(type==='KH') color='#f97316';
     if(type==='SC') color='#ef4444';
     if(editingIndex>=0){
