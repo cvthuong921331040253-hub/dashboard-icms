@@ -1615,6 +1615,36 @@ function loadAllProjects(){
             if(p.type==='SC') color='#ef4444';
 
             const mk=L.circleMarker(
+            
+            let pressTimer=null;
+            
+            mk.on('mousedown',function(){
+            
+                pressTimer=setTimeout(()=>{
+            
+                    measureDistance(
+                        p.lat,
+                        p.lng
+                    );
+            
+                    navigator.vibrate?.(100);
+            
+                },600);
+            
+            });
+            
+            mk.on('mouseup',function(){
+            
+                clearTimeout(pressTimer);
+            
+            });
+            
+            mk.on('mouseout',function(){
+            
+                clearTimeout(pressTimer);
+            
+            });
+  
                 [p.lat,p.lng],
                 {
                     radius:7,
