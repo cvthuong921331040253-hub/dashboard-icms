@@ -1208,7 +1208,12 @@ function loadLocal(){
 
         if(p.type==='ODF') color='#3b82f6';
         if(p.type==='ODP') color='#22c55e';
-        if(p.type==='TAPDIEM') color='#eab308';
+        if(p.type==='TU_DL')
+            color='#eab308';
+        
+        if(p.type==='TU_VT')
+            color='#f59e0b';
+
         if(p.type==='KH') color='#f97316';
         if(p.type==='SC') color='#ef4444';
 
@@ -1274,7 +1279,7 @@ function loadLocal(){
                 p.lat,
                 p.lng
             );
-    
+            mk.closePopup();
             navigator.vibrate?.(100);
     
         },700);
@@ -1603,7 +1608,11 @@ function loadAllProjects(){
 
             if(p.type==='ODF') color='#3b82f6';
             if(p.type==='ODP') color='#22c55e';
-            if(p.type==='TAPDIEM') color='#eab308';
+            if(p.type==='TU_DL')
+            color='#eab308';
+            
+            if(p.type==='TU_VT')
+                color='#f59e0b';
             if(p.type==='KH') color='#f97316';
             if(p.type==='SC') color='#ef4444';
 
@@ -1633,7 +1642,7 @@ function loadAllProjects(){
                     p.lat,
                     p.lng
                 );
-        
+                mk.closePopup();
                 navigator.vibrate?.(100);
         
             },700);
@@ -1645,6 +1654,7 @@ function loadAllProjects(){
             clearTimeout(pressTimer);
         
         });
+        mapMarkers.push(mk);
 
     });
 
