@@ -409,6 +409,53 @@ html,body{
 
 </div>
 
+    <div class="panel" id="listPanel">
+    
+        <div class="drag-bar"></div>
+    
+        <div
+            style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:10px;
+            "
+        >
+    
+            <h3
+                style="
+                    margin:0;
+                    font-size:16px;
+                "
+            >
+                📋 Danh sách điểm
+            </h3>
+    
+            <button
+                onclick="
+                    document
+                    .getElementById('listPanel')
+                    .classList
+                    .remove('active');
+                "
+    
+                style="
+                    background:none;
+                    border:none;
+                    color:white;
+                    font-size:20px;
+                    cursor:pointer;
+                "
+            >
+                ✕
+            </button>
+    
+        </div>
+    
+        <div id="pointListContainer"></div>
+    
+    </div>
+
 <div class="tools">
 
     <!-- THÊM ĐIỂM -->
@@ -453,6 +500,14 @@ html,body{
         onclick="openProjectManager()"
     >
         <i class="fa-solid fa-folder"></i>
+    </button>
+
+    <!-- LIST -->
+    <button
+        class="tool-btn blue"
+        onclick="openPointList()"
+    >
+        <i class="fa-solid fa-list"></i>
     </button>
 
     <!-- SHARE -->
@@ -1793,6 +1848,134 @@ function loadAllProjects(){
         });
     
     }
+
+function openPointList(){
+
+    let html='';
+
+    surveyPoints.forEach((p,index)=>{
+
+        let color='#22c55e';
+
+        if(p.type==='ODF')
+            color='#3b82f6';
+
+        if(p.type==='TU_DL')
+            color='#eab308';
+
+        if(p.type==='TU_VT')
+            color='#f59e0b';
+
+        if(p.type==='KH')
+            color='#f97316';
+
+        html+=`
+
+        <div
+            style="
+                background:#111827;
+                border:1px solid #1f2937;
+                border-radius:12px;
+                padding:10px;
+                margin-bottom:8px;
+                color:white;
+            "
+        >
+
+            <div
+                style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                "
+            >
+
+                <div>
+
+                    <div
+                        style="
+                            font-weight:700;
+                            color:${color};
+                            font-size:13px;
+                        "
+                    >
+                        ${p.name}
+                    </div>
+
+                    <div
+                        style="
+                            font-size:11px;
+                            color:#9ca3af;
+                            margin-top:2px;
+                        "
+                    >
+                        ${p.type}
+                    </div>
+
+                </div>
+
+                <div
+                    style="
+                        display:flex;
+                        gap:6px;
+                    "
+                >
+
+                    <button
+                        onclick="
+                            map.setView(
+                                [${p.lat},${p.lng}],
+                                20
+                            );
+                        "
+
+                        style="
+                            border:none;
+                            background:#2563eb;
+                            color:white;
+                            padding:6px 8px;
+                            border-radius:8px;
+                        "
+                    >
+                        📍
+                    </button>
+
+                    <button
+                        onclick="
+                            editPoint(${index})
+                        "
+
+                        style="
+                            border:none;
+                            background:#16a34a;
+                            color:white;
+                            padding:6px 8px;
+                            border-radius:8px;
+                        "
+                    >
+                        ✏️
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    document.getElementById(
+        'pointListContainer'
+    ).innerHTML=html;
+
+    document
+    .getElementById('listPanel')
+    .classList
+    .add('active');
+
+}
 
 function shareProject(){
 
