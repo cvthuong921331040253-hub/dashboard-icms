@@ -694,6 +694,18 @@ function createDraggableMarker(){
             ).openPopup();
     
             measurePoints=[];
+
+            setTimeout(()=>{
+            
+                if(measureLine){
+            
+                    map.removeLayer(measureLine);
+            
+                    measureLine=null;
+            
+                }
+            
+            },5000);
     
         }
     
@@ -917,7 +929,6 @@ function savePoint(){
         exportKML();
 
         updateStats();
-        loadLocal();
 
         document.getElementById('pointName').value='';
 
@@ -1430,9 +1441,9 @@ function importSurveyFile(event){
         }
     
     });
-    
+ 
     mapMarkers=
-    mapMarkers.filter(m=>!m.isTempImport);
+    mapMarkers.filter(m=>m.isTempImport===false);
 
         const text=e.target.result;
 
