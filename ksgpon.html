@@ -576,9 +576,15 @@ function initMap(){
     
     initGPS();
 
-map.on('click',function(e){
+    map.on('click',function(e){
+    
+        document
+        .getElementById('listPanel')
+        .classList
+        .remove('active');
+    
+    });
 
-});
 }
 
 function initGPS(){
@@ -1941,8 +1947,16 @@ function openPointList(){
                     </button>
 
                     <button
+                       
                         onclick="
+                        
+                            document
+                            .getElementById('listPanel')
+                            .classList
+                            .remove('active');
+                        
                             editPoint(${index})
+                        
                         "
 
                         style="
