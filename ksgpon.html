@@ -571,9 +571,8 @@ function initMap(){
     ).addTo(map);
 
     updateProjectList();
-    
-    loadAllProjects();
-    
+    changeProject('ALL_PROJECTS');
+
     initGPS();
 
     map.on('click',function(e){
@@ -1055,27 +1054,10 @@ function updateProjectList(){
 
     });
 
-    if(currentProject){
+    currentProject='ALL_PROJECTS';
     
-        s.value=currentProject;
-    
-    }else{
-    
-        if(projects.length>0){
-    
-            currentProject=projects[0];
-    
-            s.value=currentProject;
-    
-            loadLocal();
-    
-        }else{
-    
-            s.value='ALL_PROJECTS';
-    
-        }
-    
-    }
+    s.value='ALL_PROJECTS';
+
 
 }
     
