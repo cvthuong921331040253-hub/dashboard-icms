@@ -1382,55 +1382,75 @@ function updateStats(){
 
 }
 
+
 function openProjectManager(){
 
     const name=prompt(
         'Nhập mã trạm / công trình',
-        currentProject
+        ''
     );
 
     if(!name) return;
 
     currentProject=name;
-    
-    /* RESET DỮ LIỆU */
-    
-    surveyPoints=[];
-    
-    mapMarkers.forEach(m=>{
-    
-        if(!m.isTempImport){
-    
-            map.removeLayer(m);
-    
-        }
-    
-    });
-    
-    mapMarkers=
-    mapMarkers.filter(m=>m.isTempImport);
-    
-    /* TẠO FILE MỚI */
-    
-    exportKML();
 
-    exportKML();
-    
-    setTimeout(()=>{
-    
-        updateProjectList();
-    
-        changeProject(name);
-    
-    },300);
+    surveyPoints=[];
+
+    mapMarkers.forEach(m=>{
+
+        if(!m.isTempImport){
+
+            map.removeLayer(m);
+
+        }
+
+    });
+
+    mapMarkers=
+    mapMarkers.filter(
+        m=>m.isTempImport
+    );
+
+    /* TẠO FILE RỖNG */
+
+    const emptyKML=`
+    <?xml version="1.0" encoding="UTF-8"?>
+    <kml xmlns="http://www.opengis.net/kml/2.2">
+    <Document>
+    </Document>
+    </kml>
+    `;
+
+    Android.saveKMLFile(
+        name+'.kml',
+        emptyKML
+    );
+
+    /* THÊM THẲNG OPTION */
+
+    const s=
+    document.getElementById(
+        'projectSelect'
+    );
+
+    s.innerHTML+=`
+        <option value="${name}">
+            ${name}
+        </option>
+    `;
+
+    s.value=name;
+
+    currentProject=name;
+
+    updateStats();
 
     alert(
-        'Đã chuyển sang công trình: '+
-        currentProject
+        'Đã tạo công trình: '+name
     );
 
 }
-    
+
 function exportKML(){
 
     let kml=`<?xml version="1.0" encoding="UTF-8"?>`;
