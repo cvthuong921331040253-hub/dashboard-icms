@@ -1269,26 +1269,16 @@ function loadLocal(){
     
     mapMarkers.push(mk);
 
-    let pressTimer=null;
+    mk.on('contextmenu',function(){
     
-    mk.on('touchstart',function(){
+        measureDistance(
+            p.lat,
+            p.lng
+        );
     
-        pressTimer=setTimeout(()=>{
+        mk.closePopup();
     
-            measureDistance(
-                p.lat,
-                p.lng
-            );
-            mk.closePopup();
-            navigator.vibrate?.(100);
-    
-        },700);
-    
-    });
-    
-    mk.on('touchend',function(){
-    
-        clearTimeout(pressTimer);
+        navigator.vibrate?.(100);
     
     });
 
@@ -1632,28 +1622,20 @@ function loadAllProjects(){
                 '<b>'+project+'</b><br>'+p.name
             );
             
-        let pressTimer=null;
+   
+        mk.on('contextmenu',function(){
         
-        mk.on('touchstart',function(){
+            measureDistance(
+                p.lat,
+                p.lng
+            );
         
-            pressTimer=setTimeout(()=>{
+            mk.closePopup();
         
-                measureDistance(
-                    p.lat,
-                    p.lng
-                );
-                mk.closePopup();
-                navigator.vibrate?.(100);
-        
-            },700);
+            navigator.vibrate?.(100);
         
         });
-        
-        mk.on('touchend',function(){
-        
-            clearTimeout(pressTimer);
-        
-        });
+
         mapMarkers.push(mk);
 
     });
