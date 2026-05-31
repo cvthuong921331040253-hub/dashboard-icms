@@ -861,6 +861,19 @@ function togglePanel(){
 
 
 function savePoint(){
+   
+    if(
+        !currentProject ||
+        currentProject==='ALL_PROJECTS'
+    ){
+    
+        alert(
+            'Hãy chọn công trình'
+        );
+    
+        return;
+    
+    }
 
     if(!tempPoint){
 
@@ -1401,13 +1414,15 @@ function openProjectManager(){
     
     exportKML();
 
-    updateProjectList();
-
-    document.getElementById(
-        'projectSelect'
-    ).value=currentProject;
-
-    loadLocal();
+    exportKML();
+    
+    setTimeout(()=>{
+    
+        updateProjectList();
+    
+        changeProject(name);
+    
+    },300);
 
     alert(
         'Đã chuyển sang công trình: '+
