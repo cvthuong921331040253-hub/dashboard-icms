@@ -1263,11 +1263,10 @@ function loadLocal(){
     .bindPopup(popup);
     
     mapMarkers.push(mk);
-    
- 
+
     let pressTimer=null;
     
-    mk.on('mousedown',function(){
+    mk.on('touchstart',function(){
     
         pressTimer=setTimeout(()=>{
     
@@ -1278,17 +1277,11 @@ function loadLocal(){
     
             navigator.vibrate?.(100);
     
-        },600);
+        },700);
     
     });
     
-    mk.on('mouseup',function(){
-    
-        clearTimeout(pressTimer);
-    
-    });
-    
-    mk.on('mouseout',function(){
+    mk.on('touchend',function(){
     
         clearTimeout(pressTimer);
     
@@ -1630,37 +1623,27 @@ function loadAllProjects(){
                 '<b>'+project+'</b><br>'+p.name
             );
             
-            let pressTimer=null;
-            
-            mk.on('mousedown',function(){
-            
-                pressTimer=setTimeout(()=>{
-            
-                    measureDistance(
-                        p.lat,
-                        p.lng
-                    );
-            
-                    navigator.vibrate?.(100);
-            
-                },600);
-            
-            });
-            
-            mk.on('mouseup',function(){
-            
-                clearTimeout(pressTimer);
-            
-            });
-            
-            mk.on('mouseout',function(){
-            
-                clearTimeout(pressTimer);
-            
-            });
-            
-            mapMarkers.push(mk);
-
+        let pressTimer=null;
+        
+        mk.on('touchstart',function(){
+        
+            pressTimer=setTimeout(()=>{
+        
+                measureDistance(
+                    p.lat,
+                    p.lng
+                );
+        
+                navigator.vibrate?.(100);
+        
+            },700);
+        
+        });
+        
+        mk.on('touchend',function(){
+        
+            clearTimeout(pressTimer);
+        
         });
 
     });
