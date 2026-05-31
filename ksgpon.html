@@ -1264,14 +1264,36 @@ function loadLocal(){
     
     mapMarkers.push(mk);
     
-    mk.on('click',function(){
+ 
+    let pressTimer=null;
     
-        measureDistance(
-            p.lat,
-            p.lng
-        );
+    mk.on('mousedown',function(){
+    
+        pressTimer=setTimeout(()=>{
+    
+            measureDistance(
+                p.lat,
+                p.lng
+            );
+    
+            navigator.vibrate?.(100);
+    
+        },600);
     
     });
+    
+    mk.on('mouseup',function(){
+    
+        clearTimeout(pressTimer);
+    
+    });
+    
+    mk.on('mouseout',function(){
+    
+        clearTimeout(pressTimer);
+    
+    });
+
  });
 
 updateStats();
