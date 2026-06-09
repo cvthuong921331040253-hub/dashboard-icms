@@ -233,27 +233,38 @@ input[type="checkbox"]:checked + .checkbox-btn {
   border-bottom: 1px solid #fbc02d;
 }
 
-.marquee-banner::before{
-  content: "⚠️ KPI đang bảo trì update số liệu dự kiến ngày 14/06 sẽ hoạt động lại, xin thông cảm vì sự bất tiện này! ";
+.marquee-banner{
+  overflow: hidden;
+  white-space: nowrap;
+  background: #ffeb3b;
+  color: #d32f2f;
+  font-weight: bold;
+  padding: 8px 0;
+  border-bottom: 1px solid #fbc02d;
+}
+
+.marquee-text{
   display: inline-block;
   padding-left: 100%;
-  animation: marquee 18s linear infinite;
+  animation: marquee 15s linear infinite;
 }
 
 @keyframes marquee{
-  from{
+  0%{
     transform: translateX(0);
   }
-  to{
+  100%{
     transform: translateX(-100%);
   }
-} 
+}
 </style>
 </head>
 
 <body>
 <div class="marquee-banner">
-  KPI đang bảo trì update số liệu dự kiến ngày 14/06 sẽ hoạt động lại, xin thông cảm vì sự bất tiện này!
+  <div class="marquee-text">
+    ⚠️ KPI đang bảo trì update số liệu dự kiến ngày 14/06 sẽ hoạt động lại, xin thông cảm vì sự bất tiện này!
+  </div>
 </div>
   <div id="kpiUI">
 <div class="header-fixed">
