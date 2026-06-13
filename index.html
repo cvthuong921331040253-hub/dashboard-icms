@@ -574,7 +574,11 @@ tableDataGlobal.forEach(r=>{
 });
 
 // 👉 dòng 16+ (tính KPI)
-    allData = rawData.slice(14);
+    allData = rawData.slice(14).filter(r =>
+    Number(r.tong_tk_moi || 0) > 0 ||
+    Number(r.tong_tk_co_san || 0) > 0 ||
+    Number(r.tong_sc || 0) > 0
+  );
 
     allData.forEach(r=> r.score = calcScore(r));
     allData.sort((a,b)=> b.score - a.score);
