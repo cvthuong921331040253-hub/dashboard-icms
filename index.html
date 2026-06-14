@@ -257,6 +257,18 @@ input[type="checkbox"]:checked + .checkbox-btn {
     transform: translateX(-100%);
   }
 }
+
+.switch-btn{
+  padding:5px 8px;
+  border:none;
+  border-radius:8px;
+
+  background:#fff3cd;
+  color:#856404;
+
+  font-size:13px;
+  cursor:pointer;
+}  
 </style>
 </head>
 
@@ -272,10 +284,24 @@ input[type="checkbox"]:checked + .checkbox-btn {
 <div class="header-fixed">
   <div class="header-title">
   <div>
-    <h2>📊 KPI CĐBR</h2>
+    <h2 id="pageTitle">📊 KPI CĐBR</h2>
     <div id="logtime" class="logtime"></div>
   </div>
-  <button onclick="reloadPage()" class="reload-btn">🔄</button>
+  <div style="display:flex;gap:5px;">
+
+<button onclick="openCurrentKPI()" class="switch-btn">
+📊 KPI hiện tại
+</button>
+
+<button onclick="openOldKPI()" class="switch-btn">
+📅 KPI tháng trước
+</button>
+
+<button onclick="reloadPage()" class="reload-btn">
+🔄
+</button>
+
+</div>
 </div>
   <div class="header-filter">
   <input id="nv" placeholder="Tìm nhân viên..." onkeyup="filter()"><br>
@@ -313,7 +339,34 @@ input[type="checkbox"]:checked + .checkbox-btn {
   <div id="data"></div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget CDBR";
+const params = new URLSearchParams(window.location.search);
+const kpiType = params.get("kpi");
+
+let API = "";
+
+if(kpiType === "old"){
+
+  API =
+  "https://script.google.com/macros/s/AKfycbxkWbVLZ9H29HT2c91ezPlkT5saKjG4FK_klG7ykFoRv8ghOc10uSBvsu8o3sw86m33og/exec?sheet=Taget%20CDBRn";
+
+}else{
+
+  API =
+  "https://script.google.com/macros/s/AKfycbwO6Jw4qg0Q_xkhj06eSAxudH-G7u1Vny_GyASbPfqyfL6EImF2No2YUe46y00tSEYF/exec?sheet=Taget%20CDBR";
+
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+
+  const title = document.getElementById("pageTitle");
+
+  if(kpiType === "old"){
+    title.innerText = "📅 KPI Sự cố tháng trước";
+  }else{
+    title.innerText = "📊 KPI CĐBR";
+  }
+
+});
 let allData = [];
 let tableDataGlobal = [];
 let showBadOnly = false;
@@ -867,6 +920,15 @@ function renderTableExcel(data){
   html += "</table>";
 
   document.getElementById("tableKPI").innerHTML = html;
+}
+
+function openCurrentKPI(){
+  window.location.href = window.location.pathname;
+}
+
+function openOldKPI(){
+  window.location.href =
+    window.location.pathname + "?kpi=old";
 }
 </script>
 </div>
