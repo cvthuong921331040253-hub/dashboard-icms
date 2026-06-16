@@ -3394,7 +3394,7 @@ const url =
     .toUpperCase();
 
   const url =
-  `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check||"")}&account=${encodeURIComponent(account)}&check=${encodeURIComponent(check)}`;
+  `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check||"")}&account=${encodeURIComponent(account)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(row.nv||row.ten_nv||"")}`;
 
   window.open(url,"_blank");
 
