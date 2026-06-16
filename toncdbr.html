@@ -3284,11 +3284,14 @@
   
   if(daNhap){
   
-  alert(
-  "Account này đã nhập bypass.\n\nChỉ được chỉnh sửa trong mục 'ĐÃ NHẬP BYPASS PORT, HOME KÉM'."
-  );
+    if(!duocMoKhoa){
   
-  return;
+      alert(
+        "Account này đã nhập bypass.\n\nChỉ được chỉnh sửa trong mục 'ĐÃ NHẬP BYPASS PORT, HOME KÉM'."
+      );
+  
+      return;
+    }
   
   }
     
