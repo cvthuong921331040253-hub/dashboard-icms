@@ -3284,14 +3284,11 @@
   
   if(daNhap){
   
-    if(!duocMoKhoa){
+    alert(
+      "Account này đã nhập bypass.\n\nChỉ được chỉnh sửa trong mục ĐÃ NHẬP BYPASS PORT, HOME KÉM."
+    );
   
-      alert(
-        "Account này đã nhập bypass.\n\nChỉ được chỉnh sửa trong mục 'ĐÃ NHẬP BYPASS PORT, HOME KÉM'."
-      );
-  
-      return;
-    }
+    return;
   
   }
     
@@ -3370,6 +3367,38 @@ const url =
   );
   
   }
+
+
+  function editBypass(row){
+
+  const duocMoKhoa =
+    String(row.unlock_edit || "")
+    .trim()
+    .toLowerCase() === "true";
+
+  if(!duocMoKhoa){
+
+    alert(
+      "Account chưa được mở khóa sửa."
+    );
+
+    return;
+
+  }
+
+  const account = row.account || "";
+
+  const check =
+    String(row.check || "")
+    .trim()
+    .toUpperCase();
+
+  const url =
+  `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check||"")}&account=${encodeURIComponent(account)}&check=${encodeURIComponent(check)}`;
+
+  window.open(url,"_blank");
+
+}
     
   async function unlockEdit(row){
 
@@ -3663,7 +3692,7 @@ const url =
   
   <button
   class="account-action-btn"
-  onclick='openInput(${JSON.stringify(row)})'
+  onclick='editBypass(${JSON.stringify(row)})'
   style="
   border:none;
   background:#2563eb;
