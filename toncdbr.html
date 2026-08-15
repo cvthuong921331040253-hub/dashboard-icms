@@ -686,6 +686,17 @@
   }
   
   
+  .chart-title{
+  font-size:14px;
+  font-weight:700;
+  margin-bottom:10px;
+  color:#111827;
+  line-height:1.25;
+  min-height:18px;
+  display:flex;
+  align-items:center;
+  }
+
   .chart-box{
   
   background:#fff;
@@ -715,12 +726,2330 @@
   }
   /* BIỂU ĐỒ */
 
-  </style>
+  
+/* =========================================================
+   NOTEBOOK ĐÁNH GIÁ - ĐẶT BÊN PHẢI KHU VỰC DIỄN BIẾN THEO NGÀY
+   ========================================================= */
+.daily-notebook-layout{
+  display:block;
+  width:100%;
+  margin-bottom:20px;
+}
+.daily-notebook-layout > #dailyTrendGrid{
+  width:100%;
+  min-width:0;
+}
+.evaluation-notebook{
+  position:relative;
+  width:100%;
+  margin-top:16px;
+  background:
+    linear-gradient(90deg,rgba(248,113,113,.10) 0,rgba(248,113,113,.10) 2px,transparent 2px),
+    repeating-linear-gradient(to bottom,#fffdf5 0,#fffdf5 31px,#efe7d3 32px);
+  border:1px solid #e7dfcf;
+  border-radius:16px;
+  padding:18px 16px 16px 42px;
+  box-shadow:0 10px 28px rgba(15,23,42,.08);
+  overflow:hidden;
+}
+.evaluation-notebook:before{
+  content:"";
+  position:absolute;
+  left:14px;
+  top:0;
+  bottom:0;
+  width:1px;
+  background:#fca5a5;
+  opacity:.65;
+}
+.evaluation-notebook:after{
+  content:"📌";
+  position:absolute;
+  right:14px;
+  top:10px;
+  font-size:23px;
+  transform:rotate(10deg);
+}
+.notebook-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0 34px 5px 0;
+  font-size:17px;
+  font-weight:800;
+  color:#172033;
+}
+.notebook-subtitle{
+  color:#7c6f5b;
+  font-size:11px;
+  margin-bottom:12px;
+  line-height:1.45;
+}
+.evaluation-notebook #evaluationNotebookContent{
+  display:block;
+  width:100%;
+}
+
+.evaluation-notebook .notebook-section{
+  width:100%;
+  margin-bottom:18px;
+}
+.notebook-section{
+  margin-top:4px;
+  min-width:0;
+}
+.notebook-section-title{
+  min-height:34px;
+}
+.notebook-section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:7px 0;
+  border-bottom:1px dashed #d8c9a8;
+  color:#6b4423;
+  font-size:12px;
+  font-weight:800;
+  text-transform:uppercase;
+}
+.notebook-metric-group{
+  min-width:0;
+  padding:0 4px 8px;
+  border-bottom:1px dashed rgba(214,197,164,.55);
+}
+.notebook-section > 
+.evaluation-notebook .notebook-section:nth-child(3){
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:0 12px;
+}
+.evaluation-notebook .notebook-section:nth-child(3) .notebook-section-title{
+  grid-column:1/-1;
+}
+.notebook-month-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:3px 8px;
+  border-radius:999px;
+  background:#e0f2fe;
+  color:#0369a1;
+  font-size:9px;
+  font-weight:800;
+}
+
+.notebook-metric{
+  margin-top:4px;
+}
+
+.evaluation-notebook .notebook-section:first-child{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:0 12px;
+}
+.evaluation-notebook .notebook-section:first-child .notebook-section-title{
+  grid-column:1/-1;
+}
+.evaluation-notebook .notebook-section:nth-child(2){
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0 12px;
+}
+.evaluation-notebook .notebook-section:nth-child(2) .notebook-section-title{
+  grid-column:1/-1;
+}
+
+.notebook-metric{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+  align-items:center;
+  padding:7px 0 5px;
+  border-bottom:1px dashed rgba(214,197,164,.65);
+  cursor:pointer;
+  transition:.15s ease;
+}
+.notebook-metric:hover{
+  transform:translateX(2px);
+  background:rgba(255,247,214,.65);
+}
+.notebook-metric:last-child{border-bottom:0;}
+.notebook-label{
+  color:#374151;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.35;
+}
+.notebook-value{
+  min-width:30px;
+  padding:3px 8px;
+  border-radius:999px;
+  background:#fee2e2;
+  color:#b91c1c;
+  font-size:11px;
+  font-weight:800;
+  text-align:center;
+}
+.notebook-toplist{
+  padding:5px 0 7px;
+}
+.notebook-rank-row{
+  display:grid;
+  grid-template-columns:22px minmax(0,1fr) auto;
+  gap:7px;
+  align-items:center;
+  padding:5px 0;
+  cursor:pointer;
+  border-radius:7px;
+}
+.notebook-rank-row:hover{
+  background:rgba(255,247,214,.75);
+}
+.notebook-rank{
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#e5e7eb;
+  color:#374151;
+  font-size:9px;
+  font-weight:800;
+}
+.notebook-rank-row:nth-child(1) .notebook-rank{
+  background:#f59e0b;color:#fff;
+}
+.notebook-rank-row:nth-child(2) .notebook-rank{
+  background:#9ca3af;color:#fff;
+}
+.notebook-rank-row:nth-child(3) .notebook-rank{
+  background:#b45309;color:#fff;
+}
+.notebook-rank-name{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#374151;
+  font-size:10.5px;
+  font-weight:700;
+}
+.notebook-rank-count{
+  min-width:28px;
+  padding:2px 7px;
+  border-radius:999px;
+  background:#1f2937;
+  color:#fff;
+  text-align:center;
+  font-size:10px;
+  font-weight:800;
+}
+.notebook-empty{
+  padding:7px 0;
+  color:#9ca3af;
+  font-size:10px;
+  font-style:italic;
+}
+.notebook-foot{
+  margin-top:10px;
+  padding-top:8px;
+  border-top:1px dashed #d8c9a8;
+  color:#8b7a61;
+  font-size:9.5px;
+  line-height:1.4;
+}
+
+.july-evaluation-section{
+  display:block !important;
+}
+.july-two-columns{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:18px;
+  margin-top:8px;
+}
+.july-column{
+  min-width:0;
+  padding:10px 12px 8px;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  background:rgba(255,255,255,.52);
+}
+.july-tkm-column{
+  border-top:3px solid #2563eb;
+}
+.july-sc-column{
+  border-top:3px solid #dc2626;
+}
+.july-column-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:4px;
+  padding-bottom:7px;
+  border-bottom:1px solid #e5e7eb;
+  font-size:12px;
+  font-weight:900;
+  color:#1f2937;
+}
+.july-column-sub{
+  font-size:9px;
+  font-weight:700;
+  color:#6b7280;
+}
+.july-note-metric{
+  padding:4px 0 8px;
+}
+.july-note-metric + .july-note-metric{
+  border-top:1px dashed #ddd6c7;
+  padding-top:8px;
+}
+.july-note-metric-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+  align-items:center;
+  cursor:pointer;
+  padding:4px 5px;
+  border-radius:7px;
+}
+.july-note-metric-head:hover{
+  background:#f8fafc;
+}
+.july-note-label{
+  font-size:10.5px;
+  font-weight:800;
+}
+.july-note-total{
+  min-width:30px;
+  padding:2px 7px;
+  border-radius:999px;
+  background:#f1f5f9;
+  color:#334155;
+  text-align:center;
+  font-size:10px;
+  font-weight:900;
+}
+
+@media(max-width:1100px){
+  .july-two-columns{grid-template-columns:1fr;}
+  .evaluation-notebook .notebook-section:first-child{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+  .evaluation-notebook .notebook-section:nth-child(2){
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+@media(max-width:800px){
+  .evaluation-notebook{
+    padding:14px 12px 14px 34px;
+  }
+  .evaluation-notebook #evaluationNotebookContent{
+    display:block;
+  }
+  .evaluation-notebook .notebook-section:first-child,
+  .evaluation-notebook .notebook-section:nth-child(2){
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:0 8px;
+    margin-bottom:12px;
+  }
+}
+@media(max-width:520px){
+  .evaluation-notebook .notebook-section:first-child,
+  .evaluation-notebook .notebook-section:nth-child(2){
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ===== NOTEBOOK PRO: DÀN TRẢI + ĐỒNG BỘ DASHBOARD ===== */
+.evaluation-notebook{
+  margin-top:18px;
+  padding:18px 20px 18px 46px;
+  border-radius:14px;
+  background:
+    linear-gradient(90deg,rgba(248,113,113,.08) 0,rgba(248,113,113,.08) 2px,transparent 2px),
+    repeating-linear-gradient(to bottom,#fffdf8 0,#fffdf8 31px,#eee8dc 32px);
+  border:1px solid #dfe5ee;
+  box-shadow:0 4px 14px rgba(15,23,42,.06);
+}
+
+.evaluation-notebook .notebook-title{
+  font-size:16px;
+  color:#172033;
+  margin-bottom:2px;
+}
+
+.evaluation-notebook .notebook-subtitle{
+  margin-bottom:14px;
+  color:#64748b;
+}
+
+.evaluation-notebook .notebook-section:first-child,
+.evaluation-notebook .notebook-section:nth-child(2){
+  display:grid;
+  gap:0 14px;
+  background:rgba(255,255,255,.35);
+  border:1px solid rgba(226,232,240,.75);
+  border-radius:12px;
+  padding:8px 12px 4px;
+}
+
+.evaluation-notebook .notebook-section:first-child{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.evaluation-notebook .notebook-section:nth-child(2){
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.evaluation-notebook .notebook-section:first-child .notebook-section-title,
+.evaluation-notebook .notebook-section:nth-child(2) .notebook-section-title{
+  grid-column:1/-1;
+  margin-bottom:2px;
+}
+
+.evaluation-notebook .notebook-metric-group{
+  padding:0 6px 9px;
+  min-width:0;
+}
+
+.evaluation-notebook .notebook-metric{
+  min-height:31px;
+  padding:6px 4px;
+}
+
+.evaluation-notebook .notebook-label{
+  font-size:11px;
+}
+
+.evaluation-notebook .notebook-toplist{
+  padding:5px 4px 7px;
+}
+
+.evaluation-notebook .notebook-rank-row{
+  padding:4px 2px;
+}
+
+.evaluation-notebook .july-evaluation-section{
+  display:block !important;
+  padding:0;
+  border:0;
+  background:transparent;
+}
+
+.evaluation-notebook .july-two-columns{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+
+.evaluation-notebook .july-column{
+  background:rgba(255,255,255,.72);
+  border-color:#dfe5ee;
+  box-shadow:0 2px 8px rgba(15,23,42,.04);
+}
+
+@media(max-width:1100px){
+  .evaluation-notebook .notebook-section:first-child{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .evaluation-notebook .notebook-section:nth-child(2){
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:700px){
+  .evaluation-notebook .notebook-section:first-child,
+  .evaluation-notebook .notebook-section:nth-child(2){
+    grid-template-columns:1fr;
+  }
+  .evaluation-notebook .july-two-columns{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* =========================================================
+   NOTEBOOK / BẢNG ĐÁNH GIÁ - GIAO DIỆN BÁO CÁO TRỰC QUAN
+   ========================================================= */
+
+.evaluation-notebook{
+  position:relative;
+  width:100%;
+  margin:18px 0 24px;
+  padding:18px 20px 20px;
+  background:#ffffff;
+  border:1px solid #dfe4ea;
+  border-radius:12px;
+  box-shadow:0 3px 12px rgba(15,23,42,.07);
+  overflow:hidden;
+}
+
+/* thanh tiêu đề giống báo cáo */
+.evaluation-notebook .notebook-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 0 5px;
+  padding:10px 14px;
+  border:1px solid #e9002b;
+  border-radius:8px;
+  background:#fff;
+  color:#e9002b;
+  font-size:18px;
+  font-weight:800;
+  letter-spacing:.1px;
+}
+
+.evaluation-notebook .notebook-title:after{
+  content:"📌";
+  font-size:21px;
+  transform:rotate(8deg);
+}
+
+.evaluation-notebook .notebook-subtitle{
+  margin:0 0 14px;
+  padding:0 3px;
+  color:#64748b;
+  font-size:11px;
+  line-height:1.4;
+}
+
+/* bỏ hoàn toàn kiểu giấy kẻ dòng cũ */
+.evaluation-notebook:before,
+.evaluation-notebook:after{
+  display:none !important;
+}
+
+.evaluation-notebook #evaluationNotebookContent{
+  display:block !important;
+  width:100%;
+}
+
+/* Thanh tiêu đề section đỏ */
+.evaluation-notebook .notebook-section{
+  width:100%;
+  margin:0 0 16px;
+  padding:0;
+  background:#fff;
+  border:0;
+}
+
+.evaluation-notebook .notebook-section-title{
+  min-height:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:0 0 10px;
+  padding:9px 13px;
+  border:0;
+  border-radius:7px;
+  background:#e9002b;
+  color:#fff;
+  font-size:14px;
+  font-weight:800;
+  text-transform:uppercase;
+  box-shadow:0 2px 5px rgba(233,0,43,.15);
+}
+
+.evaluation-notebook .notebook-section-title span:last-child{
+  color:#fff !important;
+  opacity:.9;
+  font-size:10px !important;
+}
+
+/* Huyện: 4 nhóm / hàng, nhìn như bảng báo cáo */
+.evaluation-notebook .notebook-section:first-child{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+}
+
+.evaluation-notebook .notebook-section:first-child .notebook-section-title{
+  grid-column:1/-1;
+}
+
+.evaluation-notebook .notebook-metric-group{
+  min-width:0;
+  padding:10px 11px 8px;
+  background:#fff;
+  border:1px solid #e1e5eb;
+  border-radius:8px;
+  box-shadow:0 1px 4px rgba(15,23,42,.035);
+}
+
+.evaluation-notebook .notebook-metric{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:8px;
+  min-height:32px;
+  margin:0;
+  padding:5px 0 7px;
+  border-bottom:1px solid #edf0f3;
+  cursor:pointer;
+}
+
+.evaluation-notebook .notebook-metric:hover{
+  background:#fff5f6;
+  transform:none;
+}
+
+.evaluation-notebook .notebook-label{
+  color:#334155 !important;
+  font-size:11px;
+  font-weight:800;
+}
+
+.evaluation-notebook .notebook-value{
+  min-width:34px;
+  padding:4px 8px;
+  border-radius:5px;
+  background:#fee2e2 !important;
+  color:#e9002b !important;
+  font-size:11px;
+  font-weight:900;
+}
+
+.evaluation-notebook .notebook-toplist{
+  padding:4px 0 1px;
+}
+
+.evaluation-notebook .notebook-rank-row{
+  display:grid;
+  grid-template-columns:23px minmax(0,1fr) auto;
+  gap:7px;
+  align-items:center;
+  min-height:28px;
+  padding:3px 2px;
+  border-bottom:1px solid #f1f3f5;
+  border-radius:4px;
+}
+
+.evaluation-notebook .notebook-rank-row:hover{
+  background:#f8fafc;
+}
+
+.evaluation-notebook .notebook-rank{
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  font-size:9px;
+}
+
+.evaluation-notebook .notebook-rank-name{
+  color:#1f2937;
+  font-size:10.5px;
+  font-weight:700;
+}
+
+.evaluation-notebook .notebook-rank-count{
+  min-width:28px;
+  padding:3px 7px;
+  border-radius:5px;
+  background:#1f2937;
+  color:#fff;
+  font-size:10px;
+  font-weight:800;
+}
+
+/* Nhân viên: 3 nhóm / hàng */
+.evaluation-notebook .notebook-section:nth-child(2){
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+
+.evaluation-notebook .notebook-section:nth-child(2) .notebook-section-title{
+  grid-column:1/-1;
+}
+
+/* Tồn tháng 7: 2 bảng lớn TKM / SC */
+.evaluation-notebook .notebook-section:nth-child(3){
+  display:block !important;
+}
+
+.evaluation-notebook .july-two-columns{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:14px;
+  margin-top:0;
+}
+
+.evaluation-notebook .july-column{
+  min-width:0;
+  padding:0;
+  background:#fff;
+  border:1px solid #dfe4ea;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 2px 7px rgba(15,23,42,.04);
+}
+
+.evaluation-notebook .july-tkm-column{
+  border-top:4px solid #2563eb;
+}
+
+.evaluation-notebook .july-sc-column{
+  border-top:4px solid #e9002b;
+}
+
+.evaluation-notebook .july-column-title{
+  min-height:42px;
+  margin:0;
+  padding:10px 13px;
+  border-bottom:1px solid #e5e7eb;
+  background:#f8fafc;
+  color:#1f2937;
+  font-size:13px;
+  font-weight:900;
+}
+
+.evaluation-notebook .july-column-sub{
+  color:#64748b;
+  font-size:10px;
+}
+
+.evaluation-notebook .july-note-metric{
+  padding:9px 13px;
+}
+
+.evaluation-notebook .july-note-metric + .july-note-metric{
+  border-top:1px solid #edf0f3;
+}
+
+.evaluation-notebook .july-note-metric-head{
+  padding:5px 6px;
+  border-radius:5px;
+}
+
+.evaluation-notebook .july-note-metric-head:hover{
+  background:#f8fafc;
+}
+
+.evaluation-notebook .july-note-label{
+  color:#334155;
+  font-size:11px;
+  font-weight:800;
+}
+
+.evaluation-notebook .july-note-total{
+  min-width:34px;
+  padding:4px 8px;
+  border-radius:5px;
+  background:#f1f5f9;
+  color:#1f2937;
+  font-size:10px;
+  font-weight:900;
+}
+
+/* chân bảng */
+.evaluation-notebook .notebook-foot{
+  margin-top:12px;
+  padding:9px 12px 0;
+  border-top:1px solid #e5e7eb;
+  color:#64748b;
+  font-size:9.5px;
+  line-height:1.45;
+}
+
+/* responsive */
+@media(max-width:1200px){
+  .evaluation-notebook .notebook-section:first-child{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .evaluation-notebook .notebook-section:nth-child(2){
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:900px){
+  .evaluation-notebook{
+    padding:14px;
+  }
+  .evaluation-notebook .notebook-section:first-child,
+  .evaluation-notebook .notebook-section:nth-child(2){
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .evaluation-notebook .july-two-columns{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:600px){
+  .evaluation-notebook .notebook-section:first-child,
+  .evaluation-notebook .notebook-section:nth-child(2){
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* =========================================================
+   NOTEBOOK FLAT - ĐỒNG BỘ VỚI DASHBOARD
+   ========================================================= */
+
+/* Khung chính: phẳng, sạch, cùng ngôn ngữ với các chart/card */
+.evaluation-notebook{
+  margin:16px 0 22px !important;
+  padding:14px !important;
+  background:#fff !important;
+  border:1px solid #dbe3ec !important;
+  border-radius:10px !important;
+  box-shadow:none !important;
+}
+
+/* Header */
+.evaluation-notebook .notebook-title{
+  min-height:40px;
+  margin:0 0 10px !important;
+  padding:8px 12px !important;
+  border:0 !important;
+  border-radius:7px !important;
+  background:#f8fafc !important;
+  color:#172033 !important;
+  font-size:16px !important;
+  font-weight:800 !important;
+  border-left:4px solid #2563eb !important;
+}
+
+.evaluation-notebook .notebook-title:after{
+  display:none !important;
+}
+
+.evaluation-notebook .notebook-subtitle{
+  margin:0 0 12px !important;
+  padding:0 2px !important;
+  color:#64748b !important;
+  font-size:10px !important;
+}
+
+/* Section title: không dùng đỏ toàn thanh, chỉ accent giống card */
+.evaluation-notebook .notebook-section-title{
+  min-height:34px !important;
+  margin:0 0 8px !important;
+  padding:7px 10px !important;
+  border:0 !important;
+  border-left:3px solid #2563eb !important;
+  border-radius:5px !important;
+  background:#f8fafc !important;
+  color:#1e293b !important;
+  font-size:12px !important;
+  font-weight:800 !important;
+  box-shadow:none !important;
+}
+
+.evaluation-notebook .notebook-section-title span:last-child{
+  color:#64748b !important;
+  opacity:1 !important;
+}
+
+/* Các card nhỏ */
+.evaluation-notebook .notebook-metric-group{
+  padding:8px 9px 6px !important;
+  background:#fff !important;
+  border:1px solid #e2e8f0 !important;
+  border-radius:7px !important;
+  box-shadow:none !important;
+}
+
+.evaluation-notebook .notebook-metric{
+  min-height:29px !important;
+  padding:4px 0 6px !important;
+  border-bottom:1px solid #edf2f7 !important;
+}
+
+.evaluation-notebook .notebook-metric:hover{
+  background:#f8fafc !important;
+  transform:none !important;
+}
+
+.evaluation-notebook .notebook-label{
+  color:#334155 !important;
+  font-size:10.5px !important;
+  font-weight:700 !important;
+}
+
+.evaluation-notebook .notebook-value{
+  min-width:30px !important;
+  padding:3px 7px !important;
+  border-radius:5px !important;
+  background:#eff6ff !important;
+  color:#2563eb !important;
+  font-size:10px !important;
+}
+
+/* Rank list */
+.evaluation-notebook .notebook-toplist{
+  padding:3px 0 0 !important;
+}
+
+.evaluation-notebook .notebook-rank-row{
+  min-height:26px !important;
+  padding:3px 1px !important;
+  border-bottom:1px solid #f1f5f9 !important;
+}
+
+.evaluation-notebook .notebook-rank-row:hover{
+  background:#f8fafc !important;
+}
+
+.evaluation-notebook .notebook-rank-name{
+  color:#334155 !important;
+  font-size:10px !important;
+  font-weight:600 !important;
+}
+
+.evaluation-notebook .notebook-rank-count{
+  min-width:26px !important;
+  padding:2px 6px !important;
+  border-radius:5px !important;
+  background:#334155 !important;
+  font-size:9px !important;
+}
+
+/* Đổi màu rank theo đúng kiểu dashboard, nhẹ hơn */
+.evaluation-notebook .notebook-rank-row:nth-child(1) .notebook-rank{
+  background:#2563eb !important;
+}
+.evaluation-notebook .notebook-rank-row:nth-child(2) .notebook-rank{
+  background:#94a3b8 !important;
+}
+.evaluation-notebook .notebook-rank-row:nth-child(3) .notebook-rank{
+  background:#64748b !important;
+}
+
+/* Bảng TKM / SC tháng 7 */
+.evaluation-notebook .july-two-columns{
+  gap:10px !important;
+}
+
+.evaluation-notebook .july-column{
+  background:#fff !important;
+  border:1px solid #dbe3ec !important;
+  border-radius:8px !important;
+  box-shadow:none !important;
+}
+
+.evaluation-notebook .july-tkm-column{
+  border-top:3px solid #2563eb !important;
+}
+
+.evaluation-notebook .july-sc-column{
+  border-top:3px solid #ef4444 !important;
+}
+
+.evaluation-notebook .july-column-title{
+  min-height:38px !important;
+  padding:8px 11px !important;
+  background:#f8fafc !important;
+  border-bottom:1px solid #e2e8f0 !important;
+  font-size:11px !important;
+}
+
+.evaluation-notebook .july-note-metric{
+  padding:7px 10px !important;
+}
+
+.evaluation-notebook .july-note-metric + .july-note-metric{
+  border-top:1px solid #edf2f7 !important;
+}
+
+.evaluation-notebook .july-note-metric-head{
+  padding:4px !important;
+}
+
+.evaluation-notebook .july-note-label{
+  color:#334155 !important;
+  font-size:10.5px !important;
+}
+
+.evaluation-notebook .july-note-total{
+  min-width:30px !important;
+  padding:3px 7px !important;
+  border-radius:5px !important;
+  background:#f1f5f9 !important;
+  color:#334155 !important;
+}
+
+/* Footer */
+.evaluation-notebook .notebook-foot{
+  margin-top:10px !important;
+  padding:8px 2px 0 !important;
+  border-top:1px solid #e5e7eb !important;
+  color:#94a3b8 !important;
+}
+
+/* responsive */
+@media(max-width:1200px){
+  .evaluation-notebook .notebook-section:first-child{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:900px){
+  .evaluation-notebook .notebook-section:first-child,
+  .evaluation-notebook .notebook-section:nth-child(2){
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:600px){
+  .evaluation-notebook .notebook-section:first-child,
+  .evaluation-notebook .notebook-section:nth-child(2){
+    grid-template-columns:1fr !important;
+  }
+  .evaluation-notebook .july-two-columns{
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* ===== NOTEBOOK GỌN BẰNG KHU VỰC 2 BIỂU ĐỒ ===== */
+.evaluation-notebook{
+  width:calc(66.666% - 8px) !important;
+  max-width:calc(66.666% - 8px) !important;
+  margin:16px 0 22px !important;
+  padding:12px !important;
+}
+
+/* Bên trong cũng gọn lại để không thành một bảng quá cao/rộng */
+.evaluation-notebook .notebook-section:first-child{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:8px !important;
+}
+
+.evaluation-notebook .notebook-section:nth-child(2){
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:8px !important;
+}
+
+.evaluation-notebook .notebook-metric-group{
+  padding:7px 8px 5px !important;
+}
+
+.evaluation-notebook .notebook-rank-row{
+  min-height:24px !important;
+  padding:2px 1px !important;
+}
+
+.evaluation-notebook .notebook-rank-name{
+  font-size:9.5px !important;
+}
+
+.evaluation-notebook .notebook-rank-count{
+  min-width:24px !important;
+  padding:2px 5px !important;
+  font-size:8.5px !important;
+}
+
+.evaluation-notebook .july-two-columns{
+  gap:8px !important;
+}
+
+.evaluation-notebook .july-column-title{
+  min-height:34px !important;
+  padding:7px 9px !important;
+}
+
+.evaluation-notebook .july-note-metric{
+  padding:6px 8px !important;
+}
+
+@media(max-width:1100px){
+  .evaluation-notebook{
+    width:100% !important;
+    max-width:100% !important;
+  }
+}
+
+@media(max-width:700px){
+  .evaluation-notebook .notebook-section:first-child,
+  .evaluation-notebook .notebook-section:nth-child(2){
+    grid-template-columns:1fr !important;
+  }
+  .evaluation-notebook .july-two-columns{
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* ===== NOTEBOOK GỌN HƠN + THÁNG 7 NẰM CẠNH ===== */
+.evaluation-notebook{
+  width:calc(58% - 8px) !important;
+  max-width:calc(58% - 8px) !important;
+  padding:10px !important;
+}
+
+/* Giảm mật độ phần đánh giá */
+.evaluation-notebook .notebook-section:first-child,
+.evaluation-notebook .notebook-section:nth-child(2){
+  gap:6px !important;
+}
+
+.evaluation-notebook .notebook-metric-group{
+  padding:6px 7px 4px !important;
+}
+
+.evaluation-notebook .notebook-label{
+  font-size:9.5px !important;
+}
+
+.evaluation-notebook .notebook-rank-name{
+  font-size:9px !important;
+}
+
+.evaluation-notebook .notebook-rank-count{
+  font-size:8px !important;
+  min-width:22px !important;
+  padding:2px 4px !important;
+}
+
+/* Tháng 7 gọn */
+.evaluation-notebook .july-two-columns{
+  gap:6px !important;
+}
+
+.evaluation-notebook .july-column-title{
+  padding:6px 8px !important;
+  font-size:10px !important;
+}
+
+.evaluation-notebook .july-note-metric{
+  padding:5px 7px !important;
+}
+
+.evaluation-notebook .july-note-label{
+  font-size:9.5px !important;
+}
+
+/* Desktop: đặt khu Tháng 7 sang bên phải khu đánh giá */
+.evaluation-notebook .july-evaluation-section{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:39%;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+/* Phần nội dung đánh giá dành khoảng trống cho Tháng 7 */
+.evaluation-notebook #evaluationNotebookContent{
+  width:59% !important;
+}
+
+/* Tháng 7 thành một cột dọc nhỏ, TKM/SC xếp cạnh nhau */
+.evaluation-notebook .july-two-columns{
+  grid-template-columns:1fr 1fr !important;
+}
+
+/* Ẩn bớt khoảng cách để hai khu cân chiều cao */
+.evaluation-notebook .july-column{
+  min-width:0;
+}
+
+/* Tablet/mobile quay về bố cục bình thường */
+@media(max-width:1100px){
+  .evaluation-notebook{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  .evaluation-notebook #evaluationNotebookContent{
+    width:100% !important;
+  }
+
+  .evaluation-notebook .july-evaluation-section{
+    position:static;
+    width:100%;
+    margin-top:12px !important;
+  }
+}
+
+@media(max-width:700px){
+  .evaluation-notebook .july-two-columns{
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* ===== BẢN RỘNG HƠN: ƯU TIÊN HIỂN THỊ TÊN ===== */
+.evaluation-notebook{
+  width:calc(64% - 8px) !important;
+  max-width:calc(64% - 8px) !important;
+}
+
+/* Khu đánh giá có thêm không gian cho tên huyện / nhân viên */
+.evaluation-notebook #evaluationNotebookContent{
+  width:61% !important;
+}
+
+.evaluation-notebook .july-evaluation-section{
+  width:35% !important;
+}
+
+/* Tên không bị cắt/che */
+.evaluation-notebook .notebook-rank-name{
+  min-width:0 !important;
+  overflow:visible !important;
+  white-space:normal !important;
+  text-overflow:clip !important;
+  line-height:1.25 !important;
+}
+
+.evaluation-notebook .notebook-rank-row{
+  grid-template-columns:23px minmax(0,1fr) auto !important;
+}
+
+@media(max-width:1100px){
+  .evaluation-notebook{
+    width:100% !important;
+    max-width:100% !important;
+  }
+  .evaluation-notebook #evaluationNotebookContent{
+    width:100% !important;
+  }
+  .evaluation-notebook .july-evaluation-section{
+    position:static !important;
+    width:100% !important;
+  }
+}
+
+
+/* ===== RỘNG HƠN + ƯU TIÊN TÊN ĐẦY ĐỦ ===== */
+.evaluation-notebook{
+  width:calc(68% - 8px) !important;
+  max-width:calc(68% - 8px) !important;
+}
+
+.evaluation-notebook #evaluationNotebookContent{
+  width:62% !important;
+}
+
+.evaluation-notebook .july-evaluation-section{
+  width:36% !important;
+}
+
+.evaluation-notebook .notebook-rank-name{
+  white-space:normal !important;
+  overflow:visible !important;
+  text-overflow:clip !important;
+  line-height:1.25 !important;
+}
+
+.evaluation-notebook .notebook-rank-row{
+  grid-template-columns:22px minmax(0,1fr) auto !important;
+}
+
+@media(max-width:1100px){
+  .evaluation-notebook{
+    width:100% !important;
+    max-width:100% !important;
+  }
+  .evaluation-notebook #evaluationNotebookContent{
+    width:100% !important;
+  }
+  .evaluation-notebook .july-evaluation-section{
+    position:static !important;
+    width:100% !important;
+  }
+}
+
+
+.notebook-assessment-card{
+  grid-column:1/-1;
+  margin:5px 0 10px;
+  padding:9px 11px;
+  background:#f8fafc;
+  border:1px solid #dbe3ec;
+  border-left:3px solid #2563eb;
+  border-radius:7px;
+  color:#334155;
+}
+.notebook-assessment-title{
+  margin-bottom:3px;
+  font-size:10px;
+  font-weight:900;
+  color:#1e293b;
+}
+.notebook-assessment-main{
+  font-size:11px;
+  line-height:1.4;
+}
+.notebook-assessment-detail{
+  margin-top:3px;
+  font-size:10px;
+  line-height:1.4;
+  color:#475569;
+}
+.notebook-assessment-note{
+  margin-top:4px;
+  font-size:9px;
+  line-height:1.35;
+  color:#94a3b8;
+}
+.evaluation-notebook .notebook-rank-name{
+  white-space:normal !important;
+  overflow:visible !important;
+  text-overflow:clip !important;
+  line-height:1.25 !important;
+}
+
+
+/* =========================================================
+   NOTEBOOK BÁO CÁO - TOP 5 / ĐÁNH GIÁ / THÁNG N-1
+   ========================================================= */
+.evaluation-notebook{
+  background:#fff !important;
+  border:1px solid #dbe3ec !important;
+  border-radius:10px !important;
+  box-shadow:none !important;
+  padding:12px !important;
+  overflow:visible !important;
+}
+.evaluation-notebook:before,
+.evaluation-notebook:after{
+  display:none !important;
+}
+.notebook-report-row{
+  display:grid;
+  grid-template-columns:minmax(0,2fr) minmax(300px,1fr);
+  gap:10px;
+  align-items:stretch;
+  margin-bottom:10px;
+}
+.notebook-report-main{
+  min-width:0;
+  background:#fff;
+  border:1px solid #dbe3ec;
+  border-radius:8px;
+  padding:8px;
+}
+.notebook-report-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  min-height:34px;
+  padding:7px 9px;
+  margin-bottom:8px;
+  background:#f8fafc;
+  border-left:3px solid #2563eb;
+  border-radius:5px;
+  color:#1e293b;
+  font-size:12px;
+  font-weight:900;
+}
+.notebook-report-title>span:last-child{
+  color:#64748b;
+  font-size:9px;
+}
+.notebook-card-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:7px;
+}
+.notebook-staff-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.notebook-flat-card{
+  min-width:0;
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-radius:7px;
+  padding:7px;
+}
+.notebook-card-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:5px;
+  align-items:center;
+  min-height:29px;
+  padding:2px 2px 6px;
+  border-bottom:1px solid #edf2f7;
+  cursor:pointer;
+}
+.notebook-card-label{
+  font-size:10px;
+  font-weight:800;
+  line-height:1.25;
+}
+.notebook-card-total{
+  min-width:28px;
+  padding:3px 6px;
+  border-radius:5px;
+  background:#eff6ff;
+  color:#2563eb;
+  font-size:10px;
+  font-weight:900;
+  text-align:center;
+}
+.notebook-toplist{
+  padding-top:3px;
+}
+.notebook-rank-row{
+  display:grid;
+  grid-template-columns:20px minmax(0,1fr) auto;
+  gap:5px;
+  align-items:center;
+  min-height:25px;
+  padding:2px 1px;
+  border-bottom:1px solid #f1f5f9;
+  cursor:pointer;
+}
+.notebook-rank-row:hover{
+  background:#f8fafc;
+}
+.notebook-rank{
+  width:19px;
+  height:19px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#94a3b8;
+  color:#fff;
+  font-size:9px;
+  font-weight:900;
+}
+.notebook-rank-row:first-child .notebook-rank{
+  background:#2563eb;
+}
+.notebook-rank-name{
+  min-width:0;
+  white-space:normal !important;
+  overflow:visible !important;
+  text-overflow:clip !important;
+  color:#334155;
+  font-size:9.5px;
+  font-weight:700;
+  line-height:1.25;
+}
+.notebook-rank-count{
+  min-width:25px;
+  padding:2px 5px;
+  border-radius:5px;
+  background:#334155;
+  color:#fff;
+  text-align:center;
+  font-size:9px;
+  font-weight:900;
+}
+.notebook-empty{
+  padding:8px 2px;
+  color:#94a3b8;
+  font-size:9px;
+}
+.notebook-assessment-panel{
+  min-width:0;
+  padding:10px 11px;
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-top:3px solid #e11d48;
+  border-radius:8px;
+}
+.notebook-assessment-title{
+  color:#1e293b;
+  font-size:13px;
+  font-weight:900;
+  margin-bottom:2px;
+}
+.notebook-assessment-sub{
+  color:#64748b;
+  font-size:9px;
+  line-height:1.4;
+  padding-bottom:7px;
+  border-bottom:1px solid #edf2f7;
+}
+.notebook-assessment-item{
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr);
+  gap:7px;
+  padding:8px 0;
+  border-bottom:1px solid #edf2f7;
+}
+.notebook-assessment-rank{
+  width:22px;
+  height:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#e11d48;
+  color:#fff;
+  font-size:9px;
+  font-weight:900;
+}
+.notebook-assessment-item:nth-child(3) .notebook-assessment-rank{
+  background:#94a3b8;
+}
+.notebook-assessment-item:nth-child(4) .notebook-assessment-rank{
+  background:#64748b;
+}
+.notebook-assessment-name{
+  color:#1e293b;
+  font-size:11px;
+  font-weight:900;
+}
+.notebook-assessment-score{
+  margin-top:2px;
+  color:#e11d48;
+  font-size:9px;
+  font-weight:800;
+}
+.notebook-assessment-details{
+  margin-top:3px;
+  color:#475569;
+  font-size:9px;
+  line-height:1.35;
+}
+.notebook-assessment-note{
+  margin-top:8px;
+  color:#94a3b8;
+  font-size:8.5px;
+  line-height:1.4;
+}
+.notebook-july-panel{
+  min-width:0;
+  padding:8px;
+  background:#fff;
+  border:1px solid #dbe3ec;
+  border-radius:8px;
+}
+.notebook-july-title{
+  margin-bottom:8px;
+}
+.notebook-july-columns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.notebook-july-card{
+  min-width:0;
+  padding:8px;
+  border:1px solid #e2e8f0;
+  border-radius:7px;
+}
+.notebook-july-tkm{
+  border-top:3px solid #2563eb;
+}
+.notebook-july-sc{
+  border-top:3px solid #dc2626;
+}
+.notebook-july-card-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-bottom:6px;
+  margin-bottom:3px;
+  border-bottom:1px solid #edf2f7;
+  color:#1e293b;
+  font-size:11px;
+  font-weight:900;
+}
+.notebook-july-card-title b{
+  padding:3px 7px;
+  border-radius:5px;
+  background:#f1f5f9;
+  color:#334155;
+  font-size:9px;
+}
+.notebook-july-card .july-note-metric{
+  padding:4px 0 6px;
+}
+.notebook-july-card .july-note-metric + .july-note-metric{
+  border-top:1px solid #edf2f7;
+  padding-top:7px;
+}
+.notebook-july-card .july-note-metric-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:5px;
+  align-items:center;
+  padding:3px 2px;
+  cursor:pointer;
+}
+.notebook-july-card .july-note-label{
+  font-size:9.5px;
+  font-weight:800;
+}
+.notebook-july-card .july-note-total{
+  min-width:25px;
+  padding:2px 5px;
+  border-radius:5px;
+  background:#f1f5f9;
+  color:#334155;
+  font-size:9px;
+  font-weight:900;
+}
+@media(max-width:1200px){
+  .notebook-report-row{
+    grid-template-columns:1fr;
+  }
+}
+@media(max-width:900px){
+  .notebook-card-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .notebook-july-columns{
+    grid-template-columns:1fr;
+  }
+}
+@media(max-width:600px){
+  .notebook-card-grid,
+  .notebook-staff-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ===== FINAL OVERRIDE: NOTEBOOK RỘNG ĐỒNG BỘ TOÀN KHỐI ===== */
+.daily-notebook-layout{
+  width:100% !important;
+  max-width:none !important;
+}
+.evaluation-notebook{
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+.evaluation-notebook #evaluationNotebookContent{
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+}
+.evaluation-notebook .notebook-report-row{
+  width:100% !important;
+  max-width:none !important;
+}
+.evaluation-notebook .notebook-report-main{
+  width:100%;
+  min-width:0;
+}
+.evaluation-notebook .notebook-card-grid{
+  width:100%;
+}
+.evaluation-notebook .notebook-july-panel{
+  width:100%;
+}
+@media(min-width:1201px){
+  .evaluation-notebook .notebook-report-row{
+    grid-template-columns:minmax(0,2.1fr) minmax(360px,.9fr) !important;
+    gap:12px !important;
+  }
+  .evaluation-notebook .notebook-card-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:9px !important;
+  }
+  .evaluation-notebook .notebook-staff-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+}
+
+
+/* ===== FINAL CĐBR NOTEBOOK LAYOUT ===== */
+.evaluation-notebook .notebook-report-row{
+  grid-template-columns:minmax(0,1.55fr) minmax(430px,1fr) !important;
+  gap:10px !important;
+}
+.evaluation-notebook .notebook-card-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:7px !important;
+}
+.evaluation-notebook .notebook-staff-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+}
+.evaluation-notebook .notebook-flat-card{
+  padding:6px !important;
+}
+.evaluation-notebook .notebook-rank-row{
+  grid-template-columns:19px minmax(0,1fr) auto !important;
+  min-height:24px !important;
+}
+.evaluation-notebook .notebook-rank-name{
+  font-size:9px !important;
+}
+.evaluation-notebook .notebook-assessment-panel{
+  padding:10px 12px !important;
+}
+.evaluation-notebook .notebook-july-panel{
+  padding:9px !important;
+}
+.notebook-july-detail{
+  margin-top:8px;
+  padding:8px 10px;
+  border:1px solid #e2e8f0;
+  border-radius:7px;
+  background:#f8fafc;
+  color:#475569;
+  font-size:9px;
+  line-height:1.5;
+}
+.notebook-july-detail-title{
+  color:#1e293b;
+  font-size:10px;
+  font-weight:900;
+  margin-bottom:4px;
+}
+.notebook-july-detail-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+@media(max-width:1200px){
+  .evaluation-notebook .notebook-report-row{
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* ===== NÚT CHỤP BÁO CÁO CĐBR ===== */
+.notebook-title-with-action{display:flex !important;align-items:center !important;justify-content:space-between !important;gap:12px !important;}
+.btn-capture-cdbr{flex:0 0 auto;border:0;border-radius:7px;padding:7px 12px;background:#2563eb;color:#fff;font:700 11px/1.2 Arial,sans-serif;cursor:pointer;box-shadow:0 2px 5px rgba(37,99,235,.18);transition:transform .15s ease,opacity .15s ease;}
+.btn-capture-cdbr:hover{transform:translateY(-1px);opacity:.94}.btn-capture-cdbr:active{transform:translateY(0)}.btn-capture-cdbr:disabled{opacity:.65;cursor:wait;transform:none}
+@media(max-width:600px){.notebook-title-with-action{align-items:flex-start !important;}.btn-capture-cdbr{padding:6px 9px;font-size:10px;}}
+
+
+/* ===== CĐBR: cân lại tỷ lệ, giảm chiều dài và khoảng trắng ===== */
+.evaluation-notebook{
+  width:100% !important;
+  max-width:100% !important;
+  padding:8px !important;
+  box-sizing:border-box !important;
+}
+.evaluation-notebook #evaluationNotebookContent{
+  width:100% !important;
+}
+
+/* Hàng trên: khu TOP 5 gọn hơn, đánh giá rộng hơn */
+.evaluation-notebook .notebook-report-row{
+  grid-template-columns:minmax(0,1.35fr) minmax(470px,1fr) !important;
+  gap:8px !important;
+  margin-bottom:8px !important;
+}
+.evaluation-notebook .notebook-report-main{
+  padding:6px !important;
+}
+.evaluation-notebook .notebook-report-title{
+  min-height:29px !important;
+  padding:5px 7px !important;
+  margin-bottom:5px !important;
+  font-size:11px !important;
+}
+
+/* Các ô TOP 5 nhỏ lại theo chiều cao */
+.evaluation-notebook .notebook-card-grid{
+  gap:5px !important;
+}
+.evaluation-notebook .notebook-flat-card{
+  padding:5px !important;
+  border-radius:6px !important;
+}
+.evaluation-notebook .notebook-card-head{
+  min-height:24px !important;
+  padding-bottom:4px !important;
+}
+.evaluation-notebook .notebook-card-label{
+  font-size:9px !important;
+}
+.evaluation-notebook .notebook-card-total{
+  min-width:24px !important;
+  padding:2px 5px !important;
+  font-size:8px !important;
+}
+.evaluation-notebook .notebook-rank-row{
+  min-height:21px !important;
+  padding:1px !important;
+}
+.evaluation-notebook .notebook-rank{
+  width:17px !important;
+  height:17px !important;
+  font-size:8px !important;
+}
+.evaluation-notebook .notebook-rank-name{
+  font-size:8.5px !important;
+  line-height:1.1 !important;
+}
+.evaluation-notebook .notebook-rank-count{
+  min-width:22px !important;
+  padding:2px 4px !important;
+  font-size:8px !important;
+}
+
+/* Đánh giá huyện: tận dụng chiều ngang, giảm chiều cao */
+.evaluation-notebook .notebook-assessment-panel{
+  padding:8px 10px !important;
+}
+.evaluation-notebook .notebook-assessment-title{
+  font-size:11px !important;
+}
+.evaluation-notebook .notebook-assessment-sub{
+  font-size:8px !important;
+  padding-bottom:5px !important;
+}
+.evaluation-notebook .notebook-assessment-item{
+  grid-template-columns:21px minmax(0,1fr) !important;
+  gap:6px !important;
+  padding:5px 0 !important;
+}
+.evaluation-notebook .notebook-assessment-rank{
+  width:20px !important;
+  height:20px !important;
+  font-size:8px !important;
+}
+.evaluation-notebook .notebook-assessment-name{
+  font-size:10px !important;
+}
+.evaluation-notebook .notebook-assessment-score{
+  font-size:8px !important;
+  margin-top:1px !important;
+}
+.evaluation-notebook .notebook-assessment-details{
+  font-size:8px !important;
+  line-height:1.25 !important;
+  margin-top:2px !important;
+}
+.evaluation-notebook .notebook-assessment-note{
+  margin-top:5px !important;
+  font-size:7.5px !important;
+}
+
+/* Hàng nhân viên + tháng 7 cân tỷ lệ */
+.evaluation-notebook .notebook-staff-row{
+  grid-template-columns:minmax(0,1.35fr) minmax(470px,1fr) !important;
+}
+.evaluation-notebook .notebook-staff-grid{
+  gap:5px !important;
+}
+.evaluation-notebook .notebook-july-panel{
+  padding:7px !important;
+}
+.evaluation-notebook .notebook-july-columns{
+  gap:6px !important;
+}
+.evaluation-notebook .notebook-july-card{
+  padding:6px !important;
+}
+.evaluation-notebook .notebook-july-card-title{
+  padding-bottom:4px !important;
+  margin-bottom:2px !important;
+  font-size:10px !important;
+}
+.evaluation-notebook .notebook-july-card .july-note-metric{
+  padding:3px 0 4px !important;
+}
+.evaluation-notebook .notebook-july-card .july-note-metric + .july-note-metric{
+  padding-top:5px !important;
+}
+.evaluation-notebook .notebook-july-card .july-note-label{
+  font-size:8.5px !important;
+}
+.evaluation-notebook .notebook-july-card .notebook-rank-row{
+  min-height:20px !important;
+}
+
+/* Nội dung tồn tháng 7 gọn, không tạo khoảng trắng */
+.evaluation-notebook .notebook-july-detail{
+  margin-top:6px !important;
+  padding:6px 8px !important;
+  font-size:8px !important;
+}
+.evaluation-notebook .notebook-july-detail-title{
+  font-size:9px !important;
+  margin-bottom:3px !important;
+}
+.evaluation-notebook .notebook-july-detail-grid{
+  gap:5px !important;
+}
+
+/* Desktop: giữ toàn bộ notebook trong vùng nhìn, không kéo dài */
+@media(min-width:1201px){
+  .evaluation-notebook .notebook-report-row{
+    grid-template-columns:minmax(0,1.28fr) minmax(500px,1fr) !important;
+  }
+  .evaluation-notebook .notebook-card-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  }
+  .evaluation-notebook .notebook-staff-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+}
+
+
+/* =========================================================
+   CĐBR FINAL REPORT — layout gọn, phẳng, cân tỷ lệ
+   ========================================================= */
+.evaluation-notebook{
+  width:100% !important;
+  max-width:100% !important;
+  box-sizing:border-box !important;
+  padding:10px !important;
+  background:#fff !important;
+  border:1px solid #dbe3ec !important;
+  border-radius:10px !important;
+}
+.evaluation-notebook #evaluationNotebookContent{
+  width:100% !important;
+  max-width:none !important;
+}
+.evaluation-notebook .notebook-report-row{
+  display:grid !important;
+  grid-template-columns:minmax(0,1.08fr) minmax(0,1fr) !important;
+  gap:8px !important;
+  margin-bottom:8px !important;
+  align-items:stretch !important;
+}
+.evaluation-notebook .notebook-report-main{
+  min-width:0 !important;
+  padding:6px !important;
+  border:1px solid #dbe3ec !important;
+  border-radius:8px !important;
+  background:#fff !important;
+}
+.evaluation-notebook .notebook-report-title{
+  min-height:30px !important;
+  padding:5px 8px !important;
+  margin-bottom:5px !important;
+  font-size:11px !important;
+  background:#f8fafc !important;
+  border-left:3px solid #2563eb !important;
+  border-radius:5px !important;
+}
+.evaluation-notebook .notebook-card-grid{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:5px !important;
+}
+.evaluation-notebook .notebook-staff-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+}
+.evaluation-notebook .notebook-flat-card{
+  min-width:0 !important;
+  padding:5px !important;
+  border:1px solid #e2e8f0 !important;
+  border-radius:6px !important;
+}
+.evaluation-notebook .notebook-card-head{
+  min-height:24px !important;
+  padding:1px 1px 4px !important;
+}
+.evaluation-notebook .notebook-card-label{
+  font-size:9px !important;
+  line-height:1.15 !important;
+}
+.evaluation-notebook .notebook-card-total{
+  min-width:23px !important;
+  padding:2px 4px !important;
+  font-size:8px !important;
+}
+.evaluation-notebook .notebook-rank-row{
+  grid-template-columns:18px minmax(0,1fr) auto !important;
+  min-height:21px !important;
+  padding:1px !important;
+}
+.evaluation-notebook .notebook-rank{
+  width:17px !important;
+  height:17px !important;
+  font-size:8px !important;
+}
+.evaluation-notebook .notebook-rank-name{
+  font-size:8.5px !important;
+  line-height:1.15 !important;
+}
+.evaluation-notebook .notebook-rank-count{
+  min-width:22px !important;
+  padding:2px 4px !important;
+  font-size:8px !important;
+}
+.evaluation-notebook .notebook-assessment-panel{
+  min-width:0 !important;
+  padding:8px 10px !important;
+  border:1px solid #dbe3ec !important;
+  border-top:3px solid #e11d48 !important;
+  border-radius:8px !important;
+}
+.evaluation-notebook .notebook-assessment-title{
+  font-size:11px !important;
+}
+.evaluation-notebook .notebook-assessment-sub{
+  font-size:8px !important;
+  padding-bottom:5px !important;
+}
+.evaluation-notebook .notebook-assessment-item{
+  grid-template-columns:22px minmax(0,1fr) !important;
+  gap:6px !important;
+  padding:5px 0 !important;
+}
+.evaluation-notebook .notebook-assessment-rank{
+  width:21px !important;
+  height:21px !important;
+  font-size:8px !important;
+}
+.evaluation-notebook .notebook-assessment-name{
+  font-size:10px !important;
+}
+.evaluation-notebook .notebook-assessment-score{
+  font-size:8px !important;
+}
+.evaluation-notebook .notebook-assessment-details{
+  font-size:8px !important;
+  line-height:1.3 !important;
+}
+.evaluation-notebook .notebook-assessment-note{
+  font-size:7.5px !important;
+  margin-top:5px !important;
+}
+
+/* Đánh giá nhân viên nằm ngay dưới TOP 5 nhân viên, không để khoảng trắng */
+.notebook-staff-assessment{
+  margin-top:6px;
+  padding:7px 8px;
+  background:#fff;
+  border:1px solid #e11d48;
+  border-radius:7px;
+  box-sizing:border-box;
+}
+.notebook-staff-assessment-head{
+  padding-bottom:5px;
+  border-bottom:1px solid #edf2f7;
+}
+.notebook-staff-assessment-title{
+  color:#1e293b;
+  font-size:10.5px;
+  font-weight:900;
+}
+.notebook-staff-assessment-sub{
+  margin-top:2px;
+  color:#64748b;
+  font-size:7.5px;
+}
+.notebook-staff-assessment-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:4px;
+  margin-top:5px;
+}
+.notebook-staff-assessment-item{
+  min-width:0;
+  display:grid;
+  grid-template-columns:18px minmax(0,1fr);
+  gap:4px;
+  padding:5px;
+  border-right:1px solid #edf2f7;
+  cursor:pointer;
+}
+.notebook-staff-assessment-item:last-child{
+  border-right:0;
+}
+.notebook-staff-rank{
+  width:17px;
+  height:17px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#2563eb;
+  color:#fff;
+  font-size:7.5px;
+  font-weight:900;
+}
+.notebook-staff-assessment-item:nth-child(2) .notebook-staff-rank{background:#f59e0b}
+.notebook-staff-assessment-item:nth-child(3) .notebook-staff-rank{background:#f97316}
+.notebook-staff-assessment-item:nth-child(4) .notebook-staff-rank{background:#2563eb}
+.notebook-staff-assessment-item:nth-child(5) .notebook-staff-rank{background:#16a34a}
+.notebook-staff-name{
+  color:#1e293b;
+  font-size:8.5px;
+  font-weight:900;
+  line-height:1.15;
+}
+.notebook-staff-score{
+  color:#e11d48;
+  font-size:8px;
+  font-weight:900;
+  margin-top:1px;
+}
+.notebook-staff-details{
+  color:#475569;
+  font-size:7px;
+  line-height:1.25;
+  margin-top:2px;
+}
+.notebook-staff-assessment-note{
+  color:#94a3b8;
+  font-size:7px;
+  margin-top:4px;
+}
+
+/* Tháng 7: 2 card song song + note */
+.evaluation-notebook .notebook-july-panel{
+  padding:7px !important;
+  border:1px solid #dbe3ec !important;
+  border-radius:8px !important;
+}
+.evaluation-notebook .notebook-july-columns{
+  gap:6px !important;
+}
+.evaluation-notebook .notebook-july-card{
+  padding:6px !important;
+}
+.evaluation-notebook .notebook-july-card-title{
+  font-size:10px !important;
+}
+.evaluation-notebook .notebook-july-detail{
+  margin-top:6px !important;
+  padding:6px 8px !important;
+  font-size:7.5px !important;
+}
+.evaluation-notebook .notebook-july-detail-grid{
+  gap:4px !important;
+}
+
+/* Header report */
+.evaluation-notebook .notebook-title{
+  font-size:18px !important;
+  margin-bottom:2px !important;
+}
+.evaluation-notebook .notebook-subtitle{
+  font-size:8px !important;
+  margin-bottom:7px !important;
+}
+
+/* Không để các khối kéo dài chỉ vì nội dung */
+.evaluation-notebook .notebook-report-main,
+.evaluation-notebook .notebook-assessment-panel,
+.evaluation-notebook .notebook-july-panel{
+  align-self:start !important;
+}
+
+@media(max-width:1100px){
+  .evaluation-notebook .notebook-report-row{
+    grid-template-columns:1fr !important;
+  }
+}
+@media(max-width:800px){
+  .evaluation-notebook .notebook-card-grid,
+  .evaluation-notebook .notebook-staff-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+  .notebook-staff-assessment-grid{
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* ===== LAYOUT ĐÚNG MẪU: 2 CỘT, KHÔNG ĐỂ THÁNG 7 RƠI XUỐNG CỘT TRÁI ===== */
+.evaluation-notebook{
+  width:100% !important;
+  max-width:100% !important;
+  box-sizing:border-box !important;
+  padding:10px !important;
+}
+.evaluation-notebook .notebook-report-row{
+  display:grid !important;
+  grid-template-columns:minmax(0,1.04fr) minmax(0,0.96fr) !important;
+  gap:8px !important;
+  align-items:start !important;
+  margin-bottom:8px !important;
+}
+.evaluation-notebook .notebook-report-main{
+  min-width:0 !important;
+  align-self:start !important;
+}
+.evaluation-notebook .notebook-assessment-panel{
+  min-width:0 !important;
+  align-self:start !important;
+}
+.evaluation-notebook .notebook-staff-row{
+  grid-template-columns:minmax(0,1.04fr) minmax(0,0.96fr) !important;
+}
+
+/* Bảng nhân viên tồi nằm trong cột trái */
+.evaluation-notebook .notebook-staff-assessment{
+  width:100% !important;
+  margin-top:6px !important;
+  box-sizing:border-box !important;
+}
+
+/* Tháng 7 nằm nguyên cột phải */
+.evaluation-notebook .notebook-july-right{
+  width:100% !important;
+  min-width:0 !important;
+  align-self:start !important;
+  box-sizing:border-box !important;
+}
+
+/* Đồng bộ chiều rộng các card */
+.evaluation-notebook .notebook-card-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:5px !important;
+}
+.evaluation-notebook .notebook-staff-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:5px !important;
+}
+
+/* Không cho panel assessment tự kéo cao theo cột bên cạnh */
+.evaluation-notebook .notebook-assessment-panel,
+.evaluation-notebook .notebook-staff-assessment,
+.evaluation-notebook .notebook-july-panel{
+  height:auto !important;
+  min-height:0 !important;
+}
+
+/* Hàng nhân viên tồi 5 người nằm ngang */
+.evaluation-notebook .notebook-staff-assessment-grid{
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:3px !important;
+}
+
+/* Tháng 7: TKM / SC chia đôi */
+.evaluation-notebook .notebook-july-columns{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:6px !important;
+}
+
+/* Giảm khoảng trắng thừa */
+.evaluation-notebook .notebook-report-main,
+.evaluation-notebook .notebook-assessment-panel,
+.evaluation-notebook .notebook-july-panel{
+  padding:7px !important;
+}
+.evaluation-notebook .notebook-report-title{
+  margin-bottom:5px !important;
+  min-height:28px !important;
+  padding:5px 7px !important;
+}
+.evaluation-notebook .notebook-flat-card{
+  padding:5px !important;
+}
+.evaluation-notebook .notebook-rank-row{
+  min-height:21px !important;
+}
+.evaluation-notebook .notebook-rank-name{
+  font-size:8.5px !important;
+}
+.evaluation-notebook .notebook-rank-count{
+  font-size:8px !important;
+}
+
+/* Responsive */
+@media(max-width:900px){
+  .evaluation-notebook .notebook-report-row,
+  .evaluation-notebook .notebook-staff-row{
+    grid-template-columns:1fr !important;
+  }
+  .evaluation-notebook .notebook-july-columns{
+    grid-template-columns:1fr 1fr !important;
+  }
+}
+
+
+/* ===== BẢN CHỤP BÁO CÁO: chữ lớn hơn, giữ bố cục giống mẫu ===== */
+.evaluation-notebook{
+  font-size:13px !important;
+}
+.evaluation-notebook .notebook-title{
+  font-size:20px !important;
+}
+.evaluation-notebook .notebook-subtitle{
+  font-size:9px !important;
+}
+.evaluation-notebook .notebook-report-title{
+  font-size:12px !important;
+}
+.evaluation-notebook .notebook-card-label{
+  font-size:10px !important;
+}
+.evaluation-notebook .notebook-rank-name{
+  font-size:9.5px !important;
+}
+.evaluation-notebook .notebook-rank-count{
+  font-size:9px !important;
+}
+.evaluation-notebook .notebook-assessment-title{
+  font-size:12px !important;
+}
+.evaluation-notebook .notebook-assessment-name{
+  font-size:11px !important;
+}
+.evaluation-notebook .notebook-assessment-score{
+  font-size:9px !important;
+}
+.evaluation-notebook .notebook-assessment-details{
+  font-size:9px !important;
+}
+.evaluation-notebook .notebook-july-card-title{
+  font-size:11px !important;
+}
+.evaluation-notebook .notebook-staff-assessment-title{
+  font-size:11.5px !important;
+}
+.evaluation-notebook .notebook-staff-name{
+  font-size:9px !important;
+}
+.evaluation-notebook .notebook-staff-score{
+  font-size:9px !important;
+}
+.evaluation-notebook .notebook-staff-details{
+  font-size:8px !important;
+}
+
+
+/* ===== ĐỔI VỊ TRÍ: ĐÁNH GIÁ CĐBR NẰM DƯỚI DIỄN BIẾN TKM & SC THEO HUYỆN ===== */
+#evaluationNotebook.evaluation-notebook{
+  width:100% !important;
+  box-sizing:border-box !important;
+  margin-top:18px !important;
+  margin-bottom:20px !important;
+}
+.daily-notebook-layout{
+  display:block !important;
+  width:100% !important;
+}
+.daily-notebook-layout > #dailyTrendGrid{
+  width:100% !important;
+}
+#huyenTrendGrid{
+  margin-bottom:0 !important;
+}
+
+
+/* ===== THỜI GIAN CẬP NHẬT DƯỚI BẢNG THÁNG N-1 ===== */
+.evaluation-notebook .notebook-july-update{
+  margin-top:7px !important;
+  padding:6px 8px !important;
+  border-top:1px dashed #cbd5e1 !important;
+  text-align:right !important;
+  color:#64748b !important;
+  font-size:9px !important;
+  line-height:1.4 !important;
+}
+.evaluation-notebook .notebook-july-update b{
+  color:#334155 !important;
+  font-weight:700 !important;
+}
+
+
+/* ===== THÁNG N-1 TỰ ĐỘNG ===== */
+.evaluation-notebook .notebook-july-update{
+  font-size:9.5px !important;
+}
+
+</style>
   
   </head>
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <body>
   
   <h1>📊 TỒN TÁC VỤ CĐBR</h1>
@@ -741,14 +3070,7 @@
   
   <div class="chart-box">
   
-  <div
-  style="
-  font-size:14px;
-  font-weight:bold;
-  margin-bottom:12px;
-  color:#111827;
-  "
-  >
+  <div class="chart-title">
   
   📈 BIỂU ĐỒ SC
   
@@ -760,14 +3082,7 @@
   
   <div class="chart-box">
   
-  <div
-  style="
-  font-size:14px;
-  font-weight:bold;
-  margin-bottom:12px;
-  color:#111827;
-  "
-  >
+  <div class="chart-title">
   
   📉 BIỂU ĐỒ CNHS
   
@@ -779,14 +3094,7 @@
   
   <div class="chart-box">
   
-  <div
-  style="
-  font-size:14px;
-  font-weight:bold;
-  margin-bottom:12px;
-  color:#111827;
-  "
-  >
+  <div class="chart-title">
   
   📊 BIỂU ĐỒ TKM
   
@@ -798,14 +3106,7 @@
   
   <div class="chart-box">
   
-  <div
-  style="
-  font-size:14px;
-  font-weight:bold;
-  margin-bottom:12px;
-  color:#111827;
-  "
-  >
+  <div class="chart-title">
   
   🏗️ TỒN TKM THEO HUYỆN
   
@@ -815,7 +3116,53 @@
   
   </div>
 
+  <div class="chart-box">
+  <div class="chart-title">
+  📈 TKM THEO HUYỆN - KPI
   </div>
+  <canvas id="chartTKMHuyenKPI"></canvas>
+  </div>
+
+  <div class="chart-box">
+  <div class="chart-title">
+  📈 SC THEO HUYỆN - LOẠI & THỜI GIAN
+  </div>
+  <canvas id="chartSCHuyenKPI"></canvas>
+  </div>
+
+  </div>
+
+  <div class="section-title">
+  📊 DIỄN BIẾN TKM & SC THEO NGÀY
+  </div>
+
+  <div class="daily-notebook-layout">
+    <div id="dailyTrendGrid" class="chart-grid"></div>
+  </div>
+
+  <div class="section-title">
+  📊 DIỄN BIẾN TKM & SC THEO HUYỆN
+  </div>
+
+  <div id="huyenTrendSelector" style="
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+      margin:0 0 12px 0;
+  "></div>
+
+  <div id="huyenTrendGrid" class="chart-grid"></div>
+
+  <aside id="evaluationNotebook" class="evaluation-notebook">
+    <div class="notebook-title notebook-title-with-action">
+      <span>📋 ĐÁNH GIÁ TỒN CÔNG VIỆC CĐBR</span>
+      <button id="btnCaptureCDBR" class="btn-capture-cdbr" type="button" data-html2canvas-ignore="true" onclick="captureCDBRReport()">📸 Chụp báo cáo</button>
+    </div>
+    <div class="notebook-subtitle">Tự động xếp hạng các huyện và nhân viên có tồn lớn. Bấm vào từng dòng để xem chi tiết.</div>
+    <div id="evaluationNotebookContent"></div>
+    <div class="notebook-foot">Tiêu chí được tính trực tiếp từ dữ liệu SC/TKM đang có trên dashboard.</div>
+  </aside>
+
   <div class="section-title">
   🏆 NHÂN VIÊN TỒN NHIỀU
   </div>
@@ -955,6 +3302,12 @@
   
   let tonsc=[];
   let tontkm=[];
+  let tontkmHistory=[];
+  const dailyTrendCharts={};
+  const huyenTrendCharts={};
+  let chartTKMHuyenKPI=null;
+  let chartSCHuyenKPI=null;
+  let selectedHuyenTrend="";
   let currentTitle="";
   let currentData=[];
   let filteredData=[];
@@ -980,6 +3333,7 @@
     Dashboard chỉ dùng snapshot mới nhất, đúng với Sheet báo cáo hiện tại.
   */
   const rawTontkm=json.tontkm||[];
+  tontkmHistory=rawTontkm.slice();
 
   const latestTgupdate=rawTontkm.reduce((max,row)=>{
     const tg=String(row.tgupdate||"").trim();
@@ -1270,15 +3624,14 @@
   /* TKM THỰC: bỏ CẬP NHẬT HỒ SƠ.
      Sheet hiện tại chưa có KẾT THÚC nên chưa loại trạng thái này. */
   const tkmThuc=tontkm.filter(x=>{
-  
+
       const tt=String(x.tt||"")
-          .replace(/\s+/g," ")
+          .replace(/\\s+/g," ")
           .trim()
           .toUpperCase();
-  
-      return tt!=="CẬP NHẬT HỒ SƠ"
-          && tt!=="KẾT THÚC";
-  
+
+      return tt!=="CẬP NHẬT HỒ SƠ";
+
   });
 
   window.tkmThuc=tkmThuc;
@@ -1374,20 +3727,37 @@
   }
 
   function renderCharts(){
-  
+
   renderSCHuyen();
-  
+
   renderHSChart();
-  
+
   renderKPIChart();
-  
+
   renderTongTKMChart();
-  
-  renderStaffRanking();
-  
+
+  renderHuyenKPICharts();
+
+  try{
+
+    renderDailyTrendCharts();
+
+    renderHuyenTrendCharts();
+
+    initTrendDetailModal();
+
+  }catch(error){
+
+    console.error("Lỗi biểu đồ diễn biến:",error);
+
   }
-  
-  function renderSCHuyen(){
+
+  renderStaffRanking();
+  renderEvaluationNotebook();
+
+  }
+
+    function renderSCHuyen(){
   
   const labels=[...new Set(tonsc.map(x=>x.huyen||"Khác"))];
   
@@ -1484,29 +3854,19 @@
   options:{
   responsive:true,
   maintainAspectRatio:false,
-  
-  layout:{
-  padding:{
-  bottom:20
-  }
+  interaction:{mode:"index",intersect:false},
+  layout:{padding:{bottom:20}},
+  plugins:{
+  legend:{display:true,position:"top",labels:{font:{size:11}}},
+  tooltip:{mode:"index",intersect:false}
   },
-  
   scales:{
   x:{
-  ticks:{
-  maxRotation:55,
-  minRotation:55,
-  
-  font:{
-  size:11,
-  weight:"600"
+  ticks:{maxRotation:45,minRotation:45,font:{size:11,weight:"600"},padding:6},
+  title:{display:true,text:"Huyện",font:{size:11,weight:"600"}}
   },
-  
-  padding:6
+  y:{beginAtZero:true,title:{display:true,text:"Số lượng",font:{size:11,weight:"600"}}}
   }
-  }
-  }
-  
   }
   
   });
@@ -1550,7 +3910,7 @@
   datasets:[
   
   {
-  label:"Cập nhật hồ sơ",
+  label:"Tồn cập nhật hồ sơ",
   
   data:labels.map(h=>hs[h]),
   
@@ -1747,29 +4107,19 @@ const k=String(x.kpi||"")
   options:{
   responsive:true,
   maintainAspectRatio:false,
-  
-  layout:{
-  padding:{
-  bottom:20
-  }
+  interaction:{mode:"index",intersect:false},
+  layout:{padding:{bottom:20}},
+  plugins:{
+  legend:{display:true,position:"top",labels:{font:{size:11}}},
+  tooltip:{mode:"index",intersect:false}
   },
-  
   scales:{
   x:{
-  ticks:{
-  maxRotation:55,
-  minRotation:55,
-  
-  font:{
-  size:11,
-  weight:"600"
+  ticks:{maxRotation:45,minRotation:45,font:{size:11,weight:"600"},padding:6},
+  title:{display:true,text:"Huyện",font:{size:11,weight:"600"}}
   },
-  
-  padding:6
+  y:{beginAtZero:true,title:{display:true,text:"Số lượng",font:{size:11,weight:"600"}}}
   }
-  }
-  }
-  
   }
   
   });
@@ -1859,42 +4209,21 @@ const cv=String(x.cv||"")
   },
   
   options:{
-  
   responsive:true,
-  
   maintainAspectRatio:false,
-  
-  layout:{
-  padding:{
-  bottom:20
-  }
-  },
-  
+  interaction:{mode:"index",intersect:false},
+  layout:{padding:{bottom:20}},
   plugins:{
-  legend:{
-  display:true
-  }
+  legend:{display:true,position:"top",labels:{font:{size:11}}},
+  tooltip:{mode:"index",intersect:false}
   },
-  
   scales:{
   x:{
-  ticks:{
-  maxRotation:55,
-  minRotation:55,
-  
-  font:{
-  size:11,
-  weight:"600"
+  ticks:{maxRotation:45,minRotation:45,font:{size:11,weight:"600"},padding:6},
+  title:{display:true,text:"Huyện",font:{size:11,weight:"600"}}
   },
-  
-  padding:6
+  y:{beginAtZero:true,title:{display:true,text:"Số lượng",font:{size:11,weight:"600"}}}
   }
-  },
-  y:{
-  beginAtZero:true
-  }
-  }
-  
   }
   
   });
@@ -1902,7 +4231,2162 @@ const cv=String(x.cv||"")
   }
 
 
-  function renderStaffRanking(){
+
+  /* =========================
+     BIỂU ĐỒ TỔNG TKM + TỔNG SC THEO NGÀY
+     KHÔNG SỬA API:
+     - SC dùng cột "ngay"
+     - TKM dùng cột "ntdn"
+     - Mỗi tháng một biểu đồ
+     ========================= */
+
+  function parseTrendDate(value){
+
+      if(value instanceof Date && !Number.isNaN(value.getTime())){
+          return value;
+      }
+
+      const s=String(value||"").trim();
+
+      if(!s)return null;
+
+      /* dd/MM/yyyy [HH:mm:ss] */
+      let m=s.match(
+          /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/
+      );
+
+      if(m){
+          const d=new Date(
+              Number(m[3]),
+              Number(m[2])-1,
+              Number(m[1]),
+              Number(m[4]||0),
+              Number(m[5]||0),
+              Number(m[6]||0)
+          );
+
+          return Number.isNaN(d.getTime()) ? null : d;
+      }
+
+      /* yyyy-MM-dd [HH:mm:ss] */
+      m=s.match(
+          /^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/
+      );
+
+      if(m){
+          const d=new Date(
+              Number(m[1]),
+              Number(m[2])-1,
+              Number(m[3]),
+              Number(m[4]||0),
+              Number(m[5]||0),
+              Number(m[6]||0)
+          );
+
+          return Number.isNaN(d.getTime()) ? null : d;
+      }
+
+      const d=new Date(s);
+
+      return Number.isNaN(d.getTime()) ? null : d;
+
+  }
+
+
+  function trendDateKey(value){
+
+      const d=parseTrendDate(value);
+
+      if(!d)return "";
+
+      return (
+          d.getFullYear()+"-"+
+          String(d.getMonth()+1).padStart(2,"0")+"-"+
+          String(d.getDate()).padStart(2,"0")
+      );
+
+  }
+
+
+  function countTrendByDate(rows,dateField,isTKM=false){
+
+      const result={};
+
+      (rows||[]).forEach(row=>{
+
+          if(isTKM){
+
+              const tt=String(row.tt||"")
+                  .replace(/\s+/g," ")
+                  .trim()
+                  .toUpperCase();
+
+              /* Không tính CNHS và KẾT THÚC vào TKM */
+              if(
+                  tt==="CẬP NHẬT HỒ SƠ" ||
+                  tt==="KẾT THÚC"
+              ){
+                  return;
+              }
+
+          }
+
+          const key=trendDateKey(row[dateField]);
+
+          if(!key)return;
+
+          result[key]=(result[key]||0)+1;
+
+      });
+
+      return result;
+
+  }
+
+
+  function getChartHuyenList(){
+
+      const set=new Set();
+
+      (tontkm||[]).forEach(row=>{
+          const h=String(row.huyen||"").trim();
+          if(h)set.add(h);
+      });
+
+      (tonsc||[]).forEach(row=>{
+          const h=String(row.huyen||"").trim();
+          if(h)set.add(h);
+      });
+
+      return [...set].sort((a,b)=>
+          normalizeHuyen(a).localeCompare(
+              normalizeHuyen(b),
+              "vi"
+          )
+      );
+  }
+
+
+  function parseSCHours(value){
+
+      if(value===null || value===undefined || String(value).trim()===""){
+          return 0;
+      }
+
+      const raw=String(value).trim();
+
+      /* Dạng số giờ: 9.02, 16.5, 24... */
+      if(/^[-+]?\d+(?:[.,]\d+)?$/.test(raw)){
+          const n=parseFloat(raw.replace(",","."));
+          return Number.isFinite(n) ? n : 0;
+      }
+
+      /* Dạng ngày/giờ Excel 1900: lấy phần giờ + phút + giây */
+      const m=raw.match(/(?:\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+
+      if(m){
+          const h=Number(m[1]||0);
+          const min=Number(m[2]||0);
+          const sec=Number(m[3]||0);
+          return h + min/60 + sec/3600;
+      }
+
+      return parseFloat(raw.replace(",","."))||0;
+  }
+
+
+  function renderHuyenKPICharts(){
+
+      const canvasTKM=document.getElementById("chartTKMHuyenKPI");
+      const canvasSC=document.getElementById("chartSCHuyenKPI");
+
+      if(!canvasTKM || !canvasSC)return;
+
+      try{
+          if(chartTKMHuyenKPI)chartTKMHuyenKPI.destroy();
+          if(chartSCHuyenKPI)chartSCHuyenKPI.destroy();
+      }catch(e){}
+
+      chartTKMHuyenKPI=null;
+      chartSCHuyenKPI=null;
+
+      const huyens=getChartHuyenList();
+
+      const now=new Date();
+      const yearN=now.getFullYear();
+      const monthN=now.getMonth();
+      const prev=new Date(yearN,monthN-1,1);
+      const yearN1=prev.getFullYear();
+      const monthN1=prev.getMonth();
+
+      function inMonth(row,dateField,year,month){
+
+          const key=trendDateKey(row[dateField]);
+
+          if(!key)return false;
+
+          return key.slice(0,4)===String(year) &&
+                 Number(key.slice(5,7))===month+1;
+      }
+
+      function inNOrN1(row,dateField){
+
+          return inMonth(row,dateField,yearN,monthN) ||
+                 inMonth(row,dateField,yearN1,monthN1);
+      }
+
+      function validTKM(row){
+
+          const tt=String(row.tt||"")
+              .replace(/\s+/g," ")
+              .trim()
+              .toUpperCase();
+
+          return tt!=="CẬP NHẬT HỒ SƠ" &&
+                 tt!=="KẾT THÚC";
+      }
+
+      function countTKM(huyen,kpi){
+
+          return (tontkmHistory||[]).filter(row=>
+              normalizeHuyen(row.huyen)===normalizeHuyen(huyen) &&
+              validTKM(row) &&
+              inNOrN1(row,"ntdn") &&
+              String(row.kpi||"").trim().toUpperCase()===kpi
+          ).length;
+      }
+
+      function countSC(huyen,predicate){
+
+          return (tonsc||[]).filter(row=>
+              normalizeHuyen(row.huyen)===normalizeHuyen(huyen) &&
+              inNOrN1(row,"ngay") &&
+              predicate(row)
+          ).length;
+      }
+
+      function lineDataset(label,data){
+
+          return {
+              label:label,
+              data:data,
+              borderWidth:2,
+              pointRadius:3,
+              pointHoverRadius:6,
+              tension:0.2,
+              spanGaps:false
+          };
+      }
+
+      /* =====================================================
+         TKM: GỘP TOÀN BỘ DỮ LIỆU THÁNG N + N-1
+         Chỉ 3 đường cho mỗi huyện.
+         ===================================================== */
+      const tkm24=huyens.map(h=>countTKM(h,"QUÁ 24H"));
+      const tkm16=huyens.map(h=>countTKM(h,"QUÁ 16H"));
+      const tkmHen=huyens.map(h=>countTKM(h,"QUÁ HẸN"));
+
+      chartTKMHuyenKPI=new Chart(canvasTKM,{
+          type:"line",
+          data:{
+              labels:huyens,
+              datasets:[
+                  lineDataset("Quá 24h",tkm24),
+                  lineDataset("Quá 16h",tkm16),
+                  lineDataset("Quá hẹn",tkmHen)
+              ]
+          },
+          options:{
+              responsive:true,
+              maintainAspectRatio:false,
+              interaction:{mode:"index",intersect:false},
+              plugins:{
+                  legend:{display:true,position:"top"},
+                  tooltip:{mode:"index",intersect:false}
+              },
+              scales:{
+                  x:{
+                      ticks:{autoSkip:false,maxRotation:45,minRotation:45},
+                      title:{display:true,text:"Huyện"}
+                  },
+                  y:{beginAtZero:true,title:{display:true,text:"Số lượng"}}
+              },
+              onClick:function(event){
+
+                  const active=this.getElementsAtEventForMode(
+                      event,"index",{intersect:false},true
+                  );
+
+                  if(!active.length)return;
+
+                  const index=active[0].index;
+
+                  if(index>=0 && huyens[index]){
+                      showHuyenKPITrendDetail(huyens[index],"TKM");
+                  }
+              }
+          }
+      });
+
+      /* =====================================================
+         SC: GỘP TOÀN BỘ DỮ LIỆU THÁNG N + N-1
+         6 đường cho mỗi huyện.
+         ===================================================== */
+      const metrics=[
+          {
+              label:"SOC",
+              fn:row=>String(row.sc||"").trim().toUpperCase()==="SOC"
+          },
+          {
+              label:"SOC HOME",
+              fn:row=>String(row.sc||"").trim().toUpperCase()==="SOC HOME"
+          },
+          {
+              label:"HOT",
+              fn:row=>String(row.sc||"").trim().toUpperCase().includes("HOT")
+          },
+          {
+              label:"VIP",
+              fn:row=>String(row.sc||"").trim().toUpperCase().includes("VIP")
+          },
+          {
+              label:"Quá 16h",
+              fn:row=>parseSCHours(row.tg)>16
+          },
+          {
+              label:"Quá 24h",
+              fn:row=>parseSCHours(row.tg)>24
+          }
+      ];
+
+      const scDatasets=metrics.map(metric=>
+          lineDataset(
+              metric.label,
+              huyens.map(h=>countSC(h,metric.fn))
+          )
+      );
+
+      chartSCHuyenKPI=new Chart(canvasSC,{
+          type:"line",
+          data:{labels:huyens,datasets:scDatasets},
+          options:{
+              responsive:true,
+              maintainAspectRatio:false,
+              interaction:{mode:"index",intersect:false},
+              plugins:{
+                  legend:{display:true,position:"top"},
+                  tooltip:{mode:"index",intersect:false}
+              },
+              scales:{
+                  x:{
+                      ticks:{autoSkip:false,maxRotation:45,minRotation:45},
+                      title:{display:true,text:"Huyện"}
+                  },
+                  y:{beginAtZero:true,title:{display:true,text:"Số lượng"}}
+              },
+              onClick:function(event){
+
+                  const active=this.getElementsAtEventForMode(
+                      event,"index",{intersect:false},true
+                  );
+
+                  if(!active.length)return;
+
+                  const index=active[0].index;
+
+                  if(index>=0 && huyens[index]){
+                      showHuyenKPITrendDetail(huyens[index],"SC");
+                  }
+              }
+          }
+      });
+
+  }
+
+
+  function showHuyenKPITrendDetail(huyen,type,detailYear=null,detailMonth=null){
+
+      const modal=document.getElementById("trendDetailModal");
+      const title=document.getElementById("trendDetailTitle");
+      const summary=document.getElementById("trendDetailSummary");
+      const body=document.getElementById("trendDetailBody");
+
+      if(!modal||!title||!summary||!body)return;
+
+      const tkmRows=(tontkmHistory||[]).filter(row=>{
+          if(normalizeHuyen(row.huyen)!==normalizeHuyen(huyen))return false;
+
+          const tt=String(row.tt||"")
+              .replace(/\s+/g," ")
+              .trim()
+              .toUpperCase();
+
+          if(tt==="CẬP NHẬT HỒ SƠ" || tt==="KẾT THÚC"){
+              return false;
+          }
+
+          if(detailYear!==null && detailMonth!==null){
+              const key=trendDateKey(row.ntdn);
+              if(
+                  !key ||
+                  key.slice(0,4)!==String(detailYear) ||
+                  Number(key.slice(5,7))!==detailMonth+1
+              ){
+                  return false;
+              }
+          }else{
+              const key=trendDateKey(row.ntdn);
+              if(!key)return false;
+              const now=new Date();
+              const yN=now.getFullYear();
+              const mN=now.getMonth();
+              const pN=new Date(yN,mN-1,1);
+              const yN1=pN.getFullYear();
+              const mN1=pN.getMonth();
+              const yy=Number(key.slice(0,4));
+              const mm=Number(key.slice(5,7))-1;
+              if(!((yy===yN&&mm===mN)||(yy===yN1&&mm===mN1)))return false;
+          }
+
+          return true;
+      });
+
+      const scRows=(tonsc||[]).filter(row=>{
+
+          if(normalizeHuyen(row.huyen)!==normalizeHuyen(huyen)){
+              return false;
+          }
+
+          if(detailYear!==null && detailMonth!==null){
+
+              const key=trendDateKey(row.ngay);
+
+              if(
+                  !key ||
+                  key.slice(0,4)!==String(detailYear) ||
+                  Number(key.slice(5,7))!==detailMonth+1
+              ){
+                  return false;
+              }
+
+          }else{
+
+              const key=trendDateKey(row.ngay);
+              if(!key)return false;
+
+              const now=new Date();
+              const yN=now.getFullYear();
+              const mN=now.getMonth();
+              const pN=new Date(yN,mN-1,1);
+              const yN1=pN.getFullYear();
+              const mN1=pN.getMonth();
+              const yy=Number(key.slice(0,4));
+              const mm=Number(key.slice(5,7))-1;
+
+              if(!((yy===yN&&mm===mN)||(yy===yN1&&mm===mN1)))return false;
+
+          }
+
+          return true;
+
+      });
+
+      const detailMonthText=
+          detailYear!==null && detailMonth!==null
+              ? " - T"+String(detailMonth+1).padStart(2,"0")+"/"+detailYear
+              : " - T N + T N-1";
+
+      title.textContent=
+          "CHI TIẾT HUYỆN: "+huyen+detailMonthText;
+
+      summary.textContent=
+          "TKM: "+tkmRows.length+
+          " | SC: "+scRows.length+
+          " | Click × để đóng";
+
+      function normKey(value){
+          return String(value||"")
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g,"")
+              .toLowerCase()
+              .replace(/đ/g,"d")
+              .replace(/[^a-z0-9]/g,"");
+      }
+
+      function value(row,keys){
+          const map={};
+          Object.keys(row||{}).forEach(k=>{
+              map[normKey(k)]=row[k];
+          });
+          for(const k of keys){
+              const nk=normKey(k);
+              if(Object.prototype.hasOwnProperty.call(map,nk)){
+                  const v=map[nk];
+                  if(v!==null&&v!==undefined&&String(v).trim()!=="")return v;
+              }
+          }
+          return "";
+      }
+
+      function esc(v){
+          return String(v??"")
+              .replace(/&/g,"&amp;")
+              .replace(/</g,"&lt;")
+              .replace(/>/g,"&gt;")
+              .replace(/"/g,"&quot;");
+      }
+
+      function table(titleText,rows,columns){
+          if(!rows.length){
+              return `<div style="font-weight:700;margin:12px 0 6px;color:#111827;">${titleText} (0)</div><div style="color:#6b7280;padding:8px 0 14px;">Không có dữ liệu.</div>`;
+          }
+
+          let html=`<div style="font-weight:700;margin:12px 0 6px;color:#111827;">${titleText} (${rows.length})</div>`;
+          html+=`<div style="overflow:auto;border:1px solid #e5e7eb;border-radius:7px;"><table style="border-collapse:collapse;width:100%;font-size:12px;min-width:1100px;"><thead><tr>`;
+          columns.forEach(c=>{
+              html+=`<th style="background:#f3f4f6;border:1px solid #e5e7eb;padding:7px;text-align:left;white-space:nowrap;">${esc(c[0])}</th>`;
+          });
+          html+=`</tr></thead><tbody>`;
+          rows.forEach(row=>{
+              html+=`<tr>`;
+              columns.forEach(c=>{
+                  let v=value(row,c[1]);
+                  html+=`<td style="border:1px solid #e5e7eb;padding:7px;vertical-align:top;max-width:260px;">${esc(v)}</td>`;
+              });
+              html+=`</tr>`;
+          });
+          html+=`</tbody></table></div>`;
+          return html;
+      }
+
+      const tkmCols=[
+          ["Tên nv",["nv"]],["Thời gian",["tg"]],["Huyện",["huyen"]],["Account",["account"]],["Bypass",["bypass"]],["Tính KPI",["kpi"]],["Loại cv",["cv"]],["Trạng thái cv",["tt"]],["Trạng thái tích hẹn",["tthen"]],["Ngày đấu nối",["ntdn"]],["Ngày nghiệm thu",["ntnt"]],["Nguyên nhân tồn",["nnt"]],["Nguyên nhân tích hủy",["nnth"]]
+      ];
+
+      const scCols=[
+          ["Tên nv",["nv"]],["Thời gian",["tg"]],["Huyện",["huyen"]],["Account",["account"]],["Bypass",["bypass"]],["Ngày phát sinh",["ngay"]],["Giờ phát sinh",["gio"]],["Loại sự cố",["sc"]],["Mã đồng bộ GNOC",["mdb"]],["Trạng thái GNOC",["gnoc"]],["Nguyên nhân chuẩn",["nnc"]]
+      ];
+
+      body.innerHTML=
+          table("TỔNG TKM",tkmRows,tkmCols)+
+          table("TỔNG SC",scRows,scCols);
+
+      modal.style.display="flex";
+  }
+
+
+  function renderDailyTrendCharts(){
+
+      const wrap=document.getElementById("dailyTrendGrid");
+
+      if(!wrap)return;
+
+      Object.values(dailyTrendCharts).forEach(chart=>{
+          try{
+              chart.destroy();
+          }catch(e){}
+      });
+
+      Object.keys(dailyTrendCharts).forEach(key=>{
+          delete dailyTrendCharts[key];
+      });
+
+      wrap.innerHTML="";
+
+      /*
+        CHỈ HIỂN THỊ:
+        - N   : tháng hiện tại
+        - N-1 : tháng trước
+
+        Tháng N chỉ tới ngày hiện tại.
+        Sang ngày mới, lần tải dashboard tiếp theo
+        sẽ tự có thêm ngày mới.
+      */
+
+      const now=new Date();
+
+      const yearN=now.getFullYear();
+      const monthN=now.getMonth();
+
+      const previous=new Date(
+          yearN,
+          monthN-1,
+          1
+      );
+
+      const yearN1=previous.getFullYear();
+      const monthN1=previous.getMonth();
+
+      /*
+        QUAN TRỌNG:
+        - tontkm dùng snapshot mới nhất cho dashboard hiện tại.
+        - tontkmHistory giữ toàn bộ dữ liệu TKM để vẽ theo ntdn.
+      */
+      const scByDate=countTrendByDate(
+          tonsc,
+          "ngay",
+          false
+      );
+
+      const tkmByDate=countTrendByDate(
+          tontkmHistory,
+          "ntdn",
+          true
+      );
+
+      const configs=[
+          {
+              year:yearN1,
+              month:monthN1,
+              lastDay:new Date(
+                  yearN1,
+                  monthN1+1,
+                  0
+              ).getDate()
+          },
+          {
+              year:yearN,
+              month:monthN,
+              lastDay:now.getDate()
+          }
+      ];
+
+      configs.forEach(cfg=>{
+
+          const monthNumber=cfg.month+1;
+
+          const labels=[];
+          const dataTKM=[];
+          const dataSC=[];
+
+          for(let day=1;day<=cfg.lastDay;day++){
+
+              const key=
+                  cfg.year+"-"+
+                  String(monthNumber).padStart(2,"0")+"-"+
+                  String(day).padStart(2,"0");
+
+              labels.push(
+                  String(day).padStart(2,"0")
+              );
+
+              dataTKM.push(
+                  Object.prototype.hasOwnProperty.call(
+                      tkmByDate,
+                      key
+                  )
+                  ? tkmByDate[key]
+                  : 0
+              );
+
+              dataSC.push(
+                  Object.prototype.hasOwnProperty.call(
+                      scByDate,
+                      key
+                  )
+                  ? scByDate[key]
+                  : 0
+              );
+
+          }
+
+          const monthKey=
+              cfg.year+"-"+
+              String(monthNumber).padStart(2,"0");
+
+          const canvasId=
+              "dailyTrend_"+
+              monthKey.replace("-","_");
+
+          const box=document.createElement("div");
+
+          box.className="chart-box";
+
+          box.innerHTML=`
+              <div style="
+                  font-size:14px;
+                  font-weight:700;
+                  margin-bottom:8px;
+                  color:#111827;
+              ">
+                  📊 BIỂU ĐỒ TKM & SC - THÁNG ${String(monthNumber).padStart(2,"0")}/${cfg.year}
+              </div>
+
+              <div style="
+                  height:285px;
+                  position:relative;
+              ">
+                  <canvas id="${canvasId}"></canvas>
+              </div>
+          `;
+
+          wrap.appendChild(box);
+
+          const canvas=document.getElementById(canvasId);
+
+          if(!canvas)return;
+
+          dailyTrendCharts[monthKey]=new Chart(
+              canvas,
+              {
+                  type:"line",
+
+                  data:{
+                      labels:labels,
+
+                      datasets:[
+                          {
+                              label:"TỔNG TKM",
+                              data:dataTKM,
+                              borderWidth:2,
+                              pointRadius:3,
+                              pointHoverRadius:5,
+                              tension:0.25,
+                              spanGaps:false
+                          },
+                          {
+                              label:"TỔNG SC",
+                              data:dataSC,
+                              borderWidth:2,
+                              pointRadius:3,
+                              pointHoverRadius:5,
+                              tension:0.25,
+                              spanGaps:false
+                          }
+                      ]
+                  },
+
+                  options:{
+                      responsive:true,
+                      maintainAspectRatio:false,
+
+                      interaction:{
+                          mode:"index",
+                          intersect:false
+                      },
+
+                      plugins:{
+                          legend:{
+                              display:true,
+                              position:"top"
+                          },
+
+                          tooltip:{
+                              callbacks:{
+                                  title:function(items){
+
+                                      if(!items || !items.length){
+                                          return "";
+                                      }
+
+                                      return (
+                                          "Ngày "+
+                                          items[0].label+
+                                          "/"+
+                                          String(monthNumber).padStart(2,"0")+
+                                          "/"+
+                                          cfg.year
+                                      );
+
+                                  }
+                              }
+                          }
+                      },
+
+                      scales:{
+                          x:{
+                              title:{
+                                  display:true,
+                                  text:"Ngày"
+                              },
+
+                              ticks:{
+                                  maxRotation:45,
+                                  minRotation:45,
+                                  autoSkip:false,
+                                  maxTicksLimit:31
+                              }
+                          },
+
+                          y:{
+                              beginAtZero:true,
+
+                              title:{
+                                  display:true,
+                                  text:"Số lượng"
+                              }
+                          }
+                      }
+                  }
+              }
+          );
+
+
+          attachTrendClick(
+              dailyTrendCharts[monthKey],
+              canvas,
+              monthNumber,
+              cfg.year,
+              ""
+          );
+
+      });
+
+  }
+
+
+
+  function normalizeHuyen(value){
+
+      return String(value||"")
+          .replace(/\s+/g," ")
+          .trim()
+          .toUpperCase();
+
+  }
+
+
+  function renderHuyenTrendCharts(){
+
+      const selector=document.getElementById("huyenTrendSelector");
+      const grid=document.getElementById("huyenTrendGrid");
+
+      if(!selector || !grid)return;
+
+      Object.values(huyenTrendCharts).forEach(chart=>{
+          try{chart.destroy();}catch(e){}
+      });
+
+      Object.keys(huyenTrendCharts).forEach(key=>{
+          delete huyenTrendCharts[key];
+      });
+
+      selector.innerHTML="";
+      grid.innerHTML="";
+
+      /*
+        Lấy toàn bộ huyện có trong dữ liệu:
+        - TKM: huyen
+        - SC : huyen
+
+        Gộp hai nguồn để không bỏ huyện chỉ có SC hoặc chỉ có TKM.
+      */
+      const huyenSet=new Set();
+
+      tontkmHistory.forEach(row=>{
+          const h=String(row.huyen||"").trim();
+          if(h)huyenSet.add(h);
+      });
+
+      tonsc.forEach(row=>{
+          const h=String(row.huyen||"").trim();
+          if(h)huyenSet.add(h);
+      });
+
+      const huyens=[...huyenSet].sort((a,b)=>
+          normalizeHuyen(a).localeCompare(normalizeHuyen(b),"vi")
+      );
+
+      if(!huyens.length){
+
+          selector.innerHTML=
+              '<div style="color:#6b7280;padding:8px 0;">Không có dữ liệu huyện.</div>';
+
+          return;
+      }
+
+      /*
+        Mặc định chọn huyện đầu tiên.
+        Nếu huyện đang chọn vẫn tồn tại thì giữ nguyên lựa chọn.
+      */
+      if(
+          !selectedHuyenTrend ||
+          !huyens.some(h=>normalizeHuyen(h)===normalizeHuyen(selectedHuyenTrend))
+      ){
+          selectedHuyenTrend=huyens[0];
+      }else{
+          selectedHuyenTrend=
+              huyens.find(
+                  h=>normalizeHuyen(h)===normalizeHuyen(selectedHuyenTrend)
+              ) || huyens[0];
+      }
+
+      huyens.forEach(huyen=>{
+
+          const button=document.createElement("button");
+
+          button.type="button";
+          button.textContent=huyen;
+
+          const active=
+              normalizeHuyen(huyen)===normalizeHuyen(selectedHuyenTrend);
+
+          button.style.cssText=`
+              border:1px solid ${active ? "#2563eb" : "#d1d5db"};
+              background:${active ? "#2563eb" : "#ffffff"};
+              color:${active ? "#ffffff" : "#374151"};
+              border-radius:8px;
+              padding:6px 12px;
+              cursor:pointer;
+              font-size:12px;
+              font-weight:${active ? "700" : "500"};
+          `;
+
+          button.onclick=()=>{
+
+              selectedHuyenTrend=huyen;
+
+              renderHuyenTrendCharts();
+
+          };
+
+          selector.appendChild(button);
+
+      });
+
+      /*
+        Chỉ tạo 2 biểu đồ:
+        - N-1
+        - N
+
+        Mỗi biểu đồ có 2 line:
+        TKM và SC.
+      */
+      const now=new Date();
+
+      const yearN=now.getFullYear();
+      const monthN=now.getMonth();
+
+      const previous=new Date(
+          yearN,
+          monthN-1,
+          1
+      );
+
+      const configs=[
+          {
+              year:previous.getFullYear(),
+              month:previous.getMonth(),
+              lastDay:new Date(
+                  previous.getFullYear(),
+                  previous.getMonth()+1,
+                  0
+              ).getDate()
+          },
+          {
+              year:yearN,
+              month:monthN,
+              lastDay:now.getDate()
+          }
+      ];
+
+      configs.forEach(cfg=>{
+
+          const monthNumber=cfg.month+1;
+
+          const tkmByDate={};
+          const scByDate={};
+
+          /*
+            TKM: lọc huyện + bỏ CNHS/KẾT THÚC.
+          */
+          tontkmHistory.forEach(row=>{
+
+              if(
+                  normalizeHuyen(row.huyen)!==
+                  normalizeHuyen(selectedHuyenTrend)
+              ){
+                  return;
+              }
+
+              const tt=String(row.tt||"")
+                  .replace(/\s+/g," ")
+                  .trim()
+                  .toUpperCase();
+
+              if(
+                  tt==="CẬP NHẬT HỒ SƠ" ||
+                  tt==="KẾT THÚC"
+              ){
+                  return;
+              }
+
+              const key=trendDateKey(row.ntdn);
+
+              if(!key)return;
+
+              if(!tkmByDate[key])tkmByDate[key]=0;
+
+              tkmByDate[key]++;
+
+          });
+
+          /*
+            SC: lọc huyện + cột ngay.
+          */
+          tonsc.forEach(row=>{
+
+              if(
+                  normalizeHuyen(row.huyen)!==
+                  normalizeHuyen(selectedHuyenTrend)
+              ){
+                  return;
+              }
+
+              const key=trendDateKey(row.ngay);
+
+              if(!key)return;
+
+              if(!scByDate[key])scByDate[key]=0;
+
+              scByDate[key]++;
+
+          });
+
+          const labels=[];
+          const dataTKM=[];
+          const dataSC=[];
+
+          for(let day=1;day<=cfg.lastDay;day++){
+
+              const key=
+                  cfg.year+"-"+
+                  String(monthNumber).padStart(2,"0")+"-"+
+                  String(day).padStart(2,"0");
+
+              labels.push(String(day).padStart(2,"0"));
+
+              dataTKM.push(
+                  Object.prototype.hasOwnProperty.call(tkmByDate,key)
+                  ? tkmByDate[key]
+                  : 0
+              );
+
+              dataSC.push(
+                  Object.prototype.hasOwnProperty.call(scByDate,key)
+                  ? scByDate[key]
+                  : 0
+              );
+
+          }
+
+          const monthKey=
+              cfg.year+"-"+
+              String(monthNumber).padStart(2,"0");
+
+          const canvasId=
+              "huyenTrend_"+
+              monthKey.replace("-","_");
+
+          const box=document.createElement("div");
+
+          box.className="chart-box";
+
+          box.innerHTML=`
+              <div style="
+                  font-size:14px;
+                  font-weight:700;
+                  margin-bottom:8px;
+                  color:#111827;
+              ">
+                  📊 BIỂU ĐỒ TKM & SC - ${selectedHuyenTrend} - THÁNG ${String(monthNumber).padStart(2,"0")}/${cfg.year}
+              </div>
+
+              <div style="
+                  height:285px;
+                  position:relative;
+              ">
+                  <canvas id="${canvasId}"></canvas>
+              </div>
+          `;
+
+          grid.appendChild(box);
+
+          const canvas=document.getElementById(canvasId);
+
+          if(!canvas)return;
+
+          huyenTrendCharts[monthKey]=new Chart(
+              canvas,
+              {
+                  type:"line",
+
+                  data:{
+                      labels:labels,
+
+                      datasets:[
+                          {
+                              label:"TỔNG TKM",
+                              data:dataTKM,
+                              borderWidth:2,
+                              pointRadius:3,
+                              pointHoverRadius:5,
+                              tension:0.25,
+                              spanGaps:false
+                          },
+                          {
+                              label:"TỔNG SC",
+                              data:dataSC,
+                              borderWidth:2,
+                              pointRadius:3,
+                              pointHoverRadius:5,
+                              tension:0.25,
+                              spanGaps:false
+                          }
+                      ]
+                  },
+
+                  options:{
+                      responsive:true,
+                      maintainAspectRatio:false,
+
+                      interaction:{
+                          mode:"index",
+                          intersect:false
+                      },
+
+                      plugins:{
+                          legend:{
+                              display:true,
+                              position:"top"
+                          }
+                      },
+
+                      scales:{
+                          x:{
+                              title:{
+                                  display:true,
+                                  text:"Ngày"
+                              },
+
+                              ticks:{
+                                  maxRotation:45,
+                                  minRotation:45,
+                                  autoSkip:false,
+                                  maxTicksLimit:31
+                              }
+                          },
+
+                          y:{
+                              beginAtZero:true,
+
+                              title:{
+                                  display:true,
+                                  text:"Số lượng"
+                              }
+                          }
+                      }
+                  }
+              }
+          );
+
+
+          attachTrendClick(
+              huyenTrendCharts[monthKey],
+              canvas,
+              monthNumber,
+              cfg.year,
+              selectedHuyenTrend
+          );
+
+      });
+
+  }
+
+
+
+  function getDetailRows(sourceRows,dateField,selectedDate,huyenFilter=""){
+
+      return (sourceRows||[]).filter(row=>{
+
+          const key=trendDateKey(row[dateField]);
+
+          if(key!==selectedDate)return false;
+
+          if(huyenFilter){
+
+              if(
+                  normalizeHuyen(row.huyen)!==
+                  normalizeHuyen(huyenFilter)
+              ){
+                  return false;
+              }
+
+          }
+
+          return true;
+
+      });
+
+  }
+
+
+  function getRowValue(row,keys){
+
+      for(const key of keys){
+
+          if(
+              row &&
+              row[key]!==undefined &&
+              row[key]!==null &&
+              String(row[key]).trim()!==""
+          ){
+              return row[key];
+          }
+
+      }
+
+      return "";
+
+  }
+
+
+  function showTrendDetail(dateKey,monthNumber,year,huyenFilter=""){
+
+      const modal=document.getElementById("trendDetailModal");
+      const title=document.getElementById("trendDetailTitle");
+      const summary=document.getElementById("trendDetailSummary");
+      const body=document.getElementById("trendDetailBody");
+
+      if(!modal || !body)return;
+
+      const day=dateKey.slice(8,10);
+      const dateText=
+          day+"/"+String(monthNumber).padStart(2,"0")+"/"+year;
+
+      let tkmRows=getDetailRows(
+          tontkmHistory,
+          "ntdn",
+          dateKey,
+          huyenFilter
+      ).filter(row=>{
+
+          const tt=String(row.tt||"")
+              .replace(/\s+/g," ")
+              .trim()
+              .toUpperCase();
+
+          return tt!=="CẬP NHẬT HỒ SƠ" && tt!=="KẾT THÚC";
+
+      });
+
+      const scRows=getDetailRows(
+          tonsc,
+          "ngay",
+          dateKey,
+          huyenFilter
+      );
+
+      const scope=huyenFilter
+          ? " - "+huyenFilter
+          : "";
+
+      title.textContent=
+          "CHI TIẾT NGÀY "+dateText+scope;
+
+      summary.textContent=
+          "TKM: "+tkmRows.length+
+          " | SC: "+scRows.length+
+          " | Click × để đóng";
+
+      function makeTable(titleText,rows,type){
+
+          if(!rows.length){
+
+              return `
+                <div style="font-weight:700;margin:12px 0 6px;color:#111827;">
+                  ${titleText} (0)
+                </div>
+                <div style="color:#6b7280;padding:8px 0 14px;">
+                  Không có dữ liệu.
+                </div>
+              `;
+
+          }
+
+          /*
+            Không tự đoán key dữ liệu nữa.
+            Mỗi loại có danh sách tiêu đề chuẩn, nhưng giá trị
+            sẽ được lấy linh hoạt từ các key thực tế của API.
+          */
+
+          /*
+            Dùng ĐÚNG key mà bảng chính của dashboard đang sử dụng.
+            Đây là nguyên nhân bản trước bị trống nhiều ô: bảng chính
+            dùng nv/tg/cv/tt/... chứ không dùng tennv/thoigian/loaicv...
+          */
+          const columns=type==="TKM"
+              ? [
+                  ["Tên nv",["nv"]],
+                  ["Thời gian",["tg"]],
+                  ["Huyện",["huyen"]],
+                  ["Account",["account"]],
+                  ["Bypass",["bypass"]],
+                  ["Tính KPI",["kpi"]],
+                  ["Loại cv",["cv"]],
+                  ["Trạng thái cv",["tt"]],
+                  ["Trạng thái tích hẹn",["tthen"]],
+                  ["Ngày đấu nối",["ntdn"]],
+                  ["Ngày nghiệm thu",["ntnt"]],
+                  ["Nguyên nhân tồn",["nnt"]],
+                  ["Nguyên nhân tích hủy",["nnth"]]
+                ]
+              : [
+                  ["Tên nv",["nv"]],
+                  ["Thời gian",["tg"]],
+                  ["Huyện",["huyen"]],
+                  ["Account",["account"]],
+                  ["Bypass",["bypass"]],
+                  ["Ngày phát sinh",["ngay"]],
+                  ["Giờ phát sinh",["gio"]],
+                  ["Loại sự cố",["sc"]],
+                  ["Mã đồng bộ GNOC",["mdb"]],
+                  ["Trạng thái GNOC",["gnoc"]],
+                  ["Nguyên nhân chuẩn",["nnc"]]
+                ];
+
+          /*
+            Tìm key theo kiểu không phân biệt:
+            - hoa/thường
+            - dấu tiếng Việt
+            - khoảng trắng / _ / -
+          */
+          function normKey(value){
+
+              return String(value||"")
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g,"")
+                  .toLowerCase()
+                  .replace(/đ/g,"d")
+                  .replace(/[^a-z0-9]/g,"");
+
+          }
+
+          function findValue(row,keys){
+
+              const rowKeys=Object.keys(row||{});
+
+              const normalizedRow={};
+
+              rowKeys.forEach(k=>{
+                  normalizedRow[normKey(k)]=row[k];
+              });
+
+              for(const key of keys){
+
+                  const nk=normKey(key);
+
+                  if(
+                      Object.prototype.hasOwnProperty.call(
+                          normalizedRow,
+                          nk
+                      )
+                  ){
+
+                      const value=normalizedRow[nk];
+
+                      if(
+                          value!==undefined &&
+                          value!==null &&
+                          String(value).trim()!==""
+                      ){
+                          return value;
+                      }
+
+                  }
+
+              }
+
+              /*
+                Nếu không tìm thấy key chính xác, thử tìm key
+                chứa tên trường. Điều này giúp không làm mất dữ liệu
+                khi API đổi tên nhẹ.
+              */
+              for(const key of keys){
+
+                  const nk=normKey(key);
+
+                  if(!nk)continue;
+
+                  const matched=rowKeys.find(
+                      rk=>normKey(rk).includes(nk)
+                  );
+
+                  if(matched){
+
+                      const value=row[matched];
+
+                      if(
+                          value!==undefined &&
+                          value!==null &&
+                          String(value).trim()!==""
+                      ){
+                          return value;
+                      }
+
+                  }
+
+              }
+
+              return "";
+
+          }
+
+          const finalColumns=columns.map(x=>[x[0],x[1]]);
+
+          let html=`
+            <div style="
+                font-weight:700;
+                margin:12px 0 6px;
+                color:#111827;
+            ">${titleText} (${rows.length})</div>
+
+            <div style="
+                overflow:auto;
+                border:1px solid #e5e7eb;
+                border-radius:6px;
+                max-height:65vh;
+            ">
+            <table style="
+                width:max-content;
+                min-width:100%;
+                border-collapse:collapse;
+                font-size:12px;
+            ">
+              <thead>
+                <tr>
+          `;
+
+          finalColumns.forEach(([label])=>{
+
+              html+=`
+                <th style="
+                    text-align:center;
+                    padding:8px 7px;
+                    border-right:1px solid #e5e7eb;
+                    border-bottom:1px solid #d1d5db;
+                    background:#f1f3f5;
+                    color:#111827;
+                    font-weight:700;
+                    white-space:nowrap;
+                    position:sticky;
+                    top:0;
+                    z-index:2;
+                ">${label}</th>`;
+
+          });
+
+          html+=`</tr></thead><tbody>`;
+
+          rows.forEach(row=>{
+
+              html+="<tr>";
+
+              finalColumns.forEach(([,keys])=>{
+
+                  let value=findValue(row,keys);
+
+                  if(value===undefined || value===null){
+                      value="";
+                  }
+
+                  /*
+                    Nội dung dài vẫn hiển thị đầy đủ khi click.
+                    Không cắt bằng substring.
+                  */
+                  const displayValue=String(value)
+                      .replace(/&/g,"&amp;")
+                      .replace(/</g,"&lt;")
+                      .replace(/>/g,"&gt;")
+                      .replace(/"/g,"&quot;");
+
+                  html+=`
+                    <td style="
+                        padding:8px 7px;
+                        border-right:1px solid #eef0f2;
+                        border-bottom:1px solid #eef0f2;
+                        vertical-align:top;
+                        white-space:pre-wrap;
+                        min-width:90px;
+                    ">${displayValue}</td>
+                  `;
+
+              });
+
+              html+="</tr>";
+
+          });
+
+          html+="</tbody></table></div>";
+
+          return html;
+
+      }
+
+      body.innerHTML=
+          makeTable("TỔNG TKM",tkmRows,"TKM")+
+          makeTable("TỔNG SC",scRows,"SC");
+
+      modal.style.display="flex";
+      modal.style.zIndex="99999";
+
+  }
+
+
+  function attachTrendClick(chart,canvas,monthNumber,year,huyenFilter=""){
+
+      if(!chart || !canvas)return;
+
+      canvas.style.cursor="pointer";
+
+      /*
+        Bắt click trực tiếp trên canvas.
+        Không phụ thuộc vào việc click trúng point hay không.
+        Tọa độ X được quy đổi thành ngày gần nhất trên trục X.
+      */
+      canvas.addEventListener(
+          "click",
+          function(event){
+
+              const rect=canvas.getBoundingClientRect();
+
+              if(
+                  !rect.width ||
+                  !rect.height ||
+                  !chart.chartArea
+              ){
+                  return;
+              }
+
+              const x=
+                  event.clientX-
+                  rect.left;
+
+              const area=chart.chartArea;
+
+              /*
+                Chỉ xử lý khi click nằm trong vùng biểu đồ.
+              */
+              const y=
+                  event.clientY-
+                  rect.top;
+
+              /*
+                Chỉ click trong vùng vẽ dữ liệu mới mở chi tiết.
+                Legend "TỔNG TKM / TỔNG SC", tiêu đề và vùng ngoài
+                biểu đồ sẽ không làm mở bảng.
+              */
+              if(
+                  x<area.left ||
+                  x>area.right ||
+                  y<area.top ||
+                  y>area.bottom
+              ){
+                  return;
+              }
+
+              const labels=
+                  chart.data &&
+                  chart.data.labels
+                  ? chart.data.labels
+                  : [];
+
+              if(!labels.length){
+                  return;
+              }
+
+              const ratio=
+                  (x-area.left)/
+                  (area.right-area.left);
+
+              let index=Math.round(
+                  ratio*(labels.length-1)
+              );
+
+              index=Math.max(
+                  0,
+                  Math.min(
+                      labels.length-1,
+                      index
+                  )
+              );
+
+              const day=String(
+                  index+1
+              ).padStart(2,"0");
+
+              const dateKey=
+                  year+"-"+
+                  String(monthNumber).padStart(2,"0")+"-"+
+                  day;
+
+              showTrendDetail(
+                  dateKey,
+                  monthNumber,
+                  year,
+                  huyenFilter
+              );
+
+          },
+          {passive:true}
+      );
+
+  }
+
+
+  function initTrendDetailModal(){
+
+      const modal=document.getElementById("trendDetailModal");
+      const close=document.getElementById("trendDetailClose");
+
+      if(close){
+
+          close.onclick=()=>{
+              modal.style.display="none";
+          };
+
+      }
+
+      if(modal){
+
+          modal.onclick=event=>{
+
+              if(event.target===modal){
+                  modal.style.display="none";
+              }
+
+          };
+
+      }
+}
+
+
+
+  /* =========================================================
+     NOTEBOOK ĐÁNH GIÁ HUYỆN + NHÂN VIÊN
+     - Huyện: SOC, SOC HOME, SC >16H, SC >24H,
+              TKM >16H, TKM >24H, TKM quá hẹn
+     - Nhân viên: Top 5 tồn nhiều + các nhóm quá hạn tương ứng
+     - Bấm từng dòng -> mở bảng chi tiết hiện có
+     ========================================================= */
+  function renderEvaluationNotebook(){
+
+  const wrap=document.getElementById("evaluationNotebookContent");
+  if(!wrap)return;
+
+  const norm=v=>String(v??"").replace(/\s+/g," ").trim().toUpperCase();
+
+  const scRows=Array.isArray(tonsc)?tonsc:[];
+  const tkmRows=Array.isArray(tkmThuc)?tkmThuc:(Array.isArray(tontkm)?tontkm:[]);
+
+  const scHour=row=>{
+    const v=row?.tg;
+    if(v===null || v===undefined || String(v).trim()==="")return 0;
+    const raw=String(v).trim().replace(",",".");
+    if(/^[+-]?\d+(?:\.\d+)?$/.test(raw)){
+      const n=Number(raw);
+      return Number.isFinite(n)?n:0;
+    }
+    const m=raw.match(/(?:\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4})?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+    if(m)return Number(m[1]||0)+Number(m[2]||0)/60+Number(m[3]||0)/3600;
+    return 0;
+  };
+
+  const tkmKpi=row=>norm(row?.kpi);
+  const huyenName=row=>String(row?.huyen||"Khác").trim()||"Khác";
+  const staffName=row=>String(row?.nv||"Không rõ").trim()||"Không rõ";
+
+  const metrics=[
+    {
+      key:"soc",
+      label:"SOC",
+      color:"#ea580c",
+      data:scRows.filter(r=>norm(r.sc)==="SOC")
+    },
+    {
+      key:"sochome",
+      label:"SOC HOME",
+      color:"#2563eb",
+      data:scRows.filter(r=>norm(r.sc)==="SOC HOME")
+    },
+    {
+      key:"sc16",
+      label:"SC quá 16H",
+      color:"#d97706",
+      data:scRows.filter(r=>{
+        const loai=norm(r.sc);
+        return scHour(r)>16 && loai!=="SOC" && loai!=="SOC HOME";
+      })
+    },
+    {
+      key:"sc24",
+      label:"SC quá 24H",
+      color:"#dc2626",
+      data:scRows.filter(r=>{
+        const loai=norm(r.sc);
+        return scHour(r)>24 && loai!=="SOC" && loai!=="SOC HOME";
+      })
+    },
+    {
+      key:"tkm24",
+      label:"TKM quá 24H",
+      color:"#b91c1c",
+      data:tkmRows.filter(r=>tkmKpi(r)==="QUÁ 24H")
+    },
+    {
+      key:"tkmhen",
+      label:"TKM quá hẹn",
+      color:"#be123c",
+      data:tkmRows.filter(r=>tkmKpi(r)==="QUÁ HẸN")
+    },
+    {
+      key:"tkmton",
+      label:"Tồn TKM nhiều nhất",
+      color:"#2563eb",
+      data:tkmRows
+    },
+    {
+      key:"capnhatHs",
+      label:"Cập nhật hồ sơ nhiều nhất",
+      color:"#0891b2",
+      data:Array.isArray(capnhaths)?capnhaths:[]
+    }
+  ];
+
+  function rankBy(data,getName,limit=3){
+    const map={};
+    data.forEach(r=>{
+      const name=getName(r);
+      if(!name)return;
+      map[name]=(map[name]||0)+1;
+    });
+    return Object.entries(map)
+      .map(([name,count])=>({name,count}))
+      .sort((a,b)=>b.count-a.count || a.name.localeCompare(b.name,"vi"))
+      .slice(0,limit);
+  }
+
+  function rankByHuyen(data){return rankBy(data,huyenName,5);}
+  function rankByStaff(data){return rankBy(data,staffName,5);}
+
+  function esc(v){
+    return String(v??"")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+  }
+
+  function openRows(title){
+    return `showTable(${JSON.stringify(title)},window.__notebookRows[${JSON.stringify(title)}])`;
+  }
+
+  window.__notebookRows={};
+  let html="";
+
+  /* =========================================================
+     KHỐI 1: TOP 3 HUYỆN + ĐÁNH GIÁ
+     ========================================================= */
+  html+=`<div class="notebook-report-row notebook-huyen-row">`;
+
+  html+=`
+    <div class="notebook-report-main">
+      <div class="notebook-report-title">
+        <span>🏚️ TOP 5 HUYỆN TỒN NHIỀU / CHỈ TIÊU XẤU</span>
+        <span>TOP 5</span>
+      </div>
+      <div class="notebook-card-grid notebook-huyen-grid">
+  `;
+
+  metrics.forEach(m=>{
+    const top=rankByHuyen(m.data,5);
+    const title="HUYỆN • "+m.label;
+    window.__notebookRows[title]=m.data;
+
+    html+=`
+      <div class="notebook-flat-card">
+        <div class="notebook-card-head"
+             onclick='${openRows(title)}'>
+          <div class="notebook-card-label" style="color:${m.color}">
+            ${esc(m.label)}
+          </div>
+          <div class="notebook-card-total">${m.data.length}</div>
+        </div>
+        <div class="notebook-toplist">
+    `;
+
+    if(!top.length){
+      html+=`<div class="notebook-empty">Không có dữ liệu</div>`;
+    }else{
+      top.forEach((x,i)=>{
+        const key=title+" • "+x.name;
+        window.__notebookRows[key]=m.data.filter(r=>huyenName(r)===x.name);
+        html+=`
+          <div class="notebook-rank-row"
+               onclick='event.stopPropagation();showTable(${JSON.stringify(key)},window.__notebookRows[${JSON.stringify(key)}])'>
+            <div class="notebook-rank">${i+1}</div>
+            <div class="notebook-rank-name">${esc(x.name)}</div>
+            <div class="notebook-rank-count">${x.count}</div>
+          </div>
+        `;
+      });
+    }
+    html+=`</div></div>`;
+  });
+
+  html+=`</div></div>`;
+
+  /* ĐÁNH GIÁ TOP 5 HUYỆN */
+  const badByHuyen={};
+  metrics.forEach(m=>{
+    m.data.forEach(r=>{
+      const h=huyenName(r);
+      badByHuyen[h]=(badByHuyen[h]||0)+1;
+    });
+  });
+
+  const badTop=Object.entries(badByHuyen)
+    .map(([name,count])=>({name,count}))
+    .sort((a,b)=>b.count-a.count || a.name.localeCompare(b.name,"vi"))
+    .slice(0,5);
+
+  const totalBad=Object.values(badByHuyen).reduce((s,v)=>s+v,0);
+
+  html+=`
+    <div class="notebook-assessment-panel">
+      <div class="notebook-assessment-title">
+        📝 ĐÁNH GIÁ TOP 5 HUYỆN TỒI
+      </div>
+      <div class="notebook-assessment-sub">
+        Tổng hợp theo số lượng tồn và các chỉ tiêu xấu của từng huyện.
+      </div>
+  `;
+
+  if(!badTop.length){
+    html+=`<div class="notebook-assessment-empty">Chưa có dữ liệu đánh giá.</div>`;
+  }else{
+    badTop.forEach((x,i)=>{
+      const pct=totalBad ? x.count/totalBad*100 : 0;
+      const details=metrics
+        .map(m=>({
+          label:m.label,
+          count:m.data.filter(r=>huyenName(r)===x.name).length
+        }))
+        .filter(v=>v.count>0)
+        .sort((a,b)=>b.count-a.count)
+        .slice(0,6)
+        .map(v=>`${v.label}: ${v.count}`)
+        .join(" • ");
+
+      html+=`
+        <div class="notebook-assessment-item">
+          <div class="notebook-assessment-rank">${i+1}</div>
+          <div class="notebook-assessment-content">
+            <div class="notebook-assessment-name">${esc(x.name)}</div>
+            <div class="notebook-assessment-score">
+              ${x.count} · ${pct.toFixed(1)}%
+            </div>
+            <div class="notebook-assessment-details">
+              <b>Các nội dung tồi:</b> ${esc(details)}
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  html+=`
+      <div class="notebook-assessment-note">
+        Gồm: SOC, SOC HOME, SC quá 16H, SC quá 24H,
+        TKM quá 24H, TKM quá hẹn, Tồn TKM và Cập nhật hồ sơ.
+      </div>
+    </div>
+  </div>`;
+
+  /* =========================================================
+     KHỐI 2: TOP 5 NHÂN VIÊN + THÁNG N-1
+     ========================================================= */
+  html+=`<div class="notebook-report-row notebook-staff-row">`;
+
+  html+=`
+    <div class="notebook-report-main">
+      <div class="notebook-report-title">
+        <span>👨‍💼 TOP 5 NHÂN VIÊN TỒN NHIỀU / CẦN XỬ LÝ</span>
+        <span>TOP 5</span>
+      </div>
+      <div class="notebook-card-grid notebook-staff-grid">
+  `;
+
+  const staffMetrics=[
+    {
+      label:"NV tồn TKM nhiều nhất",
+      color:"#2563eb",
+      data:tkmRows
+    },
+    {
+      label:"Tồn cập nhật hồ sơ",
+      color:"#d97706",
+      data:metrics.find(x=>x.key==="sc16").data
+    },
+    {
+      label:"NV sự cố quá 24H",
+      color:"#dc2626",
+      data:metrics.find(x=>x.key==="sc24").data
+    },
+    {
+      label:"NV TKM quá 16H",
+      color:"#7c3aed",
+      data:tkmRows.filter(r=>tkmKpi(r)==="QUÁ 16H")
+    },
+    {
+      label:"NV TKM quá 24H",
+      color:"#b91c1c",
+      data:metrics.find(x=>x.key==="tkm24").data
+    },
+    {
+      label:"NV TKM quá hẹn",
+      color:"#be123c",
+      data:metrics.find(x=>x.key==="tkmhen").data
+    }
+  ];
+
+  staffMetrics.forEach(m=>{
+    const top=rankByStaff(m.data,5);
+    const title="NHÂN VIÊN • "+m.label;
+    window.__notebookRows[title]=m.data;
+
+    html+=`
+      <div class="notebook-flat-card">
+        <div class="notebook-card-head"
+             onclick='showTable(${JSON.stringify(title)},window.__notebookRows[${JSON.stringify(title)}])'>
+          <div class="notebook-card-label" style="color:${m.color}">
+            ${esc(m.label)}
+          </div>
+          <div class="notebook-card-total">${m.data.length}</div>
+        </div>
+        <div class="notebook-toplist">
+    `;
+
+    if(!top.length){
+      html+=`<div class="notebook-empty">Không có dữ liệu</div>`;
+    }else{
+      top.forEach((x,i)=>{
+        const key=title+" • "+x.name;
+        window.__notebookRows[key]=m.data.filter(r=>staffName(r)===x.name);
+        html+=`
+          <div class="notebook-rank-row"
+               onclick='event.stopPropagation();showTable(${JSON.stringify(key)},window.__notebookRows[${JSON.stringify(key)}])'>
+            <div class="notebook-rank">${i+1}</div>
+            <div class="notebook-rank-name">${esc(x.name)}</div>
+            <div class="notebook-rank-count">${x.count}</div>
+          </div>
+        `;
+      });
+    }
+    html+=`</div></div>`;
+  });
+
+  html+=`</div>`;
+
+  /* ĐÁNH GIÁ TOP 5 NHÂN VIÊN TỒI */
+  const badByStaff={};
+  staffMetrics.forEach(m=>{
+    m.data.forEach(r=>{
+      const n=staffName(r);
+      badByStaff[n]=(badByStaff[n]||0)+1;
+    });
+  });
+
+  const badStaffTop=Object.entries(badByStaff)
+    .map(([name,count])=>({name,count}))
+    .sort((a,b)=>b.count-a.count || a.name.localeCompare(b.name,"vi"))
+    .slice(0,5);
+
+  const totalBadStaff=Object.values(badByStaff).reduce((s,v)=>s+v,0);
+
+  html+=`
+    <div class="notebook-staff-assessment">
+      <div class="notebook-staff-assessment-head">
+        <div>
+          <div class="notebook-staff-assessment-title">📋 ĐÁNH GIÁ TOP 5 NHÂN VIÊN TỒI</div>
+          <div class="notebook-staff-assessment-sub">
+            Tổng hợp theo số lượng tồn và các chỉ tiêu xấu của từng nhân viên.
+          </div>
+        </div>
+      </div>
+      <div class="notebook-staff-assessment-grid">
+  `;
+
+  if(!badStaffTop.length){
+    html+=`<div class="notebook-assessment-empty">Chưa có dữ liệu đánh giá.</div>`;
+  }else{
+    badStaffTop.forEach((x,i)=>{
+      const pct=totalBadStaff ? x.count/totalBadStaff*100 : 0;
+      const details=staffMetrics
+        .map(m=>({
+          label:m.label.replace(/^NV\s*/,""),
+          count:m.data.filter(r=>staffName(r)===x.name).length
+        }))
+        .filter(v=>v.count>0)
+        .sort((a,b)=>b.count-a.count)
+        .slice(0,4)
+        .map(v=>`${v.label}: ${v.count}`)
+        .join(" • ");
+
+      const title="ĐÁNH GIÁ NHÂN VIÊN • "+x.name;
+      window.__notebookRows[title]=staffMetrics.flatMap(m=>m.data.filter(r=>staffName(r)===x.name));
+
+      html+=`
+        <div class="notebook-staff-assessment-item"
+             onclick='showTable(${JSON.stringify(title)},window.__notebookRows[${JSON.stringify(title)}])'>
+          <div class="notebook-staff-rank">${i+1}</div>
+          <div class="notebook-staff-assessment-content">
+            <div class="notebook-staff-name">${esc(x.name)}</div>
+            <div class="notebook-staff-score">${x.count} · ${pct.toFixed(1)}%</div>
+            <div class="notebook-staff-details">
+              <b>Các nội dung tồi:</b> ${esc(details || "Không xác định")}
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  html+=`
+      </div>
+      <div class="notebook-staff-assessment-note">
+        Đánh giá dựa trên: tồn TKM, sự cố quá 16H/24H, TKM quá 16H/24H và TKM quá hẹn.
+      </div>
+    </div>
+    </div>
+  `;
+
+  /* THÁNG N-1: TỰ ĐỘNG LẤY THÁNG TRƯỚC */
+  const nowReport=new Date();
+  const prevMonthDate=new Date(
+    nowReport.getFullYear(),
+    nowReport.getMonth()-1,
+    1
+  );
+
+  const prevMonthYear=prevMonthDate.getFullYear();
+  const prevMonthIndex=prevMonthDate.getMonth();
+  const prevMonthNumber=String(prevMonthIndex+1).padStart(2,"0");
+  const prevMonthLabel=prevMonthNumber+"/"+prevMonthYear;
+
+  const isPrevMonth=(row,field)=>{
+    const d=parseTrendDate(row?.[field]);
+    return d
+      && d.getFullYear()===prevMonthYear
+      && d.getMonth()===prevMonthIndex;
+  };
+
+  const prevMonthTkmRows=tkmRows.filter(r=>isPrevMonth(r,"ntdn"));
+  const prevMonthScRows=scRows.filter(r=>isPrevMonth(r,"ngay"));
+
+  const rankGeneric=(data,getName,limit=5)=>{
+    const map={};
+    data.forEach(r=>{
+      const name=getName(r);
+      if(!name)return;
+      map[name]=(map[name]||0)+1;
+    });
+    return Object.entries(map)
+      .map(([name,count])=>({name,count}))
+      .sort((a,b)=>b.count-a.count || a.name.localeCompare(b.name,"vi"))
+      .slice(0,limit);
+  };
+
+  const renderPrevMonthRank=(label,color,data,getName)=>{
+    const top=rankGeneric(data,getName,5);
+    const title="THÁNG 07/"+prevMonthYear+" • "+label;
+    window.__notebookRows[title]=data;
+
+    let s=`
+      <div class="july-note-metric">
+        <div class="july-note-metric-head"
+             onclick='showTable(${JSON.stringify(title)},window.__notebookRows[${JSON.stringify(title)}])'>
+          <div class="july-note-label" style="color:${color}">${esc(label)}</div>
+          <div class="july-note-total">${data.length}</div>
+        </div>
+        <div class="notebook-toplist">
+    `;
+
+    if(!top.length){
+      s+=`<div class="notebook-empty">Không có dữ liệu</div>`;
+    }else{
+      top.forEach((x,i)=>{
+        const key=title+" • "+x.name;
+        window.__notebookRows[key]=data.filter(r=>getName(r)===x.name);
+        s+=`
+          <div class="notebook-rank-row"
+               onclick='event.stopPropagation();showTable(${JSON.stringify(key)},window.__notebookRows[${JSON.stringify(key)}])'>
+            <div class="notebook-rank">${i+1}</div>
+            <div class="notebook-rank-name">${esc(x.name)}</div>
+            <div class="notebook-rank-count">${x.count}</div>
+          </div>
+        `;
+      });
+    }
+    return s+`</div></div>`;
+  };
+
+  html+=`
+    <div class="notebook-july-panel notebook-july-right">
+      <div class="notebook-report-title notebook-july-title">
+        <span>📅 TỒN THÁNG 07/${prevMonthYear}</span>
+        <span>TOP 5</span>
+      </div>
+
+      <div class="notebook-july-columns">
+        <div class="notebook-july-card notebook-july-tkm">
+          <div class="notebook-july-card-title">
+            <span>📊 TKM</span>
+            <b>${prevMonthTkmRows.length}</b>
+          </div>
+          ${renderPrevMonthRank("Huyện tồn TKM","#2563eb",prevMonthTkmRows,huyenName)}
+          ${renderPrevMonthRank("Nhân viên tồn TKM","#7c3aed",prevMonthTkmRows,staffName)}
+        </div>
+
+        <div class="notebook-july-card notebook-july-sc">
+          <div class="notebook-july-card-title">
+            <span>🚨 SC</span>
+            <b>${prevMonthScRows.length}</b>
+          </div>
+          ${renderPrevMonthRank("Huyện tồn SC","#dc2626",prevMonthScRows,huyenName)}
+          ${renderPrevMonthRank("Nhân viên tồn SC","#ea580c",prevMonthScRows,staffName)}
+        </div>
+      </div>
+
+      <div class="notebook-july-detail">
+        <div class="notebook-july-detail-title">📌 CÁC NỘI DUNG CÒN TỒN THÁNG ${prevMonthLabel}</div>
+        <div class="notebook-july-detail-grid">
+          <div>
+            <b>TKM:</b>
+            Quá 24H: ${tkmRows.filter(r=>tkmKpi(r)==="QUÁ 24H").filter(r=>isPrevMonth(r,"ntdn")).length}
+            · Quá hẹn: ${tkmRows.filter(r=>tkmKpi(r)==="QUÁ HẸN").filter(r=>isPrevMonth(r,"ntdn")).length}
+            · Quá 16H: ${tkmRows.filter(r=>tkmKpi(r)==="QUÁ 16H").filter(r=>isPrevMonth(r,"ntdn")).length}
+            · Cập nhật hồ sơ: ${prevMonthTkmRows.length}
+          </div>
+          <div>
+            <b>SC:</b>
+            Quá 24H: ${prevMonthScRows.filter(r=>scHour(r)>24).length}
+            · Quá 16H: ${prevMonthScRows.filter(r=>scHour(r)>16).length}
+            · SOC: ${prevMonthScRows.filter(r=>norm(r.sc)==="SOC").length}
+            · SOC HOME: ${prevMonthScRows.filter(r=>norm(r.sc)==="SOC HOME").length}
+          </div>
+        </div>
+      </div>
+      <div class="notebook-july-update">
+        ⏰ Cập nhật dữ liệu: <b>${esc(String(tontkm[0]?.tgupdate || "Chưa xác định"))}</b>
+      </div>
+    </div>
+  </div>`;
+
+  wrap.innerHTML=html;
+}
+function renderStaffRanking(){
   
   const wrap =
   document.getElementById(
@@ -4146,7 +8630,88 @@ const url =
   
   }
     
-  </script>
   
-  </body>
+
+  async function captureCDBRReport(){
+    const target=document.getElementById('evaluationNotebook');
+    const btn=document.getElementById('btnCaptureCDBR');
+    if(!target) return;
+    if(typeof html2canvas!=='function'){
+      alert('Chưa tải được thư viện chụp màn hình. Hãy mở lại trang và thử lại.');
+      return;
+    }
+    const oldText=btn?btn.innerHTML:'';
+    if(btn){btn.disabled=true;btn.innerHTML='⏳ Đang chụp...';}
+    try{
+      if(document.fonts && document.fonts.ready) await document.fonts.ready;
+      await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+      const canvas=await html2canvas(target,{
+        scale:2,useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false,
+        imageTimeout:15000,scrollX:0,scrollY:-window.scrollY,
+        windowWidth:Math.max(document.documentElement.clientWidth,target.scrollWidth),
+        windowHeight:target.scrollHeight
+      });
+      const stamp=new Date();
+      const pad=n=>String(n).padStart(2,'0');
+      const filename=`DANH_GIA_TON_CONG_VIEC_CDBR_${stamp.getFullYear()}${pad(stamp.getMonth()+1)}${pad(stamp.getDate())}_${pad(stamp.getHours())}${pad(stamp.getMinutes())}.png`;
+      canvas.toBlob(blob=>{
+        if(!blob){alert('Không tạo được ảnh báo cáo.');return;}
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');a.href=url;a.download=filename;
+        document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+        if(navigator.clipboard && window.ClipboardItem){
+          try{navigator.clipboard.write([new ClipboardItem({'image/png':blob})]).catch(()=>{});}catch(e){}
+        }
+      },'image/png');
+    }catch(err){
+      console.error('captureCDBRReport:',err);
+      alert('Chụp báo cáo thất bại. Hãy thử lại.');
+    }finally{
+      if(btn)setTimeout(()=>{btn.disabled=false;btn.innerHTML=oldText||'📸 Chụp báo cáo';},500);
+    }
+  }
+</script>
+  
+  
+<div id="trendDetailModal" style="
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:rgba(0,0,0,.45);
+    padding:30px;
+">
+  <div style="
+      background:#fff;
+      width:min(1200px,96vw);
+      max-height:88vh;
+      margin:auto;
+      border-radius:10px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+  ">
+    <div style="
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding:14px 18px;
+        border-bottom:1px solid #e5e7eb;
+    ">
+      <div>
+        <div id="trendDetailTitle" style="font-weight:700;color:#111827;"></div>
+        <div id="trendDetailSummary" style="font-size:12px;color:#6b7280;margin-top:3px;"></div>
+      </div>
+      <button id="trendDetailClose" type="button" style="
+          border:0;background:#f3f4f6;border-radius:7px;
+          padding:6px 10px;cursor:pointer;font-size:18px;
+      ">×</button>
+    </div>
+    <div style="overflow:auto;padding:12px 16px;">
+      <div id="trendDetailBody"></div>
+    </div>
+  </div>
+</div>
+
+</body>
   </html>
