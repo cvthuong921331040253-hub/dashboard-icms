@@ -1270,14 +1270,15 @@
   /* TKM THỰC: bỏ CẬP NHẬT HỒ SƠ.
      Sheet hiện tại chưa có KẾT THÚC nên chưa loại trạng thái này. */
   const tkmThuc=tontkm.filter(x=>{
-
+  
       const tt=String(x.tt||"")
-          .replace(/\\s+/g," ")
+          .replace(/\s+/g," ")
           .trim()
           .toUpperCase();
-
-      return tt!=="CẬP NHẬT HỒ SƠ";
-
+  
+      return tt!=="CẬP NHẬT HỒ SƠ"
+          && tt!=="KẾT THÚC";
+  
   });
 
   window.tkmThuc=tkmThuc;
