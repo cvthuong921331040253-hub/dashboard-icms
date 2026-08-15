@@ -955,7 +955,6 @@
   
   let tonsc=[];
   let tontkm=[];
-  let tkmThuc=[];
   let currentTitle="";
   let currentData=[];
   let filteredData=[];
@@ -1240,30 +1239,19 @@
   const groups={};
   
   const capnhaths=tontkm.filter(x=>{
+  
       const tt=String(x.tt||"")
           .replace(/\s+/g," ")
           .trim()
           .toUpperCase();
   
       return tt==="CẬP NHẬT HỒ SƠ";
-  });
   
-  tkmThuc=tontkm.filter(x=>{
-      const tt=String(x.tt||"")
-          .replace(/\s+/g," ")
-          .trim()
-          .toUpperCase();
-  
-      return ![
-          "CẬP NHẬT HỒ SƠ",
-          "KẾT THÚC"
-      ].includes(tt);
   });
   
   window.capnhaths=capnhaths;
-  window.tkmThuc=tkmThuc;
   
-  tkmThuc.forEach(x=>{
+  tontkm.forEach(x=>{
   
   const tt=String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase();
   
@@ -1285,14 +1273,9 @@
   
   let html="";
   
-  window.tongtkm=tkmThuc;
+  window.tongtkm=tontkm;
   
-  html+=createCard(
-      "TỔNG TKM",
-      tkmThuc.length,
-      "#111827",
-      "showTable('TỔNG TKM',tongtkm)"
-  );
+  html+=createCard("TỔNG TKM",tontkm.length,"#111827","showTable('TỔNG TKM',tongtkm)");
   
   [
       "QUÁ 24H",
@@ -1328,12 +1311,7 @@
   
   });
   
-    const chuagiao=tkmThuc.filter(x=>
-      String(x.tt||"")
-          .replace(/\s+/g," ")
-          .trim()
-          .toUpperCase()==="ĐANG GIAO TỔ ĐỘI"
-  );
+  const chuagiao=tontkm.filter(x=>String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase()==="ĐANG GIAO TỔ ĐỘI");
   
   window.tkmchuagiao=chuagiao;
     
@@ -1488,86 +1466,103 @@
   
   function renderHSChart(){
   
-      const labels=[
-          ...new Set(
-              capnhaths.map(x=>x.huyen||"Khác")
-          )
-      ];
+  const labels=[...new Set(tontkm.map(x=>x.huyen||"Khác"))];
   
-      const hs={};
+  const hs={};
   
-      labels.forEach(h=>{
-          hs[h]=0;
-      });
+  labels.forEach(h=>{
   
-      capnhaths.forEach(x=>{
+  hs[h]=0;
   
-          const h=x.huyen||"Khác";
+  });
   
-          hs[h]++;
+  tontkm.forEach(x=>{
   
-      });
+  const h=x.huyen||"Khác";
   
-      new Chart(document.getElementById("chartCNHS"),{
+  const tt=String(x.tt||"").toUpperCase();
   
-          type:"bar",
+  if(tt.includes("CẬP NHẬT HỒ SƠ")){
   
-          data:{
-              labels:labels,
+  hs[h]++;
   
-              datasets:[
-                  {
-                      label:"Cập nhật hồ sơ",
-                      data:labels.map(h=>hs[h]),
-                      backgroundColor:"#16a34a",
-                      borderColor:"#15803d",
-                      borderWidth:1.5,
-                      hoverBackgroundColor:"#22c55e",
-                      maxBarThickness:18,
-                      categoryPercentage:0.72,
-                      barPercentage:0.82
-                  }
-              ]
-          },
+  }
   
-          options:{
-              responsive:true,
-              maintainAspectRatio:false,
+  });
   
-              layout:{
-                  padding:{
-                      bottom:35,
-                      top:10,
-                      left:10,
-                      right:10
-                  }
-              },
+  new Chart(document.getElementById("chartCNHS"),{
   
-              scales:{
-                  x:{
-                      ticks:{
-                          maxRotation:55,
-                          minRotation:55,
-                          font:{
-                              size:11,
-                              weight:"600"
-                          },
-                          padding:6
-                      }
-                  }
-              }
-          }
+  type:"bar",
   
-      });
+  data:{
+  
+  labels:labels,
+  
+  datasets:[
+  
+  {
+  label:"Cập nhật hồ sơ",
+  
+  data:labels.map(h=>hs[h]),
+  
+  backgroundColor:"#16a34a",
+  
+  borderColor:"#15803d",
+  
+  borderWidth:1.5,
+  
+  hoverBackgroundColor:"#22c55e",
+  
+  maxBarThickness:18,
+
+  categoryPercentage:0.72,
+  
+  barPercentage:0.82
+  
+  }
+  
+  ]
+  
+  },
+  
+  options:{
+  responsive:true,
+  maintainAspectRatio:false,
+  
+  layout:{
+  padding:{
+  bottom:35,
+  top:10,
+  left:10,
+  right:10
+  }
+  },
+  
+  scales:{
+  x:{
+  ticks:{
+  maxRotation:55,
+  minRotation:55,
+  
+  font:{
+  size:11,
+  weight:"600"
+  },
+  
+  padding:6
+  }
+  }
+  }
+  
+  }
+  
+  });
+  
   }
   
   function renderKPIChart(){
   
-  const labels=[
-      ...new Set(
-          tkmThuc.map(x=>x.huyen||"Khác")
-      )
-  ];
+  const labels=[...new Set(tontkm.map(x=>x.huyen||"Khác"))];
   
   const q24={};
   const q3_10={};
@@ -1589,7 +1584,7 @@
   
   });
   
-  tkmThuc.forEach(x=>{
+  tontkm.forEach(x=>{
   
   const h=x.huyen||"Khác";
 
@@ -1598,6 +1593,11 @@
       .trim()
       .toUpperCase();
       
+      /* BỎ CẬP NHẬT HỒ SƠ */
+      if(tt.includes("CẬP NHẬT HỒ SƠ")){
+          return;
+      }
+    
   const k=String(x.kpi||"")
   
       .replace(/\u00A0/g," ")
@@ -1736,11 +1736,11 @@
   function renderTongTKMChart(){
 
   const labels=[
-      ...new Set(
-          tkmThuc.map(x=>x.huyen||"Khác")
-      )
+  ...new Set(
+  tontkm.map(x=>x.huyen||"Khác")
+  )
   ];
-    
+  
   const tongTKM={};
   const duongDayMoi={};
   const duongDayCoSan={};
@@ -1753,7 +1753,7 @@
   
   });
   
-  tkmThuc.forEach(x=>{
+  tontkm.forEach(x=>{
   
       const h=x.huyen||"Khác";
   
@@ -1761,6 +1761,11 @@
       .replace(/\s+/g," ")
       .trim()
       .toUpperCase();
+  
+      /* BỎ CẬP NHẬT HỒ SƠ */
+      if(tt.includes("CẬP NHẬT HỒ SƠ")){
+          return;
+      }
   
       const cv=String(x.cv||"")
       .replace(/\s+/g," ")
@@ -2033,7 +2038,7 @@
   
   /* TKM QUÁ HẸN */
   const tkmQuaHen =
-  tkmThuc.filter(x=>{
+  tontkm.filter(x=>{
   
   const k =
   String(x.kpi||"")
@@ -2046,7 +2051,7 @@
   
   /* TKM QUÁ 24H */
   const tkm24h =
-  tkmThuc.filter(x=>{
+  tontkm.filter(x=>{
   
   const k =
   String(x.kpi||"")
