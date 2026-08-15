@@ -955,6 +955,7 @@
   
   let tonsc=[];
   let tontkm=[];
+  let tkmThuc=[];
   let currentTitle="";
   let currentData=[];
   let filteredData=[];
@@ -1247,7 +1248,7 @@
       return tt==="CẬP NHẬT HỒ SƠ";
   });
   
-  const tkmThuc=tontkm.filter(x=>{
+  ctkmThuc=tontkm.filter(x=>{
       const tt=String(x.tt||"")
           .replace(/\s+/g," ")
           .trim()
@@ -1327,7 +1328,12 @@
   
   });
   
-  const chuagiao=tontkm.filter(x=>String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase()==="ĐANG GIAO TỔ ĐỘI");
+    const chuagiao=tkmThuc.filter(x=>
+      String(x.tt||"")
+          .replace(/\s+/g," ")
+          .trim()
+          .toUpperCase()==="ĐANG GIAO TỔ ĐỘI"
+  );
   
   window.tkmchuagiao=chuagiao;
     
@@ -1492,7 +1498,7 @@
   
   });
   
-  tontkm.forEach(x=>{
+  tkmThuc.forEach(x=>{
   
   const h=x.huyen||"Khác";
   
@@ -1578,7 +1584,11 @@
   
   function renderKPIChart(){
   
-  const labels=[...new Set(tontkm.map(x=>x.huyen||"Khác"))];
+  const labels=[
+      ...new Set(
+          tkmThuc.map(x=>x.huyen||"Khác")
+      )
+  ];
   
   const q24={};
   const q3_10={};
@@ -1600,7 +1610,7 @@
   
   });
   
-  tontkm.forEach(x=>{
+  tkmThuc.forEach(x=>{
   
   const h=x.huyen||"Khác";
 
@@ -1609,11 +1619,6 @@
       .trim()
       .toUpperCase();
       
-      /* BỎ CẬP NHẬT HỒ SƠ */
-      if(tt.includes("CẬP NHẬT HỒ SƠ")){
-          return;
-      }
-    
   const k=String(x.kpi||"")
   
       .replace(/\u00A0/g," ")
@@ -1752,11 +1757,11 @@
   function renderTongTKMChart(){
 
   const labels=[
-  ...new Set(
-  tontkm.map(x=>x.huyen||"Khác")
-  )
+      ...new Set(
+          tkmThuc.map(x=>x.huyen||"Khác")
+      )
   ];
-  
+    
   const tongTKM={};
   const duongDayMoi={};
   const duongDayCoSan={};
@@ -1769,7 +1774,7 @@
   
   });
   
-  tontkm.forEach(x=>{
+  tkmThuc.forEach(x=>{
   
       const h=x.huyen||"Khác";
   
@@ -1777,11 +1782,6 @@
       .replace(/\s+/g," ")
       .trim()
       .toUpperCase();
-  
-      /* BỎ CẬP NHẬT HỒ SƠ */
-      if(tt.includes("CẬP NHẬT HỒ SƠ")){
-          return;
-      }
   
       const cv=String(x.cv||"")
       .replace(/\s+/g," ")
