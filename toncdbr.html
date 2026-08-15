@@ -1488,98 +1488,77 @@
   
   function renderHSChart(){
   
-  const labels=[...new Set(tontkm.map(x=>x.huyen||"Khác"))];
+      const labels=[
+          ...new Set(
+              capnhaths.map(x=>x.huyen||"Khác")
+          )
+      ];
   
-  const hs={};
+      const hs={};
   
-  labels.forEach(h=>{
+      labels.forEach(h=>{
+          hs[h]=0;
+      });
   
-  hs[h]=0;
+      capnhaths.forEach(x=>{
   
-  });
+          const h=x.huyen||"Khác";
   
-  tkmThuc.forEach(x=>{
+          hs[h]++;
   
-  const h=x.huyen||"Khác";
+      });
   
-  const tt=String(x.tt||"").toUpperCase();
+      new Chart(document.getElementById("chartCNHS"),{
   
-  if(tt.includes("CẬP NHẬT HỒ SƠ")){
+          type:"bar",
   
-  hs[h]++;
+          data:{
+              labels:labels,
   
-  }
+              datasets:[
+                  {
+                      label:"Cập nhật hồ sơ",
+                      data:labels.map(h=>hs[h]),
+                      backgroundColor:"#16a34a",
+                      borderColor:"#15803d",
+                      borderWidth:1.5,
+                      hoverBackgroundColor:"#22c55e",
+                      maxBarThickness:18,
+                      categoryPercentage:0.72,
+                      barPercentage:0.82
+                  }
+              ]
+          },
   
-  });
+          options:{
+              responsive:true,
+              maintainAspectRatio:false,
   
-  new Chart(document.getElementById("chartCNHS"),{
+              layout:{
+                  padding:{
+                      bottom:35,
+                      top:10,
+                      left:10,
+                      right:10
+                  }
+              },
   
-  type:"bar",
+              scales:{
+                  x:{
+                      ticks:{
+                          maxRotation:55,
+                          minRotation:55,
+                          font:{
+                              size:11,
+                              weight:"600"
+                          },
+                          padding:6
+                      }
+                  }
+              }
+          }
   
-  data:{
-  
-  labels:labels,
-  
-  datasets:[
-  
-  {
-  label:"Cập nhật hồ sơ",
-  
-  data:labels.map(h=>hs[h]),
-  
-  backgroundColor:"#16a34a",
-  
-  borderColor:"#15803d",
-  
-  borderWidth:1.5,
-  
-  hoverBackgroundColor:"#22c55e",
-  
-  maxBarThickness:18,
-
-  categoryPercentage:0.72,
-  
-  barPercentage:0.82
-  
-  }
-  
-  ]
-  
-  },
-  
-  options:{
-  responsive:true,
-  maintainAspectRatio:false,
-  
-  layout:{
-  padding:{
-  bottom:35,
-  top:10,
-  left:10,
-  right:10
-  }
-  },
-  
-  scales:{
-  x:{
-  ticks:{
-  maxRotation:55,
-  minRotation:55,
-  
-  font:{
-  size:11,
-  weight:"600"
-  },
-  
-  padding:6
-  }
-  }
-  }
-  
-  }
-  
-  });
-  
+      });
   }
   
   function renderKPIChart(){
