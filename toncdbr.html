@@ -1253,7 +1253,10 @@
           .trim()
           .toUpperCase();
   
-      return tt!=="CẬP NHẬT HỒ SƠ";
+      return ![
+          "CẬP NHẬT HỒ SƠ",
+          "KẾT THÚC"
+      ].includes(tt);
   });
   
   window.capnhaths=capnhaths;
