@@ -1239,19 +1239,27 @@
   const groups={};
   
   const capnhaths=tontkm.filter(x=>{
-  
       const tt=String(x.tt||"")
           .replace(/\s+/g," ")
           .trim()
           .toUpperCase();
   
       return tt==="CẬP NHẬT HỒ SƠ";
+  });
   
+  const tkmThuc=tontkm.filter(x=>{
+      const tt=String(x.tt||"")
+          .replace(/\s+/g," ")
+          .trim()
+          .toUpperCase();
+  
+      return tt!=="CẬP NHẬT HỒ SƠ";
   });
   
   window.capnhaths=capnhaths;
+  window.tkmThuc=tkmThuc;
   
-  tontkm.forEach(x=>{
+  tkmThuc.forEach(x=>{
   
   const tt=String(x.tt||"").replace(/\s+/g," ").trim().toUpperCase();
   
@@ -1273,9 +1281,14 @@
   
   let html="";
   
-  window.tongtkm=tontkm;
+  window.tongtkm=tkmThuc;
   
-  html+=createCard("TỔNG TKM",tontkm.length,"#111827","showTable('TỔNG TKM',tongtkm)");
+  html+=createCard(
+      "TỔNG TKM",
+      tkmThuc.length,
+      "#111827",
+      "showTable('TỔNG TKM',tongtkm)"
+  );
   
   [
       "QUÁ 24H",
@@ -2038,7 +2051,7 @@
   
   /* TKM QUÁ HẸN */
   const tkmQuaHen =
-  tontkm.filter(x=>{
+  tkmThuc.filter(x=>{
   
   const k =
   String(x.kpi||"")
@@ -2051,7 +2064,7 @@
   
   /* TKM QUÁ 24H */
   const tkm24h =
-  tontkm.filter(x=>{
+  tkmThuc.filter(x=>{
   
   const k =
   String(x.kpi||"")
