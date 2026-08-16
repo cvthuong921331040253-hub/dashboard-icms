@@ -3313,12 +3313,199 @@
   }
 }
 
+
+/* ===== TKM THEO HUYỆN - LINE: ĐỒNG BỘ FONT + KHÔNG MẤT SỐ ===== */
+#chartTongTKM{
+  font-family:Arial,sans-serif;
+}
+
+
+/* ===== TKM THEO HUYỆN - LINE: FONT ĐỒNG BỘ ===== */
+#chartTongTKM{
+  font-family:Arial,sans-serif !important;
+}
+
+.chart-box:has(#chartTongTKM) .chart-title{
+  font-family:Arial,sans-serif !important;
+  font-size:14px !important;
+  font-weight:700 !important;
+  color:#111827 !important;
+  line-height:1.25 !important;
+}
+
+.chart-box:has(#chartTongTKM){
+  font-family:Arial,sans-serif !important;
+}
+
 </style>
   
   </head>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+/* ===== HIỆN SỐ CHO CÁC BIỂU ĐỒ ===== */
+(function(){
+
+  const cdbrValueLabels = {
+    id:"cdbrValueLabels",
+
+    afterDatasetsDraw(chart){
+
+      const chartId =
+        chart.canvas?.id || "";
+
+      /* Biểu đồ TKM theo huyện đã có bộ hiện số riêng,
+         tránh vẽ trùng nhãn. */
+      if(
+        chartId==="chartTongTKM" ||
+        chartId==="chartSOC24_72_HUYEN"
+      ){
+        return;
+      }
+
+      const ctx=chart.ctx;
+      const area=chart.chartArea;
+
+      if(!area)return;
+
+      ctx.save();
+
+      const datasets=
+        chart.data?.datasets || [];
+
+      datasets.forEach((dataset,datasetIndex)=>{
+
+        const meta=
+          chart.getDatasetMeta(datasetIndex);
+
+        if(!meta || !meta.data)return;
+
+        meta.data.forEach((element,index)=>{
+
+          const raw=
+            dataset.data?.[index];
+
+          const value=
+            typeof raw==="number"
+              ? raw
+              : Number(raw);
+
+          if(!Number.isFinite(value))return;
+
+          /* Không hiện số 0 để tránh biểu đồ quá rối. */
+          if(value===0)return;
+
+          const props=
+            element.getProps
+              ? element.getProps(
+                  ["x","y","base"],
+                  true
+                )
+              : element;
+
+          const x=
+            Number(props?.x);
+
+          const y=
+            Number(
+              chart.config.type==="bar"
+                ? Math.min(
+                    Number(props?.y ?? 0),
+                    Number(props?.base ?? props?.y ?? 0)
+                  )
+                : Number(props?.y)
+            );
+
+          if(
+            !Number.isFinite(x) ||
+            !Number.isFinite(y)
+          ){
+            return;
+          }
+
+          let labelY =
+            chart.config.type==="bar"
+              ? y-7
+              : y-8;
+
+          /* Giữ số trong vùng biểu đồ. */
+          labelY=
+            Math.max(
+              area.top+9,
+              labelY
+            );
+
+          const label=
+            Number.isInteger(value)
+              ? String(value)
+              : String(
+                  Number(
+                    value.toFixed(2)
+                  )
+                );
+
+          ctx.font=
+            "700 9px Arial";
+
+          const metrics=
+            ctx.measureText(label);
+
+          const padX=3;
+          const padY=2;
+
+          const boxW=
+            metrics.width+
+            padX*2;
+
+          const boxH=13+padY;
+
+          /* Nền trắng nhẹ để số không bị nền/cột che. */
+          ctx.fillStyle=
+            "rgba(255,255,255,.88)";
+
+          ctx.fillRect(
+            x-boxW/2,
+            labelY-boxH/2,
+            boxW,
+            boxH
+          );
+
+          ctx.fillStyle=
+            "#374151";
+
+          ctx.textAlign="center";
+          ctx.textBaseline="middle";
+
+          ctx.fillText(
+            label,
+            x,
+            labelY
+          );
+
+        });
+
+      });
+
+      ctx.restore();
+
+    }
+
+  };
+
+  try{
+    Chart.register(cdbrValueLabels);
+  }catch(err){
+    console.warn(
+      "Không đăng ký được plugin hiện số:",
+      err
+    );
+  }
+
+})();
+</script>
+
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <body>
   
@@ -4622,7 +4809,6 @@ onClick:function(event){
 
   const rows = Array.isArray(tkmThuc) ? tkmThuc : [];
 
-  // Chỉ tính TKM thực; loại Cập nhật hồ sơ và Kết thúc.
   const validRows = rows.filter(row=>{
     const tt = String(row?.tt || "")
       .replace(/\u00A0/g," ")
@@ -4641,13 +4827,6 @@ onClick:function(event){
       .trim()
       .toLowerCase();
 
-  /*
-    Ánh xạ cột LINE:
-      LĐTB phụ = Lắp đặt thiết bị
-      line phụ = Line phụ đi kèm line kéo cáp
-      line chủ = Line kéo cáp
-      Lẻ       = Line phụ đấu lẻ
-  */
   const classifyLine = value => {
 
     const v = normalize(value);
@@ -4690,14 +4869,11 @@ onClick:function(event){
     "Lẻ"
   ];
 
-  /*
-    Đánh giá theo HUYỆN:
-    - Trục X = huyện
-    - Mỗi huyện có 4 cột tương ứng 4 nhóm LINE.
-  */
   const huyens = [
     ...new Set(
-      validRows.map(row=>String(row?.huyen || "Khác").trim() || "Khác")
+      validRows.map(row=>
+        String(row?.huyen || "Khác").trim() || "Khác"
+      )
     )
   ];
 
@@ -4731,6 +4907,14 @@ onClick:function(event){
 
   });
 
+  const totalByHuyen = huyens.map(huyen=>
+    lines.reduce(
+      (sum,line)=>
+        sum + countByHuyenLine[huyen][line],
+      0
+    )
+  );
+
   const canvas =
     document.getElementById("chartTongTKM");
 
@@ -4740,6 +4924,136 @@ onClick:function(event){
     Chart.getChart(canvas);
 
   if(old)old.destroy();
+
+  /*
+    Plugin hiện số:
+    - 4 cột LINE: hiện số trên từng cột nếu > 0
+    - Line Tổng: hiện số trên điểm
+  */
+  const tkmLineValueLabels = {
+
+    id:"tongTKMAndBarLabels",
+
+    afterDatasetsDraw(chart){
+
+      const ctx = chart.ctx;
+      const area = chart.chartArea;
+      const datasets = chart.data?.datasets || [];
+
+      if(!area)return;
+
+      ctx.save();
+
+      ctx.textAlign="center";
+      ctx.textBaseline="middle";
+      ctx.font="700 9px Arial";
+
+      datasets.forEach((dataset,datasetIndex)=>{
+
+        const meta =
+          chart.getDatasetMeta(datasetIndex);
+
+        if(!meta || !meta.data)return;
+
+        meta.data.forEach((element,index)=>{
+
+          const value =
+            Number(dataset.data?.[index] ?? 0);
+
+          if(!Number.isFinite(value) || value===0){
+            return;
+          }
+
+          const props =
+            element.getProps
+              ? element.getProps(
+                  ["x","y","base"],
+                  true
+                )
+              : element;
+
+          const x = Number(props?.x);
+          const y = Number(props?.y);
+          const base = Number(props?.base);
+
+          if(
+            !Number.isFinite(x) ||
+            !Number.isFinite(y)
+          ){
+            return;
+          }
+
+          /*
+            Line tổng = dataset 4.
+            Cột = dataset 0..3.
+          */
+          let labelY;
+
+          if(datasetIndex===4){
+
+            labelY = y - 11;
+
+          }else{
+
+            /*
+              Trên đầu cột, lấy top của cột.
+              Nếu quá sát mép trên thì đẩy vào chart.
+            */
+            const top =
+              Number.isFinite(base)
+                ? Math.min(y,base)
+                : y;
+
+            labelY =
+              Math.max(
+                area.top + 10,
+                top - 8
+              );
+
+          }
+
+          const label = String(value);
+
+          const metrics =
+            ctx.measureText(label);
+
+          const boxW =
+            metrics.width + 7;
+
+          const boxH = 14;
+
+          /*
+            Nền trắng để số con không bị
+            cột/line che.
+          */
+          ctx.fillStyle =
+            "rgba(255,255,255,.94)";
+
+          ctx.fillRect(
+            x - boxW/2,
+            labelY - boxH/2,
+            boxW,
+            boxH
+          );
+
+          ctx.fillStyle =
+            datasetIndex===4
+              ? "#111827"
+              : "#374151";
+
+          ctx.fillText(
+            label,
+            x,
+            labelY
+          );
+
+        });
+
+      });
+
+      ctx.restore();
+    }
+  };
 
   new Chart(canvas,{
 
@@ -4798,79 +5112,29 @@ onClick:function(event){
         {
           type:"line",
           label:"Tổng TKM",
-        data:huyens.map(h=>
-          lines.reduce(
-            (sum,line)=>
-              sum + countByHuyenLine[h][line],
-            0
-          )
-        ),
-        borderColor:"#111827",
-        backgroundColor:"#111827",
-        borderWidth:2,
-        pointRadius:3,
-        pointHoverRadius:5,
-        tension:0,
-        fill:false,
-        order:0
-      }
+          data:totalByHuyen,
+          borderColor:"#111827",
+          backgroundColor:"#111827",
+          borderWidth:2,
+          pointRadius:4,
+          pointHoverRadius:6,
+          tension:0,
+          fill:false,
+          order:0,
+          clip:false
+        }
 
       ]
 
     },
 
-      plugins:[{
-        id:"tongTKMLabels",
-        afterDatasetsDraw(chart){
-          const {ctx,scales:{x,y}}=chart;
-          const labels=chart.data.labels||[];
-          const datasets=chart.data.datasets||[];
-
-          ctx.save();
-          ctx.font="700 10px Arial";
-          ctx.textAlign="center";
-          ctx.textBaseline="bottom";
-          ctx.fillStyle="#111827";
-
-          labels.forEach((label,index)=>{
-            let total=0;
-            let topY=Infinity;
-
-            datasets.slice(0,4).forEach(ds=>{
-              const value=Number(ds.data?.[index]||0);
-              total+=value;
-
-              const meta=chart.getDatasetMeta(
-                chart.data.datasets.indexOf(ds)
-              );
-
-              const el=meta?.data?.[index];
-              if(el && value>0){
-                topY=Math.min(topY,el.y);
-              }
-            });
-
-            if(total<=0 || !Number.isFinite(topY))return;
-
-            const xPos=x.getPixelForValue(index);
-
-            /* Đặt nhãn trên cột cao nhất, nhưng luôn nằm trong chart area. */
-            const yPos=Math.max(
-              y.top+14,
-              topY-7
-            );
-
-            ctx.fillText(String(total),xPos,yPos);
-          });
-
-          ctx.restore();
-        }
-      }],
+    plugins:[
+      tkmLineValueLabels
+    ],
 
     options:{
 
       responsive:true,
-
       maintainAspectRatio:false,
 
       interaction:{
@@ -4878,14 +5142,29 @@ onClick:function(event){
         intersect:false
       },
 
+      layout:{
+        padding:{
+          top:18,
+          right:8,
+          bottom:6,
+          left:4
+        }
+      },
+
       plugins:{
 
         legend:{
           display:true,
           position:"top",
+
           labels:{
-            font:{size:9},
+            font:{
+              family:"Arial",
+              size:9,
+              weight:"600"
+            },
             boxWidth:12,
+            boxHeight:8,
             padding:6
           }
         },
@@ -4903,18 +5182,8 @@ onClick:function(event){
               const index =
                 items[0].dataIndex;
 
-              const huyen =
-                huyens[index];
-
-              const total =
-                lines.reduce(
-                  (sum,line)=>
-                    sum +
-                    countByHuyenLine[huyen][line],
-                  0
-                );
-
-              return "Tổng TKM: " + total;
+              return "Tổng TKM: " +
+                totalByHuyen[index];
 
             }
 
@@ -4933,14 +5202,21 @@ onClick:function(event){
             maxRotation:45,
             minRotation:45,
             font:{
+              family:"Arial",
               size:9,
               weight:"600"
-            }
+            },
+            padding:4
           },
 
           title:{
             display:true,
-            text:"Huyện"
+            text:"Huyện",
+            font:{
+              family:"Arial",
+              size:10,
+              weight:"600"
+            }
           }
 
         },
@@ -4948,14 +5224,23 @@ onClick:function(event){
         y:{
 
           beginAtZero:true,
+          grace:"22%",
 
-          grace:"18%",
+          ticks:{
+            font:{
+              family:"Arial",
+              size:9,
+              weight:"600"
+            },
+            precision:0
+          },
 
           title:{
             display:true,
             text:"Số lượng TKM",
             font:{
-              size:11,
+              family:"Arial",
+              size:10,
               weight:"700"
             }
           }
@@ -4965,7 +5250,15 @@ onClick:function(event){
       },
 
       onClick:function(event){
-        const active=this.getElementsAtEventForMode(event,"nearest",{intersect:true},true);
+
+        const active=
+          this.getElementsAtEventForMode(
+            event,
+            "nearest",
+            {intersect:true},
+            true
+          );
+
         if(!active.length)return;
 
         const el=active[0];
@@ -4974,14 +5267,25 @@ onClick:function(event){
         const huyen=huyens[index];
 
         if(datasetIndex===4){
-          const rows=validRows.filter(row=>
-            (String(row?.huyen||"Khác").trim()||"Khác")===huyen
-          );
+
+          const rows=
+            validRows.filter(row=>
+              (
+                String(
+                  row?.huyen || "Khác"
+                ).trim() || "Khác"
+              ) === huyen
+            );
 
           showTable(
-            "TỔNG TKM • HUYỆN "+huyen+" ("+rows.length+")",
+            "TỔNG TKM • HUYỆN " +
+            huyen +
+            " (" +
+            rows.length +
+            ")",
             rows
           );
+
           return;
         }
 
@@ -4991,6 +5295,7 @@ onClick:function(event){
           "Line kéo cáp",
           "Line phụ đấu lẻ"
         ];
+
         const map={
           "Lắp đặt thiết bị":"LĐTB phụ",
           "Line phụ đi kèm line kéo cáp":"line phụ",
@@ -4998,18 +5303,32 @@ onClick:function(event){
           "Line phụ đấu lẻ":"Lẻ"
         };
 
-        const series=labelsLine[datasetIndex]||"";
-        const target=map[series];
+        const series =
+          labelsLine[datasetIndex] || "";
 
-        const rows=validRows.filter(row=>
-          (String(row?.huyen||"Khác").trim()||"Khác")===huyen &&
-          classifyLine(row?.line)===target
-        );
+        const target =
+          map[series];
+
+        const rows=
+          validRows.filter(row=>
+            (
+              String(
+                row?.huyen || "Khác"
+              ).trim() || "Khác"
+            )===huyen &&
+            classifyLine(row?.line)===target
+          );
 
         showTable(
-          series+" • HUYỆN "+huyen+" ("+rows.length+")",
+          series +
+          " • HUYỆN " +
+          huyen +
+          " (" +
+          rows.length +
+          ")",
           rows
         );
+
       }
 
     }
@@ -6051,20 +6370,52 @@ onClick:function(event){
                   if(!meta || !meta.data)return;
 
                   ctx.save();
+
                   ctx.font="700 9px Arial";
                   ctx.textAlign="center";
-                  ctx.textBaseline="bottom";
-                  ctx.fillStyle="#1d4ed8";
+                  ctx.textBaseline="middle";
 
                   meta.data.forEach((point,index)=>{
+
                       const value=
                           chart.data.datasets[datasetIndex].data[index];
 
-                      ctx.fillText(
-                          String(value),
-                          point.x,
-                          point.y-6
+                      const label=
+                          String(value);
+
+                      const metrics=
+                          ctx.measureText(label);
+
+                      const boxW=
+                          metrics.width+7;
+
+                      const boxH=15;
+
+                      const x=point.x;
+                      const y=point.y-10;
+
+                      /*
+                        Nền trắng giúp số tổng không bị 2 line
+                        >24H / >72H che.
+                      */
+                      ctx.fillStyle=
+                          "rgba(255,255,255,.92)";
+
+                      ctx.fillRect(
+                          x-boxW/2,
+                          y-boxH/2,
+                          boxW,
+                          boxH
                       );
+
+                      ctx.fillStyle="#1d4ed8";
+
+                      ctx.fillText(
+                          label,
+                          x,
+                          y
+                      );
+
                   });
 
                   ctx.restore();
@@ -9930,433 +10281,133 @@ const url =
   loadData();
   
   function exportExcel(){
-
+  
   const kw =
-    document.getElementById("searchInput")
-      .value
-      .toLowerCase();
-
+  document.getElementById("searchInput")
+  .value
+  .toLowerCase();
+  
   const huyen =
-    document.getElementById("huyenFilter")
-      .value;
-
+  document.getElementById("huyenFilter")
+  .value;
+  
   const type =
-    document.getElementById("typeFilter")
-      .value;
-
+  document.getElementById("typeFilter")
+  .value;
+  
   const month =
-    document.getElementById("filter_month")
-      .value;
-
-  /* =========================
-     LỌC DỮ LIỆU
-     ========================= */
-
+  document.getElementById("filter_month")
+  .value;
+  
+  /* FILTER LẠI TRỰC TIẾP */
+  
   const exportData = currentData.filter(row=>{
-
-    const text =
-      JSON.stringify(row)
-        .toLowerCase();
-
-    const okSearch =
-      text.includes(kw);
-
-    const okHuyen =
-      !huyen || row.huyen==huyen;
-
-    const okType =
-      !type ||
-      row.sc==type ||
-      row.kpi==type;
-
-    let okMonth=true;
-
-    if(month){
-
-      const ngay=
-        String(
-          row.ngay ||
-          row.ntdn ||
-          ""
-        );
-
-      if(ngay.includes("/")){
-
-        const parts=
-          ngay.split("/");
-
-        if(parts.length===3){
-
-          const rowMonth=
-            `${parts[2]}-${parts[1]}`;
-
-          okMonth=
-            rowMonth===month;
-
-        }
-
-      }
-
-    }
-
-    return (
-      okSearch &&
-      okHuyen &&
-      okType &&
-      okMonth
-    );
-
+  
+  const text =
+  JSON.stringify(row)
+  .toLowerCase();
+  
+  const okSearch =
+  text.includes(kw);
+  
+  const okHuyen =
+  !huyen || row.huyen==huyen;
+  
+  const okType =
+  !type || row.sc==type || row.kpi==type;
+  
+  let okMonth = true;
+  
+  if(month){
+  
+  const ngay =
+  String(
+  row.ngay ||
+  row.ntdn ||
+  ""
+  );
+  
+  if(ngay.includes("/")){
+  
+  const parts =
+  ngay.split("/");
+  
+  if(parts.length===3){
+  
+  const rowMonth =
+  `${parts[2]}-${parts[1]}`;
+  
+  okMonth =
+  rowMonth===month;
+  
+  }
+  
+  }
+  
+  }
+  
+  return (
+  okSearch
+  && okHuyen
+  && okType
+  && okMonth
+  );
+  
   });
-
+  
   if(!exportData.length){
-
-    alert(
-      "Không có dữ liệu để xuất Excel."
-    );
-
-    return;
-
+  
+  alert("Không có dữ liệu");
+  
+  return;
+  
   }
-
-  /* =========================
-     CHUYỂN DATA SANG SHEET
-     ========================= */
-
-  const rows=
-    exportData.map(row=>{
-
-      const obj={};
-
-      Object.keys(row).forEach(k=>{
-
-        if(
-          k==="thuongcv1" ||
-          k==="tgupdate"
-        ){
-          return;
-        }
-
-        obj[getColumnTitle(k)] =
-          row[k];
-
-      });
-
-      return obj;
-
-    });
-
-  const ws=
-    XLSX.utils.json_to_sheet(rows);
-
-  const wb=
-    XLSX.utils.book_new();
-
+  
+  const rows=exportData.map(row=>{
+  
+  const obj={};
+  
+  Object.keys(row).forEach(k=>{
+  
+  if(
+  k==="thuongcv1"
+  ||
+  k==="tgupdate"
+  )return;
+  
+  obj[getColumnTitle(k)] =
+  row[k];
+  
+  });
+  
+  return obj;
+  
+  });
+  
+  const ws =
+  XLSX.utils.json_to_sheet(rows);
+  
+  const wb =
+  XLSX.utils.book_new();
+  
   XLSX.utils.book_append_sheet(
-    wb,
-    ws,
-    "DATA"
+  wb,
+  ws,
+  "DATA"
   );
-
-  const range=
-    XLSX.utils.decode_range(
-      ws["!ref"]
-    );
-
-  /* =========================
-     STYLE
-     ========================= */
-
-  const borderStyle={
-    top:{
-      style:"thin",
-      color:{rgb:"D9E1F2"}
-    },
-    bottom:{
-      style:"thin",
-      color:{rgb:"D9E1F2"}
-    },
-    left:{
-      style:"thin",
-      color:{rgb:"D9E1F2"}
-    },
-    right:{
-      style:"thin",
-      color:{rgb:"D9E1F2"}
-    }
-  };
-
-  const headerStyle={
-    fill:{
-      patternType:"solid",
-      fgColor:{rgb:"1F4E78"}
-    },
-    font:{
-      name:"Arial",
-      sz:11,
-      bold:true,
-      color:{rgb:"FFFFFF"}
-    },
-    alignment:{
-      horizontal:"center",
-      vertical:"center",
-      wrapText:true
-    },
-    border:borderStyle
-  };
-
-  const bodyStyle={
-    font:{
-      name:"Arial",
-      sz:10,
-      color:{rgb:"1F2937"}
-    },
-    alignment:{
-      vertical:"center",
-      wrapText:true
-    },
-    border:borderStyle
-  };
-
-  /* =========================
-     ĐỘ RỘNG CỘT
-     ========================= */
-
-  const colWidths=[];
-
-  for(
-    let c=range.s.c;
-    c<=range.e.c;
-    c++
-  ){
-
-    let maxLen=0;
-
-    for(
-      let r=range.s.r;
-      r<=range.e.r;
-      r++
-    ){
-
-      const cell=
-        ws[
-          XLSX.utils.encode_cell({
-            r:r,
-            c:c
-          })
-        ];
-
-      if(!cell)continue;
-
-      const value=
-        cell.v===null ||
-        cell.v===undefined
-          ? ""
-          : String(cell.v);
-
-      const lines=
-        value.split(/\r?\n/);
-
-      for(const line of lines){
-
-        maxLen=
-          Math.max(
-            maxLen,
-            line.length
-          );
-
-      }
-
-    }
-
-    /*
-      Tự căn cột nhưng có giới hạn để
-      không làm file Excel quá rộng.
-    */
-    colWidths.push({
-      wch:
-        Math.min(
-          Math.max(
-            maxLen+2,
-            10
-          ),
-          42
-        )
-    });
-
-  }
-
-  ws["!cols"] =
-    colWidths;
-
-  /* =========================
-     ÁP STYLE + TỰ CĂN DÒNG
-     ========================= */
-
-  const rowHeights=[];
-
-  for(
-    let r=range.s.r;
-    r<=range.e.r;
-    r++
-  ){
-
-    let maxLines=1;
-
-    for(
-      let c=range.s.c;
-      c<=range.e.c;
-      c++
-    ){
-
-      const addr=
-        XLSX.utils.encode_cell({
-          r:r,
-          c:c
-        });
-
-      const cell=ws[addr];
-
-      if(!cell)continue;
-
-      cell.s =
-        r===range.s.r
-          ? headerStyle
-          : bodyStyle;
-
-      /*
-        STT / số lượng: căn giữa.
-        Các cột còn lại giữ căn trái.
-      */
-      if(r>range.s.r){
-
-        const headerCell=
-          ws[
-            XLSX.utils.encode_cell({
-              r:range.s.r,
-              c:c
-            })
-          ];
-
-        const headerText=
-          String(
-            headerCell?.v || ""
-          ).toUpperCase();
-
-        if(
-          c===range.s.c ||
-          /SỐ LƯỢNG|TỔNG|STT|THỜI GIAN|NGÀY/.test(
-            headerText
-          )
-        ){
-
-          cell.s={
-            ...bodyStyle,
-            alignment:{
-              horizontal:"center",
-              vertical:"center",
-              wrapText:true
-            }
-          };
-
-        }
-
-      }
-
-      const colWidth=
-        colWidths[c-range.s.c]?.wch || 15;
-
-      const value=
-        cell.v===null ||
-        cell.v===undefined
-          ? ""
-          : String(cell.v);
-
-      const logicalWidth=
-        Math.max(
-          colWidth-2,
-          8
-        );
-
-      const lines=
-        value
-          .split(/\r?\n/)
-          .reduce(
-            (sum,line)=>
-              sum+
-              Math.max(
-                1,
-                Math.ceil(
-                  line.length/
-                  logicalWidth
-                )
-              ),
-            0
-          );
-
-      maxLines=
-        Math.max(
-          maxLines,
-          lines
-        );
-
-    }
-
-    /*
-      Tự căn chiều cao dòng theo nội dung,
-      giới hạn để không quá cao.
-    */
-    rowHeights.push({
-      hpt:
-        Math.min(
-          Math.max(
-            20,
-            maxLines*15+4
-          ),
-          90
-        )
-    });
-
-  }
-
-  ws["!rows"]=
-    rowHeights;
-
-  /* Header cao hơn */
-  if(ws["!rows"]?.length){
-
-    ws["!rows"][0]={
-      hpt:32
-    };
-
-  }
-
-  /* Bật AutoFilter */
-  ws["!autofilter"]={
-    ref:ws["!ref"]
-  };
-
-  /* Freeze tiêu đề */
-  ws["!freeze"]={
-    xSplit:0,
-    ySplit:1
-  };
-
+  
   const title =
-    document.getElementById(
-      "modalTitle"
-    ).innerText ||
-    "DATA";
-
+  document.getElementById("modalTitle")
+  .innerText
+  ||
+  "DATA";
+  
   XLSX.writeFile(
-    wb,
-    title+".xlsx",
-    {
-      cellStyles:true,
-      bookType:"xlsx"
-    }
+  wb,
+  title+".xlsx"
   );
-
-}
+  
+  }
 
   /* =========================
   XÓA TOÀN BỘ SC/TKM
