@@ -3,17 +3,113 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fff">
-<title>Dashboard cài đặt</title>
+<meta name="theme-color" content="#ffffff">
+<title>Dashboard cài đặt Tâmmi</title>
 <style>
-:root{--bg:#f5f6f8;--card:#fff;--text:#202124;--muted:#777b83;--line:#e5e6e9;--red:#d71920}
-*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}.app{max-width:1100px;margin:auto;min-height:100vh}.header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:14px 16px}.head{display:flex;align-items:center;gap:12px}.back{border:0;background:#f0f1f3;border-radius:10px;width:40px;height:40px;font-size:22px}.title{font-size:23px;font-weight:800}.area{margin-left:auto;color:var(--red);font-size:20px;font-weight:800}.content{padding:18px 16px}.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}.box h2{margin:0 0 8px;font-size:20px}.box p{margin:0;color:var(--muted);line-height:1.5}
+:root{--bg:#f5f6f8;--card:#fff;--text:#202124;--muted:#6f737a;--line:#e2e4e8;--red:#e9002b;--red2:#d71920;--blue:#39779b;--green:#3c907f;--gold:#a47f21;--softred:#fff2f3}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}button,select{font:inherit}.app{max-width:1200px;margin:auto;padding:18px 18px 35px}.topbar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 5px #00000008}.back{border:0;background:#f0f1f3;width:40px;height:40px;border-radius:10px;font-size:23px}.title{flex:1;text-align:center;color:var(--red);font-size:24px;font-weight:900;letter-spacing:.2px}.area{color:var(--red);font-size:20px;font-weight:900}.datebar{margin-top:10px;background:#fff;border:2px solid var(--red);border-radius:10px;padding:11px;text-align:center;color:var(--red);font-size:20px;font-weight:900}.loading{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;color:#666}.hidden{display:none}.section-title{margin-top:18px;background:var(--red);color:#fff;border-radius:8px;padding:10px 15px;font-size:18px;font-weight:900;box-shadow:0 2px 5px #00000014}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}.kpi{background:#fff;border:2px solid var(--line);border-radius:10px;overflow:hidden}.kpi-head{color:#fff;text-align:center;font-weight:900;padding:10px}.gold .kpi-head{background:var(--gold)}.blue .kpi-head{background:var(--blue)}.green .kpi-head{background:var(--green)}.redk .kpi-head{background:var(--red)}.kpi-body{display:grid;grid-template-columns:repeat(3,1fr);text-align:center}.kpi-body div{padding:8px 5px;border-right:1px solid var(--line)}.kpi-body div:last-child{border-right:0}.kpi-label{font-size:12px;font-weight:700}.kpi-value{font-size:17px;font-weight:900;margin-top:8px}.subline{font-size:11px;color:var(--muted);margin-top:3px}.table-wrap{overflow:auto;background:#fff;border:1px solid var(--line);border-radius:8px;margin-top:10px}.report{width:100%;border-collapse:collapse;min-width:900px}.report th,.report td{border:1px solid #e1e3e7;padding:8px 7px;text-align:center;font-weight:700}.report th{background:#f0eeee}.report th.group{font-size:14px}.report td:first-child,.report th:first-child{text-align:left}.report tbody tr:nth-child(even){background:#fff6f7}.rate-low{background:var(--red)!important;color:#fff!important;border-radius:5px}.rate-good{font-weight:900}.warning-title{margin-top:18px;background:var(--red);color:#fff;border-radius:8px;padding:10px 15px;font-size:17px;font-weight:900}.note{text-align:center;color:var(--red);font-size:12px;font-weight:700;margin-top:12px}.controls{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}.controls select{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 10px}.empty{padding:25px;text-align:center;color:#777}.footer{margin-top:15px;text-align:center;color:#e55;font-size:11px;font-weight:700;border-top:1px dashed #ddd;padding-top:10px}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.title{font-size:20px}.datebar{font-size:17px}}
+@media(max-width:600px){.app{padding:10px}.topbar{padding:10px}.area{font-size:17px}.title{font-size:17px}.datebar{font-size:14px;padding:9px}.section-title,.warning-title{font-size:15px}.cards{grid-template-columns:1fr}.kpi-value{font-size:16px}.controls{justify-content:stretch}.controls select{flex:1}}
 </style>
 </head>
 <body>
 <div class="app">
-<header class="header"><div class="head"><button class="back" onclick="history.back()" aria-label="Quay lại">‹</button><div class="title">DASHBOARD</div><div class="area">GLI</div></div></header>
-<main class="content"><section class="box"><h2>Dashboard cài đặt</h2><p>Khu vực này đã được tạo sẵn. Các thông số, biểu đồ và nội dung Dashboard sẽ được bổ sung theo yêu cầu tiếp theo.</p></section></main>
+  <div class="topbar"><button class="back" onclick="location.href='tammi.html'">‹</button><div class="title">DASHBOARD BÁO CÁO CÀI ĐẶT TAMMI</div><div class="area">GLI</div></div>
+  <div class="datebar" id="reportTitle">GIA LAI - BÁO CÁO KẾT QUẢ CÀI ĐẶT TAMMI</div>
+  <div class="loading" id="loading">Đang tổng hợp dữ liệu...</div>
+
+  <div class="section-title">▥ TỔNG QUAN TOÀN TỈNH</div>
+  <div class="cards" id="kpis"></div>
+
+  <div class="warning-title">⚠ CẢNH BÁO: CÁC HUYỆN/CỤM CÓ TỶ LỆ CÀI ĐẶT TAMMI THẤP</div>
+  <div class="controls"><select id="lowCount"><option value="10">Top 10 huyện</option><option value="13">Tất cả huyện</option></select></div>
+  <div class="table-wrap"><table class="report" id="districtTable"></table></div>
+
+  <div class="warning-title">⚠ CẢNH BÁO: CÁC FT CÓ TỶ LỆ CÀI ĐẶT TAMMI THẤP</div>
+  <div class="table-wrap"><table class="report" id="employeeTable"></table></div>
+
+  <div class="note">Số liệu được tổng hợp trực tiếp từ Google Sheets thông qua Apps Script API.</div>
+  <div class="footer">Dashboard Tâmmi - Gia Lai</div>
 </div>
+<script>
+const API_URL='https://script.google.com/macros/s/AKfycbxyL8pyy5_Hz_ehabGQM4c0fwrytudPE-JkHm1zpn-CT9-br-JOS7krTfCGtZJf7n8u/exec';
+const PAGE_SIZE=100;
+const CACHE_KEY='tammi_dashboard_cache_v1';
+const CACHE_MS=60000;
+const HUYEN=[
+{value:'Cụm kỹ thuật Chư Prông - Đức Cơ',label:'Chư Prông'},
+{value:'Cụm kỹ thuật Hoài Nhơn - Hoài Ân - An Lão',label:'Bồng Sơn'},
+{value:'Cụm kỹ thuật Huyện An Khê - Kông Chro - Đăk Pơ',label:'An Khê'},
+{value:'Cụm kỹ thuật Huyện AyunPa-Ia-pa -Phú Thiện -Krông Pa',label:'AyunPa'},
+{value:'Cụm kỹ thuật Huyện Chư Sê - Chư Pưh',label:'Chư Sê'},
+{value:'Cụm kỹ thuật Huyện Đăk Đoa - Mang Yang',label:'Đăk Đoa'},
+{value:'Cụm kỹ thuật Phù Cát - Phù Mỹ',label:'Phù Cát'},
+{value:'Cụm kỹ thuật Tây Sơn - Vĩnh Thạnh',label:'Tây Sơn'},
+{value:'Cụm kỹ thuật TP Pleiku - Chư Păh',label:'Hội Phú'},
+{value:'Cụm kỹ thuật Tuy Phước - Vân Canh - An Nhơn',label:'Tuy Phước'},
+{value:'Ia Grai',label:'Ia Grai'},{value:'Kbang',label:'Kbang'},{value:'Quy Nhơn',label:'Quy Nhơn'}
+];
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n||0).toLocaleString('vi-VN');
+const pct=(a,b)=>b?((a/b)*100).toLocaleString('vi-VN',{minimumFractionDigits:0,maximumFractionDigits:2})+'%':'0%';
+const norm=s=>String(s??'').trim().toLowerCase();
+const isInstalled=s=>['1','true','đã cài','da cai','yes','y'].includes(norm(s));
+function parseDate(s){
+  s=String(s||'').trim();
+  if(!s)return null;
+  let m=s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+  if(m)return new Date(+m[3],+m[2]-1,+m[1]);
+  m=s.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+  if(m)return new Date(+m[1],+m[2]-1,+m[3]);
+  const d=new Date(s);return isNaN(d)?null:d;
+}
+function keyDate(d){return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`:''}
+function sameDay(d,t){return d&&keyDate(d)===keyDate(t)}
+function sameMonth(d,t){return d&&d.getFullYear()===t.getFullYear()&&d.getMonth()===t.getMonth()}
+function taskType(x){const t=norm(x['Tác vụ']);if(t.includes('ptm'))return 'PTM';if(t.includes('xlsc'))return 'XLSC';return 'OTHER'}
+function installDate(x){return parseDate(x['Thời gian cài'])}
+function woDate(x){return parseDate(x['Thời gian đóng TV'])}
+function districtLabel(raw){const f=HUYEN.find(x=>norm(x.value)===norm(raw));return f?f.label:(raw||'Khác')}
+
+async function fetchPage(p){const u=new URL(API_URL);u.searchParams.set('page',p);u.searchParams.set('pageSize',PAGE_SIZE);const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const j=await r.json();if(!j.success)throw Error(j.error||'API lỗi');return j}
+async function fetchAll(){
+  const first=await fetchPage(1);let all=Array.isArray(first.data)?first.data.slice():[];const pages=Number(first.totalPages||1);
+  if(pages>1){for(let p=2;p<=pages;p+=8){const batch=[];for(let q=p;q<Math.min(p+8,pages+1);q++)batch.push(fetchPage(q));const rs=await Promise.all(batch);rs.forEach(j=>all.push(...(j.data||[])));}}
+  return all;
+}
+function getCached(){try{const x=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');if(x&&Date.now()-x.time<CACHE_MS)return x.data}catch(e){}return null}
+function setCached(data){try{localStorage.setItem(CACHE_KEY,JSON.stringify({time:Date.now(),data}))}catch(e){}}
+
+function statFor(records, target, mode){
+  const wo=records.filter(x=>{const d=woDate(x);return mode==='day'?sameDay(d,target):sameMonth(d,target)});
+  const installed=records.filter(x=>{const d=installDate(x);return isInstalled(x['Đã cài'])&&(mode==='day'?sameDay(d,target):sameMonth(d,target))});
+  return {wo:wo.length,installed:installed.length};
+}
+function statType(records,target,mode,type){
+  const subset=records.filter(x=>taskType(x)===type);const a=statFor(subset,target,mode);return a;
+}
+function renderKpis(records,today){
+  const day=statFor(records,today,'day'),month=statFor(records,today,'month');
+  const ptmD=statType(records,today,'day','PTM'),ptmM=statType(records,today,'month','PTM');
+  const xD=statType(records,today,'day','XLSC'),xM=statType(records,today,'month','XLSC');
+  const html=(title,cls,d,m)=>`<div class="kpi ${cls}"><div class="kpi-head">${title}</div><div class="kpi-body"><div><div class="kpi-label">WO</div><div class="kpi-value">${fmt(d.wo)}</div></div><div><div class="kpi-label">Wo cài</div><div class="kpi-value">${fmt(d.installed)}</div></div><div><div class="kpi-label">Tỷ lệ</div><div class="kpi-value">${pct(d.installed,d.wo)}</div></div></div><div class="kpi-body" style="border-top:1px solid var(--line)"><div><div class="kpi-label">Lũy kế WO</div><div class="kpi-value">${fmt(m.wo)}</div></div><div><div class="kpi-label">Lũy kế cài</div><div class="kpi-value">${fmt(m.installed)}</div></div><div><div class="kpi-label">Tỷ lệ LK</div><div class="kpi-value">${pct(m.installed,m.wo)}</div></div></div></div>`;
+  $('kpis').innerHTML=html('Chỉ tiêu cài đặt','gold',day,month)+html('PTM','blue',ptmD,ptmM)+html('XLSC','green',xD,xM)+html('Tổng / Lũy kế','redk',day,month);
+}
+function districtStats(records,today){
+  return HUYEN.map(h=>{const rs=records.filter(x=>norm(x['Huyện'])===norm(h.value));const d=statFor(rs,today,'day'),m=statFor(rs,today,'month');return {...h,d,m}}).sort((a,b)=>(a.m.installed/Math.max(a.m.wo,1))-(b.m.installed/Math.max(b.m.wo,1)));
+}
+function renderDistrict(records,today){
+  let rows=districtStats(records,today);const n=Number($('lowCount').value);rows=rows.slice(0,n);
+  $('districtTable').innerHTML=`<thead><tr><th rowspan="2">Cụm/Huyện</th><th colspan="3">TRONG NGÀY</th><th colspan="3">LŨY KẾ THÁNG</th></tr><tr><th>Wo</th><th>Wo cài</th><th>Tỷ lệ</th><th>Wo</th><th>Wo cài</th><th>Tỷ lệ</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r.label}</td><td>${fmt(r.d.wo)}</td><td>${fmt(r.d.installed)}</td><td class="${r.d.wo&&r.d.installed/r.d.wo<.2?'rate-low':''}">${pct(r.d.installed,r.d.wo)}</td><td>${fmt(r.m.wo)}</td><td>${fmt(r.m.installed)}</td><td class="${r.m.wo&&r.m.installed/r.m.wo<.2?'rate-low':''}">${pct(r.m.installed,r.m.wo)}</td></tr>`).join('')}</tbody>`;
+}
+function employeeStats(records,today){
+  const map=new Map();
+  records.forEach(x=>{const name=x['Họ tên']||x['Mã nhân viên']||'-';const code=x['Mã nhân viên']||'';const k=code+'|'+name;if(!map.has(k))map.set(k,{name,code,huyen:districtLabel(x['Huyện']),d:{wo:0,installed:0},m:{wo:0,installed:0}});const o=map.get(k);const wd=woDate(x),id=installDate(x);if(sameDay(wd,today))o.d.wo++;if(sameMonth(wd,today))o.m.wo++;if(isInstalled(x['Đã cài'])&&sameDay(id,today))o.d.installed++;if(isInstalled(x['Đã cài'])&&sameMonth(id,today))o.m.installed++});
+  return [...map.values()].filter(x=>x.m.wo>0).sort((a,b)=>(a.m.installed/Math.max(a.m.wo,1))-(b.m.installed/Math.max(b.m.wo,1)));
+}
+function renderEmployees(records,today){const rows=employeeStats(records,today).slice(0,10);$('employeeTable').innerHTML=`<thead><tr><th rowspan="2">Cụm/Huyện</th><th rowspan="2">Họ tên NV</th><th colspan="3">TRONG NGÀY</th><th colspan="3">LŨY KẾ THÁNG</th></tr><tr><th>Wo</th><th>Wo cài</th><th>Tỷ lệ</th><th>Wo</th><th>Wo cài</th><th>Tỷ lệ</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r.huyen}</td><td style="text-align:left">${r.name}</td><td>${fmt(r.d.wo)}</td><td>${fmt(r.d.installed)}</td><td class="${r.d.wo&&r.d.installed/r.d.wo<.2?'rate-low':''}">${pct(r.d.installed,r.d.wo)}</td><td>${fmt(r.m.wo)}</td><td>${fmt(r.m.installed)}</td><td class="${r.m.wo&&r.m.installed/r.m.wo<.2?'rate-low':''}">${pct(r.m.installed,r.m.wo)}</td></tr>`).join('')}</tbody>`}
+async function init(){try{let records=getCached();if(!records){records=await fetchAll();setCached(records)}const today=new Date();$('reportTitle').textContent=`GIA LAI - BÁO CÁO KẾT QUẢ CÀI ĐẶT TAMMI NGÀY ${String(today.getDate()).padStart(2,'0')}/${String(today.getMonth()+1).padStart(2,'0')}/${today.getFullYear()}`;renderKpis(records,today);renderDistrict(records,today);renderEmployees(records,today);$('loading').classList.add('hidden')}catch(e){console.error(e);$('loading').textContent='Không tải được dữ liệu: '+e.message}}
+$('lowCount').addEventListener('change',()=>{const records=getCached();if(records)renderDistrict(records,new Date())});init();
+</script>
 </body>
 </html>
