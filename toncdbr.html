@@ -3316,7 +3316,7 @@
 </style>
   
   </head>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
   
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -9930,133 +9930,433 @@ const url =
   loadData();
   
   function exportExcel(){
-  
+
   const kw =
-  document.getElementById("searchInput")
-  .value
-  .toLowerCase();
-  
+    document.getElementById("searchInput")
+      .value
+      .toLowerCase();
+
   const huyen =
-  document.getElementById("huyenFilter")
-  .value;
-  
+    document.getElementById("huyenFilter")
+      .value;
+
   const type =
-  document.getElementById("typeFilter")
-  .value;
-  
+    document.getElementById("typeFilter")
+      .value;
+
   const month =
-  document.getElementById("filter_month")
-  .value;
-  
-  /* FILTER LẠI TRỰC TIẾP */
-  
+    document.getElementById("filter_month")
+      .value;
+
+  /* =========================
+     LỌC DỮ LIỆU
+     ========================= */
+
   const exportData = currentData.filter(row=>{
-  
-  const text =
-  JSON.stringify(row)
-  .toLowerCase();
-  
-  const okSearch =
-  text.includes(kw);
-  
-  const okHuyen =
-  !huyen || row.huyen==huyen;
-  
-  const okType =
-  !type || row.sc==type || row.kpi==type;
-  
-  let okMonth = true;
-  
-  if(month){
-  
-  const ngay =
-  String(
-  row.ngay ||
-  row.ntdn ||
-  ""
-  );
-  
-  if(ngay.includes("/")){
-  
-  const parts =
-  ngay.split("/");
-  
-  if(parts.length===3){
-  
-  const rowMonth =
-  `${parts[2]}-${parts[1]}`;
-  
-  okMonth =
-  rowMonth===month;
-  
-  }
-  
-  }
-  
-  }
-  
-  return (
-  okSearch
-  && okHuyen
-  && okType
-  && okMonth
-  );
-  
+
+    const text =
+      JSON.stringify(row)
+        .toLowerCase();
+
+    const okSearch =
+      text.includes(kw);
+
+    const okHuyen =
+      !huyen || row.huyen==huyen;
+
+    const okType =
+      !type ||
+      row.sc==type ||
+      row.kpi==type;
+
+    let okMonth=true;
+
+    if(month){
+
+      const ngay=
+        String(
+          row.ngay ||
+          row.ntdn ||
+          ""
+        );
+
+      if(ngay.includes("/")){
+
+        const parts=
+          ngay.split("/");
+
+        if(parts.length===3){
+
+          const rowMonth=
+            `${parts[2]}-${parts[1]}`;
+
+          okMonth=
+            rowMonth===month;
+
+        }
+
+      }
+
+    }
+
+    return (
+      okSearch &&
+      okHuyen &&
+      okType &&
+      okMonth
+    );
+
   });
-  
+
   if(!exportData.length){
-  
-  alert("Không có dữ liệu");
-  
-  return;
-  
+
+    alert(
+      "Không có dữ liệu để xuất Excel."
+    );
+
+    return;
+
   }
-  
-  const rows=exportData.map(row=>{
-  
-  const obj={};
-  
-  Object.keys(row).forEach(k=>{
-  
-  if(
-  k==="thuongcv1"
-  ||
-  k==="tgupdate"
-  )return;
-  
-  obj[getColumnTitle(k)] =
-  row[k];
-  
-  });
-  
-  return obj;
-  
-  });
-  
-  const ws =
-  XLSX.utils.json_to_sheet(rows);
-  
-  const wb =
-  XLSX.utils.book_new();
-  
+
+  /* =========================
+     CHUYỂN DATA SANG SHEET
+     ========================= */
+
+  const rows=
+    exportData.map(row=>{
+
+      const obj={};
+
+      Object.keys(row).forEach(k=>{
+
+        if(
+          k==="thuongcv1" ||
+          k==="tgupdate"
+        ){
+          return;
+        }
+
+        obj[getColumnTitle(k)] =
+          row[k];
+
+      });
+
+      return obj;
+
+    });
+
+  const ws=
+    XLSX.utils.json_to_sheet(rows);
+
+  const wb=
+    XLSX.utils.book_new();
+
   XLSX.utils.book_append_sheet(
-  wb,
-  ws,
-  "DATA"
+    wb,
+    ws,
+    "DATA"
   );
-  
-  const title =
-  document.getElementById("modalTitle")
-  .innerText
-  ||
-  "DATA";
-  
-  XLSX.writeFile(
-  wb,
-  title+".xlsx"
-  );
-  
+
+  const range=
+    XLSX.utils.decode_range(
+      ws["!ref"]
+    );
+
+  /* =========================
+     STYLE
+     ========================= */
+
+  const borderStyle={
+    top:{
+      style:"thin",
+      color:{rgb:"D9E1F2"}
+    },
+    bottom:{
+      style:"thin",
+      color:{rgb:"D9E1F2"}
+    },
+    left:{
+      style:"thin",
+      color:{rgb:"D9E1F2"}
+    },
+    right:{
+      style:"thin",
+      color:{rgb:"D9E1F2"}
+    }
+  };
+
+  const headerStyle={
+    fill:{
+      patternType:"solid",
+      fgColor:{rgb:"1F4E78"}
+    },
+    font:{
+      name:"Arial",
+      sz:11,
+      bold:true,
+      color:{rgb:"FFFFFF"}
+    },
+    alignment:{
+      horizontal:"center",
+      vertical:"center",
+      wrapText:true
+    },
+    border:borderStyle
+  };
+
+  const bodyStyle={
+    font:{
+      name:"Arial",
+      sz:10,
+      color:{rgb:"1F2937"}
+    },
+    alignment:{
+      vertical:"center",
+      wrapText:true
+    },
+    border:borderStyle
+  };
+
+  /* =========================
+     ĐỘ RỘNG CỘT
+     ========================= */
+
+  const colWidths=[];
+
+  for(
+    let c=range.s.c;
+    c<=range.e.c;
+    c++
+  ){
+
+    let maxLen=0;
+
+    for(
+      let r=range.s.r;
+      r<=range.e.r;
+      r++
+    ){
+
+      const cell=
+        ws[
+          XLSX.utils.encode_cell({
+            r:r,
+            c:c
+          })
+        ];
+
+      if(!cell)continue;
+
+      const value=
+        cell.v===null ||
+        cell.v===undefined
+          ? ""
+          : String(cell.v);
+
+      const lines=
+        value.split(/\r?\n/);
+
+      for(const line of lines){
+
+        maxLen=
+          Math.max(
+            maxLen,
+            line.length
+          );
+
+      }
+
+    }
+
+    /*
+      Tự căn cột nhưng có giới hạn để
+      không làm file Excel quá rộng.
+    */
+    colWidths.push({
+      wch:
+        Math.min(
+          Math.max(
+            maxLen+2,
+            10
+          ),
+          42
+        )
+    });
+
   }
+
+  ws["!cols"] =
+    colWidths;
+
+  /* =========================
+     ÁP STYLE + TỰ CĂN DÒNG
+     ========================= */
+
+  const rowHeights=[];
+
+  for(
+    let r=range.s.r;
+    r<=range.e.r;
+    r++
+  ){
+
+    let maxLines=1;
+
+    for(
+      let c=range.s.c;
+      c<=range.e.c;
+      c++
+    ){
+
+      const addr=
+        XLSX.utils.encode_cell({
+          r:r,
+          c:c
+        });
+
+      const cell=ws[addr];
+
+      if(!cell)continue;
+
+      cell.s =
+        r===range.s.r
+          ? headerStyle
+          : bodyStyle;
+
+      /*
+        STT / số lượng: căn giữa.
+        Các cột còn lại giữ căn trái.
+      */
+      if(r>range.s.r){
+
+        const headerCell=
+          ws[
+            XLSX.utils.encode_cell({
+              r:range.s.r,
+              c:c
+            })
+          ];
+
+        const headerText=
+          String(
+            headerCell?.v || ""
+          ).toUpperCase();
+
+        if(
+          c===range.s.c ||
+          /SỐ LƯỢNG|TỔNG|STT|THỜI GIAN|NGÀY/.test(
+            headerText
+          )
+        ){
+
+          cell.s={
+            ...bodyStyle,
+            alignment:{
+              horizontal:"center",
+              vertical:"center",
+              wrapText:true
+            }
+          };
+
+        }
+
+      }
+
+      const colWidth=
+        colWidths[c-range.s.c]?.wch || 15;
+
+      const value=
+        cell.v===null ||
+        cell.v===undefined
+          ? ""
+          : String(cell.v);
+
+      const logicalWidth=
+        Math.max(
+          colWidth-2,
+          8
+        );
+
+      const lines=
+        value
+          .split(/\r?\n/)
+          .reduce(
+            (sum,line)=>
+              sum+
+              Math.max(
+                1,
+                Math.ceil(
+                  line.length/
+                  logicalWidth
+                )
+              ),
+            0
+          );
+
+      maxLines=
+        Math.max(
+          maxLines,
+          lines
+        );
+
+    }
+
+    /*
+      Tự căn chiều cao dòng theo nội dung,
+      giới hạn để không quá cao.
+    */
+    rowHeights.push({
+      hpt:
+        Math.min(
+          Math.max(
+            20,
+            maxLines*15+4
+          ),
+          90
+        )
+    });
+
+  }
+
+  ws["!rows"]=
+    rowHeights;
+
+  /* Header cao hơn */
+  if(ws["!rows"]?.length){
+
+    ws["!rows"][0]={
+      hpt:32
+    };
+
+  }
+
+  /* Bật AutoFilter */
+  ws["!autofilter"]={
+    ref:ws["!ref"]
+  };
+
+  /* Freeze tiêu đề */
+  ws["!freeze"]={
+    xSplit:0,
+    ySplit:1
+  };
+
+  const title =
+    document.getElementById(
+      "modalTitle"
+    ).innerText ||
+    "DATA";
+
+  XLSX.writeFile(
+    wb,
+    title+".xlsx",
+    {
+      cellStyles:true,
+      bookType:"xlsx"
+    }
+  );
+
+}
 
   /* =========================
   XÓA TOÀN BỘ SC/TKM
