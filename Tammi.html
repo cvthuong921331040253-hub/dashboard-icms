@@ -1,0 +1,1159 @@
+const SHEET_ID =
+  "1WTP6sZGYR_dZA-KS5U_taaod3iO4GiYRdcBpnSycYjw";
+
+const INPUT_SHEET_ID =
+  "1lrq7ah2kWudow2UFDuhj5uaYsPA3kZggWoE6zgFlj0U";
+
+const UPLOAD_FOLDER_ID =
+  "1DirnH_3g1sZNvqws9y4gWgO2mZPwFdP3";
+
+/* =========================
+   MAIN API
+========================= */
+
+function doGet(e){
+
+  const action =
+    e?.parameter?.action || "";
+
+  /* =========================
+     GET INPUT DATA
+  ========================= */
+
+  if(action==="getInput"){
+
+    return getInputData(e);
+
+  }
+  if(action==="detail"){
+
+  return getDetail(e);
+
+  }
+
+  /* =========================
+     DASHBOARD
+  ========================= */
+
+  const ss =
+    SpreadsheetApp.openById(SHEET_ID);
+
+  const inputSS =
+    SpreadsheetApp.openById(INPUT_SHEET_ID);
+
+  return output({
+
+    tonsc: getSheetData(
+      ss.getSheetByName("Ton SC"),
+      1
+    ),
+
+    tontkm: getSheetData(
+      ss.getSheetByName("Ton TKM"),
+      1
+    ),
+
+    nhaplieu: getNhapLieuData(
+      inputSS.getSheetByName("Nhap lieu ton cdbr")
+    ),
+
+    update: formatDateVN(new Date())
+
+  });
+
+}
+
+/* =========================
+   SAVE INPUT
+========================= */
+
+function doPost(e){
+
+    const data =
+      JSON.parse(
+      e.postData.contents || "{}"
+      );
+
+    /* =========================
+    MỞ KHÓA SỬA 1 LẦN
+    ========================= */
+
+    if(data.action==="unlock_edit"){
+
+    const sheet =
+    SpreadsheetApp
+    .openById(INPUT_SHEET_ID)
+    .getSheetByName("Nhap lieu ton cdbr");
+
+    const rows =
+    sheet.getDataRange().getValues();
+
+    for(let i=2;i<rows.length;i++){
+
+    const account =
+    String(rows[i][4]||"")
+    .trim()
+    .toUpperCase();
+
+    const check =
+    String(rows[i][14]||"")
+    .trim()
+    .toUpperCase();
+
+    if(
+
+    account ===
+    String(data.account)
+    .trim()
+    .toUpperCase()
+
+    &&
+
+    check ===
+    String(data.check)
+    .trim()
+    .toUpperCase()
+
+    ){
+
+    /* unlock_edit=true */
+
+    sheet
+    .getRange(i+1,17)
+    .setValue(true);
+
+    return output({
+
+    success:true
+
+    });
+
+    }
+
+    }
+
+    return output({
+
+    success:false,
+    error:"Không tìm thấy account"
+
+    });
+
+    }
+
+      /* =========================
+      DELETE SC/TKM
+      ========================= */
+
+      if(
+      data.action === "deleteScTkmAll"
+      ){
+
+      return deleteScTkmAll(data);
+
+      }
+
+  try{
+
+      deleteRemovedFiles(
+      data.removed_old_files || {}
+      );
+    const ss =
+      SpreadsheetApp.openById(INPUT_SHEET_ID);
+
+    const sheet =
+      ss.getSheetByName("Nhap lieu ton cdbr");
+
+    /* =========================
+       UPLOAD FILES
+    ========================= */
+
+    const topo =
+      uploadFiles(
+        data.file_topo,
+        "topo",
+        data
+      );
+
+    const bienban =
+      uploadFiles(
+        data.file_bienban,
+        "bienban",
+        data
+      );
+
+    const calllog =
+      uploadFiles(
+        data.file_calllog,
+        "calllog",
+        data
+      );
+
+    const ghiam =
+      uploadFiles(
+        data.file_ghiam,
+        "ghiam",
+        data
+      );
+
+    /* =========================
+       SAVE SHEET
+    ========================= */
+
+const mode =
+  data.mode || "insert";
+
+const rows =
+  sheet.getDataRange().getValues();
+
+let foundRow = -1;
+
+/* =========================
+UPDATE BY ID
+========================= */
+
+if(data.id_check){
+
+for(let i=2;i<rows.length;i++){
+
+const rowId =
+
+String(rows[i][15] || "")
+.trim();
+
+if(
+rowId ===
+String(data.id_check).trim()
+){
+
+foundRow = i + 1;
+
+break;
+
+}
+
+}
+
+}
+
+/* =========================
+FALLBACK ACCOUNT
+========================= */
+
+const oldRow =
+
+foundRow !== -1
+
+? rows[foundRow-1]
+
+: [];
+
+const rowData = [
+
+  formatDateVN(new Date()),
+
+  data.ngay_goc || "",
+
+  data.nv_xuly || "",
+
+  data.ten_nv || "",
+
+  data.account || "",
+
+  data.nguyen_nhan ||
+
+  (foundRow !== -1
+  ? rows[foundRow-1][5]
+  : ""),
+
+  (data.chitiet_bypass || ""),
+
+  mergeOldAndNewFiles(
+  oldRow[7],
+  topo,
+  data.removed_old_files?.old_topo || []
+  ),
+
+  mergeOldAndNewFiles(
+  oldRow[8],
+  bienban,
+  data.removed_old_files?.old_bienban || []
+  ),
+
+  mergeOldAndNewFiles(
+  oldRow[9],
+  calllog,
+  data.removed_old_files?.old_calllog || []
+  ),
+
+  mergeOldAndNewFiles(
+  oldRow[10],
+  ghiam,
+  data.removed_old_files?.old_ghiam || []
+  ),
+
+  (data.thietbi || ""),
+
+  (data.serial_hwf || ""),
+
+data.loai_wo ||
+
+(foundRow !== -1
+? rows[foundRow-1][13]
+: ""),
+
+/* CHECK */
+
+(
+data.loai_wo==="SC"
+||
+data.loai_wo==="TKM"
+)
+
+? ""
+
+:
+
+(
+foundRow !== -1
+? rows[foundRow-1][14]
+: data.check || ""
+),
+
+/* ID CHECK */
+
+data.id_check ||
+
+(
+foundRow !== -1
+? rows[foundRow-1][15]
+: Utilities.getUuid()
+),
+
+/* unlock_edit */
+
+(
+mode==="update"
+
+? false
+
+:
+
+(
+foundRow !== -1
+? rows[foundRow-1][16]
+: false
+)
+
+)
+
+];
+
+if(
+  mode === "update"
+  &&
+  foundRow !== -1
+){
+
+
+  sheet
+    .getRange(
+      foundRow,
+      1,
+      1,
+      rowData.length
+    )
+    .setValues([rowData]);
+
+}else{
+
+  sheet.appendRow(rowData);
+
+}
+
+return output({
+
+  success:true
+
+});
+
+}catch(err){
+
+  return output({
+
+    success:false,
+
+    error:String(err)
+
+  });
+
+}
+}
+
+/* =========================
+   UPLOAD FILES
+========================= */
+
+function uploadFiles(files,prefix,data){
+
+  if(!files || !files.length){
+
+    return [];
+
+  }
+
+  if(files.length > 15){
+
+  throw new Error(
+    "Tối đa 15 file"
+  );
+
+  }
+
+  const folder =
+    DriveApp.getFolderById(
+      UPLOAD_FOLDER_ID
+    );
+
+  const urls=[];
+
+  files.forEach((file,index)=>{
+
+    try{
+
+      /* =========================
+         FILE SIZE LIMIT
+      ========================= */
+
+      if(file.size > 15 * 1024 * 1024){
+
+        throw new Error(
+
+          file.name +
+
+          " vượt quá 15MB"
+
+        );
+
+      }
+
+      /* =========================
+         BASE64
+      ========================= */
+
+      const base64 =
+        file.data.split(",")[1];
+
+      /* =========================
+         EXT
+      ========================= */
+
+      const ext =
+
+        file.name
+        .split(".")
+        .pop();
+
+      /* =========================
+         SAFE ACCOUNT
+      ========================= */
+
+      const safeAccount =
+
+        String(data.account || "")
+
+        .trim()
+
+        .replace(/[^\w]/g,"_");
+
+      /* =========================
+         SAFE TEN NV
+      ========================= */
+
+      const safeTenNv =
+
+        String(data.ten_nv || "")
+
+        .normalize("NFD")
+
+        .replace(/[\u0300-\u036f]/g,"")
+
+        .replace(/[^\w]/g,"_")
+
+        .trim();
+
+      /* =========================
+         FILE NAME
+      ========================= */
+
+      const fileName =
+
+        safeAccount +
+
+        "_" +
+
+        safeTenNv +
+
+        "_" +
+
+        prefix +
+
+        "_" +
+
+        (index+1) +
+
+        "_" +
+
+        Date.now()
+
+        +
+
+        "." +
+
+        ext;
+
+      /* =========================
+         CREATE BLOB
+      ========================= */
+
+      const blob =
+        Utilities.newBlob(
+
+          Utilities.base64Decode(base64),
+
+          file.type,
+
+          fileName
+
+        );
+
+      /* =========================
+         UPLOAD DRIVE
+      ========================= */
+
+      const driveFile =
+        folder.createFile(blob);
+
+      /* =========================
+         PUBLIC
+      ========================= */
+
+      driveFile.setSharing(
+
+        DriveApp.Access.ANYONE_WITH_LINK,
+
+        DriveApp.Permission.VIEW
+
+      );
+
+      /* =========================
+         SAVE URL
+      ========================= */
+
+      urls.push({
+
+        name:
+          driveFile.getName(),
+
+        url:
+
+          "https://drive.google.com/file/d/"
+
+          +
+
+          driveFile.getId()
+
+          +
+
+          "/view",
+
+        type:
+          file.type
+
+      });
+
+    }catch(err){
+
+      Logger.log(err);
+
+    }
+
+  });
+
+  return urls;
+
+}
+
+function deleteRemovedFiles(files){
+
+Object.values(files).forEach(arr=>{
+
+(arr||[]).forEach(link=>{
+
+try{
+
+const id=
+link.match(/[-\w]{25,}/)?.[0];
+
+if(id){
+
+DriveApp
+.getFileById(id)
+.setTrashed(true);
+
+}
+
+}catch(err){}
+
+});
+
+});
+
+}
+
+function mergeOldAndNewFiles(
+oldLinks,
+newFiles,
+removed
+){
+
+const oldArr =
+
+String(oldLinks || "")
+
+.split(",")
+
+.map(v=>v.trim())
+
+.filter(Boolean)
+
+.filter(v=>!removed.includes(v));
+
+const newArr =
+
+(newFiles || [])
+
+.map(v=>v.url);
+
+return [
+
+...oldArr,
+...newArr
+
+].join(",");
+
+}
+
+/* =========================
+   GET INPUT DATA
+========================= */
+
+function getInputData(e){
+
+  const account =
+    e.parameter.account || "";
+
+  const check =
+    e.parameter.check || "";
+
+  const ss =
+    SpreadsheetApp.openById(INPUT_SHEET_ID);
+
+  const sheet =
+    ss.getSheetByName("Nhap lieu ton cdbr");
+
+  const values =
+    sheet.getDataRange().getValues();
+
+  if(values.length<2){
+
+    return output([]);
+
+  }
+
+  const headers =
+    values[1];
+
+  const rows =
+    values.slice(2);
+
+  const result=[];
+
+  rows.forEach(r=>{
+
+    const obj={};
+
+    headers.forEach((h,i)=>{
+
+      obj[h]=r[i];
+
+    });
+
+    if(
+
+      String(obj.account||"")
+      .trim()
+      .toUpperCase()
+
+      ===
+
+      String(account||"")
+      .trim()
+      .toUpperCase()
+
+      &&
+
+      String(obj.check||"")
+      .trim()
+      .toUpperCase()
+
+      ===
+
+      String(check||"")
+      .trim()
+      .toUpperCase()
+
+    ){
+
+      result.push(obj);
+
+    }
+
+  });
+
+  return output(result);
+
+}
+
+/* =========================
+   OUTPUT JSON
+========================= */
+
+function getDetail(e){
+
+const idCheck =
+
+String(
+e.parameter.id_check || ""
+)
+
+.trim();
+
+const account =
+
+String(
+e.parameter.account || ""
+)
+
+.trim()
+
+.toUpperCase();
+
+const reqCheck =
+
+String(
+e.parameter.check || ""
+)
+
+.trim()
+
+.toUpperCase();
+
+const ss =
+SpreadsheetApp.openById(
+INPUT_SHEET_ID
+);
+
+const sheet =
+ss.getSheetByName(
+"Nhap lieu ton cdbr"
+);
+
+const values =
+sheet.getDataRange().getValues();
+
+if(values.length < 3){
+
+return output({
+success:false
+});
+
+}
+
+const headers =
+values[1];
+
+for(let i=2;i<values.length;i++){
+
+const row =
+values[i];
+
+const rowId =
+
+String(row[15] || "")
+.trim();
+
+const acc =
+
+String(row[4] || "")
+.trim()
+.toUpperCase();
+
+const rowCheck =
+
+String(row[14] || "")
+.trim()
+.toUpperCase();
+
+if(
+
+(idCheck && rowId===idCheck)
+
+||
+
+(
+
+!idCheck
+
+&&
+
+acc===account
+
+&&
+
+rowCheck===reqCheck
+
+)
+
+){
+
+const obj = {};
+
+headers.forEach((h,index)=>{
+
+obj[h] = row[index];
+
+});
+
+obj.rowIndex = i + 1;
+
+return output({
+
+success:true,
+
+data:obj
+
+});
+
+}
+
+}
+
+return output({
+
+success:false
+
+});
+
+}
+
+function output(data){
+
+  return ContentService
+    .createTextOutput(
+      JSON.stringify(data)
+    )
+    .setMimeType(
+      ContentService.MimeType.JSON
+    );
+
+}
+
+/* =========================
+   FORMAT DATE VN
+========================= */
+
+function formatDateVN(value){
+
+  if(!value){
+
+    return "";
+
+  }
+
+  try{
+
+    return Utilities.formatDate(
+
+      new Date(value),
+
+      "Asia/Ho_Chi_Minh",
+
+      "dd/MM/yyyy HH:mm:ss"
+
+    );
+
+  }catch(err){
+
+    return value;
+
+  }
+
+}
+
+/* =========================
+   READ SHEET
+========================= */
+
+function getSheetData(sheet,skipRows=1){
+
+  const values =
+    sheet.getDataRange().getValues();
+
+  if(values.length<2){
+
+    return [];
+
+  }
+
+  const aliasRow =
+    values[0];
+
+  const rows =
+    values.slice(skipRows);
+
+  const data=[];
+
+  rows.forEach(row=>{
+
+    const isEmpty =
+      row.every(v=>v===""||v===null);
+
+    if(isEmpty)return;
+
+    const obj={};
+
+    aliasRow.forEach((alias,index)=>{
+
+      if(!alias)return;
+
+      const key =
+        String(alias).trim();
+
+      let value =
+        row[index];
+
+      if(value instanceof Date){
+
+        value =
+          formatDateVN(value);
+
+      }
+
+      if(typeof value==="string"){
+
+        value =
+          value.trim();
+
+      }
+
+      obj[key]=value;
+
+    });
+
+    /* =========================
+       SKIP HEADER VN
+    ========================= */
+
+    const firstValue =
+      String(row[0]||"")
+      .trim()
+      .toUpperCase();
+
+    if(
+
+      firstValue==="MÃ NV"
+
+      ||
+
+      firstValue==="LOẠI CV"
+
+    )return;
+
+    data.push(obj);
+
+  });
+
+  return data;
+
+}
+
+function getNhapLieuData(sheet){
+
+const values =
+sheet.getDataRange().getValues();
+
+if(values.length < 3){
+return [];
+}
+
+const aliasRow = values[1];
+
+const rows = values.slice(2);
+
+return rows.map(row=>{
+
+const obj = {};
+
+aliasRow.forEach((key,i)=>{
+
+obj[String(key).trim()] = row[i];
+
+});
+
+return obj;
+
+});
+
+}
+
+function deleteScTkmAll(data){
+
+const ADMIN_PASSWORD =
+"26664aA@!!";
+
+/* PASSWORD */
+
+if(
+data.password !== ADMIN_PASSWORD
+){
+
+return output({
+
+success:false,
+
+error:"Sai mật khẩu"
+
+});
+
+}
+
+/* SHEET */
+
+const sheet =
+SpreadsheetApp
+.openById(INPUT_SHEET_ID)
+.getSheetByName("Nhap lieu ton cdbr");
+
+const values =
+sheet.getDataRange()
+.getValues();
+
+let deleted = 0;
+
+
+/* =========================
+LẤY CÁC ROW CẦN XÓA
+========================= */
+
+const rowsToDelete = [];
+
+for(
+
+let i = 3;
+
+i <= values.length;
+
+i++
+
+){
+
+const row = values[i - 1];
+
+const loai =
+
+String(row[13] || "")
+.trim()
+.toUpperCase();
+
+/* CHỈ SC/TKM */
+
+if(
+
+loai === "SC"
+||
+loai === "TKM"
+
+){
+
+/* =========================
+XÓA FILE DRIVE
+========================= */
+
+[7,8,9,10].forEach(col=>{
+
+const text =
+String(row[col] || "");
+
+if(!text){
+return;
+}
+
+text
+.split(",")
+.forEach(link=>{
+
+try{
+
+const id =
+link.match(
+/\/d\/(.*?)\//
+)?.[1];
+
+if(id){
+
+DriveApp
+.getFileById(id)
+.setTrashed(true);
+
+}
+
+}catch(err){
+
+console.log(err);
+
+}
+
+});
+
+});
+
+rowsToDelete.push(i);
+
+}
+
+}
+
+/* =========================
+XÓA TỪ DƯỚI LÊN
+========================= */
+
+rowsToDelete
+.reverse()
+.forEach(rowNumber=>{
+
+sheet.deleteRow(rowNumber);
+
+deleted++;
+
+});
+
+return output({
+
+success:true,
+
+deleted:deleted
+
+});
+
+}
