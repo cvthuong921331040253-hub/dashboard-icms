@@ -5587,6 +5587,202 @@ canvas{
   }
 }
 
+
+@keyframes periodComparePulse{
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:.35;transform:scale(.75);}
+}
+.period-compare-btn:disabled{
+  opacity:.72 !important;
+  cursor:wait !important;
+}
+
+
+.period-loading-state{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  color:#b45309;
+  font-weight:800;
+}
+.period-loading-dots{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  height:10px;
+}
+.period-loading-dots i{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#f59e0b;
+  display:block;
+  animation:periodLoadingBounce 1.05s infinite ease-in-out;
+}
+.period-loading-dots i:nth-child(2){
+  animation-delay:.15s;
+}
+.period-loading-dots i:nth-child(3){
+  animation-delay:.30s;
+}
+@keyframes periodLoadingBounce{
+  0%,60%,100%{
+    transform:translateY(0);
+    opacity:.35;
+  }
+  30%{
+    transform:translateY(-4px);
+    opacity:1;
+  }
+}
+
+
+/* ===== TRẠNG THÁI ĐANG LỌC MỐC ===== */
+.period-compare-btn{
+  position:relative;
+  overflow:hidden;
+  transition:.15s ease;
+}
+
+.period-compare-btn.is-loading{
+  background:#1d4ed8 !important;
+  box-shadow:0 0 0 2px rgba(37,99,235,.12);
+}
+
+.period-compare-btn.is-loading::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-35%;
+  width:35%;
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.45),
+    transparent
+  );
+  animation:compareButtonSweep 1s infinite;
+}
+
+@keyframes compareButtonSweep{
+  0%{left:-35%;}
+  100%{left:100%;}
+}
+
+.compare-loading-label{
+  position:relative;
+  z-index:2;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+}
+
+.compare-loading-dots{
+  display:inline-flex;
+  gap:2px;
+  align-items:center;
+}
+
+.compare-loading-dots i{
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#fff;
+  display:block;
+  animation:compareDotBounce .9s infinite ease-in-out;
+}
+
+.compare-loading-dots i:nth-child(2){
+  animation-delay:.12s;
+}
+
+.compare-loading-dots i:nth-child(3){
+  animation-delay:.24s;
+}
+
+@keyframes compareDotBounce{
+  0%,60%,100%{
+    transform:translateY(0);
+    opacity:.35;
+  }
+  30%{
+    transform:translateY(-3px);
+    opacity:1;
+  }
+}
+
+.compare-loading-box{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-height:24px;
+  color:#b45309;
+  font-weight:800;
+}
+
+.compare-loading-spinner{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#f59e0b;
+  flex:none;
+  animation:compareStatusPulse .85s infinite ease-in-out;
+}
+
+@keyframes compareStatusPulse{
+  0%,100%{
+    transform:scale(.8);
+    opacity:.45;
+  }
+  50%{
+    transform:scale(1.15);
+    opacity:1;
+  }
+}
+
+.compare-loading-track{
+  display:inline-block;
+  width:70px;
+  height:4px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#fde68a;
+  position:relative;
+}
+
+.compare-loading-track > span{
+  position:absolute;
+  top:0;
+  left:-35%;
+  width:35%;
+  height:100%;
+  border-radius:999px;
+  background:#f59e0b;
+  animation:compareTrackMove 1.15s infinite ease-in-out;
+}
+
+@keyframes compareTrackMove{
+  0%{left:-35%;}
+  100%{left:100%;}
+}
+
+.compare-ready-text{
+  color:#15803d;
+  font-weight:800;
+}
+
+.compare-error-text{
+  color:#b91c1c;
+  font-weight:800;
+}
+
+@media(max-width:600px){
+  .compare-loading-track{
+    width:55px;
+  }
+}
+
 </style>
   
   </head>
@@ -5918,10 +6114,11 @@ canvas{
         <select id="compareBackup2"></select>
       </label>
 
-      <button type="button"
+      <button id="periodCompareBtn"
+              type="button"
               class="period-compare-btn"
               onclick="renderPeriodComparison()">
-        🔄 SO SÁNH
+        SO SÁNH
       </button>
 
     </div>
@@ -8062,7 +8259,7 @@ let tonsc=[];
 
 
 
-  async function renderPeriodComparison(){
+  async function renderPeriodComparisonCore(){
 
     const kpiWrap=
       document.getElementById(
@@ -8701,7 +8898,131 @@ let tonsc=[];
 
   }
 
-  async function initPeriodComparison(){
+  
+let periodCompareRunId = 0;
+
+async function renderPeriodComparison(){
+
+  const runId =
+    ++periodCompareRunId;
+
+  const btn =
+    document.getElementById(
+      "periodCompareBtn"
+    );
+
+  const status =
+    document.getElementById(
+      "periodCompareStatus"
+    );
+
+  /*
+    Chặn việc nhiều lần render chạy chồng lên nhau:
+    chỉ lần chạy mới nhất được phép cập nhật trạng thái UI.
+  */
+  const isCurrentRun =
+    () =>
+      runId === periodCompareRunId;
+
+  if(btn){
+    btn.disabled = true;
+    btn.classList.add("is-loading");
+    btn.setAttribute(
+      "aria-busy",
+      "true"
+    );
+
+    btn.innerHTML =
+      `
+        <span class="compare-loading-label">
+          ĐANG LỌC MỐC
+          <span class="compare-loading-dots" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </span>
+        </span>
+      `;
+  }
+
+  if(status){
+    status.innerHTML =
+      `
+        <div class="compare-loading-box">
+          <span class="compare-loading-text">
+            Đang lọc mốc
+          </span>
+
+          <span class="compare-loading-track" aria-hidden="true">
+            <span></span>
+          </span>
+        </div>
+      `;
+  }
+
+  try{
+
+    await renderPeriodComparisonCore();
+
+    if(!isCurrentRun()){
+      return;
+    }
+
+    if(status){
+      status.innerHTML =
+        `
+          <span class="compare-ready-text">
+            ✓ Đã lọc xong 2 mốc
+          </span>
+        `;
+    }
+
+  }catch(err){
+
+    console.error(
+      "renderPeriodComparison:",
+      err
+    );
+
+    if(
+      isCurrentRun() &&
+      status
+    ){
+      status.innerHTML =
+        `
+          <span class="compare-error-text">
+            ⚠ Lọc mốc thất bại
+          </span>
+        `;
+    }
+
+  }finally{
+
+    if(
+      isCurrentRun() &&
+      btn
+    ){
+      /*
+        Dọn sạch hoàn toàn trạng thái animation.
+      */
+      btn.classList.remove(
+        "is-loading"
+      );
+
+      btn.disabled = false;
+
+      btn.removeAttribute(
+        "aria-busy"
+      );
+
+      btn.innerHTML =
+        "SO SÁNH";
+    }
+
+  }
+
+}
+
+/* Hiệu ứng chấm vàng khi đang tải mốc. */
+async function initPeriodComparison(){
 
     await loadRemoteHistorySnapshots();
 
