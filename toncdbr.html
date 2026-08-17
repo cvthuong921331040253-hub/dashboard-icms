@@ -4446,11 +4446,25 @@
 
 
 /* ===== PHÓNG TO BIỂU ĐỒ: DESKTOP + MOBILE ===== */
+.chart-box canvas,
+.district-report-card canvas,
+.chart-card canvas{
+  cursor:zoom-in;
+}
+
 .chart-box,
 .district-report-card,
 .chart-card,
-canvas{
-  cursor:zoom-in;
+.chart-box select,
+.chart-box input,
+.chart-box button,
+.district-report-card select,
+.district-report-card input,
+.district-report-card button,
+.chart-card select,
+.chart-card input,
+.chart-card button{
+  cursor:default;
 }
 
 .chart-zoom-modal{
@@ -5783,6 +5797,259 @@ canvas{
   }
 }
 
+
+/* ===== LINE MỨC TỔNG 7 NGÀY TRONG SO SÁNH THEO HUYỆN ===== */
+.district-total-7day-line-panel{
+  margin-top:10px;
+  border:1px solid #dbe4f0;
+  border-radius:8px;
+  background:#fff;
+  padding:9px;
+  min-width:0;
+}
+.district-total-7day-line-title{
+  font-size:11px;
+  font-weight:900;
+  color:#1f2937;
+  text-align:center;
+  margin-bottom:2px;
+}
+.district-total-7day-line-sub{
+  text-align:center;
+  color:#64748b;
+  font-size:9px;
+  line-height:1.3;
+  margin-bottom:6px;
+}
+.district-total-7day-line-wrap{
+  position:relative;
+  width:100%;
+  height:300px;
+  min-height:240px;
+}
+#districtTotal7DayLineChart{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:100% !important;
+}
+@media(max-width:700px){
+  .district-total-7day-line-panel{
+    padding:7px;
+  }
+  .district-total-7day-line-title{
+    font-size:10px;
+  }
+  .district-total-7day-line-sub{
+    font-size:8px;
+  }
+  .district-total-7day-line-wrap{
+    height:260px;
+  }
+}
+
+
+/* ===== BỐ TRÍ: BÁO CÁO TỈNH 7 NGÀY Ở GIỮA 2 KHỐI ===== */
+.district-total-7day-line-panel{
+  margin:10px 0 !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+}
+
+
+.district-total-7day-line-panel .report-title-with-capture{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:10px !important;
+}
+.district-total-7day-line-panel .report-capture-btn{
+  flex:0 0 auto;
+}
+@media(max-width:700px){
+  .district-total-7day-line-panel .report-title-with-capture{
+    align-items:center !important;
+  }
+  .district-total-7day-line-panel .report-title-with-capture > span{
+    min-width:0 !important;
+  }
+  .district-total-7day-line-panel .report-capture-btn{
+    font-size:9px !important;
+    padding:5px 7px !important;
+  }
+}
+
+
+/* Không hiển thị biểu tượng kính phóng đại khi rê vào ô chọn/bộ lọc */
+.district-report-toolbar select,
+.district-report-toolbar label,
+.period-compare-filters select,
+.period-compare-filters label,
+.ops-staff-filters select,
+.ops-staff-filters input,
+#sevenDayDistrictSelect{
+  cursor:pointer !important;
+}
+
+
+/* Legend của Chart.js: click để ẩn/hiện series, không phải phóng to */
+.chart-box canvas,
+.district-report-card canvas,
+.chart-card canvas{
+  cursor:zoom-in;
+}
+
+.chart-box .legend,
+.district-report-card .legend,
+.chart-card .legend{
+  cursor:pointer !important;
+}
+
+
+/* ===== CHỈ PHÓNG TO KHI BẤM NÚT "PHÓNG TO" ===== */
+.chart-has-zoom-button{
+  position:relative !important;
+}
+
+.chart-zoom-trigger{
+  position:absolute;
+  top:6px;
+  right:6px;
+  z-index:100;
+  border:1px solid #dbe3ec;
+  border-radius:6px;
+  padding:4px 8px;
+  background:rgba(255,255,255,.96);
+  color:#2563eb;
+  font:700 9px/1.2 Arial,sans-serif;
+  cursor:pointer !important;
+  box-shadow:0 1px 4px rgba(15,23,42,.10);
+}
+
+.chart-zoom-trigger:hover{
+  background:#eff6ff;
+}
+
+.chart-zoom-trigger:active{
+  transform:translateY(1px);
+}
+
+@media(max-width:700px){
+  .chart-zoom-trigger{
+    top:5px;
+    right:5px;
+    font-size:8px;
+    padding:4px 6px;
+  }
+}
+
+
+/* ===== NÚT PHÓNG TO CHO TẤT CẢ BIỂU ĐỒ ===== */
+.chart-has-zoom-button{
+  position:relative !important;
+}
+
+.chart-zoom-trigger{
+  position:absolute !important;
+  top:6px !important;
+  right:6px !important;
+  z-index:999 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:1px solid #cbd5e1 !important;
+  border-radius:6px !important;
+  padding:4px 8px !important;
+  min-height:24px !important;
+  background:rgba(255,255,255,.96) !important;
+  color:#2563eb !important;
+  font:700 9px/1.2 Arial,sans-serif !important;
+  cursor:pointer !important;
+  box-shadow:0 1px 4px rgba(15,23,42,.10) !important;
+  white-space:nowrap !important;
+}
+
+.chart-zoom-trigger:hover{
+  background:#eff6ff !important;
+  color:#1d4ed8 !important;
+}
+
+.chart-zoom-trigger:active{
+  transform:translateY(1px);
+}
+
+@media(max-width:700px){
+  .chart-zoom-trigger{
+    top:5px !important;
+    right:5px !important;
+    min-height:22px !important;
+    padding:3px 6px !important;
+    font-size:8px !important;
+  }
+}
+
+
+/* ===== NÚT PHÓNG TO: HIỆN KHI TRỎ VÀO BIỂU ĐỒ ===== */
+.chart-has-zoom-button{
+  position:relative !important;
+}
+
+.chart-zoom-trigger{
+  position:absolute !important;
+  top:6px !important;
+  right:6px !important;
+  z-index:9999 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:1px solid #cbd5e1 !important;
+  border-radius:6px !important;
+  padding:4px 8px !important;
+  min-height:24px !important;
+  background:rgba(255,255,255,.98) !important;
+  color:#2563eb !important;
+  font:700 9px/1.2 Arial,sans-serif !important;
+  cursor:pointer !important;
+  box-shadow:0 2px 7px rgba(15,23,42,.16) !important;
+  white-space:nowrap !important;
+
+  /*
+    Mặc định ẩn để không che legend.
+    Chỉ hiện khi rê chuột vào vùng biểu đồ.
+  */
+  opacity:0 !important;
+  visibility:hidden !important;
+  transform:translateY(-2px);
+  pointer-events:none !important;
+  transition:
+    opacity .14s ease,
+    visibility .14s ease,
+    transform .14s ease;
+}
+
+.chart-has-zoom-button:hover > .chart-zoom-trigger,
+.chart-has-zoom-button:focus-within > .chart-zoom-trigger{
+  opacity:1 !important;
+  visibility:visible !important;
+  transform:translateY(0);
+  pointer-events:auto !important;
+}
+
+.chart-zoom-trigger:hover{
+  background:#eff6ff !important;
+  color:#1d4ed8 !important;
+}
+
+/* Mobile/touch: luôn hiện nút vì không có hover */
+@media (hover:none), (max-width:700px){
+  .chart-zoom-trigger{
+    opacity:1 !important;
+    visibility:visible !important;
+    transform:none !important;
+    pointer-events:auto !important;
+  }
+}
+
 </style>
   
   </head>
@@ -6130,7 +6397,7 @@ canvas{
 
   <div class="period-compare-panel">
     <div class="period-compare-panel-title">
-      📌 CHỈ TIÊU SO SÁNH
+      📌 BÁO CÁO TĂNG/GIẢM MỨC TỈNH CÁC MỐC TRONG 7 NGÀY
     </div>
 
     <div class="period-table-wrap">
@@ -6178,6 +6445,28 @@ canvas{
 
   
 
+
+
+    
+<div id="districtTotal7DayLineReport" class="district-total-7day-line-panel report-capture-section">
+      <div class="district-total-7day-line-title report-title-with-capture">
+        <span>📈 BÁO CÁO TĂNG/GIẢM MỨC TỈNH CÁC MỐC TRONG 7 NGÀY</span>
+        <button
+          type="button"
+          class="report-capture-btn"
+          data-html2canvas-ignore="true"
+          onclick="captureReportSection('districtTotal7DayLineReport','BAO_CAO_TANG_GIAM_MUC_TINH_7_NGAY')"
+        >
+          📸 Chụp báo cáo
+        </button>
+      </div>
+      <div class="district-total-7day-line-sub">
+        TỔNG TKM • TKM QUÁ 24H • CẬP NHẬT HỒ SƠ • TỔNG SC • SOC + SOC HOME
+      </div>
+      <div class="district-total-7day-line-wrap">
+        <canvas id="districtTotal7DayLineChart"></canvas>
+      </div>
+    </div>
 
 <div id="district7DayReport" class="period-compare-panel period-district-7day-report report-capture-section" style="margin-top:10px;">
 
@@ -8112,6 +8401,201 @@ let tonsc=[];
       cnhsData,
       "#16a34a"
     );
+
+
+    /*
+      Biểu đồ mức tổng tỉnh trong 7 ngày.
+      TKM QUÁ 24H không tính Cập nhật hồ sơ.
+    */
+    const total7DayCanvas =
+      document.getElementById(
+        "districtTotal7DayLineChart"
+      );
+
+    if(total7DayCanvas){
+
+      const total7DayData = {
+        tkm:
+          details.map(
+            d=>d.tkm.length
+          ),
+
+        tkm24:
+          details.map(
+            d=>
+              d.tkm.filter(
+                row=>
+                  !compareIsCNHS(row) &&
+                  compareNorm(row?.kpi)==="QUÁ 24H"
+              ).length
+          ),
+
+        cnhs:
+          details.map(
+            d=>
+              d.tkm.filter(
+                row=>
+                  compareIsCNHS(row)
+              ).length
+          ),
+
+        sc:
+          details.map(
+            d=>d.sc.length
+          ),
+
+        socTotal:
+          details.map(
+            d=>
+              d.sc.filter(
+                row=>{
+                  const v=compareNorm(row?.sc);
+                  return (
+                    v==="SOC" ||
+                    v==="SOC HOME"
+                  );
+                }
+              ).length
+          )
+      };
+
+      if(window.__districtTotal7DayLineChart){
+        try{
+          window.__districtTotal7DayLineChart.destroy();
+        }catch(e){}
+      }
+
+      window.__districtTotal7DayLineChart =
+        new Chart(
+          total7DayCanvas,
+          {
+            type:"line",
+
+            data:{
+              labels,
+
+              datasets:[
+                {
+                  label:"TỔNG TKM",
+                  data:total7DayData.tkm,
+                  borderColor:"#2563eb",
+                  backgroundColor:"transparent",
+                  borderWidth:2.2,
+                  tension:.18,
+                  pointRadius:3,
+                  pointHoverRadius:5,
+                  fill:false
+                },
+                {
+                  label:"TKM QUÁ 24H",
+                  data:total7DayData.tkm24,
+                  borderColor:"#dc2626",
+                  backgroundColor:"transparent",
+                  borderWidth:2.2,
+                  tension:.18,
+                  pointRadius:3,
+                  pointHoverRadius:5,
+                  fill:false
+                },
+                {
+                  label:"CẬP NHẬT HỒ SƠ",
+                  data:total7DayData.cnhs,
+                  borderColor:"#0891b2",
+                  backgroundColor:"transparent",
+                  borderWidth:2.2,
+                  tension:.18,
+                  pointRadius:3,
+                  pointHoverRadius:5,
+                  fill:false
+                },
+                {
+                  label:"TỔNG SC",
+                  data:total7DayData.sc,
+                  borderColor:"#ea580c",
+                  backgroundColor:"transparent",
+                  borderWidth:2.2,
+                  tension:.18,
+                  pointRadius:3,
+                  pointHoverRadius:5,
+                  fill:false
+                },
+                {
+                  label:"SOC + SOC HOME",
+                  data:total7DayData.socTotal,
+                  borderColor:"#7c3aed",
+                  backgroundColor:"transparent",
+                  borderWidth:2.2,
+                  tension:.18,
+                  pointRadius:3,
+                  pointHoverRadius:5,
+                  fill:false
+                }
+              ]
+            },
+
+            options:{
+              responsive:true,
+              maintainAspectRatio:false,
+
+              interaction:{
+                mode:"index",
+                intersect:false
+              },
+
+              plugins:{
+                legend:{
+                  display:true,
+                  position:"top",
+                  labels:{
+                    boxWidth:12,
+                    boxHeight:8,
+                    padding:10,
+                    font:{
+                      size:9,
+                      weight:"700"
+                    }
+                  }
+                },
+                tooltip:{
+                  mode:"index",
+                  intersect:false
+                }
+              },
+
+              scales:{
+                x:{
+                  ticks:{
+                    autoSkip:false,
+                    maxRotation:35,
+                    minRotation:20,
+                    font:{
+                      size:8
+                    }
+                  }
+                },
+                y:{
+                  beginAtZero:true,
+                  ticks:{
+                    precision:0,
+                    font:{
+                      size:8
+                    }
+                  },
+                  title:{
+                    display:true,
+                    text:"Số lượng",
+                    font:{
+                      size:9,
+                      weight:"700"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        );
+
+    }
 
     const lastIndex=
       labels.length-1;
@@ -15841,257 +16325,591 @@ const url =
 
 
 <script>
-let activeChartZoomInstance=null;
-let activeChartZoomSourceCanvas=null;
+
+let activeChartZoomChart=null;
 
 function getChartInstanceFromCanvas(canvas){
-  if(!canvas) return null;
 
-  if(window.Chart &&
-     typeof Chart.getChart==="function"){
-    return Chart.getChart(canvas) || null;
+  if(!canvas){
+    return null;
   }
 
-  return canvas.__chartist__ ||
-         canvas._chart ||
-         null;
-}
+  /*
+    Chart.js 3/4:
+  */
+  if(
+    window.Chart &&
+    typeof Chart.getChart==="function"
+  ){
+    const chart =
+      Chart.getChart(canvas);
 
-function findClosestChartCanvas(target){
-  if(!target) return null;
-
-  if(target.tagName==="CANVAS"){
-    return target;
+    if(chart){
+      return chart;
+    }
   }
 
-  return target.querySelector
-    ? target.querySelector("canvas")
-    : null;
+  /*
+    Fallback cho các bản Chart.js cũ.
+  */
+  return (
+    canvas.__chartist__ ||
+    canvas._chart ||
+    null
+  );
+
 }
 
-function getChartTitleForZoom(sourceCanvas){
-  if(!sourceCanvas) return "Biểu đồ";
+function getChartZoomTitle(canvas, chart){
 
-  const explicit =
-    sourceCanvas.dataset.chartTitle ||
-    sourceCanvas.getAttribute("aria-label");
-
-  if(explicit) return explicit;
-
-  const box =
-    sourceCanvas.closest(
-      ".chart-box,.district-report-card,.chart-card"
+  const host =
+    getChartZoomHost(
+      canvas
     );
 
-  if(box){
+  if(host){
+
     const title =
-      box.querySelector(
-        ".chart-title,.district-report-card-title,.chart-card-title"
+      host.querySelector(
+        ".chart-title, .district-report-card-title, .chart-card-title, .district-total-7day-line-title"
       );
 
     if(title){
-      return String(title.textContent || "")
+
+      const value =
+        String(
+          title.textContent || ""
+        )
         .replace(/\s+/g," ")
         .trim();
+
+      if(value){
+        return value;
+      }
+
     }
+
+  }
+
+  if(
+    chart &&
+    chart.data &&
+    Array.isArray(
+      chart.data.datasets
+    ) &&
+    chart.data.datasets.length===1 &&
+    chart.data.datasets[0]?.label
+  ){
+    return String(
+      chart.data.datasets[0].label
+    );
   }
 
   return "Biểu đồ";
+
 }
 
-function openChartZoomFromCanvas(sourceCanvas){
+function cloneChartValue(value){
 
-  const modal =
-    document.getElementById("chartZoomModal");
-
-  const zoomCanvas =
-    document.getElementById("chartZoomCanvas");
-
-  const title =
-    document.getElementById("chartZoomTitle");
-
-  if(!modal || !zoomCanvas || !sourceCanvas){
-    return;
+  if(
+    value===null ||
+    typeof value!=="object"
+  ){
+    return value;
   }
 
-  const chart =
-    getChartInstanceFromCanvas(sourceCanvas);
-
-  if(!chart){
-    console.warn(
-      "Không tìm thấy Chart.js instance:",
-      sourceCanvas
+  if(
+    Array.isArray(value)
+  ){
+    return value.map(
+      cloneChartValue
     );
-    return;
   }
 
-  activeChartZoomInstance = chart;
-  activeChartZoomSourceCanvas = sourceCanvas;
+  const out={};
 
-  title.textContent =
-    getChartTitleForZoom(
-      sourceCanvas
-    );
-
-  modal.classList.add("is-open");
-  modal.setAttribute("aria-hidden","false");
-  document.body.style.overflow="hidden";
-
-  requestAnimationFrame(
-    ()=>{
-      try{
-
-        if(window.Chart){
-          const clonedConfig = {
-            type:chart.config.type,
-            data:JSON.parse(
-              JSON.stringify(
-                chart.config.data
-              )
-            ),
-            options:JSON.parse(
-              JSON.stringify(
-                chart.config.options || {}
-              )
-            ),
-            plugins:[]
-          };
-
-          clonedConfig.options =
-            clonedConfig.options || {};
-
-          clonedConfig.options.responsive=true;
-          clonedConfig.options.maintainAspectRatio=false;
-
-          /*
-            Không copy animation khi phóng to:
-            mở modal sẽ hiển thị ngay, tránh giật.
-          */
-          clonedConfig.options.animation=false;
-
-          /*
-            Cho phép pan/zoom theo touch nếu chart
-            đã có plugin zoom; nếu không có thì
-            vẫn tự phóng full màn hình.
-          */
-
-          const zoomChart =
-            new Chart(
-              zoomCanvas.getContext("2d"),
-              clonedConfig
-            );
-
-          zoomCanvas._zoomChart =
-            zoomChart;
-        }
-
-      }catch(err){
-
-        console.error(
-          "chart zoom:",
-          err
-        );
-
+  Object.keys(value).forEach(
+    key=>{
+      /*
+        Bỏ các object chức năng của Chart.js
+        không thể serialize.
+      */
+      if(
+        key==="canvas" ||
+        key==="ctx" ||
+        key==="chartArea" ||
+        key==="legend"
+      ){
+        return;
       }
+
+      try{
+        out[key] =
+          cloneChartValue(
+            value[key]
+          );
+      }catch(e){}
     }
   );
+
+  return out;
+
 }
 
-function closeChartZoom(){
+function openChartZoomFromCanvas(
+  sourceCanvas
+){
 
   const modal =
     document.getElementById(
       "chartZoomModal"
     );
 
-  if(!modal){
+  const zoomCanvas =
+    document.getElementById(
+      "chartZoomCanvas"
+    );
+
+  const title =
+    document.getElementById(
+      "chartZoomTitle"
+    );
+
+  if(
+    !modal ||
+    !zoomCanvas ||
+    !sourceCanvas
+  ){
+    return;
+  }
+
+  const chart =
+    getChartInstanceFromCanvas(
+      sourceCanvas
+    );
+
+  if(!chart){
+    console.warn(
+      "Không tìm thấy Chart.js instance cho canvas:",
+      sourceCanvas
+    );
     return;
   }
 
   try{
-    if(
-      document.getElementById(
-        "chartZoomCanvas"
-      ) &&
-      document.getElementById(
-        "chartZoomCanvas"
-      )._zoomChart
-    ){
-      document
-        .getElementById(
-          "chartZoomCanvas"
-        )
-        ._zoomChart
-        .destroy();
+
+    if(activeChartZoomChart){
+      activeChartZoomChart.destroy();
+      activeChartZoomChart=null;
     }
+
   }catch(e){}
 
-  activeChartZoomInstance=null;
-  activeChartZoomSourceCanvas=null;
+  if(title){
+    title.textContent =
+      getChartZoomTitle(
+        sourceCanvas,
+        chart
+      );
+  }
 
-  modal.classList.remove("is-open");
-  modal.setAttribute("aria-hidden","true");
-  document.body.style.overflow="";
+  /*
+    Đóng băng dữ liệu + cấu hình hiện tại
+    để clone thành chart fullscreen.
+  */
+  const config = {
+    type:
+      chart.config.type,
+
+    data:
+      cloneChartValue(
+        chart.config.data
+      ),
+
+    options:
+      cloneChartValue(
+        chart.config.options || {}
+      ),
+
+    plugins:
+      []
+  };
+
+  config.options =
+    config.options || {};
+
+  config.options.responsive =
+    true;
+
+  config.options.maintainAspectRatio =
+    false;
+
+  config.options.animation =
+    false;
+
+  /*
+    Legend vẫn hoạt động bình thường trong
+    biểu đồ phóng to.
+  */
+  try{
+
+    activeChartZoomChart =
+      new Chart(
+        zoomCanvas.getContext("2d"),
+        config
+      );
+
+  }catch(err){
+
+    console.error(
+      "Không thể tạo biểu đồ phóng to:",
+      err
+    );
+
+    /*
+      Fallback: thử clone lại bằng data sâu hơn.
+    */
+    try{
+
+      activeChartZoomChart =
+        new Chart(
+          zoomCanvas.getContext("2d"),
+          {
+            type:chart.config.type,
+            data:JSON.parse(
+              JSON.stringify(
+                chart.data
+              )
+            ),
+            options:{
+              responsive:true,
+              maintainAspectRatio:false,
+              animation:false
+            }
+          }
+        );
+
+    }catch(err2){
+
+      console.error(
+        "Fallback chart zoom failed:",
+        err2
+      );
+
+      activeChartZoomChart=null;
+      return;
+
+    }
+
+  }
+
+  modal.classList.add(
+    "is-open"
+  );
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.style.overflow =
+    "hidden";
+
+  /*
+    Resize sau khi modal đã visible để
+    Chart.js lấy đúng kích thước.
+  */
+  requestAnimationFrame(
+    ()=>{
+      if(
+        activeChartZoomChart &&
+        typeof activeChartZoomChart.resize==="function"
+      ){
+        activeChartZoomChart.resize();
+      }
+    }
+  );
+
+}
+
+function closeChartZoom(){
+
+  try{
+
+    if(activeChartZoomChart){
+
+      activeChartZoomChart.destroy();
+
+      activeChartZoomChart=null;
+    }
+
+  }catch(e){
+
+    activeChartZoomChart=null;
+
+  }
+
+  const modal =
+    document.getElementById(
+      "chartZoomModal"
+    );
+
+  if(modal){
+
+    modal.classList.remove(
+      "is-open"
+    );
+
+    modal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  }
+
+  document.body.style.overflow =
+    "";
+
+}
+
+function getChartZoomHost(canvas){
+
+  if(!canvas){
+    return null;
+  }
+
+  const knownHost =
+    canvas.closest(
+      ".chart-box, .district-report-card, .chart-card, .district-total-7day-line-panel"
+    );
+
+  if(knownHost){
+    return knownHost;
+  }
+
+  let el =
+    canvas.parentElement;
+
+  while(
+    el &&
+    el!==document.body
+  ){
+
+    const rect =
+      el.getBoundingClientRect();
+
+    if(
+      rect.width>180 &&
+      rect.height>120
+    ){
+      return el;
+    }
+
+    el =
+      el.parentElement;
+  }
+
+  return canvas.parentElement;
+}
+
+function addChartZoomButtons(){
+
+  document
+    .querySelectorAll("canvas")
+    .forEach(
+      canvas=>{
+
+        if(
+          canvas.id==="chartZoomCanvas"
+        ){
+          return;
+        }
+
+        const host =
+          getChartZoomHost(
+            canvas
+          );
+
+        if(!host){
+          return;
+        }
+
+        /*
+          Không đợi Chart.js instance.
+          Chỉ cần có canvas là tạo nút.
+          Khi người dùng bấm, mới lấy Chart instance.
+        */
+        const existing =
+          host.querySelector(
+            '.chart-zoom-trigger[data-zoom-canvas="1"]'
+          );
+
+        if(existing){
+          existing.__zoomCanvas =
+            canvas;
+          return;
+        }
+
+        host.classList.add(
+          "chart-has-zoom-button"
+        );
+
+        if(
+          window.getComputedStyle(host).position==="static"
+        ){
+          host.style.position="relative";
+        }
+
+        const button =
+          document.createElement(
+            "button"
+          );
+
+        button.type="button";
+        button.className=
+          "chart-zoom-trigger";
+        button.dataset.zoomCanvas="1";
+        button.dataset.zoomCanvasId=
+          canvas.id || "";
+
+        button.setAttribute(
+          "aria-label",
+          "Phóng to biểu đồ"
+        );
+
+        button.setAttribute(
+          "data-html2canvas-ignore",
+          "true"
+        );
+
+        button.innerHTML=
+          "⛶ Phóng to";
+
+        button.__zoomCanvas =
+          canvas;
+
+        button.addEventListener(
+          "click",
+          event=>{
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            const targetCanvas =
+              button.__zoomCanvas ||
+              canvas;
+
+            if(
+              !targetCanvas ||
+              !document.body.contains(
+                targetCanvas
+              )
+            ){
+              return;
+            }
+
+            /*
+              Lấy instance Chart.js ngay lúc click.
+              Không phụ thuộc thời điểm biểu đồ được tạo.
+            */
+            const chart =
+              getChartInstanceFromCanvas(
+                targetCanvas
+              );
+
+            if(!chart){
+
+              /*
+                Một số Chart.js version có thể chưa
+                trả về qua Chart.getChart(). Thử lại
+                sau một tick.
+              */
+              setTimeout(
+                ()=>{
+                  const retryChart =
+                    getChartInstanceFromCanvas(
+                      targetCanvas
+                    );
+
+                  if(retryChart){
+                    openChartZoomFromCanvas(
+                      targetCanvas
+                    );
+                  }
+                },
+                50
+              );
+
+              return;
+            }
+
+            openChartZoomFromCanvas(
+              targetCanvas
+            );
+
+          }
+        );
+
+        host.appendChild(
+          button
+        );
+
+      }
+    );
+
 }
 
 function initAllChartZoom(){
 
-  document.addEventListener(
-    "click",
-    event=>{
+  addChartZoomButtons();
 
-      if(
-        event.target.closest(
-          ".chart-zoom-modal"
-        )
-      ){
-        return;
+  /*
+    Theo dõi biểu đồ được tạo động.
+  */
+  const observer =
+    new MutationObserver(
+      ()=>{
+        addChartZoomButtons();
       }
+    );
 
-      const canvas =
-        findClosestChartCanvas(
-          event.target
-        );
+  observer.observe(
+    document.body,
+    {
+      childList:true,
+      subtree:true
+    }
+  );
 
-      if(!canvas){
-        return;
-      }
+  /*
+    Quét lại trong giai đoạn Dashboard khởi tạo.
+  */
+  let scans=0;
 
-      /*
-        Các canvas trong modal không được mở lại chính nó.
-      */
-      if(
-        event.target.id ===
-        "chartZoomCanvas"
-      ){
-        return;
-      }
+  const timer =
+    setInterval(
+      ()=>{
+        addChartZoomButtons();
+        scans++;
 
-      /*
-        Chỉ áp dụng cho các chart thực.
-      */
-      const chart =
-        getChartInstanceFromCanvas(
-          canvas
-        );
+        if(scans>=40){
+          clearInterval(timer);
+        }
+      },
+      400
+    );
 
-      if(!chart){
-        return;
-      }
-
-      openChartZoomFromCanvas(
-        canvas
-      );
-
+  window.addEventListener(
+    "resize",
+    ()=>{
+      addChartZoomButtons();
     }
   );
 
   document.addEventListener(
     "keydown",
     event=>{
-      if(
-        event.key==="Escape"
-      ){
+      if(event.key==="Escape"){
         closeChartZoom();
       }
     }
@@ -16115,6 +16933,7 @@ function initAllChartZoom(){
       }
     );
   }
+
 }
 
 document.addEventListener(
