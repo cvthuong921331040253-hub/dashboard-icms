@@ -6050,6 +6050,108 @@
   }
 }
 
+
+/* ===== FIX MOBILE: BÁO CÁO TĂNG/GIẢM MỨC TỈNH 7 NGÀY ===== */
+@media(max-width:768px){
+
+  #districtTotal7DayLineReport,
+  .district-total-7day-line-panel{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    height:auto !important;
+    min-height:0 !important;
+    overflow:visible !important;
+    position:relative !important;
+    box-sizing:border-box !important;
+  }
+
+  #districtTotal7DayLineReport .district-total-7day-line-wrap,
+  .district-total-7day-line-panel .district-total-7day-line-wrap{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    height:300px !important;
+    min-height:300px !important;
+    position:relative !important;
+    overflow:visible !important;
+    box-sizing:border-box !important;
+  }
+
+  #districtTotal7DayLineChart{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    position:relative !important;
+    width:100% !important;
+    height:100% !important;
+    min-height:300px !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+  }
+
+  #districtTotal7DayLineReport .district-total-7day-line-title,
+  .district-total-7day-line-panel .district-total-7day-line-title{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    width:100% !important;
+    min-width:0 !important;
+    gap:6px !important;
+    text-align:left !important;
+    line-height:1.25 !important;
+  }
+
+  #districtTotal7DayLineReport .district-total-7day-line-title > span{
+    min-width:0 !important;
+    flex:1 1 auto !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  #districtTotal7DayLineReport .district-total-7day-line-sub{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  /* Nút phóng to không che legend khi màn hình nhỏ */
+  #districtTotal7DayLineReport .chart-zoom-trigger{
+    top:5px !important;
+    right:5px !important;
+  }
+
+  /*
+    Nếu container cha của khu báo cáo đang có display:none
+    do rule mobile cũ, ép riêng section hiển thị.
+  */
+  #districtCompareReport ~ #districtTotal7DayLineReport,
+  #districtCompareReport + #districtTotal7DayLineReport{
+    display:block !important;
+  }
+
+}
+
+@media(max-width:420px){
+
+  #districtTotal7DayLineReport .district-total-7day-line-wrap{
+    height:280px !important;
+    min-height:280px !important;
+  }
+
+  #districtTotal7DayLineChart{
+    min-height:280px !important;
+  }
+
+  #districtTotal7DayLineReport .district-total-7day-line-sub{
+    font-size:8px !important;
+  }
+}
+
 </style>
   
   </head>
@@ -8594,6 +8696,22 @@ let tonsc=[];
             }
           }
         );
+
+      /*
+        Trên mobile Chart.js có thể khởi tạo khi container
+        chưa có kích thước cuối cùng. Resize lại sau khi
+        trình duyệt đã layout xong.
+      */
+      requestAnimationFrame(
+        ()=>{
+          if(
+            window.__districtTotal7DayLineChart &&
+            typeof window.__districtTotal7DayLineChart.resize==="function"
+          ){
+            window.__districtTotal7DayLineChart.resize();
+          }
+        }
+      );
 
     }
 
