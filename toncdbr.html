@@ -4563,6 +4563,1030 @@ canvas{
   }
 }
 
+
+/* =========================================================
+   MOBILE FIX – CÁC BẢNG/BÁO CÁO CĐBR
+   Mục tiêu: không bị tràn khỏi màn hình, bảng luôn nhìn thấy,
+   dữ liệu rộng thì cuộn ngang ngay trong chính bảng.
+   ========================================================= */
+
+@media(max-width:700px){
+
+  html, body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden !important;
+  }
+
+  /* Khu SO SÁNH */
+  #periodCompareSection{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    overflow:visible !important;
+  }
+
+  #periodCompareSection .period-compare-head{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    width:100% !important;
+    gap:7px !important;
+  }
+
+  #periodCompareSection .period-compare-title{
+    width:100% !important;
+    min-width:0 !important;
+    font-size:13px !important;
+    line-height:1.3 !important;
+    padding:7px 9px !important;
+  }
+
+  #periodCompareSection .period-compare-title span{
+    min-width:0 !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  #periodCompareSection .period-compare-filters{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    width:100% !important;
+    min-width:0 !important;
+    gap:6px !important;
+  }
+
+  #periodCompareSection .period-compare-filters label{
+    min-width:0 !important;
+    width:100% !important;
+  }
+
+  #periodCompareSection .period-compare-filters select{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    font-size:10px !important;
+  }
+
+  #periodCompareSection .period-compare-btn{
+    grid-column:1/-1 !important;
+    width:100% !important;
+  }
+
+  /* 12 KPI: 2 cột trên mobile, không bị ép thành 1 hàng rộng */
+  #periodCompareKpis{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    width:100% !important;
+    gap:5px !important;
+    overflow:visible !important;
+  }
+
+  #periodCompareKpis .period-kpi{
+    width:100% !important;
+    min-width:0 !important;
+    overflow:hidden !important;
+    padding:6px !important;
+  }
+
+  #periodCompareKpis .period-kpi-label{
+    min-height:22px !important;
+    font-size:8px !important;
+    line-height:1.2 !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  #periodCompareKpis .period-kpi-value{
+    font-size:14px !important;
+    overflow:hidden !important;
+  }
+
+  /* Panel: không cắt phần bảng */
+  #periodCompareSection .period-compare-panel{
+    width:100% !important;
+    min-width:0 !important;
+    overflow:visible !important;
+  }
+
+  /* Bảng nhiều cột: cuộn ngang trong chính wrapper */
+  #periodCompareSection .period-table-wrap{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    max-height:65vh !important;
+    overflow-x:auto !important;
+    overflow-y:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+    overscroll-behavior:contain;
+  }
+
+  #periodCompareSection .period-table{
+    width:max-content !important;
+    min-width:920px !important;
+    table-layout:auto !important;
+  }
+
+  #periodCompareSection .period-table th{
+    font-size:9px !important;
+    padding:5px 6px !important;
+    white-space:normal !important;
+  }
+
+  #periodCompareSection .period-table td{
+    font-size:9px !important;
+    padding:5px 6px !important;
+  }
+
+  /* Tên huyện/nhân viên không bị ép mất chữ */
+  #periodCompareSection .period-table td:nth-child(2){
+    min-width:120px !important;
+    white-space:normal !important;
+  }
+
+  /* Bảng nhân viên 30 dòng */
+  #periodCompareSection .period-staff-table-wrap{
+    width:100% !important;
+    max-width:100% !important;
+    height:62vh !important;
+    max-height:62vh !important;
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  #periodCompareSection .period-staff-table-wrap table{
+    min-width:920px !important;
+    width:max-content !important;
+  }
+
+  /* Báo cáo 7 ngày */
+  #district7DayReport,
+  .period-district-7day-report{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    overflow:visible !important;
+  }
+
+  .district-report-toolbar{
+    width:100% !important;
+    min-width:0 !important;
+  }
+
+  .district-report-toolbar select{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  .district-report-charts{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    width:100% !important;
+  }
+
+  .district-report-card{
+    width:100% !important;
+    min-width:0 !important;
+  }
+
+  .district-report-chart-wrap{
+    width:100% !important;
+    height:230px !important;
+  }
+
+  .district-change-grid{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    width:100% !important;
+  }
+
+  .district-change-table-card{
+    width:100% !important;
+    min-width:0 !important;
+  }
+
+  /* Tiêu đề + nút chụp */
+  .report-title-with-capture{
+    width:100% !important;
+    align-items:center !important;
+  }
+
+  .report-title-with-capture > span{
+    flex:1 1 auto !important;
+    min-width:0 !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  .report-capture-btn{
+    flex:none !important;
+    font-size:9px !important;
+    padding:5px 7px !important;
+  }
+
+  /* Dashboard N-1 / N */
+  #opsDashboardSection{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+
+  #opsDashboardSection .ops-dashboard-row{
+    grid-template-columns:1fr !important;
+    width:100% !important;
+  }
+
+  #opsDashboardSection .ops-dashboard{
+    width:100% !important;
+    min-width:0 !important;
+  }
+
+  #opsDashboardSection .ops-columns{
+    grid-template-columns:1fr !important;
+  }
+
+  #opsDashboardSection .ops-title{
+    font-size:15px !important;
+    line-height:1.25 !important;
+  }
+
+  #opsDashboardSection .ops-sub{
+    font-size:9px !important;
+  }
+
+  /* Bảng nhân viên điều hành: cho cuộn ngang bên trong */
+  #opsDashboardSection .ops-staff-detail{
+    width:100% !important;
+    min-width:0 !important;
+  }
+
+  #opsDashboardSection .ops-staff-filters{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    width:100% !important;
+  }
+
+  #opsDashboardSection .ops-staff-table-wrap{
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:auto !important;
+    overflow-y:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  #opsDashboardSection .ops-staff-table{
+    width:max-content !important;
+    min-width:900px !important;
+  }
+
+  /* Các chart tổng trên Dashboard */
+  .chart-grid{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  .chart-box{
+    width:100% !important;
+    min-width:0 !important;
+    height:300px !important;
+  }
+
+  /* Khu đánh giá CĐBR */
+  #evaluationNotebook{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    overflow:visible !important;
+  }
+
+  #evaluationNotebook .notebook-report-row{
+    grid-template-columns:1fr !important;
+  }
+
+  #evaluationNotebook .july-evaluation-section{
+    position:static !important;
+    width:100% !important;
+    margin-top:10px !important;
+  }
+
+  #evaluationNotebook #evaluationNotebookContent{
+    width:100% !important;
+  }
+
+  #evaluationNotebook .notebook-section:first-child,
+  #evaluationNotebook .notebook-section:nth-child(2){
+    grid-template-columns:1fr !important;
+  }
+
+}
+
+/* Màn hình rất nhỏ: giảm thêm khoảng cách, nhưng không làm mất dữ liệu */
+@media(max-width:420px){
+
+  #periodCompareKpis .period-kpi-label{
+    font-size:7.5px !important;
+  }
+
+  #periodCompareKpis .period-kpi-value{
+    font-size:13px !important;
+  }
+
+  #periodCompareSection .period-table{
+    min-width:880px !important;
+  }
+
+  #periodCompareSection .period-staff-table-wrap table{
+    min-width:880px !important;
+  }
+
+  .chart-box{
+    height:270px !important;
+  }
+}
+
+
+/* ===== MOBILE FIX 2: KHÔI PHỤC CÁC BẢNG BỊ ẨN ===== */
+@media(max-width:768px){
+
+  /*
+    Code mobile cũ có:
+      table{display:none;}
+    nên các bảng báo cáo bị ẩn hoàn toàn.
+    Chỉ bật lại các bảng của Dashboard/báo cáo,
+    không ảnh hưởng bảng modal chung.
+  */
+
+  #periodCompareSection table.period-table,
+  #periodCompareSection .period-staff-table-wrap table.period-table,
+  #districtCompareReport table.period-table,
+  #staffCompareReport table.period-table,
+  #district7DayReport table.district-change-table,
+  #opsDashboardSection table.ops-staff-table{
+    display:table !important;
+    visibility:visible !important;
+    opacity:1 !important;
+  }
+
+  #periodCompareSection .period-table-wrap,
+  #districtCompareReport .period-table-wrap,
+  #staffCompareReport .period-table-wrap,
+  #opsDashboardSection .ops-staff-table-wrap{
+    display:block !important;
+    visibility:visible !important;
+  }
+
+  /*
+    Không để rule global table{display:none}
+    của giao diện cũ tiếp tục ảnh hưởng.
+  */
+  #periodCompareSection thead,
+  #periodCompareSection tbody,
+  #districtCompareReport thead,
+  #districtCompareReport tbody,
+  #staffCompareReport thead,
+  #staffCompareReport tbody,
+  #district7DayReport thead,
+  #district7DayReport tbody,
+  #opsDashboardSection thead,
+  #opsDashboardSection tbody{
+    display:table-header-group !important;
+  }
+
+  #periodCompareSection tbody,
+  #districtCompareReport tbody,
+  #staffCompareReport tbody,
+  #district7DayReport tbody,
+  #opsDashboardSection tbody{
+    display:table-row-group !important;
+  }
+
+  #periodCompareSection tr,
+  #districtCompareReport tr,
+  #staffCompareReport tr,
+  #district7DayReport tr,
+  #opsDashboardSection tr{
+    display:table-row !important;
+  }
+
+  #periodCompareSection th,
+  #periodCompareSection td,
+  #districtCompareReport th,
+  #districtCompareReport td,
+  #staffCompareReport th,
+  #staffCompareReport td,
+  #district7DayReport th,
+  #district7DayReport td,
+  #opsDashboardSection th,
+  #opsDashboardSection td{
+    display:table-cell !important;
+  }
+
+  /*
+    Bảng so sánh huyện/nhân viên cần đủ chiều rộng để
+    nội dung không bị ép mất chữ; wrapper chịu trách nhiệm
+    cuộn ngang.
+  */
+  #districtCompareReport .period-table,
+  #staffCompareReport .period-table{
+    min-width:920px !important;
+    width:max-content !important;
+  }
+
+  #periodCompareSection > .period-compare-panel:first-of-type
+  .period-table{
+    min-width:720px !important;
+    width:max-content !important;
+  }
+
+  /*
+    Đặc biệt khu NHÂN VIÊN: không để khoảng trắng khổng lồ
+    khi table được khôi phục.
+  */
+  #staffCompareReport .period-staff-top{
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+  }
+
+  #staffCompareReport .period-staff-table-wrap{
+    height:62vh !important;
+    max-height:62vh !important;
+    min-height:180px !important;
+    overflow:auto !important;
+  }
+
+  /*
+    Bảng chi tiết nhân viên N-1/N cũng phải hiện.
+  */
+  #opsDashboardSection .ops-staff-detail{
+    display:block !important;
+    visibility:visible !important;
+  }
+
+  #opsDashboardSection .ops-staff-table-wrap{
+    min-height:180px !important;
+    max-height:62vh !important;
+    overflow:auto !important;
+  }
+
+  #opsDashboardSection .ops-staff-table{
+    display:table !important;
+    min-width:900px !important;
+    width:max-content !important;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE – CỐ ĐỊNH CỘT STT + TÊN KHI CUỘN NGANG
+   - Bảng CHỈ TIÊU: STT + Chỉ tiêu
+   - Bảng HUYỆN: STT + Huyện
+   - Bảng NHÂN VIÊN: STT + Nhân viên
+   - Bảng NV N-1/N: STT + Nhân viên
+   ========================================================= */
+@media(max-width:768px){
+
+  /* Khung cuộn ngang */
+  #periodCompareSection .period-table-wrap,
+  #districtCompareReport .period-table-wrap,
+  #staffCompareReport .period-table-wrap,
+  #opsDashboardSection .ops-staff-table-wrap{
+    position:relative !important;
+    overflow-x:auto !important;
+    overflow-y:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+    isolation:isolate;
+  }
+
+  /* =========================
+     1. CHỈ TIÊU SO SÁNH
+     ========================= */
+  #periodCompareSection .period-compare-panel:first-of-type
+  .period-table th:nth-child(1),
+  #periodCompareSection .period-compare-panel:first-of-type
+  .period-table td:nth-child(1){
+    position:sticky !important;
+    left:0 !important;
+    z-index:31 !important;
+    width:42px !important;
+    min-width:42px !important;
+    max-width:42px !important;
+    text-align:center !important;
+    background:#eef2f7 !important;
+    box-shadow:2px 0 0 #dbe3ec;
+  }
+
+  #periodCompareSection .period-compare-panel:first-of-type
+  .period-table tbody td:nth-child(1){
+    background:#fff !important;
+  }
+
+  #periodCompareSection .period-compare-panel:first-of-type
+  .period-table th:nth-child(2),
+  #periodCompareSection .period-compare-panel:first-of-type
+  .period-table td:nth-child(2){
+    position:sticky !important;
+    left:42px !important;
+    z-index:30 !important;
+    width:135px !important;
+    min-width:135px !important;
+    max-width:135px !important;
+    text-align:left !important;
+    background:#eef2f7 !important;
+    box-shadow:2px 0 0 #dbe3ec;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  #periodCompareSection .period-compare-panel:first-of-type
+  .period-table tbody td:nth-child(2){
+    background:#fff !important;
+  }
+
+  /* Dòng tô màu TKM/SC/Tổng vẫn giữ nền */
+  #periodCompareSection .period-compare-panel:first-of-type
+  .period-table tbody tr.period-summary-row
+  td:nth-child(1),
+  #periodCompareSection .period-compare-panel:first-of-type
+  .period-table tbody tr.period-summary-row
+  td:nth-child(2){
+    background:#eef6ff !important;
+  }
+
+  /* Header luôn nằm trên cùng cả dọc lẫn ngang */
+  #periodCompareSection .period-compare-panel:first-of-type
+  .period-table thead th:nth-child(1),
+  #periodCompareSection .period-compare-panel:first-of-type
+  .period-table thead th:nth-child(2){
+    z-index:45 !important;
+  }
+
+  /* =========================
+     2. SO SÁNH THEO HUYỆN
+     ========================= */
+  #districtCompareReport .period-table th:nth-child(1),
+  #districtCompareReport .period-table td:nth-child(1){
+    position:sticky !important;
+    left:0 !important;
+    z-index:31 !important;
+    width:42px !important;
+    min-width:42px !important;
+    max-width:42px !important;
+    text-align:center !important;
+    background:#eef2f7 !important;
+    box-shadow:2px 0 0 #dbe3ec;
+  }
+
+  #districtCompareReport .period-table tbody td:nth-child(1){
+    background:#fff !important;
+  }
+
+  #districtCompareReport .period-table th:nth-child(2),
+  #districtCompareReport .period-table td:nth-child(2){
+    position:sticky !important;
+    left:42px !important;
+    z-index:30 !important;
+    width:125px !important;
+    min-width:125px !important;
+    max-width:125px !important;
+    text-align:left !important;
+    background:#eef2f7 !important;
+    box-shadow:2px 0 0 #dbe3ec;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  #districtCompareReport .period-table tbody td:nth-child(2){
+    background:#fff !important;
+    font-weight:800 !important;
+  }
+
+  #districtCompareReport .period-table thead th:nth-child(1),
+  #districtCompareReport .period-table thead th:nth-child(2){
+    z-index:45 !important;
+  }
+
+  /* =========================
+     3. BÁO CÁO NHÂN VIÊN
+     ========================= */
+  #staffCompareReport .period-table th:nth-child(1),
+  #staffCompareReport .period-table td:nth-child(1){
+    position:sticky !important;
+    left:0 !important;
+    z-index:31 !important;
+    width:42px !important;
+    min-width:42px !important;
+    max-width:42px !important;
+    text-align:center !important;
+    background:#eef2f7 !important;
+    box-shadow:2px 0 0 #dbe3ec;
+  }
+
+  #staffCompareReport .period-table tbody td:nth-child(1){
+    background:#fff !important;
+  }
+
+  #staffCompareReport .period-table th:nth-child(2),
+  #staffCompareReport .period-table td:nth-child(2){
+    position:sticky !important;
+    left:42px !important;
+    z-index:30 !important;
+    width:135px !important;
+    min-width:135px !important;
+    max-width:135px !important;
+    text-align:left !important;
+    background:#eef2f7 !important;
+    box-shadow:2px 0 0 #dbe3ec;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  #staffCompareReport .period-table tbody td:nth-child(2){
+    background:#fff !important;
+    font-weight:800 !important;
+  }
+
+  #staffCompareReport .period-table thead th:nth-child(1),
+  #staffCompareReport .period-table thead th:nth-child(2){
+    z-index:45 !important;
+  }
+
+  /* =========================
+     4. NHÂN VIÊN N-1 / N
+     ========================= */
+  #opsDashboardSection .ops-staff-table th:nth-child(1),
+  #opsDashboardSection .ops-staff-table td:nth-child(1){
+    position:sticky !important;
+    left:0 !important;
+    z-index:31 !important;
+    width:42px !important;
+    min-width:42px !important;
+    max-width:42px !important;
+    text-align:center !important;
+    background:#f8fafc !important;
+    box-shadow:2px 0 0 #dbe3ec;
+  }
+
+  #opsDashboardSection .ops-staff-table tbody td:nth-child(1){
+    background:#fff !important;
+  }
+
+  #opsDashboardSection .ops-staff-table th:nth-child(2),
+  #opsDashboardSection .ops-staff-table td:nth-child(2){
+    position:sticky !important;
+    left:42px !important;
+    z-index:30 !important;
+    width:145px !important;
+    min-width:145px !important;
+    max-width:145px !important;
+    text-align:left !important;
+    background:#f8fafc !important;
+    box-shadow:2px 0 0 #dbe3ec;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  #opsDashboardSection .ops-staff-table tbody td:nth-child(2){
+    background:#fff !important;
+  }
+
+  #opsDashboardSection .ops-staff-table thead th:nth-child(1),
+  #opsDashboardSection .ops-staff-table thead th:nth-child(2){
+    z-index:45 !important;
+  }
+
+  /* Dòng SUBTOTAL của bảng NV N-1/N */
+  #opsDashboardSection .ops-staff-table .ops-subtotal-row
+  td:nth-child(1),
+  #opsDashboardSection .ops-staff-table .ops-subtotal-row
+  td:nth-child(2){
+    background:#eff6ff !important;
+    font-weight:900 !important;
+  }
+
+}
+
+
+/* ===== FIX STICKY CỘT CHỈ TIÊU SO SÁNH TRÊN MOBILE ===== */
+@media(max-width:768px){
+
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody){
+    position:relative !important;
+    overflow-x:auto !important;
+    overflow-y:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody) .period-table{
+    min-width:720px !important;
+    width:max-content !important;
+    table-layout:auto !important;
+  }
+
+  /* STT */
+  #periodCompareMetricBody tr > th:nth-child(1),
+  #periodCompareMetricBody tr > td:nth-child(1),
+  #periodCompareMetricBody ~ *{
+    box-sizing:border-box;
+  }
+
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table thead th:nth-child(1),
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table tbody td:nth-child(1){
+    position:sticky !important;
+    left:0 !important;
+    z-index:50 !important;
+    width:42px !important;
+    min-width:42px !important;
+    max-width:42px !important;
+    background:#eef2f7 !important;
+    box-shadow:2px 0 0 #dbe3ec !important;
+    text-align:center !important;
+  }
+
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table tbody td:nth-child(1){
+    background:#fff !important;
+  }
+
+  /* Chỉ tiêu */
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table thead th:nth-child(2),
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table tbody td:nth-child(2){
+    position:sticky !important;
+    left:42px !important;
+    z-index:49 !important;
+    width:150px !important;
+    min-width:150px !important;
+    max-width:150px !important;
+    background:#eef2f7 !important;
+    box-shadow:2px 0 0 #dbe3ec !important;
+    text-align:left !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table tbody td:nth-child(2){
+    background:#fff !important;
+    font-weight:700 !important;
+  }
+
+  /* Ưu tiên nền cho 3 dòng tổng */
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table tbody tr.period-summary-row td:nth-child(1),
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table tbody tr.period-summary-row td:nth-child(2){
+    background:#eef6ff !important;
+    font-weight:900 !important;
+  }
+
+  /* Header cố định cả dọc và ngang */
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table thead th:nth-child(1),
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table thead th:nth-child(2){
+    z-index:70 !important;
+  }
+
+}
+
+
+/* ===== MOBILE: CHO TIÊU ĐỀ CỘT XUỐNG DÒNG ===== */
+@media(max-width:768px){
+
+  #periodCompareSection .period-table thead th,
+  #districtCompareReport .period-table thead th,
+  #staffCompareReport .period-table thead th,
+  #opsDashboardSection .ops-staff-table thead th{
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    line-height:1.15 !important;
+    vertical-align:middle !important;
+    height:auto !important;
+  }
+
+  /* Cột Chỉ tiêu / Huyện / Nhân viên cho phép xuống dòng rõ hơn */
+  #periodCompareSection .period-table thead th:nth-child(2),
+  #districtCompareReport .period-table thead th:nth-child(2),
+  #staffCompareReport .period-table thead th:nth-child(2),
+  #opsDashboardSection .ops-staff-table thead th:nth-child(2){
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+
+  /* Các tiêu đề dài trong bảng 13 chỉ tiêu */
+  #districtCompareReport .period-table thead th:nth-child(n+3),
+  #staffCompareReport .period-table thead th:nth-child(n+3){
+    min-width:72px !important;
+    max-width:86px !important;
+    padding:5px 3px !important;
+  }
+
+  #periodCompareSection .period-compare-panel:first-of-type
+  .period-table thead th:nth-child(n+3){
+    min-width:82px !important;
+    max-width:105px !important;
+    padding:5px 3px !important;
+  }
+
+  @media(max-width:420px){
+    #periodCompareSection .period-table thead th,
+    #districtCompareReport .period-table thead th,
+    #staffCompareReport .period-table thead th,
+    #opsDashboardSection .ops-staff-table thead th{
+      font-size:8px !important;
+    }
+  }
+
+}
+
+
+/* ===== MOBILE TIGHT TABLE: GIẢM CỘT + ÉP HEADER XUỐNG DÒNG ===== */
+@media(max-width:768px){
+
+  /* Bảng CHỈ TIÊU SO SÁNH: thu hẹp toàn bộ cột */
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody) .period-table{
+    min-width:670px !important;
+    width:670px !important;
+    table-layout:fixed !important;
+  }
+
+  /* STT */
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table th:nth-child(1),
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table td:nth-child(1){
+    width:34px !important;
+    min-width:34px !important;
+    max-width:34px !important;
+    left:0 !important;
+  }
+
+  /* CHỈ TIÊU: thu còn ~105px */
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table th:nth-child(2),
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table td:nth-child(2){
+    width:105px !important;
+    min-width:105px !important;
+    max-width:105px !important;
+    left:34px !important;
+    white-space:normal !important;
+    word-break:break-word !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  /* Các cột số: nhỏ hơn để có thêm chỗ */
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table th:nth-child(n+3),
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table td:nth-child(n+3){
+    width:88px !important;
+    min-width:88px !important;
+    max-width:88px !important;
+    white-space:normal !important;
+    word-break:break-word !important;
+    overflow-wrap:anywhere !important;
+    text-align:center !important;
+  }
+
+  /* Header Mốc 1/Mốc 2/%/Đánh giá xuống dòng mạnh */
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table thead th{
+    white-space:normal !important;
+    word-break:break-word !important;
+    overflow-wrap:anywhere !important;
+    line-height:1.05 !important;
+    font-size:8px !important;
+    padding:4px 2px !important;
+  }
+
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table tbody td{
+    font-size:9px !important;
+    padding:4px 3px !important;
+  }
+
+  /* Sticky nền đúng màu khi ngang */
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table thead th:nth-child(1),
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table thead th:nth-child(2){
+    background:#eef2f7 !important;
+  }
+
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table tbody td:nth-child(1),
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table tbody td:nth-child(2){
+    background:#fff !important;
+  }
+
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table tbody tr.period-summary-row td:nth-child(1),
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table tbody tr.period-summary-row td:nth-child(2){
+    background:#eef6ff !important;
+  }
+
+  /* Các tiêu đề dài trong hàng: cho phép xuống 2-3 dòng */
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table th:nth-child(4),
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table th:nth-child(6),
+  #periodCompareSection .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table th:nth-child(7){
+    white-space:normal !important;
+  }
+
+}
+
+
+/* ===== NHẬN BIẾT BIỂU ĐỒ 7 NGÀY ĐÃ VẼ XONG ===== */
+.district-report-toolbar{
+  position:relative;
+}
+
+.seven-day-chart-status{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-height:38px;
+  padding:0 11px;
+  border:1px solid #dbe4f0;
+  border-radius:9px;
+  background:#f8fafc;
+  color:#64748b;
+  font-size:10px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.seven-day-chart-status.is-loading{
+  color:#b45309;
+  background:#fff7ed;
+  border-color:#fed7aa;
+}
+
+.seven-day-chart-status.is-ready{
+  color:#15803d;
+  background:#f0fdf4;
+  border-color:#bbf7d0;
+}
+
+.seven-day-chart-status.is-error{
+  color:#b91c1c;
+  background:#fef2f2;
+  border-color:#fecaca;
+}
+
+.seven-day-status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#94a3b8;
+  flex:none;
+}
+
+.seven-day-chart-status.is-loading .seven-day-status-dot{
+  background:#f59e0b;
+  animation:sevenDayPulse 1s infinite;
+}
+
+.seven-day-chart-status.is-ready .seven-day-status-dot{
+  background:#16a34a;
+}
+
+.seven-day-chart-status.is-error .seven-day-status-dot{
+  background:#dc2626;
+}
+
+@keyframes sevenDayPulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.4;transform:scale(.75)}
+}
+
+@media(max-width:600px){
+  .district-report-toolbar{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:6px !important;
+  }
+
+  .seven-day-chart-status{
+    width:100% !important;
+    min-height:34px !important;
+    font-size:10px !important;
+  }
+}
+
 </style>
   
   </head>
@@ -4973,6 +5997,14 @@ canvas{
     <label class="district-select-only">
       <select id="sevenDayDistrictSelect" aria-label="Chọn huyện"></select>
     </label>
+
+    <div id="sevenDayChartStatus"
+         class="seven-day-chart-status"
+         role="status"
+         aria-live="polite">
+      <span class="seven-day-status-dot"></span>
+      <span class="seven-day-status-text">Sẵn sàng</span>
+    </div>
   </div>
 
   <div class="district-report-charts">
@@ -6439,6 +7471,15 @@ let tonsc=[];
 
   async function renderSevenDayHistoryChart(){
 
+  setSevenDayChartStatus(
+    "loading",
+    "Đang vẽ biểu đồ…"
+  );
+
+  try{
+
+
+
     const select=
       document.getElementById(
         "sevenDayDistrictSelect"
@@ -6975,7 +8016,45 @@ let tonsc=[];
         );
     }
 
+  
+
+    /*
+      Chart.js đã cập nhật sau khi các hàm render chart
+      hoàn tất. Chờ 2 animation frame để trình duyệt vẽ
+      pixel cuối cùng rồi mới báo "Đã xong".
+    */
+    await new Promise(
+      resolve =>
+        requestAnimationFrame(
+          () =>
+            requestAnimationFrame(
+              resolve
+            )
+        )
+    );
+
+    setSevenDayChartStatus(
+      "ready",
+      "✓ Biểu đồ đã tải xong"
+    );
+
+  }catch(err){
+
+    console.error(
+      "renderSevenDayHistoryChart:",
+      err
+    );
+
+    setSevenDayChartStatus(
+      "error",
+      "⚠ Không tải được biểu đồ"
+    );
+
+    throw err;
+
   }
+
+}
 
 
 
@@ -14721,6 +15800,40 @@ document.addEventListener(
   "DOMContentLoaded",
   initAllChartZoom
 );
+</script>
+
+
+<script>
+function setSevenDayChartStatus(state, text){
+  const status =
+    document.getElementById("sevenDayChartStatus");
+
+  if(!status) return;
+
+  status.classList.remove(
+    "is-loading",
+    "is-ready",
+    "is-error"
+  );
+
+  if(state==="loading"){
+    status.classList.add("is-loading");
+  }else if(state==="ready"){
+    status.classList.add("is-ready");
+  }else if(state==="error"){
+    status.classList.add("is-error");
+  }
+
+  const label =
+    status.querySelector(
+      ".seven-day-status-text"
+    );
+
+  if(label){
+    label.textContent = text || "";
+  }
+}
+
 </script>
 
 </body>
