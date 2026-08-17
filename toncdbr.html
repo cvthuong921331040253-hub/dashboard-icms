@@ -3337,6 +3337,1232 @@
   font-family:Arial,sans-serif !important;
 }
 
+
+/* ===== SO SÁNH ĐẦU KỲ / CUỐI KỲ ===== */
+.period-compare{
+  width:100%;
+  margin:18px 0 22px;
+  padding:14px;
+  background:#fff;
+  border:1px solid #dbe3ec;
+  border-radius:10px;
+  box-shadow:none;
+  font-family:Arial,sans-serif;
+}
+.period-compare-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.period-compare-title{
+  font-size:16px;
+  font-weight:800;
+  color:#172033;
+  border-left:4px solid #2563eb;
+  padding:8px 12px;
+  background:#f8fafc;
+  border-radius:7px;
+}
+.period-compare-sub{
+  margin-top:4px;
+  padding-left:2px;
+  color:#64748b;
+  font-size:10px;
+  line-height:1.4;
+}
+.period-compare-filters{
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.period-compare-filters label{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  font-size:10px;
+  font-weight:700;
+  color:#475569;
+}
+.period-compare-filters select{
+  min-width:175px;
+  height:34px;
+  padding:0 9px;
+  border:1px solid #cbd5e1;
+  border-radius:7px;
+  background:#fff;
+  color:#1f2937;
+  font-size:11px;
+  font-family:Arial,sans-serif;
+}
+.period-compare-btn{
+  height:34px;
+  padding:0 12px;
+  border:0;
+  border-radius:7px;
+  background:#2563eb;
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+}
+.period-compare-status{
+  margin:6px 0 10px;
+  font-size:10px;
+  color:#64748b;
+}
+.period-compare-kpis{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  margin-bottom:10px;
+}
+.period-kpi{
+  border:1px solid #dbe3ec;
+  border-radius:8px;
+  background:#f8fafc;
+  padding:9px 10px;
+}
+.period-kpi-label{
+  font-size:9.5px;
+  font-weight:700;
+  color:#64748b;
+  margin-bottom:4px;
+}
+.period-kpi-value{
+  font-size:18px;
+  font-weight:800;
+  line-height:1.1;
+}
+.period-kpi-note{
+  margin-top:3px;
+  font-size:9px;
+  color:#94a3b8;
+}
+.period-compare-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.7fr) minmax(280px,0.9fr);
+  gap:10px;
+}
+.period-compare-panel{
+  min-width:0;
+  border:1px solid #dbe3ec;
+  border-radius:8px;
+  background:#fff;
+  overflow:hidden;
+}
+.period-compare-panel-title{
+  padding:8px 10px;
+  background:#f8fafc;
+  border-bottom:1px solid #e2e8f0;
+  font-size:11px;
+  font-weight:800;
+  color:#1f2937;
+}
+.period-table-wrap{
+  max-height:420px;
+  overflow:auto;
+}
+.period-table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:auto;
+}
+.period-table th{
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:#eef2f7;
+  color:#334155;
+  font-size:10px;
+  font-weight:800;
+  text-align:center;
+  border:1px solid #dbe3ec;
+  padding:6px 7px;
+}
+.period-table td{
+  border:1px solid #e2e8f0;
+  padding:6px 7px;
+  font-size:10px;
+  vertical-align:middle;
+}
+.period-table td.num{
+  text-align:center;
+  font-weight:700;
+}
+.period-table tr:nth-child(even){
+  background:#fafafa;
+}
+.period-good{
+  color:#16a34a;
+  font-weight:800;
+}
+.period-bad{
+  color:#dc2626;
+  font-weight:800;
+}
+.period-flat{
+  color:#64748b;
+  font-weight:800;
+}
+.period-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:58px;
+  padding:3px 6px;
+  border-radius:5px;
+  font-size:9px;
+  font-weight:800;
+}
+.period-pill.good{
+  background:#dcfce7;
+  color:#15803d;
+}
+.period-pill.bad{
+  background:#fee2e2;
+  color:#b91c1c;
+}
+.period-pill.flat{
+  background:#f1f5f9;
+  color:#64748b;
+}
+.period-staff-top{
+  padding:8px 10px;
+}
+.period-staff-group-title{
+  margin:3px 0 6px;
+  font-size:10px;
+  font-weight:800;
+  color:#475569;
+}
+.period-staff-row{
+  display:grid;
+  grid-template-columns:22px minmax(0,1fr) auto;
+  gap:7px;
+  align-items:center;
+  min-height:28px;
+  padding:4px 2px;
+  border-bottom:1px solid #edf2f7;
+}
+.period-staff-rank{
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#e2e8f0;
+  color:#334155;
+  font-size:9px;
+  font-weight:800;
+}
+.period-staff-name{
+  min-width:0;
+  color:#334155;
+  font-size:10px;
+  font-weight:700;
+  line-height:1.25;
+  word-break:break-word;
+}
+.period-staff-delta{
+  font-size:10px;
+  font-weight:900;
+}
+.period-staff-empty{
+  padding:10px 0;
+  color:#94a3b8;
+  font-size:10px;
+  font-style:italic;
+}
+@media(max-width:900px){
+  .period-compare-kpis{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .period-compare-grid{grid-template-columns:1fr;}
+}
+@media(max-width:600px){
+  .period-compare-filters{width:100%;}
+  .period-compare-filters label{flex:1;min-width:0;}
+  .period-compare-filters select{min-width:0;width:100%;}
+  .period-compare-btn{width:100%;}
+  .period-compare-kpis{grid-template-columns:1fr 1fr;}
+}
+
+
+.same-hour-controls,
+.snapshot-controls{
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.same-hour-controls input{
+  min-width:145px;
+  height:34px;
+  padding:0 9px;
+  border:1px solid #cbd5e1;
+  border-radius:7px;
+  background:#fff;
+  color:#1f2937;
+  font-size:11px;
+  font-family:Arial,sans-serif;
+}
+.same-hour-controls select{
+  min-width:95px;
+}
+@media(max-width:700px){
+  .same-hour-controls,
+  .snapshot-controls{
+    width:100%;
+  }
+  .same-hour-controls label,
+  .snapshot-controls label{
+    flex:1;
+    min-width:0;
+  }
+}
+
+
+.period-compare-filters{
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.period-compare-filters label{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  font-size:10px;
+  font-weight:700;
+  color:#475569;
+}
+.period-compare-filters select{
+  min-width:180px;
+  height:34px;
+  padding:0 9px;
+  border:1px solid #cbd5e1;
+  border-radius:7px;
+  background:#fff;
+  color:#1f2937;
+  font-size:11px;
+  font-family:Arial,sans-serif;
+}
+
+
+@media(max-width:700px){
+  .period-compare-filters{
+    width:100%;
+  }
+  .period-compare-filters label{
+    flex:1;
+    min-width:0;
+  }
+  .period-compare-filters select{
+    min-width:0;
+    width:100%;
+  }
+}
+
+.period-table-wrap{
+  overflow-x:auto !important;
+  overflow-y:visible !important;
+  max-height:none !important;
+}
+
+.period-district-detail-table{
+  min-width:0;
+  width:100%;
+}
+.period-district-detail-table th,
+.period-district-detail-table td{
+  white-space:nowrap;
+  vertical-align:middle;
+}
+.district-metric-cell{
+  font-size:10px;
+  line-height:1.25;
+  text-align:center;
+}
+.district-metric-main{
+  font-weight:800;
+}
+.district-metric-delta{
+  font-size:9px;
+  font-weight:800;
+  margin-top:2px;
+}
+.district-chart-panel{
+  margin-top:10px;
+  border:1px solid #dbe4f0;
+  border-radius:8px;
+  background:#fff;
+  padding:10px;
+}
+.district-chart-title{
+  font-size:11px;
+  font-weight:800;
+  color:#1e3a8a;
+  margin-bottom:6px;
+}
+.district-chart-wrap{
+  position:relative;
+  height:360px;
+}
+.seven-day-chart-wrap{
+  position:relative;
+  height:330px;
+}
+@media(max-width:800px){
+  .district-chart-wrap{height:320px;}
+  .seven-day-chart-wrap{height:280px;}
+}
+
+
+/* ============================================================
+   RESPONSIVE SO SÁNH – KHÔNG CUỘN NGANG / CUỘN DỌC TRONG BẢNG
+   ============================================================ */
+
+#periodCompareSection{
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow:visible;
+}
+
+#periodCompareSection .period-compare-panel,
+#periodCompareSection .period-compare-head{
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow:visible;
+}
+
+#periodCompareSection .period-compare-filters{
+  width:100%;
+  box-sizing:border-box;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:flex-end;
+}
+
+#periodCompareSection .period-compare-filters label{
+  min-width:0;
+  flex:1 1 150px;
+}
+
+#periodCompareSection .period-compare-filters select{
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+
+#periodCompareSection .period-table-wrap{
+  width:100%;
+  max-width:100%;
+  overflow:visible !important;
+  max-height:none !important;
+  box-sizing:border-box;
+}
+
+#periodCompareSection .period-table{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  table-layout:fixed !important;
+  border-collapse:collapse;
+  box-sizing:border-box;
+}
+
+#periodCompareSection .period-table th,
+#periodCompareSection .period-table td{
+  min-width:0 !important;
+  max-width:none !important;
+  box-sizing:border-box;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  word-break:break-word;
+  overflow-wrap:anywhere;
+  white-space:normal !important;
+  vertical-align:middle;
+  padding:5px 3px;
+  line-height:1.15;
+}
+
+#periodCompareSection .period-table th{
+  font-size:clamp(7px,0.62vw,10px);
+  font-weight:800;
+}
+
+#periodCompareSection .period-table td{
+  font-size:clamp(7px,0.58vw,10px);
+}
+
+#periodCompareSection .period-table .num{
+  text-align:center;
+}
+
+#periodCompareSection .period-table td b{
+  font-size:inherit;
+}
+
+/* Bảng 13 chỉ tiêu: STT 4% + Huyện/NV 14% + 13 cột ~6.31% */
+#periodCompareSection .period-district-detail-table th:nth-child(1),
+#periodCompareSection .period-district-detail-table td:nth-child(1){
+  width:4%;
+}
+#periodCompareSection .period-district-detail-table th:nth-child(2),
+#periodCompareSection .period-district-detail-table td:nth-child(2){
+  width:14%;
+  text-align:left;
+}
+#periodCompareSection .period-district-detail-table th:nth-child(n+3),
+#periodCompareSection .period-district-detail-table td:nth-child(n+3){
+  width:6.307%;
+  text-align:center;
+}
+
+#periodCompareSection .district-metric-cell{
+  padding:4px 2px !important;
+}
+#periodCompareSection .district-metric-main{
+  font-size:clamp(7px,0.56vw,9px);
+  line-height:1.1;
+  font-weight:800;
+}
+#periodCompareSection .district-metric-delta{
+  font-size:clamp(6px,0.48vw,8px);
+  line-height:1.05;
+  margin-top:2px;
+}
+
+/* Bảng chỉ tiêu tổng: chia đều */
+#periodCompareSection #periodCompareMetricBody + *{
+  max-width:100%;
+}
+
+#periodCompareSection .period-kpi{
+  min-width:0 !important;
+  flex:1 1 180px;
+}
+
+/* Bảng nhân viên dùng đúng cấu trúc 13 chỉ tiêu như huyện */
+#periodCompareSection #periodStaffTop{
+  width:100%;
+  overflow:visible !important;
+}
+
+/* Biểu đồ */
+#periodCompareSection .district-chart-panel,
+#periodCompareSection .seven-day-chart-wrap{
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
+}
+
+#periodCompareSection .district-chart-wrap{
+  width:100%;
+  max-width:100%;
+  height:clamp(240px,30vw,360px);
+}
+
+#periodCompareSection .seven-day-chart-wrap{
+  height:clamp(220px,28vw,330px);
+}
+
+/* Không ép rộng cho các canvas */
+#periodCompareSection canvas{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+}
+
+/* Nhỏ hơn desktop */
+@media (max-width:1200px){
+  #periodCompareSection .period-table th,
+  #periodCompareSection .period-table td{
+    padding:4px 2px;
+  }
+}
+
+@media (max-width:900px){
+  #periodCompareSection .period-compare-head{
+    flex-direction:column;
+  }
+
+  #periodCompareSection .period-compare-filters{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    width:100%;
+  }
+
+  #periodCompareSection .period-compare-filters button{
+    width:100%;
+  }
+
+  #periodCompareSection .period-table th{
+    font-size:7px;
+  }
+
+  #periodCompareSection .period-table td{
+    font-size:7px;
+  }
+
+  #periodCompareSection .district-metric-main{
+    font-size:7px;
+  }
+
+  #periodCompareSection .district-metric-delta{
+    font-size:6px;
+  }
+}
+
+@media (max-width:600px){
+  #periodCompareSection .period-compare-filters{
+    grid-template-columns:1fr 1fr;
+  }
+
+  #periodCompareSection .period-compare-title{
+    font-size:14px;
+  }
+
+  #periodCompareSection .period-compare-panel-title{
+    font-size:10px;
+  }
+
+  #periodCompareSection .period-table th,
+  #periodCompareSection .period-table td{
+    padding:3px 1px;
+    font-size:6px;
+  }
+
+  #periodCompareSection .period-table th:nth-child(2),
+  #periodCompareSection .period-table td:nth-child(2){
+    font-size:6.5px;
+  }
+
+  #periodCompareSection .district-metric-main{
+    font-size:6px;
+  }
+
+  #periodCompareSection .district-metric-delta{
+    font-size:5.5px;
+  }
+
+  #periodCompareSection .district-chart-wrap{
+    height:240px;
+  }
+
+  #periodCompareSection .seven-day-chart-wrap{
+    height:220px;
+  }
+}
+
+
+ .period-total-ops-row td{
+  font-weight:800 !important;
+  background:#f5f9ff !important;
+  border-top:1px solid #dbeafe !important;
+  border-bottom:1px solid #dbeafe !important;
+}
+.period-total-ops-row td:first-child{
+  color:#2563eb !important;
+}
+.period-total-ops-label{
+  color:#1d4ed8 !important;
+}
+.period-total-ops-row .period-good{
+  color:#15803d !important;
+}
+.period-total-ops-row .period-bad{
+  color:#dc2626 !important;
+}
+
+.period-summary-row td{
+  font-weight:800 !important;
+  background:#eef6ff !important;
+  border-top:1px solid #cfe2ff !important;
+  border-bottom:1px solid #cfe2ff !important;
+}
+.period-summary-row td:first-child{
+  color:#1d4ed8 !important;
+}
+.period-summary-label{
+  color:#163a63 !important;
+  font-weight:900 !important;
+}
+
+
+.district-7day-chart-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  width:100%;
+  max-width:100%;
+}
+.district-7day-chart-card{
+  min-width:0;
+  width:100%;
+  border:1px solid #dbe4f0;
+  border-radius:8px;
+  background:#fff;
+  padding:8px;
+  box-sizing:border-box;
+}
+.district-7day-chart-title{
+  font-size:10px;
+  font-weight:800;
+  color:#334155;
+  margin-bottom:6px;
+  text-align:center;
+}
+.district-7day-chart-wrap{
+  position:relative;
+  width:100%;
+  height:clamp(240px,28vw,340px);
+  overflow:hidden;
+}
+.district-7day-chart-wrap canvas{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+}
+@media(max-width:1100px){
+  .district-7day-chart-grid{
+    grid-template-columns:1fr;
+  }
+  .district-7day-chart-wrap{
+    height:300px;
+  }
+}
+
+
+/* ===== BÁO CÁO 1 HUYỆN / 7 NGÀY ===== */
+.period-district-7day-report{
+  width:100%;
+  box-sizing:border-box;
+}
+.district-report-toolbar{
+  display:flex;
+  align-items:stretch;
+  gap:10px;
+  margin:8px 0 10px;
+  width:100%;
+}
+.district-report-toolbar label.district-select-only{
+  display:block;
+  width:100%;
+  min-width:0;
+  flex:1 1 100%;
+}
+.district-report-toolbar select{
+  width:100%;
+  height:64px;
+  box-sizing:border-box;
+  border:1px solid #dbeafe;
+  border-radius:10px;
+  padding:0 14px;
+  background:#f8fbff;
+  color:#1e3a8a;
+  font-size:18px;
+  font-weight:900;
+}
+.district-report-charts{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  width:100%;
+}
+.district-report-card{
+  min-width:0;
+  border:1px solid #dbe4f0;
+  border-radius:8px;
+  background:#fff;
+  padding:8px;
+}
+.district-report-card-title{
+  font-size:10px;
+  font-weight:900;
+  text-align:center;
+  color:#334155;
+  margin-bottom:4px;
+}
+.district-report-chart-wrap{
+  position:relative;
+  width:100%;
+  height:280px;
+}
+.district-report-chart-wrap canvas{
+  width:100% !important;
+  height:100% !important;
+}
+@media(max-width:1050px){
+  .district-report-charts{
+    grid-template-columns:1fr;
+  }
+}
+@media(max-width:600px){
+  .district-report-toolbar label.district-select-only{
+    flex:1 1 100%;
+  }
+  .district-report-chart-wrap{
+    height:220px;
+  }
+  .district-report-toolbar select{
+    height:54px;
+    font-size:15px;
+  }
+}
+
+
+.district-report-period-title{
+  color:#64748b;
+  font-size:9px;
+  font-weight:800;
+  margin-left:4px;
+}
+
+
+.district-select-only{
+  flex:1 1 100%;
+  min-width:0 !important;
+}
+.district-select-only select{
+  width:100% !important;
+  height:38px !important;
+  font-size:13px !important;
+  font-weight:800 !important;
+  box-sizing:border-box;
+}
+
+.district-change-panel{
+  margin-top:10px;
+  border:1px solid #dbe4f0;
+  border-radius:8px;
+  background:#fff;
+  padding:9px;
+}
+.district-change-title{
+  font-size:11px;
+  font-weight:900;
+  color:#1e3a8a;
+  margin-bottom:7px;
+}
+.district-change-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.district-change-table-card{
+  min-width:0;
+  border:1px solid #e2e8f0;
+  border-radius:7px;
+  background:#fff;
+  overflow:hidden;
+}
+.district-change-card-title{
+  padding:6px 8px;
+  font-size:10px;
+  font-weight:900;
+  text-align:center;
+  background:#f8fbff;
+  color:#334155;
+  border-bottom:1px solid #e2e8f0;
+}
+.district-change-table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+.district-change-table th,
+.district-change-table td{
+  padding:5px 4px;
+  border-bottom:1px solid #eef2f7;
+  text-align:center;
+  font-size:9px;
+}
+.district-change-table th{
+  color:#64748b;
+  font-weight:800;
+  background:#fbfdff;
+}
+.district-change-table td{
+  font-weight:800;
+}
+.district-change-up{
+  color:#dc2626;
+}
+.district-change-down{
+  color:#15803d;
+}
+.district-change-flat{
+  color:#64748b;
+}
+
+@media(max-width:900px){
+  .district-change-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+
+.district-change-panel{
+  width:100%;
+  box-sizing:border-box;
+}
+.district-change-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  width:100%;
+}
+.district-change-table-card{
+  width:100%;
+  min-width:0;
+}
+.district-change-table{
+  width:100%;
+}
+@media(max-width:900px){
+  .district-change-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ===== TĂNG NHẸ CỠ CHỮ CÁC BẢNG SO SÁNH ===== */
+#periodCompareSection .period-table th{
+  font-size:11px !important;
+}
+#periodCompareSection .period-table td{
+  font-size:11px !important;
+  line-height:1.3 !important;
+}
+#periodCompareSection .district-metric-cell{
+  font-size:11px !important;
+}
+#periodCompareSection .district-metric-main{
+  font-size:11px !important;
+  line-height:1.25 !important;
+}
+#periodCompareSection .district-metric-delta{
+  font-size:10px !important;
+  line-height:1.2 !important;
+}
+#periodCompareSection .district-change-table th{
+  font-size:10px !important;
+}
+#periodCompareSection .district-change-table td{
+  font-size:10px !important;
+}
+#periodCompareSection .period-staff-row,
+#periodCompareSection .period-staff-name,
+#periodCompareSection .period-staff-delta{
+  font-size:11px !important;
+}
+#periodCompareSection .period-staff-rank{
+  font-size:10px !important;
+}
+#periodCompareSection .district-report-card-title{
+  font-size:11px !important;
+}
+#periodCompareSection .district-report-period-title{
+  font-size:10px !important;
+}
+@media(max-width:700px){
+  #periodCompareSection .period-table th,
+  #periodCompareSection .period-table td{
+    font-size:10px !important;
+  }
+  #periodCompareSection .district-metric-main{
+    font-size:10px !important;
+  }
+  #periodCompareSection .district-metric-delta{
+    font-size:9px !important;
+  }
+}
+
+
+
+@media(max-width:700px){
+  #periodCompareSection .period-staff-table-wrap{
+    height:700px;
+    max-height:700px;
+  }
+}
+
+
+/* ===== NHÂN VIÊN: 30 DÒNG + CUỘN ===== */
+#periodCompareSection .period-staff-table-wrap{
+  height:780px;
+  max-height:780px;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  position:relative;
+  border:1px solid #e2e8f0;
+  border-radius:7px;
+  background:#fff;
+}
+
+#periodCompareSection .period-staff-table-wrap table{
+  width:100% !important;
+  min-width:0 !important;
+  table-layout:fixed !important;
+}
+
+#periodCompareSection .period-staff-table-wrap thead th{
+  position:sticky !important;
+  top:0 !important;
+  z-index:30 !important;
+  background:#f3f4f6 !important;
+}
+
+#periodCompareSection .period-staff-table-wrap tbody tr{
+  height:25px;
+}
+
+@media(max-width:700px){
+  #periodCompareSection .period-staff-table-wrap{
+    height:700px;
+    max-height:700px;
+  }
+}
+
+
+
+
+/* KPI CHỈ TIÊU: sắp xếp từ TKM -> SC */
+.period-compare-kpis{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  margin-bottom:10px;
+}
+
+
+/* ===== TĂNG CỠ CHỮ TIÊU ĐỀ DASHBOARD ĐIỀU HÀNH N-1 / N ===== */
+#opsDashboardSection .ops-title{
+  font-size:20px !important;
+  line-height:1.25 !important;
+  font-weight:900 !important;
+}
+
+#opsDashboardSection .ops-sub{
+  font-size:10.5px !important;
+}
+
+
+/* ===== KPI SO SÁNH: 1 HÀNG ===== */
+#periodCompareKpis{
+  display:grid !important;
+  grid-template-columns:repeat(12,minmax(0,1fr)) !important;
+  gap:6px !important;
+  margin-bottom:8px !important;
+  width:100% !important;
+}
+
+#periodCompareKpis .period-kpi{
+  min-width:0 !important;
+  padding:6px 7px !important;
+  border-radius:7px !important;
+}
+
+#periodCompareKpis .period-kpi-label{
+  font-size:8.5px !important;
+  line-height:1.2 !important;
+  min-height:20px;
+  margin-bottom:2px !important;
+}
+
+#periodCompareKpis .period-kpi-value{
+  font-size:15px !important;
+  line-height:1.05 !important;
+  white-space:nowrap;
+}
+
+#periodCompareKpis .period-kpi-value span{
+  font-size:9px !important;
+}
+
+#periodCompareKpis .period-kpi > div:last-child{
+  margin-top:2px !important;
+  font-size:9px !important;
+  line-height:1.05 !important;
+}
+
+@media(max-width:1100px){
+  #periodCompareKpis{
+    grid-template-columns:repeat(12,minmax(110px,1fr)) !important;
+    overflow-x:auto !important;
+  }
+}
+
+@media(max-width:700px){
+  #periodCompareKpis{
+    grid-template-columns:repeat(12,minmax(100px,1fr)) !important;
+  }
+}
+
+
+/* ===== NÚT CHỤP TỪNG BÁO CÁO ===== */
+.report-title-with-capture{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:10px !important;
+}
+.report-title-with-capture > span{
+  min-width:0;
+}
+.report-capture-btn{
+  flex:0 0 auto;
+  border:0;
+  border-radius:6px;
+  padding:5px 9px;
+  background:#2563eb;
+  color:#fff;
+  font:700 10px/1.2 Arial,sans-serif;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.report-capture-btn:hover{opacity:.92;}
+.report-capture-btn:disabled{opacity:.6;cursor:wait;}
+
+
+#periodCompareSection .report-title-with-capture,
+#districtCompareReport .report-title-with-capture{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:10px !important;
+}
+#districtCompareReport .report-capture-btn{
+  flex:0 0 auto;
+}
+
+
+/* ===== PHÓNG TO BIỂU ĐỒ: DESKTOP + MOBILE ===== */
+.chart-box,
+.district-report-card,
+.chart-card,
+canvas{
+  cursor:zoom-in;
+}
+
+.chart-zoom-modal{
+  position:fixed;
+  inset:0;
+  z-index:100000;
+  display:none;
+}
+
+.chart-zoom-modal.is-open{
+  display:block;
+}
+
+.chart-zoom-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(15,23,42,.68);
+  backdrop-filter:blur(2px);
+}
+
+.chart-zoom-dialog{
+  position:relative;
+  width:min(96vw,1500px);
+  height:min(92vh,980px);
+  margin:4vh auto 0;
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 18px 60px rgba(15,23,42,.28);
+  display:flex;
+  flex-direction:column;
+}
+
+.chart-zoom-head{
+  min-height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:8px 12px;
+  border-bottom:1px solid #e2e8f0;
+  background:#f8fafc;
+}
+
+.chart-zoom-title{
+  min-width:0;
+  font-size:14px;
+  line-height:1.3;
+  font-weight:800;
+  color:#0f172a;
+}
+
+.chart-zoom-close{
+  width:34px;
+  height:34px;
+  flex:none;
+  border:0;
+  border-radius:8px;
+  background:#ef4444;
+  color:#fff;
+  font-size:16px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.chart-zoom-body{
+  flex:1;
+  min-height:0;
+  padding:10px;
+  background:#fff;
+}
+
+.chart-zoom-canvas-wrap{
+  position:relative;
+  width:100%;
+  height:100%;
+  min-height:0;
+}
+
+#chartZoomCanvas{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+}
+
+@media(max-width:700px){
+  .chart-zoom-dialog{
+    width:100vw;
+    height:100vh;
+    margin:0;
+    border-radius:0;
+  }
+
+  .chart-zoom-head{
+    min-height:44px;
+    padding:7px 9px;
+  }
+
+  .chart-zoom-title{
+    font-size:13px;
+  }
+
+  .chart-zoom-close{
+    width:32px;
+    height:32px;
+  }
+
+  .chart-zoom-body{
+    padding:6px;
+  }
+}
+
 </style>
   
   </head>
@@ -3620,6 +4846,237 @@
     <div class="notebook-foot">Tiêu chí được tính trực tiếp từ dữ liệu SC/TKM đang có trên dashboard.</div>
   </aside>
 
+
+<!-- ===== SO SÁNH ĐẦU KỲ / CUỐI KỲ ===== -->
+
+
+
+<section id="periodCompareSection" class="period-compare report-capture-section">
+
+
+
+  <div class="period-compare-head">
+    <div>
+      <div class="period-compare-title report-title-with-capture">
+        <span>📊 SO SÁNH DỮ LIỆU TỒN TĂNG/GIẢM MỨC TỈNH</span>
+        <button type="button" class="report-capture-btn" data-html2canvas-ignore="true" onclick="captureReportSection('periodCompareSection','SO_SANH_TON_TANG_GIAM_MUC_TINH')">📸 Chụp báo cáo</button>
+      </div>
+      <div class="period-compare-sub">
+        Dashboard hiện tại ↔ Backup cũ hoặc Backup cũ ↔ Backup cũ
+      </div>
+    </div>
+
+    <div class="period-compare-filters">
+
+      <label>
+        <span>MỐC 1</span>
+        <select id="compareSource1">
+          <option value="backup">Backup</option>
+          <option value="dashboard">Dashboard hiện tại</option>
+        </select>
+      </label>
+
+      <label id="compareBackup1Wrap">
+        <span>TGUPDATE MỐC 1</span>
+        <select id="compareBackup1"></select>
+      </label>
+
+      <label>
+        <span>MỐC 2</span>
+        <select id="compareSource2">
+          <option value="dashboard">Dashboard hiện tại</option>
+          <option value="backup">Backup</option>
+        </select>
+      </label>
+
+      <label id="compareBackup2Wrap" style="display:none;">
+        <span>TGUPDATE MỐC 2</span>
+        <select id="compareBackup2"></select>
+      </label>
+
+      <button type="button"
+              class="period-compare-btn"
+              onclick="renderPeriodComparison()">
+        🔄 SO SÁNH
+      </button>
+
+    </div>
+  </div>
+
+  <div id="periodCompareStatus" class="period-compare-status"></div>
+
+  <div class="period-compare-kpis" id="periodCompareKpis"></div>
+
+  <div class="period-compare-panel">
+    <div class="period-compare-panel-title">
+      📌 CHỈ TIÊU SO SÁNH
+    </div>
+
+    <div class="period-table-wrap">
+      <table class="period-table">
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Chỉ tiêu</th>
+            <th id="periodMetricHead1">Mốc 1</th>
+            <th id="periodMetricHead2">Mốc 2</th>
+            <th>Chênh lệch</th>
+            <th>% thay đổi</th>
+            <th>Đánh giá</th>
+          </tr>
+        </thead>
+        <tbody id="periodCompareMetricBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="districtCompareReport" class="period-compare-panel report-capture-section" style="margin-top:10px;">
+    <div class="period-compare-panel-title report-title-with-capture"
+         id="periodDistrictTitle">
+      <span>🏠 SO SÁNH TỒN TĂNG/GIẢM THEO MỨC HUYỆN</span>
+      <button type="button" class="report-capture-btn" data-html2canvas-ignore="true" onclick="captureReportSection('districtCompareReport','SO_SANH_TON_TANG_GIAM_MUC_HUYEN')">📸 Chụp báo cáo</button>
+    </div>
+
+    <div class="period-compare-sub" style="margin:6px 0 8px;">
+      Click vào một huyện để xem biểu đồ chi tiết 13 chỉ tiêu.
+    </div>
+
+    <div class="period-table-wrap">
+      <table class="period-table period-district-detail-table">
+        <thead>
+          <tr id="periodDistrictHead">
+            <th>STT</th>
+            <th>Huyện</th>
+          </tr>
+        </thead>
+        <tbody id="periodCompareDistrictBody"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  
+
+
+<div id="district7DayReport" class="period-compare-panel period-district-7day-report report-capture-section" style="margin-top:10px;">
+
+  <div class="period-compare-panel-title report-title-with-capture">
+    <span>📈 BÁO CÁO TĂNG/GIẢM MỨC HUYỆN CÁC MỐC TRONG 7 NGÀY</span>
+    <button type="button" class="report-capture-btn" data-html2canvas-ignore="true" onclick="captureReportSection('district7DayReport','BAO_CAO_TANG_GIAM_MUC_HUYEN_7_NGAY')">📸 Chụp báo cáo</button>
+  </div>
+
+  <div class="period-compare-sub" style="margin:6px 0 8px;">
+    Chọn 1 huyện để theo dõi xu hướng 7 ngày của TKM, SC và Cập nhật hồ sơ.
+  </div>
+
+  <div class="district-report-toolbar">
+    <label class="district-select-only">
+      <select id="sevenDayDistrictSelect" aria-label="Chọn huyện"></select>
+    </label>
+  </div>
+
+  <div class="district-report-charts">
+
+    <div class="district-report-card">
+      <div class="district-report-card-title">TỔNG TKM<span id="sevenDaySelectedTkmTitle" class="district-report-period-title"></span></div>
+      <div class="district-report-chart-wrap">
+        <canvas id="sevenDaySelectedTkmChart"></canvas>
+      </div>
+    </div>
+
+    <div class="district-report-card">
+      <div class="district-report-card-title">TỔNG SC<span id="sevenDaySelectedScTitle" class="district-report-period-title"></span></div>
+      <div class="district-report-chart-wrap">
+        <canvas id="sevenDaySelectedScChart"></canvas>
+      </div>
+    </div>
+
+    <div class="district-report-card">
+      <div class="district-report-card-title">CẬP NHẬT HỒ SƠ<span id="sevenDaySelectedCnhsTitle" class="district-report-period-title"></span></div>
+      <div class="district-report-chart-wrap">
+        <canvas id="sevenDaySelectedCnhsChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="district-change-panel">
+    <div class="district-change-title">
+      📌 TĂNG / GIẢM
+    </div>
+
+    <div class="district-change-grid">
+
+      <div class="district-change-table-card">
+        <div class="district-change-card-title">TKM</div>
+        <table class="district-change-table">
+          <thead>
+            <tr>
+              <th>Đầu kỳ</th>
+              <th>Cuối kỳ</th>
+              <th>±</th>
+              <th>%</th>
+              <th>Đánh giá</th>
+            </tr>
+          </thead>
+          <tbody id="districtChangeTkmBody"></tbody>
+        </table>
+      </div>
+
+      <div class="district-change-table-card">
+        <div class="district-change-card-title">SC</div>
+        <table class="district-change-table">
+          <thead>
+            <tr>
+              <th>Đầu kỳ</th>
+              <th>Cuối kỳ</th>
+              <th>±</th>
+              <th>%</th>
+              <th>Đánh giá</th>
+            </tr>
+          </thead>
+          <tbody id="districtChangeScBody"></tbody>
+        </table>
+      </div>
+
+      <div class="district-change-table-card">
+        <div class="district-change-card-title">CẬP NHẬT HỒ SƠ</div>
+        <table class="district-change-table">
+          <thead>
+            <tr>
+              <th>Đầu kỳ</th>
+              <th>Cuối kỳ</th>
+              <th>±</th>
+              <th>%</th>
+              <th>Đánh giá</th>
+            </tr>
+          </thead>
+          <tbody id="districtChangeCnhsBody"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  </div>
+
+<div id="staffCompareReport" class="period-compare-panel report-capture-section" style="margin-top:10px;">
+    <div class="period-compare-panel-title report-title-with-capture">
+      <span>👨‍💼 BÁO CÁO TĂNG/GIẢM MỨC NHÂN VIÊN</span><button type="button" class="report-capture-btn" data-html2canvas-ignore="true" onclick="captureReportSection('staffCompareReport','BAO_CAO_TANG_GIAM_MUC_NHAN_VIEN')">📸 Chụp báo cáo</button>
+    </div>
+    <div class="period-staff-top" id="periodStaffTop"></div>
+  </div>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
 <!-- ===== NEW: DASHBOARD ĐIỀU HÀNH N-1 / N + CHI TIẾT NHÂN VIÊN ===== -->
 <section id="opsDashboardSection">
   <div class="ops-dashboard-row">
@@ -3823,11 +5280,313 @@
   
   </div>
   
-  <script>
+  
+<script>
+async function captureReportSection(
+  sectionId,
+  filePrefix
+){
+
+  const original=
+    document.getElementById(
+      sectionId
+    );
+
+  if(!original){
+    alert("Không tìm thấy khu vực báo cáo.");
+    return;
+  }
+
+  if(typeof html2canvas!=="function"){
+    alert(
+      "Chưa tải được thư viện chụp màn hình. Hãy mở lại trang và thử lại."
+    );
+    return;
+  }
+
+  const btn=
+    original.querySelector(
+      ".report-capture-btn"
+    );
+
+  const oldText=
+    btn ? btn.innerHTML : "";
+
+  if(btn){
+    btn.disabled=true;
+    btn.innerHTML="⏳ Đang chụp...";
+  }
+
+  let target=
+    original;
+  let tempNode=
+    null;
+
+  try{
+
+    /*
+      SO SÁNH MỨC TỈNH nằm chung section với
+      HUYỆN / 7 NGÀY / NHÂN VIÊN.
+      Khi chụp tỉnh, tạo bản sao và loại bỏ
+      3 khu phía dưới để ảnh chỉ chứa báo cáo tỉnh.
+    */
+    if(
+      sectionId==="periodCompareSection"
+    ){
+
+      tempNode=
+        original.cloneNode(
+          true
+        );
+
+      [
+        "#districtCompareReport",
+        "#district7DayReport",
+        "#staffCompareReport"
+      ].forEach(
+        selector=>{
+          tempNode
+            .querySelectorAll(
+              selector
+            )
+            .forEach(
+              el=>el.remove()
+            );
+        }
+      );
+
+      /*
+        Các nút khác trong bản sao không cần thiết
+        nhưng vẫn giữ nút tỉnh và nó được loại khỏi ảnh
+        bằng data-html2canvas-ignore.
+      */
+      tempNode.id=
+        "periodCompareCaptureClone";
+
+      tempNode.style.position=
+        "absolute";
+      tempNode.style.left=
+        "-100000px";
+      tempNode.style.top=
+        "0";
+      tempNode.style.width=
+        `${Math.max(
+          original.scrollWidth,
+          original.clientWidth
+        )}px`;
+      tempNode.style.maxWidth=
+        "none";
+      tempNode.style.background=
+        "#ffffff";
+
+      document.body.appendChild(
+        tempNode
+      );
+
+      target=
+        tempNode;
+
+    }
+
+    if(
+      document.fonts &&
+      document.fonts.ready
+    ){
+      await document.fonts.ready;
+    }
+
+    await new Promise(
+      r=>
+        requestAnimationFrame(
+          ()=>
+            requestAnimationFrame(r)
+        )
+    );
+
+    const canvas=
+      await html2canvas(
+        target,
+        {
+          scale:2,
+          useCORS:true,
+          allowTaint:false,
+          backgroundColor:"#ffffff",
+          logging:false,
+          imageTimeout:15000,
+          scrollX:0,
+          scrollY:0,
+          windowWidth:
+            Math.max(
+              document.documentElement.clientWidth,
+              target.scrollWidth
+            ),
+          windowHeight:
+            Math.max(
+              target.scrollHeight,
+              target.clientHeight
+            )
+        }
+      );
+
+    const stamp=
+      new Date();
+
+    const pad=
+      n=>
+        String(n).padStart(2,"0");
+
+    const filename=
+      `${filePrefix}_${
+        stamp.getFullYear()
+      }${
+        pad(stamp.getMonth()+1)
+      }${
+        pad(stamp.getDate())
+      }_${
+        pad(stamp.getHours())
+      }${
+        pad(stamp.getMinutes())
+      }.png`;
+
+    canvas.toBlob(
+      async blob=>{
+
+        if(!blob){
+          alert(
+            "Không tạo được ảnh báo cáo."
+          );
+          return;
+        }
+
+        const url=
+          URL.createObjectURL(
+            blob
+          );
+
+        const a=
+          document.createElement(
+            "a"
+          );
+
+        a.href=url;
+        a.download=
+          filename;
+
+        document.body.appendChild(
+          a
+        );
+
+        a.click();
+        a.remove();
+
+        setTimeout(
+          ()=>{
+            URL.revokeObjectURL(
+              url
+            );
+          },
+          1500
+        );
+
+        if(
+          navigator.clipboard &&
+          window.ClipboardItem
+        ){
+          try{
+
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                "image/png":blob
+              })
+            ]);
+
+          }catch(e){}
+
+        }
+
+      },
+      "image/png"
+    );
+
+  }catch(err){
+
+    console.error(
+      "captureReportSection:",
+      err
+    );
+
+    alert(
+      "Chụp báo cáo thất bại. Hãy thử lại."
+    );
+
+  }finally{
+
+    if(
+      tempNode &&
+      tempNode.parentNode
+    ){
+
+      tempNode.parentNode.removeChild(
+        tempNode
+      );
+
+    }
+
+    if(btn){
+
+      setTimeout(
+        ()=>{
+          btn.disabled=false;
+          btn.innerHTML=
+            oldText ||
+            "📸 Chụp báo cáo";
+        },
+        700
+      );
+
+    }
+
+  }
+
+}
+</script>
+
+<script>
   
   const API="https://script.google.com/macros/s/AKfycbxWCMLUu6oCSXnkkAqc6GLsF2LBN_RU9Yux2q0tWc4PzcM34xD5kbqo-WHYzLdr5Bc/exec";
   
-  let tonsc=[];
+  
+  /*
+    ================================================================
+    BACKUP LỊCH SỬ TKM + SC
+    Dán URL Web App Apps Script vào HISTORY_API sau khi Deploy.
+    ================================================================
+  */
+  const HISTORY_API="https://script.google.com/macros/s/AKfycbw8RkpDLv-cE6EmtjkhLyrNhuW_uQPhIlAqSP-NYyS0sbxPbxW6hsqQsb1x-1OiKwCUjQ/exec";
+
+  function normalizeHistoryApiUrl(v){
+    return String(v||"")
+      .trim()
+      .replace(/\/+$/,"");
+  }
+
+  function historyApiReady(){
+
+    return (
+      typeof HISTORY_API==="string" &&
+      HISTORY_API.trim()!=="" &&
+      !HISTORY_API.includes(
+        "PASTE_APPS_SCRIPT_WEB_APP_URL_HERE"
+      )
+    );
+
+  }
+
+
+  let historyBackupBusy=false;
+  let historyBackupTimer=null;
+
+let tonsc=[];
   let tontkm=[];
   let tontkmHistory=[];
   const dailyTrendCharts={};
@@ -3846,7 +5605,2076 @@
   
   function parseDateVN(str){if(!str)return 0;try{const [datePart,timePart]=str.split(" ");const [d,m,y]=datePart.split("/");const [hh,mm,ss]=(timePart||"00:00:00").split(":");return new Date(Number(y),Number(m)-1,Number(d),Number(hh),Number(mm),Number(ss));}catch(err){return 0;}}
   
-  async function loadData(){
+
+  /* =========================================================
+     SO SÁNH ĐẦU KỲ / CUỐI KỲ
+     Chỉ dùng lịch sử TKM đã có trong tontkmHistory.
+     Không thay đổi API.
+     ========================================================= */
+
+  
+  
+  let periodHistoryCache=[];
+  let sevenDayHistoryChart=null;
+
+  function normalizeHistoryApiUrl(v){
+    return String(v||"").trim().replace(/\/+$/,"");
+  }
+
+  function historyApiReady(){
+    return normalizeHistoryApiUrl(HISTORY_API)!=="";
+  }
+
+  function compareNormalize(v){
+    return String(v ?? "")
+      .replace(/\u00A0/g," ")
+      .replace(/\s+/g," ")
+      .trim();
+  }
+
+  function districtKey_(v){
+    return compareNorm(v);
+  }
+
+  function compareNorm(v){
+    return compareNormalize(v).toUpperCase();
+  }
+
+  function compareIsCNHS(row){
+    return compareNorm(row?.tt)==="CẬP NHẬT HỒ SƠ";
+  }
+
+  function compareHours(row){
+    const value=row?.tg;
+    if(value===null || value===undefined || compareNormalize(value)==="") return 0;
+
+    const raw=String(value).trim().replace(",",".");
+    if(/^[+-]?\d+(?:\.\d+)?$/.test(raw)){
+      const n=Number(raw);
+      return Number.isFinite(n)?n:0;
+    }
+
+    const m=raw.match(/(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+    if(m){
+      return Number(m[1]||0)+
+             Number(m[2]||0)/60+
+             Number(m[3]||0)/3600;
+    }
+
+    return 0;
+  }
+
+  function parseHistoryDate(value){
+    const s=String(value??"").trim();
+    if(!s) return 0;
+
+    const vn=s.match(
+      /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/
+    );
+
+    if(vn){
+      const dt=new Date(
+        Number(vn[3]),
+        Number(vn[2])-1,
+        Number(vn[1]),
+        Number(vn[4]||0),
+        Number(vn[5]||0),
+        Number(vn[6]||0)
+      );
+      return Number.isFinite(dt.getTime())
+        ? dt.getTime()
+        : 0;
+    }
+
+    const d=new Date(s);
+    return Number.isFinite(d.getTime())
+      ? d.getTime()
+      : 0;
+  }
+
+  function formatHistoryDate(value){
+    const ts=parseHistoryDate(value);
+    if(!ts) return String(value||"");
+
+    const d=new Date(ts);
+
+    return (
+      String(d.getDate()).padStart(2,"0")+
+      "/"+
+      String(d.getMonth()+1).padStart(2,"0")+
+      "/"+
+      d.getFullYear()+
+      " "+
+      String(d.getHours()).padStart(2,"0")+
+      ":"+
+      String(d.getMinutes()).padStart(2,"0")+
+      ":"+
+      String(d.getSeconds()).padStart(2,"0")
+    );
+  }
+
+  function snapshotTg(snapshot){
+    /*
+      CHỈ dùng TGUPDATE.
+      Không fallback sang capturedAt.
+    */
+    const v=
+      snapshot?.tgupdate ??
+      snapshot?.tg ??
+      "";
+
+    return String(v).trim();
+  }
+
+  async function loadRemoteHistorySnapshots(){
+    if(!historyApiReady()){
+      periodHistoryCache=[];
+      return [];
+    }
+
+    try{
+      const res=await fetch(
+        normalizeHistoryApiUrl(HISTORY_API)+
+        "?action=listSnapshots",
+        {cache:"no-store"}
+      );
+
+      const json=await res.json();
+
+      if(!json || !Array.isArray(json.snapshots)){
+        periodHistoryCache=[];
+        return [];
+      }
+
+      periodHistoryCache=
+        json.snapshots
+          .filter(x=>x && x.snapshotId)
+          .sort(
+            (a,b)=>
+              parseHistoryDate(
+                snapshotTg(a)
+              )-
+              parseHistoryDate(
+                snapshotTg(b)
+              )
+          );
+
+      return periodHistoryCache;
+
+    }catch(err){
+      console.error(
+        "HISTORY API listSnapshots:",
+        err
+      );
+      periodHistoryCache=[];
+      return [];
+    }
+  }
+
+  function compareSnapshotList(){
+    return Array.isArray(periodHistoryCache)
+      ? periodHistoryCache
+      : [];
+  }
+
+  function compareSnapshotOptions(){
+
+    const b1=document.getElementById(
+      "compareBackup1"
+    );
+
+    const b2=document.getElementById(
+      "compareBackup2"
+    );
+
+    if(!b1 || !b2)return;
+
+    b1.innerHTML="";
+    b2.innerHTML="";
+
+    const snapshots=
+      compareSnapshotList();
+
+    const invalidSnapshot=
+      snapshots.some(
+        snap=>
+          !String(
+            snapshotTg(snap)
+          ).trim()
+      );
+
+    if(invalidSnapshot){
+      console.warn(
+        "HISTORY_SNAPSHOTS có snapshot thiếu TGUPDATE.",
+        snapshots
+      );
+    }
+
+    if(!snapshots.length){
+
+      b1.innerHTML=
+        `<option value="">Chưa có backup</option>`;
+
+      b2.innerHTML=
+        `<option value="">Chưa có backup</option>`;
+
+      return;
+    }
+
+    snapshots.forEach(
+      (snap,index)=>{
+
+        const tg=
+          formatHistoryDate(
+            snapshotTg(snap)
+          );
+
+        /*
+          Chỉ hiển thị tgupdate.
+          Không lấy capturedAt.
+        */
+        const label=tg;
+
+        const o1=
+          document.createElement(
+            "option"
+          );
+
+        o1.value=
+          String(index);
+
+        o1.textContent=
+          label;
+
+        const o2=
+          o1.cloneNode(true);
+
+        b1.appendChild(o1);
+        b2.appendChild(o2);
+
+      }
+    );
+
+    /*
+      Mốc 1 = backup cũ nhất
+      Mốc 2 = backup mới nhất
+    */
+    b1.value="0";
+    b2.value=
+      String(
+        Math.max(
+          0,
+          snapshots.length-1
+        )
+      );
+
+  }
+
+  function toggleCompareSourceUI(){
+
+    const source1=
+      document.getElementById(
+        "compareSource1"
+      )?.value || "dashboard";
+
+    const source2=
+      document.getElementById(
+        "compareSource2"
+      )?.value || "backup";
+
+    const wrap1=
+      document.getElementById(
+        "compareBackup1Wrap"
+      );
+
+    const wrap2=
+      document.getElementById(
+        "compareBackup2Wrap"
+      );
+
+    if(wrap1){
+      wrap1.style.display=
+        source1==="backup"
+          ? "flex"
+          : "none";
+    }
+
+    if(wrap2){
+      wrap2.style.display=
+        source2==="backup"
+          ? "flex"
+          : "none";
+    }
+
+  }
+
+  async function fetchRemoteSnapshotRows(
+    snapshotId
+  ){
+
+    if(
+      !historyApiReady() ||
+      !snapshotId
+    ){
+
+      return {
+        tkm:[],
+        sc:[]
+      };
+
+    }
+
+    try{
+
+      const res=
+        await fetch(
+          normalizeHistoryApiUrl(
+            HISTORY_API
+          )+
+          "?action=getSnapshot&snapshotId="+
+          encodeURIComponent(
+            snapshotId
+          ),
+          {
+            cache:"no-store"
+          }
+        );
+
+      const json=
+        await res.json();
+
+      return {
+        tkm:
+          Array.isArray(json?.tkm)
+            ? json.tkm
+            : [],
+
+        sc:
+          Array.isArray(json?.sc)
+            ? json.sc
+            : []
+      };
+
+    }catch(err){
+
+      console.error(
+        "HISTORY API getSnapshot:",
+        err
+      );
+
+      return {
+        tkm:[],
+        sc:[]
+      };
+
+    }
+
+  }
+
+  function getCurrentDashboardSnapshot_(){
+
+    return {
+
+      tkm:
+        Array.isArray(tontkm)
+          ? tontkm
+          : [],
+
+      sc:
+        Array.isArray(tonsc)
+          ? tonsc
+          : [],
+
+      tgupdate:
+        String(
+          tontkm?.[0]?.tgupdate ||
+          ""
+        )
+
+    };
+
+  }
+
+  function compareTkmStats(rows){
+
+    const data=
+      Array.isArray(rows)
+        ? rows
+        : [];
+
+    const cn=
+      data.filter(
+        compareIsCNHS
+      );
+
+    const thuc=
+      data.filter(
+        r=>!compareIsCNHS(r)
+      );
+
+    const kpi=
+      r=>
+        compareNorm(
+          r?.kpi
+        );
+
+    return {
+
+      total:
+        data.length,
+
+      capnhat:
+        cn.length,
+
+      thuc:
+        thuc.length,
+
+      q16:
+        thuc.filter(
+          r=>kpi(r)==="QUÁ 16H"
+        ).length,
+
+      q24:
+        thuc.filter(
+          r=>kpi(r)==="QUÁ 24H"
+        ).length,
+
+      qHen:
+        thuc.filter(
+          r=>kpi(r)==="QUÁ HẸN"
+        ).length
+
+    };
+
+  }
+
+  function compareScStats(rows){
+
+    const data=
+      Array.isArray(rows)
+        ? rows
+        : [];
+
+    const isSoc=
+      r=>{
+        const sc=
+          compareNorm(
+            r?.sc
+          );
+
+        return (
+          sc==="SOC" ||
+          sc==="SOC HOME"
+        );
+      };
+
+    /*
+      SC QUÁ 16H / 24H:
+      CHỈ tính sự cố SC thông thường.
+      SOC và SOC HOME được tách riêng,
+      không cộng vào SC >16H / >24H.
+    */
+    const scNormal=
+      data.filter(
+        r=>!isSoc(r)
+      );
+
+    return {
+
+      total:
+        data.length,
+
+      q16:
+        scNormal.filter(
+          r=>compareHours(r)>16
+        ).length,
+
+      q24:
+        scNormal.filter(
+          r=>compareHours(r)>24
+        ).length,
+
+      soc:
+        data.filter(
+          r=>
+            compareNorm(r?.sc)==="SOC"
+        ).length,
+
+      socHome:
+        data.filter(
+          r=>
+            compareNorm(r?.sc)==="SOC HOME"
+        ).length,
+
+      soc24:
+        data.filter(
+          r=>
+            isSoc(r) &&
+            compareHours(r)>24
+        ).length,
+
+      soc72:
+        data.filter(
+          r=>
+            isSoc(r) &&
+            compareHours(r)>72
+        ).length
+
+    };
+
+  }
+
+  function compareDeltaClass(delta){
+
+    return delta<0
+      ? "period-good"
+      : delta>0
+        ? "period-bad"
+        : "period-flat";
+
+  }
+
+  function compareMetricDefs(){
+
+    return [
+      ["TỔNG TKM","TKM"],
+      ["CẬP NHẬT HỒ SƠ","CNHS"],
+      ["TKM QUÁ 16H","TKM16"],
+      ["TKM QUÁ 24H","TKM24"],
+      ["TKM QUÁ HẸN","TKMHEN"],
+      ["TỔNG SC","SC"],
+      ["SC QUÁ 16H","SC16"],
+      ["SC QUÁ 24H","SC24"],
+      ["SOC","SOC"],
+      ["SOC HOME","SOCHOME"],
+      ["SOC + SOC HOME QUÁ 24H","SOC24"],
+      ["SOC + SOC HOME QUÁ 72H","SOC72"],
+      ["TỔNG SC + TKM","TOTAL_OPS"]
+    ];
+
+  }
+
+  function compareAllStats(tkmRows,scRows){
+
+    const t=
+      compareTkmStats(
+        tkmRows
+      );
+
+    const s=
+      compareScStats(
+        scRows
+      );
+
+    return {
+
+      TKM:t.total,
+      CNHS:t.capnhat,
+      TKM16:t.q16,
+      TKM24:t.q24,
+      TKMHEN:t.qHen,
+
+      SC:s.total,
+      SC16:s.q16,
+      SC24:s.q24,
+      SOC:s.soc,
+      SOCHOME:s.socHome,
+      SOC24:s.soc24,
+      SOC72:s.soc72,
+
+      TOTAL_OPS:
+        t.total + s.total
+
+    };
+
+  }
+
+  function setCompareHeaderTimes(
+    source1,
+    meta1,
+    source2,
+    meta2,
+    current
+  ){
+
+    const h1=
+      document.getElementById(
+        "periodMetricHead1"
+      );
+
+    const h2=
+      document.getElementById(
+        "periodMetricHead2"
+      );
+
+    if(!h1 || !h2)return;
+
+    const m1=
+      source1==="dashboard"
+        ? (
+            current.tgupdate
+              ? formatHistoryDate(
+                  current.tgupdate
+                )
+              : "Hiện tại"
+          )
+        : formatHistoryDate(
+            snapshotTg(meta1)
+          );
+
+    const m2=
+      source2==="dashboard"
+        ? (
+            current.tgupdate
+              ? formatHistoryDate(
+                  current.tgupdate
+                )
+              : "Hiện tại"
+          )
+        : formatHistoryDate(
+            snapshotTg(meta2)
+          );
+
+    h1.textContent=
+      `Mốc 1 • ${m1}`;
+
+    h2.textContent=
+      `Mốc 2 • ${m2}`;
+
+  }
+
+  function renderDistrictCompareTable(
+    data1,
+    data2
+  ){
+
+    const head=
+      document.getElementById(
+        "periodDistrictHead"
+      );
+
+    const body=
+      document.getElementById(
+        "periodCompareDistrictBody"
+      );
+
+    if(!head || !body)return;
+
+    const defs=
+      compareMetricDefs();
+
+    head.innerHTML=
+      "<th>STT</th><th>Huyện</th>"+
+      defs.map(
+        d=>
+          `<th>${d[0]}</th>`
+      ).join("");
+
+    const set=
+      new Set();
+
+    [
+      ...data1.tkm,
+      ...data1.sc,
+      ...data2.tkm,
+      ...data2.sc
+    ].forEach(
+      row=>{
+        set.add(
+          compareNormalize(
+            row?.huyen
+          ) ||
+          "Khác"
+        );
+      }
+    );
+
+    const rows=
+      [...set].map(
+        huyen=>{
+
+          const tkm1=
+            data1.tkm.filter(
+              r=>
+                (
+                  compareNormalize(
+                    r?.huyen
+                  )||
+                  "Khác"
+                )===huyen
+            );
+
+          const tkm2=
+            data2.tkm.filter(
+              r=>
+                (
+                  compareNormalize(
+                    r?.huyen
+                  )||
+                  "Khác"
+                )===huyen
+            );
+
+          const sc1=
+            data1.sc.filter(
+              r=>
+                (
+                  compareNormalize(
+                    r?.huyen
+                  )||
+                  "Khác"
+                )===huyen
+            );
+
+          const sc2=
+            data2.sc.filter(
+              r=>
+                (
+                  compareNormalize(
+                    r?.huyen
+                  )||
+                  "Khác"
+                )===huyen
+            );
+
+          return {
+
+            huyen,
+
+            stats1:
+              compareAllStats(
+                tkm1,
+                sc1
+              ),
+
+            stats2:
+              compareAllStats(
+                tkm2,
+                sc2
+              )
+
+          };
+
+        }
+      );
+
+    rows.sort(
+      (a,b)=>
+        (
+          b.stats2.TKM+
+          b.stats2.SC
+        )-
+        (
+          a.stats2.TKM+
+          a.stats2.SC
+        )
+    );
+
+    body.innerHTML=
+      rows.map(
+        (row,index)=>{
+
+          const cells=
+            defs.map(
+              d=>{
+
+                const v1=
+                  row.stats1[d[1]]||0;
+
+                const v2=
+                  row.stats2[d[1]]||0;
+
+                const delta=
+                  v2-v1;
+
+                const cls=
+                  compareDeltaClass(
+                    delta
+                  );
+
+                return `
+                  <td
+                    class="district-metric-cell ${cls}"
+                    title="${d[0]}: ${v1} → ${v2}"
+                    onclick="event.stopPropagation();"
+                  >
+                    <div class="district-metric-main">
+                      ${v1} → ${v2}
+                    </div>
+                    <div class="district-metric-delta">
+                      ${delta>0?"+":""}${delta}
+                    </div>
+                  </td>
+                `;
+
+              }
+            ).join("");
+
+          return `
+            <tr>
+              <td class="num">
+                ${index+1}
+              </td>
+
+              <td>
+                <b>${String(row.huyen).toUpperCase()}</b>
+              </td>
+
+              ${cells}
+
+            </tr>
+          `;
+
+        }
+      ).join("");
+
+    window.periodDistrictRows=
+      rows;
+
+  }
+
+  
+
+
+
+  async function renderSevenDayHistoryChart(){
+
+    const select=
+      document.getElementById(
+        "sevenDayDistrictSelect"
+      );
+
+    const canvasTkm=
+      document.getElementById(
+        "sevenDaySelectedTkmChart"
+      );
+
+    const canvasSc=
+      document.getElementById(
+        "sevenDaySelectedScChart"
+      );
+
+    const canvasCnhs=
+      document.getElementById(
+        "sevenDaySelectedCnhsChart"
+      );
+
+    if(
+      !select ||
+      !canvasTkm ||
+      !canvasSc ||
+      !canvasCnhs
+    ){
+      return;
+    }
+
+    const cutoff=
+      Date.now()-
+      7*24*60*60*1000;
+
+    const history=
+      compareSnapshotList()
+        .filter(
+          snap=>
+            parseHistoryDate(
+              snapshotTg(snap)
+            )>=cutoff
+        )
+        .sort(
+          (a,b)=>
+            parseHistoryDate(snapshotTg(a))-
+            parseHistoryDate(snapshotTg(b))
+        );
+
+    const current=
+      getCurrentDashboardSnapshot_();
+
+    const currentTg=
+      current.tgupdate
+        ? formatHistoryDate(current.tgupdate)
+        : "";
+
+    const entries=[];
+
+    history.forEach(
+      snap=>{
+        entries.push({
+          key:formatHistoryDate(snapshotTg(snap)),
+          label:formatHistoryDate(snapshotTg(snap)),
+          type:"backup",
+          snapshotId:snap.snapshotId
+        });
+      }
+    );
+
+    if(currentTg){
+
+      const same=
+        entries.find(
+          x=>x.key===currentTg
+        );
+
+      if(same){
+
+        same.type="current";
+        same.currentData=current;
+        same.label=
+          currentTg;
+
+      }else{
+
+        entries.push({
+          key:currentTg,
+          label:currentTg,
+          type:"current",
+          currentData:current
+        });
+
+      }
+
+    }
+
+    entries.sort(
+      (a,b)=>
+        parseHistoryDate(a.key)-
+        parseHistoryDate(b.key)
+    );
+
+    if(!entries.length){
+      return;
+    }
+
+    const details=
+      await Promise.all(
+        entries.map(
+          async entry=>{
+
+            if(
+              entry.type==="current"
+            ){
+
+              return {
+                tkm:
+                  Array.isArray(entry.currentData?.tkm)
+                    ? entry.currentData.tkm
+                    : [],
+
+                sc:
+                  Array.isArray(entry.currentData?.sc)
+                    ? entry.currentData.sc
+                    : []
+              };
+
+            }
+
+            return fetchRemoteSnapshotRows(
+              entry.snapshotId
+            );
+
+          }
+        )
+      );
+
+    /*
+      Chuẩn hóa tên huyện không phân biệt hoa/thường.
+    */
+    const districtMap=new Map();
+
+    details.forEach(
+      detail=>{
+
+        [
+          ...detail.tkm,
+          ...detail.sc
+        ].forEach(
+          row=>{
+
+            const raw=
+              compareNormalize(
+                row?.huyen
+              );
+
+            if(!raw){
+              return;
+            }
+
+            const key=
+              compareNorm(raw);
+
+            if(!districtMap.has(key)){
+              districtMap.set(key,raw);
+            }
+
+          }
+        );
+
+      }
+    );
+
+    const districts=
+      [...districtMap.values()]
+        .sort(
+          (a,b)=>
+            a.localeCompare(b,"vi")
+        );
+
+    const oldValue=
+      select.value;
+
+    select.innerHTML=
+      districts
+        .map(
+          district=>
+            `<option value="${district.replace(/"/g,"&quot;")}">${String(district).toUpperCase()}</option>`
+        )
+        .join("");
+
+    if(
+      oldValue &&
+      districts.includes(oldValue)
+    ){
+
+      select.value=
+        oldValue;
+
+    }else{
+
+      const last=
+        details[details.length-1];
+
+      let best=
+        districts[0] ||
+        "";
+
+      let bestValue=-1;
+
+      districts.forEach(
+        district=>{
+
+          const key=
+            compareNorm(
+              district
+            );
+
+          const value=
+            last.tkm.filter(
+              row=>
+                compareNorm(row?.huyen)===key
+            ).length+
+            last.sc.filter(
+              row=>
+                compareNorm(row?.huyen)===key
+            ).length;
+
+          if(value>bestValue){
+
+            bestValue=value;
+            best=district;
+
+          }
+
+        }
+      );
+
+      select.value=
+        best;
+
+    }
+
+    const selected=
+      select.value ||
+      districts[0] ||
+      "";
+
+    const selectedKey=
+      compareNorm(selected);
+
+    const labels=
+      entries.map(
+        x=>x.label
+      );
+
+    const periodStart =
+      entries.length
+        ? formatHistoryDate(entries[0].key)
+        : "";
+
+    const periodEnd =
+      entries.length
+        ? formatHistoryDate(entries[entries.length-1].key)
+        : "";
+
+    const periodText =
+      periodStart && periodEnd
+        ? ` • ${periodStart} → ${periodEnd}`
+        : "";
+
+    [
+      "sevenDaySelectedTkmTitle",
+      "sevenDaySelectedScTitle",
+      "sevenDaySelectedCnhsTitle"
+    ].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){
+        el.textContent=periodText;
+      }
+    });
+
+    const tkmData=
+      details.map(
+        d=>
+          d.tkm.filter(
+            row=>
+              compareNorm(row?.huyen)===selectedKey
+          ).length
+      );
+
+    const scData=
+      details.map(
+        d=>
+          d.sc.filter(
+            row=>
+              compareNorm(row?.huyen)===selectedKey
+          ).length
+      );
+
+    const cnhsData=
+      details.map(
+        d=>
+          d.tkm.filter(
+            row=>
+              compareNorm(row?.huyen)===selectedKey &&
+              compareIsCNHS(row)
+          ).length
+      );
+
+    if(
+      !window.__selectedDistrictCharts
+    ){
+      window.__selectedDistrictCharts={
+        tkm:null,
+        sc:null,
+        cnhs:null
+      };
+    }
+
+    function drawChart(
+      key,
+      canvas,
+      label,
+      data,
+      borderColor
+    ){
+
+      if(
+        window.__selectedDistrictCharts[key]
+      ){
+
+        window.__selectedDistrictCharts[key].destroy();
+
+      }
+
+      window.__selectedDistrictCharts[key]=
+        new Chart(
+          canvas,
+          {
+            type:"line",
+
+            data:{
+              labels,
+
+              datasets:[
+                {
+                  label,
+                  data,
+                  borderColor,
+                  backgroundColor:"transparent",
+                  tension:0,
+                  borderWidth:2.2,
+                  pointRadius:3,
+                  pointHoverRadius:5,
+                  fill:false
+                }
+              ]
+            },
+
+            options:{
+              responsive:true,
+              maintainAspectRatio:false,
+
+              interaction:{
+                mode:"index",
+                intersect:false
+              },
+
+              plugins:{
+                legend:{
+                  display:false
+                },
+
+                tooltip:{
+                  mode:"index",
+                  intersect:false
+                }
+              },
+
+              scales:{
+                x:{
+                  ticks:{
+                    autoSkip:false,
+                    maxRotation:40,
+                    minRotation:25,
+                    font:{size:8}
+                  },
+                  title:{
+                    display:false,
+                    text:""
+                  }
+                },
+
+                y:{
+                  beginAtZero:true,
+
+                  title:{
+                    display:true,
+                    text:"Số lượng",
+                    font:{
+                      size:10,
+                      weight:"700"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        );
+
+    }
+
+    drawChart(
+      "tkm",
+      canvasTkm,
+      "TỔNG TKM",
+      tkmData,
+      "#2563eb"
+    );
+
+    drawChart(
+      "sc",
+      canvasSc,
+      "TỔNG SC",
+      scData,
+      "#ef4444"
+    );
+
+    drawChart(
+      "cnhs",
+      canvasCnhs,
+      "CẬP NHẬT HỒ SƠ",
+      cnhsData,
+      "#16a34a"
+    );
+
+    const lastIndex=
+      labels.length-1;
+    function changeRow(
+      first,
+      last
+    ){
+
+      const delta=
+        last-first;
+
+      const pct=
+        first===0
+          ? (
+              last===0
+                ? 0
+                : null
+            )
+          : (
+              delta/first
+            )*100;
+
+      const cls=
+        delta>0
+          ? "district-change-up"
+          : delta<0
+            ? "district-change-down"
+            : "district-change-flat";
+
+      const verdict=
+        delta>0
+          ? "Tăng"
+          : delta<0
+            ? "Giảm"
+            : "Không đổi";
+
+      return `
+        <tr>
+          <td>${first}</td>
+          <td>${last}</td>
+          <td class="${cls}">
+            ${delta>0?"+":""}${delta}
+          </td>
+          <td class="${cls}">
+            ${
+              pct===null
+                ? "—"
+                : (
+                    (pct>0?"+":"")+
+                    pct.toFixed(1)+
+                    "%"
+                  )
+            }
+          </td>
+          <td class="${cls}">
+            ${verdict}
+          </td>
+        </tr>
+      `;
+
+    }
+
+    const tkmBody=
+      document.getElementById(
+        "districtChangeTkmBody"
+      );
+
+    const scBody=
+      document.getElementById(
+        "districtChangeScBody"
+      );
+
+    const cnhsBody=
+      document.getElementById(
+        "districtChangeCnhsBody"
+      );
+
+    if(tkmBody){
+      tkmBody.innerHTML=
+        changeRow(
+          tkmData[0]||0,
+          tkmData[lastIndex]||0
+        );
+    }
+
+    if(scBody){
+      scBody.innerHTML=
+        changeRow(
+          scData[0]||0,
+          scData[lastIndex]||0
+        );
+    }
+
+    if(cnhsBody){
+      cnhsBody.innerHTML=
+        changeRow(
+          cnhsData[0]||0,
+          cnhsData[lastIndex]||0
+        );
+    }
+
+  }
+
+
+
+
+
+
+
+  async function renderPeriodComparison(){
+
+    const kpiWrap=
+      document.getElementById(
+        "periodCompareKpis"
+      );
+
+    const metricBody=
+      document.getElementById(
+        "periodCompareMetricBody"
+      );
+
+    const districtBody=
+      document.getElementById(
+        "periodCompareDistrictBody"
+      );
+
+    const staffWrap=
+      document.getElementById(
+        "periodStaffTop"
+      );
+
+    const status=
+      document.getElementById(
+        "periodCompareStatus"
+      );
+
+    if(
+      !kpiWrap||
+      !metricBody||
+      !districtBody||
+      !staffWrap||
+      !status
+    ){
+      return;
+    }
+
+    if(
+      !historyApiReady()
+    ){
+
+      status.textContent=
+        "⚠️ Chưa cấu hình HISTORY API.";
+
+      return;
+
+    }
+
+    const snapshots=
+      compareSnapshotList();
+
+    if(!snapshots.length){
+
+      status.textContent=
+        "⚠️ HISTORY_SNAPSHOTS chưa có backup.";
+
+      return;
+
+    }
+
+    const source1=
+      document.getElementById(
+        "compareSource1"
+      )?.value ||
+      "dashboard";
+
+    const source2=
+      document.getElementById(
+        "compareSource2"
+      )?.value ||
+      "backup";
+
+    const current=
+      getCurrentDashboardSnapshot_();
+
+    let meta1=null;
+    let meta2=null;
+
+    let data1=null;
+    let data2=null;
+
+    if(
+      source1==="dashboard"
+    ){
+
+      data1=current;
+
+    }else{
+
+      const index=
+        Number(
+          document.getElementById(
+            "compareBackup1"
+          )?.value
+        );
+
+      meta1=
+        snapshots[index];
+
+      if(!meta1){
+
+        status.textContent=
+          "⚠️ Chưa chọn backup mốc 1.";
+
+        return;
+
+      }
+
+      data1=
+        await fetchRemoteSnapshotRows(
+          meta1.snapshotId
+        );
+
+    }
+
+    if(
+      source2==="dashboard"
+    ){
+
+      data2=current;
+
+    }else{
+
+      const index=
+        Number(
+          document.getElementById(
+            "compareBackup2"
+          )?.value
+        );
+
+      meta2=
+        snapshots[index];
+
+      if(!meta2){
+
+        status.textContent=
+          "⚠️ Chưa chọn backup mốc 2.";
+
+        return;
+
+      }
+
+      data2=
+        await fetchRemoteSnapshotRows(
+          meta2.snapshotId
+        );
+
+    }
+
+    const stats1=
+      compareAllStats(
+        data1.tkm,
+        data1.sc
+      );
+
+    const stats2=
+      compareAllStats(
+        data2.tkm,
+        data2.sc
+      );
+
+    setCompareHeaderTimes(
+      source1,
+      meta1,
+      source2,
+      meta2,
+      current
+    );
+
+    const districtTitle =
+      document.getElementById(
+        "periodDistrictTitle"
+      );
+
+    if(districtTitle){
+
+      const m1 =
+        source1==="dashboard"
+          ? (
+              current.tgupdate
+                ? formatHistoryDate(
+                    current.tgupdate
+                  )
+                : "Dashboard"
+            )
+          : formatHistoryDate(
+              snapshotTg(meta1)
+            );
+
+      const m2 =
+        source2==="dashboard"
+          ? (
+              current.tgupdate
+                ? formatHistoryDate(
+                    current.tgupdate
+                  )
+                : "Dashboard"
+            )
+          : formatHistoryDate(
+              snapshotTg(meta2)
+            );
+
+      districtTitle.innerHTML =
+        `
+          <span>
+            🏠 SO SÁNH TỒN TĂNG/GIẢM THEO MỨC HUYỆN • ${m1} → ${m2}
+          </span>
+          <button
+            type="button"
+            class="report-capture-btn"
+            data-html2canvas-ignore="true"
+            onclick="captureReportSection('districtCompareReport','SO_SANH_TON_TANG_GIAM_MUC_HUYEN')"
+          >
+            📸 Chụp báo cáo
+          </button>
+        `;
+
+    }
+
+    const defs=
+      compareMetricDefs();
+
+    const pct=
+      (a,b)=>
+        a===0
+          ? (
+              b===0
+                ? 0
+                : null
+            )
+          : (
+              (b-a)/a
+            )*100;
+
+    kpiWrap.innerHTML=
+      [
+        ["TỔNG TKM",stats1.TKM,stats2.TKM],
+        ["TKM QUÁ 16H",stats1.TKM16,stats2.TKM16],
+        ["TKM QUÁ 24H",stats1.TKM24,stats2.TKM24],
+        ["TKM QUÁ HẸN",stats1.TKMHEN,stats2.TKMHEN],
+        ["CẬP NHẬT HỒ SƠ",stats1.CNHS,stats2.CNHS],
+        ["TỔNG SC",stats1.SC,stats2.SC],
+        ["SC QUÁ 16H",stats1.SC16,stats2.SC16],
+        ["SC QUÁ 24H",stats1.SC24,stats2.SC24],
+        ["SOC",stats1.SOC,stats2.SOC],
+        ["SOC HOME",stats1.SOCHOME,stats2.SOCHOME],
+        ["SOC + SOC HOME >24H",stats1.SOC24,stats2.SOC24],
+        ["SOC + SOC HOME >72H",stats1.SOC72,stats2.SOC72]
+      ]
+      .map(
+        item=>{
+
+          const delta=
+            item[2]-item[1];
+
+          return `
+            <div class="period-kpi">
+
+              <div class="period-kpi-label">
+                ${item[0]}
+              </div>
+
+              <div class="period-kpi-value">
+                ${item[1]}
+                <span style="
+                  color:#94a3b8;
+                  font-size:11px;
+                ">→</span>
+                ${item[2]}
+              </div>
+
+              <div class="${
+                compareDeltaClass(
+                  delta
+                )
+              }"
+              style="
+                margin-top:4px;
+                font-size:11px;
+              ">
+                ${delta>0?"+":""}${delta}
+              </div>
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+    metricBody.innerHTML=
+      defs.map(
+        (d,index)=>{
+
+          const label=d[0];
+          const key=d[1];
+
+          const a=
+            stats1[key]||0;
+
+          const b=
+            stats2[key]||0;
+
+          const delta=
+            b-a;
+
+          const p=
+            pct(
+              a,
+              b
+            );
+
+          const verdict=
+            delta<0
+              ? "Giảm"
+              : delta>0
+                ? "Tăng"
+                : "Không đổi";
+
+          return `
+            <tr class="${
+              (
+                key==="TOTAL_OPS" ||
+                key==="TKM" ||
+                key==="SC"
+              )
+                ? "period-summary-row"
+                : ""
+            }">
+
+              <td class="num">
+                ${index+1}
+              </td>
+
+              <td class="${
+                (
+                  key==="TOTAL_OPS" ||
+                  key==="TKM" ||
+                  key==="SC"
+                )
+                  ? "period-summary-label"
+                  : ""
+              }">
+                <b>${label}</b>
+              </td>
+
+              <td class="num">
+                ${a}
+              </td>
+
+              <td class="num">
+                ${b}
+              </td>
+
+              <td class="num ${
+                compareDeltaClass(delta)
+              }">
+                ${delta>0?"+":""}${delta}
+              </td>
+
+              <td class="num ${
+                compareDeltaClass(delta)
+              }">
+                ${
+                  p===null
+                    ? "—"
+                    : (
+                        (p>0?"+":"")+
+                        p.toFixed(1)+
+                        "%"
+                      )
+                }
+              </td>
+
+              <td class="num">
+                <span class="period-pill ${
+                  delta<0
+                    ? "good"
+                    : delta>0
+                      ? "bad"
+                      : "flat"
+                }">
+                  ${verdict}
+                </span>
+              </td>
+
+            </tr>
+          `;
+
+        }
+      )
+      .join("");
+
+    renderDistrictCompareTable(
+      data1,
+      data2
+    );
+
+    
+    /*
+      NHÂN VIÊN:
+      Hiển thị cùng cấu trúc 13 chỉ tiêu như bảng huyện.
+    */
+
+    const staffNames=
+      new Set();
+
+    [
+      ...data1.tkm,
+      ...data1.sc,
+      ...data2.tkm,
+      ...data2.sc
+    ].forEach(
+      row=>{
+        staffNames.add(
+          compareNormalize(
+            row?.nv
+          ) ||
+          "Không rõ"
+        );
+      }
+    );
+
+    const staffRows=
+      [...staffNames]
+        .map(
+          name=>{
+
+            const tkm1=
+              data1.tkm.filter(
+                r=>
+                  (
+                    compareNormalize(
+                      r?.nv
+                    )||
+                    "Không rõ"
+                  )===name
+              );
+
+            const tkm2=
+              data2.tkm.filter(
+                r=>
+                  (
+                    compareNormalize(
+                      r?.nv
+                    )||
+                    "Không rõ"
+                  )===name
+              );
+
+            const sc1=
+              data1.sc.filter(
+                r=>
+                  (
+                    compareNormalize(
+                      r?.nv
+                    )||
+                    "Không rõ"
+                  )===name
+              );
+
+            const sc2=
+              data2.sc.filter(
+                r=>
+                  (
+                    compareNormalize(
+                      r?.nv
+                    )||
+                    "Không rõ"
+                  )===name
+              );
+
+            return {
+              name,
+
+              stats1:
+                compareAllStats(
+                  tkm1,
+                  sc1
+                ),
+
+              stats2:
+                compareAllStats(
+                  tkm2,
+                  sc2
+                )
+
+            };
+
+          }
+        );
+
+    staffRows.sort(
+      (a,b)=>
+        (
+          b.stats2.TKM+
+          b.stats2.SC
+        )-
+        (
+          a.stats2.TKM+
+          a.stats2.SC
+        )
+    );
+
+    const staffDefs=
+      compareMetricDefs();
+
+    staffWrap.innerHTML=
+      `
+        <div class="period-table-wrap period-staff-table-wrap">
+          <table class="period-table period-district-detail-table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Nhân viên</th>
+                ${staffDefs.map(
+                  d=>
+                    `<th>${d[0]}</th>`
+                ).join("")}
+              </tr>
+            </thead>
+
+            <tbody>
+              ${
+                staffRows.map(
+                  (row,index)=>
+                    `
+                      <tr>
+
+                        <td class="num">
+                          ${index+1}
+                        </td>
+
+                        <td>
+                          <b>
+                            ${row.name}
+                          </b>
+                        </td>
+
+                        ${
+                          staffDefs.map(
+                            d=>{
+
+                              const a=
+                                row.stats1[d[1]]||0;
+
+                              const b=
+                                row.stats2[d[1]]||0;
+
+                              const delta=
+                                b-a;
+
+                              return `
+                                <td
+                                  class="district-metric-cell ${
+                                    compareDeltaClass(
+                                      delta
+                                    )
+                                  }"
+                                >
+
+                                  <div class="district-metric-main">
+                                    ${a} → ${b}
+                                  </div>
+
+                                  <div class="district-metric-delta">
+                                    ${delta>0?"+":""}${delta}
+                                  </div>
+
+                                </td>
+                              `;
+
+                            }
+                          ).join("")
+                        }
+
+                      </tr>
+                    `
+                ).join("")
+              }
+            </tbody>
+          </table>
+        </div>
+      `;
+
+    status.innerHTML=
+      `
+        <span class="period-compare-selected">
+          MỐC 1 • ${
+            source1==="dashboard"
+              ? (
+                  current.tgupdate
+                    ? formatHistoryDate(
+                        current.tgupdate
+                      )
+                    : "Dashboard hiện tại"
+                )
+              : (
+                  "BACKUP • "+
+                  formatHistoryDate(
+                    snapshotTg(
+                      meta1
+                    )
+                  )
+                )
+          }
+        </span>
+
+        <span style="
+          margin:0 5px;
+          color:#94a3b8;
+        ">→</span>
+
+        <span class="period-compare-selected">
+          MỐC 2 • ${
+            source2==="dashboard"
+              ? (
+                  current.tgupdate
+                    ? formatHistoryDate(
+                        current.tgupdate
+                      )
+                    : "Dashboard hiện tại"
+                )
+              : (
+                  "BACKUP • "+
+                  formatHistoryDate(
+                    snapshotTg(
+                      meta2
+                    )
+                  )
+                )
+          }
+        </span>
+      `;
+
+    await renderSevenDayHistoryChart();
+
+  }
+
+  async function initPeriodComparison(){
+
+    await loadRemoteHistorySnapshots();
+
+    compareSnapshotOptions();
+    toggleCompareSourceUI();
+
+    document.getElementById(
+      "compareSource1"
+    )?.addEventListener(
+      "change",
+      ()=>{
+        toggleCompareSourceUI();
+        renderPeriodComparison();
+      }
+    );
+
+    document.getElementById(
+      "compareSource2"
+    )?.addEventListener(
+      "change",
+      ()=>{
+        toggleCompareSourceUI();
+        renderPeriodComparison();
+      }
+    );
+
+    document.getElementById(
+      "compareBackup1"
+    )?.addEventListener(
+      "change",
+      renderPeriodComparison
+    );
+
+    document.getElementById(
+      "compareBackup2"
+    )?.addEventListener(
+      "change",
+      renderPeriodComparison
+    );
+
+    await renderPeriodComparison();
+
+    document.getElementById(
+      "sevenDayDistrictSelect"
+    )?.addEventListener(
+      "change",
+      renderSevenDayHistoryChart
+    );
+
+  }
+
+async function loadData(){
   
   try{
   
@@ -3984,6 +7812,14 @@ const nhaplieu =
   renderTonSC();
   renderTonTKM();
   renderCharts();
+
+  /*
+    BACKUP LỊCH SỬ:
+    Apps Script tự kiểm tra API mỗi 5 phút và chỉ backup
+    khi tgupdate đã quá 20 phút và chưa từng backup.
+    Dashboard không tự backup để tránh tạo snapshot quá sớm.
+  */
+
   document.getElementById("updateTime").innerHTML="⏰ Thời gian lấy báo cáo: "+(tontkm[0]?.tgupdate||"");
   }catch(err){
   
@@ -4366,6 +8202,7 @@ function renderCharts(){
   renderEvaluationNotebook();
   /* NEW: render điều hành N-1/N sau khi API đã có dữ liệu */
   renderOpsDashboards();
+  initPeriodComparison();
 
   document.getElementById("opsStaffMonth")?.addEventListener(
     "change",
@@ -10565,6 +14402,326 @@ const url =
     </div>
   </div>
 </div>
+
+
+<!-- ===== CHART ZOOM MODAL ===== -->
+<div id="chartZoomModal"
+     class="chart-zoom-modal"
+     aria-hidden="true">
+  <div class="chart-zoom-backdrop"
+       data-chart-zoom-close="1"></div>
+
+  <div class="chart-zoom-dialog"
+       role="dialog"
+       aria-modal="true"
+       aria-label="Biểu đồ phóng to">
+
+    <div class="chart-zoom-head">
+      <div id="chartZoomTitle"
+           class="chart-zoom-title">
+        Biểu đồ
+      </div>
+
+      <button
+        type="button"
+        class="chart-zoom-close"
+        aria-label="Đóng"
+        onclick="closeChartZoom()">
+        ✕
+      </button>
+    </div>
+
+    <div class="chart-zoom-body">
+      <div class="chart-zoom-canvas-wrap">
+        <canvas id="chartZoomCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+let activeChartZoomInstance=null;
+let activeChartZoomSourceCanvas=null;
+
+function getChartInstanceFromCanvas(canvas){
+  if(!canvas) return null;
+
+  if(window.Chart &&
+     typeof Chart.getChart==="function"){
+    return Chart.getChart(canvas) || null;
+  }
+
+  return canvas.__chartist__ ||
+         canvas._chart ||
+         null;
+}
+
+function findClosestChartCanvas(target){
+  if(!target) return null;
+
+  if(target.tagName==="CANVAS"){
+    return target;
+  }
+
+  return target.querySelector
+    ? target.querySelector("canvas")
+    : null;
+}
+
+function getChartTitleForZoom(sourceCanvas){
+  if(!sourceCanvas) return "Biểu đồ";
+
+  const explicit =
+    sourceCanvas.dataset.chartTitle ||
+    sourceCanvas.getAttribute("aria-label");
+
+  if(explicit) return explicit;
+
+  const box =
+    sourceCanvas.closest(
+      ".chart-box,.district-report-card,.chart-card"
+    );
+
+  if(box){
+    const title =
+      box.querySelector(
+        ".chart-title,.district-report-card-title,.chart-card-title"
+      );
+
+    if(title){
+      return String(title.textContent || "")
+        .replace(/\s+/g," ")
+        .trim();
+    }
+  }
+
+  return "Biểu đồ";
+}
+
+function openChartZoomFromCanvas(sourceCanvas){
+
+  const modal =
+    document.getElementById("chartZoomModal");
+
+  const zoomCanvas =
+    document.getElementById("chartZoomCanvas");
+
+  const title =
+    document.getElementById("chartZoomTitle");
+
+  if(!modal || !zoomCanvas || !sourceCanvas){
+    return;
+  }
+
+  const chart =
+    getChartInstanceFromCanvas(sourceCanvas);
+
+  if(!chart){
+    console.warn(
+      "Không tìm thấy Chart.js instance:",
+      sourceCanvas
+    );
+    return;
+  }
+
+  activeChartZoomInstance = chart;
+  activeChartZoomSourceCanvas = sourceCanvas;
+
+  title.textContent =
+    getChartTitleForZoom(
+      sourceCanvas
+    );
+
+  modal.classList.add("is-open");
+  modal.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+
+  requestAnimationFrame(
+    ()=>{
+      try{
+
+        if(window.Chart){
+          const clonedConfig = {
+            type:chart.config.type,
+            data:JSON.parse(
+              JSON.stringify(
+                chart.config.data
+              )
+            ),
+            options:JSON.parse(
+              JSON.stringify(
+                chart.config.options || {}
+              )
+            ),
+            plugins:[]
+          };
+
+          clonedConfig.options =
+            clonedConfig.options || {};
+
+          clonedConfig.options.responsive=true;
+          clonedConfig.options.maintainAspectRatio=false;
+
+          /*
+            Không copy animation khi phóng to:
+            mở modal sẽ hiển thị ngay, tránh giật.
+          */
+          clonedConfig.options.animation=false;
+
+          /*
+            Cho phép pan/zoom theo touch nếu chart
+            đã có plugin zoom; nếu không có thì
+            vẫn tự phóng full màn hình.
+          */
+
+          const zoomChart =
+            new Chart(
+              zoomCanvas.getContext("2d"),
+              clonedConfig
+            );
+
+          zoomCanvas._zoomChart =
+            zoomChart;
+        }
+
+      }catch(err){
+
+        console.error(
+          "chart zoom:",
+          err
+        );
+
+      }
+    }
+  );
+}
+
+function closeChartZoom(){
+
+  const modal =
+    document.getElementById(
+      "chartZoomModal"
+    );
+
+  if(!modal){
+    return;
+  }
+
+  try{
+    if(
+      document.getElementById(
+        "chartZoomCanvas"
+      ) &&
+      document.getElementById(
+        "chartZoomCanvas"
+      )._zoomChart
+    ){
+      document
+        .getElementById(
+          "chartZoomCanvas"
+        )
+        ._zoomChart
+        .destroy();
+    }
+  }catch(e){}
+
+  activeChartZoomInstance=null;
+  activeChartZoomSourceCanvas=null;
+
+  modal.classList.remove("is-open");
+  modal.setAttribute("aria-hidden","true");
+  document.body.style.overflow="";
+}
+
+function initAllChartZoom(){
+
+  document.addEventListener(
+    "click",
+    event=>{
+
+      if(
+        event.target.closest(
+          ".chart-zoom-modal"
+        )
+      ){
+        return;
+      }
+
+      const canvas =
+        findClosestChartCanvas(
+          event.target
+        );
+
+      if(!canvas){
+        return;
+      }
+
+      /*
+        Các canvas trong modal không được mở lại chính nó.
+      */
+      if(
+        event.target.id ===
+        "chartZoomCanvas"
+      ){
+        return;
+      }
+
+      /*
+        Chỉ áp dụng cho các chart thực.
+      */
+      const chart =
+        getChartInstanceFromCanvas(
+          canvas
+        );
+
+      if(!chart){
+        return;
+      }
+
+      openChartZoomFromCanvas(
+        canvas
+      );
+
+    }
+  );
+
+  document.addEventListener(
+    "keydown",
+    event=>{
+      if(
+        event.key==="Escape"
+      ){
+        closeChartZoom();
+      }
+    }
+  );
+
+  const modal =
+    document.getElementById(
+      "chartZoomModal"
+    );
+
+  if(modal){
+    modal.addEventListener(
+      "click",
+      event=>{
+        if(
+          event.target.dataset &&
+          event.target.dataset.chartZoomClose
+        ){
+          closeChartZoom();
+        }
+      }
+    );
+  }
+}
+
+document.addEventListener(
+  "DOMContentLoaded",
+  initAllChartZoom
+);
+</script>
 
 </body>
   </html>
