@@ -6179,6 +6179,1131 @@
   overflow:visible !important;
 }
 
+
+/* ===== BẢNG SOC + SOC HOME QUÁ 24H / 72H CHƯA BYPASS ===== */
+.huyen-soc-bypass-report{
+  min-width:0 !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+}
+
+.huyen-soc-report-title{
+  font-size:13px;
+  font-weight:800;
+  color:#b91c1c;
+  line-height:1.2;
+  margin-bottom:2px;
+}
+
+.huyen-soc-report-sub{
+  color:#1d4ed8;
+  font-size:10px;
+  font-weight:800;
+  margin-bottom:5px;
+}
+
+.huyen-soc-report-summary{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:5px;
+}
+
+.huyen-soc-report-summary span{
+  padding:3px 7px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:800;
+  background:#fff;
+}
+
+.huyen-soc-summary-24{
+  color:#b45309;
+  border:1px solid #fde68a;
+}
+
+.huyen-soc-summary-72{
+  color:#b91c1c;
+  border:1px solid #fecaca;
+}
+
+.huyen-soc-report-note{
+  color:#64748b;
+  font-size:9px;
+  line-height:1.35;
+  margin-bottom:6px;
+}
+
+.huyen-soc-report-table-wrap{
+  max-height:285px;
+  overflow:auto;
+  border:1px solid #e2e8f0;
+  border-radius:6px;
+}
+
+.huyen-soc-report-table{
+  width:100%;
+  min-width:620px;
+  border-collapse:collapse;
+  table-layout:fixed;
+  font-size:9px;
+}
+
+.huyen-soc-report-table th{
+  position:sticky;
+  top:0;
+  z-index:3;
+  background:#eff6ff;
+  color:#334155;
+  font-weight:800;
+  padding:5px 4px;
+  border-bottom:1px solid #dbe3ec;
+  white-space:nowrap;
+}
+
+.huyen-soc-report-table td{
+  padding:5px 4px;
+  vertical-align:top;
+  border-bottom:1px solid #eef2f7;
+  color:#334155;
+  background:#fff;
+}
+
+.huyen-soc-level{
+  display:inline-block;
+  padding:2px 4px;
+  border-radius:5px;
+  font-size:8px;
+  font-weight:900;
+}
+
+.huyen-soc-level.warning{
+  color:#b45309;
+  background:#fef3c7;
+}
+
+.huyen-soc-level.danger{
+  color:#b91c1c;
+  background:#fee2e2;
+}
+
+.huyen-soc-account{
+  color:#1d4ed8;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+
+.huyen-soc-nv{
+  color:#64748b;
+  font-size:8px;
+  margin-top:2px;
+  overflow-wrap:anywhere;
+}
+
+.huyen-soc-hours{
+  text-align:center;
+  color:#b91c1c;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.huyen-soc-bypass{
+  text-align:center;
+  color:#b91c1c !important;
+  font-weight:900;
+  background:#fff7f7 !important;
+}
+
+.huyen-soc-report-empty{
+  padding:20px 10px;
+  text-align:center;
+  color:#15803d;
+  background:#f0fdf4;
+  font-size:10px;
+  font-weight:700;
+}
+
+@media(min-width:1201px){
+  #huyenTrendGrid{
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:8px !important;
+    align-items:stretch !important;
+  }
+}
+
+@media(max-width:1200px) and (min-width:701px){
+  #huyenTrendGrid{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:8px !important;
+  }
+}
+
+@media(max-width:700px){
+  #huyenTrendGrid{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+  }
+
+  .huyen-soc-report-table-wrap{
+    max-height:320px;
+  }
+}
+
+
+.huyen-soc-summary-24-not,
+.huyen-soc-summary-72-not{
+  color:#b91c1c;
+  border:1px solid #fecaca;
+}
+
+.huyen-soc-summary-24-done,
+.huyen-soc-summary-72-done{
+  color:#15803d;
+  border:1px solid #bbf7d0;
+}
+
+.huyen-soc-bypass.is-bypassed{
+  color:#15803d !important;
+  background:#f0fdf4 !important;
+  text-align:center;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.huyen-soc-bypass.is-not-bypassed{
+  background:#fff !important;
+}
+
+
+/* ===== TỔNG SOC + SOC HOME 2 THÁNG - MỨC TỈNH ===== */
+.soc-2month-summary{
+  width:100%;
+  box-sizing:border-box;
+  margin:0 0 10px 0;
+  padding:10px;
+  border:1px solid #dbe3ec;
+  border-radius:9px;
+  background:#fff;
+}
+
+.soc-2month-summary-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:8px;
+}
+
+.soc-2month-summary-title{
+  font-size:13px;
+  font-weight:800;
+  color:#111827;
+}
+
+.soc-2month-summary-badge{
+  padding:4px 8px;
+  border-radius:999px;
+  background:#eff6ff;
+  color:#1d4ed8;
+  font-size:10px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.soc-2month-summary-grid{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:7px;
+}
+
+.soc-2month-stat{
+  min-width:0;
+  padding:8px;
+  border:1px solid #dbe3ec;
+  border-radius:7px;
+  background:#f8fafc;
+}
+
+.soc-2month-stat.green{
+  background:#f0fdf4;
+  border-color:#bbf7d0;
+}
+
+.soc-2month-stat.red{
+  background:#fff7f7;
+  border-color:#fecaca;
+}
+
+.soc-2month-stat-label{
+  color:#64748b;
+  font-size:9px;
+  font-weight:800;
+  line-height:1.2;
+}
+
+.soc-2month-stat-value{
+  margin-top:3px;
+  color:#111827;
+  font-size:18px;
+  font-weight:900;
+}
+
+.soc-2month-stat.green .soc-2month-stat-value{
+  color:#15803d;
+}
+
+.soc-2month-stat.red .soc-2month-stat-value{
+  color:#b91c1c;
+}
+
+@media(max-width:1200px){
+  .soc-2month-summary-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+
+@media(max-width:700px){
+  .soc-2month-summary{
+    padding:8px;
+  }
+
+  .soc-2month-summary-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .soc-2month-summary-title{
+    font-size:11px;
+  }
+
+  .soc-2month-stat-value{
+    font-size:16px;
+  }
+}
+
+
+/* ===== LINE SOC + SOC HOME THEO HUYỆN ===== */
+.huyen-soc-bypass-line-box{
+  width:100% !important;
+  box-sizing:border-box !important;
+  margin-bottom:10px !important;
+}
+
+.huyen-soc-bypass-line-title{
+  font-size:14px;
+  font-weight:800;
+  color:#111827;
+  margin-bottom:3px;
+}
+
+.huyen-soc-bypass-line-sub{
+  color:#64748b;
+  font-size:9px;
+  line-height:1.35;
+  margin-bottom:5px;
+}
+
+#huyenSocBypassLineWrap{
+  position:relative;
+  height:340px;
+  width:100%;
+}
+
+#huyenSocBypassLineChart{
+  display:block;
+  width:100% !important;
+  height:100% !important;
+}
+
+@media(max-width:700px){
+  .huyen-soc-bypass-line-title{
+    font-size:12px;
+  }
+
+  #huyenSocBypassLineWrap{
+    height:310px;
+  }
+}
+
+
+/* ===== BIỂU ĐỒ SOC + SOC HOME THEO HUYỆN - KÍCH THƯỚC NHỎ ===== */
+.huyen-soc-bypass-line-box{
+  margin-top:6px !important;
+  margin-bottom:8px !important;
+  padding:8px !important;
+}
+
+.huyen-soc-bypass-line-title{
+  font-size:11px !important;
+  line-height:1.2 !important;
+  margin-bottom:2px !important;
+}
+
+.huyen-soc-bypass-line-sub{
+  font-size:8px !important;
+  margin-bottom:3px !important;
+}
+
+#huyenSocBypassLineWrap{
+  height:190px !important;
+  min-height:190px !important;
+}
+
+#huyenSocBypassLineChart{
+  height:190px !important;
+  min-height:190px !important;
+}
+
+@media(max-width:700px){
+  .huyen-soc-bypass-line-box{
+    padding:6px !important;
+  }
+
+  .huyen-soc-bypass-line-title{
+    font-size:10px !important;
+  }
+
+  #huyenSocBypassLineWrap{
+    height:165px !important;
+    min-height:165px !important;
+  }
+
+  #huyenSocBypassLineChart{
+    height:165px !important;
+    min-height:165px !important;
+  }
+}
+
+
+/* ===== THAY BẢNG SOC+SOC HOME BẰNG BIỂU ĐỒ LINE ===== */
+@media(min-width:1201px){
+  #huyenTrendGrid{
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:8px !important;
+    align-items:stretch !important;
+  }
+
+  #huyenSocBypassLineBox{
+    grid-column:auto !important;
+  }
+}
+
+@media(max-width:1200px) and (min-width:701px){
+  #huyenTrendGrid{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:8px !important;
+  }
+}
+
+@media(max-width:700px){
+  #huyenTrendGrid{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* ===== CHI TIẾT CHỮ DƯỚI BIỂU ĐỒ SOC + SOC HOME ===== */
+.huyen-soc-bypass-line-summary{
+  margin-top:5px !important;
+}
+
+.huyen-soc-summary-title{
+  font-size:8px;
+  font-weight:800;
+  color:#334155;
+  margin-bottom:2px;
+}
+
+.huyen-soc-summary-note{
+  font-size:7px;
+  color:#64748b;
+  margin-bottom:4px;
+}
+
+.huyen-soc-summary-table-wrap{
+  max-height:140px;
+  overflow:auto;
+  border:1px solid #e2e8f0;
+  border-radius:5px;
+}
+
+.huyen-soc-summary-table{
+  width:100%;
+  min-width:610px;
+  border-collapse:collapse;
+  font-size:8px;
+  background:#fff;
+}
+
+.huyen-soc-summary-table th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  background:#eff6ff;
+  color:#334155;
+  padding:3px 2px;
+  border-bottom:1px solid #dbe3ec;
+  white-space:nowrap;
+}
+
+.huyen-soc-summary-table td{
+  padding:3px 2px;
+  border-bottom:1px solid #eef2f7;
+  text-align:center;
+  white-space:nowrap;
+}
+
+.huyen-soc-summary-table td:first-child{
+  text-align:left;
+  font-weight:700;
+}
+
+.huyen-soc-summary-table .done{
+  color:#15803d;
+  font-weight:900;
+  background:#f0fdf4;
+}
+
+.huyen-soc-summary-table .pending{
+  color:#b91c1c;
+  font-weight:900;
+  background:#fff7f7;
+}
+
+
+/* ===== ZOOM: BẢNG CHỮ PHÓNG TO CÙNG BIỂU ĐỒ ===== */
+.chart-zoom-body{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:8px !important;
+}
+
+.chart-zoom-summary{
+  width:100%;
+  box-sizing:border-box;
+  overflow:auto;
+  max-height:32vh;
+  background:#fff;
+}
+
+.chart-zoom-summary .huyen-soc-bypass-line-summary{
+  margin-top:0 !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-table-wrap{
+  max-height:260px !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-table{
+  font-size:11px !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-table th,
+.chart-zoom-summary .huyen-soc-summary-table td{
+  padding:6px 5px !important;
+}
+
+@media(max-width:700px){
+  .chart-zoom-summary{
+    max-height:38vh;
+  }
+
+  .chart-zoom-summary .huyen-soc-summary-table{
+    min-width:680px !important;
+    font-size:9px !important;
+  }
+}
+
+
+/* ===== PHÓNG TO: HIỂN THỊ ĐỦ 13 HUYỆN + SUBTOTAL ===== */
+.chart-zoom-dialog{
+  width:min(1800px,98vw) !important;
+  height:96vh !important;
+  max-height:96vh !important;
+}
+
+.chart-zoom-body{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:8px !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+}
+
+.chart-zoom-canvas-wrap{
+  flex:1 1 auto !important;
+  min-height:320px !important;
+}
+
+.chart-zoom-summary{
+  flex:0 0 auto !important;
+  width:100% !important;
+  max-height:none !important;
+  overflow:visible !important;
+  box-sizing:border-box !important;
+  background:#fff !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-title{
+  font-size:12px !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-note{
+  font-size:9px !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-table-wrap{
+  max-height:none !important;
+  overflow:visible !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-table{
+  width:100% !important;
+  min-width:0 !important;
+  font-size:11px !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-table th,
+.chart-zoom-summary .huyen-soc-summary-table td{
+  padding:5px 6px !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-subtotal td{
+  font-weight:900 !important;
+  background:#eaf3ff !important;
+  color:#0f172a !important;
+  border-top:2px solid #94a3b8 !important;
+  border-bottom:1px solid #cbd5e1 !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-subtotal td.done{
+  background:#dcfce7 !important;
+  color:#15803d !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-subtotal td.pending{
+  background:#fee2e2 !important;
+  color:#b91c1c !important;
+}
+
+@media(max-width:700px){
+  .chart-zoom-dialog{
+    width:99vw !important;
+    height:96vh !important;
+    max-height:96vh !important;
+  }
+
+  .chart-zoom-canvas-wrap{
+    min-height:260px !important;
+  }
+
+  .chart-zoom-summary{
+    overflow:auto !important;
+  }
+
+  .chart-zoom-summary .huyen-soc-summary-table-wrap{
+    overflow:visible !important;
+  }
+
+  .chart-zoom-summary .huyen-soc-summary-table{
+    min-width:760px !important;
+    font-size:9px !important;
+  }
+}
+
+
+/* ===== TỶ LỆ TRONG BẢNG ===== */
+.huyen-soc-summary-table .count-main{
+  font-size:1em;
+  font-weight:800;
+  line-height:1.05;
+}
+
+.huyen-soc-summary-table .count-rate{
+  margin-top:2px;
+  font-size:8px;
+  font-weight:700;
+  line-height:1;
+  opacity:.9;
+}
+
+@media(max-width:700px){
+  .huyen-soc-summary-table .count-rate{
+    font-size:7px;
+  }
+}
+
+
+/* ===== ZOOM SOC: ƯU TIÊN HIỂN THỊ ĐỦ 13 HUYỆN ===== */
+.chart-zoom-dialog{
+  height:98vh !important;
+  max-height:98vh !important;
+  margin:1vh auto 0 !important;
+}
+
+.chart-zoom-body{
+  display:flex !important;
+  flex-direction:column !important;
+  min-height:0 !important;
+  overflow:auto !important;
+  padding:8px !important;
+}
+
+.chart-zoom-canvas-wrap{
+  flex:0 0 320px !important;
+  height:320px !important;
+  min-height:320px !important;
+}
+
+#chartZoomCanvas{
+  width:100% !important;
+  height:100% !important;
+}
+
+.chart-zoom-summary{
+  flex:0 0 auto !important;
+  width:100% !important;
+  max-height:none !important;
+  overflow:visible !important;
+  margin-top:4px !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-title{
+  font-size:11px !important;
+  margin-bottom:2px !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-note{
+  font-size:8px !important;
+  margin-bottom:3px !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-table-wrap{
+  max-height:none !important;
+  overflow:visible !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-table{
+  width:100% !important;
+  min-width:0 !important;
+  font-size:10px !important;
+  table-layout:fixed !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-table th{
+  height:27px !important;
+  padding:4px 4px !important;
+  white-space:nowrap !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-table td{
+  height:28px !important;
+  padding:3px 4px !important;
+  white-space:nowrap !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-table .count-main{
+  font-size:10px !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-table .count-rate{
+  font-size:7px !important;
+}
+
+.chart-zoom-summary .huyen-soc-summary-subtotal td{
+  height:32px !important;
+}
+
+@media(max-width:700px){
+  .chart-zoom-dialog{
+    height:100vh !important;
+    max-height:100vh !important;
+    margin:0 !important;
+  }
+
+  .chart-zoom-canvas-wrap{
+    flex:0 0 260px !important;
+    height:260px !important;
+    min-height:260px !important;
+  }
+
+  .chart-zoom-summary .huyen-soc-summary-table{
+    min-width:760px !important;
+    font-size:9px !important;
+    table-layout:auto !important;
+  }
+
+  .chart-zoom-summary .huyen-soc-summary-table th{
+    height:26px !important;
+  }
+
+  .chart-zoom-summary .huyen-soc-summary-table td{
+    height:27px !important;
+  }
+}
+
+
+/* ===== CĂN THẲNG BIỂU ĐỒ HUYỆN VỚI 2 BIỂU ĐỒ TKM/SC ===== */
+#huyenSocBypassLineBox{
+  display:flex !important;
+  flex-direction:column !important;
+  min-height:0 !important;
+}
+
+#huyenSocBypassLineBox .huyen-soc-bypass-line-title{
+  height:18px !important;
+  min-height:18px !important;
+  line-height:18px !important;
+  margin:0 !important;
+  overflow:hidden !important;
+  white-space:nowrap !important;
+}
+
+#huyenSocBypassLineBox .huyen-soc-bypass-line-sub{
+  height:12px !important;
+  min-height:12px !important;
+  line-height:12px !important;
+  margin:0 !important;
+  overflow:hidden !important;
+  white-space:nowrap !important;
+}
+
+#huyenSocBypassLineBox #huyenSocBypassLineWrap{
+  margin-top:0 !important;
+  height:190px !important;
+  min-height:190px !important;
+}
+
+#huyenSocBypassLineBox .huyen-soc-bypass-line-summary{
+  margin-top:4px !important;
+}
+
+/* Desktop: giữ card thứ 3 cùng chiều cao tổng quan với 2 card bên cạnh */
+@media(min-width:1201px){
+  #huyenTrendGrid > #huyenSocBypassLineBox{
+    align-self:start !important;
+  }
+}
+
+/* Mobile vẫn cho phép title xuống dòng khi cần */
+@media(max-width:700px){
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-title{
+    height:auto !important;
+    min-height:18px !important;
+    line-height:1.2 !important;
+    white-space:normal !important;
+  }
+
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-sub{
+    height:auto !important;
+    min-height:11px !important;
+    white-space:normal !important;
+  }
+}
+
+
+/* ===== CĂN THẲNG 3 CARD: 2 BIỂU ĐỒ THÁNG + BIỂU ĐỒ SOC/SOC HOME ===== */
+@media(min-width:1201px){
+
+  #huyenTrendGrid{
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:8px !important;
+    align-items:start !important;
+  }
+
+  #huyenTrendGrid > .chart-box{
+    box-sizing:border-box !important;
+    min-width:0 !important;
+  }
+
+  /*
+    Card SOC/SOC HOME dùng cùng khoảng đầu card với 2 card tháng.
+    Ép phần title + subtitle + legend về cùng một khối cố định.
+  */
+  #huyenSocBypassLineBox{
+    padding-top:8px !important;
+  }
+
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-title{
+    height:18px !important;
+    min-height:18px !important;
+    line-height:18px !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:flex !important;
+    align-items:center !important;
+  }
+
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-sub{
+    height:12px !important;
+    min-height:12px !important;
+    line-height:12px !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+
+  /*
+    Legend của Chart.js nằm phía trong canvas, nên không thể
+    chỉnh bằng CSS ngoài canvas. Tạo khoảng canvas cố định
+    để đỉnh plot của chart 3 trùng với 2 chart tháng.
+  */
+  #huyenSocBypassLineBox #huyenSocBypassLineWrap{
+    position:relative !important;
+    margin-top:0 !important;
+    height:190px !important;
+    min-height:190px !important;
+  }
+
+  /*
+    Giữ toàn bộ chart card không bị bảng bên dưới kéo lệch.
+  */
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-summary{
+    margin-top:4px !important;
+  }
+}
+
+/*
+  Nếu 2 card tháng có wrapper title/legend cao hơn, cân lại toàn grid
+  bằng cùng min-height ở phần chart đầu.
+*/
+@media(min-width:1201px){
+  #huyenTrendGrid > .chart-box:not(#huyenSocBypassLineBox){
+    padding-top:8px !important;
+  }
+}
+
+
+/* ===== LEGEND RIÊNG: KHÔNG LÀM LỆCH 3 BIỂU ĐỒ ===== */
+#huyenSocBypassLineBox .huyen-soc-bypass-line-legend{
+  height:24px !important;
+  min-height:24px !important;
+  width:100% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:4px !important;
+  flex-wrap:nowrap !important;
+  overflow:hidden !important;
+  margin:0 !important;
+  padding:0 !important;
+  box-sizing:border-box !important;
+}
+
+#huyenSocBypassLineBox .huyen-soc-line-legend-item{
+  flex:0 0 auto !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:3px !important;
+  border:0 !important;
+  background:transparent !important;
+  padding:1px 2px !important;
+  margin:0 !important;
+  color:#64748b !important;
+  font-size:7px !important;
+  line-height:1 !important;
+  white-space:nowrap !important;
+  cursor:pointer !important;
+}
+
+#huyenSocBypassLineBox .huyen-soc-line-legend-dot{
+  width:8px !important;
+  height:8px !important;
+  border:2px solid !important;
+  border-radius:0 !important;
+  display:inline-block !important;
+  box-sizing:border-box !important;
+  flex:0 0 auto !important;
+}
+
+#huyenSocBypassLineBox .huyen-soc-line-legend-item.is-hidden{
+  opacity:.35 !important;
+}
+
+#huyenSocBypassLineBox #huyenSocBypassLineWrap{
+  height:190px !important;
+  min-height:190px !important;
+  margin-top:0 !important;
+}
+
+/* Đồng nhất chiều cao phần đầu card để plot bắt đầu cùng cao độ. */
+@media(min-width:1201px){
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-title{
+    height:18px !important;
+    min-height:18px !important;
+    line-height:18px !important;
+    margin:0 !important;
+  }
+
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-sub{
+    height:12px !important;
+    min-height:12px !important;
+    line-height:12px !important;
+    margin:0 !important;
+  }
+}
+
+@media(max-width:700px){
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-legend{
+    justify-content:flex-start !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+  }
+}
+
+
+/* ===== FINAL ALIGN: CARD 3 CÙNG CAO ĐỘ VỚI 2 CARD THÁNG ===== */
+@media(min-width:1201px){
+
+  #huyenTrendGrid{
+    align-items:start !important;
+  }
+
+  #huyenTrendGrid > .chart-box{
+    margin-top:0 !important;
+  }
+
+  #huyenSocBypassLineBox{
+    padding:8px !important;
+    box-sizing:border-box !important;
+    overflow:hidden !important;
+  }
+
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-title{
+    display:flex !important;
+    align-items:center !important;
+    height:22px !important;
+    min-height:22px !important;
+    line-height:22px !important;
+    margin:0 !important;
+    padding:0 !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+  }
+
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-legend{
+    height:22px !important;
+    min-height:22px !important;
+    line-height:22px !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:5px !important;
+    overflow:hidden !important;
+    white-space:nowrap !important;
+  }
+
+  #huyenSocBypassLineBox .huyen-soc-line-legend-item{
+    height:18px !important;
+    min-height:18px !important;
+    padding:0 1px !important;
+    margin:0 !important;
+    gap:3px !important;
+    font-size:7px !important;
+    line-height:18px !important;
+    flex:0 0 auto !important;
+    white-space:nowrap !important;
+  }
+
+  #huyenSocBypassLineBox .huyen-soc-line-legend-dot{
+    width:8px !important;
+    height:8px !important;
+    flex:0 0 8px !important;
+  }
+
+  #huyenSocBypassLineBox #huyenSocBypassLineWrap{
+    height:190px !important;
+    min-height:190px !important;
+    margin:0 !important;
+    position:relative !important;
+  }
+
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-summary{
+    margin-top:4px !important;
+  }
+}
+
+/* On mobile, allow legend to scroll horizontally instead of wrapping. */
+@media(max-width:700px){
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-legend{
+    justify-content:flex-start !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    flex-wrap:nowrap !important;
+  }
+}
+
+
+/* ===== DÒNG ĐIỀU HÀNH NGAY DƯỚI TIÊU ĐỀ BIỂU ĐỒ ===== */
+#huyenSocBypassLineBox .huyen-soc-bypass-line-headline{
+  height:18px !important;
+  min-height:18px !important;
+  line-height:18px !important;
+  margin:0 0 2px 0 !important;
+  padding:0 !important;
+  color:#334155 !important;
+  font-size:9px !important;
+  font-weight:700 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+#huyenSocBypassLineBox .huyen-soc-bypass-line-headline .headline-red{
+  color:#dc2626 !important;
+}
+
+@media(max-width:700px){
+  #huyenSocBypassLineBox .huyen-soc-bypass-line-headline{
+    font-size:8px !important;
+    white-space:normal !important;
+    height:auto !important;
+    min-height:16px !important;
+    line-height:1.25 !important;
+  }
+}
+
+
+#huyenSocBypassLineBox .huyen-soc-bypass-line-headline{
+  height:18px !important;
+  min-height:18px !important;
+  line-height:18px !important;
+  margin:0 0 2px 0 !important;
+  padding:0 !important;
+  font-size:9px !important;
+  font-weight:700 !important;
+  color:#334155 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+#huyenSocBypassLineBox .huyen-soc-bypass-line-headline .headline-red{
+  color:#dc2626 !important;
+}
+
+
+/* ===== TIÊU ĐỀ ZOOM BIỂU ĐỒ: HIỂN THỊ CẢ DÒNG N-1 ===== */
+#chartZoomTitle{
+  white-space:normal !important;
+  overflow:visible !important;
+  text-overflow:clip !important;
+  line-height:1.25 !important;
+  max-width:calc(100% - 52px) !important;
+}
+@media(max-width:700px){
+  #chartZoomTitle{
+    font-size:11px !important;
+    line-height:1.2 !important;
+  }
+}
+
 </style>
   
   </head>
@@ -6449,6 +7574,9 @@
       gap:7px;
       margin:0 0 12px 0;
   "></div>
+
+
+
 
   <div id="huyenTrendGrid" class="chart-grid"></div>
 
@@ -10433,6 +11561,8 @@ function renderCharts(){
 
     renderHuyenTrendCharts();
 
+    renderSocSocHome2MonthProvinceSummary();
+
     initTrendDetailModal();
 
   }catch(error){
@@ -13066,7 +14196,1570 @@ onClick:function(event){
 
       });
 
+  
+
+      renderHuyenSocBypassLineChart();
+}
+
+
+
+  /*
+    BÁO CÁO 2 THÁNG SOC + SOC HOME
+    - Tổng 2 tháng
+    - >24H: tổng / đã bypass / chưa bypass
+    - >72H: tổng / đã bypass / chưa bypass
+    - Cấp TỈNH hiển thị phía trên
+    - Cấp HUYỆN dùng huyện đang chọn
+  */
+  function getSocSocHomeBypassStats(rows){
+
+      const norm =
+          v =>
+              String(v ?? "")
+                  .replace(/\u00A0/g," ")
+                  .replace(/\s+/g," ")
+                  .trim()
+                  .toUpperCase();
+
+      const parseHours =
+          value => {
+
+              if(
+                  value===null ||
+                  value===undefined ||
+                  String(value).trim()===""
+              ){
+                  return 0;
+              }
+
+              const raw =
+                  String(value)
+                      .trim()
+                      .replace(",", ".");
+
+              if(
+                  /^[+-]?\d+(?:\.\d+)?$/.test(raw)
+              ){
+                  const n=Number(raw);
+                  return Number.isFinite(n) ? n : 0;
+              }
+
+              const m =
+                  raw.match(
+                      /(?:\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4})?\s*(\d{1,3}):(\d{2})(?::(\d{2}))?/
+                  );
+
+              if(m){
+                  return (
+                      Number(m[1]||0) +
+                      Number(m[2]||0)/60 +
+                      Number(m[3]||0)/3600
+                  );
+              }
+
+              return 0;
+
+          };
+
+      const allBypass =
+          Array.isArray(allAccounts)
+              ? allAccounts
+              : [];
+
+      const base =
+          (Array.isArray(rows)
+              ? rows
+              : []
+          )
+          .filter(
+              row =>{
+                  const sc =
+                      norm(row?.sc);
+
+                  return (
+                      sc==="SOC" ||
+                      sc==="SOC HOME"
+                  );
+              }
+          )
+          .map(
+              row => {
+
+                  const account =
+                      String(
+                          row?.account || ""
+                      )
+                      .trim()
+                      .toUpperCase();
+
+                  const sc =
+                      norm(row?.sc);
+
+                  const bypass =
+                      allBypass.find(
+                          item =>
+                              String(
+                                  item?.account || ""
+                              )
+                              .trim()
+                              .toUpperCase()===account
+                              &&
+                              norm(item?.check)===sc
+                      );
+
+                  const hours =
+                      parseHours(
+                          row?.tg
+                      );
+
+                  return {
+                      row,
+                      hours,
+                      bypass:
+                          bypass || null
+                  };
+
+              }
+          );
+
+      const gt24 =
+          base.filter(
+              x =>
+                  x.hours > 24
+          );
+
+      const gt72 =
+          base.filter(
+              x =>
+                  x.hours > 72
+          );
+
+      return {
+          total:
+              base.length,
+
+          gt24Total:
+              gt24.length,
+
+          gt24Bypass:
+              gt24.filter(
+                  x=>!!x.bypass
+              ).length,
+
+          gt24NoBypass:
+              gt24.filter(
+                  x=>!x.bypass
+              ).length,
+
+          gt72Total:
+              gt72.length,
+
+          gt72Bypass:
+              gt72.filter(
+                  x=>!!x.bypass
+              ).length,
+
+          gt72NoBypass:
+              gt72.filter(
+                  x=>!x.bypass
+              ).length
+      };
+
   }
+
+  function renderSocSocHome2MonthProvinceSummary(){
+
+      const section =
+          document.getElementById(
+              "huyenTrendSection"
+          );
+
+      if(!section){
+          return;
+      }
+
+      const old =
+          document.getElementById(
+              "provinceSoc2MonthSummary"
+          );
+
+      if(old){
+          old.remove();
+      }
+
+      const stats =
+          getSocSocHomeBypassStats(
+              tonsc
+          );
+
+      const panel =
+          document.createElement(
+              "div"
+          );
+
+      panel.id =
+          "provinceSoc2MonthSummary";
+
+      panel.className =
+          "soc-2month-summary soc-2month-summary-province";
+
+      panel.innerHTML = `
+        <div class="soc-2month-summary-head">
+          <div class="soc-2month-summary-title">
+            🌐 SOC + SOC HOME — MỨC TỈNH / 2 THÁNG
+          </div>
+
+          <div class="soc-2month-summary-badge">
+            TỔNG: ${stats.total}
+          </div>
+        </div>
+
+        <div class="soc-2month-summary-grid">
+
+          <div class="soc-2month-stat">
+            <div class="soc-2month-stat-label">
+              >24H • TỔNG
+            </div>
+            <div class="soc-2month-stat-value">
+              ${stats.gt24Total}
+            </div>
+          </div>
+
+          <div class="soc-2month-stat green">
+            <div class="soc-2month-stat-label">
+              >24H • ĐÃ BYPASS
+            </div>
+            <div class="soc-2month-stat-value">
+              ${stats.gt24Bypass}
+            </div>
+          </div>
+
+          <div class="soc-2month-stat red">
+            <div class="soc-2month-stat-label">
+              >24H • CHƯA BYPASS
+            </div>
+            <div class="soc-2month-stat-value">
+              ${stats.gt24NoBypass}
+            </div>
+          </div>
+
+          <div class="soc-2month-stat">
+            <div class="soc-2month-stat-label">
+              >72H • TỔNG
+            </div>
+            <div class="soc-2month-stat-value">
+              ${stats.gt72Total}
+            </div>
+          </div>
+
+          <div class="soc-2month-stat green">
+            <div class="soc-2month-stat-label">
+              >72H • ĐÃ BYPASS
+            </div>
+            <div class="soc-2month-stat-value">
+              ${stats.gt72Bypass}
+            </div>
+          </div>
+
+          <div class="soc-2month-stat red">
+            <div class="soc-2month-stat-label">
+              >72H • CHƯA BYPASS
+            </div>
+            <div class="soc-2month-stat-value">
+              ${stats.gt72NoBypass}
+            </div>
+          </div>
+
+        </div>
+      `;
+
+      /*
+        Chèn ngay trên phần MỨC HUYỆN.
+      */
+      section.appendChild(
+          panel
+      );
+
+  }
+
+
+
+  /*
+    LINE CHART: SOC + SOC HOME THEO HUYỆN
+    6 đường:
+      >24H TỔNG / ĐÃ BYPASS / CHƯA BYPASS
+      >72H TỔNG / ĐÃ BYPASS / CHƯA BYPASS
+    Xác định BYPASS:
+      - cột bypass có nội dung => ĐÃ BYPASS
+      - cột bypass trống => CHƯA BYPASS
+  */
+  let huyenSocBypassLineChart = null;
+
+  function renderHuyenSocBypassLineChart(){
+
+      const grid =
+          document.getElementById(
+              "huyenTrendGrid"
+          );
+
+      if(!grid){
+          return;
+      }
+
+      /*
+        Biểu đồ này thay thế đúng vị trí bảng
+        SOC + SOC HOME >24H / >72H cũ.
+        Luôn đặt SAU 2 biểu đồ TKM & SC theo tháng.
+      */
+      const oldBox =
+          document.getElementById(
+              "huyenSocBypassLineBox"
+          );
+
+      if(oldBox){
+          oldBox.remove();
+      }
+
+      const box =
+          document.createElement("div");
+
+      box.id =
+          "huyenSocBypassLineBox";
+
+      box.className =
+          "chart-box huyen-soc-bypass-line-box";
+
+      box.innerHTML = `
+        <div class="huyen-soc-bypass-line-title">
+          📈 SOC + SOC HOME QUÁ 24H / 72H THEO HUYỆN
+        </div>
+
+        <div id="huyenSocBypassLineHeadline"
+             class="huyen-soc-bypass-line-headline">
+        </div>
+
+        <div id="huyenSocBypassLineLegend"
+             class="huyen-soc-bypass-line-legend">
+        </div>
+
+        <div id="huyenSocBypassLineWrap">
+          <canvas id="huyenSocBypassLineChart"></canvas>
+        </div>
+      `;
+
+      grid.appendChild(
+          box
+      );
+
+      const target =
+          document.getElementById(
+              "huyenSocBypassLineWrap"
+          );
+
+      if(!target){
+          return;
+      }
+
+      if(huyenSocBypassLineChart){
+          try{
+              huyenSocBypassLineChart.destroy();
+          }catch(e){}
+          huyenSocBypassLineChart = null;
+      }
+
+      const norm =
+          v =>
+              String(v ?? "")
+                  .replace(/\u00A0/g," ")
+                  .replace(/\s+/g," ")
+                  .trim()
+                  .toUpperCase();
+
+      const parseHours =
+          value => {
+
+              if(
+                  value===null ||
+                  value===undefined ||
+                  String(value).trim()===""
+              ){
+                  return 0;
+              }
+
+              const raw =
+                  String(value)
+                      .trim()
+                      .replace(",", ".");
+
+              if(
+                  /^[+-]?\d+(?:\.\d+)?$/.test(raw)
+              ){
+                  const n=Number(raw);
+                  return Number.isFinite(n) ? n : 0;
+              }
+
+              const m =
+                  raw.match(
+                      /(?:\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4})?\s*(\d{1,3}):(\d{2})(?::(\d{2}))?/
+                  );
+
+              if(m){
+                  return (
+                      Number(m[1]||0) +
+                      Number(m[2]||0)/60 +
+                      Number(m[3]||0)/3600
+                  );
+              }
+
+              return 0;
+          };
+
+      const allBypass =
+          Array.isArray(allAccounts)
+              ? allAccounts
+              : [];
+
+      /*
+        Danh sách cố định đủ 13 huyện/địa bàn.
+        Huyện không có dữ liệu vẫn phải hiển thị 0.
+      */
+      const huyens = [
+          "An Khê",
+          "Ayun Pa",
+          "Chư Prông",
+          "Chư Sê",
+          "Đắk Đoa",
+          "Hoài Nhơn",
+          "Ia Grai",
+          "Kbang",
+          "Phù Cát",
+          "Pleiku",
+          "Quy Nhơn",
+          "Tây Sơn",
+          "Tuy Phước"
+      ];
+
+      const stats = {};
+
+      huyens.forEach(
+          h=>{
+              stats[h]={
+                  gt24Total:0,
+                  gt24Bypass:0,
+                  gt24NoBypass:0,
+                  gt72Total:0,
+                  gt72Bypass:0,
+                  gt72NoBypass:0
+              };
+          }
+      );
+
+      /*
+        Tính theo từng huyện.
+        Tổng = toàn bộ SOC + SOC HOME đạt ngưỡng.
+        Không loại các dòng đã bypass.
+      */
+      (Array.isArray(tonsc) ? tonsc : [])
+          .forEach(
+              row=>{
+
+                  const loai =
+                      norm(row?.sc);
+
+                  if(
+                      loai!=="SOC" &&
+                      loai!=="SOC HOME"
+                  ){
+                      return;
+                  }
+
+                  const h =
+                      String(
+                          row?.huyen || ""
+                      ).trim();
+
+                  if(!stats[h]){
+                      return;
+                  }
+
+                  const hours =
+                      parseHours(
+                          row?.tg
+                      );
+
+                  if(hours<=24){
+                      return;
+                  }
+
+                  const account =
+                      String(
+                          row?.account || ""
+                      )
+                      .trim()
+                      .toUpperCase();
+
+                  /*
+                    Bypass = cột bypass khác trống.
+                    Dữ liệu bypass được xác định từ allAccounts
+                    theo Account + đúng loại SOC/SOC HOME.
+                  */
+                  /*
+                    Cột BYPASS của bảng được xem là đã bypass
+                    khi cùng ACCOUNT có nội dung trong trường check/bypass.
+                    Không bắt buộc check phải bằng SOC/SOC HOME.
+                  */
+                  const bypassItem =
+                      allBypass.find(
+                          item =>
+                              String(
+                                  item?.account || ""
+                              )
+                              .trim()
+                              .toUpperCase()===account
+                              &&
+                              String(
+                                  item?.check || ""
+                              )
+                              .trim()!==""
+                      );
+
+                  const isBypass =
+                      !!bypassItem;
+
+                  stats[h].gt24Total++;
+
+                  if(isBypass){
+                      stats[h].gt24Bypass++;
+                  }else{
+                      stats[h].gt24NoBypass++;
+                  }
+
+                  if(hours>72){
+
+                      stats[h].gt72Total++;
+
+                      if(isBypass){
+                          stats[h].gt72Bypass++;
+                      }else{
+                          stats[h].gt72NoBypass++;
+                      }
+
+                  }
+
+              }
+          );
+
+      /*
+        Dòng điều hành ngay dưới tiêu đề:
+        SOC + SOC HOME tháng N-1 tồn bao nhiêu,
+        và tỷ lệ chưa bypass trong nhóm >24H.
+        Lấy tháng N-1 theo thời gian hiện tại của Dashboard.
+      */
+      const nowForHeadline =
+          new Date();
+
+      const n1Start =
+          new Date(
+              nowForHeadline.getFullYear(),
+              nowForHeadline.getMonth()-1,
+              1,
+              0,0,0,0
+          );
+
+      const n1End =
+          new Date(
+              nowForHeadline.getFullYear(),
+              nowForHeadline.getMonth(),
+              0,
+              23,59,59,999
+          );
+
+      const parseDateValue =
+          value => {
+
+              if(
+                  value instanceof Date &&
+                  !Number.isNaN(value.getTime())
+              ){
+                  return new Date(
+                      value.getTime()
+                  );
+              }
+
+              const raw =
+                  String(
+                      value ?? ""
+                  )
+                  .trim();
+
+              if(!raw){
+                  return null;
+              }
+
+              /*
+                Dữ liệu của Dashboard thường là:
+                DD/MM/YYYY hoặc DD-MM-YYYY.
+              */
+              let m =
+                  raw.match(
+                      /^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/
+                  );
+
+              if(m){
+
+                  const d =
+                      new Date(
+                          Number(m[3]),
+                          Number(m[2])-1,
+                          Number(m[1])
+                      );
+
+                  return Number.isNaN(
+                      d.getTime()
+                  )
+                      ? null
+                      : d;
+
+              }
+
+              /*
+                ISO: YYYY-MM-DD...
+              */
+              m =
+                  raw.match(
+                      /^(\d{4})-(\d{1,2})-(\d{1,2})/
+                  );
+
+              if(m){
+
+                  const d =
+                      new Date(
+                          Number(m[1]),
+                          Number(m[2])-1,
+                          Number(m[3])
+                      );
+
+                  return Number.isNaN(
+                      d.getTime()
+                  )
+                      ? null
+                      : d;
+
+              }
+
+              const d =
+                  new Date(
+                      raw
+                  );
+
+              return Number.isNaN(
+                  d.getTime()
+              )
+                  ? null
+                  : d;
+
+          };
+
+      const n1Rows =
+          (Array.isArray(tonsc) ? tonsc : [])
+              .filter(
+                  row => {
+
+                      const sc =
+                          norm(row?.sc);
+
+                      if(
+                          sc!=="SOC" &&
+                          sc!=="SOC HOME"
+                      ){
+                          return false;
+                      }
+
+                      /*
+                        Tồn theo tháng N-1:
+                        ưu tiên trường ngày hiện có trong dữ liệu.
+                      */
+                      const rawDate =
+                          row?.ngay ||
+                          row?.date ||
+                          row?.ntdn ||
+                          row?.createdAt ||
+                          row?.tgupdate ||
+                          "";
+
+                      const d =
+                          parseDateValue(
+                              rawDate
+                          );
+
+                      if(!d){
+                          return false;
+                      }
+
+                      return (
+                          d>=n1Start &&
+                          d<=n1End
+                      );
+
+                  }
+              );
+
+      const n1NoBypassRows =
+          n1Rows.filter(
+              row => {
+
+                  const account =
+                      String(
+                          row?.account || ""
+                      )
+                      .trim()
+                      .toUpperCase();
+
+                  const bypassItem =
+                      allBypass.find(
+                          item =>
+                              String(
+                                  item?.account || ""
+                              )
+                              .trim()
+                              .toUpperCase()===account
+                              &&
+                              String(
+                                  item?.check || ""
+                              )
+                              .trim()!==""
+                      );
+
+                  return !bypassItem;
+
+              }
+          );
+
+      const n1NoBypassRate =
+          n1Rows.length
+              ? (
+                  n1NoBypassRows.length /
+                  n1Rows.length *
+                  100
+                ).toFixed(1)+"%"
+              : "0.0%";
+
+      const n1MonthText =
+          `${String(
+              n1Start.getMonth()+1
+          ).padStart(2,"0")}/${n1Start.getFullYear()}`;
+
+      /*
+        Chỉ cập nhật headline SAU khi các biến N-1 đã được khởi tạo.
+      */
+      const headline =
+          document.getElementById(
+              "huyenSocBypassLineHeadline"
+          );
+
+      if(headline){
+
+          headline.innerHTML = `
+              SOC + SOC HOME THÁNG N-1 (${n1MonthText}):
+              <b>${n1Rows.length}</b> tồn
+              • Chưa bypass:
+              <b class="headline-red">${n1NoBypassRows.length}</b>
+              (<b class="headline-red">${n1NoBypassRate}</b>)
+          `;
+
+      }
+
+      const labels =
+          huyens.map(
+              h=>h
+          );
+
+      const datasets = [
+
+          {
+              label:">24H TỔNG",
+              data:
+                  labels.map(
+                      h=>stats[h].gt24Total
+                  ),
+              borderWidth:2.4,
+              pointRadius:3,
+              pointHoverRadius:5,
+              tension:0.22
+          },
+
+          {
+              label:">24H ĐÃ BYPASS",
+              data:
+                  labels.map(
+                      h=>stats[h].gt24Bypass
+                  ),
+              borderWidth:2,
+              pointRadius:2.5,
+              pointHoverRadius:5,
+              tension:0.22,
+              borderDash:[6,4]
+          },
+
+          {
+              label:">24H CHƯA BYPASS",
+              data:
+                  labels.map(
+                      h=>stats[h].gt24NoBypass
+                  ),
+              borderWidth:2,
+              pointRadius:2.5,
+              pointHoverRadius:5,
+              tension:0.22,
+              borderDash:[2,3]
+          },
+
+          {
+              label:">72H TỔNG",
+              data:
+                  labels.map(
+                      h=>stats[h].gt72Total
+                  ),
+              borderWidth:2.4,
+              pointRadius:3,
+              pointHoverRadius:5,
+              tension:0.22
+          },
+
+          {
+              label:">72H ĐÃ BYPASS",
+              data:
+                  labels.map(
+                      h=>stats[h].gt72Bypass
+                  ),
+              borderWidth:2,
+              pointRadius:2.5,
+              pointHoverRadius:5,
+              tension:0.22,
+              borderDash:[6,4]
+          },
+
+          {
+              label:">72H CHƯA BYPASS",
+              data:
+                  labels.map(
+                      h=>stats[h].gt72NoBypass
+                  ),
+              borderWidth:2,
+              pointRadius:2.5,
+              pointHoverRadius:5,
+              tension:0.22,
+              borderDash:[2,3]
+          }
+
+      ];
+
+      /*
+        Chart.js tự lấy màu mặc định.
+        Không cố định màu để giữ đồng bộ hệ thống dashboard.
+      */
+      const canvas =
+          document.getElementById(
+              "huyenSocBypassLineChart"
+          );
+
+      if(!canvas){
+          return;
+      }
+
+      huyenSocBypassLineChart =
+          new Chart(
+              canvas,
+              {
+                  type:"line",
+
+                  data:{
+                      labels,
+                      datasets
+                  },
+
+                  options:{
+                      responsive:true,
+                      maintainAspectRatio:false,
+
+                      interaction:{
+                          mode:"index",
+                          intersect:false
+                      },
+
+                      plugins:{
+                          legend:{
+                              display:false
+                          },
+
+                          tooltip:{
+                              mode:"index",
+                              intersect:false
+                          }
+                      },
+
+                      scales:{
+                          x:{
+                              title:{
+                                  display:true,
+                                  text:"Huyện"
+                              },
+
+                              ticks:{
+                                  autoSkip:false,
+                                  maxRotation:55,
+                                  minRotation:35,
+                                  font:{
+                                      size:9
+                                  }
+                              }
+                          },
+
+                          y:{
+                              beginAtZero:true,
+
+                              ticks:{
+                                  precision:0
+                              },
+
+                              title:{
+                                  display:true,
+                                  text:"Số lượng",
+                                  font:{
+                                      size:11,
+                                      weight:"bold"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          )
+
+      /*
+        Legend HTML cố định 1 hàng:
+        không để Chart.js tự xuống dòng làm lệch 3 card.
+      */
+      const legendHost =
+          document.getElementById(
+              "huyenSocBypassLineLegend"
+          );
+
+      if(legendHost){
+
+          legendHost.innerHTML="";
+
+          legendHost.className =
+              "huyen-soc-bypass-line-legend";
+
+          huyenSocBypassLineChart.data.datasets
+              .forEach(
+                  (ds,index)=>{
+
+                      const item =
+                          document.createElement(
+                              "button"
+                          );
+
+                      item.type="button";
+                      item.className =
+                          "huyen-soc-line-legend-item";
+
+                      const meta =
+                          huyenSocBypassLineChart.getDatasetMeta(
+                              index
+                          );
+
+                      const style =
+                          meta &&
+                          meta.controller &&
+                          typeof meta.controller.getStyle==="function"
+                              ? meta.controller.getStyle()
+                              : null;
+
+                      const color =
+                          style?.borderColor ||
+                          ds.borderColor ||
+                          "#94a3b8";
+
+                      const compactLabel =
+                          ({
+                              ">24H TỔNG": "24H Tổng",
+                              ">24H ĐÃ BYPASS": "24H BP",
+                              ">24H CHƯA BYPASS": "24H Chưa",
+                              ">72H TỔNG": "72H Tổng",
+                              ">72H ĐÃ BYPASS": "72H BP",
+                              ">72H CHƯA BYPASS": "72H Chưa"
+                          })[ds.label] || ds.label;
+
+                      item.title = ds.label;
+
+                      item.innerHTML = `
+                          <span
+                            class="huyen-soc-line-legend-dot"
+                            style="
+                              background:${color};
+                              border-color:${color};
+                            "
+                          ></span>
+                          <span class="huyen-soc-line-legend-label">
+                            ${compactLabel}
+                          </span>
+                      `;
+
+                      item.addEventListener(
+                          "click",
+                          ()=>{
+                              const visible =
+                                  huyenSocBypassLineChart.isDatasetVisible(
+                                      index
+                                  );
+
+                              huyenSocBypassLineChart.setDatasetVisibility(
+                                  index,
+                                  !visible
+                              );
+
+                              huyenSocBypassLineChart.update();
+
+                              item.classList.toggle(
+                                  "is-hidden",
+                                  visible
+                              );
+                          }
+                      );
+
+                      legendHost.appendChild(
+                          item
+                      );
+
+                  }
+              );
+
+      }
+
+;
+
+
+      /*
+        Hiển thị bằng chữ dưới biểu đồ để đối chiếu nhanh
+        từng huyện: Tổng / Đã bypass / Chưa bypass.
+      */
+      const oldSummary =
+          box.querySelector(
+              "#huyenSocBypassLineSummary"
+          );
+
+      if(oldSummary){
+          oldSummary.remove();
+      }
+
+      const summary =
+          document.createElement(
+              "div"
+          );
+
+      summary.id =
+          "huyenSocBypassLineSummary";
+
+      summary.className =
+          "huyen-soc-bypass-line-summary";
+      const pct =
+          (value,total)=>{
+              const n = Number(total)||0;
+
+              if(!n){
+                  return "0.0%";
+              }
+
+              return (
+                  (Number(value)||0) /
+                  n *
+                  100
+              ).toFixed(1)+"%";
+          };
+
+      const summaryRows =
+          labels.map(
+              h=>{
+                  const s = stats[h];
+
+                  return `
+                    <tr>
+                      <td>${h}</td>
+
+                      <td>
+                        <div class="count-main">${s.gt24Total}</div>
+                      </td>
+
+                      <td class="done">
+                        <div class="count-main">${s.gt24Bypass}</div>
+                        <div class="count-rate">${pct(s.gt24Bypass,s.gt24Total)}</div>
+                      </td>
+
+                      <td class="pending">
+                        <div class="count-main">${s.gt24NoBypass}</div>
+                        <div class="count-rate">${pct(s.gt24NoBypass,s.gt24Total)}</div>
+                      </td>
+
+                      <td>
+                        <div class="count-main">${s.gt72Total}</div>
+                      </td>
+
+                      <td class="done">
+                        <div class="count-main">${s.gt72Bypass}</div>
+                        <div class="count-rate">${pct(s.gt72Bypass,s.gt72Total)}</div>
+                      </td>
+
+                      <td class="pending">
+                        <div class="count-main">${s.gt72NoBypass}</div>
+                        <div class="count-rate">${pct(s.gt72NoBypass,s.gt72Total)}</div>
+                      </td>
+                    </tr>
+                  `;
+              }
+          ).join("");
+
+      const subtotal =
+          labels.reduce(
+              (acc,h)=>{
+                  const s = stats[h];
+
+                  acc.gt24Total += Number(s.gt24Total)||0;
+                  acc.gt24Bypass += Number(s.gt24Bypass)||0;
+                  acc.gt24NoBypass += Number(s.gt24NoBypass)||0;
+                  acc.gt72Total += Number(s.gt72Total)||0;
+                  acc.gt72Bypass += Number(s.gt72Bypass)||0;
+                  acc.gt72NoBypass += Number(s.gt72NoBypass)||0;
+
+                  return acc;
+              },
+              {
+                  gt24Total:0,
+                  gt24Bypass:0,
+                  gt24NoBypass:0,
+                  gt72Total:0,
+                  gt72Bypass:0,
+                  gt72NoBypass:0
+              }
+          );
+
+      const subtotalRow = `
+          <tr class="huyen-soc-summary-subtotal">
+            <td>SUBTOTAL</td>
+
+            <td>
+              <div class="count-main">${subtotal.gt24Total}</div>
+            </td>
+
+            <td class="done">
+              <div class="count-main">${subtotal.gt24Bypass}</div>
+              <div class="count-rate">${pct(subtotal.gt24Bypass,subtotal.gt24Total)}</div>
+            </td>
+
+            <td class="pending">
+              <div class="count-main">${subtotal.gt24NoBypass}</div>
+              <div class="count-rate">${pct(subtotal.gt24NoBypass,subtotal.gt24Total)}</div>
+            </td>
+
+            <td>
+              <div class="count-main">${subtotal.gt72Total}</div>
+            </td>
+
+            <td class="done">
+              <div class="count-main">${subtotal.gt72Bypass}</div>
+              <div class="count-rate">${pct(subtotal.gt72Bypass,subtotal.gt72Total)}</div>
+            </td>
+
+            <td class="pending">
+              <div class="count-main">${subtotal.gt72NoBypass}</div>
+              <div class="count-rate">${pct(subtotal.gt72NoBypass,subtotal.gt72Total)}</div>
+            </td>
+          </tr>
+      `;
+
+      summary.innerHTML = `
+        <div class="huyen-soc-summary-title">
+          CHI TIẾT: TỔNG / ĐÃ BYPASS / CHƯA BYPASS
+        </div>
+
+
+        <div class="huyen-soc-summary-table-wrap">
+          <table class="huyen-soc-summary-table">
+            <thead>
+              <tr>
+                <th>Huyện</th>
+                <th>&gt;24H Tổng</th>
+                <th>&gt;24H Đã bypass</th>
+                <th>&gt;24H Chưa</th>
+                <th>&gt;72H Tổng</th>
+                <th>&gt;72H Đã bypass</th>
+                <th>&gt;72H Chưa</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              ${subtotalRow}
+              ${summaryRows}
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      box.appendChild(
+          summary
+      );
+
+  }
+
+  function renderHuyenSocBypassReport(){
+
+      const grid =
+          document.getElementById(
+              "huyenTrendGrid"
+          );
+
+      if(!grid){
+          return;
+      }
+
+      const old =
+          document.getElementById(
+              "huyenSocBypassReport"
+          );
+
+      if(old){
+          old.remove();
+      }
+
+      const huyen =
+          String(
+              selectedHuyenTrend || ""
+          ).trim();
+
+      const norm =
+          v =>
+              String(v ?? "")
+                  .replace(/\u00A0/g," ")
+                  .replace(/\s+/g," ")
+                  .trim()
+                  .toUpperCase();
+
+      const parseHours =
+          value => {
+
+              if(
+                  value===null ||
+                  value===undefined ||
+                  String(value).trim()===""
+              ){
+                  return 0;
+              }
+
+              const raw =
+                  String(value)
+                      .trim()
+                      .replace(",", ".");
+
+              if(
+                  /^[+-]?\d+(?:\.\d+)?$/.test(raw)
+              ){
+                  const n=Number(raw);
+                  return Number.isFinite(n) ? n : 0;
+              }
+
+              const m =
+                  raw.match(
+                      /(?:\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4})?\s*(\d{1,3}):(\d{2})(?::(\d{2}))?/
+                  );
+
+              if(m){
+                  return (
+                      Number(m[1]||0) +
+                      Number(m[2]||0)/60 +
+                      Number(m[3]||0)/3600
+                  );
+              }
+
+              return 0;
+          };
+
+      const allBypass =
+          Array.isArray(allAccounts)
+              ? allAccounts
+              : [];
+
+      const districtRows =
+          (Array.isArray(tonsc) ? tonsc : [])
+              .filter(
+                  row =>
+                      norm(row?.huyen) ===
+                      norm(huyen)
+              );
+
+      const stats =
+          getSocSocHomeBypassStats(
+              districtRows
+          );
+
+      /*
+        Hiển thị chi tiết từng sự cố >24H,
+        cột BYPASS có giá trị = đã bypass,
+        trống = chưa bypass.
+      */
+      const rows =
+          districtRows
+              .filter(
+                  row =>{
+                      const sc =
+                          norm(row?.sc);
+
+                      return (
+                          (
+                              sc==="SOC" ||
+                              sc==="SOC HOME"
+                          )
+                          &&
+                          parseHours(row?.tg)>24
+                      );
+                  }
+              )
+              .map(
+                  row => {
+
+                      const account =
+                          String(
+                              row?.account || ""
+                          )
+                          .trim()
+                          .toUpperCase();
+
+                      const bypass =
+                          allBypass.find(
+                              item =>
+                                  String(
+                                      item?.account || ""
+                                  )
+                                  .trim()
+                                  .toUpperCase()===account
+                                  &&
+                                  norm(
+                                      item?.check
+                                  )===norm(
+                                      row?.sc
+                                  )
+                          );
+
+                      return {
+                          row,
+                          hours:
+                              parseHours(row?.tg),
+                          bypass:
+                              bypass || null
+                      };
+
+                  }
+              )
+              .sort(
+                  (a,b)=>
+                      b.hours-a.hours
+              );
+
+      const esc =
+          v =>
+              String(v ?? "")
+                  .replace(/&/g,"&amp;")
+                  .replace(/</g,"&lt;")
+                  .replace(/>/g,"&gt;")
+                  .replace(/"/g,"&quot;")
+                  .replace(/'/g,"&#039;");
+
+      let body="";
+
+      rows.forEach(
+          item => {
+
+              const row =
+                  item.row;
+
+              body += `
+                <tr>
+                  <td>
+                    <span class="huyen-soc-level ${
+                        item.hours>72
+                            ? "danger"
+                            : "warning"
+                    }">
+                      ${
+                          item.hours>72
+                              ? ">72H"
+                              : ">24H"
+                      }
+                    </span>
+                  </td>
+
+                  <td>
+                    ${esc(
+                        row?.ngay || "—"
+                    )}
+                  </td>
+
+                  <td>
+                    <div class="huyen-soc-account">
+                      ${esc(
+                          row?.account || "—"
+                      )}
+                    </div>
+                    <div class="huyen-soc-nv">
+                      ${esc(
+                          row?.nv || "—"
+                      )}
+                    </div>
+                  </td>
+
+                  <td>
+                    ${esc(
+                        row?.sc || "—"
+                    )}
+                  </td>
+
+                  <td class="huyen-soc-hours">
+                    ${Number(
+                        item.hours
+                    )
+                    .toFixed(1)
+                    .replace(".0","")}H
+                  </td>
+
+                  <td class="
+                      huyen-soc-bypass
+                      ${
+                          item.bypass
+                              ? "is-bypassed"
+                              : "is-not-bypassed"
+                      }
+                  ">
+                    ${
+                        item.bypass
+                            ? esc(
+                                item.bypass.check ||
+                                "ĐÃ BYPASS"
+                              )
+                            : ""
+                    }
+                  </td>
+                </tr>
+              `;
+
+          }
+      );
+
+      const panel =
+          document.createElement(
+              "div"
+          );
+
+      panel.id =
+          "huyenSocBypassReport";
+
+      panel.className =
+          "chart-box huyen-soc-bypass-report";
+
+      panel.innerHTML = `
+        <div class="huyen-soc-report-title">
+          🚨 SOC + SOC HOME — MỨC HUYỆN / 2 THÁNG
+        </div>
+
+        <div class="huyen-soc-report-sub">
+          ${esc(
+              huyen || "Huyện đang chọn"
+          )}
+          • TỔNG:
+          <b>${stats.total}</b>
+        </div>
+
+        <div class="huyen-soc-report-summary">
+
+          <span class="huyen-soc-summary-24">
+            >24H TỔNG:
+            <b>${stats.gt24Total}</b>
+          </span>
+
+          <span class="huyen-soc-summary-24-not">
+            >24H CHƯA BYPASS:
+            <b>${stats.gt24NoBypass}</b>
+          </span>
+
+          <span class="huyen-soc-summary-24-done">
+            >24H ĐÃ BYPASS:
+            <b>${stats.gt24Bypass}</b>
+          </span>
+
+          <span class="huyen-soc-summary-72">
+            >72H TỔNG:
+            <b>${stats.gt72Total}</b>
+          </span>
+
+          <span class="huyen-soc-summary-72-not">
+            >72H CHƯA BYPASS:
+            <b>${stats.gt72NoBypass}</b>
+          </span>
+
+          <span class="huyen-soc-summary-72-done">
+            >72H ĐÃ BYPASS:
+            <b>${stats.gt72Bypass}</b>
+          </span>
+
+        </div>
+
+        <div class="huyen-soc-report-note">
+          Cột BYPASS có nội dung = đã bypass;
+          ô trống = chưa bypass.
+        </div>
+
+        <div class="huyen-soc-report-table-wrap">
+
+          ${
+              rows.length
+                ? `
+                    <table class="huyen-soc-report-table">
+                      <thead>
+                        <tr>
+                          <th>MỨC</th>
+                          <th>NGÀY</th>
+                          <th>ACCOUNT / NV</th>
+                          <th>SỰ CỐ</th>
+                          <th>TG</th>
+                          <th>BYPASS</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        ${body}
+                      </tbody>
+                    </table>
+                  `
+                : `
+                    <div class="huyen-soc-report-empty">
+                      Không có SOC / SOC HOME >24H.
+                    </div>
+                  `
+          }
+
+        </div>
+      `;
+
+      grid.appendChild(
+          panel
+      );
+
+  }
+
+
+
+
+
+
 
 
 
@@ -16678,6 +19371,11 @@ const url =
       <div class="chart-zoom-canvas-wrap">
         <canvas id="chartZoomCanvas"></canvas>
       </div>
+
+      <div id="chartZoomSummary"
+           class="chart-zoom-summary"
+           aria-live="polite">
+      </div>
     </div>
   </div>
 </div>
@@ -16726,26 +19424,62 @@ function getChartZoomTitle(canvas, chart){
       canvas
     );
 
+  let baseTitle = "";
+
   if(host){
 
     const title =
       host.querySelector(
-        ".chart-title, .district-report-card-title, .chart-card-title, .district-total-7day-line-title"
+        ".chart-title, .district-report-card-title, .chart-card-title, .district-total-7day-line-title, .huyen-soc-bypass-line-title"
       );
 
     if(title){
 
-      const value =
+      baseTitle =
         String(
           title.textContent || ""
         )
         .replace(/\s+/g," ")
         .trim();
 
-      if(value){
-        return value;
+    }
+
+    /*
+      Riêng biểu đồ SOC + SOC HOME theo huyện:
+      đưa luôn dòng điều hành N-1 vào tiêu đề của
+      cửa sổ phóng to.
+    */
+    if(
+      canvas &&
+      canvas.id==="huyenSocBypassLineChart"
+    ){
+
+      const headline =
+        host.querySelector(
+          "#huyenSocBypassLineHeadline"
+        );
+
+      const headlineText =
+        String(
+          headline?.textContent || ""
+        )
+        .replace(/\s+/g," ")
+        .trim();
+
+      if(headlineText){
+
+        return (
+          baseTitle
+            ? baseTitle + " — " + headlineText
+            : headlineText
+        );
+
       }
 
+    }
+
+    if(baseTitle){
+      return baseTitle;
     }
 
   }
@@ -16834,6 +19568,11 @@ function openChartZoomFromCanvas(
       "chartZoomTitle"
     );
 
+  const summary =
+    document.getElementById(
+      "chartZoomSummary"
+    );
+
   if(
     !modal ||
     !zoomCanvas ||
@@ -16873,6 +19612,49 @@ function openChartZoomFromCanvas(
   }
 
   /*
+    Riêng biểu đồ SOC + SOC HOME theo huyện:
+    phóng to luôn cả bảng chữ bên dưới biểu đồ.
+  */
+  if(summary){
+
+    summary.innerHTML="";
+
+    if(
+      sourceCanvas.id ===
+      "huyenSocBypassLineChart"
+    ){
+
+      const host =
+        sourceCanvas.closest(
+          "#huyenSocBypassLineBox"
+        );
+
+      const sourceSummary =
+        host?.querySelector(
+          "#huyenSocBypassLineSummary"
+        );
+
+      if(sourceSummary){
+
+        const clonedSummary =
+          sourceSummary.cloneNode(
+            true
+          );
+
+        clonedSummary
+          .removeAttribute("id");
+
+        summary.appendChild(
+          clonedSummary
+        );
+
+      }
+
+    }
+
+  }
+
+  /*
     Đóng băng dữ liệu + cấu hình hiện tại
     để clone thành chart fullscreen.
   */
@@ -16905,6 +19687,27 @@ function openChartZoomFromCanvas(
 
   config.options.animation =
     false;
+
+  /*
+    Biểu đồ SOC + SOC HOME dùng legend HTML ở card nhỏ.
+    Khi phóng to, bật lại legend Chart.js trong modal.
+  */
+  if(
+    sourceCanvas &&
+    sourceCanvas.id==="huyenSocBypassLineChart"
+  ){
+      config.options.plugins =
+        config.options.plugins || {};
+
+      config.options.plugins.legend =
+        config.options.plugins.legend || {};
+
+      config.options.plugins.legend.display =
+        true;
+
+      config.options.plugins.legend.position =
+        "top";
+  }
 
   /*
     Legend vẫn hoạt động bình thường trong
@@ -17006,6 +19809,15 @@ function closeChartZoom(){
 
     activeChartZoomChart=null;
 
+  }
+
+  const summary =
+    document.getElementById(
+      "chartZoomSummary"
+    );
+
+  if(summary){
+    summary.innerHTML="";
   }
 
   const modal =
