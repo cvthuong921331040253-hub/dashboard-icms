@@ -6152,6 +6152,33 @@
   }
 }
 
+
+/* ===== THỨ TỰ CÁC BÁO CÁO ===== */
+#periodCompareSection #districtTotal7DayLineReport,
+#periodCompareSection #districtCompareReport,
+#periodCompareSection #district7DayReport{
+  width:100% !important;
+  box-sizing:border-box !important;
+}
+#periodCompareSection #districtTotal7DayLineReport{
+  margin:10px 0 !important;
+}
+#periodCompareSection #districtCompareReport{
+  margin:10px 0 !important;
+}
+#periodCompareSection #district7DayReport{
+  margin:10px 0 !important;
+}
+
+
+/* ===== CHỤP 2 KHỐI MỨC TỈNH: GIỮ NGUYÊN BIỂU ĐỒ ===== */
+#periodCompareCaptureClone{
+  background:#ffffff !important;
+}
+#periodCompareCaptureClone .district-total-7day-line-wrap{
+  overflow:visible !important;
+}
+
 </style>
   
   </head>
@@ -6520,7 +6547,27 @@
     </div>
   </div>
 
-  <div id="districtCompareReport" class="period-compare-panel report-capture-section" style="margin-top:10px;">
+<div id="districtTotal7DayLineReport" class="district-total-7day-line-panel report-capture-section">
+      <div class="district-total-7day-line-title report-title-with-capture">
+        <span>📈 BÁO CÁO TĂNG/GIẢM MỨC TỈNH CÁC MỐC TRONG 7 NGÀY</span>
+        <button
+          type="button"
+          class="report-capture-btn"
+          data-html2canvas-ignore="true"
+          onclick="captureReportSection('districtTotal7DayLineReport','BAO_CAO_TANG_GIAM_MUC_TINH_7_NGAY')"
+        >
+          📸 Chụp báo cáo
+        </button>
+      </div>
+      <div class="district-total-7day-line-sub">
+        TỔNG TKM • TKM QUÁ 24H • CẬP NHẬT HỒ SƠ • TỔNG SC • SOC + SOC HOME
+      </div>
+      <div class="district-total-7day-line-wrap">
+        <canvas id="districtTotal7DayLineChart"></canvas>
+      </div>
+    </div>
+
+<div id="districtCompareReport" class="period-compare-panel report-capture-section" style="margin-top:10px;">
     <div class="period-compare-panel-title report-title-with-capture"
          id="periodDistrictTitle">
       <span>🏠 SO SÁNH TỒN TĂNG/GIẢM THEO MỨC HUYỆN</span>
@@ -6544,31 +6591,6 @@
     </div>
 
   </div>
-
-  
-
-
-
-    
-<div id="districtTotal7DayLineReport" class="district-total-7day-line-panel report-capture-section">
-      <div class="district-total-7day-line-title report-title-with-capture">
-        <span>📈 BÁO CÁO TĂNG/GIẢM MỨC TỈNH CÁC MỐC TRONG 7 NGÀY</span>
-        <button
-          type="button"
-          class="report-capture-btn"
-          data-html2canvas-ignore="true"
-          onclick="captureReportSection('districtTotal7DayLineReport','BAO_CAO_TANG_GIAM_MUC_TINH_7_NGAY')"
-        >
-          📸 Chụp báo cáo
-        </button>
-      </div>
-      <div class="district-total-7day-line-sub">
-        TỔNG TKM • TKM QUÁ 24H • CẬP NHẬT HỒ SƠ • TỔNG SC • SOC + SOC HOME
-      </div>
-      <div class="district-total-7day-line-wrap">
-        <canvas id="districtTotal7DayLineChart"></canvas>
-      </div>
-    </div>
 
 <div id="district7DayReport" class="period-compare-panel period-district-7day-report report-capture-section" style="margin-top:10px;">
 
@@ -6679,6 +6701,17 @@
   </div>
 
   </div>
+
+  
+
+  
+
+
+
+    
+
+
+
 
 <div id="staffCompareReport" class="period-compare-panel report-capture-section" style="margin-top:10px;">
     <div class="period-compare-panel-title report-title-with-capture">
@@ -6907,7 +6940,7 @@ async function captureReportSection(
   filePrefix
 ){
 
-  const original=
+  const original =
     document.getElementById(
       sectionId
     );
@@ -6917,19 +6950,21 @@ async function captureReportSection(
     return;
   }
 
-  if(typeof html2canvas!=="function"){
+  if(
+    typeof html2canvas!=="function"
+  ){
     alert(
       "Chưa tải được thư viện chụp màn hình. Hãy mở lại trang và thử lại."
     );
     return;
   }
 
-  const btn=
+  const btn =
     original.querySelector(
       ".report-capture-btn"
     );
 
-  const oldText=
+  const oldText =
     btn ? btn.innerHTML : "";
 
   if(btn){
@@ -6937,24 +6972,22 @@ async function captureReportSection(
     btn.innerHTML="⏳ Đang chụp...";
   }
 
-  let target=
-    original;
-  let tempNode=
-    null;
+  let captureRoot=original;
 
   try{
 
     /*
-      SO SÁNH MỨC TỈNH nằm chung section với
-      HUYỆN / 7 NGÀY / NHÂN VIÊN.
-      Khi chụp tỉnh, tạo bản sao và loại bỏ
-      3 khu phía dưới để ảnh chỉ chứa báo cáo tỉnh.
+      SO SÁNH DỮ LIỆU TỒN TĂNG/GIẢM MỨC TỈNH:
+      chỉ chụp:
+        1. Khối so sánh mức tỉnh
+        2. Biểu đồ TĂNG/GIẢM MỨC TỈNH 7 NGÀY
+      Không lấy huyện / nhân viên.
     */
     if(
       sectionId==="periodCompareSection"
     ){
 
-      tempNode=
+      captureRoot =
         original.cloneNode(
           true
         );
@@ -6965,7 +6998,7 @@ async function captureReportSection(
         "#staffCompareReport"
       ].forEach(
         selector=>{
-          tempNode
+          captureRoot
             .querySelectorAll(
               selector
             )
@@ -6975,38 +7008,122 @@ async function captureReportSection(
         }
       );
 
-      /*
-        Các nút khác trong bản sao không cần thiết
-        nhưng vẫn giữ nút tỉnh và nó được loại khỏi ảnh
-        bằng data-html2canvas-ignore.
-      */
-      tempNode.id=
+      captureRoot.id =
         "periodCompareCaptureClone";
 
-      tempNode.style.position=
+      captureRoot.style.position =
         "absolute";
-      tempNode.style.left=
+
+      captureRoot.style.left =
         "-100000px";
-      tempNode.style.top=
+
+      captureRoot.style.top =
         "0";
-      tempNode.style.width=
+
+      captureRoot.style.width =
         `${Math.max(
+          original.getBoundingClientRect().width,
           original.scrollWidth,
           original.clientWidth
         )}px`;
-      tempNode.style.maxWidth=
+
+      captureRoot.style.maxWidth =
         "none";
-      tempNode.style.background=
+
+      captureRoot.style.background =
         "#ffffff";
 
+      captureRoot.style.overflow =
+        "visible";
+
       document.body.appendChild(
-        tempNode
+        captureRoot
       );
 
-      target=
-        tempNode;
+    }else{
+
+      /*
+        Các nút riêng khác: clone đúng section đó.
+      */
+      captureRoot =
+        original.cloneNode(
+          true
+        );
+
+      captureRoot.id =
+        sectionId+"_capture_clone";
+
+      captureRoot.style.position =
+        "absolute";
+
+      captureRoot.style.left =
+        "-100000px";
+
+      captureRoot.style.top =
+        "0";
+
+      captureRoot.style.width =
+        `${Math.max(
+          original.getBoundingClientRect().width,
+          original.scrollWidth,
+          original.clientWidth
+        )}px`;
+
+      captureRoot.style.maxWidth =
+        "none";
+
+      captureRoot.style.background =
+        "#ffffff";
+
+      captureRoot.style.overflow =
+        "visible";
+
+      document.body.appendChild(
+        captureRoot
+      );
 
     }
+
+    /*
+      Loại tất cả nút thao tác khỏi ảnh.
+    */
+    captureRoot
+      .querySelectorAll(
+        '[data-html2canvas-ignore="true"], .report-capture-btn, .chart-zoom-trigger'
+      )
+      .forEach(
+        el=>el.remove()
+      );
+
+    /*
+      Chụp canvas ĐÚNG cách:
+      trong callback onclone của html2canvas, lấy canvas gốc
+      đang hiển thị và copy pixel vào canvas clone.
+
+      Đây là điểm quan trọng. Clone DOM của canvas không mang
+      theo pixel, nên nếu không làm bước này biểu đồ sẽ trắng.
+    */
+    const originalCanvases =
+      Array.from(
+        original.querySelectorAll(
+          "canvas"
+        )
+      );
+
+    const clonedCanvasCount =
+      captureRoot.querySelectorAll(
+        "canvas"
+      ).length;
+
+    await new Promise(
+      resolve =>
+        requestAnimationFrame(
+          () =>
+            requestAnimationFrame(
+              resolve
+            )
+        )
+    );
 
     if(
       document.fonts &&
@@ -7015,17 +7132,9 @@ async function captureReportSection(
       await document.fonts.ready;
     }
 
-    await new Promise(
-      r=>
-        requestAnimationFrame(
-          ()=>
-            requestAnimationFrame(r)
-        )
-    );
-
-    const canvas=
+    const output =
       await html2canvas(
-        target,
+        captureRoot,
         {
           scale:2,
           useCORS:true,
@@ -7033,29 +7142,153 @@ async function captureReportSection(
           backgroundColor:"#ffffff",
           logging:false,
           imageTimeout:15000,
+          removeContainer:true,
           scrollX:0,
           scrollY:0,
+
           windowWidth:
             Math.max(
               document.documentElement.clientWidth,
-              target.scrollWidth
+              captureRoot.scrollWidth,
+              captureRoot.clientWidth
             ),
+
           windowHeight:
             Math.max(
-              target.scrollHeight,
-              target.clientHeight
-            )
+              document.documentElement.clientHeight,
+              captureRoot.scrollHeight,
+              captureRoot.clientHeight
+            ),
+
+          onclone:
+            async clonedDocument=>{
+
+              const clonedCanvases =
+                Array.from(
+                  clonedDocument
+                    .querySelectorAll(
+                      sectionId==="periodCompareSection"
+                        ? "#periodCompareCaptureClone canvas"
+                        : `#${sectionId}_capture_clone canvas`
+                    )
+                );
+
+              /*
+                Hỗ trợ đầy đủ mọi canvas trong section.
+              */
+              const count =
+                Math.min(
+                  originalCanvases.length,
+                  clonedCanvases.length
+                );
+
+              for(
+                let i=0;
+                i<count;
+                i++
+              ){
+
+                const sourceCanvas =
+                  originalCanvases[i];
+
+                const targetCanvas =
+                  clonedCanvases[i];
+
+                if(
+                  !sourceCanvas ||
+                  !targetCanvas
+                ){
+                  continue;
+                }
+
+                try{
+
+                  const rect =
+                    sourceCanvas.getBoundingClientRect();
+
+                  const cssWidth =
+                    Math.max(
+                      1,
+                      Math.round(
+                        rect.width ||
+                        sourceCanvas.clientWidth ||
+                        sourceCanvas.width
+                      )
+                    );
+
+                  const cssHeight =
+                    Math.max(
+                      1,
+                      Math.round(
+                        rect.height ||
+                        sourceCanvas.clientHeight ||
+                        sourceCanvas.height
+                      )
+                    );
+
+                  /*
+                    Giữ đúng kích thước CSS của canvas.
+                  */
+                  targetCanvas.style.width =
+                    cssWidth+"px";
+
+                  targetCanvas.style.height =
+                    cssHeight+"px";
+
+                  targetCanvas.width =
+                    sourceCanvas.width;
+
+                  targetCanvas.height =
+                    sourceCanvas.height;
+
+                  const ctx =
+                    targetCanvas.getContext(
+                      "2d"
+                    );
+
+                  if(ctx){
+
+                    ctx.clearRect(
+                      0,
+                      0,
+                      targetCanvas.width,
+                      targetCanvas.height
+                    );
+
+                    ctx.drawImage(
+                      sourceCanvas,
+                      0,
+                      0
+                    );
+
+                  }
+
+                }catch(err){
+
+                  console.warn(
+                    "Không copy được pixel canvas:",
+                    err
+                  );
+
+                }
+
+              }
+
+            }
         }
       );
 
-    const stamp=
+    const stamp =
       new Date();
 
-    const pad=
+    const pad =
       n=>
-        String(n).padStart(2,"0");
+        String(n).padStart(
+          2,
+          "0"
+        );
 
-    const filename=
+    const filename =
       `${filePrefix}_${
         stamp.getFullYear()
       }${
@@ -7068,64 +7301,68 @@ async function captureReportSection(
         pad(stamp.getMinutes())
       }.png`;
 
-    canvas.toBlob(
-      async blob=>{
+    const blob =
+      await new Promise(
+        resolve =>
+          output.toBlob(
+            resolve,
+            "image/png"
+          )
+      );
 
-        if(!blob){
-          alert(
-            "Không tạo được ảnh báo cáo."
-          );
-          return;
-        }
+    if(!blob){
+      throw new Error(
+        "Không tạo được ảnh báo cáo."
+      );
+    }
 
-        const url=
-          URL.createObjectURL(
-            blob
-          );
+    const url =
+      URL.createObjectURL(
+        blob
+      );
 
-        const a=
-          document.createElement(
-            "a"
-          );
+    const a =
+      document.createElement(
+        "a"
+      );
 
-        a.href=url;
-        a.download=
-          filename;
+    a.href=url;
+    a.download=filename;
 
-        document.body.appendChild(
-          a
+    document.body.appendChild(
+      a
+    );
+
+    a.click();
+    a.remove();
+
+    /*
+      Copy ảnh vào clipboard.
+    */
+    if(
+      navigator.clipboard &&
+      window.ClipboardItem
+    ){
+
+      try{
+
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "image/png":blob
+          })
+        ]);
+
+      }catch(e){}
+
+    }
+
+    setTimeout(
+      ()=>{
+        URL.revokeObjectURL(
+          url
         );
-
-        a.click();
-        a.remove();
-
-        setTimeout(
-          ()=>{
-            URL.revokeObjectURL(
-              url
-            );
-          },
-          1500
-        );
-
-        if(
-          navigator.clipboard &&
-          window.ClipboardItem
-        ){
-          try{
-
-            await navigator.clipboard.write([
-              new ClipboardItem({
-                "image/png":blob
-              })
-            ]);
-
-          }catch(e){}
-
-        }
-
       },
-      "image/png"
+      2000
     );
 
   }catch(err){
@@ -7141,13 +7378,17 @@ async function captureReportSection(
 
   }finally{
 
+    /*
+      Chỉ xóa clone, KHÔNG đụng DOM thật.
+    */
     if(
-      tempNode &&
-      tempNode.parentNode
+      captureRoot &&
+      captureRoot!==original &&
+      captureRoot.parentNode
     ){
 
-      tempNode.parentNode.removeChild(
-        tempNode
+      captureRoot.parentNode.removeChild(
+        captureRoot
       );
 
     }
@@ -7157,7 +7398,7 @@ async function captureReportSection(
       setTimeout(
         ()=>{
           btn.disabled=false;
-          btn.innerHTML=
+          btn.innerHTML =
             oldText ||
             "📸 Chụp báo cáo";
         },
