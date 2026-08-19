@@ -11306,11 +11306,554 @@
   border-right:1px solid #e3e8ee !important;
 }
 
+
+/* ===== EXCEL EXPORT V5 ===== */
+.excel-btn + .excel-btn{
+  margin-left:6px !important;
+}
+
+
+/* ==========================================================
+   MOBILE-ONLY OPTIMIZATION
+   Chỉ áp dụng <= 768px.
+   Không thay đổi desktop/tablet > 768px.
+   Không thay đổi dữ liệu, KPI, filter logic, capture logic.
+   ========================================================== */
+
+@media (max-width:768px){
+
+  /* ===== Khung dashboard: bám màn hình ===== */
+  body{
+    overflow-x:hidden !important;
+  }
+
+  .section-title,
+  .chart-box,
+  .evaluation-notebook,
+  .period-compare,
+  .period-compare-panel,
+  #staffCompareReport,
+  #districtCompareReport,
+  #district7DayReport{
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
+
+  /* ===== Tiêu đề các khu vực ===== */
+  .chart-title,
+  .period-compare-title,
+  .district-total-7day-line-title,
+  .period-compare-panel-title{
+    line-height:1.12 !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  /* ===== Bộ lọc + nút chụp ===== */
+  #periodStaffTitle{
+    display:flex !important;
+    flex-wrap:wrap !important;
+    align-items:center !important;
+    gap:5px !important;
+  }
+
+  #periodStaffTitleText{
+    flex:1 1 100% !important;
+    min-width:0 !important;
+    font-size:12px !important;
+    line-height:1.1 !important;
+  }
+
+  #periodStaffTitle > div{
+    width:100% !important;
+    display:flex !important;
+    flex-wrap:wrap !important;
+    gap:5px !important;
+  }
+
+  #periodStaffHuyenFilter{
+    flex:1 1 145px !important;
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+    height:27px !important;
+    font-size:9px !important;
+  }
+
+  #staffCompareReport .report-capture-btn{
+    flex:0 0 106px !important;
+    width:106px !important;
+    min-width:106px !important;
+    max-width:106px !important;
+    height:27px !important;
+    font-size:9px !important;
+    padding:0 6px !important;
+  }
+
+  /* ===== Dòng Tính đến + KPI ===== */
+  #periodStaffSummary{
+    display:flex !important;
+    flex-wrap:wrap !important;
+    align-items:center !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    gap:3px !important;
+    padding:4px !important;
+    box-sizing:border-box !important;
+  }
+
+  #periodStaffSummary .summary-title{
+    flex:0 0 100% !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    font-size:8px !important;
+    line-height:1.05 !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    margin:0 !important;
+    padding:0 0 2px !important;
+  }
+
+  #periodStaffSummary .summary-item{
+    flex:0 0 auto !important;
+    max-width:100% !important;
+    font-size:7px !important;
+    line-height:1 !important;
+    padding:2px 4px !important;
+    white-space:nowrap !important;
+  }
+
+  /* ===== BẢNG NHÂN VIÊN - mobile compact ===== */
+  #staffCompareReport .period-staff-top{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    overflow:visible !important;
+  }
+
+  #staffCompareReport .period-staff-table-wrap{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    overflow-x:auto !important;
+    overflow-y:visible !important;
+    -webkit-overflow-scrolling:touch !important;
+    border-radius:6px !important;
+  }
+
+  /*
+    Không ép 1080/1100px trên mobile.
+    Bảng vẫn có độ rộng nội tại đủ để đọc,
+    nhưng chỉ cuộn ngang phần bảng nếu cần.
+  */
+  #staffCompareReport .period-staff-table-wrap table.period-table{
+    width:100% !important;
+    min-width:780px !important;
+    max-width:none !important;
+    table-layout:fixed !important;
+  }
+
+  #staffCompareReport .period-staff-table-wrap table.period-table th,
+  #staffCompareReport .period-staff-table-wrap table.period-table td{
+    box-sizing:border-box !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:normal !important;
+    writing-mode:horizontal-tb !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    vertical-align:middle !important;
+    line-height:1.0 !important;
+    padding:2px 1px !important;
+  }
+
+  /* STT */
+  #staffCompareReport .period-staff-table-wrap table.period-table th:nth-child(1),
+  #staffCompareReport .period-staff-table-wrap table.period-table td:nth-child(1){
+    width:34px !important;
+    min-width:34px !important;
+    max-width:34px !important;
+    font-size:8px !important;
+    text-align:center !important;
+  }
+
+  /* Nhân viên */
+  #staffCompareReport .period-staff-table-wrap table.period-table th:nth-child(2),
+  #staffCompareReport .period-staff-table-wrap table.period-table td:nth-child(2){
+    width:112px !important;
+    min-width:112px !important;
+    max-width:112px !important;
+    font-size:8px !important;
+    font-weight:800 !important;
+    text-align:left !important;
+    padding-left:3px !important;
+  }
+
+  /* 15 cột KPI */
+  #staffCompareReport .period-staff-table-wrap table.period-table th:nth-child(n+3),
+  #staffCompareReport .period-staff-table-wrap table.period-table td:nth-child(n+3){
+    width:42px !important;
+    min-width:42px !important;
+    max-width:42px !important;
+    font-size:7px !important;
+  }
+
+  /* Ba cột dài: cho phép tiêu đề 3 dòng nhưng không nở cột */
+  #staffCompareReport .period-staff-table-wrap table.period-table th:nth-child(15),
+  #staffCompareReport .period-staff-table-wrap table.period-table td:nth-child(15),
+  #staffCompareReport .period-staff-table-wrap table.period-table th:nth-child(16),
+  #staffCompareReport .period-staff-table-wrap table.period-table td:nth-child(16),
+  #staffCompareReport .period-staff-table-wrap table.period-table th:nth-child(17),
+  #staffCompareReport .period-staff-table-wrap table.period-table td:nth-child(17){
+    width:42px !important;
+    min-width:42px !important;
+    max-width:42px !important;
+    font-size:7px !important;
+    line-height:.92 !important;
+  }
+
+  #staffCompareReport .period-staff-table-wrap table.period-table th{
+    font-size:6.8px !important;
+    line-height:.9 !important;
+    font-weight:900 !important;
+    padding:3px 1px !important;
+    background:#edf3f9 !important;
+  }
+
+  #staffCompareReport .period-staff-table-wrap table.period-table td{
+    font-size:7px !important;
+  }
+
+  #staffCompareReport .district-metric-main{
+    font-size:7px !important;
+    line-height:.95 !important;
+  }
+
+  #staffCompareReport .district-metric-delta{
+    font-size:6px !important;
+    line-height:.9 !important;
+    margin-top:0 !important;
+  }
+
+  #staffCompareReport .staff-huyen-tag{
+    font-size:10px !important;
+    line-height:1 !important;
+    padding:2px 5px !important;
+  }
+
+  /* Zebra rõ hơn trên mobile */
+  #staffCompareReport .period-staff-table-wrap table.period-table tbody tr:nth-child(odd) td{
+    background:#f5f7fa !important;
+  }
+
+  #staffCompareReport .period-staff-table-wrap table.period-table tbody tr:nth-child(even) td{
+    background:#ffffff !important;
+  }
+
+  /* ===== SC KPI TRỌNG TÂM – legend gọn ===== */
+  #chartSCHuyenKPI{
+    max-width:100% !important;
+  }
+
+  /*
+    Không ép canvas thấp trên mobile; giữ chiều cao hiện tại của chart.
+  */
+  #chartSCHuyenKPI{
+    display:block !important;
+  }
+
+  /* ===== Các biểu đồ ===== */
+  .chart-box canvas{
+    max-width:100% !important;
+  }
+
+  /* Legend chart.js xuống nhiều dòng, chữ nhỏ vừa màn hình */
+  .chart-box .chartjs-legend,
+  .chart-box .chartjs-legend *{
+    font-size:9px !important;
+  }
+
+  /* ===== Bảng huyện: không để tràn toàn trang ===== */
+  #districtCompareReport .period-table-wrap,
+  #district7DayReport .period-table-wrap{
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  /* ===== So sánh tỉnh/huyện ===== */
+  .period-compare-filters,
+  .district-report-toolbar{
+    flex-wrap:wrap !important;
+    gap:5px !important;
+  }
+
+  .period-compare-filters label,
+  .district-report-toolbar label{
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+
+  /* ===== Modal bảng trên điện thoại ===== */
+  #modal > div{
+    width:98vw !important;
+    max-width:98vw !important;
+  }
+
+  #tableContainer{
+    max-width:100% !important;
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  #tableContainer table{
+    min-width:760px !important;
+  }
+
+}
+
+/* Màn hình rất nhỏ */
+@media (max-width:420px){
+
+  #periodStaffTitleText{
+    font-size:11px !important;
+  }
+
+  #periodStaffHuyenFilter{
+    flex:1 1 130px !important;
+    font-size:8px !important;
+  }
+
+  #staffCompareReport .report-capture-btn{
+    flex-basis:98px !important;
+    width:98px !important;
+    min-width:98px !important;
+    max-width:98px !important;
+    font-size:8px !important;
+  }
+
+  #periodStaffSummary .summary-title{
+    font-size:7px !important;
+  }
+
+  #periodStaffSummary .summary-item{
+    font-size:6.5px !important;
+    padding:2px 3px !important;
+  }
+
+  #staffCompareReport .period-staff-table-wrap table.period-table{
+    min-width:700px !important;
+  }
+
+  #staffCompareReport .period-staff-table-wrap table.period-table th:nth-child(2),
+  #staffCompareReport .period-staff-table-wrap table.period-table td:nth-child(2){
+    width:100px !important;
+    min-width:100px !important;
+    max-width:100px !important;
+    font-size:7.2px !important;
+  }
+
+  #staffCompareReport .period-staff-table-wrap table.period-table th:nth-child(n+3),
+  #staffCompareReport .period-staff-table-wrap table.period-table td:nth-child(n+3){
+    width:38px !important;
+    min-width:38px !important;
+    max-width:38px !important;
+    font-size:6.5px !important;
+  }
+
+  #staffCompareReport .period-staff-table-wrap table.period-table th:nth-child(15),
+  #staffCompareReport .period-staff-table-wrap table.period-table td:nth-child(15),
+  #staffCompareReport .period-staff-table-wrap table.period-table th:nth-child(16),
+  #staffCompareReport .period-staff-table-wrap table.period-table td:nth-child(16),
+  #staffCompareReport .period-staff-table-wrap table.period-table th:nth-child(17),
+  #staffCompareReport .period-staff-table-wrap table.period-table td:nth-child(17){
+    width:38px !important;
+    min-width:38px !important;
+    max-width:38px !important;
+  }
+
+}
+
+
+/* ==========================================================
+   V9 FIX: bảng ngoài SOC + SOC HOME >24H / >72H
+   Không để header dính vào nhau trên desktop/mobile.
+   ========================================================== */
+
+.huyen-soc-summary-table{
+  width:100% !important;
+  min-width:700px !important;
+  table-layout:fixed !important;
+  border-collapse:collapse !important;
+}
+
+.huyen-soc-summary-table th,
+.huyen-soc-summary-table td{
+  box-sizing:border-box !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+  word-break:normal !important;
+  text-align:center !important;
+  vertical-align:middle !important;
+  line-height:1.05 !important;
+  border-right:1px solid #dbe3ec !important;
+}
+
+.huyen-soc-summary-table th:first-child,
+.huyen-soc-summary-table td:first-child{
+  width:100px !important;
+  text-align:left !important;
+}
+
+.huyen-soc-summary-table th:nth-child(2),
+.huyen-soc-summary-table td:nth-child(2),
+.huyen-soc-summary-table th:nth-child(5),
+.huyen-soc-summary-table td:nth-child(5){
+  width:78px !important;
+}
+
+.huyen-soc-summary-table th:nth-child(3),
+.huyen-soc-summary-table td:nth-child(3),
+.huyen-soc-summary-table th:nth-child(4),
+.huyen-soc-summary-table td:nth-child(4),
+.huyen-soc-summary-table th:nth-child(6),
+.huyen-soc-summary-table td:nth-child(6),
+.huyen-soc-summary-table th:nth-child(7),
+.huyen-soc-summary-table td:nth-child(7){
+  width:92px !important;
+}
+
+.huyen-soc-summary-table th{
+  font-size:8px !important;
+  font-weight:900 !important;
+  padding:4px 3px !important;
+  height:32px !important;
+}
+
+.huyen-soc-summary-table td{
+  font-size:8px !important;
+  padding:3px 3px !important;
+  height:24px !important;
+}
+
+@media(max-width:700px){
+  .huyen-soc-summary-table-wrap{
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:auto !important;
+    overflow-y:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  .huyen-soc-summary-table{
+    min-width:700px !important;
+  }
+
+  .huyen-soc-summary-table th{
+    font-size:7px !important;
+    line-height:.95 !important;
+    height:34px !important;
+    padding:4px 2px !important;
+  }
+
+  .huyen-soc-summary-table td{
+    font-size:7px !important;
+    padding:2px !important;
+  }
+}
+
+/* ==========================================================
+   V9 ZOOM: tự fit theo kích thước viewport hiện tại.
+   ========================================================== */
+
+.chart-zoom-dialog{
+  width:calc(100vw - 12px) !important;
+  max-width:1500px !important;
+  height:calc(100vh - 12px) !important;
+  max-height:none !important;
+  margin:6px auto 0 !important;
+}
+
+.chart-zoom-body{
+  display:flex !important;
+  flex-direction:column !important;
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  height:auto !important;
+  max-height:none !important;
+  overflow:auto !important;
+  padding:7px !important;
+  box-sizing:border-box !important;
+}
+
+.chart-zoom-canvas-wrap{
+  flex:0 0 clamp(240px,42vh,430px) !important;
+  width:100% !important;
+  height:clamp(240px,42vh,430px) !important;
+  min-height:240px !important;
+  max-height:430px !important;
+  margin:0 0 7px 0 !important;
+}
+
+#chartZoomCanvas{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+
+#chartZoomSummary{
+  flex:0 0 auto !important;
+  max-height:none !important;
+  overflow:visible !important;
+}
+
+@media(max-width:700px){
+  .chart-zoom-dialog{
+    width:100vw !important;
+    height:100vh !important;
+    max-width:none !important;
+    margin:0 !important;
+    border-radius:0 !important;
+  }
+
+  .chart-zoom-head{
+    min-height:42px !important;
+  }
+
+  .chart-zoom-body{
+    padding:5px !important;
+  }
+
+  .chart-zoom-canvas-wrap{
+    flex-basis:34vh !important;
+    height:34vh !important;
+    min-height:220px !important;
+    max-height:360px !important;
+  }
+
+  #chartZoomCanvas{
+    height:100% !important;
+  }
+}
+
+@media(max-width:420px){
+  .chart-zoom-canvas-wrap{
+    flex-basis:31vh !important;
+    height:31vh !important;
+    min-height:200px !important;
+    max-height:300px !important;
+  }
+}
+
 </style>
 </head>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-  
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 /* ===== HIỆN SỐ CHO CÁC BIỂU ĐỒ ===== */
@@ -11991,11 +12534,16 @@
   <button
   class="excel-btn"
   onclick="exportExcel()"
-  >
-  
-  Excel
-  
-  </button>
+  title="Tải dữ liệu theo đúng bộ lọc hiện tại">
+  📥 Tải bảng đang lọc
+</button>
+
+<button
+  class="excel-btn"
+  onclick="exportFullTkmSc()"
+  title="Tải toàn bộ TKM và SC thành một file, gồm 2 sheet">
+  📦 FULL TKM + SC
+</button>
   
   <button
   class="excel-btn"
@@ -14326,6 +14874,61 @@ let tonsc=[];
                     }
                   }
                 }
+              },
+
+              onClick:function(event){
+                const active =
+                  this.getElementsAtEventForMode(
+                    event,
+                    "nearest",
+                    {intersect:true},
+                    true
+                  );
+
+                if(!active.length) return;
+
+                const el = active[0];
+                const index = el.index;
+
+                if(index < 0 || index >= details.length){
+                  return;
+                }
+
+                const detail = details[index] || {};
+                const datasetLabel =
+                  String(
+                    this.data?.datasets?.[el.datasetIndex]?.label || label
+                  ).toUpperCase();
+
+                let rows = [];
+
+                if(datasetLabel.includes("CẬP NHẬT HỒ SƠ")){
+                  rows = Array.isArray(detail.tkm)
+                    ? detail.tkm.filter(row => compareIsCNHS(row))
+                    : [];
+                }
+                else if(datasetLabel.includes("SC")){
+                  rows = Array.isArray(detail.sc)
+                    ? detail.sc
+                    : [];
+                }
+                else{
+                  rows = Array.isArray(detail.tkm)
+                    ? detail.tkm
+                    : [];
+                }
+
+                showTable(
+                  datasetLabel +
+                  " • " +
+                  selected +
+                  " • " +
+                  labels[index] +
+                  " (" +
+                  rows.length +
+                  ")",
+                  rows
+                );
               }
             }
           }
@@ -14545,6 +15148,61 @@ let tonsc=[];
                     }
                   }
                 }
+              },
+
+              onClick:function(event){
+                const active =
+                  this.getElementsAtEventForMode(
+                    event,
+                    "nearest",
+                    {intersect:true},
+                    true
+                  );
+
+                if(!active.length) return;
+
+                const el = active[0];
+                const index = el.index;
+
+                if(index < 0 || index >= details.length){
+                  return;
+                }
+
+                const detail = details[index] || {};
+                const datasetLabel =
+                  String(
+                    this.data?.datasets?.[el.datasetIndex]?.label || ""
+                  ).toUpperCase();
+
+                let rows = [];
+
+                if(datasetLabel.includes("CẬP NHẬT HỒ SƠ")){
+                  rows = Array.isArray(detail.tkm)
+                    ? detail.tkm.filter(row => compareIsCNHS(row))
+                    : [];
+                }
+                else if(datasetLabel.includes("TKM")){
+                  rows = Array.isArray(detail.tkm)
+                    ? detail.tkm
+                    : [];
+                }
+                else{
+                  rows = Array.isArray(detail.sc)
+                    ? detail.sc
+                    : [];
+                }
+
+                showTable(
+                  datasetLabel +
+                  " • " +
+                  selected +
+                  " • " +
+                  labels[index] +
+                  " (" +
+                  rows.length +
+                  ")",
+                  rows
+                );
               }
             }
           }
@@ -17739,46 +18397,54 @@ onClick:function(event){
           return ["SC","SC HOT","SC VIP"].includes(s);
       };
 
+      /*
+        SC KPI TRỌNG TÂM
+        Gộp SỰ CỐ + SỰ CỐ HỖ TRỢ vào cùng một KPI.
+
+        4 mốc:
+        >3h và <=10h
+        >10h và <=16h
+        >16h và <=24h
+        >24h
+
+        Không tách HT/SC trên biểu đồ.
+      */
+      const isScKpiType = row =>
+          isSupportType(row) ||
+          isIncidentType(row);
+
       const scHuyenMetrics = [
           {
-              label:"Quá 3h, trong 10h - Hỗ trợ",
-              fn:row=>isSupportType(row) &&
-                     scKpiRanges.over3to10(parseSCHours(row.tg))
+              label:"Quá 3-10h",
+              fn:row=>
+                  isScKpiType(row) &&
+                  scKpiRanges.over3to10(
+                      parseSCHours(row.tg)
+                  )
           },
           {
-              label:"Quá 10h, trong 16h - Hỗ trợ",
-              fn:row=>isSupportType(row) &&
-                     scKpiRanges.over10to16(parseSCHours(row.tg))
+              label:"Quá 10-16h",
+              fn:row=>
+                  isScKpiType(row) &&
+                  scKpiRanges.over10to16(
+                      parseSCHours(row.tg)
+                  )
           },
           {
-              label:"Quá 16h, trong 24h - Hỗ trợ",
-              fn:row=>isSupportType(row) &&
-                     scKpiRanges.over16to24(parseSCHours(row.tg))
+              label:"Quá 16-24h",
+              fn:row=>
+                  isScKpiType(row) &&
+                  scKpiRanges.over16to24(
+                      parseSCHours(row.tg)
+                  )
           },
           {
-              label:"Quá 24h - Hỗ trợ",
-              fn:row=>isSupportType(row) &&
-                     scKpiRanges.over24(parseSCHours(row.tg))
-          },
-          {
-              label:"Quá 3h, trong 10h - Sự cố",
-              fn:row=>isIncidentType(row) &&
-                     scKpiRanges.over3to10(parseSCHours(row.tg))
-          },
-          {
-              label:"Quá 10h, trong 16h - Sự cố",
-              fn:row=>isIncidentType(row) &&
-                     scKpiRanges.over10to16(parseSCHours(row.tg))
-          },
-          {
-              label:"Quá 16h, trong 24h - Sự cố",
-              fn:row=>isIncidentType(row) &&
-                     scKpiRanges.over16to24(parseSCHours(row.tg))
-          },
-          {
-              label:"Quá 24h - Sự cố",
-              fn:row=>isIncidentType(row) &&
-                     scKpiRanges.over24(parseSCHours(row.tg))
+              label:"Quá 24h",
+              fn:row=>
+                  isScKpiType(row) &&
+                  scKpiRanges.over24(
+                      parseSCHours(row.tg)
+                  )
           }
       ];
 
@@ -17838,7 +18504,7 @@ onClick:function(event){
                     inNOrN1(row,"ngay") &&
                     metric.fn(row)
                   );
-                  showTable("SC • "+metric.label+" • HUYỆN "+huyen+" ("+rows.length+")",rows);
+                  showTable("SC + HT • "+metric.label+" • HUYỆN "+huyen+" ("+rows.length+")",rows);
               }
 }
       });
@@ -18682,6 +19348,38 @@ onClick:function(event){
 
 
 
+
+
+  function inMonthRowsForSocBypass(row){
+
+      const key =
+          trendDateKey(row?.ngay);
+
+      if(!key){
+          return false;
+      }
+
+      const y = Number(key.slice(0,4));
+      const mo = Number(key.slice(5,7)) - 1;
+
+      const now = new Date();
+      const yearN = now.getFullYear();
+      const monthN = now.getMonth();
+
+      const previous = new Date(
+          yearN,
+          monthN-1,
+          1
+      );
+
+      const yearN1 = previous.getFullYear();
+      const monthN1 = previous.getMonth();
+
+      return (
+          (y === yearN && mo === monthN) ||
+          (y === yearN1 && mo === monthN1)
+      );
+  }
 
 
   function normalizeHuyen(value){
@@ -20066,18 +20764,7 @@ onClick:function(event){
 
                       plugins:{
                           legend: {
-              display:true,
-              position:"top",
-              align:"start",
-              labels:{
-                boxWidth:16,
-                boxHeight:6,
-                padding:8,
-                font:{
-                  size:9
-                },
-                usePointStyle:false
-              }
+              display:false
             },
 
                           tooltip:{
@@ -20119,6 +20806,94 @@ onClick:function(event){
                                   }
                               }
                           }
+                      },
+
+                      onClick:function(event){
+                          const active =
+                              this.getElementsAtEventForMode(
+                                  event,
+                                  "nearest",
+                                  {intersect:true},
+                                  true
+                              );
+
+                          if(!active.length) return;
+
+                          const el = active[0];
+                          const index = el.index;
+                          const datasetIndex = el.datasetIndex;
+                          const huyen = labels[index];
+
+                          if(!huyen) return;
+
+                          const rowsBase =
+                              (tonsc || []).filter(row =>
+                                  normalizeHuyen(row.huyen) === normalizeHuyen(huyen) &&
+                                  isSocType(row) &&
+                                  inMonthRowsForSocBypass(row)
+                              );
+
+                          let rows = [];
+
+                          /*
+                            Dataset mapping:
+                            0 >24 tổng
+                            1 >24 đã bypass
+                            2 >24 chưa bypass
+                            3 >72 tổng
+                            4 >72 đã bypass
+                            5 >72 chưa bypass
+                          */
+                          if(datasetIndex === 0){
+                              rows = rowsBase.filter(row =>{
+                                  const h = hourSC(row);
+                                  return h > 24 && h <= 72;
+                              });
+                          }
+                          else if(datasetIndex === 1 || datasetIndex === 2){
+                              rows = rowsBase.filter(row =>{
+                                  const h = hourSC(row);
+                                  if(!(h > 24 && h <= 72)) return false;
+                                  const hasBypass = allAccounts.some(item =>
+                                      String(item?.account || "").trim().toUpperCase() ===
+                                      String(row?.account || "").trim().toUpperCase() &&
+                                      String(item?.check || "").trim().toUpperCase() ===
+                                      String(row?.sc || "").trim().toUpperCase()
+                                  );
+                                  return datasetIndex === 1
+                                      ? hasBypass
+                                      : !hasBypass;
+                              });
+                          }
+                          else if(datasetIndex === 3){
+                              rows = rowsBase.filter(row => hourSC(row) > 72);
+                          }
+                          else if(datasetIndex === 4 || datasetIndex === 5){
+                              rows = rowsBase.filter(row =>{
+                                  if(!(hourSC(row) > 72)) return false;
+                                  const hasBypass = allAccounts.some(item =>
+                                      String(item?.account || "").trim().toUpperCase() ===
+                                      String(row?.account || "").trim().toUpperCase() &&
+                                      String(item?.check || "").trim().toUpperCase() ===
+                                      String(row?.sc || "").trim().toUpperCase()
+                                  );
+                                  return datasetIndex === 4
+                                      ? hasBypass
+                                      : !hasBypass;
+                              });
+                          }
+
+                          showTable(
+                              String(
+                                  this.data?.datasets?.[datasetIndex]?.label || "SOC + SOC HOME"
+                              ) +
+                              " • " +
+                              huyen +
+                              " (" +
+                              rows.length +
+                              ")",
+                              rows
+                          );
                       }
                   }
               }
@@ -20369,9 +21144,9 @@ onClick:function(event){
 
       /*
         TOP 5 nhân viên tồn SOC + SOC HOME:
-        - Chỉ tính >24H
+        - Chỉ tính >24H và >72H
         - Hiển thị riêng số >24H và >72H
-        - Xếp hạng theo >24H giảm dần, sau đó >72H
+        - Xếp hạng theo tổng (>24H + >72H) giảm dần
       */
       /*
         Helper riêng cho biểu đồ:
@@ -20470,6 +21245,8 @@ onClick:function(event){
           )
           .sort(
               (a,b)=>
+                  ((b.over24 + b.over72) -
+                   (a.over24 + a.over72)) ||
                   b.over24-a.over24 ||
                   b.over72-a.over72 ||
                   a.name.localeCompare(
@@ -20531,11 +21308,11 @@ onClick:function(event){
                   <tr>
                     <th>Huyện</th>
                     <th>&gt;24H Tổng</th>
-                    <th>&gt;24H Đã bypass</th>
-                    <th>&gt;24H Chưa</th>
+                    <th>24H Bypass</th>
+                    <th>24H Chưa</th>
                     <th>&gt;72H Tổng</th>
-                    <th>&gt;72H Đã bypass</th>
-                    <th>&gt;72H Chưa</th>
+                    <th>72H Bypass</th>
+                    <th>72H Chưa</th>
                   </tr>
                 </thead>
 
@@ -24235,134 +25012,1176 @@ const url =
   
   loadData();
   
+  /*
+    EXPORT EXCEL 3 SHEETS
+    1. DATA      = dữ liệu đang xem, format giống bảng mẫu người dùng gửi.
+    2. TỔNG TKM  = toàn bộ TKM thực tế, loại Cập nhật hồ sơ.
+    3. TỔNG SC   = toàn bộ loại sự cố, không loại SOC/SOC HOME.
+
+    Bộ lọc:
+    - DATA: giữ Search + Huyện + Loại + Tháng.
+    - TỔNG TKM / TỔNG SC: giữ Search + Huyện + Tháng;
+      bỏ filter "Loại" vì mỗi sheet đã là một loại dữ liệu riêng.
+  */
+
+  
+  /* ============================================================
+     EXCEL EXPORT ENGINE – KHÔNG PHỤ THUỘC CDN
+     Tạo XLSX trực tiếp trong trình duyệt.
+     ============================================================ */
+
+  const EXCEL_COLUMNS = [
+    ["cv","Loại cv"],
+    ["account","Account"],
+    ["gline","line"],
+    ["ntdn","Ngày đấu nối"],
+    ["nv","Tên nv"],
+    ["huyen","Huyện"],
+    ["tt","Trạng thái cv"],
+    ["tthen","Trạng thái tích hẹn"],
+    ["tg","Thời gian"],
+    ["kpi","Tính KPI"],
+    ["nnt","Nguyên nhân tồn"],
+    ["nnth","Nguyên nhân tích hủy"],
+    ["bypass","Bypass"]
+  ];
+
+  const EXCEL_COL_WIDTHS = [
+    9,18,11,13,20,14,22,28,11,17,28,22,10
+  ];
+
+  function excelXmlEscape(value){
+    return String(value ?? "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&apos;");
+  }
+
+  function excelCellRef(row, col){
+    let n = col + 1;
+    let s = "";
+    while(n > 0){
+      const rem = (n - 1) % 26;
+      s = String.fromCharCode(65 + rem) + s;
+      n = Math.floor((n - 1) / 26);
+    }
+    return s + row;
+  }
+
+  function excelColLetter(col){
+    let n = col + 1;
+    let s = "";
+    while(n > 0){
+      const rem = (n - 1) % 26;
+      s = String.fromCharCode(65 + rem) + s;
+      n = Math.floor((n - 1) / 26);
+    }
+    return s;
+  }
+
+  function excelNormalizeText(value){
+    return String(value ?? "")
+      .replace(/\u00A0/g," ")
+      .replace(/\s+/g," ")
+      .trim();
+  }
+
+  function excelBuildRows(rows){
+    const out = [
+      EXCEL_COLUMNS.map(x => x[1])
+    ];
+
+    rows.forEach(row => {
+      out.push(
+        EXCEL_COLUMNS.map(
+          ([key]) => row?.[key] ?? ""
+        )
+      );
+    });
+
+    return out;
+  }
+
+  function excelStyleForCell(
+    rowIndex,
+    colIndex,
+    value,
+    headers
+  ){
+
+    if(rowIndex===0){
+      return 1;
+    }
+
+    const header =
+      String(
+        headers?.[colIndex] || ""
+      )
+      .trim()
+      .toLowerCase();
+
+    const v =
+      excelNormalizeText(
+        value
+      ).toLowerCase();
+
+    /*
+      KPI: nhận diện theo tên cột, vì TKM và SC
+      có cấu trúc cột khác nhau.
+    */
+    if(
+      header === "tính kpi"
+    ){
+
+      if(
+        v.includes("quá 24h") ||
+        v.includes("quá hẹn")
+      ){
+        return 2;
+      }
+
+      if(
+        v.includes("quá 3h") ||
+        v.includes("quá 10h") ||
+        v.includes("quá 16h")
+      ){
+        return 3;
+      }
+    }
+
+    if(
+      header === "bypass" &&
+      v !== ""
+    ){
+      return 4;
+    }
+
+    return 0;
+  }
+
+  function excelBuildWorksheetXml(
+    matrix,
+    columnWidths
+  ){
+
+    const rows =
+      Array.isArray(matrix)
+        ? matrix
+        : [];
+
+    const totalRows =
+      Math.max(
+        1,
+        rows.length
+      );
+
+    const headers =
+      rows[0] || [];
+
+    const widths =
+      Array.isArray(columnWidths)
+        ? columnWidths
+        : [];
+
+    let xml =
+      `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>`;
+
+    xml +=
+      `<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">`;
+
+    xml += `<sheetViews>`;
+    xml += `<sheetView workbookViewId="0">`;
+    xml +=
+      `<pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/>`;
+    xml += `</sheetView>`;
+    xml += `</sheetViews>`;
+
+    xml +=
+      `<sheetFormatPr defaultRowHeight="22"/>`;
+
+    xml += `<cols>`;
+
+    widths.forEach(
+      (width,index)=>{
+        const c =
+          index+1;
+
+        xml +=
+          `<col min="${c}" max="${c}" width="${width}" customWidth="1"/>`;
+      }
+    );
+
+    xml += `</cols>`;
+    xml += `<sheetData>`;
+
+    rows.forEach(
+      (row,rowIndex)=>{
+
+        const excelRow =
+          rowIndex+1;
+
+        const rowHeight =
+          rowIndex===0
+            ? 32
+            : 22;
+
+        xml +=
+          `<row r="${excelRow}" ht="${rowHeight}" customHeight="1">`;
+
+        row.forEach(
+          (value,colIndex)=>{
+
+            const styleId =
+              excelStyleForCell(
+                rowIndex,
+                colIndex,
+                value,
+                headers
+              );
+
+            const ref =
+              excelCellRef(
+                excelRow,
+                colIndex
+              );
+
+            xml +=
+              `<c r="${ref}" s="${styleId}" t="inlineStr">` +
+              `<is><t xml:space="preserve">${excelXmlEscape(value)}</t></is>` +
+              `</c>`;
+          }
+        );
+
+        xml += `</row>`;
+      }
+    );
+
+    xml += `</sheetData>`;
+
+    const lastCol =
+      excelColLetter(
+        Math.max(
+          0,
+          headers.length-1
+        )
+      );
+
+    xml +=
+      `<autoFilter ref="A1:${lastCol}${totalRows}"/>`;
+
+    xml += `</worksheet>`;
+
+    return xml;
+  }
+
+  function excelBuildStylesXml(){
+
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+  <fonts count="3">
+    <font>
+      <sz val="10"/>
+      <name val="Calibri"/>
+      <family val="2"/>
+      <color rgb="FF000000"/>
+    </font>
+    <font>
+      <b/>
+      <sz val="11"/>
+      <name val="Calibri"/>
+      <family val="2"/>
+      <color rgb="FF000000"/>
+    </font>
+    <font>
+      <b/>
+      <sz val="10"/>
+      <name val="Calibri"/>
+      <family val="2"/>
+      <color rgb="FFC00000"/>
+    </font>
+  </fonts>
+  <fills count="5">
+    <fill><patternFill patternType="none"/></fill>
+    <fill><patternFill patternType="gray125"/></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FF9BBB59"/><bgColor indexed="64"/></patternFill></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FFFCE4D6"/><bgColor indexed="64"/></patternFill></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FFFFF2CC"/><bgColor indexed="64"/></patternFill></fill>
+  </fills>
+  <borders count="2">
+    <border>
+      <left/><right/><top/><bottom/><diagonal/>
+    </border>
+    <border>
+      <left style="thin"><color rgb="FFA6A6A6"/></left>
+      <right style="thin"><color rgb="FFA6A6A6"/></right>
+      <top style="thin"><color rgb="FFA6A6A6"/></top>
+      <bottom style="thin"><color rgb="FFA6A6A6"/></bottom>
+      <diagonal/>
+    </border>
+  </borders>
+  <cellStyleXfs count="1">
+    <xf numFmtId="0" fontId="0" fillId="0" borderId="0"/>
+  </cellStyleXfs>
+  <cellXfs count="5">
+    <xf numFmtId="0" fontId="0" fillId="0" borderId="1" applyAlignment="1">
+      <alignment vertical="center" wrapText="1"/>
+    </xf>
+    <xf numFmtId="0" fontId="1" fillId="2" borderId="1" applyAlignment="1">
+      <alignment horizontal="center" vertical="center" wrapText="1"/>
+    </xf>
+    <xf numFmtId="0" fontId="2" fillId="3" borderId="1" applyAlignment="1">
+      <alignment horizontal="center" vertical="center" wrapText="1"/>
+    </xf>
+    <xf numFmtId="0" fontId="0" fillId="4" borderId="1" applyAlignment="1">
+      <alignment horizontal="center" vertical="center" wrapText="1"/>
+    </xf>
+    <xf numFmtId="0" fontId="1" fillId="0" borderId="1" applyAlignment="1">
+      <alignment vertical="center" wrapText="1"/>
+    </xf>
+  </cellXfs>
+  <cellStyles count="1">
+    <cellStyle name="Normal" xfId="0" builtinId="0"/>
+  </cellStyles>
+</styleSheet>`;
+  }
+
+  function excelBuildWorkbookXml(sheetNames){
+
+    const sheetXml =
+      sheetNames
+        .map(
+          (name, i) =>
+            `<sheet name="${excelXmlEscape(name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`
+        )
+        .join("");
+
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook
+  xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+  <bookViews>
+    <workbookView activeTab="0"/>
+  </bookViews>
+  <sheets>${sheetXml}</sheets>
+</workbook>`;
+  }
+
+  function excelBuildWorkbookRels(sheetCount){
+
+    const rels = [];
+
+    for(let i=1;i<=sheetCount;i++){
+      rels.push(
+        `<Relationship Id="rId${i}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i}.xml"/>`
+      );
+    }
+
+    rels.push(
+      `<Relationship Id="rId${sheetCount+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>`
+    );
+
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+${rels.join("")}
+</Relationships>`;
+  }
+
+  function excelBuildRootRels(sheetCount){
+
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>`;
+  }
+
+  function excelBuildContentTypes(sheetCount){
+
+    let sheets = "";
+
+    for(let i=1;i<=sheetCount;i++){
+      sheets +=
+        `<Override PartName="/xl/worksheets/sheet${i}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`;
+    }
+
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+  ${sheets}
+  <Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>
+</Types>`;
+  }
+
+  function excelBuildCoreProps(){
+
+    const now =
+      new Date().toISOString();
+
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cp:coreProperties
+ xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <dc:creator>Dashboard CDBR</dc:creator>
+ <cp:lastModifiedBy>Dashboard CDBR</cp:lastModifiedBy>
+ <dcterms:created xsi:type="dcterms:W3CDTF">${now}</dcterms:created>
+ <dcterms:modified xsi:type="dcterms:W3CDTF">${now}</dcterms:modified>
+</cp:coreProperties>`;
+  }
+
+  function excelBuildAppProps(sheetNames){
+
+    const titles =
+      sheetNames
+        .map(
+          name => `<vt:lpstr>${excelXmlEscape(name)}</vt:lpstr>`
+        )
+        .join("");
+
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"
+ xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
+  <Application>Dashboard CDBR</Application>
+  <HeadingPairs>
+    <vt:vector size="2" baseType="variant">
+      <vt:variant><vt:lpstr>Worksheets</vt:lpstr></vt:variant>
+      <vt:variant><vt:i4>${sheetNames.length}</vt:i4></vt:variant>
+    </vt:vector>
+  </HeadingPairs>
+  <TitlesOfParts>
+    <vt:vector size="${sheetNames.length}" baseType="lpstr">${titles}</vt:vector>
+  </TitlesOfParts>
+</Properties>`;
+  }
+
+  function excelCrc32(bytes){
+
+    if(
+      !window.__excelCrcTable
+    ){
+
+      window.__excelCrcTable =
+        new Uint32Array(256);
+
+      for(
+        let n=0;
+        n<256;
+        n++
+      ){
+
+        let c=n;
+
+        for(
+          let k=0;
+          k<8;
+          k++
+        ){
+          c =
+            (
+              c & 1
+            )
+              ? (
+                  0xEDB88320 ^
+                  (
+                    c >>> 1
+                  )
+                )
+              : (
+                  c >>> 1
+                );
+        }
+
+        window.__excelCrcTable[n]=c>>>0;
+      }
+    }
+
+    let crc =
+      0xFFFFFFFF;
+
+    for(
+      let i=0;
+      i<bytes.length;
+      i++
+    ){
+      crc =
+        window.__excelCrcTable[
+          (crc ^ bytes[i]) & 0xFF
+        ] ^
+        (crc >>> 8);
+    }
+
+    return (
+      crc ^
+      0xFFFFFFFF
+    ) >>> 0;
+  }
+
+  function excelU16(view, offset, value){
+    view.setUint16(
+      offset,
+      value,
+      true
+    );
+  }
+
+  function excelU32(view, offset, value){
+    view.setUint32(
+      offset,
+      value >>> 0,
+      true
+    );
+  }
+
+  function excelDosDateTime(date){
+
+    const year =
+      Math.max(
+        1980,
+        date.getFullYear()
+      );
+
+    const dosDate =
+      (
+        (year - 1980) << 9
+      ) |
+      (
+        (date.getMonth()+1) << 5
+      ) |
+      date.getDate();
+
+    const dosTime =
+      (
+        date.getHours() << 11
+      ) |
+      (
+        date.getMinutes() << 5
+      ) |
+      Math.floor(
+        date.getSeconds()/2
+      );
+
+    return {
+      dosDate,
+      dosTime
+    };
+  }
+
+  function excelMakeZip(entries){
+
+    const encoder =
+      new TextEncoder();
+
+    const buffers = [];
+    const central = [];
+
+    let offset = 0;
+
+    const dt =
+      excelDosDateTime(
+        new Date()
+      );
+
+    entries.forEach(
+      entry => {
+
+        const nameBytes =
+          encoder.encode(
+            entry.name
+          );
+
+        const dataBytes =
+          typeof entry.data==="string"
+            ? encoder.encode(entry.data)
+            : entry.data;
+
+        const crc =
+          excelCrc32(
+            dataBytes
+          );
+
+        const local =
+          new ArrayBuffer(
+            30 + nameBytes.length
+          );
+
+        const lv =
+          new DataView(
+            local
+          );
+
+        excelU32(lv,0,0x04034b50);
+        excelU16(lv,4,20);
+        excelU16(lv,6,0);
+        excelU16(lv,8,0);
+        excelU16(lv,10,dt.dosTime);
+        excelU16(lv,12,dt.dosDate);
+        excelU32(lv,14,crc);
+        excelU32(lv,18,dataBytes.length);
+        excelU32(lv,22,dataBytes.length);
+        excelU16(lv,26,nameBytes.length);
+        excelU16(lv,28,0);
+
+        new Uint8Array(
+          local,
+          30
+        ).set(
+          nameBytes
+        );
+
+        buffers.push(
+          new Uint8Array(local)
+        );
+
+        buffers.push(
+          dataBytes
+        );
+
+        const centralEntry =
+          new ArrayBuffer(
+            46 + nameBytes.length
+          );
+
+        const cv =
+          new DataView(
+            centralEntry
+          );
+
+        excelU32(cv,0,0x02014b50);
+        excelU16(cv,4,20);
+        excelU16(cv,6,20);
+        excelU16(cv,8,0);
+        excelU16(cv,10,0);
+        excelU16(cv,12,dt.dosTime);
+        excelU16(cv,14,dt.dosDate);
+        excelU32(cv,16,crc);
+        excelU32(cv,20,dataBytes.length);
+        excelU32(cv,24,dataBytes.length);
+        excelU16(cv,28,nameBytes.length);
+        excelU16(cv,30,0);
+        excelU16(cv,32,0);
+        excelU16(cv,34,0);
+        excelU16(cv,36,0);
+        excelU32(cv,38,0);
+        excelU32(cv,42,offset);
+
+        new Uint8Array(
+          centralEntry,
+          46
+        ).set(
+          nameBytes
+        );
+
+        central.push(
+          new Uint8Array(
+            centralEntry
+          )
+        );
+
+        offset +=
+          30 +
+          nameBytes.length +
+          dataBytes.length;
+      }
+    );
+
+    const centralOffset =
+      offset;
+
+    let centralSize =
+      0;
+
+    central.forEach(
+      part=>{
+        centralSize += part.length;
+        buffers.push(part);
+      }
+    );
+
+    const end =
+      new ArrayBuffer(22);
+
+    const ev =
+      new DataView(end);
+
+    excelU32(ev,0,0x06054b50);
+    excelU16(ev,4,0);
+    excelU16(ev,6,0);
+    excelU16(ev,8,central.length);
+    excelU16(ev,10,central.length);
+    excelU32(ev,12,centralSize);
+    excelU32(ev,16,centralOffset);
+    excelU16(ev,20,0);
+
+    buffers.push(
+      new Uint8Array(end)
+    );
+
+    return new Blob(
+      buffers,
+      {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      }
+    );
+  }
+
+  function excelSaveWorkbook(
+    sheetMap,
+    filename
+  ){
+
+    const names =
+      Object.keys(
+        sheetMap
+      );
+
+    const entries = [
+      {
+        name:"[Content_Types].xml",
+        data:excelBuildContentTypes(
+          names.length
+        )
+      },
+      {
+        name:"_rels/.rels",
+        data:excelBuildRootRels(
+          names.length
+        )
+      },
+      {
+        name:"docProps/core.xml",
+        data:excelBuildCoreProps()
+      },
+      {
+        name:"docProps/app.xml",
+        data:excelBuildAppProps(
+          names
+        )
+      },
+      {
+        name:"xl/workbook.xml",
+        data:excelBuildWorkbookXml(
+          names
+        )
+      },
+      {
+        name:"xl/_rels/workbook.xml.rels",
+        data:excelBuildWorkbookRels(
+          names.length
+        )
+      },
+      {
+        name:"xl/styles.xml",
+        data:excelBuildStylesXml()
+      }
+    ];
+
+    names.forEach(
+      (name,index)=>{
+
+        const config =
+          sheetMap[name] || {};
+
+        entries.push({
+          name:
+            `xl/worksheets/sheet${index+1}.xml`,
+          data:
+            excelBuildWorksheetXml(
+              config.matrix || [],
+              config.widths || []
+            )
+        });
+
+      }
+    );
+
+    const blob =
+      excelMakeZip(
+        entries
+      );
+
+    const url =
+      URL.createObjectURL(
+        blob
+      );
+
+    const a =
+      document.createElement(
+        "a"
+      );
+
+    a.href =
+      url;
+
+    a.download =
+      filename;
+
+    document.body.appendChild(
+      a
+    );
+
+    a.click();
+
+    a.remove();
+
+    setTimeout(
+      ()=>{
+        URL.revokeObjectURL(
+          url
+        );
+      },
+      3000
+    );
+  }
+
+  function excelGetFilters(){
+
+    const kw =
+      String(
+        document.getElementById("searchInput")?.value || ""
+      )
+      .trim()
+      .toLowerCase();
+
+    const huyen =
+      document.getElementById("huyenFilter")?.value || "";
+
+    const type =
+      document.getElementById("typeFilter")?.value || "";
+
+    const month =
+      document.getElementById("filter_month")?.value || "";
+
+    const normalizeText =
+      value =>
+        String(value ?? "")
+          .replace(/\u00A0/g," ")
+          .replace(/\s+/g," ")
+          .trim();
+
+    const getRowMonth =
+      row => {
+        const ngay =
+          String(
+            row?.ngay ||
+            row?.ntdn ||
+            ""
+          ).trim();
+
+        if(!ngay.includes("/")){
+          return "";
+        }
+
+        const parts =
+          ngay.split("/");
+
+        if(parts.length!==3){
+          return "";
+        }
+
+        return `${parts[2]}-${parts[1]}`;
+      };
+
+    const rowMatches =
+      (
+        row,
+        allowType=true
+      )=>{
+
+        const haystack =
+          [
+            row?.account,
+            row?.nv,
+            row?.huyen,
+            row?.sc,
+            row?.kpi,
+            row?.cv,
+            row?.bypass,
+            row?.mdb,
+            row?.tt,
+            row?.nd,
+            row?.gline,
+            row?.ntdn
+          ]
+          .map(normalizeText)
+          .join(" ")
+          .toLowerCase();
+
+        const okSearch =
+          !kw ||
+          haystack.includes(
+            kw
+          );
+
+        const okHuyen =
+          !huyen ||
+          normalizeText(
+            row?.huyen
+          ) === normalizeText(
+            huyen
+          );
+
+        const okType =
+          !allowType ||
+          !type ||
+          row?.sc === type ||
+          row?.kpi === type;
+
+        const okMonth =
+          !month ||
+          getRowMonth(row) === month;
+
+        return (
+          okSearch &&
+          okHuyen &&
+          okType &&
+          okMonth
+        );
+      };
+
+    return {
+      kw,
+      huyen,
+      type,
+      month,
+      rowMatches
+    };
+  }
+
+  function excelMatrixFromRows(
+    rows,
+    columns
+  ){
+
+    const safeRows =
+      Array.isArray(rows)
+        ? rows
+        : [];
+
+    return [
+      columns.map(
+        ([,title]) => title
+      ),
+      ...safeRows.map(
+        row =>
+          columns.map(
+            ([key]) =>
+              row?.[key] ?? ""
+          )
+      )
+    ];
+  }
+
+  const EXCEL_TKM_COLUMNS = [
+    ["cv","Loại cv"],
+    ["account","Account"],
+    ["gline","line"],
+    ["ntdn","Ngày đấu nối"],
+    ["nv","Tên nv"],
+    ["huyen","Huyện"],
+    ["tt","Trạng thái cv"],
+    ["tthen","Trạng thái tích hẹn"],
+    ["tg","Thời gian"],
+    ["kpi","Tính KPI"],
+    ["nnt","Nguyên nhân tồn"],
+    ["nnth","Nguyên nhân tích hủy"],
+    ["bypass","Bypass"]
+  ];
+
+  const EXCEL_SC_COLUMNS = [
+    ["sc","Loại sự cố"],
+    ["account","Account"],
+    ["gline","line"],
+    ["ngay","Ngày phát sinh"],
+    ["gio","Giờ phát sinh"],
+    ["nv","Tên nv"],
+    ["huyen","Huyện"],
+    ["dc","Địa chỉ"],
+    ["tg","Thời gian"],
+    ["mdb","Mất đồng bộ GNOC"],
+    ["gnoc","Trạng thái GNOC"],
+    ["nd","Nội dung"],
+    ["nnc","Nguyên nhân chuẩn"],
+    ["bypass","Bypass"]
+  ];
+
+  const EXCEL_TKM_WIDTHS = [
+    9,18,11,13,20,14,22,28,11,17,28,22,10
+  ];
+
+  const EXCEL_SC_WIDTHS = [
+    12,18,11,14,10,20,14,28,11,22,22,30,24,10
+  ];
+
   function exportExcel(){
-  
-  const kw =
-  document.getElementById("searchInput")
-  .value
-  .toLowerCase();
-  
-  const huyen =
-  document.getElementById("huyenFilter")
-  .value;
-  
-  const type =
-  document.getElementById("typeFilter")
-  .value;
-  
-  const month =
-  document.getElementById("filter_month")
-  .value;
-  
-  /* FILTER LẠI TRỰC TIẾP */
-  
-  const exportData = currentData.filter(row=>{
-  
-  const text =
-  JSON.stringify(row)
-  .toLowerCase();
-  
-  const okSearch =
-  text.includes(kw);
-  
-  const okHuyen =
-  !huyen || row.huyen==huyen;
-  
-  const okType =
-  !type || row.sc==type || row.kpi==type;
-  
-  let okMonth = true;
-  
-  if(month){
-  
-  const ngay =
-  String(
-  row.ngay ||
-  row.ntdn ||
-  ""
-  );
-  
-  if(ngay.includes("/")){
-  
-  const parts =
-  ngay.split("/");
-  
-  if(parts.length===3){
-  
-  const rowMonth =
-  `${parts[2]}-${parts[1]}`;
-  
-  okMonth =
-  rowMonth===month;
-  
+
+    /*
+      filteredData chính là dữ liệu sau:
+      Search + Huyện + Loại + Tháng
+      của ĐÚNG bảng đang mở.
+
+      Vì TKM và SC có bộ cột khác nhau,
+      tuyệt đối không dùng chung layout.
+    */
+    const rows =
+      Array.isArray(filteredData)
+        ? filteredData
+        : [];
+
+    if(!rows.length){
+
+      alert(
+        "Bảng hiện tại không có dữ liệu để tải."
+      );
+
+      return;
+    }
+
+    const isTKM =
+      rows.some(
+        row =>
+          row &&
+          Object.prototype.hasOwnProperty.call(
+            row,
+            "cv"
+          )
+      );
+
+    const columns =
+      isTKM
+        ? EXCEL_TKM_COLUMNS
+        : EXCEL_SC_COLUMNS;
+
+    const widths =
+      isTKM
+        ? EXCEL_TKM_WIDTHS
+        : EXCEL_SC_WIDTHS;
+
+    const matrix =
+      excelMatrixFromRows(
+        rows,
+        columns
+      );
+
+    const sheetName =
+      isTKM
+        ? "TKM"
+        : "SC";
+
+    const now =
+      new Date();
+
+    const pad =
+      n =>
+        String(n).padStart(2,"0");
+
+    const filename =
+      `BAO_CAO_${
+        sheetName
+      }_DANG_LOC_${
+        now.getFullYear()
+      }${
+        pad(now.getMonth()+1)
+      }${
+        pad(now.getDate())
+      }_${
+        pad(now.getHours())
+      }${
+        pad(now.getMinutes())
+      }.xlsx`;
+
+    excelSaveWorkbook(
+      {
+        [sheetName]:{
+          matrix,
+          widths
+        }
+      },
+      filename
+    );
   }
-  
+
+  function exportFullTkmSc(){
+
+    /*
+      FULL = toàn bộ nguồn:
+      - TKM: giữ tất cả dòng TKM, kể cả Cập nhật hồ sơ.
+      - SC: giữ tất cả dòng SC.
+    */
+    const tkmRows =
+      Array.isArray(tontkm)
+        ? tontkm
+        : [];
+
+    const scRows =
+      Array.isArray(tonsc)
+        ? tonsc
+        : [];
+
+    if(
+      !tkmRows.length &&
+      !scRows.length
+    ){
+
+      alert(
+        "Không có dữ liệu TKM/SC để tải."
+      );
+
+      return;
+    }
+
+    const tkmMatrix =
+      excelMatrixFromRows(
+        tkmRows,
+        EXCEL_TKM_COLUMNS
+      );
+
+    const scMatrix =
+      excelMatrixFromRows(
+        scRows,
+        EXCEL_SC_COLUMNS
+      );
+
+    const now =
+      new Date();
+
+    const pad =
+      n =>
+        String(n).padStart(2,"0");
+
+    const filename =
+      `FULL_TKM_SC_${
+        now.getFullYear()
+      }${
+        pad(now.getMonth()+1)
+      }${
+        pad(now.getDate())
+      }_${
+        pad(now.getHours())
+      }${
+        pad(now.getMinutes())
+      }.xlsx`;
+
+    excelSaveWorkbook(
+      {
+        "TKM":{
+          matrix:tkmMatrix,
+          widths:EXCEL_TKM_WIDTHS
+        },
+        "SC":{
+          matrix:scMatrix,
+          widths:EXCEL_SC_WIDTHS
+        }
+      },
+      filename
+    );
   }
-  
-  }
-  
-  return (
-  okSearch
-  && okHuyen
-  && okType
-  && okMonth
-  );
-  
-  });
-  
-  if(!exportData.length){
-  
-  alert("Không có dữ liệu");
-  
-  return;
-  
-  }
-  
-  const rows=exportData.map(row=>{
-  
-  const obj={};
-  
-  Object.keys(row).forEach(k=>{
-  
-  if(
-  k==="thuongcv1"
-  ||
-  k==="tgupdate"
-  )return;
-  
-  obj[getColumnTitle(k)] =
-  row[k];
-  
-  });
-  
-  return obj;
-  
-  });
-  
-  const ws =
-  XLSX.utils.json_to_sheet(rows);
-  
-  const wb =
-  XLSX.utils.book_new();
-  
-  XLSX.utils.book_append_sheet(
-  wb,
-  ws,
-  "DATA"
-  );
-  
-  const title =
-  document.getElementById("modalTitle")
-  .innerText
-  ||
-  "DATA";
-  
-  XLSX.writeFile(
-  wb,
-  title+".xlsx"
-  );
-  
-  }
+
 
   /* =========================
   XÓA TOÀN BỘ SC/TKM
@@ -25194,6 +27013,56 @@ function openChartZoomFromCanvas(
   */
   requestAnimationFrame(
     ()=>{
+      const dialog =
+        document.getElementById(
+          "chartZoomCaptureArea"
+        );
+
+      const head =
+        dialog?.querySelector(
+          ".chart-zoom-head"
+        );
+
+      const wrap =
+        document.querySelector(
+          "#chartZoomCaptureArea .chart-zoom-canvas-wrap"
+        );
+
+      if(dialog && wrap){
+        const vh =
+          window.innerHeight || document.documentElement.clientHeight || 800;
+
+        const isMobile =
+          window.matchMedia &&
+          window.matchMedia("(max-width:700px)").matches;
+
+        const targetHeight =
+          isMobile
+            ? Math.max(
+                200,
+                Math.min(
+                  360,
+                  Math.floor(vh * 0.34)
+                )
+              )
+            : Math.max(
+                240,
+                Math.min(
+                  430,
+                  Math.floor(vh * 0.42)
+                )
+              );
+
+        wrap.style.height =
+          targetHeight + "px";
+
+        wrap.style.minHeight =
+          targetHeight + "px";
+
+        wrap.style.maxHeight =
+          targetHeight + "px";
+      }
+
       if(
         activeChartZoomChart &&
         typeof activeChartZoomChart.resize==="function"
