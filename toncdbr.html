@@ -12059,6 +12059,68 @@
     max-height:50vh !important;
   }
 }
+
+/* ==========================================================
+   DASHBOARD INITIAL LOAD OVERLAY
+   Che mờ toàn bộ dashboard + spinner cho tới khi dữ liệu
+   và các biểu đồ chính/history comparison load xong.
+   ========================================================== */
+#dashboardInitialLoader{
+  position:fixed;
+  inset:0;
+  z-index:2147483647;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:14px;
+  background:rgba(15,23,42,.58);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transition:opacity .25s ease, visibility .25s ease;
+}
+#dashboardInitialLoader.is-hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+#dashboardInitialLoader .loader-spinner{
+  width:48px;
+  height:48px;
+  border:5px solid rgba(255,255,255,.35);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:dashboardLoaderSpin .8s linear infinite;
+  box-sizing:border-box;
+}
+#dashboardInitialLoader .loader-title{
+  color:#fff;
+  font-size:15px;
+  font-weight:800;
+  text-align:center;
+  text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+#dashboardInitialLoader .loader-subtitle{
+  color:rgba(255,255,255,.88);
+  font-size:11px;
+  font-weight:600;
+  text-align:center;
+}
+body.dashboard-is-loading{
+  overflow:hidden !important;
+}
+@keyframes dashboardLoaderSpin{
+  to{transform:rotate(360deg);}
+}
+@media(max-width:600px){
+  #dashboardInitialLoader .loader-title{font-size:14px;}
+  #dashboardInitialLoader .loader-subtitle{font-size:10px;}
+  #dashboardInitialLoader .loader-spinner{width:42px;height:42px;border-width:4px;}
+}
+
 </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12226,7 +12288,14 @@
 </script>
 
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <body>
+  <body class="dashboard-is-loading">
+
+<div id="dashboardInitialLoader" aria-live="polite" aria-busy="true">
+  <div class="loader-spinner" aria-hidden="true"></div>
+  <div class="loader-title">⏳ Đang tải Dashboard...</div>
+  <div class="loader-subtitle">Đang tải dữ liệu, KPI và biểu đồ. Vui lòng chờ.</div>
+</div>
+
   
   <h1>📊 TỒN TÁC VỤ CĐBR</h1>
   
@@ -16730,6 +16799,15 @@ async function initPeriodComparison(){
 
   }
 
+function finishDashboardInitialLoading(success=true){
+  const loader=document.getElementById("dashboardInitialLoader");
+  if(!loader)return;
+
+  loader.setAttribute("aria-busy","false");
+  loader.classList.add("is-hidden");
+  document.body.classList.remove("dashboard-is-loading");
+}
+
 async function loadData(){
   
   try{
@@ -16867,7 +16945,7 @@ const nhaplieu =
   
   renderTonSC();
   renderTonTKM();
-  renderCharts();
+  await renderCharts();
 
   /*
     BACKUP LỊCH SỬ:
@@ -16882,6 +16960,8 @@ const nhaplieu =
   console.error(err);
   document.getElementById("updateTime").innerHTML="⚠️ Không tải được dữ liệu API";
   
+  }finally{
+    finishDashboardInitialLoading();
   }
   
   }
@@ -17228,7 +17308,7 @@ try{
   Chart.defaults.elements.point.hoverRadius=5;
 }catch(e){}
 
-function renderCharts(){
+async function renderCharts(){
 
   renderSCHuyen();
 
@@ -17260,7 +17340,7 @@ function renderCharts(){
   renderEvaluationNotebook();
   /* NEW: render điều hành N-1/N sau khi API đã có dữ liệu */
   renderOpsDashboards();
-  initPeriodComparison();
+  await initPeriodComparison();
 
   document.getElementById("opsStaffMonth")?.addEventListener(
     "change",
@@ -26133,6 +26213,73 @@ ${rels.join("")}
     };
   }
 
+  /*
+    KPI SC khi xuất Excel.
+    Đồng bộ với compareScStats():
+      - SC thường:
+          >3h  và <=10h  => QUÁ 3H
+          >10h và <=16h  => QUÁ 10H
+          >16h và <=24h  => QUÁ 16H
+          >24h            => QUÁ 24H
+      - SOC / SOC HOME:
+          >24h và <=72h  => QUÁ 24H
+          >72h            => QUÁ 72H
+      - <= ngưỡng đầu    => TRONG HẠN
+  */
+  function getExportScKpi(row){
+    const loai =
+      compareNorm(row?.sc);
+
+    const hours =
+      compareHours(row);
+
+    const isSocRow =
+      loai==="SOC" ||
+      loai==="SOC HOME";
+
+    if(isSocRow){
+      if(hours>72){
+        return "QUÁ 72H";
+      }
+      if(hours>24){
+        return "QUÁ 24H";
+      }
+      return "TRONG HẠN";
+    }
+
+    if(hours>24){
+      return "QUÁ 24H";
+    }
+    if(hours>16){
+      return "QUÁ 16H";
+    }
+    if(hours>10){
+      return "QUÁ 10H";
+    }
+    if(hours>3){
+      return "QUÁ 3H";
+    }
+
+    return "TRONG HẠN";
+  }
+
+  function prepareRowsForExcel(rows, isTKM){
+    const safe =
+      Array.isArray(rows)
+        ? rows
+        : [];
+
+    if(isTKM){
+      return safe;
+    }
+
+    return safe.map(row=>({
+      ...row,
+      kpi_export:
+        getExportScKpi(row)
+    }));
+  }
+
   function excelMatrixFromRows(
     rows,
     columns
@@ -26183,6 +26330,7 @@ ${rels.join("")}
     ["huyen","Huyện"],
     ["dc","Địa chỉ"],
     ["tg","Thời gian"],
+    ["kpi_export","Tính KPI"],
     ["mdb","Mất đồng bộ GNOC"],
     ["gnoc","Trạng thái GNOC"],
     ["nd","Nội dung"],
@@ -26242,9 +26390,15 @@ ${rels.join("")}
         ? EXCEL_TKM_WIDTHS
         : EXCEL_SC_WIDTHS;
 
+    const excelRows =
+      prepareRowsForExcel(
+        rows,
+        isTKM
+      );
+
     const matrix =
       excelMatrixFromRows(
-        rows,
+        excelRows,
         columns
       );
 
@@ -26321,9 +26475,15 @@ ${rels.join("")}
         EXCEL_TKM_COLUMNS
       );
 
+    const scExcelRows =
+      prepareRowsForExcel(
+        scRows,
+        false
+      );
+
     const scMatrix =
       excelMatrixFromRows(
-        scRows,
+        scExcelRows,
         EXCEL_SC_COLUMNS
       );
 
