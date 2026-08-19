@@ -13610,6 +13610,15 @@ let tonsc=[];
 
   function compareAllStats(tkmRows,scRows){
 
+  /*
+    QUY ƯỚC BÁO CÁO NHÂN VIÊN:
+    - Tổng TKM = tổng TKM nguồn - Cập nhật hồ sơ.
+    - Tổng SC = toàn bộ cột Loại sự cố (không loại SOC/SOC HOME).
+    - Tổng SC + TKM = Tổng TKM thực tế + Tổng SC toàn bộ.
+    Các mốc >16h, >24h, >3h, >10h... chỉ là KPI đánh giá,
+    không được trừ khỏi Tổng TKM/Tổng SC.
+  */
+
     const t=
       compareTkmStats(
         tkmRows
@@ -13622,8 +13631,12 @@ let tonsc=[];
 
     return {
 
-      TKM:t.total,
-      CNHS:t.capnhat,
+      TKM:
+        t.total -
+        t.capnhat,
+
+      CNHS:
+        t.capnhat,
       TKM16:t.q16,
       TKM24:t.q24,
       TKMHEN:t.qHen,
@@ -13639,7 +13652,11 @@ let tonsc=[];
       SOC72:s.soc72,
 
       TOTAL_OPS:
-        t.total + s.total
+        (
+          t.total -
+          t.capnhat
+        ) +
+        s.total
 
     };
 
