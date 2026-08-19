@@ -11852,6 +11852,214 @@
 }
 
 </style>
+
+<style id="MOBILE_CHART_TABLE_FIX_V1">
+/* ==========================================================
+   MOBILE V1
+   - Biểu đồ tự co theo chiều rộng màn hình
+   - Không tràn ngang do canvas/chart
+   - Các bảng có vùng scroll riêng, không kéo cả trang
+   - Header bảng cố định khi cuộn
+   ========================================================== */
+@media (max-width:768px){
+  html, body{
+    max-width:100%;
+    overflow-x:hidden !important;
+  }
+
+  .chart-grid,
+  .daily-notebook-layout,
+  .district-report-charts,
+  .dashboard,
+  .ops-dashboard-row{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+
+  .chart-box,
+  .district-report-card,
+  .district-total-7day-line-panel,
+  #huyenSocBypassLineBox{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+    overflow:hidden !important;
+  }
+
+  /* Canvas chính: luôn theo chiều rộng thực tế của màn hình */
+  .chart-box canvas,
+  .district-report-chart-wrap canvas,
+  .district-total-7day-line-wrap canvas,
+  #huyenSocBypassLineWrap canvas{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  /* Các wrapper được tạo bằng style height:285px */
+  .chart-box > div[style*="height:285px"],
+  .chart-box > div[style*="height: 285px"]{
+    height:clamp(205px,55vw,270px) !important;
+    min-height:205px !important;
+    max-height:270px !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  /* Biểu đồ TKM theo huyện trước đây bị khóa 310px */
+  #chartTongTKM{
+    height:auto !important;
+    max-height:none !important;
+  }
+  .chart-box:has(#chartTongTKM){
+    min-height:0 !important;
+  }
+
+  /* Biểu đồ SOC 24/72 theo huyện */
+  #huyenSocBypassLineWrap{
+    width:100% !important;
+    height:clamp(215px,58vw,280px) !important;
+    min-height:215px !important;
+    max-height:280px !important;
+    position:relative !important;
+  }
+
+  #chartSOC24_72_HUYEN{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  /* Không để grid ép chiều rộng chart trên màn hình nhỏ */
+  .chart-grid{
+    grid-template-columns:minmax(0,1fr) !important;
+    gap:8px !important;
+  }
+
+  /* ========================================================
+     TABLE SCROLL: mỗi bảng tự cuộn, trang không bị kéo ngang
+     ======================================================== */
+  .period-table-wrap,
+  .period-staff-table-wrap,
+  .ops-staff-table-wrap,
+  .district-change-table-wrap,
+  .district-change-table-card,
+  .district-report-table-wrap,
+  .district-total-7day-line-wrap,
+  #districtCompareReport .period-table-wrap,
+  #staffCompareReport .period-staff-table-wrap,
+  #district7DayReport .district-change-grid,
+  #periodCompareSection .period-table-wrap{
+    overflow-x:auto !important;
+    overflow-y:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+    overscroll-behavior:contain !important;
+    touch-action:auto !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
+
+  /* Chiều cao vùng cuộn: không làm dài cả trang */
+  #periodCompareSection .period-table-wrap,
+  #districtCompareReport .period-table-wrap,
+  #district7DayReport .district-change-table-wrap,
+  #staffCompareReport .period-staff-table-wrap,
+  #opsDashboardSection .ops-staff-table-wrap{
+    max-height:52vh !important;
+    min-height:0 !important;
+  }
+
+  /* Bảng vẫn đủ rộng để đọc; wrapper chịu trách nhiệm scroll ngang */
+  #periodCompareSection table.period-table,
+  #districtCompareReport table.period-table,
+  #staffCompareReport table.period-table,
+  #district7DayReport table.district-change-table,
+  #opsDashboardSection table.ops-staff-table{
+    width:max-content !important;
+    max-width:none !important;
+  }
+
+  /* Header bảng cố định khi cuộn dọc */
+  #periodCompareSection table.period-table thead th,
+  #districtCompareReport table.period-table thead th,
+  #staffCompareReport table.period-table thead th,
+  #district7DayReport table.district-change-table thead th,
+  #opsDashboardSection table.ops-staff-table thead th{
+    position:sticky !important;
+    top:0 !important;
+    z-index:20 !important;
+  }
+
+  /* Giữ hàng header không bị mất nền khi sticky */
+  #periodCompareSection table.period-table thead,
+  #districtCompareReport table.period-table thead,
+  #staffCompareReport table.period-table thead,
+  #district7DayReport table.district-change-table thead,
+  #opsDashboardSection table.ops-staff-table thead{
+    position:sticky !important;
+    top:0 !important;
+    z-index:19 !important;
+  }
+
+  /* Bảng báo cáo nhân viên: cuộn ngang/dọc trong chính khung */
+  #staffCompareReport .period-staff-table-wrap{
+    max-height:55vh !important;
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+    overscroll-behavior:contain !important;
+  }
+
+  /* Bảng chi tiết vận hành */
+  #opsDashboardSection .ops-staff-table-wrap{
+    max-height:55vh !important;
+    overflow:auto !important;
+  }
+
+  /* Hàng tiêu đề không bị xuống dòng quá cao */
+  #periodCompareSection table.period-table thead th,
+  #districtCompareReport table.period-table thead th,
+  #staffCompareReport table.period-table thead th,
+  #district7DayReport table.district-change-table thead th,
+  #opsDashboardSection table.ops-staff-table thead th{
+    white-space:nowrap !important;
+  }
+}
+
+@media (max-width:420px){
+  .chart-box,
+  .district-report-card{
+    padding:7px !important;
+  }
+
+  .chart-box .chart-title,
+  .district-report-card-title{
+    font-size:11px !important;
+    line-height:1.2 !important;
+  }
+
+  .chart-box > div[style*="height:285px"],
+  .chart-box > div[style*="height: 285px"]{
+    height:205px !important;
+    min-height:205px !important;
+    max-height:205px !important;
+  }
+
+  #huyenSocBypassLineWrap{
+    height:215px !important;
+    min-height:215px !important;
+    max-height:215px !important;
+  }
+
+  #periodCompareSection .period-table-wrap,
+  #districtCompareReport .period-table-wrap,
+  #district7DayReport .district-change-table-wrap,
+  #staffCompareReport .period-staff-table-wrap,
+  #opsDashboardSection .ops-staff-table-wrap{
+    max-height:50vh !important;
+  }
+}
+</style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -12799,62 +13007,26 @@ async function captureReportSection(
           );
         }
 
+        /*
+          STAFF REPORT:
+          Chỉ COPY ảnh vào Clipboard.
+          KHÔNG tạo Blob URL để tải file.
+          KHÔNG dùng <a download>.
+        */
         if(
-          navigator.clipboard &&
-          window.ClipboardItem
+          !navigator.clipboard ||
+          !window.ClipboardItem
         ){
-          await navigator.clipboard.write([
-            new ClipboardItem({
-              "image/png":blob
-            })
-          ]);
-}else{
-
-          /*
-            Fallback nếu trình duyệt không hỗ trợ clipboard ảnh.
-          */
-          const url =
-            URL.createObjectURL(
-              blob
-            );
-
-          const a =
-            document.createElement(
-              "a"
-            );
-
-          const now =
-            new Date();
-
-          const pad =
-            n=>String(n).padStart(2,"0");
-
-          a.href=url;
-
-          a.download=
-            `BAO_CAO_NHAN_VIEN_${
-              now.getFullYear()
-            }${
-              pad(now.getMonth()+1)
-            }${
-              pad(now.getDate())
-            }_${
-              pad(now.getHours())
-            }${
-              pad(now.getMinutes())
-            }.png`;
-
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-
-          setTimeout(
-            ()=>{
-              URL.revokeObjectURL(url);
-            },
-            2000
+          throw new Error(
+            "Trình duyệt không hỗ trợ sao chép ảnh vào Clipboard."
           );
-}
+        }
+
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "image/png":blob
+          })
+        ]);
 
       }finally{
 
@@ -12957,41 +13129,18 @@ async function captureReportSection(
           "Không tạo được ảnh báo cáo."
         );
       }
-
-      const url =
-        URL.createObjectURL(
-          blob
-        );
-
-      const a =
-        document.createElement("a");
-
-      a.href=url;
-      a.download=filename;
-
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-
-      if(
-        navigator.clipboard &&
-        window.ClipboardItem
-      ){
-        try{
-          await navigator.clipboard.write([
-            new ClipboardItem({
-              "image/png":blob
-            })
-          ]);
-        }catch(e){}
-      }
-
-      setTimeout(
-        ()=>{
-          URL.revokeObjectURL(url);
-        },
-        2000
+    /* CHỈ COPY ẢNH VÀO CLIPBOARD - KHÔNG LƯU FILE */
+    if(!navigator.clipboard || !window.ClipboardItem){
+      throw new Error(
+        "Trình duyệt không hỗ trợ sao chép ảnh vào Clipboard."
       );
+    }
+
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        "image/png":blob
+      })
+    ]);
 
       return;
     }
@@ -13419,55 +13568,18 @@ async function captureReportSection(
         "Không tạo được ảnh báo cáo."
       );
     }
-
-    const url =
-      URL.createObjectURL(
-        blob
+    /* CHỈ COPY ẢNH VÀO CLIPBOARD - KHÔNG LƯU FILE */
+    if(!navigator.clipboard || !window.ClipboardItem){
+      throw new Error(
+        "Trình duyệt không hỗ trợ sao chép ảnh vào Clipboard."
       );
-
-    const a =
-      document.createElement(
-        "a"
-      );
-
-    a.href=url;
-    a.download=filename;
-
-    document.body.appendChild(
-      a
-    );
-
-    a.click();
-    a.remove();
-
-    /*
-      Copy ảnh vào clipboard.
-    */
-    if(
-      navigator.clipboard &&
-      window.ClipboardItem
-    ){
-
-      try{
-
-        await navigator.clipboard.write([
-          new ClipboardItem({
-            "image/png":blob
-          })
-        ]);
-
-      }catch(e){}
-
     }
 
-    setTimeout(
-      ()=>{
-        URL.revokeObjectURL(
-          url
-        );
-      },
-      2000
-    );
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        "image/png":blob
+      })
+    ]);
 
   }catch(err){
 
@@ -13821,10 +13933,78 @@ let tonsc=[];
     );
 
     /*
-      Mốc 1 = backup cũ nhất
-      Mốc 2 = backup mới nhất
+      MỐC 2 mặc định = Dashboard hiện tại.
+      MỐC 1 mặc định = backup có TGUPDATE gần nhất
+      nhưng PHẢI NHỎ HƠN TGUPDATE của Dashboard hiện tại.
+      Không được chọn backup có cùng TGUPDATE với Dashboard hiện tại.
+      Nếu không có backup trước đó thì lấy mốc gần nhất
+      theo khoảng cách thời gian tuyệt đối.
     */
-    b1.value="0";
+    const current =
+      getCurrentDashboardSnapshot_();
+
+    const currentTs =
+      parseHistoryDate(
+        current?.tgupdate
+      );
+
+    let nearestIndex = 0;
+
+    if(currentTs){
+
+      const previousCandidates =
+        snapshots
+          .map((snap,index)=>({
+            index,
+            ts:parseHistoryDate(
+              snapshotTg(snap)
+            )
+          }))
+          .filter(x=>x.ts && x.ts < currentTs);
+
+      if(previousCandidates.length){
+
+        previousCandidates.sort(
+          (a,b)=>b.ts-a.ts
+        );
+
+        nearestIndex =
+          previousCandidates[0].index;
+
+      }else{
+
+        const allCandidates =
+          snapshots
+            .map((snap,index)=>({
+              index,
+              ts:parseHistoryDate(
+                snapshotTg(snap)
+              )
+            }))
+            .filter(x=>x.ts);
+
+        if(allCandidates.length){
+          allCandidates
+            .filter(x=>x.ts !== currentTs)
+            .sort(
+              (a,b)=>
+                Math.abs(a.ts-currentTs)-
+                Math.abs(b.ts-currentTs)
+            );
+
+          nearestIndex =
+            allCandidates[0].index;
+        }
+
+      }
+
+    }
+
+    b1.value=
+      String(nearestIndex);
+
+    /* Mốc 2 vẫn giữ Dashboard hiện tại.
+       compareSource2 mặc định là dashboard. */
     b2.value=
       String(
         Math.max(
@@ -26281,15 +26461,25 @@ ${rels.join("")}
       const stamp=new Date();
       const pad=n=>String(n).padStart(2,'0');
       const filename=`DANH_GIA_TON_CONG_VIEC_CDBR_${stamp.getFullYear()}${pad(stamp.getMonth()+1)}${pad(stamp.getDate())}_${pad(stamp.getHours())}${pad(stamp.getMinutes())}.png`;
-      canvas.toBlob(blob=>{
-        if(!blob){alert('Không tạo được ảnh báo cáo.');return;}
-        const url=URL.createObjectURL(blob);
-        const a=document.createElement('a');a.href=url;a.download=filename;
-        document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-        if(navigator.clipboard && window.ClipboardItem){
-          try{navigator.clipboard.write([new ClipboardItem({'image/png':blob})]).catch(()=>{});}catch(e){}
-        }
-      },'image/png');
+      const blob=await new Promise((resolve,reject)=>{
+        canvas.toBlob(
+          b=>b
+            ? resolve(b)
+            : reject(new Error('Không tạo được ảnh báo cáo.')),
+          'image/png'
+        );
+      });
+
+      /* CHỈ COPY ẢNH VÀO CLIPBOARD - KHÔNG LƯU FILE */
+      if(!navigator.clipboard || !window.ClipboardItem){
+        throw new Error(
+          'Trình duyệt không hỗ trợ sao chép ảnh vào Clipboard.'
+        );
+      }
+
+      await navigator.clipboard.write([
+        new ClipboardItem({'image/png':blob})
+      ]);
     }catch(err){
       console.error('captureCDBRReport:',err);
       alert('Chụp báo cáo thất bại. Hãy thử lại.');
@@ -27444,3 +27634,4 @@ function setSevenDayChartStatus(state, text){
 
 </body>
   </html>
+
