@@ -17012,23 +17012,20 @@ const nhaplieu =
     const url =
       "https://drive.google.com/drive/u/0/folders/1AyMu7BARQzOVntp0rceb698v29ge70Qf";
 
-    /*
-     * Android:
-     * Giữ window.open("_blank") để MainActivity bắt popup
-     * và mở trang bằng Dialog WebView riêng.
-     *
-     * Không dùng window.location.href vì sẽ thay trang Dashboard
-     * thay vì tạo popup.
-     */
     try{
-      const popup = window.open(
-        url,
-        "_blank",
-        "noopener,noreferrer"
-      );
+      // Android APK: call the native bridge directly.
+      // This bypasses _blank completely and opens a REAL WebView Dialog.
+      if(
+        window.Android &&
+        typeof window.Android.openGuidePopup === "function"
+      ){
+        window.Android.openGuidePopup(url);
+        return false;
+      }
 
-      // Nếu trình duyệt chặn popup thì mới fallback.
-      if(!popup){
+      // Desktop/browser fallback.
+      const w = window.open(url,"_blank","noopener,noreferrer");
+      if(!w){
         window.location.href = url;
       }
     }catch(e){
