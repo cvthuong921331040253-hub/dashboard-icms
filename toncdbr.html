@@ -12158,8 +12158,6 @@ body.dashboard-is-loading{
   }
 }
 
-
-
 </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -24713,18 +24711,7 @@ function showTable(title,data){
 const url =
 `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}`;
   
-    if(window.matchMedia &&
-     window.matchMedia("(max-width:768px)").matches){
-
-    saveMobileReturnPosition();
-
-    window.location.href=url;
-
-  }else{
-
-    window.open(url,"_blank");
-
-  }
+  window.open(url,"_blank");
   
   }
 
@@ -24780,18 +24767,10 @@ const url =
   
   `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}&mode=view`;
   
-    if(window.matchMedia &&
-     window.matchMedia("(max-width:768px)").matches){
-
-    saveMobileReturnPosition();
-
-    window.location.href=url;
-
-  }else{
-
-    window.open(url,"_blank");
-
-  }
+  window.open(
+  url,
+  "_blank"
+  );
   
   }
 
@@ -24823,18 +24802,7 @@ const url =
   const url =
   `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check||"")}&account=${encodeURIComponent(account)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(row.nv||row.ten_nv||"")}`;
 
-    if(window.matchMedia &&
-     window.matchMedia("(max-width:768px)").matches){
-
-    saveMobileReturnPosition();
-
-    window.location.href=url;
-
-  }else{
-
-    window.open(url,"_blank");
-
-  }
+  window.open(url,"_blank");
 
 }
     
@@ -24892,72 +24860,6 @@ const url =
   "Đã mở khóa sửa 1 lần"
   );
   
-
-/* ==========================================================
-   MOBILE RETURN POSITION
-   Desktop navigation remains the original window.open().
-   Mobile navigation uses the same tab and restores scroll
-   when the user returns with Back.
-   ========================================================== */
-(function(){
-  const SCROLL_KEY="dashboard_mobile_return_scroll_v2";
-  const PENDING_KEY="dashboard_mobile_return_pending_v2";
-
-  window.saveMobileReturnPosition=function(){
-    if(!(window.matchMedia &&
-         window.matchMedia("(max-width:768px)").matches)){
-      return;
-    }
-
-    try{
-      sessionStorage.setItem(
-        SCROLL_KEY,
-        String(window.scrollY || window.pageYOffset || 0)
-      );
-      sessionStorage.setItem(PENDING_KEY,"1");
-    }catch(e){}
-  };
-
-  function restore(){
-    if(!(window.matchMedia &&
-         window.matchMedia("(max-width:768px)").matches)){
-      return;
-    }
-
-    let pending=null;
-    let saved=null;
-
-    try{
-      pending=sessionStorage.getItem(PENDING_KEY);
-      saved=sessionStorage.getItem(SCROLL_KEY);
-    }catch(e){}
-
-    if(pending!=="1" || saved===null) return;
-
-    const y=Number(saved);
-    if(!Number.isFinite(y)) return;
-
-    const go=()=>{
-      window.scrollTo(0,y);
-    };
-
-    requestAnimationFrame(()=>{
-      requestAnimationFrame(go);
-    });
-
-    setTimeout(go,350);
-    setTimeout(go,1000);
-
-    try{
-      sessionStorage.removeItem(PENDING_KEY);
-      sessionStorage.removeItem(SCROLL_KEY);
-    }catch(e){}
-  }
-
-  window.addEventListener("pageshow",restore);
-  window.addEventListener("load",restore);
-})();
-
   loadData();
   
   }else{
@@ -25393,18 +25295,7 @@ const url =
   const url =
   `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1&id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ten_nv=${encodeURIComponent(ten_nv)}&loai=${encodeURIComponent(loai)}&tg_nhap=${encodeURIComponent(tg_nhap)}&edit=1`;
   
-    if(window.matchMedia &&
-     window.matchMedia("(max-width:768px)").matches){
-
-    saveMobileReturnPosition();
-
-    window.location.href=url;
-
-  }else{
-
-    window.open(url,"_blank");
-
-  }
+  window.open(url,"_blank");
   
   }
     
@@ -25413,18 +25304,7 @@ const url =
   const url =
   "https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1";
   
-    if(window.matchMedia &&
-     window.matchMedia("(max-width:768px)").matches){
-
-    saveMobileReturnPosition();
-
-    window.location.href=url;
-
-  }else{
-
-    window.open(url,"_blank");
-
-  }
+  window.open(url,"_blank");
   
   }
   
