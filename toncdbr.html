@@ -12158,6 +12158,90 @@ body.dashboard-is-loading{
   }
 }
 
+
+
+/* ==========================================================
+   MOBILE EXTERNAL PAGE PANEL
+   ========================================================== */
+#mobileExternalPageOverlay{display:none;}
+
+@media(max-width:768px){
+  #mobileExternalPageOverlay{
+    position:fixed;
+    inset:0;
+    z-index:2147483000;
+    display:flex;
+    flex-direction:column;
+    background:#f8fafc;
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity .18s ease, transform .18s ease;
+    overscroll-behavior:none;
+  }
+
+  #mobileExternalPageOverlay.is-open{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .mobile-external-head{
+    flex:0 0 48px;
+    min-height:48px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:6px 8px;
+    box-sizing:border-box;
+    background:#fff;
+    border-bottom:1px solid #dbe3ee;
+    box-shadow:0 1px 5px rgba(15,23,42,.08);
+  }
+
+  .mobile-external-close{
+    border:0;
+    border-radius:8px;
+    padding:8px 12px;
+    background:#2563eb;
+    color:#fff;
+    font-size:12px;
+    font-weight:800;
+    line-height:1;
+    cursor:pointer;
+    flex:none;
+  }
+
+  .mobile-external-title{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:#334155;
+    font-size:12px;
+    font-weight:700;
+  }
+
+  .mobile-external-body{
+    flex:1 1 auto;
+    min-height:0;
+    width:100%;
+    overflow:hidden;
+    background:#fff;
+  }
+
+  .mobile-external-body iframe{
+    display:block;
+    width:100%;
+    height:100%;
+    border:0;
+    background:#fff;
+  }
+
+  body:has(#mobileExternalPageOverlay.is-open){
+    overflow:hidden !important;
+    overscroll-behavior:none !important;
+  }
+}
+
 </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -24711,7 +24795,7 @@ function showTable(title,data){
 const url =
 `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}`;
   
-  window.open(url,"_blank");
+  openExternalSmart(url);
   
   }
 
@@ -24767,10 +24851,7 @@ const url =
   
   `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}&mode=view`;
   
-  window.open(
-  url,
-  "_blank"
-  );
+  openExternalSmart(url);
   
   }
 
@@ -24802,7 +24883,7 @@ const url =
   const url =
   `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check||"")}&account=${encodeURIComponent(account)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(row.nv||row.ten_nv||"")}`;
 
-  window.open(url,"_blank");
+  openExternalSmart(url);
 
 }
     
@@ -24860,6 +24941,118 @@ const url =
   "Đã mở khóa sửa 1 lần"
   );
   
+
+/* ==========================================================
+   MOBILE APP NAVIGATION
+   Desktop: GIỮ NGUYÊN mở tab mới.
+   Mobile: mở trang trong panel toàn màn hình + nút ĐÓNG,
+   giữ lại vị trí scroll Dashboard khi quay về.
+   ========================================================== */
+(function(){
+  let mobileExternalOverlay = null;
+  let mobileExternalScrollY = 0;
+  let mobileExternalHistoryPushed = false;
+
+  function isMobileViewport(){
+    return window.matchMedia &&
+      window.matchMedia("(max-width:768px)").matches;
+  }
+
+  function closeMobileExternalPage(fromPopState){
+    if(!mobileExternalOverlay) return;
+
+    const overlay = mobileExternalOverlay;
+    mobileExternalOverlay = null;
+
+    const iframe = overlay.querySelector("iframe");
+    if(iframe) iframe.src = "about:blank";
+
+    overlay.remove();
+    document.body.style.overflow = "";
+
+    requestAnimationFrame(()=>{
+      window.scrollTo(0, mobileExternalScrollY);
+    });
+
+    if(mobileExternalHistoryPushed && !fromPopState){
+      mobileExternalHistoryPushed = false;
+      try{ history.back(); }catch(e){}
+    }else{
+      mobileExternalHistoryPushed = false;
+    }
+  }
+
+  window.closeMobileExternalPage = closeMobileExternalPage;
+
+  window.openExternalSmart = function(url){
+    if(!url) return;
+
+    /* DESKTOP: giữ nguyên mở tab mới */
+    if(!isMobileViewport()){
+      window.open(url,"_blank");
+      return;
+    }
+
+    /* MOBILE: lưu vị trí Dashboard */
+    mobileExternalScrollY =
+      window.scrollY || window.pageYOffset || 0;
+
+    if(mobileExternalOverlay){
+      const oldFrame =
+        mobileExternalOverlay.querySelector("iframe");
+      if(oldFrame) oldFrame.src = url;
+      return;
+    }
+
+    const overlay = document.createElement("div");
+    overlay.id = "mobileExternalPageOverlay";
+
+    overlay.innerHTML = `
+      <div class="mobile-external-head">
+        <button
+          type="button"
+          class="mobile-external-close"
+          onclick="closeMobileExternalPage(false)"
+        >✕ ĐÓNG</button>
+        <div class="mobile-external-title">Trang thao tác</div>
+      </div>
+      <div class="mobile-external-body">
+        <iframe
+          src="${String(url).replace(/"/g,"&quot;")}"
+          title="Trang thao tác"
+          loading="eager"
+          allow="clipboard-read; clipboard-write; camera; microphone; geolocation"
+        ></iframe>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+    mobileExternalOverlay = overlay;
+    document.body.style.overflow = "hidden";
+
+    try{
+      history.pushState(
+        {mobileExternalPage:true},
+        "",
+        window.location.href
+      );
+      mobileExternalHistoryPushed = true;
+    }catch(e){
+      mobileExternalHistoryPushed = false;
+    }
+
+    requestAnimationFrame(()=>{
+      overlay.classList.add("is-open");
+    });
+  };
+
+  window.addEventListener("popstate", ()=>{
+    if(mobileExternalOverlay){
+      closeMobileExternalPage(true);
+    }
+  });
+})();
+
   loadData();
   
   }else{
@@ -25295,7 +25488,7 @@ const url =
   const url =
   `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1&id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ten_nv=${encodeURIComponent(ten_nv)}&loai=${encodeURIComponent(loai)}&tg_nhap=${encodeURIComponent(tg_nhap)}&edit=1`;
   
-  window.open(url,"_blank");
+  openExternalSmart(url);
   
   }
     
@@ -25304,7 +25497,7 @@ const url =
   const url =
   "https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1";
   
-  window.open(url,"_blank");
+  openExternalSmart(url);
   
   }
   
