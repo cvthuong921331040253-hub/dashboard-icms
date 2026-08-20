@@ -366,8 +366,8 @@ td.sl-cell{
 
   th:nth-child(4),
   td:nth-child(4){
-    min-width:75px;
-    max-width:95px;
+    min-width:105px;
+    max-width:125px;
     white-space:normal;
     word-break:break-word;
     line-height:1.2;
@@ -375,8 +375,8 @@ td.sl-cell{
 
   th:nth-child(5),
   td:nth-child(5){
-    min-width:85px;
-    max-width:105px;
+    min-width:55px;
+    max-width:70px;
     white-space:normal;
     word-break:break-word;
     line-height:1.2;
@@ -727,17 +727,6 @@ function downloadExcel(){
 
   }
 
-  /* 
-     Thứ tự xuất:
-     mh  -> Mặt hàng
-     dv  -> Đơn vị
-     tt  -> Trạng thái
-     sl  -> Số lượng
-     nv  -> Nhân viên
-     huyen -> Huyện
-     loaimh -> Loại mặt hàng
-  */
-
   const excelData = currentData.map(item => ({
     "Mặt hàng": item.mh || "",
     "Đơn vị": item.dv || "",
@@ -749,8 +738,6 @@ function downloadExcel(){
   }));
 
   const ws = XLSX.utils.json_to_sheet(excelData);
-
-  /* ===== ĐỊNH DẠNG TIÊU ĐỀ ===== */
 
   const header = [
     "Mặt hàng",
@@ -800,20 +787,16 @@ function downloadExcel(){
 
   });
 
-  /* ===== TỰ ĐỘNG ĐỘ RỘNG CỘT ===== */
-
-  const widths = header.map((title,index) => {
+  const widths = header.map(title => {
 
     let maxLength = title.length;
 
     excelData.forEach(row => {
 
-      const value =
-        String(row[title] ?? "");
-
-      /* Không để cột quá dài */
-      maxLength =
-        Math.max(maxLength,value.length);
+      maxLength = Math.max(
+        maxLength,
+        String(row[title] ?? "").length
+      );
 
     });
 
@@ -828,24 +811,20 @@ function downloadExcel(){
 
   ws["!cols"] = widths;
 
-  /* Chiều cao tiêu đề */
   ws["!rows"] = [
     {hpt:24}
   ];
 
-  /* Freeze tiêu đề */
   ws["!freeze"] = {
     xSplit:0,
     ySplit:1
   };
 
-  /* Bộ lọc */
   ws["!autofilter"] = {
     ref:`A1:G${excelData.length + 1}`
   };
 
-  /* Căn giữa các cột phù hợp */
-  const centerCols = [1,2,3,5];
+  const centerCols = [1,2,4,5];
 
   for(let r = 1; r <= excelData.length; r++){
 
@@ -894,8 +873,6 @@ function downloadExcel(){
 
   }
 
-  /* ===== TẠO FILE ===== */
-
   const wb = XLSX.utils.book_new();
 
   XLSX.utils.book_append_sheet(
@@ -915,12 +892,43 @@ function downloadExcel(){
     String(now.getHours()).padStart(2,"0") +
     String(now.getMinutes()).padStart(2,"0");
 
-  XLSX.writeFile(
-    wb,
-    `Kho_vat_tu_${date}_${time}.xlsx`
-  );
-}
+  const fileName =
+    `Kho_vat_tu_${date}_${time}.xlsx`;
 
+  /*
+    Xuất thành ArrayBuffer rồi tạo Blob.
+    Cách này ổn định hơn window.open() trên trình duyệt mobile,
+    tránh trường hợp hệ thống lưu file Excel thành .bin.
+  */
+  const excelBuffer = XLSX.write(wb, {
+    bookType:"xlsx",
+    type:"array"
+  });
+
+  const blob = new Blob(
+    [excelBuffer],
+    {
+      type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    }
+  );
+
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = fileName;
+  link.style.display = "none";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 3000);
+
+}
 /* ===== EVENTS ===== */
 
 document
