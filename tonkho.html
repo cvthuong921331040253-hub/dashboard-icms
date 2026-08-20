@@ -4,81 +4,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>Kho vật tư</title>
 
-<style>
+<!-- Thư viện tạo Excel trực tiếp từ dữ liệu đang có trên giao diện -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 
-body{
+<style>
+*{
+  box-sizing:border-box;
+}
+
+html,body{
   margin:0;
   padding:0;
-  font-family:Arial;
-  background:#f4f6f9;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f3f6fa;
+  color:#263238;
 }
 
-h2{
-  margin:0;
+/* ===== LOADING ===== */
+#pageLoader{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:14px;
+  background:rgba(243,246,250,.78);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  transition:opacity .35s ease, visibility .35s ease;
 }
 
-.update-time{
-  color:#777;
-  margin:4px 0 8px;
-  font-size:11px;
+#pageLoader.hide{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+.loader-spinner{
+  width:46px;
+  height:46px;
+  border:4px solid #dbe5f0;
+  border-top-color:#1976d2;
+  border-right-color:#42a5f5;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+
+.loader-text{
+  color:#546e7a;
+  font-size:13px;
+  font-weight:600;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+
+/* ===== HEADER ===== */
+.sticky-top{
+  position:sticky;
+  top:0;
+  z-index:999;
+  background:rgba(243,246,250,.96);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  padding:10px;
 }
 
 .header-row{
   display:flex;
   justify-content:space-between;
   align-items:center;
-}
-
-.reload-btn{
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  padding:0;
-  font-size:16px;
-  flex-shrink:0;
-}
-
-.topbar{
-  display:flex;
   gap:10px;
-  margin-bottom:10px;
-  flex-wrap:wrap;
 }
 
-input,select{
-  padding:8px;
-  border:1px solid #ccc;
-  border-radius:6px;
+h2{
+  margin:0;
+  font-size:21px;
+  color:#263238;
+  letter-spacing:.2px;
 }
 
+.update-time{
+  color:#78909c;
+  margin:4px 0 9px;
+  font-size:11px;
+}
+
+/* ===== BUTTON ===== */
 button{
-  padding:8px 14px;
   border:none;
   background:#1976d2;
   color:white;
-  border-radius:6px;
+  border-radius:7px;
   cursor:pointer;
+  transition:.18s ease;
 }
 
-.card{
-  background:white;
-  border-radius:10px;
-  padding:10px;
-  margin-bottom:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
+button:hover{
+  filter:brightness(.96);
+  transform:translateY(-1px);
 }
 
-.sticky-top{
-  position:sticky;
-  top:0;
-  z-index:999;
-  background:#f4f6f9;
-  padding:10px;
+.excel-btn{
+  min-height:34px;
+  padding:0 13px;
+  background:#2e7d32;
+  font-size:12px;
+  font-weight:600;
+  box-shadow:0 2px 5px rgba(46,125,50,.18);
 }
 
+/* ===== STATS ===== */
 .mini-stats{
   display:flex;
   gap:8px;
@@ -88,55 +129,79 @@ button{
 .mini-stat{
   flex:1;
   background:white;
+  border:1px solid #e5ebf1;
   border-radius:10px;
-  padding:10px 12px;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
-
+  padding:9px 12px;
+  box-shadow:0 2px 8px rgba(31,45,61,.06);
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
 
 .mini-stat span{
-  font-size:13px;
-  color:#666;
+  font-size:12px;
+  color:#607d8b;
 }
 
 .mini-stat b{
   font-size:16px;
+  color:#263238;
 }
 
-
-.stat h3{
-  margin:0;
-  font-size:14px;
-  color:#666;
+/* ===== FILTER CARD ===== */
+.card{
+  background:white;
+  border:1px solid #e5ebf1;
+  border-radius:11px;
+  padding:10px;
+  margin-bottom:10px;
+  box-shadow:0 2px 8px rgba(31,45,61,.06);
 }
 
-.stat p{
-  margin:8px 0 0;
-  font-size:24px;
-  font-weight:bold;
+.topbar{
+  display:grid;
+  grid-template-columns:1.3fr 1.1fr 1fr 1.15fr;
+  gap:8px;
 }
 
+input,select{
+  width:100%;
+  min-height:36px;
+  padding:8px 10px;
+  border:1px solid #d5dee7;
+  border-radius:7px;
+  background:#fff;
+  color:#37474f;
+  outline:none;
+  transition:border-color .18s, box-shadow .18s;
+}
+
+input::placeholder{
+  color:#90a4ae;
+}
+
+input:focus,select:focus{
+  border-color:#64b5f6;
+  box-shadow:0 0 0 3px rgba(33,150,243,.10);
+}
+
+/* ===== TABLE ===== */
 .table-wrap{
-  height:calc(100vh - 185px);
+  height:calc(100vh - 180px);
+  min-height:300px;
   overflow:auto;
   background:white;
-  border-radius:10px 10px 0 0;
-  box-shadow:0 1px 4px rgba(0,0,0,.1);
+  border:1px solid #e1e8ef;
+  border-radius:11px 11px 0 0;
+  box-shadow:0 2px 9px rgba(31,45,61,.07);
 }
 
 table{
   width:auto;
   min-width:100%;
-  border-collapse:collapse;
+  border-collapse:separate;
+  border-spacing:0;
   table-layout:auto;
-}
-
-th:not(:first-child),
-td:not(:first-child){
-  white-space:nowrap;
 }
 
 thead th{
@@ -145,47 +210,37 @@ thead th{
   position:sticky;
   top:0;
   z-index:10;
-}
-
-thead th:first-child{
-  left:0;
-  z-index:20;
-}
-
-tbody td:first-child{
-  position:sticky;
-  left:0;
-  z-index:5;
-
-  min-width:105px;
-  max-width:105px;
-
-  white-space:normal;
-  word-break:break-word;
-  line-height:1.3;
-
-  font-size:12px;
-  padding:6px;
-}
-
-thead th:first-child{
-  min-width:105px;
-  max-width:105px;
-
-  white-space:normal;
-  word-break:break-word;
-
-  font-size:12px;
-  padding:6px;
+  font-weight:600;
+  box-shadow:0 1px 0 rgba(0,0,0,.08);
 }
 
 th,td{
-  padding:8px;
-  border:1px solid #ddd;
-  font-size:14px;
-
+  padding:8px 10px;
+  border-right:1px solid #e2e8ee;
+  border-bottom:1px solid #e5ebf0;
+  font-size:13px;
   vertical-align:middle;
   text-align:left;
+}
+
+thead th:first-child{
+  border-top-left-radius:10px;
+}
+
+tbody tr:nth-child(even){
+  background:#f7faff;
+}
+
+tbody tr:nth-child(odd){
+  background:#fff;
+}
+
+tbody tr:hover{
+  background:#eaf3ff;
+}
+
+tbody tr:active{
+  background:#dbeaff;
 }
 
 th:not(:first-child),
@@ -193,51 +248,54 @@ td:not(:first-child){
   white-space:nowrap;
 }
 
-tbody tr:nth-child(even){
-  background:#eef4ff;
+/* Cột mặt hàng cố định */
+thead th:first-child{
+  left:0;
+  z-index:20;
+  min-width:145px;
+  max-width:240px;
+  white-space:normal;
+  word-break:break-word;
+  line-height:1.25;
 }
 
-tbody tr:nth-child(odd){
-  background:#ffffff;
+tbody td:first-child{
+  position:sticky;
+  left:0;
+  z-index:5;
+  min-width:145px;
+  max-width:240px;
+  white-space:normal;
+  word-break:break-word;
+  line-height:1.3;
+  font-weight:600;
 }
 
+/* Nền của cột sticky phải theo từng dòng */
 tbody tr:nth-child(even) td:first-child{
-  background:#eef4ff;
+  background:#f7faff;
 }
 
 tbody tr:nth-child(odd) td:first-child{
-  background:#ffffff;
+  background:#fff;
 }
 
+tbody tr:hover td:first-child{
+  background:#eaf3ff;
+}
 
-tbody tr:active{
-  background:#cfe2ff;
+td.sl-cell{
+  text-align:right;
+  font-weight:700;
 }
 
 .loading{
-  padding:30px;
-  text-align:center;
+  padding:30px !important;
+  text-align:center !important;
+  color:#78909c;
 }
 
-.type-filters{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
-
-.type-btn{
-  background:#e0e0e0;
-  color:#333;
-  font-weight:bold;
-}
-
-.type-btn.active{
-  background:#1976d2;
-  color:white;
-}
-
-
+/* ===== RESPONSIVE ===== */
 @media(max-width:768px){
 
   .sticky-top{
@@ -245,47 +303,39 @@ tbody tr:active{
   }
 
   h2{
-    font-size:20px;
+    font-size:19px;
+  }
+
+  .excel-btn{
+    min-height:32px;
+    padding:0 10px;
+    font-size:11px;
   }
 
   .mini-stats{
     gap:6px;
   }
-  
+
   .mini-stat{
     padding:8px 10px;
   }
-  
+
   .mini-stat span{
-    font-size:12px;
+    font-size:11px;
   }
-  
+
   .mini-stat b{
     font-size:15px;
   }
 
   .topbar{
-    display:grid;
     grid-template-columns:1fr 1fr;
     gap:6px;
   }
 
-
-  input,
-  select{
-    width:100%;
-    box-sizing:border-box;
-  }
-
-  .type-filters{
-    overflow:auto;
-    flex-wrap:nowrap;
-    padding-bottom:4px;
-  }
-
-  .type-btn{
-    white-space:nowrap;
-    flex-shrink:0;
+  input,select{
+    min-height:34px;
+    font-size:12px;
   }
 
   table{
@@ -297,38 +347,26 @@ tbody tr:active{
     padding:6px;
   }
 
+  thead th:first-child,
   tbody td:first-child{
-    min-width:70px;
-    max-width:70px;
-  
-    white-space:normal;
-    word-break:break-word;
-  }
-  
-  thead th:first-child{
-    min-width:70px;
-    max-width:70px;
-  
-    white-space:normal;
-    word-break:break-word;
+    min-width:105px;
+    max-width:105px;
   }
 
   th:nth-child(2),
   td:nth-child(2){
-    width:28px;
+    min-width:42px;
   }
-  
+
   th:nth-child(3),
   td:nth-child(3){
-    width:22px;
+    min-width:38px;
   }
-  
+
   th:nth-child(4),
   td:nth-child(4){
-    width:85px;
-    min-width:85px;
-    max-width:85px;
-  
+    min-width:75px;
+    max-width:95px;
     white-space:normal;
     word-break:break-word;
     line-height:1.2;
@@ -336,10 +374,8 @@ tbody tr:active{
 
   th:nth-child(5),
   td:nth-child(5){
-    width:55px;
-    min-width:55px;
-    max-width:55px;
-  
+    min-width:65px;
+    max-width:90px;
     white-space:normal;
     word-break:break-word;
     line-height:1.2;
@@ -349,118 +385,94 @@ tbody tr:active{
     height:calc(100vh - 205px);
   }
 }
-
 </style>
 </head>
 
 <body>
+
+<!-- Màn hình loading -->
+<div id="pageLoader">
+  <div class="loader-spinner"></div>
+  <div class="loader-text">Đang tải dữ liệu kho...</div>
+</div>
+
 <div class="sticky-top">
 
-<div class="header-row">
+  <div class="header-row">
+    <h2>📦 KHO VẬT TƯ</h2>
 
-  <h2>📦 KHO VẬT TƯ</h2>
-
-<div style="
-  display:flex;
-  gap:6px;
-  align-items:center;
-">
-
-  <button
-    class="reload-btn"
-    onclick="reloadAll()">
-    ↻
-  </button>
-
-  <button
-    class="reload-btn"
-    onclick="downloadExcel()"
-    style="
-      width:auto;
-      border-radius:8px;
-      padding:0 10px;
-      font-size:11px;
-      background:#2e7d32;
-    "
-  >
-    Tải file excel
-  </button>
-
-</div>
-
-</div>
-
-<div class="update-time">
-  <span id="lastUpdate">--</span>
-</div>
-
-<div class="mini-stats">
-
-  <div class="mini-stat">
-    <span>Tổng bản ghi:</span>
-    <b id="tong">0</b>
+    <button
+      class="excel-btn"
+      onclick="downloadExcel()">
+      Tải file Excel
+    </button>
   </div>
 
-  <div class="mini-stat">
-    <span>Tổng số lượng:</span>
-    <b id="tongsl">0</b>
+  <div class="update-time">
+    Cập nhật: <span id="lastUpdate">--</span>
+  </div>
+
+  <div class="mini-stats">
+
+    <div class="mini-stat">
+      <span>Tổng bản ghi</span>
+      <b id="tong">0</b>
+    </div>
+
+    <div class="mini-stat">
+      <span>Tổng số lượng</span>
+      <b id="tongsl">0</b>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <div class="topbar">
+
+      <input
+        type="text"
+        id="search"
+        placeholder="🔎 Tìm mặt hàng...">
+
+      <input
+        type="text"
+        id="searchNV"
+        placeholder="👤 Tìm nhân viên...">
+
+      <select id="huyenFilter">
+        <option value="">Tất cả huyện</option>
+      </select>
+
+      <select id="loaiFilter">
+        <option value="">Tất cả loại mặt hàng</option>
+      </select>
+
+    </div>
   </div>
 
 </div>
 
-
-<div class="card">
-
-  <div class="topbar">
-  
-    <input
-      type="text"
-      id="search"
-      placeholder="Tìm mặt hàng..."
-    >
-       
-    <input
-      type="text"
-      id="searchNV"
-      placeholder="Tìm nhân viên..."
-    >
-  
-    <select id="huyenFilter">
-      <option value="">Tất cả huyện</option>
-    </select>
-  
-    <select id="loaiFilter">
-      <option value="">Tất cả loại mặt hàng</option>
-    </select>
-  
-  </div>
-</div>
-</div>
 <div class="table-wrap">
 
-<table>
+  <table>
+    <thead>
+      <tr>
+        <th>Mặt hàng</th>
+        <th>ĐVT</th>
+        <th>SL</th>
+        <th>Nhân viên</th>
+        <th>Huyện</th>
+      </tr>
+    </thead>
 
-<thead>
-<tr>
-  <th>Mặt hàng</th>
-  <th>ĐVT</th>
-  <th>SL</th>
-  <th>Nhân viên</th>
-  <th>Huyện</th>
-</tr>
-</thead>
-
-<tbody id="tbody">
-
-<tr>
-<td colspan="5" class="loading">
-⏳ Đang tải dữ liệu...vui lòng chờ!
-</td>
-</tr>
-
-</tbody>
-
-</table>
+    <tbody id="tbody">
+      <tr>
+        <td colspan="5" class="loading">
+          ⏳ Đang tải dữ liệu...
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
 </div>
 
@@ -470,47 +482,64 @@ const API_URL =
 "https://script.google.com/macros/s/AKfycbyqb1Qf8YHiaPvlFKAX872-o6sf6a_GcQCy_2l9poMeYXyePFEjKnxTtpJHImaAQ0JTVg/exec?sheet=Data%20kho";
 
 let allData = [];
+let currentData = [];
 
-let currentLoaiMH = "";
+/* ===== LOAD DATA ===== */
 
 async function loadData(){
 
   try{
 
     const res = await fetch(API_URL);
-
     const json = await res.json();
 
     allData = json.data || [];
 
     allData.sort((a,b) => {
-    
-      return Number(b.sl || 0)
-           - Number(a.sl || 0);
-    
+      return Number(b.sl || 0) - Number(a.sl || 0);
     });
 
-    renderTable(allData);
+    currentData = [...allData];
 
-    renderStats(allData);
-
+    renderTable(currentData);
+    renderStats(currentData);
     renderHuyen(allData);
-
     renderLoaiMH(allData);
+
+    /* Hiện giao diện sau khi tải xong */
+    hideLoader();
 
   }catch(err){
 
     document.getElementById("tbody").innerHTML = `
       <tr>
         <td colspan="5" class="loading">
-          Lỗi tải dữ liệu
+          ❌ Lỗi tải dữ liệu
         </td>
       </tr>
     `;
 
     console.log(err);
+
+    /* Không để màn hình loading bị treo */
+    hideLoader();
+
   }
 }
+
+/* ===== HIDE LOADER ===== */
+
+function hideLoader(){
+
+  const loader = document.getElementById("pageLoader");
+
+  setTimeout(() => {
+    loader.classList.add("hide");
+  }, 180);
+
+}
+
+/* ===== TABLE ===== */
 
 function renderTable(data){
 
@@ -524,6 +553,8 @@ function renderTable(data){
       </tr>
     `;
 
+    document.getElementById("lastUpdate").innerText = "--";
+
     return;
   }
 
@@ -533,39 +564,54 @@ function renderTable(data){
 
     html += `
       <tr>
-        <td>${item.mh || ""}</td>
-        <td>${item.dv || ""}</td>
-        <td>${item.sl || 0}</td>
-        <td>${item.nv || ""}</td>
-        <td>${item.huyen || ""}</td>
+        <td>${escapeHtml(item.mh || "")}</td>
+        <td>${escapeHtml(item.dv || "")}</td>
+        <td class="sl-cell">${escapeHtml(item.sl ?? 0)}</td>
+        <td>${escapeHtml(item.nv || "")}</td>
+        <td>${escapeHtml(item.huyen || "")}</td>
       </tr>
     `;
+
   });
 
   document.getElementById("tbody").innerHTML = html;
 
   let last = data[0].tg || "--";
 
-  document.getElementById("lastUpdate")
-    .innerText = last;
+  document.getElementById("lastUpdate").innerText = last;
 }
+
+/* ===== ESCAPE HTML ===== */
+
+function escapeHtml(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+/* ===== STATS ===== */
 
 function renderStats(data){
 
   document.getElementById("tong").innerText =
-    data.length;
+    data.length.toLocaleString("vi-VN");
 
   let tongsl = 0;
 
   data.forEach(i => {
-
     tongsl += Number(i.sl || 0);
-
   });
 
   document.getElementById("tongsl").innerText =
-    tongsl;
+    tongsl.toLocaleString("vi-VN");
 }
+
+/* ===== HUYỆN ===== */
 
 function renderHuyen(data){
 
@@ -581,16 +627,18 @@ function renderHuyen(data){
   arr.forEach(h => {
 
     html += `
-      <option value="${h}">
-        ${h}
+      <option value="${escapeHtml(h)}">
+        ${escapeHtml(h)}
       </option>
     `;
+
   });
 
   document.getElementById("huyenFilter").innerHTML =
     html;
 }
 
+/* ===== LOẠI MẶT HÀNG ===== */
 
 function renderLoaiMH(data){
 
@@ -606,107 +654,294 @@ function renderLoaiMH(data){
   arr.forEach(loai => {
 
     html += `
-      <option value="${loai}">
-        ${loai}
+      <option value="${escapeHtml(loai)}">
+        ${escapeHtml(loai)}
       </option>
     `;
+
   });
 
-  document.getElementById("loaiFilter")
-    .innerHTML = html;
+  document.getElementById("loaiFilter").innerHTML =
+    html;
 }
 
+/* ===== FILTER ===== */
 
 function filterData(){
 
   let keyword =
     document.getElementById("search")
     .value
-    .toLowerCase();
+    .toLowerCase()
+    .trim();
 
   let keywordNV =
     document.getElementById("searchNV")
     .value
-    .toLowerCase();
-    
+    .toLowerCase()
+    .trim();
+
   let huyen =
     document.getElementById("huyenFilter")
     .value;
 
-  let filtered = allData.filter(i => {
+  let loai =
+    document.getElementById("loaiFilter")
+    .value;
+
+  currentData = allData.filter(i => {
 
     let okSearch =
-      (i.mh || "")
+      String(i.mh || "")
       .toLowerCase()
       .includes(keyword);
-   
+
     let okNV =
-      (i.nv || "")
+      String(i.nv || "")
       .toLowerCase()
       .includes(keywordNV);
 
     let okHuyen =
       !huyen || i.huyen === huyen;
 
-
-    let loai =
-      document.getElementById("loaiFilter")
-      .value;
-    
     let okLoai =
-      !loai ||
-      i.loaimh === loai;
+      !loai || i.loaimh === loai;
 
     return okSearch && okNV && okHuyen && okLoai;
+
   });
 
-  renderTable(filtered);
-
-  renderStats(filtered);
+  renderTable(currentData);
+  renderStats(currentData);
 }
 
-function reloadAll(){
-
-  document.getElementById("search").value = "";
-  
-  document.getElementById("searchNV").value = "";
-
-  document.getElementById("huyenFilter").value = "";
-
-  document.getElementById("loaiFilter").value = "";
-
-  renderTable(allData);
-
-  renderStats(allData);
-}
-
-
-document
-.getElementById("search")
-.addEventListener("input", filterData);
-
-document
-.getElementById("searchNV")
-.addEventListener("input", filterData);
-
-document
-.getElementById("huyenFilter")
-.addEventListener("change", filterData);
-  
-document
-.getElementById("loaiFilter")
-.addEventListener("change", filterData);
-
-loadData();
+/* ===== EXCEL ===== */
 
 function downloadExcel(){
 
-  const fileUrl =
-    'https://docs.google.com/spreadsheets/d/1WTP6sZGYR_dZA-KS5U_taaod3iO4GiYRdcBpnSycYjw/export?format=xlsx&gid=1589570025';
+  if(!currentData.length){
 
-  window.open(fileUrl,'_blank');
+    alert("Không có dữ liệu để tải Excel.");
+    return;
 
+  }
+
+  /* 
+     Thứ tự xuất:
+     mh  -> Mặt hàng
+     dv  -> Đơn vị
+     tt  -> Trạng thái
+     sl  -> Số lượng
+     nv  -> Nhân viên
+     huyen -> Huyện
+     loaimh -> Loại mặt hàng
+  */
+
+  const excelData = currentData.map(item => ({
+    "Mặt hàng": item.mh || "",
+    "Đơn vị": item.dv || "",
+    "Trạng thái": item.tt || "",
+    "Số lượng": Number(item.sl || 0),
+    "Nhân viên": item.nv || "",
+    "Huyện": item.huyen || "",
+    "Loại mặt hàng": item.loaimh || ""
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(excelData);
+
+  /* ===== ĐỊNH DẠNG TIÊU ĐỀ ===== */
+
+  const header = [
+    "Mặt hàng",
+    "Đơn vị",
+    "Trạng thái",
+    "Số lượng",
+    "Nhân viên",
+    "Huyện",
+    "Loại mặt hàng"
+  ];
+
+  header.forEach((text,index) => {
+
+    const cell = ws[XLSX.utils.encode_cell({
+      r:0,
+      c:index
+    })];
+
+    if(cell){
+
+      cell.s = {
+        font:{
+          bold:true,
+          color:"FFFFFF",
+          sz:11
+        },
+        fill:{
+          patternType:"solid",
+          fgColor:{
+            rgb:"1976D2"
+          }
+        },
+        alignment:{
+          horizontal:"center",
+          vertical:"center",
+          wrapText:true
+        },
+        border:{
+          top:{style:"thin",color:{rgb:"D9E2EC"}},
+          bottom:{style:"thin",color:{rgb:"D9E2EC"}},
+          left:{style:"thin",color:{rgb:"D9E2EC"}},
+          right:{style:"thin",color:{rgb:"D9E2EC"}}
+        }
+      };
+
+    }
+
+  });
+
+  /* ===== TỰ ĐỘNG ĐỘ RỘNG CỘT ===== */
+
+  const widths = header.map((title,index) => {
+
+    let maxLength = title.length;
+
+    excelData.forEach(row => {
+
+      const value =
+        String(row[title] ?? "");
+
+      /* Không để cột quá dài */
+      maxLength =
+        Math.max(maxLength,value.length);
+
+    });
+
+    return {
+      wch:Math.min(
+        Math.max(maxLength + 2,10),
+        40
+      )
+    };
+
+  });
+
+  ws["!cols"] = widths;
+
+  /* Chiều cao tiêu đề */
+  ws["!rows"] = [
+    {hpt:24}
+  ];
+
+  /* Freeze tiêu đề */
+  ws["!freeze"] = {
+    xSplit:0,
+    ySplit:1
+  };
+
+  /* Bộ lọc */
+  ws["!autofilter"] = {
+    ref:`A1:G${excelData.length + 1}`
+  };
+
+  /* Căn giữa các cột phù hợp */
+  const centerCols = [1,2,3,5];
+
+  for(let r = 1; r <= excelData.length; r++){
+
+    centerCols.forEach(c => {
+
+      const cell =
+        ws[XLSX.utils.encode_cell({
+          r:r,
+          c:c
+        })];
+
+      if(cell){
+
+        cell.s = {
+          alignment:{
+            horizontal:"center",
+            vertical:"center",
+            wrapText:true
+          }
+        };
+
+      }
+
+    });
+
+    const slCell =
+      ws[XLSX.utils.encode_cell({
+        r:r,
+        c:3
+      })];
+
+    if(slCell){
+
+      slCell.s = {
+        font:{
+          bold:true
+        },
+        alignment:{
+          horizontal:"right",
+          vertical:"center"
+        },
+        numFmt:'#,##0'
+      };
+
+    }
+
+  }
+
+  /* ===== TẠO FILE ===== */
+
+  const wb = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(
+    wb,
+    ws,
+    "Kho vật tư"
+  );
+
+  const now = new Date();
+
+  const date =
+    String(now.getDate()).padStart(2,"0") +
+    String(now.getMonth()+1).padStart(2,"0") +
+    now.getFullYear();
+
+  const time =
+    String(now.getHours()).padStart(2,"0") +
+    String(now.getMinutes()).padStart(2,"0");
+
+  XLSX.writeFile(
+    wb,
+    `Kho_vat_tu_${date}_${time}.xlsx`
+  );
 }
+
+/* ===== EVENTS ===== */
+
+document
+  .getElementById("search")
+  .addEventListener("input",filterData);
+
+document
+  .getElementById("searchNV")
+  .addEventListener("input",filterData);
+
+document
+  .getElementById("huyenFilter")
+  .addEventListener("change",filterData);
+
+document
+  .getElementById("loaiFilter")
+  .addEventListener("change",filterData);
+
+/* ===== START ===== */
+
+loadData();
+
 </script>
 
 </body>
