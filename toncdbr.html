@@ -24713,7 +24713,18 @@ function showTable(title,data){
 const url =
 `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}`;
   
-  openExternalSmart(url);
+    if(window.matchMedia &&
+     window.matchMedia("(max-width:768px)").matches){
+
+    saveMobileReturnPosition();
+
+    window.location.href=url;
+
+  }else{
+
+    window.open(url,"_blank");
+
+  }
   
   }
 
@@ -24769,7 +24780,18 @@ const url =
   
   `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ngay=${encodeURIComponent(ngayPhatSinh)}&loai=${encodeURIComponent(loai)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(ten_nv)}&mode=view`;
   
-  openExternalSmart(url);
+    if(window.matchMedia &&
+     window.matchMedia("(max-width:768px)").matches){
+
+    saveMobileReturnPosition();
+
+    window.location.href=url;
+
+  }else{
+
+    window.open(url,"_blank");
+
+  }
   
   }
 
@@ -24801,7 +24823,18 @@ const url =
   const url =
   `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?id_check=${encodeURIComponent(row.id_check||"")}&account=${encodeURIComponent(account)}&check=${encodeURIComponent(check)}&ten_nv=${encodeURIComponent(row.nv||row.ten_nv||"")}`;
 
-  openExternalSmart(url);
+    if(window.matchMedia &&
+     window.matchMedia("(max-width:768px)").matches){
+
+    saveMobileReturnPosition();
+
+    window.location.href=url;
+
+  }else{
+
+    window.open(url,"_blank");
+
+  }
 
 }
     
@@ -24861,128 +24894,68 @@ const url =
   
 
 /* ==========================================================
-   MOBILE APP NAVIGATION - RELIABLE VERSION
-   Desktop: giữ nguyên mở tab mới.
-   Mobile: chuyển trực tiếp sang trang đích trong cùng tab.
-   Trước khi chuyển sẽ lưu vị trí Dashboard; khi người dùng
-   bấm Back trên điện thoại để quay lại, Dashboard tự phục hồi
-   đúng vị trí cũ.
+   MOBILE RETURN POSITION
+   Desktop navigation remains the original window.open().
+   Mobile navigation uses the same tab and restores scroll
+   when the user returns with Back.
    ========================================================== */
 (function(){
-  const MOBILE_SCROLL_KEY =
-    "dashboard_mobile_return_scroll_v1";
+  const SCROLL_KEY="dashboard_mobile_return_scroll_v2";
+  const PENDING_KEY="dashboard_mobile_return_pending_v2";
 
-  const MOBILE_RETURN_KEY =
-    "dashboard_mobile_return_pending_v1";
-
-  function isMobileViewport(){
-    return window.matchMedia &&
-      window.matchMedia("(max-width:768px)").matches;
-  }
-
-  window.openExternalSmart = function(url){
-    if(!url) return;
-
-    /* DESKTOP: KHÔNG ĐỤNG VÀO CÁCH CŨ */
-    if(!isMobileViewport()){
-      window.open(url,"_blank");
+  window.saveMobileReturnPosition=function(){
+    if(!(window.matchMedia &&
+         window.matchMedia("(max-width:768px)").matches)){
       return;
     }
 
-    /* MOBILE:
-       Lưu vị trí hiện tại trước khi rời Dashboard. */
-    const scrollY =
-      window.scrollY ||
-      window.pageYOffset ||
-      0;
-
     try{
       sessionStorage.setItem(
-        MOBILE_SCROLL_KEY,
-        String(scrollY)
+        SCROLL_KEY,
+        String(window.scrollY || window.pageYOffset || 0)
       );
-
-      sessionStorage.setItem(
-        MOBILE_RETURN_KEY,
-        "1"
-      );
+      sessionStorage.setItem(PENDING_KEY,"1");
     }catch(e){}
-
-    /*
-      Dùng location.href thay vì iframe.
-      Cách này không bị X-Frame-Options/CSP của trang đích
-      chặn và chắc chắn mở được trên mobile.
-    */
-    window.location.href = url;
   };
 
-  function restoreMobileDashboardScroll(){
-    if(!isMobileViewport()) return;
+  function restore(){
+    if(!(window.matchMedia &&
+         window.matchMedia("(max-width:768px)").matches)){
+      return;
+    }
 
-    let pending = null;
-    let savedY = null;
+    let pending=null;
+    let saved=null;
 
     try{
-      pending =
-        sessionStorage.getItem(
-          MOBILE_RETURN_KEY
-        );
-
-      savedY =
-        sessionStorage.getItem(
-          MOBILE_SCROLL_KEY
-        );
+      pending=sessionStorage.getItem(PENDING_KEY);
+      saved=sessionStorage.getItem(SCROLL_KEY);
     }catch(e){}
 
-    if(pending !== "1" || savedY === null){
-      return;
-    }
+    if(pending!=="1" || saved===null) return;
 
-    const y =
-      Number(savedY);
+    const y=Number(saved);
+    if(!Number.isFinite(y)) return;
 
-    if(!Number.isFinite(y)){
-      return;
-    }
-
-    /* Chờ Dashboard render xong rồi mới phục hồi scroll. */
-    const restore = ()=>{
-      requestAnimationFrame(()=>{
-        requestAnimationFrame(()=>{
-          window.scrollTo({
-            top:y,
-            left:0,
-            behavior:"instant"
-          });
-        });
-      });
+    const go=()=>{
+      window.scrollTo(0,y);
     };
 
-    restore();
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(go);
+    });
 
-    /* Một lần nữa sau khi layout/chart hoàn tất. */
-    setTimeout(restore, 350);
-    setTimeout(restore, 1000);
+    setTimeout(go,350);
+    setTimeout(go,1000);
 
     try{
-      sessionStorage.removeItem(
-        MOBILE_RETURN_KEY
-      );
-      sessionStorage.removeItem(
-        MOBILE_SCROLL_KEY
-      );
+      sessionStorage.removeItem(PENDING_KEY);
+      sessionStorage.removeItem(SCROLL_KEY);
     }catch(e){}
   }
 
-  window.addEventListener(
-    "pageshow",
-    restoreMobileDashboardScroll
-  );
-
-  window.addEventListener(
-    "load",
-    restoreMobileDashboardScroll
-  );
+  window.addEventListener("pageshow",restore);
+  window.addEventListener("load",restore);
 })();
 
   loadData();
@@ -25420,7 +25393,18 @@ const url =
   const url =
   `https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1&id_check=${encodeURIComponent(row.id_check || "")}&account=${encodeURIComponent(account)}&ten_nv=${encodeURIComponent(ten_nv)}&loai=${encodeURIComponent(loai)}&tg_nhap=${encodeURIComponent(tg_nhap)}&edit=1`;
   
-  openExternalSmart(url);
+    if(window.matchMedia &&
+     window.matchMedia("(max-width:768px)").matches){
+
+    saveMobileReturnPosition();
+
+    window.location.href=url;
+
+  }else{
+
+    window.open(url,"_blank");
+
+  }
   
   }
     
@@ -25429,7 +25413,18 @@ const url =
   const url =
   "https://cvthuong921331040253-hub.github.io/dashboard-icms/nhaplieutoncdbr.html?manual=1";
   
-  openExternalSmart(url);
+    if(window.matchMedia &&
+     window.matchMedia("(max-width:768px)").matches){
+
+    saveMobileReturnPosition();
+
+    window.location.href=url;
+
+  }else{
+
+    window.open(url,"_blank");
+
+  }
   
   }
   
