@@ -17004,16 +17004,37 @@ const nhaplieu =
   }
   
   function openBypassGuide(event){
-    if(event){ event.preventDefault(); event.stopPropagation(); }
-    const url = "https://drive.google.com/drive/u/0/folders/1AyMu7BARQzOVntp0rceb698v29ge70Qf";
+    if(event){
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    const url =
+      "https://drive.google.com/drive/u/0/folders/1AyMu7BARQzOVntp0rceb698v29ge70Qf";
+
+    /*
+     * Android:
+     * Giữ window.open("_blank") để MainActivity bắt popup
+     * và mở trang bằng Dialog WebView riêng.
+     *
+     * Không dùng window.location.href vì sẽ thay trang Dashboard
+     * thay vì tạo popup.
+     */
     try{
-      if(/Android/i.test(navigator.userAgent || "")){
+      const popup = window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+      );
+
+      // Nếu trình duyệt chặn popup thì mới fallback.
+      if(!popup){
         window.location.href = url;
-        return false;
       }
-      const w = window.open(url,"_blank","noopener,noreferrer");
-      if(!w) window.location.href = url;
-    }catch(e){ window.location.href = url; }
+    }catch(e){
+      window.location.href = url;
+    }
+
     return false;
   }
 
