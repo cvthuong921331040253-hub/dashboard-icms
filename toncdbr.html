@@ -17003,6 +17003,20 @@ const nhaplieu =
   
   }
   
+  function openBypassGuide(event){
+    if(event){ event.preventDefault(); event.stopPropagation(); }
+    const url = "https://drive.google.com/drive/u/0/folders/1AyMu7BARQzOVntp0rceb698v29ge70Qf";
+    try{
+      if(/Android/i.test(navigator.userAgent || "")){
+        window.location.href = url;
+        return false;
+      }
+      const w = window.open(url,"_blank","noopener,noreferrer");
+      if(!w) window.location.href = url;
+    }catch(e){ window.location.href = url; }
+    return false;
+  }
+
   function createCard(title,count,color,onClick,bg=""){
   
   return `
@@ -17113,7 +17127,7 @@ const nhaplieu =
   dashboard.innerHTML=
   
   createCard(
-  `<span>📝 TỔNG SC</span> <a class="bypass-hd-link" href="https://drive.google.com/drive/u/0/folders/1AyMu7BARQzOVntp0rceb698v29ge70Qf" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">HD nhập bb bypass</a>`,
+  `<span>📝 TỔNG SC</span> <a class="bypass-hd-link" href="https://drive.google.com/drive/u/0/folders/1AyMu7BARQzOVntp0rceb698v29ge70Qf" onclick="return openBypassGuide(event);">HD nhập bb bypass</a>`,
   tonsc.length,
   "#111827",
   "showTable('TỔNG SC',tongsc)"
