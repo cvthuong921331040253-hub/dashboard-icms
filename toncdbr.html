@@ -12121,6 +12121,43 @@ body.dashboard-is-loading{
   #dashboardInitialLoader .loader-spinner{width:42px;height:42px;border-width:4px;}
 }
 
+
+
+/* ==========================================================
+   GHI CHÚ NHỎ CHO CARD BKK SC & TKM / LINK HD
+   ========================================================== */
+.bkk-sc-tkm-note{
+  display:block;
+  margin-top:3px;
+  font-size:9px;
+  line-height:1.2;
+  font-weight:600;
+  color:#64748b;
+}
+
+.bypass-hd-link{
+  display:inline-block;
+  margin-left:5px;
+  font-size:9px;
+  line-height:1.2;
+  font-weight:700;
+  color:#2563eb;
+  text-decoration:none;
+  white-space:nowrap;
+  cursor:pointer;
+}
+
+.bypass-hd-link:hover{
+  text-decoration:underline;
+}
+
+@media(max-width:600px){
+  .bkk-sc-tkm-note,
+  .bypass-hd-link{
+    font-size:8px;
+  }
+}
+
 </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -17129,7 +17166,8 @@ const nhaplieu =
   +
 
   createCard(
-  "📝 NHẬP BKK SC & TKM",
+  `<span>📝 NHẬP BKK SC & TKM</span>
+   <span class="bkk-sc-tkm-note">SOC+SOC HOME không nhập vào đây</span>`,
   "&nbsp;",
   "#15803d",
   "openManualInput()",
@@ -17139,7 +17177,14 @@ const nhaplieu =
   +
 
   createCard(
-  "📁 ĐÃ NHẬP BYPASS PORT, HOME KÉM",
+  `<span>📁 ĐÃ NHẬP BYPASS PORT, HOME KÉM</span>
+   <a
+     class="bypass-hd-link"
+     href="https://drive.google.com/drive/u/0/folders/1AyMu7BARQzOVntp0rceb698v29ge70Qf"
+     target="_blank"
+     rel="noopener noreferrer"
+     onclick="event.stopPropagation();"
+   >Click vào link xem hướng dẫn</a>`,
   allAccounts.length,
   "#1d4ed8",
   "showAccountManager()",
