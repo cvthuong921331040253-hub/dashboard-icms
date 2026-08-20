@@ -185,6 +185,116 @@ input:focus,select:focus{
   box-shadow:0 0 0 3px rgba(33,150,243,.10);
 }
 
+
+/* ===== BOT TRA CỨU ===== */
+.bot-card{
+  background:white;
+  border:1px solid #dfe7ee;
+  border-radius:11px;
+  padding:10px;
+  margin-bottom:10px;
+  box-shadow:0 2px 8px rgba(31,45,61,.06);
+}
+
+.bot-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:7px;
+}
+
+.bot-title strong{
+  font-size:14px;
+  color:#263238;
+}
+
+.bot-title span{
+  font-size:11px;
+  color:#78909c;
+}
+
+.bot-input-row{
+  display:flex;
+  gap:7px;
+}
+
+#botInput{
+  flex:1;
+  min-width:0;
+}
+
+.bot-send{
+  min-width:70px;
+  padding:0 12px;
+  font-size:12px;
+  font-weight:600;
+}
+
+.bot-result{
+  margin-top:8px;
+  padding:9px 10px;
+  border-radius:8px;
+  background:#f5f9fd;
+  border:1px solid #e1ebf3;
+  font-size:12px;
+  line-height:1.45;
+  color:#455a64;
+  max-height:260px;
+  overflow:auto;
+}
+
+.bot-result:empty{
+  display:none;
+}
+
+.bot-result b{
+  color:#263238;
+}
+
+.bot-help{
+  margin-top:7px;
+  color:#607d8b;
+  font-size:11px;
+  line-height:1.45;
+}
+
+.bot-result table{
+  width:100%;
+  min-width:0;
+  border-collapse:collapse;
+  margin-top:7px;
+  background:white;
+}
+
+.bot-result th,
+.bot-result td{
+  font-size:11px;
+  padding:5px 6px;
+  border:1px solid #dfe7ee;
+  white-space:normal;
+}
+
+.bot-result th{
+  background:#1976d2;
+  color:white;
+  position:static;
+}
+
+@media(max-width:768px){
+  .bot-title span{
+    display:none;
+  }
+
+  .bot-send{
+    min-width:62px;
+  }
+
+  .bot-result{
+    max-height:300px;
+  }
+}
+
 /* ===== TABLE ===== */
 .table-wrap{
   height:calc(100vh - 180px);
@@ -411,6 +521,36 @@ td.sl-cell{
 
   <div class="update-time">
     Cập nhật: <span id="lastUpdate">--</span>
+  </div>
+
+
+  <div class="bot-card">
+
+    <div class="bot-title">
+      <strong>🤖 Bot tra cứu kho</strong>
+      <span>Nhập /help để xem lệnh</span>
+    </div>
+
+    <div class="bot-input-row">
+      <input
+        type="text"
+        id="botInput"
+        placeholder='Ví dụ: /help hoặc "2fo"'>
+      <button
+        type="button"
+        class="bot-send"
+        onclick="runBot()">
+        Tra cứu
+      </button>
+    </div>
+
+    <div id="botHelp" class="bot-help">
+      Không biết lệnh? Nhập <b>/help</b>. Bạn cũng có thể nhập
+      <b>3–4 ký tự</b> để tìm nhanh.
+    </div>
+
+    <div id="botResult" class="bot-result"></div>
+
   </div>
 
   <div class="mini-stats">
@@ -929,6 +1069,182 @@ function downloadExcel(){
   }, 3000);
 
 }
+
+/* ===== BOT TRA CỨU ===== */
+
+function normalizeText(value){
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .trim();
+}
+
+function runBot(){
+
+  const input = document.getElementById("botInput");
+  const result = document.getElementById("botResult");
+  const help = document.getElementById("botHelp");
+
+  const raw = input.value.trim();
+
+  if(!raw){
+    result.innerHTML =
+      "⚠️ Hãy nhập <b>/help</b> hoặc ít nhất 3 ký tự để tra cứu.";
+    return;
+  }
+
+  if(normalizeText(raw) === "/help"){
+
+    help.style.display = "none";
+
+    result.innerHTML = `
+      <b>📖 HƯỚNG DẪN BOT</b><br><br>
+
+      <b>/help</b> — Xem hướng dẫn sử dụng.<br><br>
+
+      <b>🔎 Tìm nhanh 3–4 ký tự</b><br>
+      Ví dụ: <b>2fo</b>, <b>g059</b>, <b>ple</b>, <b>nguy</b>.<br>
+      Bot tìm trong Mặt hàng, Đơn vị, Trạng thái,
+      Nhân viên, Huyện và Loại mặt hàng.<br><br>
+
+      <b>💬 Có thể nhập tên cần tìm</b><br>
+      Ví dụ: <b>Nguyễn Văn A</b>, <b>Pleiku</b>, <b>dây 2FO</b>.<br><br>
+
+      <b>💡 Không biết lệnh?</b><br>
+      Chỉ cần nhớ <b>/help</b> hoặc nhập 3–4 ký tự liên quan.
+    `;
+
+    return;
+  }
+
+  help.style.display = "none";
+
+  const key = normalizeText(raw);
+
+  /* Tìm nhanh 3–4 ký tự */
+  if(key.length >= 3 && key.length <= 4){
+
+    const matches = allData.filter(item => {
+
+      const fields = [
+        item.mh,
+        item.dv,
+        item.tt,
+        item.nv,
+        item.huyen,
+        item.loaimh
+      ];
+
+      return fields.some(value =>
+        normalizeText(value).includes(key)
+      );
+
+    });
+
+    renderBotResults(
+      matches,
+      `🔎 Tìm nhanh "${escapeHtml(raw)}"`
+    );
+
+    return;
+  }
+
+  /* Tìm theo chuỗi dài hơn */
+  const matches = allData.filter(item => {
+
+    const fields = [
+      item.mh,
+      item.dv,
+      item.tt,
+      item.nv,
+      item.huyen,
+      item.loaimh
+    ];
+
+    return fields.some(value =>
+      normalizeText(value).includes(key)
+    );
+
+  });
+
+  renderBotResults(
+    matches,
+    `🔎 Kết quả cho "${escapeHtml(raw)}"`
+  );
+}
+
+function renderBotResults(data,title){
+
+  const result = document.getElementById("botResult");
+
+  if(!data.length){
+
+    result.innerHTML = `
+      <b>${title}</b><br><br>
+      ❌ Không tìm thấy dữ liệu phù hợp.<br>
+      Thử từ khóa khác hoặc nhập <b>/help</b>.
+    `;
+
+    return;
+  }
+
+  const showData = data.slice(0,50);
+
+  let totalSL = 0;
+
+  data.forEach(item => {
+    totalSL += Number(item.sl || 0);
+  });
+
+  let html = `
+    <b>${title}</b><br>
+    Tìm thấy <b>${data.length.toLocaleString("vi-VN")}</b> bản ghi
+    — tổng số lượng <b>${totalSL.toLocaleString("vi-VN")}</b>.
+  `;
+
+  if(data.length > 50){
+    html += `<br><span style="color:#78909c">
+      Đang hiển thị 50 kết quả đầu tiên.
+    </span>`;
+  }
+
+  html += `
+    <table>
+      <thead>
+        <tr>
+          <th>Mặt hàng</th>
+          <th>SL</th>
+          <th>Nhân viên</th>
+          <th>Huyện</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  showData.forEach(item => {
+
+    html += `
+      <tr>
+        <td>${escapeHtml(item.mh || "")}</td>
+        <td style="text-align:right;font-weight:bold">
+          ${escapeHtml(item.sl ?? 0)}
+        </td>
+        <td>${escapeHtml(item.nv || "")}</td>
+        <td>${escapeHtml(item.huyen || "")}</td>
+      </tr>
+    `;
+
+  });
+
+  html += `
+      </tbody>
+    </table>
+  `;
+
+  result.innerHTML = html;
+}
+
 /* ===== EVENTS ===== */
 
 document
