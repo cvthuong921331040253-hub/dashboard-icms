@@ -775,6 +775,11 @@ td.sl-cell{
 .product-analysis-meta{margin-top:7px;color:#607d8b;font-size:10px;line-height:1.45}
 .product-analysis-note{margin-top:6px;padding-top:6px;border-top:1px solid #edf1f4;color:#455a64;font-size:10px;line-height:1.45}
 @media(max-width:768px){.bot-panel.maximized{top:5px !important;right:5px !important;bottom:5px !important;left:5px !important}}
+
+.bot-next-commands{margin-bottom:8px}
+.bot-command-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}
+.bot-command-grid button{border:1px solid #d9e3eb;background:white;color:#455a64;border-radius:7px;padding:7px 6px;font-size:10.5px;text-align:left}
+.bot-command-grid button:hover{background:#eef6ff;border-color:#90caf9;color:#1565c0}
 </style>
 </head>
 
@@ -1460,6 +1465,25 @@ function runBot(){
 
   let words = normalizedRaw.split(" ").filter(Boolean);
 
+  /* ===== LỆNH CHI TIẾT TỒN ===== */
+  const wantsDetail =
+    words.includes("chitiet") ||
+    words.includes("chitietton") ||
+    (words.includes("chi") && words.includes("tiet")) ||
+    words.includes("danhsach");
+
+  const wantsHuyen = words.includes("huyen");
+
+  const wantsNhanVien =
+    words.includes("nhanvien") ||
+    (words.includes("nhan") && words.includes("vien")) ||
+    words.includes("nv");
+
+  words = words.filter(w =>
+    !["chitiet","chitietton","danhsach","chi","tiet","huyen",
+      "nhanvien","nhan","vien","nv","theo"].includes(w)
+  );
+
   /* ===== NHẬN DIỆN CÁC TỪ ĐIỀU KHIỂN ===== */
 
   /* Tạm thời bỏ chức năng line. */
@@ -1528,11 +1552,25 @@ function runBot(){
     itemMatches.length > 0;
   if(looksLikeItemQuery){
 
-    renderItemAnalysis(
-      itemMatches,
-      searchWords.join(" "),
-      selectedType
-    );
+    const queryKeyword = searchWords.join(" ");
+
+    if(wantsDetail){
+
+      renderInventoryDetail(itemMatches,queryKeyword,selectedType);
+
+    }else if(wantsHuyen){
+
+      renderDimensionAnalysis(itemMatches,queryKeyword,selectedType,"huyen");
+
+    }else if(wantsNhanVien){
+
+      renderDimensionAnalysis(itemMatches,queryKeyword,selectedType,"nv");
+
+    }else{
+
+      renderItemAnalysis(itemMatches,queryKeyword,selectedType);
+
+    }
 
     return;
   }
@@ -1577,32 +1615,533 @@ function runBot(){
 
 /* ===== PHÂN TÍCH MẶT HÀNG ===== */
 
-function renderItemAnalysis(data,keyword,selectedType){
+function renderInventoryDetail(data,keyword,selectedType){
+
   const result=document.getElementById("botResult");
-  if(!data.length){ result.innerHTML=`❌ Không tìm thấy mặt hàng <b>${escapeHtml(keyword)}</b>.`; return; }
-  const groups=new Map();
-  data.forEach(item=>{const name=String(item.mh||"").trim()||"Chưa xác định"; if(!groups.has(name)) groups.set(name,[]); groups.get(name).push(item);});
-  const groupList=[...groups.entries()].map(([name,rows])=>({name,rows,total:rows.reduce((s,i)=>s+Number(i.sl||0),0)})).sort((a,b)=>b.total-a.total);
-  const grandTotal=data.reduce((s,i)=>s+Number(i.sl||0),0), huyen=aggregateBy(data,"huyen"), nv=aggregateBy(data,"nv");
-  let title=`📦 PHÂN TÍCH ${escapeHtml(keyword.toUpperCase())}`; if(selectedType) title+=` — ${escapeHtml(typeName(selectedType))}`;
-  let html=`<div class="analysis-title">${title}</div>
+  if(!data.length){
+    result.innerHTML=`❌ Không tìm thấy tồn chi tiết cho <b>${escapeHtml(keyword)}</b>.`;
+    return;
+  }
+
+  const total=data.reduce((sum,item)=>sum+Number(item.sl||0),0);
+  let title=`📋 CHI TIẾT TỒN — ${escapeHtml(keyword.toUpperCase())}`;
+  if(selectedType) title+=` — ${escapeHtml(typeName(selectedType))}`;
+
+  let html=`
+    <div class="analysis-title">${title}</div>
     <div class="analysis-summary">
-      <div class="analysis-stat"><span>Tổng tồn</span><b>${formatNumber(grandTotal)}</b></div>
-      <div class="analysis-stat"><span>Chủng loại</span><b>${groupList.length}</b></div>
-      <div class="analysis-stat"><span>Huyện</span><b>${huyen.length}</b></div>
-      <div class="analysis-stat"><span>Nhân viên</span><b>${nv.length}</b></div>
+      <div class="analysis-stat"><span>Tổng tồn</span><b>${formatNumber(total)}</b></div>
+      <div class="analysis-stat"><span>Số dòng</span><b>${formatNumber(data.length)}</b></div>
+      <div class="analysis-stat"><span>Huyện</span><b>${new Set(data.map(i=>String(i.huyen||"").trim()).filter(Boolean)).size}</b></div>
+      <div class="analysis-stat"><span>Nhân viên</span><b>${new Set(data.map(i=>String(i.nv||"").trim()).filter(Boolean)).size}</b></div>
     </div>
-    <div class="analysis-section"><b>📦 Phân tích từng chủng loại</b><div class="analysis-list">${groupList.map((g,i)=>renderProductGroupCard(g,i,grandTotal)).join("")}</div></div>
-    <div class="analysis-section"><b>📍 Top huyện tổng thể</b><div class="analysis-list">${huyen.slice(0,5).map((x,i)=>`<div class="analysis-row"><span>${i+1}. ${escapeHtml(x.name)}</span><strong>${formatNumber(x.total)}</strong></div>`).join("")}</div></div>
-    <div class="analysis-section"><b>👤 Top nhân viên tổng thể</b><div class="analysis-list">${nv.slice(0,5).map((x,i)=>`<div class="analysis-row"><span>${i+1}. ${escapeHtml(x.name)}</span><strong>${formatNumber(x.total)}</strong></div>`).join("")}</div></div>
-    <div class="analysis-section"><b>🧠 Đánh giá tổng thể</b><div class="analysis-assessment">
-      • Có <b>${groupList.length}</b> chủng loại, tổng tồn <b>${formatNumber(grandTotal)}</b> bộ.<br>
-      • Chủng loại tồn cao nhất: <b>${escapeHtml(groupList[0].name)}</b> — <b>${formatNumber(groupList[0].total)}</b> bộ.<br>
-      • Huyện tồn cao nhất: <b>${escapeHtml(huyen[0]?.name||"—")}</b> — <b>${formatNumber(huyen[0]?.total||0)}</b> bộ.<br>
-      • Nhân viên tồn cao nhất: <b>${escapeHtml(nv[0]?.name||"—")}</b> — <b>${formatNumber(nv[0]?.total||0)}</b> bộ.
-    </div></div>`;
+    <div class="analysis-section"><b>📦 Danh sách tồn chi tiết</b><div class="bot-list">`;
+
+  data.forEach((item,index)=>{
+    html+=`<div class="bot-item">
+      <div class="bot-item-main">
+        <div class="bot-item-name">${index+1}. ${escapeHtml(item.mh||"Chưa xác định")}</div>
+        <div class="bot-item-sl">SL: ${formatNumber(item.sl||0)}</div>
+      </div>
+      <div class="bot-item-info">
+        <span class="bot-tag">📦 ${escapeHtml(item.dv||"—")}</span>
+        <span class="bot-tag">👤 ${escapeHtml(item.nv||"Chưa xác định")}</span>
+        <span class="bot-tag">📍 ${escapeHtml(item.huyen||"Chưa xác định")}</span>
+        <span class="bot-tag">🏷️ ${escapeHtml(item.loaimh||"Chưa xác định")}</span>
+        <span class="bot-tag">${escapeHtml(item.tt||"")}</span>
+      </div>
+    </div>`;
+  });
+
+  html+=`</div></div><div class="analysis-hint">💡 Đây là danh sách tồn chi tiết theo dữ liệu hiện tại. Nhập lại mã/tên để phân tích tổng hợp.</div>`;
   result.innerHTML=html;
 }
+
+
+function renderDimensionAnalysis(data,keyword,selectedType,field){
+
+  const result=document.getElementById("botResult");
+  const rows=aggregateBy(data,field);
+  const total=data.reduce((s,i)=>s+Number(i.sl||0),0);
+
+  const title=field==="huyen"
+    ? `📍 TỒN THEO HUYỆN — ${escapeHtml(keyword.toUpperCase())}`
+    : `👤 TỒN THEO NHÂN VIÊN — ${escapeHtml(keyword.toUpperCase())}`;
+
+  const tk=data.filter(i=>isTypeForAnalysis(i,"tk")).reduce((s,i)=>s+Number(i.sl||0),0);
+  const th=data.filter(i=>isTypeForAnalysis(i,"th")).reduce((s,i)=>s+Number(i.sl||0),0);
+  const uctt=data.filter(i=>isTypeForAnalysis(i,"uctt")).reduce((s,i)=>s+Number(i.sl||0),0);
+
+  result.innerHTML=`
+    <div class="analysis-title">${title}</div>
+    <div class="analysis-summary">
+      <div class="analysis-stat"><span>Tổng tồn</span><b>${formatNumber(total)}</b></div>
+      <div class="analysis-stat"><span>Đối tượng</span><b>${rows.length}</b></div>
+      <div class="analysis-stat"><span>TK</span><b>${formatNumber(tk)}</b></div>
+      <div class="analysis-stat"><span>TH / UCTT</span><b>${formatNumber(th)} / ${formatNumber(uctt)}</b></div>
+    </div>
+    <div class="analysis-section">
+      <b>📊 Phân bổ tồn</b>
+      <div class="analysis-list">
+        ${rows.map((x,i)=>`
+          <div class="analysis-row">
+            <span>${i+1}. ${escapeHtml(x.name)}</span>
+            <strong>${formatNumber(x.total)} · ${percentage(x.total,total)}</strong>
+          </div>`).join("")}
+      </div>
+    </div>`;
+}
+
+function renderItemAnalysis(data,keyword,selectedType){
+
+  const result=document.getElementById("botResult");
+
+  if(!data.length){
+    result.innerHTML=`❌ Không tìm thấy mặt hàng <b>${escapeHtml(keyword)}</b>.`;
+    return;
+  }
+
+  const total=data.reduce((s,i)=>s+Number(i.sl||0),0);
+
+  /* Tách từng chủng loại/mã hàng thực tế */
+  const groups=new Map();
+
+  data.forEach(item=>{
+    const name=String(item.mh||"").trim()||"Chưa xác định";
+    if(!groups.has(name)) groups.set(name,[]);
+    groups.get(name).push(item);
+  });
+
+  const groupList=[...groups.entries()]
+    .map(([name,rows])=>({
+      name,
+      rows,
+      total:rows.reduce((s,i)=>s+Number(i.sl||0),0)
+    }))
+    .sort((a,b)=>b.total-a.total);
+
+  const tk=data.filter(i=>isTypeForAnalysis(i,"tk"))
+    .reduce((s,i)=>s+Number(i.sl||0),0);
+  const th=data.filter(i=>isTypeForAnalysis(i,"th"))
+    .reduce((s,i)=>s+Number(i.sl||0),0);
+  const uctt=data.filter(i=>isTypeForAnalysis(i,"uctt"))
+    .reduce((s,i)=>s+Number(i.sl||0),0);
+
+  const huyen=aggregateBy(data,"huyen");
+  const nv=aggregateBy(data,"nv");
+
+  /* Kho: lấy riêng, không đưa vào nhân viên */
+  const khoData=data.filter(i=>{
+    const text=normalizeText(
+      String(i.huyen||"")+" "+String(i.nv||"")
+    );
+    return text.includes("kho gli dong") ||
+           text.includes("kho gli tay");
+  });
+
+  const khoTotal=khoData.reduce((s,i)=>s+Number(i.sl||0),0);
+
+  /* Trạng thái */
+  const status=aggregateBy(data,"tt");
+
+  /* Đơn vị */
+  const donvi=aggregateBy(data,"dv");
+
+  let title=`📦 PHÂN TÍCH CHUYÊN SÂU — ${escapeHtml(keyword.toUpperCase())}`;
+  if(selectedType){
+    title+=` — ${escapeHtml(typeName(selectedType))}`;
+  }
+
+  let html=`
+    <div class="analysis-title">${title}</div>
+
+    <div class="analysis-summary">
+      <div class="analysis-stat">
+        <span>Tổng tồn</span>
+        <b>${formatNumber(total)}</b>
+      </div>
+
+      <div class="analysis-stat">
+        <span>Chủng loại</span>
+        <b>${groupList.length}</b>
+      </div>
+
+      <div class="analysis-stat">
+        <span>Huyện</span>
+        <b>${huyen.length}</b>
+      </div>
+
+      <div class="analysis-stat">
+        <span>Nhân viên</span>
+        <b>${nv.length}</b>
+      </div>
+    </div>
+
+    <div class="analysis-section">
+      <b>📊 Cơ cấu tồn theo loại hàng</b>
+
+      <div class="deep-type-grid">
+        ${renderDeepType("TK","Hàng triển khai",tk,total)}
+        ${renderDeepType("TH","Hàng thu hồi",th,total)}
+        ${renderDeepType("UCTT","Hàng UCTT",uctt,total)}
+      </div>
+    </div>
+
+    <div class="analysis-section">
+      <b>📦 Từng chủng loại / mã hàng</b>
+
+      <div class="analysis-list">
+        ${groupList.map((g,i)=>
+          renderProductGroupCard(g,i,total)
+        ).join("")}
+      </div>
+    </div>
+
+    <div class="analysis-section">
+      <b>📍 Phân bổ theo huyện</b>
+
+      <div class="analysis-list">
+        ${huyen.slice(0,10).map((x,i)=>`
+          <div class="analysis-row">
+            <span>
+              ${i+1}. ${escapeHtml(x.name)}
+            </span>
+            <strong>
+              ${formatNumber(x.total)}
+              · ${percentage(x.total,total)}
+            </strong>
+          </div>
+        `).join("")}
+      </div>
+
+      ${huyen.length>10
+        ? `<div class="analysis-more">Còn ${huyen.length-10} huyện khác.</div>`
+        : ""}
+    </div>
+
+    <div class="analysis-section">
+      <b>👤 Phân bổ theo nhân viên</b>
+
+      ${
+        nv.length
+        ? `
+          <div class="analysis-list">
+            ${nv.slice(0,10).map((x,i)=>`
+              <div class="analysis-row">
+                <span>${i+1}. ${escapeHtml(x.name)}</span>
+                <strong>
+                  ${formatNumber(x.total)}
+                  · ${percentage(x.total,total)}
+                </strong>
+              </div>
+            `).join("")}
+          </div>
+        `
+        : `<div class="analysis-assessment">Không có dữ liệu nhân viên hợp lệ.</div>`
+      }
+    </div>
+
+    <div class="analysis-section">
+      <b>🏬 Tồn tại kho</b>
+
+      <div class="analysis-assessment">
+        Kho GLI Đông/Tây được tách riêng, không tính vào nhân viên.
+        <br>
+        Tổng tồn tại kho: <b>${formatNumber(khoTotal)}</b> bộ
+        · ${percentage(khoTotal,total)} tổng tồn.
+      </div>
+    </div>
+
+    <div class="analysis-section">
+      <b>📌 Trạng thái tồn</b>
+
+      <div class="analysis-list">
+        ${status.slice(0,10).map((x,i)=>`
+          <div class="analysis-row">
+            <span>${i+1}. ${escapeHtml(x.name||"Không xác định")}</span>
+            <strong>${formatNumber(x.total)} · ${percentage(x.total,total)}</strong>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+
+    <div class="analysis-section">
+      <b>🏷️ Đơn vị</b>
+
+      <div class="analysis-list">
+        ${donvi.slice(0,8).map((x,i)=>`
+          <div class="analysis-row">
+            <span>${i+1}. ${escapeHtml(x.name||"Không xác định")}</span>
+            <strong>${formatNumber(x.total)}</strong>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+
+    ${buildDeepAssessment(
+      data,
+      total,
+      groupList,
+      tk,
+      th,
+      uctt,
+      huyen,
+      nv,
+      khoTotal,
+      status
+    )}
+
+    ${buildBotNextCommands(keyword,selectedType)}
+  `;
+
+  result.innerHTML=html;
+}
+
+
+function renderDeepType(code,name,value,total){
+
+  const p=percentage(value,total);
+
+  let level="Thấp";
+
+  if(value/Math.max(total,1)>=.4){
+    level="Cao";
+  }else if(value/Math.max(total,1)>=.2){
+    level="Đáng kể";
+  }
+
+  return `
+    <div class="deep-type-card">
+      <div class="deep-type-head">
+        <strong>${code}</strong>
+        <span>${level}</span>
+      </div>
+
+      <div class="deep-type-name">${name}</div>
+
+      <div class="deep-type-value">
+        ${formatNumber(value)}
+      </div>
+
+      <div class="deep-type-percent">
+        ${p} tổng tồn
+      </div>
+    </div>
+  `;
+}
+
+
+function buildDeepAssessment(
+  data,
+  total,
+  groups,
+  tk,
+  th,
+  uctt,
+  huyen,
+  nv,
+  khoTotal,
+  status
+){
+
+  const messages=[];
+
+  if(!total) return "";
+
+  /* 1. Cơ cấu TK/TH/UCTT */
+  const typeValues=[
+    {code:"TK",name:"Hàng triển khai",value:tk},
+    {code:"TH",name:"Hàng thu hồi",value:th},
+    {code:"UCTT",name:"Hàng UCTT",value:uctt}
+  ].sort((a,b)=>b.value-a.value);
+
+  const mainType=typeValues[0];
+
+  messages.push(
+    `Cơ cấu tồn lớn nhất là <b>${mainType.code}</b> (${mainType.name}) với <b>${formatNumber(mainType.value)}</b> bộ, chiếm <b>${percentage(mainType.value,total)}</b> tổng tồn.`
+  );
+
+  /* 2. Tồn TH */
+  if(th>0){
+    const p=th/total;
+
+    messages.push(
+      p>=.3
+      ? `Hàng <b>TH</b> đang ở mức <b>${formatNumber(th)}</b> bộ (${percentage(th,total)}), tỷ trọng cao; nên ưu tiên rà soát hàng thu hồi chưa xử lý.`
+      : `Hàng <b>TH</b> đang tồn <b>${formatNumber(th)}</b> bộ (${percentage(th,total)}).`
+    );
+  }else{
+    messages.push(`Hàng <b>TH</b> hiện tồn <b>0</b> bộ.`);
+  }
+
+  /* 3. UCTT */
+  if(uctt>0){
+    const p=uctt/total;
+
+    messages.push(
+      p>=.3
+      ? `Hàng <b>UCTT</b> tồn <b>${formatNumber(uctt)}</b> bộ (${percentage(uctt,total)}), tỷ trọng cao và cần theo dõi riêng.`
+      : `Hàng <b>UCTT</b> tồn <b>${formatNumber(uctt)}</b> bộ (${percentage(uctt,total)}).`
+    );
+  }else{
+    messages.push(`Hàng <b>UCTT</b> hiện tồn <b>0</b> bộ.`);
+  }
+
+  /* 4. Chủng loại tập trung */
+  if(groups.length){
+
+    const top=groups[0];
+    const p=top.total/total;
+
+    messages.push(
+      `Chủng loại tồn nhiều nhất là <b>${escapeHtml(top.name)}</b>: <b>${formatNumber(top.total)}</b> bộ (${percentage(top.total,total)}).`+
+      (p>=.5
+        ? ` Đây là mức tập trung rất cao, cần ưu tiên kiểm tra riêng.`
+        : p>=.3
+          ? ` Đây là nhóm chiếm tỷ trọng đáng kể.`
+          : "")
+    );
+  }
+
+  /* 5. Huyện */
+  if(huyen.length){
+
+    const top=huyen[0];
+    const p=top.total/total;
+
+    messages.push(
+      `Tồn tập trung nhiều nhất tại <b>${escapeHtml(top.name)}</b>: <b>${formatNumber(top.total)}</b> bộ (${percentage(top.total,total)})`+
+      (p>=.4 ? ` — mức tập trung cao.` : ".")
+    );
+  }
+
+  /* 6. Nhân viên */
+  if(nv.length){
+
+    const top=nv[0];
+    const p=top.total/total;
+
+    messages.push(
+      `Nhân viên có tồn cao nhất là <b>${escapeHtml(top.name)}</b>: <b>${formatNumber(top.total)}</b> bộ (${percentage(top.total,total)})`+
+      (p>=.25 ? ` — mức tập trung cao.` : ".")
+    );
+  }else{
+    messages.push(`Không tính tồn tại <b>KHO GLI ĐÔNG/KHO GLI TÂY</b> vào chỉ tiêu nhân viên.`);
+  }
+
+  /* 7. Kho */
+  if(khoTotal>0){
+
+    messages.push(
+      `Riêng tồn tại kho GLI Đông/Tây là <b>${formatNumber(khoTotal)}</b> bộ (${percentage(khoTotal,total)} tổng tồn), được theo dõi tách khỏi nhân viên.`
+    );
+  }
+
+  /* 8. Trạng thái */
+  if(status.length){
+
+    const top=status[0];
+
+    messages.push(
+      `Trạng thái có số lượng lớn nhất là <b>${escapeHtml(top.name)}</b>: <b>${formatNumber(top.total)}</b> bộ (${percentage(top.total,total)}).`
+    );
+  }
+
+  /* 9. Độ phân tán */
+  if(groups.length>=5){
+
+    messages.push(
+      `Tồn đang phân tán trên <b>${groups.length}</b> chủng loại; nên ưu tiên kiểm tra các nhóm đứng đầu trước thay vì xem toàn bộ cùng lúc.`
+    );
+
+  }else if(groups.length>1){
+
+    messages.push(
+      `Có <b>${groups.length}</b> chủng loại khác nhau trong kết quả, bot đã tách riêng để tránh cộng gộp sai mã hàng.`
+    );
+  }
+
+  return `
+    <div class="analysis-section">
+      <b>🧠 ĐÁNH GIÁ CHUYÊN SÂU</b>
+
+      <div class="analysis-assessment deep-assessment">
+        ${messages.map(x=>`<div>• ${x}</div>`).join("")}
+      </div>
+    </div>
+  `;
+}
+
+
+
+
+function escapeJs(value){
+  return String(value || "")
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'")
+    .replace(/\n/g,"\\n")
+    .replace(/\r/g,"\\r");
+}
+
+function runBotCommand(command){
+
+  const input=document.getElementById("botInput");
+
+  input.value=command;
+
+  runBot();
+
+}
+
+function buildBotNextCommands(keyword,selectedType){
+
+  const type=selectedType
+    ? ` ${selectedType.toUpperCase()}`
+    : "";
+
+  return `
+    <div class="analysis-section bot-next-commands">
+
+      <b>💬 Có thể hỏi tiếp</b>
+
+      <div class="bot-command-grid">
+
+        <button type="button"
+          onclick="runBotCommand('${escapeJs(keyword)}${type} chi tiết')">
+          📋 Chi tiết tồn
+        </button>
+
+        <button type="button"
+          onclick="runBotCommand('${escapeJs(keyword)} TK')">
+          🔵 Hàng TK
+        </button>
+
+        <button type="button"
+          onclick="runBotCommand('${escapeJs(keyword)} TH')">
+          🟠 Hàng TH
+        </button>
+
+        <button type="button"
+          onclick="runBotCommand('${escapeJs(keyword)} UCTT')">
+          🟣 Hàng UCTT
+        </button>
+
+        <button type="button"
+          onclick="runBotCommand('${escapeJs(keyword)} huyện')">
+          📍 Theo huyện
+        </button>
+
+        <button type="button"
+          onclick="runBotCommand('${escapeJs(keyword)} nhân viên')">
+          👤 Theo nhân viên
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
+
 function renderProductGroupCard(group,index,grandTotal){
   const rows=group.rows;
   const tk=rows.filter(i=>isTypeForAnalysis(i,"tk")).reduce((s,i)=>s+Number(i.sl||0),0);
@@ -1655,28 +2194,44 @@ function aggregateBy(data,field){
 
   data.forEach(item => {
 
-    const name = String(item[field] || "").trim() || "Chưa xác định";
+    let name = String(item[field] || "").trim();
+
+    if(field === "nv"){
+
+      const kho = normalizeText(
+        String(item.huyen || "") + " " + String(item.nv || "")
+      );
+
+      /* Kho GLI Đông/Tây và dòng nhân viên trống không tính vào nhân viên. */
+      if(
+        !name ||
+        kho.includes("kho gli dong") ||
+        kho.includes("kho gli tay")
+      ){
+        return;
+      }
+    }
+
+    if(!name){
+      name = "Chưa xác định";
+    }
+
     const value = Number(item.sl || 0);
 
     if(!map.has(name)){
-      map.set(name,{
-        name:name,
-        total:0,
-        lines:0
-      });
+      map.set(name,{name:name,total:0,lines:0});
     }
 
-    const obj = map.get(name);
+    const obj=map.get(name);
     obj.total += value;
     obj.lines += 1;
 
   });
 
   return [...map.values()]
-    .sort((a,b) => b.total - a.total);
+    .sort((a,b)=>b.total-a.total);
 
 }
-
 
 function formatNumber(value){
 
