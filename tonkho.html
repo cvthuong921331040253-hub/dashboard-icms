@@ -756,6 +756,25 @@ td.sl-cell{
     height:calc(100vh - 205px);
   }
 }
+
+/* ===== BOT PHÓNG TO + PHÂN TÍCH CHỦNG LOẠI ===== */
+.bot-header-actions{display:flex;align-items:center;gap:4px}
+.bot-max,.bot-close{width:32px;height:32px;padding:0;border-radius:50%;background:rgba(255,255,255,.16);color:white;font-size:18px;line-height:1}
+.bot-max:hover,.bot-close:hover{background:rgba(255,255,255,.25)}
+.bot-panel.maximized{top:10px !important;right:10px !important;bottom:10px !important;left:10px !important;width:auto !important;max-width:none !important;height:auto !important;border-radius:12px}
+.product-analysis-card{background:white;border:1px solid #dfe7ee;border-radius:9px;padding:9px;box-shadow:0 1px 3px rgba(31,45,61,.04)}
+.product-analysis-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.product-analysis-name{display:flex;align-items:flex-start;gap:7px;min-width:0}
+.product-analysis-name strong{font-size:12px;line-height:1.35;color:#263238;word-break:break-word}
+.product-index{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#eaf3fb;color:#1976d2;font-size:10px;font-weight:700}
+.product-analysis-total{flex-shrink:0;text-align:right;font-size:14px;font-weight:700;color:#1976d2}
+.product-analysis-total small{display:block;font-size:9px;font-weight:400;color:#78909c}
+.product-analysis-types{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:7px}
+.product-type{display:flex;justify-content:space-between;align-items:center;padding:5px 6px;border-radius:6px;background:#f5f8fb;font-size:10px}
+.product-type b{color:#607d8b}.product-type span{font-weight:700;color:#263238}
+.product-analysis-meta{margin-top:7px;color:#607d8b;font-size:10px;line-height:1.45}
+.product-analysis-note{margin-top:6px;padding-top:6px;border-top:1px solid #edf1f4;color:#455a64;font-size:10px;line-height:1.45}
+@media(max-width:768px){.bot-panel.maximized{top:5px !important;right:5px !important;bottom:5px !important;left:5px !important}}
 </style>
 </head>
 
@@ -842,13 +861,10 @@ td.sl-cell{
         <small>TK · TH · UCTT</small>
       </div>
 
-      <button
-        type="button"
-        class="bot-close"
-        onclick="toggleBot()"
-        aria-label="Đóng bot">
-        ×
-      </button>
+      <div class="bot-header-actions">
+        <button type="button" class="bot-max" onclick="toggleBotMax()" aria-label="Phóng to bot">⛶</button>
+        <button type="button" class="bot-close" onclick="toggleBot()" aria-label="Đóng bot">×</button>
+      </div>
     </div>
 
     <div class="bot-panel-body">
@@ -1365,12 +1381,21 @@ function normalizeText(value){
 }
 
 
+function toggleBotMax(){
+  const panel=document.getElementById("botPanel");
+  panel.classList.toggle("maximized");
+}
+
 function toggleBot(){
 
   const panel = document.getElementById("botPanel");
   const input = document.getElementById("botInput");
 
   panel.classList.toggle("open");
+
+  if(!panel.classList.contains("open")){
+    panel.classList.remove("maximized");
+  }
 
   if(panel.classList.contains("open")){
     setTimeout(() => input.focus(), 80);
@@ -1406,7 +1431,7 @@ function runBot(){
 
       <b>📊 Phân tích mặt hàng</b><br>
       Chỉ cần nhập mã/tên, ví dụ: <b>HC25</b>.<br>
-      Bot tự tổng hợp tổng tồn, số line, TK/TH/UCTT,
+      Bot tự tổng hợp tổng tồn, TK/TH/UCTT,
       huyện, nhân viên và cảnh báo tập trung tồn.<br><br>
 
       <b>🔎 Lọc theo loại</b><br>
@@ -1414,11 +1439,6 @@ function runBot(){
       • <b>HC25 TH</b><br>
       • <b>HC25 UCTT</b><br>
       • <b>TK HC25</b> — thứ tự không quan trọng.<br><br>
-
-      <b>📋 Xem tồn line</b><br>
-      • <b>HC25 line</b><br>
-      • <b>HC25 TK line</b><br>
-      • <b>HC25 UCTT line</b><br><br>
 
       <b>🔍 Tìm nhanh</b><br>
       Nhập 3–4 ký tự như <b>hc2</b>, <b>g05</b>, <b>ple</b> để tìm nhanh.<br><br>
@@ -1442,14 +1462,7 @@ function runBot(){
 
   /* ===== NHẬN DIỆN CÁC TỪ ĐIỀU KHIỂN ===== */
 
-  const wantsLine = words.includes("line") ||
-                    words.includes("lines") ||
-                    words.includes("dong") ||
-                    words.includes("dongton");
-
-  words = words.filter(w =>
-    !["line","lines","dong","dongton"].includes(w)
-  );
+  /* Tạm thời bỏ chức năng line. */
 
   let selectedType = "";
 
@@ -1507,27 +1520,12 @@ function runBot(){
   });
 
   /*
-    Nếu câu hỏi có từ "line" hoặc nhận diện rõ là mặt hàng,
-    hiển thị chi tiết line.
+    Khi người dùng nhập mã/tên mặt hàng, mặc định phân tích chuyên sâu.
+    Nếu không tìm thấy theo tên mặt hàng thì chuyển sang tìm kiếm tổng quát.
   */
   const looksLikeItemQuery =
     searchWords.length > 0 &&
     itemMatches.length > 0;
-
-  if(wantsLine && looksLikeItemQuery){
-
-    renderLineResults(
-      itemMatches,
-      `📋 Tồn line — ${escapeHtml(raw)}`
-    );
-
-    return;
-  }
-
-  /*
-    Khi người dùng nhập mã/tên mặt hàng, mặc định phân tích chuyên sâu.
-    Nếu không tìm thấy theo tên mặt hàng thì chuyển sang tìm kiếm tổng quát.
-  */
   if(looksLikeItemQuery){
 
     renderItemAnalysis(
@@ -1580,135 +1578,42 @@ function runBot(){
 /* ===== PHÂN TÍCH MẶT HÀNG ===== */
 
 function renderItemAnalysis(data,keyword,selectedType){
-
-  const result = document.getElementById("botResult");
-
-  if(!data.length){
-    result.innerHTML = `
-      ❌ Không tìm thấy mặt hàng <b>${escapeHtml(keyword)}</b>.
-    `;
-    return;
-  }
-
-  const total = data.reduce(
-    (sum,item) => sum + Number(item.sl || 0),0
-  );
-
-  const lineCount = data.length;
-
-  const types = {
-    tk: data.filter(i => isTypeForAnalysis(i,"tk")),
-    th: data.filter(i => isTypeForAnalysis(i,"th")),
-    uctt: data.filter(i => isTypeForAnalysis(i,"uctt"))
-  };
-
-  const typeStats = {
-    tk: summarizeRows(types.tk),
-    th: summarizeRows(types.th),
-    uctt: summarizeRows(types.uctt)
-  };
-
-  const huyen = aggregateBy(data,"huyen");
-  const nv = aggregateBy(data,"nv");
-
-  const topHuyen = huyen.slice(0,5);
-  const topNV = nv.slice(0,5);
-
-  let title = `📦 PHÂN TÍCH ${escapeHtml(keyword.toUpperCase())}`;
-
-  if(selectedType){
-    title += ` — ${escapeHtml(typeName(selectedType))}`;
-  }
-
-  let html = `
-    <div class="analysis-title">${title}</div>
-
+  const result=document.getElementById("botResult");
+  if(!data.length){ result.innerHTML=`❌ Không tìm thấy mặt hàng <b>${escapeHtml(keyword)}</b>.`; return; }
+  const groups=new Map();
+  data.forEach(item=>{const name=String(item.mh||"").trim()||"Chưa xác định"; if(!groups.has(name)) groups.set(name,[]); groups.get(name).push(item);});
+  const groupList=[...groups.entries()].map(([name,rows])=>({name,rows,total:rows.reduce((s,i)=>s+Number(i.sl||0),0)})).sort((a,b)=>b.total-a.total);
+  const grandTotal=data.reduce((s,i)=>s+Number(i.sl||0),0), huyen=aggregateBy(data,"huyen"), nv=aggregateBy(data,"nv");
+  let title=`📦 PHÂN TÍCH ${escapeHtml(keyword.toUpperCase())}`; if(selectedType) title+=` — ${escapeHtml(typeName(selectedType))}`;
+  let html=`<div class="analysis-title">${title}</div>
     <div class="analysis-summary">
-      <div class="analysis-stat">
-        <span>Tổng tồn</span>
-        <b>${formatNumber(total)}</b>
-      </div>
-
-      <div class="analysis-stat">
-        <span>Số line</span>
-        <b>${formatNumber(lineCount)}</b>
-      </div>
-
-      <div class="analysis-stat">
-        <span>Huyện</span>
-        <b>${huyen.length}</b>
-      </div>
-
-      <div class="analysis-stat">
-        <span>Nhân viên</span>
-        <b>${nv.length}</b>
-      </div>
+      <div class="analysis-stat"><span>Tổng tồn</span><b>${formatNumber(grandTotal)}</b></div>
+      <div class="analysis-stat"><span>Chủng loại</span><b>${groupList.length}</b></div>
+      <div class="analysis-stat"><span>Huyện</span><b>${huyen.length}</b></div>
+      <div class="analysis-stat"><span>Nhân viên</span><b>${nv.length}</b></div>
     </div>
-
-    <div class="analysis-section">
-      <b>📊 Cơ cấu tồn</b>
-      <div class="analysis-list">
-        ${analysisTypeCard("TK","Hàng triển khai",typeStats.tk,total)}
-        ${analysisTypeCard("TH","Hàng thu hồi",typeStats.th,total)}
-        ${analysisTypeCard("UCTT","Hàng UCTT",typeStats.uctt,total)}
-      </div>
-    </div>
-  `;
-
-  if(topHuyen.length){
-
-    html += `
-      <div class="analysis-section">
-        <b>📍 Top huyện tồn</b>
-        <div class="analysis-list">
-          ${topHuyen.map((x,i) => `
-            <div class="analysis-row">
-              <span>${i+1}. ${escapeHtml(x.name || "Chưa xác định")}</span>
-              <strong>${formatNumber(x.total)}</strong>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-    `;
-
-  }
-
-  if(topNV.length){
-
-    html += `
-      <div class="analysis-section">
-        <b>👤 Top nhân viên tồn</b>
-        <div class="analysis-list">
-          ${topNV.map((x,i) => `
-            <div class="analysis-row">
-              <span>${i+1}. ${escapeHtml(x.name || "Chưa xác định")}</span>
-              <strong>${formatNumber(x.total)}</strong>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-    `;
-
-  }
-
-  html += buildAnalysisAssessment(
-    data,
-    total,
-    typeStats,
-    topHuyen,
-    topNV
-  );
-
-  html += `
-    <div class="analysis-hint">
-      💡 Nhập <b>${escapeHtml(keyword)} line</b> để xem toàn bộ tồn line.
-      Có thể thêm <b>TK</b>, <b>TH</b> hoặc <b>UCTT</b> để phân tích riêng từng loại.
-    </div>
-  `;
-
-  result.innerHTML = html;
+    <div class="analysis-section"><b>📦 Phân tích từng chủng loại</b><div class="analysis-list">${groupList.map((g,i)=>renderProductGroupCard(g,i,grandTotal)).join("")}</div></div>
+    <div class="analysis-section"><b>📍 Top huyện tổng thể</b><div class="analysis-list">${huyen.slice(0,5).map((x,i)=>`<div class="analysis-row"><span>${i+1}. ${escapeHtml(x.name)}</span><strong>${formatNumber(x.total)}</strong></div>`).join("")}</div></div>
+    <div class="analysis-section"><b>👤 Top nhân viên tổng thể</b><div class="analysis-list">${nv.slice(0,5).map((x,i)=>`<div class="analysis-row"><span>${i+1}. ${escapeHtml(x.name)}</span><strong>${formatNumber(x.total)}</strong></div>`).join("")}</div></div>
+    <div class="analysis-section"><b>🧠 Đánh giá tổng thể</b><div class="analysis-assessment">
+      • Có <b>${groupList.length}</b> chủng loại, tổng tồn <b>${formatNumber(grandTotal)}</b> bộ.<br>
+      • Chủng loại tồn cao nhất: <b>${escapeHtml(groupList[0].name)}</b> — <b>${formatNumber(groupList[0].total)}</b> bộ.<br>
+      • Huyện tồn cao nhất: <b>${escapeHtml(huyen[0]?.name||"—")}</b> — <b>${formatNumber(huyen[0]?.total||0)}</b> bộ.<br>
+      • Nhân viên tồn cao nhất: <b>${escapeHtml(nv[0]?.name||"—")}</b> — <b>${formatNumber(nv[0]?.total||0)}</b> bộ.
+    </div></div>`;
+  result.innerHTML=html;
 }
-
+function renderProductGroupCard(group,index,grandTotal){
+  const rows=group.rows;
+  const tk=rows.filter(i=>isTypeForAnalysis(i,"tk")).reduce((s,i)=>s+Number(i.sl||0),0);
+  const th=rows.filter(i=>isTypeForAnalysis(i,"th")).reduce((s,i)=>s+Number(i.sl||0),0);
+  const uctt=rows.filter(i=>isTypeForAnalysis(i,"uctt")).reduce((s,i)=>s+Number(i.sl||0),0);
+  const huyen=aggregateBy(rows,"huyen").slice(0,3), nv=aggregateBy(rows,"nv").slice(0,3);
+  let note=`Cơ cấu: TK <b>${formatNumber(tk)}</b> · TH <b>${formatNumber(th)}</b> · UCTT <b>${formatNumber(uctt)}</b>.`;
+  if(huyen.length) note+=` Huyện cao nhất: <b>${escapeHtml(huyen[0].name)}</b> — <b>${formatNumber(huyen[0].total)}</b>.`;
+  if(nv.length) note+=` Nhân viên cao nhất: <b>${escapeHtml(nv[0].name)}</b> — <b>${formatNumber(nv[0].total)}</b>.`;
+  return `<div class="product-analysis-card"><div class="product-analysis-head"><div class="product-analysis-name"><span class="product-index">${index+1}</span><strong>${escapeHtml(group.name)}</strong></div><div class="product-analysis-total">${formatNumber(group.total)}<small>${percentage(group.total,grandTotal)} tổng</small></div></div><div class="product-analysis-types"><div class="product-type"><b>TK</b><span>${formatNumber(tk)}</span></div><div class="product-type"><b>TH</b><span>${formatNumber(th)}</span></div><div class="product-type"><b>UCTT</b><span>${formatNumber(uctt)}</span></div></div><div class="product-analysis-meta">📍 <b>Huyện:</b> ${huyen.map(x=>`${escapeHtml(x.name)} (${formatNumber(x.total)})`).join(" · ")||"—"}<br>👤 <b>Nhân viên:</b> ${nv.map(x=>`${escapeHtml(x.name)} (${formatNumber(x.total)})`).join(" · ")||"—"}</div><div class="product-analysis-note">${note}</div></div>`;
+}
 
 function isTypeForAnalysis(item,type){
 
