@@ -9,239 +9,614 @@
 <title>THU HỒI</title>
 
 <style>
-/* ===== BODY ===== */
-body {
-  font-family: Arial;
-  padding: 8px;
-  background: #f5f7fb;
-  margin: 0;
+*{box-sizing:border-box}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  padding:8px;
+  background:#f3f6fa;
+  margin:0;
+  color:#263238;
 }
 
-/* ===== HEADER ===== */
-.header {
-  position: sticky;
-  top: 0;
-  background:#f5f7fb;
+.header{
+  position:sticky;
+  top:0;
+  background:rgba(243,246,250,.96);
+  backdrop-filter:blur(8px);
   z-index:1000;
-  padding-bottom:6px;
+  padding-bottom:8px;
 }
 
 .header-top{
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  padding:2px 4px 4px;
 }
 
-/* ===== INPUT ===== */
+.header-top h2{
+  margin:0;
+  font-size:19px;
+  font-weight:700;
+}
+
 input{
-  padding:6px 10px;
-  margin:4px 0;
-  border-radius:20px;
-  border:1px solid #ddd;
+  padding:9px 13px;
+  margin:3px 0;
+  border-radius:10px;
+  border:1px solid #d9e0e7;
   width:100%;
-  box-sizing: border-box;
+  background:#fff;
+  color:#263238;
+  outline:none;
+  font-size:13px;
+  box-shadow:0 1px 2px rgba(0,0,0,.03);
 }
 
-/* ===== TABLE WRAP ===== */
-.table-wrap {
-  overflow-x: auto;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+input:focus{
+  border-color:#64b5f6;
+  box-shadow:0 0 0 3px rgba(25,118,210,.1);
 }
 
-/* ===== TABLE ===== */
-.table-custom {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
+#marqueeBox{
+  width:100%;
+  overflow:hidden;
+  white-space:nowrap;
+  background:#fff8e1;
+  border:1px solid #ffe8a3;
+  border-radius:10px;
+  padding:7px 0;
+  margin:4px 0 8px;
 }
 
-/* ===== HEADER TABLE (STICKY) ===== */
-.table-custom th {
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  background: #1976d2;
-  color: #fff;
-  padding: 8px;
-  border: 1px solid #ccc;
+#marqueeText{
+  display:inline-block;
+  padding-left:100%;
+  animation:marquee 18s linear infinite;
+  font-size:12px;
+  color:#795548;
 }
 
-/* ===== CELL ===== */
-.table-custom td {
-  padding: 6px;
-  border: 1px solid #ccc;
-  text-align: center;
+@keyframes marquee{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-100%)}
 }
 
-/* ===== HOVER ===== */
-.table-custom tr:hover {
-  background: #f5f7fb;
+#logtimeTH{
+  padding:2px 5px;
+  font-size:11px!important;
+  color:#7a858f!important;
 }
 
-/* ===== KPI ===== */
-.rate-good {
-  color: #2e7d32;
-  font-weight: bold;
+#loadingTH{
+  font-size:12px;
+  color:#78909c;
+  padding:4px;
 }
 
-.rate-bad {
-  color: #d32f2f;
-  font-weight: bold;
+h3{
+  margin:13px 3px 7px;
+  font-size:14px;
+  font-weight:700;
+  color:#37474f;
 }
 
-.money {
-  font-weight: bold;
-  color: #d32f2f;
+/* ===== BẢNG ===== */
+.table-wrap{
+  overflow:auto;
+  background:#fff;
+  border-radius:12px;
+  border:1px solid #e2e7ed;
+  box-shadow:0 2px 8px rgba(32,55,80,.06);
+  max-height:300px;
+  -webkit-overflow-scrolling:touch;
 }
 
-/* ===== CARD ===== */
-.card {
-  background: white;
-  border-radius: 8px;
-  padding: 8px;
-  margin-bottom: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+.table-custom{
+  width:100%;
+  min-width:440px;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:12px;
 }
 
-.top { background: #e8f5e9; }
-.worst { background: #ffeaea; }
-
-/* ===== DONE TEXT ===== */
-.ok {
-  color: #0a8f08;
-  font-weight: bold;
+.table-custom th{
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:#1976d2;
+  color:#fff;
+  padding:8px 6px;
+  border:0;
+  font-weight:600;
+  white-space:nowrap;
 }
 
-/* ===== MARQUEE ===== */
-#marqueeBox {
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  background: #fff3cd;
-  border-radius: 6px;
-  padding: 6px 0;
-  margin: 6px 0;
+.table-custom th:first-child{
+  border-top-left-radius:11px;
 }
 
-#marqueeText {
-  display: inline-block;
-  padding-left: 100%;
-  animation: marquee 15s linear infinite;
-  font-size: 13px;
-  color: #856404;
+.table-custom th:last-child{
+  border-top-right-radius:11px;
 }
 
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
+.table-custom td{
+  padding:7px 6px;
+  border-bottom:1px solid #edf0f3;
+  text-align:center;
+  white-space:nowrap;
 }
-/* Giao diện chuẩn mobile */
-@media (max-width: 600px) {
 
-  body {
-    font-size: 13px;
-    padding: 6px;
+.table-custom th:first-child,
+.table-custom td:first-child{
+  position:sticky;
+  left:0;
+  min-width:92px;
+  max-width:105px;
+  z-index:4;
+  text-align:left;
+}
+
+.table-custom th:first-child{
+  z-index:7;
+  background:#1976d2;
+}
+
+.table-custom td:first-child{
+  background:#fff;
+  box-shadow:2px 0 4px rgba(0,0,0,.04);
+}
+
+.table-custom tbody tr:nth-child(even) td:first-child{
+  background:#fafbfd;
+}
+
+.table-custom tbody tr:hover td{
+  background:#f1f7ff;
+}
+
+.table-custom tbody tr:hover td:first-child{
+  background:#f1f7ff;
+}
+
+.table-custom .cnct-row{
+  background:#e8f1fb!important;
+  font-weight:700;
+  border-top:2px solid #90caf9;
+}
+
+.table-custom .cnct-row td{
+  color:#1565c0;
+  background:#e8f1fb!important;
+}
+
+.table-custom .cnct-row td:first-child{
+  background:#e8f1fb!important;
+  z-index:4;
+}
+
+.rate-good{color:#2e7d32;font-weight:700}
+.rate-bad{color:#d32f2f;font-weight:700}
+.money{font-weight:700;color:#d32f2f}
+
+.card{
+  background:#fff;
+  border:1px solid #e3e8ee;
+  border-radius:12px;
+  padding:10px;
+  margin-bottom:8px;
+  box-shadow:0 2px 7px rgba(32,55,80,.055);
+}
+
+.top{
+  background:#f0faf2;
+  border-left:4px solid #43a047;
+}
+
+.worst{
+  background:#fff5f5;
+  border-left:4px solid #e53935;
+}
+
+.mesh-note{
+  color:#1976d2;
+  font-weight:700;
+}
+
+/* ===== LOADING ===== */
+#pageLoader{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  background:rgba(243,246,250,.72);
+  backdrop-filter:blur(2px);
+}
+
+#pageLoader.hidden{display:none}
+
+.loader-spinner{
+  width:38px;
+  height:38px;
+  border:4px solid #dce3ec;
+  border-top-color:#1976d2;
+  border-radius:50%;
+  animation:spinLoader .8s linear infinite;
+}
+
+#pageLoaderText{
+  margin-top:11px;
+  font-size:14px;
+  font-weight:600;
+  color:#54606b;
+}
+
+@keyframes spinLoader{
+  to{transform:rotate(360deg)}
+}
+
+/* ===== BOT ===== */
+#botButton{
+  position:fixed;
+  right:16px;
+  bottom:18px;
+  width:52px;
+  height:52px;
+  border:0;
+  border-radius:50%;
+  background:#1976d2;
+  color:#fff;
+  font-size:25px;
+  box-shadow:0 5px 16px rgba(25,118,210,.32);
+  cursor:pointer;
+  z-index:9000;
+}
+
+#botPanel{
+  position:fixed;
+  right:14px;
+  bottom:80px;
+  width:min(370px,calc(100vw - 28px));
+  height:min(560px,calc(100vh - 110px));
+  background:#fff;
+  border:1px solid #e1e6ec;
+  border-radius:16px;
+  box-shadow:0 8px 30px rgba(25,40,60,.18);
+  z-index:8999;
+  display:none;
+  overflow:hidden;
+  flex-direction:column;
+}
+
+#botPanel.open{display:flex}
+
+.bot-header{
+  background:#1976d2;
+  color:#fff;
+  padding:11px 13px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.bot-title{font-size:14px;font-weight:700}
+.bot-subtitle{font-size:10px;opacity:.85;margin-top:2px}
+
+#botClose{
+  border:0;
+  background:transparent;
+  color:#fff;
+  font-size:21px;
+  cursor:pointer;
+}
+#botMax{
+  border:0;
+  background:transparent;
+  color:#fff;
+  font-size:18px;
+  line-height:1;
+  width:28px;
+  height:28px;
+  cursor:pointer;
+  border-radius:6px;
+}
+
+#botMax:hover,
+#botClose:hover{
+  background:rgba(255,255,255,.14);
+}
+
+#botPanel.maximized{
+  right:12px;
+  bottom:12px;
+  width:calc(100vw - 24px);
+  height:calc(100vh - 24px);
+  max-width:none;
+  max-height:none;
+  border-radius:14px;
+}
+
+#botPanel.maximized #botMessages{
+  font-size:13px;
+}
+
+#botPanel.maximized .bot-msg{
+  max-width:85%;
+  font-size:13px;
+  line-height:1.55;
+}
+
+@media(max-width:600px){
+  #botPanel.maximized{
+    right:5px;
+    bottom:5px;
+    width:calc(100vw - 10px);
+    height:calc(100vh - 10px);
+    border-radius:12px;
   }
-
-  h2 { font-size: 16px; }
-  h3 { font-size: 14px; }
-
-  /* cố định tiêu đề bảng mobile */
-  .table-wrap {
-    max-height: 260px;
-    overflow-y: auto;
-  }
-
 }
-  /* Giao diện chạy thông báo */
-  #marqueeBox {
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  background: #fff3cd;
-  border-radius: 6px;
-  padding: 6px 0;
-  margin: 6px 0;
+
+#botMessages{
+  flex:1;
+  overflow-y:auto;
+  padding:11px;
+  background:#f6f8fb;
+}
+
+.bot-msg{
+  max-width:92%;
+  padding:8px 10px;
+  margin-bottom:8px;
+  border-radius:11px;
+  font-size:12px;
+  line-height:1.45;
+  word-break:break-word;
+}
+
+.bot-msg.bot{
+  background:#fff;
+  border:1px solid #e5e9ee;
+  margin-right:auto;
+}
+
+.bot-msg.user{
+  background:#e3f2fd;
+  color:#0d47a1;
+  margin-left:auto;
+}
+
+.bot-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-top:9px;
+  padding-top:7px;
+  border-top:1px solid #edf0f3;
+}
+
+.bot-action-btn{
+  border:1px solid #cbd8e6;
+  background:#f7fbff;
+  color:#1565c0;
+  border-radius:14px;
+  padding:5px 8px;
+  font-size:10px;
+  cursor:pointer;
+}
+
+.bot-suggestions{
+  display:flex;
+  gap:5px;
+  overflow-x:auto;
+  padding:7px 9px;
+  background:#fff;
+  border-top:1px solid #edf0f3;
+}
+
+.bot-suggestions button{
+  flex:0 0 auto;
+  border:1px solid #cfd8e3;
+  background:#fff;
+  color:#455a64;
+  border-radius:15px;
+  padding:5px 9px;
+  font-size:10px;
+}
+
+.bot-input{
+  display:flex;
+  gap:6px;
+  padding:8px;
+  background:#fff;
+  border-top:1px solid #edf0f3;
+}
+
+#botInput{
+  flex:1;
+  margin:0;
+  padding:8px 10px;
+  border-radius:18px;
+  font-size:12px;
+}
+
+#botSend{
+  width:38px;
+  border:0;
+  border-radius:50%;
+  background:#1976d2;
+  color:#fff;
+  cursor:pointer;
+  font-size:16px;
+}
+
+@media(max-width:600px){
+  body{font-size:13px;padding:6px}
+  .header-top h2{font-size:17px}
+  h3{font-size:13px;margin-top:11px}
+  .table-wrap{max-height:285px;border-radius:10px}
+  .table-custom{min-width:390px;font-size:10.5px}
+  .table-custom th{padding:7px 5px}
+  .table-custom td{padding:6px 5px}
+  .card{padding:9px;border-radius:10px}
+  #botButton{
+    right:12px;
+    bottom:14px;
+    width:48px;
+    height:48px;
+    font-size:23px;
+  }
+  #botPanel{
+    right:8px;
+    bottom:70px;
+    width:calc(100vw - 16px);
+    height:min(540px,calc(100vh - 90px));
+    border-radius:14px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
+<div id="pageLoader">
+  <div class="loader-spinner"></div>
+  <div id="pageLoaderText">Đang tải dữ liệu...</div>
+</div>
+
 <div class="header">
   <div id="marqueeBox">
-  <div id="marqueeText">⏳ Đang tải thông báo...</div>
-</div>
+    <div id="marqueeText">⏳ Đang tải thông báo...</div>
+  </div>
 
   <div class="header-top">
     <h2>📥 Thu hồi</h2>
-    <button onclick="reloadPage()" class="reload-btn">🔄</button>
   </div>
 
-  <div id="logtimeTH" style="font-size:12px;color:#666;margin:6px 0"></div>
+  <div id="logtimeTH"></div>
 
   <input id="nv_th" placeholder="Tìm nhân viên..." onkeyup="filterTH()">
-  <input id="huyen_th" placeholder="Tìm huyện..." onkeyup="filterTH()">
-
-</div>
-
+  <input id="huyen_th" placeholder="Tìm TTH..." onkeyup="filterTH()">
 </div>
 
 <div id="loadingTH">⏳ Đang tải dữ liệu...</div>
 
-<h3>📊 Thu hồi theo Huyện</h3>
+<h3>📊 Thu hồi theo TTH</h3>
 <div id="tableHuyen"></div>
 
 <h3>👤 Danh sách nhân viên</h3>
 <div id="dataTH"></div>
 
-<script>
+<!-- BOT: HTML giao diện, không chứa logic tải dữ liệu -->
+<button id="botButton" onclick="toggleBot()" title="BOT phân tích thu hồi">🤖</button>
 
+<div id="botPanel">
+  <div class="bot-header">
+    <div>
+      <div class="bot-title">🤖 BOT Thu hồi</div>
+      <div class="bot-subtitle">Phân tích dữ liệu đang hiển thị</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:4px">
+      <button id="botMax" onclick="toggleBotSize()" title="Phóng to/thu nhỏ">⛶</button>
+      <button id="botClose" onclick="toggleBot()">×</button>
+    </div>
+  </div>
+
+  <div id="botMessages">
+    <div class="bot-msg bot">
+      Xin chào. Tôi là BOT Thu hồi.<br>
+      Nhập <b>/help</b> để xem cách tra cứu.
+    </div>
+  </div>
+
+  <div class="bot-suggestions">
+    <button onclick="botAsk('CNCT')">CNCT</button>
+    <button onclick="botAsk('TTH tồi nhất')">TTH tồi nhất</button>
+    <button onclick="botAsk('nhân viên tồi nhất')">NV tồi nhất</button>
+    <button onclick="botAsk('/help')">/help</button>
+  </div>
+
+  <div class="bot-input">
+    <input id="botInput" placeholder="Nhập câu hỏi hoặc account..." onkeydown="if(event.key==='Enter')botSend()">
+    <button id="botSend" onclick="botSend()">➤</button>
+  </div>
+</div>
+
+<!-- =========================================================
+     CORE SCRIPT - GIỮ FLOW CŨ, BOT KHÔNG CAN THIỆP
+     ========================================================= -->
+<script>
 const API_TH = "https://script.google.com/macros/s/AKfycbzqj0IEDtejqhkPeJ9RHSczMz-K2_IqBdZB62VCtGL9l9rE4hyZa8tF8hx2vXupFa66/exec?sheet=Thu hoi";
 
 let dataTH = [];
 let dataHuyenGlobal = [];
-// ===== TABLE HUYỆN =====
+
+function hidePageLoader(){
+  const loader = document.getElementById("pageLoader");
+  if(loader) loader.classList.add("hidden");
+}
+
 function renderHuyen(data){
+  let tongCan = 0;
+  let tongDa = 0;
+  let tongPhat = 0;
+
+  data.forEach(r=>{
+    tongCan += Number(r.tong_can || 0);
+    tongDa += Number(r.tong_da || 0);
+    tongPhat += Number(r.tong_phat || 0);
+  });
+
+  let tongTyLe = tongCan === 0 ? 1 : tongDa / tongCan;
+  let tongPercent = (tongTyLe * 100).toFixed(0);
+
   let html = `
   <div class="table-wrap">
   <table class="table-custom">
-    <tr>
-      <th>Huyện</th>
-      <th>Tổng giao</th>
-      <th>Đã thu</th>
-      <th>Tỷ lệ</th>
-      <th>Tiền phạt</th>
-    </tr>
+    <thead>
+      <tr>
+        <th>TTH</th>
+        <th>Tổng giao</th>
+        <th>Đã thu</th>
+        <th>Tỷ lệ</th>
+        <th>Tiền phạt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="cnct-row">
+        <td>CNCT</td>
+        <td>${tongCan}</td>
+        <td>${tongDa}</td>
+        <td class="${tongTyLe<1?'rate-bad':'rate-good'}">${tongPercent}%</td>
+        <td class="money">${tongPhat.toLocaleString('vi-VN')}</td>
+      </tr>
   `;
 
   data.forEach(r=>{
     let ty_le = r.tong_can === 0 ? 1 : r.tong_da / r.tong_can;
-    let percent = (ty_le*100).toFixed(0);
+    let percent = (ty_le * 100).toFixed(0);
 
     html += `
       <tr>
-        <td style="text-align:left">${r.huyen}</td>
+        <td>${r.huyen}</td>
         <td>${r.tong_can}</td>
         <td>${r.tong_da}</td>
-        <td class="${ty_le<1?'rate-bad':'rate-good'}">
-          ${percent}%
-        </td>
-        <td class="money">
-          ${r.tong_phat.toLocaleString('vi-VN')}
-        </td>
+        <td class="${ty_le<1?'rate-bad':'rate-good'}">${percent}%</td>
+        <td class="money">${r.tong_phat.toLocaleString('vi-VN')}</td>
       </tr>
     `;
   });
 
-  html += "</table></div>";
+  html += `
+    </tbody>
+  </table>
+  </div>`;
+
   document.getElementById("tableHuyen").innerHTML = html;
 }
 
-// ===== NHÂN VIÊN =====
 function renderTH(data){
   let html = "";
 
@@ -250,18 +625,17 @@ function renderTH(data){
 
     let listHTML = r.list.map(acc=>{
       let isDone = Number(acc.can) > 0 && Number(acc.da) >= Number(acc.can);
-    
-      let styleDone = isDone 
-        ? "color:#0a8f08; font-weight:bold;"
+      let styleDone = isDone ? "color:#0a8f08;font-weight:bold;" : "";
+
+      let meshHTML = acc.mesh
+        ? ` <span class="mesh-note">(Có Mesh)</span>`
         : "";
-    
+
       return `
-      <div style="font-size:12px; margin-left:10px; ${styleDone}">
-        • [ƯT ${acc.uu_tien}] ${acc.account}
+      <div style="font-size:12px;margin-left:10px;${styleDone}">
+        • [ƯT ${acc.uu_tien}] ${acc.account}${meshHTML}
         | ${acc.da}/${acc.can}
-        <span>
-          (${(acc.ty_le*100).toFixed(0)}%)
-        </span>
+        <span>(${(acc.ty_le*100).toFixed(0)}%)</span>
       </div>
       `;
     }).join("");
@@ -269,9 +643,8 @@ function renderTH(data){
     html += `
       <div class="card ${ty_le<1?'worst':'top'}">
         👤 <b>${r.nhan_vien}</b> - ${r.huyen}<br>
-        💸 Tổng tiền phạt: <b style="color:#d32f2f">
-        ${r.tong_phat.toLocaleString('vi-VN')}
-        </b><br>
+        💸 Tổng tiền phạt:
+        <b style="color:#d32f2f">${r.tong_phat.toLocaleString('vi-VN')}</b><br>
         ${listHTML}
       </div>
     `;
@@ -280,7 +653,6 @@ function renderTH(data){
   document.getElementById("dataTH").innerHTML = html;
 }
 
-// ===== LOAD =====
 function loadThuHoi(){
 
   document.getElementById("loadingTH").style.display = "block";
@@ -293,125 +665,119 @@ function loadThuHoi(){
 
     let raw = res.data || [];
 
-    // ===== LOGTIME =====
     if(raw.length > 0){
       let tg = raw[0].tg_update || raw[0]["Tg update"];
-    
-    if(tg){
-      let d = new Date(tg);
-    
-      let day = String(d.getDate()).padStart(2,"0");
-      let month = String(d.getMonth()+1).padStart(2,"0");
-      let year = d.getFullYear();
-      let hour = String(d.getHours()).padStart(2,"0");
-      let minute = String(d.getMinutes()).padStart(2,"0");
-    
-      document.getElementById("logtimeTH").innerText =
-        `🕒 Thời gian lấy báo cáo: ${day}/${month}/${year} ${hour}:${minute}`;
-    }
+
+      if(tg){
+        let d = new Date(tg);
+        let day = String(d.getDate()).padStart(2,"0");
+        let month = String(d.getMonth()+1).padStart(2,"0");
+        let year = d.getFullYear();
+        let hour = String(d.getHours()).padStart(2,"0");
+        let minute = String(d.getMinutes()).padStart(2,"0");
+
+        document.getElementById("logtimeTH").innerText =
+          `🕒 Thời gian lấy báo cáo: ${day}/${month}/${year} ${hour}:${minute}`;
+      }
     }
 
     let nhanvienMap = {};
     let huyenMap = {};
 
-  raw.forEach(r=>{
-  
-    let nv = r.nhan_vien || "Không tên";
-    let h = r.huyen || "Không rõ";
-  
-    let can = Number(r.can_thu || 0);
-    let da = Number(r.da_thu_hoi || 0);
-    let phat = Number(r.tien_phat || 0);
-    let uu = Number(r.uu_tien || 0);
-  
-    // ===== 1. TẠO NHÂN VIÊN =====
-    if(!nhanvienMap[nv]){
-      nhanvienMap[nv] = { 
-        nhan_vien:nv, 
-        huyen:h, 
-        tong_can:0, 
-        tong_da:0, 
-        tong_phat: 0,
-        list:[]
-      };
-    }
-  
-    // ===== 2. TẠO HUYỆN (PHẢI TRƯỚC) =====
-    if(!huyenMap[h]){
-      huyenMap[h] = { 
-        huyen:h, 
-        tong_can:0, 
-        tong_da:0,
-        tong_phat:0,
-        nv_set: new Set()
-      };
-    }
-  
-    // ===== 3. TIỀN PHẠT NHÂN VIÊN =====
-    if(phat > 0 && nhanvienMap[nv].tong_phat === 0){
-      nhanvienMap[nv].tong_phat = phat;
-    }
-  
-    // ===== 4. TIỀN PHẠT HUYỆN (KHÔNG TRÙNG NV) =====
-    if(phat > 0 && !huyenMap[h].nv_set.has(nv)){
-      huyenMap[h].tong_phat += phat;
-      huyenMap[h].nv_set.add(nv);
-    }
-  
-    // ===== 5. CỘNG NHÂN VIÊN =====
-    nhanvienMap[nv].tong_can += can;
-    nhanvienMap[nv].tong_da += da;
-  
-    nhanvienMap[nv].list.push({
-      account:r.account,
-      uu_tien:uu,
-      can, da,
-      ty_le: can === 0 ? 1 : da / can
+    raw.forEach(r=>{
+
+      let nv = r.nhan_vien || "Không tên";
+      let h = r.huyen || "Không rõ";
+
+      let can = Number(r.can_thu || 0);
+      let da = Number(r.da_thu_hoi || 0);
+      let phat = Number(r.tien_phat || 0);
+      let uu = Number(r.uu_tien || 0);
+      let mesh = r.mesh || "";
+
+      if(!nhanvienMap[nv]){
+        nhanvienMap[nv] = {
+          nhan_vien:nv,
+          huyen:h,
+          tong_can:0,
+          tong_da:0,
+          tong_phat:0,
+          list:[]
+        };
+      }
+
+      if(!huyenMap[h]){
+        huyenMap[h] = {
+          huyen:h,
+          tong_can:0,
+          tong_da:0,
+          tong_phat:0,
+          nv_set:new Set()
+        };
+      }
+
+      if(phat > 0 && nhanvienMap[nv].tong_phat === 0){
+        nhanvienMap[nv].tong_phat = phat;
+      }
+
+      if(phat > 0 && !huyenMap[h].nv_set.has(nv)){
+        huyenMap[h].tong_phat += phat;
+        huyenMap[h].nv_set.add(nv);
+      }
+
+      nhanvienMap[nv].tong_can += can;
+      nhanvienMap[nv].tong_da += da;
+
+      nhanvienMap[nv].list.push({
+        account:r.account,
+        mesh:mesh,
+        uu_tien:uu,
+        can,
+        da,
+        ty_le:can === 0 ? 1 : da / can
+      });
+
+      if(uu === 1 || uu === 2){
+        huyenMap[h].tong_can += can;
+        huyenMap[h].tong_da += da;
+      }
     });
-  
-    // ===== 6. CHỈ TÍNH ƯT1 + ƯT2 CHO HUYỆN =====
-    if(uu === 1 || uu === 2){
-      huyenMap[h].tong_can += can;
-      huyenMap[h].tong_da += da;
-    }
-  
-  });
 
     dataTH = Object.values(nhanvienMap);
     let dataHuyen = Object.values(huyenMap);
+
     dataHuyenGlobal = dataHuyen;
+
     renderHuyen(dataHuyen);
 
-    // sort account ƯT trong từng nhân viên
-    dataTH.forEach(nv => {
-      nv.list.sort((a, b) => a.uu_tien - b.uu_tien);
+    dataTH.forEach(nv=>{
+      nv.list.sort((a,b)=>a.uu_tien-b.uu_tien);
     });
-    
-    // ✅ sort nhân viên theo tiền phạt cao đến thấp
-    dataTH.sort((a, b) => b.tong_phat - a.tong_phat);
+
+    dataTH.sort((a,b)=>b.tong_phat-a.tong_phat);
 
     renderTH(dataTH);
-    let tongPhat = dataTH.reduce((sum, nv) => sum + (nv.tong_phat || 0), 0);
 
     document.getElementById("marqueeText").innerHTML =
-    `📢 Tập trung thu hồi ƯT1, ƯT2 trước, ƯT3 thu hồi giảm phạt rời mạng | <b>📢 Nhập tổ đội lưu ý:</b> (báo cáo thu hồi tháng 4 sang đầu tháng 5 mới nhập tổ đội, tương tự với các tháng tiếp theo)`;
-    
+      `📢 Tập trung thu hồi ƯT1, ƯT2 trước, ƯT3 thu hồi giảm phạt rời mạng | <b>📢 Nhập tổ đội lưu ý:</b> (báo cáo thu hồi tháng 4 sang đầu tháng 5 mới nhập tổ đội, tương tự với các tháng tiếp theo)`;
+
     document.getElementById("loadingTH").style.display = "none";
+    hidePageLoader();
 
   })
-  .catch(err => {
-    console.log("API lỗi", err);
+  .catch(err=>{
+    console.log("API lỗi",err);
+    document.getElementById("loadingTH").innerText = "❌ Không tải được dữ liệu";
+    hidePageLoader();
   });
 }
 
-// ===== FILTER =====
 function filterTH(){
+
   let nv = document.getElementById("nv_th").value.toLowerCase();
   let h = document.getElementById("huyen_th").value.toLowerCase();
-
   let tableHuyenDiv = document.getElementById("tableHuyen");
 
-  // ===== 1. FILTER NHÂN VIÊN =====
   let filteredNV = dataTH.filter(r =>
     (r.nhan_vien||"").toLowerCase().includes(nv) &&
     (r.huyen||"").toLowerCase().includes(h)
@@ -419,15 +785,11 @@ function filterTH(){
 
   renderTH(filteredNV);
 
-  // ===== 2. LOGIC HIỂN THỊ =====
-
-  // 🔴 Nếu đang lọc nhân viên → ẨN bảng huyện
   if(nv){
     tableHuyenDiv.style.display = "none";
     return;
   }
 
-  // 🟢 Nếu lọc huyện → lọc lại bảng huyện
   if(h){
     let filteredHuyen = dataHuyenGlobal.filter(r =>
       (r.huyen||"").toLowerCase().includes(h)
@@ -438,19 +800,472 @@ function filterTH(){
     return;
   }
 
-  // 🔄 Nếu không filter gì → trả về mặc định
   renderHuyen(dataHuyenGlobal);
   tableHuyenDiv.style.display = "block";
 }
 
-// START
 loadThuHoi();
-function reloadPage(){
-  document.body.style.opacity = 0.3;
-  setTimeout(()=>{
-    location.reload();
-  },200);
-}
+</script>
+
+<!-- =========================================================
+     BOT SCRIPT - TÁCH RIÊNG, KHÔNG THỂ CHẶN CORE SCRIPT
+     ========================================================= -->
+<script>
+(function(){
+
+  function norm(s){
+    return String(s||"")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g,"")
+      .trim();
+  }
+
+  function esc(s){
+    return String(s??"")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;");
+  }
+
+  function rate(can,da){
+    return Number(can)===0 ? 1 : Number(da||0)/Number(can);
+  }
+
+  function money(v){
+    return Number(v||0).toLocaleString("vi-VN");
+  }
+
+  function accounts(){
+    const out=[];
+    (typeof dataTH!=='undefined' ? dataTH : []).forEach(nv=>{
+      (nv.list||[]).forEach(a=>{
+        out.push({...a,nhan_vien:nv.nhan_vien,tth:nv.huyen});
+      });
+    });
+    return out;
+  }
+
+  function tths(){
+    return (typeof dataHuyenGlobal!=='undefined' ? dataHuyenGlobal : []).map(r=>({
+      ...r,
+      rate:rate(r.tong_can,r.tong_da),
+      con_lai:Math.max(0,Number(r.tong_can||0)-Number(r.tong_da||0))
+    }));
+  }
+
+  function nvs(){
+    return (typeof dataTH!=='undefined' ? dataTH : []).map(r=>({
+      ...r,
+      rate:rate(r.tong_can,r.tong_da),
+      con_lai:Math.max(0,Number(r.tong_can||0)-Number(r.tong_da||0))
+    }));
+  }
+
+  window.toggleBot=function(){
+    document.getElementById("botPanel").classList.toggle("open");
+  };
+
+  window.toggleBotSize=function(){
+    const panel=document.getElementById("botPanel");
+    const btn=document.getElementById("botMax");
+    panel.classList.toggle("maximized");
+    btn.textContent=panel.classList.contains("maximized") ? "⛶" : "⛶";
+    btn.title=panel.classList.contains("maximized") ? "Thu nhỏ BOT" : "Phóng to BOT";
+  };
+
+  window.botAsk=function(text){
+    document.getElementById("botInput").value=text;
+    window.botSend();
+  };
+
+  function add(text,type,actions){
+    const box=document.getElementById("botMessages");
+    const d=document.createElement("div");
+    d.className="bot-msg "+type;
+    d.innerHTML=text;
+
+    if(actions && actions.length){
+      const wrap=document.createElement("div");
+      wrap.className="bot-actions";
+
+      actions.forEach(a=>{
+        const b=document.createElement("button");
+        b.className="bot-action-btn";
+        b.textContent=a.label;
+        b.onclick=()=>window.botAsk(a.command);
+        wrap.appendChild(b);
+      });
+
+      d.appendChild(wrap);
+    }
+
+    box.appendChild(d);
+    box.scrollTop=box.scrollHeight;
+  }
+
+  window.botSend=function(){
+    const input=document.getElementById("botInput");
+    const q=input.value.trim();
+    if(!q)return;
+
+    add(esc(q),"user",[]);
+    input.value="";
+
+    setTimeout(()=>{
+      const r=analyze(q);
+      add(r.text,"bot",r.actions||[]);
+    },120);
+  };
+
+  function analyze(q0){
+    const q=norm(q0);
+    const T=tths();
+    const N=nvs();
+    const A=accounts();
+
+    if(!T.length){
+      return {
+        text:"⏳ Dữ liệu chưa tải xong. Hãy chờ bảng xuất hiện rồi thử lại.",
+        actions:[]
+      };
+    }
+
+    if(q==="/help"||q==="help"||q==="?"){
+      return {
+        text:`
+        <b>🤖 /HELP — TRA CỨU THU HỒI</b><br><br>
+        <b>📊 Phân tích:</b><br>
+        • <b>CNCT</b> — tổng quan CNCT<br>
+        • <b>tỷ lệ TTH</b> — xếp hạng TTH<br>
+        • <b>TTH Hoài Nhơn</b> — phân tích TTH<br>
+        • <b>TTH tồi nhất</b> — TTH cần tập trung<br>
+        • <b>tỷ lệ nhân viên</b> — xếp hạng nhân viên<br>
+        • <b>NV tên</b> — phân tích nhân viên<br>
+        • <b>nhân viên tồi nhất</b> — NV cần chú ý<br>
+        • <b>phạt cao nhất</b> — tiền phạt<br>
+        • <b>mesh</b> — thống kê Mesh<br><br>
+        <b>🔎 Tìm account:</b><br>
+        Nhập trực tiếp 2–4 ký tự/số, ví dụ <b>056</b>, <b>ABC</b>, <b>123</b>.<br>
+        BOT sẽ tìm account có chứa chuỗi đó.<br><br>
+        Sau mỗi kết quả BOT sẽ đưa ra các lựa chọn để xem tiếp.
+        `,
+        actions:[
+          {label:"📊 CNCT",command:"CNCT"},
+          {label:"🔴 TTH tồi nhất",command:"TTH tồi nhất"},
+          {label:"👤 NV tồi nhất",command:"nhân viên tồi nhất"},
+          {label:"💰 Phạt",command:"phạt cao nhất"}
+        ]
+      };
+    }
+
+    /* ===== ACCOUNT 2-4 KÝ TỰ =====
+       Chỉ tìm account nếu không phải lệnh hệ thống/nghiệp vụ.
+    ===== */
+    const shortCommands = [
+      "cnct",
+      "mesh",
+      "tth",
+      "nv",
+      "phat",
+      "help"
+    ];
+
+    const isShortCommand = shortCommands.includes(q);
+
+    if(
+      q.length>=2 &&
+      q.length<=4 &&
+      !q.startsWith("/") &&
+      !q.startsWith("tth ") &&
+      !q.startsWith("nv ") &&
+      !isShortCommand
+    ){
+      const m=A.filter(a=>norm(a.account).includes(q));
+
+      if(!m.length){
+        return {
+          text:`🔎 Không tìm thấy account chứa <b>${esc(q0)}</b>.`,
+          actions:[{label:"/help",command:"/help"},{label:"📊 CNCT",command:"CNCT"}]
+        };
+      }
+
+      let text=`<b>🔎 TÌM ACCOUNT: ${esc(q0)}</b><br>Tìm thấy <b>${m.length}</b> account.<br><br>`;
+
+      m.slice(0,20).forEach((a,i)=>{
+        const mesh=String(a.mesh||"").trim()?` <span class="mesh-note">(Có Mesh)</span>`:"";
+        text+=`
+          ${i+1}. <b>${esc(a.account)}</b>${mesh}<br>
+          <span style="font-size:11px">
+          TTH: ${esc(a.tth)} | NV: ${esc(a.nhan_vien)} | ƯT${a.uu_tien} |
+          ${a.da}/${a.can} — ${(rate(a.can,a.da)*100).toFixed(0)}%
+          </span><br>
+        `;
+      });
+
+      if(m.length>20)text+=`<br>... còn ${m.length-20} kết quả.`;
+
+      return {
+        text,
+        actions:[
+          {label:"📊 CNCT",command:"CNCT"},
+          {label:"🔴 TTH tồi nhất",command:"TTH tồi nhất"},
+          {label:"/help",command:"/help"}
+        ]
+      };
+    }
+
+    /* ===== CNCT ===== */
+    if(q==="cnct"||q.includes("tong quan")){
+      const can=T.reduce((s,r)=>s+Number(r.tong_can||0),0);
+      const da=T.reduce((s,r)=>s+Number(r.tong_da||0),0);
+      const phat=T.reduce((s,r)=>s+Number(r.tong_phat||0),0);
+      const con=Math.max(0,can-da);
+      const rt=rate(can,da);
+      const bad=[...T].sort((a,b)=>a.rate-b.rate).slice(0,3);
+      const good=[...T].sort((a,b)=>b.rate-a.rate).slice(0,3);
+
+      return {
+        text:`
+          <b>📊 PHÂN TÍCH CNCT</b><br><br>
+          • Tổng giao: <b>${can}</b><br>
+          • Đã thu: <b>${da}</b><br>
+          • Còn lại: <b>${con}</b><br>
+          • Tỷ lệ: <b>${(rt*100).toFixed(0)}%</b><br>
+          • Tiền phạt: <b>${money(phat)} đ</b><br>
+          • TTH: <b>${T.length}</b><br><br>
+          <b>🔴 TTH cần tập trung</b><br>
+          ${bad.map((r,i)=>`${i+1}. <b>${esc(r.huyen)}</b> — <span class="rate-bad">${(r.rate*100).toFixed(0)}%</span> — tồn ${r.con_lai}`).join("<br>")}
+          <br><br>
+          <b>🟢 TTH tốt nhất</b><br>
+          ${good.map((r,i)=>`${i+1}. <b>${esc(r.huyen)}</b> — <span class="rate-good">${(r.rate*100).toFixed(0)}%</span>`).join("<br>")}
+          <br><br>
+          <b>🎯 Đề xuất:</b> ưu tiên TTH có tỷ lệ thấp và số tồn lớn; sau đó đi sâu xuống nhân viên và account.
+        `,
+        actions:[
+          {label:"🔴 TTH tồi nhất",command:"TTH tồi nhất"},
+          {label:"👤 NV tồi nhất",command:"nhân viên tồi nhất"},
+          {label:"💰 Phạt cao nhất",command:"phạt cao nhất"},
+          {label:"📋 Xếp hạng TTH",command:"tỷ lệ TTH"}
+        ]
+      };
+    }
+
+    /* ===== TỶ LỆ TTH ===== */
+    if(q.includes("ty le tth")||q.includes("xep hang tth")){
+      const s=[...T].sort((a,b)=>a.rate-b.rate);
+      return {
+        text:`<b>📋 XẾP HẠNG TTH</b><br><br>`+
+          s.map((r,i)=>`${i+1}. <b>${esc(r.huyen)}</b> — <span class="${r.rate<.75?'rate-bad':'rate-good'}">${(r.rate*100).toFixed(0)}%</span> — tồn ${r.con_lai} — phạt ${money(r.tong_phat)} đ`).join("<br>"),
+        actions:[
+          {label:"🔴 TTH tồi nhất",command:"TTH tồi nhất"},
+          {label:"📊 CNCT",command:"CNCT"}
+        ]
+      };
+    }
+
+    /* ===== TTH CỤ THỂ ===== */
+    if(q.startsWith("tth ")){
+      const key=q.slice(4).trim();
+      const m=T.filter(r=>norm(r.huyen).includes(key));
+
+      if(!m.length){
+        return {text:`⚠️ Không tìm thấy TTH chứa <b>${esc(key)}</b>.`,actions:[{label:"📋 Xếp hạng TTH",command:"tỷ lệ TTH"}]};
+      }
+
+      if(m.length>1){
+        return {
+          text:`🔎 Có <b>${m.length}</b> TTH phù hợp. Chọn TTH bên dưới:`,
+          actions:m.slice(0,6).map(r=>({label:"📍 "+r.huyen,command:"TTH "+r.huyen}))
+        };
+      }
+
+      const r=m[0];
+      const nv=N.filter(n=>norm(n.huyen)===norm(r.huyen)).sort((a,b)=>a.rate-b.rate);
+
+      return {
+        text:`
+          <b>📍 PHÂN TÍCH TTH: ${esc(r.huyen)}</b><br><br>
+          • Tổng giao: <b>${r.tong_can}</b><br>
+          • Đã thu: <b>${r.tong_da}</b><br>
+          • Còn lại: <b>${r.con_lai}</b><br>
+          • Tỷ lệ: <b class="${r.rate<.75?'rate-bad':'rate-good'}">${(r.rate*100).toFixed(0)}%</b><br>
+          • Tiền phạt: <b>${money(r.tong_phat)} đ</b><br><br>
+          <b>🔴 Nhân viên cần chú ý</b><br>
+          ${nv.slice(0,5).map((n,i)=>`${i+1}. <b>${esc(n.nhan_vien)}</b> — ${(n.rate*100).toFixed(0)}% — tồn ${n.con_lai}`).join("<br>")}
+        `,
+        actions:[
+          {label:"👤 NV tồi nhất",command:"nhân viên tồi nhất"},
+          {label:"🔎 Account tồn",command:"account tồn "+r.huyen},
+          {label:"📊 CNCT",command:"CNCT"}
+        ]
+      };
+    }
+
+    /* ===== TỶ LỆ NHÂN VIÊN ===== */
+    if(q.includes("ty le nhan vien")||q.includes("xep hang nhan vien")){
+      const s=[...N].sort((a,b)=>a.rate-b.rate).slice(0,20);
+      return {
+        text:`<b>👤 XẾP HẠNG NHÂN VIÊN</b><br><br>`+
+          s.map((r,i)=>`${i+1}. <b>${esc(r.nhan_vien)}</b> — ${esc(r.huyen)} — <span class="${r.rate<.75?'rate-bad':'rate-good'}">${(r.rate*100).toFixed(0)}%</span> — tồn ${r.con_lai}`).join("<br>"),
+        actions:[
+          {label:"🔴 NV tồi nhất",command:"nhân viên tồi nhất"},
+          {label:"📋 TTH",command:"tỷ lệ TTH"}
+        ]
+      };
+    }
+
+    /* ===== NV CỤ THỂ ===== */
+    if(q.startsWith("nv ")){
+      const key=q.slice(3).trim();
+      const m=N.filter(r=>norm(r.nhan_vien).includes(key));
+
+      if(!m.length){
+        return {text:`⚠️ Không tìm thấy nhân viên chứa <b>${esc(key)}</b>.`,actions:[{label:"👤 Xếp hạng NV",command:"tỷ lệ nhân viên"}]};
+      }
+
+      if(m.length>1){
+        return {
+          text:`🔎 Có <b>${m.length}</b> nhân viên phù hợp. Chọn:`,
+          actions:m.slice(0,6).map(r=>({label:"👤 "+r.nhan_vien,command:"NV "+r.nhan_vien}))
+        };
+      }
+
+      const r=m[0];
+      const acc=(r.list||[]).filter(a=>Number(a.can)>Number(a.da)).sort((a,b)=>rate(a.can,a.da)-rate(b.can,b.da)).slice(0,8);
+
+      return {
+        text:`
+          <b>👤 PHÂN TÍCH NHÂN VIÊN: ${esc(r.nhan_vien)}</b><br><br>
+          • TTH: <b>${esc(r.huyen)}</b><br>
+          • Tổng giao: <b>${r.tong_can}</b><br>
+          • Đã thu: <b>${r.tong_da}</b><br>
+          • Còn lại: <b>${r.con_lai}</b><br>
+          • Tỷ lệ: <b class="${r.rate<.75?'rate-bad':'rate-good'}">${(r.rate*100).toFixed(0)}%</b><br>
+          • Tiền phạt: <b>${money(r.tong_phat)} đ</b><br><br>
+          <b>🔴 Account chưa hoàn thành</b><br>
+          ${acc.length?acc.map((a,i)=>`${i+1}. <b>${esc(a.account)}</b> — ƯT${a.uu_tien} — ${a.da}/${a.can} — ${(rate(a.can,a.da)*100).toFixed(0)}%`).join("<br>"):"Không còn account tồn."}
+        `,
+        actions:[
+          {label:"🔎 Account tồn",command:"account tồn "+r.nhan_vien},
+          {label:"📍 TTH",command:"TTH "+r.huyen}
+        ]
+      };
+    }
+
+    /* ===== TTH TỒI ===== */
+    if(q.includes("tth toi")||q.includes("tth kem")||q.includes("tth thap")){
+      const r=[...T].sort((a,b)=>a.rate-b.rate||b.con_lai-a.con_lai)[0];
+      return {
+        text:`
+          <b>🔴 TTH CẦN TẬP TRUNG NHẤT</b><br><br>
+          <b>${esc(r.huyen)}</b><br>
+          • Tỷ lệ: <b class="rate-bad">${(r.rate*100).toFixed(0)}%</b><br>
+          • Tổng giao: ${r.tong_can}<br>
+          • Đã thu: ${r.tong_da}<br>
+          • Còn lại: <b>${r.con_lai}</b><br>
+          • Tiền phạt: ${money(r.tong_phat)} đ
+        `,
+        actions:[
+          {label:"📍 Phân tích TTH",command:"TTH "+r.huyen},
+          {label:"👤 NV tồi nhất",command:"nhân viên tồi nhất"},
+          {label:"📊 CNCT",command:"CNCT"}
+        ]
+      };
+    }
+
+    /* ===== NV TỒI ===== */
+    if(q.includes("nhan vien toi")||q.includes("nv toi")||q.includes("nhan vien kem")){
+      const r=[...N].sort((a,b)=>a.rate-b.rate||b.con_lai-a.con_lai)[0];
+      return {
+        text:`
+          <b>🔴 NHÂN VIÊN CẦN CHÚ Ý</b><br><br>
+          👤 <b>${esc(r.nhan_vien)}</b><br>
+          • TTH: ${esc(r.huyen)}<br>
+          • Tỷ lệ: <b class="rate-bad">${(r.rate*100).toFixed(0)}%</b><br>
+          • Tổng giao: ${r.tong_can}<br>
+          • Đã thu: ${r.tong_da}<br>
+          • Còn lại: <b>${r.con_lai}</b><br>
+          • Tiền phạt: ${money(r.tong_phat)} đ
+        `,
+        actions:[
+          {label:"👤 Phân tích NV",command:"NV "+r.nhan_vien},
+          {label:"📍 Xem TTH",command:"TTH "+r.huyen}
+        ]
+      };
+    }
+
+    /* ===== PHẠT ===== */
+    if(q.includes("phat cao")||q.includes("phat nhieu")||q==="phat"||q.includes("tien phat")){
+      const s=[...N].sort((a,b)=>Number(b.tong_phat||0)-Number(a.tong_phat||0)).slice(0,5);
+      const total=N.reduce((x,r)=>x+Number(r.tong_phat||0),0);
+
+      return {
+        text:`<b>💰 PHÂN TÍCH TIỀN PHẠT</b><br><br>• Tổng: <b>${money(total)} đ</b><br><br>`+
+          s.map((r,i)=>`${i+1}. <b>${esc(r.nhan_vien)}</b> — ${esc(r.huyen)} — <b>${money(r.tong_phat)} đ</b>`).join("<br>"),
+        actions:[
+          {label:"👤 NV tồi nhất",command:"nhân viên tồi nhất"},
+          {label:"📊 CNCT",command:"CNCT"}
+        ]
+      };
+    }
+
+    /* ===== MESH ===== */
+    if(q.includes("mesh")){
+      const total=A.length;
+      const mesh=A.filter(a=>String(a.mesh||"").trim()!=="").length;
+
+      return {
+        text:`
+          <b>📡 PHÂN TÍCH MESH</b><br><br>
+          • Tổng account: <b>${total}</b><br>
+          • Có Mesh: <b>${mesh}</b><br>
+          • Không Mesh: <b>${total-mesh}</b><br>
+          • Tỷ lệ Mesh: <b>${total?(mesh/total*100).toFixed(0):0}%</b>
+        `,
+        actions:[
+          {label:"📊 CNCT",command:"CNCT"},
+          {label:"/help",command:"/help"}
+        ]
+      };
+    }
+
+    /* ===== ACCOUNT TỒN ===== */
+    if(q.includes("account ton")){
+      let key=q.split("account ton")[1].trim();
+      let pool=A.filter(a=>Number(a.can)>Number(a.da));
+
+      if(key){
+        pool=pool.filter(a=>norm(a.tth).includes(key)||norm(a.nhan_vien).includes(key));
+      }
+
+      pool.sort((a,b)=>rate(a.can,a.da)-rate(b.can,b.da));
+
+      if(!pool.length){
+        return {text:"🟢 Không có account tồn phù hợp.",actions:[{label:"📊 CNCT",command:"CNCT"}]};
+      }
+
+      return {
+        text:`<b>🔎 ACCOUNT TỒN</b><br>Tìm thấy <b>${pool.length}</b><br><br>`+
+          pool.slice(0,15).map((a,i)=>`${i+1}. <b>${esc(a.account)}</b> — ${esc(a.tth)} — ${esc(a.nhan_vien)} — ƯT${a.uu_tien} — ${a.da}/${a.can} — ${(rate(a.can,a.da)*100).toFixed(0)}%`).join("<br>"),
+        actions:[
+          {label:"🔴 TTH tồi nhất",command:"TTH tồi nhất"},
+          {label:"👤 NV tồi nhất",command:"nhân viên tồi nhất"}
+        ]
+      };
+    }
+
+    return {
+      text:`⚠️ Tôi chưa xác định được yêu cầu.<br><br>Nhập <b>/help</b> để xem cách tra cứu.`,
+      actions:[
+        {label:"📊 CNCT",command:"CNCT"},
+        {label:"/help",command:"/help"}
+      ]
+    };
+  }
+
+})();
 </script>
 
 </body>
