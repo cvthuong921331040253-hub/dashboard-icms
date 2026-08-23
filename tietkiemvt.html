@@ -1,504 +1,866 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>KPI Khoán Vật Tư</title>
 <style>
-body { font-family: Arial; background:#f5f7fb; padding:8px; }
+:root{
+  --bg:#f4f7fb; --card:#fff; --text:#172033; --muted:#6b7280;
+  --line:#e7ebf2; --blue:#2563eb; --blue2:#eff6ff; --green:#16a34a;
+  --green2:#ecfdf3; --red:#dc2626; --red2:#fff1f2; --amber:#d97706;
+  --shadow:0 10px 30px rgba(15,23,42,.08); --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;overflow-x:hidden;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);padding:14px}
+.app{max-width:none;margin:0}
+.header{position:sticky;top:0;z-index:100;background:rgba(244,247,251,.92);backdrop-filter:blur(14px);padding:6px 0 12px}
+.hero{display:flex;justify-content:space-between;gap:14px;align-items:center;background:linear-gradient(135deg,#172554,#2563eb);color:#fff;padding:18px 20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+.hero h1{margin:0;font-size:24px}.hero p{margin:5px 0 0;color:#dbeafe;font-size:13px}
+.reload-btn,.icon-btn,.send-btn,.quick-btn{border:0;cursor:pointer;transition:.2s}
+.reload-btn{width:42px;height:42px;border-radius:13px;background:rgba(255,255,255,.18);color:#fff;font-size:18px}
+.reload-btn:hover{transform:rotate(90deg);background:rgba(255,255,255,.28)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;padding:10px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 4px 16px rgba(15,23,42,.04)}
+.search{flex:1;min-width:180px;position:relative}
+.search input{width:100%;border:1px solid var(--line);background:#f8fafc;border-radius:12px;padding:11px 12px;outline:none;font-size:13px}
+.search input:focus{border-color:#93c5fd;background:#fff;box-shadow:0 0 0 3px #dbeafe}
+.bad-wrap{display:flex;align-items:center}.bad-wrap input{display:none}
+.checkbox-btn{padding:10px 13px;border-radius:12px;background:#f3f4f6;color:#374151;font-size:13px;cursor:pointer;white-space:nowrap}
+.bad-wrap input:checked+.checkbox-btn{background:var(--red);color:#fff}
+.logtime{font-size:12px;color:var(--muted);margin-top:9px;padding-left:4px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 4px 18px rgba(15,23,42,.04)}
+.stat .label{font-size:12px;color:var(--muted)}.stat .value{font-size:22px;font-weight:800;margin-top:6px}
+.section{margin-top:14px}.section-title{display:flex;justify-content:space-between;align-items:center;margin:0 0 8px;font-size:16px}
+.table-wrap{overflow:auto;max-height:64vh;border:2px solid #94a3b8;border-radius:var(--radius);background:#fff;box-shadow:var(--shadow)}
+table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%}
+th,td{padding:10px 9px;font-size:12px;text-align:center;border-right:1px solid #cbd5e1;border-bottom:1px solid #cbd5e1;white-space:nowrap}
+th{background:#eaf1fb;font-weight:750;position:sticky;top:0;z-index:20;box-shadow:0 2px 0 #94a3b8}tr:last-child td{border-bottom:0}th:last-child,td:last-child{border-right:0}
+td:first-child{font-weight:650;text-align:left}.fail{background:#fff7f7}.ok{color:var(--green);font-weight:750}.phat{color:var(--red);font-weight:750}.neutral{color:var(--muted)}
+.rank-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.rank-panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px;box-shadow:var(--shadow)}
+.rank-panel h3{margin:0 0 10px;font-size:15px}.card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:13px;margin-bottom:9px;box-shadow:0 4px 15px rgba(15,23,42,.035);font-size:13px;line-height:1.55}
+.top{border-left:4px solid var(--green)}.worst{border-left:4px solid var(--red)}
+.employee-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.employee-card{margin:0}.emp-name{font-weight:800;font-size:14px}.emp-huyen{color:var(--muted);font-size:12px}.money{font-size:18px;font-weight:850;margin:5px 0}.mini{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.mini div{background:#f8fafc;border-radius:10px;padding:7px;font-size:11px}.mini b{display:block;font-size:12px;margin-top:2px}
+.empty{padding:25px;text-align:center;color:var(--muted);background:#fff;border:1px dashed #cbd5e1;border-radius:16px}
+#loadingOverlay{position:fixed;inset:0;z-index:9999;background:rgba(244,247,251,.86);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;transition:.25s}
+.loader-box{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px 34px;text-align:center;box-shadow:0 20px 60px rgba(15,23,42,.18);min-width:250px}
+.spinner{width:46px;height:46px;border:4px solid #dbeafe;border-top-color:var(--blue);border-radius:50%;margin:0 auto 14px;animation:spin .8s linear infinite}
+.loader-title{font-weight:800}.loader-sub{font-size:12px;color:var(--muted);margin-top:6px}.retry-btn{margin-top:14px;border:0;background:var(--blue);color:#fff;padding:9px 14px;border-radius:10px;cursor:pointer}
+@keyframes spin{to{transform:rotate(360deg)}}
+.chat-launcher{position:fixed;right:20px;bottom:20px;z-index:2000;width:56px;height:56px;border:0;border-radius:18px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-size:24px;box-shadow:0 12px 30px rgba(37,99,235,.35);cursor:pointer}
+.chat-box{position:fixed;right:20px;bottom:88px;width:390px;max-width:calc(100vw - 24px);height:540px;max-height:calc(100vh - 110px);background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 20px 60px rgba(15,23,42,.2);z-index:2000;display:none;overflow:hidden;flex-direction:column}
+.chat-box.open{display:flex}.chat-box.max{right:12px;bottom:12px;width:min(900px,calc(100vw - 24px));height:calc(100vh - 24px);max-height:none}
+.chat-head{padding:13px 15px;background:linear-gradient(135deg,#172554,#2563eb);color:#fff;display:flex;align-items:center;justify-content:space-between}.chat-head b{font-size:14px}.chat-head small{display:block;color:#dbeafe;font-size:11px;margin-top:3px}.chat-actions{display:flex;gap:5px}.icon-btn{width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.15);color:#fff}
+.chat-messages{flex:1;overflow:auto;padding:12px;background:#f8fafc}.msg{max-width:88%;padding:10px 12px;border-radius:14px;margin-bottom:8px;font-size:13px;line-height:1.5;white-space:pre-wrap}.msg.bot{background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}.msg.user{margin-left:auto;background:#2563eb;color:#fff;border-bottom-right-radius:4px}
+.quick{display:flex;gap:6px;overflow:auto;padding:8px;border-top:1px solid var(--line);background:#fff}.quick-btn{white-space:nowrap;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:7px 10px;font-size:11px}
+.help-btn{background:#172554;color:#fff;font-weight:700}
+.chat-input{display:flex;gap:7px;padding:10px;border-top:1px solid var(--line);background:#fff}.chat-input input{flex:1;border:1px solid var(--line);border-radius:12px;padding:10px;outline:none}.send-btn{width:42px;border-radius:12px;background:var(--blue);color:#fff;font-size:17px}
+@media(max-width:1100px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .employee-grid{grid-template-columns:repeat(2,minmax(260px,1fr))}
+}
+@media(max-width:800px){
+  body{padding:6px}
+  .app{max-width:none}
+  .header{padding-top:0}
+  .hero{padding:14px 15px;border-radius:15px}
+  .hero h1{font-size:19px}
+  .hero p{font-size:11px;line-height:1.45}
+  .reload-btn{width:38px;height:38px;border-radius:11px}
+  .toolbar{padding:8px;gap:7px;border-radius:14px}
+  .search{min-width:100%;flex-basis:100%}
+  .search input{font-size:13px;padding:10px 11px}
+  .stats{grid-template-columns:repeat(2,1fr);gap:7px;margin:9px 0}
+  .stat{padding:11px;border-radius:13px}
+  .stat .value{font-size:18px}
+  .section{margin-top:10px}
+  .section-title{font-size:15px;padding:0 2px}
+  .table-wrap{max-height:62vh;border:2px solid #94a3b8;border-radius:14px}
+  #myTable{
+    width:max-content;
+    min-width:760px;
+    max-width:none;
+    table-layout:auto;
+    border-collapse:separate;
+    border-spacing:0;
+  }
+  .table-wrap{overflow-x:auto;overflow-y:auto}
+  #myTable th,#myTable td{box-sizing:border-box;padding:8px 7px;font-size:11px;border-right:1px solid #cbd5e1;border-bottom:1px solid #cbd5e1}
 
-.card {
-  background:#fff;
-  border-radius:8px;
-  padding:8px;
-  margin-bottom:8px;
-  box-shadow:0 1px 3px rgba(0,0,0,0.1);
-  font-size: 13px;
-  line-height: 1.4;
-}
-/* màu thưởng/phạt */
-.ok { color: green; }
-.phat { color: red; font-weight: bold; }
-/* màu tỉ lệ */
-.tl-am { color: red; font-weight: bold; }
-/* top NV tốt, NV kém*/
-.top { background:#e8f5e9; }
-.worst { background:#ffeaea; }
-/* Style ô tìm kiếm*/
-input {
-  padding: 6px 10px;
-  margin-right: 6px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  outline: none;
-  width: 48%;
-}
-/* ===== Style BUTTON NV KÉM ===== */
-.checkbox-btn {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 20px;
-  background: #e0e0e0;
-  color: #333;
-  font-size: 13px;
-  cursor: pointer;
-  margin-top: 6px;
-  transition: 0.2s;
-}
-
-input[type="checkbox"] {
-  display: none;
-}
-
-input[type="checkbox"]:checked + .checkbox-btn {
-  background: #ff5252;
-  color: white;
-}
-/* Style bảng*/
-th, td {
-  border: 1px solid #999;
-  padding: 3px 6px;
-  font-size: 12px;
-}
-/* Cố định thanh tìm kiếm phía trên*/
-.header {
-  position: sticky;
-  top: 0;
-  background: #f5f7fb;
-  z-index: 1000;
-  padding-bottom: 6px;
-}
-
-.card br {
-  line-height: 0.8;
-}
-/* Nút load */
-.header-top {
-  display: flex;
-  justify-content: space-between; /* 🔥 đẩy về 2 bên nút button load */
-  align-items: center;
-}
-.reload-btn {
-  padding: 5px 8px;
-  border: none;
-  border-radius: 8px;
-  background: #e3f2fd;
-  color: #1976d2;
-  font-size: 13px;
-}
-
-.reload-btn:hover {
-  background: #1976d2;
-}
-
-/* Giao diện chuẩn mobile */
-@media (max-width: 600px) {
-
-  body {
-    font-size: 13px;
-    padding: 6px;
+  /* Chiều cao cố định để 2 hàng tiêu đề không bị lệch */
+  #myTable tr:nth-child(1) th{
+    height:34px;
+    min-height:34px;
+    line-height:16px;
+    vertical-align:middle;
+  }
+  #myTable tr:nth-child(2) th{
+    height:34px;
+    min-height:34px;
+    line-height:16px;
+    vertical-align:middle;
   }
 
-  h2 { font-size: 16px; }
-  h3 { font-size: 14px; }
-
-  /*Tùy chỉnh bảng */
-  .table-wrap {
-    overflow-x: auto;
-    overflow-y: auto;   /* 👈 GIỮ CẢ 2 SCROLL */
-    max-height: 60vh;
-  
-    -webkit-overflow-scrolling: touch;
-  
-    border: 1px solid #ddd;
-    background: #fff;
-  
-    border-radius: 12px;
+  /* Cố định cả 2 hàng tiêu đề khi cuộn dọc */
+  #myTable tr:nth-child(1) th{
+    position:sticky;
+    top:0;
+    z-index:30;
+    background:#dbeafe;
+    box-shadow:0 1px 0 #94a3b8;
   }
-    .table-wrap {
-      overflow-x: auto;
-    }
-  #myTable td:first-child {
-  position: sticky;
-  left: 0;
-  background: #d0e7ff;
-  font-weight: 500;
-  border-right: 2px solid #90caf9;
-  box-shadow: 3px 0 6px rgba(0,0,0,0.08);
-  z-index: 3;
-  white-space: nowrap;
-  width: 80px;
+  #myTable tr:nth-child(2) th{
+    position:sticky;
+    top:34px;
+    z-index:29;
+    background:#eaf1fb;
+    box-shadow:0 2px 0 #94a3b8;
+  }
+
+  /* Ô Huyện rowspan = 2 hàng: cố định đúng chiều cao 68px */
+  #myTable tr:nth-child(1) th[rowspan]{
+    position:sticky;
+    top:0;
+    left:0;
+    height:68px;
+    min-height:68px;
+    z-index:50;
+    background:#dbeafe;
+    vertical-align:middle;
+    box-shadow:3px 0 8px rgba(15,23,42,.10),0 2px 0 #94a3b8;
+  }
+
+  /* Cố định cột Huyện khi cuộn ngang */
+  #myTable th:first-child,#myTable td:first-child{
+    position:sticky;
+    left:0;
+    box-shadow:3px 0 8px rgba(15,23,42,.10);
+  }
+  #myTable th:first-child{
+    z-index:50;
+    background:#dbeafe;
+  }
+  #myTable td:first-child{z-index:10;background:#f8fafc}
+  #myTable tr:nth-child(even) td:first-child{background:#f1f5f9}
+  .rank-grid{grid-template-columns:1fr;gap:10px}
+  .rank-panel{padding:10px;border-radius:14px}
+  .employee-grid{grid-template-columns:1fr;gap:8px}
+  .card{border-radius:13px;padding:11px}
+  .chat-box{right:8px;bottom:72px;width:calc(100vw - 16px);height:min(72vh,560px);border-radius:18px}
+  .chat-box.max{right:4px;bottom:4px;width:calc(100vw - 8px);height:calc(100vh - 8px)}
+  .chat-launcher{right:14px;bottom:14px;width:52px;height:52px;border-radius:16px}
+}
+@media(min-width:801px){
+  body{padding:18px;overflow-x:hidden}
+  .app{width:min(100%,1800px);max-width:1800px;margin:0 auto}
+
+  .hero{padding:22px 26px;border-radius:22px}
+  .hero h1{font-size:28px}
+  .hero p{font-size:13px}
+  .reload-btn{width:46px;height:46px}
+
+  .toolbar{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    align-items:center;
+    gap:10px;
+    padding:12px;
+    border-radius:18px;
+  }
+  .search{min-width:0}
+  .search input{width:100%;padding:12px 14px;font-size:14px}
+
+  .stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:16px 0}
+  .stat{min-width:0;padding:18px;border-radius:18px}
+  .stat .value{font-size:25px}
+
+  .section{width:100%;min-width:0;margin-top:18px}
+  .section-title{font-size:18px;margin-bottom:10px}
+
+  /* Khung bảng tuyệt đối không cho bảng vượt chiều rộng */
+  .table-wrap{
+    display:block;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    max-height:72vh;
+    overflow-y:auto;
+    overflow-x:hidden;
+    border:2px solid #94a3b8;
+    border-radius:18px;
+    box-sizing:border-box;
+  }
+
+  #myTable{
+    display:table;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    margin:0;
+    table-layout:fixed !important;
+    border-collapse:collapse !important;
+    border-spacing:0;
+  }
+
+  #myTable col:nth-child(1){width:16%}
+  #myTable col:nth-child(2){width:12%}
+  #myTable col:nth-child(3){width:12%}
+  #myTable col:nth-child(4){width:8%}
+  #myTable col:nth-child(5){width:12%}
+  #myTable col:nth-child(6){width:12%}
+  #myTable col:nth-child(7){width:8%}
+  #myTable col:nth-child(8){width:20%}
+
+  #myTable th,#myTable td{
+    width:auto;
+    min-width:0 !important;
+    max-width:none;
+    padding:clamp(6px,.45vw,10px) clamp(4px,.45vw,8px);
+    font-size:clamp(9px,.62vw,12px);
+    line-height:1.2;
+    border-right:1px solid #cbd5e1;
+    border-bottom:1px solid #cbd5e1;
+    box-sizing:border-box;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  #myTable th{
+    background:#eaf1fb;
+    font-size:clamp(9px,.62vw,12px);
+  }
+
+  #myTable tr:first-child th,
+  #myTable tr:nth-child(2) th{
+    position:static;
+    z-index:auto;
+    background:#eaf1fb;
+  }
+
+  .rank-grid{grid-template-columns:1fr 1fr;gap:18px}
+  .employee-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+
+  .chat-box{width:420px;height:600px;bottom:92px;right:24px}
+  .chat-box.max{width:min(1000px,calc(100vw - 40px));height:calc(100vh - 40px);right:20px;bottom:20px}
+  .chat-launcher{right:24px;bottom:24px}
+}
+@media(min-width:801px){
+  .stat,.rank-panel,.employee-card{transition:transform .18s ease,box-shadow .18s ease}
+  .stat:hover,.rank-panel:hover,.employee-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 28px rgba(15,23,42,.09);
+  }
+  #myTable tbody tr{transition:background .15s ease}
+  #myTable tbody tr:hover td{background:#f3f7ff}
+  #myTable tbody tr:hover td:first-child{background:#eaf1fb}
 }
 
-#myTable tr:first-child th:first-child {
-  position: sticky;
-  left: 0;
-  background: #90caf9;
-  font-weight: bold;
-  z-index: 4;
+
+/* ===== DESKTOP WEB FLUID ===== */
+.section-heading-row,.insight-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
 }
-  }
-   /*Tùy chỉnh bảng giao diện web*/
-  @media (min-width: 601px) {
-  
-    #myTable {
-      width: max-content;
-      table-layout: auto;
-      font-size: 10px;
-    }
-  
-    #myTable td, #myTable th {
-      white-space: normal;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding: 2px 3px;
-    }
-  
+.section-note{font-size:clamp(11px,.65vw,14px);color:#94a3b8}
+.live-dot{font-size:clamp(11px,.65vw,14px);color:#16a34a;font-weight:700;white-space:nowrap}
+.desktop-rank-panel{margin-bottom:clamp(10px,.8vw,18px)}
+.desktop-rank-panel:last-child{margin-bottom:0}
+
+@media(min-width:801px){
+
+  :root{
+    --desktop-gap:clamp(12px,1vw,22px);
+    --desktop-radius:clamp(14px,.9vw,22px);
+    --desktop-pad:clamp(10px,1vw,22px);
   }
 
-  /*Tùy chỉnh bảng */
-  #myTable {
-    border-collapse: collapse;
-    width: auto;
+  html,body{
+    width:100%;
+    min-width:0;
   }
 
-  #myTable th {
-    background: #e3f2fd;
-    text-align: center;
-    font-weight: bold;
-    position: sticky;
-    top: 0;
-    z-index: 2;
+  body{
+    margin:0;
+    padding:clamp(12px,1.2vw,28px);
+    overflow-x:hidden;
+    background:
+      radial-gradient(circle at 0 0,rgba(37,99,235,.05),transparent 25%),
+      radial-gradient(circle at 100% 0,rgba(79,70,229,.04),transparent 22%),
+      #f3f6fb;
   }
 
-  #myTable td {
-    text-align: center;
-    background: #f9fbff;
+  .app{
+    width:100%;
+    max-width:none;
+    min-width:0;
+    margin:0;
   }
 
-  /*Tùy chỉnh bảng */
-  #myTable tr:nth-child(even) td {
-    background: #f1f6ff;
+  .header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    width:100%;
+    padding:0 0 var(--desktop-gap);
+  }
+
+  .hero{
+    width:100%;
+    min-height:clamp(76px,5.3vw,108px);
+    padding:clamp(15px,1.4vw,26px) clamp(18px,1.7vw,34px);
+    border-radius:var(--desktop-radius);
+    box-shadow:0 14px 34px rgba(15,23,42,.11);
+  }
+
+  .hero h1{
+    font-size:clamp(21px,1.45vw,31px);
+    letter-spacing:-.4px;
+  }
+  .hero p{
+    font-size:clamp(10px,.68vw,14px);
+  }
+
+  .reload-btn{
+    width:clamp(40px,2.7vw,52px);
+    height:clamp(40px,2.7vw,52px);
+    border-radius:clamp(10px,.75vw,15px);
+    font-size:clamp(16px,1.1vw,21px);
+  }
+
+  .toolbar{
+    margin-top:clamp(8px,.8vw,14px);
+    padding:clamp(8px,.7vw,14px);
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(8px,.7vw,14px);
+    background:rgba(255,255,255,.9);
+    border:1px solid #e3e9f3;
+    box-shadow:0 8px 22px rgba(15,23,42,.05);
+    border-radius:clamp(12px,.75vw,18px);
+  }
+
+  .search{
+    min-width:0;
+  }
+
+  .search input{
+    width:100%;
+    height:clamp(38px,2.7vw,48px);
+    padding:0 clamp(11px,1vw,18px);
+    font-size:clamp(11px,.72vw,15px);
+    border-radius:clamp(9px,.6vw,13px);
+  }
+
+  .logtime{
+    margin-top:clamp(5px,.45vw,9px);
+    padding-left:3px;
+    font-size:clamp(9px,.55vw,12px);
+  }
+
+  .stats{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:var(--desktop-gap);
+    margin:var(--desktop-gap) 0;
+  }
+
+  .stat{
+    min-width:0;
+    min-height:clamp(76px,5.6vw,108px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:var(--desktop-pad);
+    border-radius:var(--desktop-radius);
+    border:1px solid #e4e9f2;
+    box-shadow:0 7px 18px rgba(15,23,42,.045);
+  }
+
+  .stat .label{
+    font-size:clamp(10px,.62vw,14px);
+  }
+
+  .stat .value{
+    font-size:clamp(19px,1.55vw,31px);
+    margin-top:clamp(3px,.3vw,7px);
+  }
+
+  /* Dashboard desktop thật: vùng nội dung chính dùng toàn bộ chiều ngang */
+  .desktop-main-grid{
+    width:100%;
+    min-width:0;
+    display:grid;
+    grid-template-columns:minmax(0,2.35fr) minmax(clamp(300px,23vw,430px),.82fr);
+    align-items:start;
+    gap:var(--desktop-gap);
+  }
+
+  .table-section,.insight-section{
+    min-width:0;
+    width:100%;
+    margin-top:0;
+  }
+
+  .section-heading-row{
+    min-height:clamp(28px,2vw,38px);
+    margin-bottom:clamp(6px,.55vw,10px);
+  }
+
+  .section-title{
+    font-size:clamp(14px,.95vw,20px);
+    margin:0;
+  }
+
+  .table-wrap{
+    display:block;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    height:auto;
+    min-height:0;
+    max-height:none;
+    overflow:visible;
+    border:2px solid #91a4c1;
+    border-radius:var(--desktop-radius);
+    box-shadow:0 10px 26px rgba(15,23,42,.055);
+    background:#fff;
+  }
+
+  #myTable{
+    width:100%!important;
+    min-width:100%!important;
+    max-width:none!important;
+    table-layout:fixed!important;
+    border-collapse:collapse!important;
+  }
+
+  #myTable th,#myTable td{
+    padding:clamp(7px,.58vw,12px) clamp(5px,.55vw,12px);
+    font-size:clamp(9px,.66vw,14px);
+    line-height:1.2;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  #myTable th{
+    font-size:clamp(9px,.68vw,14px);
+    font-weight:800;
+  }
+
+  #myTable td:first-child{
+    font-weight:700;
+  }
+
+  .insight-section{
+    position:sticky;
+    top:clamp(95px,7.5vw,145px);
+    max-height:calc(100vh - clamp(120px,9vw,170px));
+    overflow:auto;
+    padding-right:2px;
+    scrollbar-width:thin;
+  }
+
+  .insight-head{
+    min-height:clamp(28px,2vw,38px);
+    margin-bottom:clamp(6px,.55vw,10px);
+  }
+
+  .desktop-rank-panel{
+    padding:clamp(10px,.8vw,16px);
+    border-radius:var(--desktop-radius);
+    border:1px solid #e4e9f2;
+    box-shadow:0 8px 20px rgba(15,23,42,.045);
+  }
+
+  .desktop-rank-panel h3{
+    font-size:clamp(12px,.78vw,16px);
+    margin:0 0 clamp(8px,.55vw,12px);
+  }
+
+  .desktop-rank-panel .card{
+    padding:clamp(8px,.55vw,11px);
+    margin-bottom:clamp(5px,.4vw,8px);
+    border-radius:clamp(8px,.55vw,12px);
+    font-size:clamp(10px,.62vw,13px);
+    line-height:1.45;
+  }
+
+  .employee-section{
+    margin-top:var(--desktop-gap);
+  }
+
+  .employee-grid{
+    width:100%;
+    grid-template-columns:repeat(auto-fit,minmax(clamp(250px,16vw,340px),1fr));
+    gap:clamp(8px,.7vw,14px);
+  }
+
+  .employee-card{
+    min-width:0;
+    padding:clamp(10px,.75vw,15px);
+    border-radius:clamp(11px,.65vw,15px);
+  }
+
+  .emp-name{
+    font-size:clamp(11px,.72vw,15px);
+  }
+
+  .emp-huyen{
+    font-size:clamp(9px,.6vw,12px);
+  }
+
+  .money{
+    font-size:clamp(16px,1.05vw,21px);
+  }
+
+  .mini div{
+    font-size:clamp(9px,.55vw,11px);
+    padding:clamp(6px,.45vw,9px);
+  }
+
+  .mini b{
+    font-size:clamp(10px,.62vw,13px);
+  }
+
+  .chat-box{
+    width:clamp(360px,24vw,500px);
+    height:clamp(500px,62vh,700px);
+    right:clamp(18px,1.5vw,30px);
+    bottom:clamp(78px,5vw,96px);
+  }
+
+  .chat-box.max{
+    width:calc(100vw - clamp(30px,3vw,60px));
+    height:calc(100vh - clamp(30px,3vw,60px));
+    right:clamp(15px,1.5vw,30px);
+    bottom:clamp(15px,1.5vw,30px);
+  }
+
+  .chat-launcher{
+    right:clamp(18px,1.5vw,30px);
+    bottom:clamp(18px,1.5vw,30px);
+    width:clamp(48px,3vw,62px);
+    height:clamp(48px,3vw,62px);
   }
 }
+@media(max-width:800px){
+  .desktop-main-grid{
+    display:block;
+  }
+  .insight-section{
+    position:static;
+    max-height:none;
+    overflow:visible;
+  }
+  .section-heading-row,.insight-head{
+    align-items:flex-start;
+  }
+  .employee-section{margin-top:10px}
+}
+
 </style>
 </head>
-
 <body>
-
-<div class="header">
-
-  <div class="header-top">
-    <h2>📊 KPI Khoán Vật Tư</h2>
-    <button onclick="reloadPage()" class="reload-btn">🔄</button>
+<div id="loadingOverlay">
+  <div class="loader-box">
+    <div class="spinner"></div>
+    <div class="loader-title" id="loadingTitle">Đang tải KPI...</div>
+    <div class="loader-sub" id="loadingSub">Đang kết nối dữ liệu, vui lòng chờ</div>
+    <button id="retryBtn" class="retry-btn" style="display:none" onclick="load()">🔄 Tải lại</button>
   </div>
-  <div id="logtime" style="font-size:12px;color:#666;margin:8px 0 10px"></div>
-  <input id="nv" placeholder="Tìm nhân viên..." onkeyup="filter()"><br>
-  <input id="huyen" placeholder="Tìm huyện..." onkeyup="filter()">
-  <input type="checkbox" id="badCheck" onchange="onlyBad(this.checked)">
-  <label for="badCheck" class="checkbox-btn">⚠️ NV kém</label>
-
 </div>
 
-<div id="tableSection">
-  <h3>📊 Bảng huyện</h3>
-<div class="table-wrap">
-  <table id="myTable"></table>
-</div>
+<div class="app">
+  <div class="header">
+    <div class="hero">
+      <div><h1>📊 KPI Khoán Vật Tư</h1><p>Dashboard theo dõi huyện và nhân viên • Phân tích trực tiếp từ dữ liệu hiện tại</p></div>
+      <button onclick="reloadPage()" class="reload-btn" title="Tải lại">↻</button>
+    </div>
+    <div class="toolbar">
+      <div class="search"><input id="nv" placeholder="🔎 Tìm nhân viên..." oninput="applyFilter()"></div>
+      <div class="search"><input id="huyen" placeholder="📍 Tìm huyện..." oninput="applyFilter()"></div>
+    </div>
+    <div id="logtime" class="logtime"></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="label">Tổng nhân viên</div><div class="value" id="stNV">0</div></div>
+    <div class="stat"><div class="label">Số huyện</div><div class="value" id="stHuyen">0</div></div>
+    <div class="stat"><div class="label">Tổng thưởng/phạt</div><div class="value" id="stTong">0</div></div>
+    <div class="stat"><div class="label">NV bị phạt</div><div class="value" id="stBad">0</div></div>
+  </div>
+
+  <div class="desktop-main-grid">
+    <section id="tableSection" class="section table-section">
+      <div class="section-heading-row">
+        <h2 class="section-title">📊 Tổng hợp theo huyện</h2>
+        <span class="section-note">Theo dõi toàn bộ chỉ tiêu</span>
+      </div>
+      <div class="table-wrap"><table id="myTable"></table></div>
+    </section>
+
+    <section id="topSection" class="section insight-section">
+      <div class="insight-head">
+        <div>
+          <h2 class="section-title">📈 Phân tích nhanh</h2>
+          <span class="section-note">Xếp hạng hiệu suất</span>
+        </div>
+        <span class="live-dot">● Live</span>
+      </div>
+      <div class="rank-panel desktop-rank-panel">
+        <h3>🏆 Top 10 nhân viên tốt</h3>
+        <div id="top"></div>
+      </div>
+      <div class="rank-panel desktop-rank-panel">
+        <h3>⚠️ Top 10 nhân viên cần chú ý</h3>
+        <div id="worst"></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="section employee-section">
+    <h2 class="section-title">👥 Danh sách nhân viên <span id="listCount" class="neutral"></span></h2>
+    <div id="list" class="employee-grid"></div>
+  </section>
 </div>
 
-<div id="topSection">
-  <h3>🏆 Top 10 NV tốt</h3>
-  <div id="top"></div>
+<button class="chat-launcher" onclick="toggleChat()" title="Mở phân tích">💬</button>
+<div id="chatBox" class="chat-box">
+  <div class="chat-head">
+    <div><b>🤖 Phân tích KPI</b><small>Phân tích trực tiếp dữ liệu đang hiển thị</small></div>
+    <div class="chat-actions">
+      <button class="icon-btn" onclick="toggleMaxChat()" title="Phóng to">⛶</button>
+      <button class="icon-btn" onclick="toggleChat()" title="Đóng">×</button>
+    </div>
+  </div>
+  <div id="chatMessages" class="chat-messages">
+    <div class="msg bot">Tôi có thể phân tích dữ liệu KPI hiện tại.
 
-  <h3>⚠️ Top 10 NV kém</h3>
-  <div id="worst"></div>
+Bạn có thể hỏi:
+• Nhân viên nào kém nhất?
+• Ai có thưởng cao nhất?
+• Huyện nào có kết quả tốt nhất?
+• Phân tích TKM và XLSC
+• Phân tích tên một nhân viên cụ thể</div>
+  </div>
+  <div class="quick">
+    <button class="quick-btn help-btn" onclick="askQuick('help')">❓ Help</button>
+    <button class="quick-btn" onclick="askQuick('Nhân viên nào kém nhất?')">NV kém nhất</button>
+    <button class="quick-btn" onclick="askQuick('Ai có thưởng cao nhất?')">NV tốt nhất</button>
+    <button class="quick-btn" onclick="askQuick('Huyện nào tốt nhất?')">Huyện tốt nhất</button>
+    <button class="quick-btn" onclick="askQuick('Tóm tắt tình hình')">Tóm tắt</button>
+  </div>
+  <div class="chat-input"><input id="chatInput" placeholder="Nhập câu hỏi phân tích..." onkeydown="if(event.key==='Enter')sendChat()"><button class="send-btn" onclick="sendChat()">➤</button></div>
 </div>
-
-<h3>📋 Danh sách nhân viên</h3>
-<div id="list"></div>
 
 <script>
+const API="https://script.google.com/macros/s/AKfycby2YYZVK6r1QXP_TgnB0i99prYJmEG8cJwGDQILU1tph0i38b80BhN6Oa9bT5IMuQft0A/exec?sheet=Khoan vt";
+let tableData=[], nvData=[];
 
-const API = "https://script.google.com/macros/s/AKfycby2YYZVK6r1QXP_TgnB0i99prYJmEG8cJwGDQILU1tph0i38b80BhN6Oa9bT5IMuQft0A/exec?sheet=Khoan vt";
+const num=v=>Number(v||0).toLocaleString("vi-VN");
+const totalMoney=r=>Number(r.t_p||0);
+const norm=s=>(s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 
-const LABEL = {
-  dm_tkm: "Định mức TKM",
-  dm_xlsc: "Định mức XLSC",
-  th_tkm: "Thực hiện TKM",
-  th_sc: "Thực hiện XLSC",
-  t_dm: "Tổng định mức",
-  t_th: "Tổng thực hiện",
-  cl: "Chênh lệch",
-  tl: "Tỉ lệ",
-  t_p: "Thưởng/Phạt"
-};
-
-let tableData = [];
-let nvData = [];
-let showBadOnly = false;
-
-function num(v){ return Number(v||0).toLocaleString("vi-VN"); }
-
-// ===== LOAD =====
-function load(){
-  fetch(API)
-    .then(r => r.json())
-    .then(res => {
-
-      let raw = res.data || [];
-
-      let tg = raw[0]?.tg_update || "";
-      if(tg){
-        let d = new Date(tg);
-        tg = d.toLocaleString("vi-VN");
-      }
-
-      document.getElementById("logtime").innerText =
-        tg ? "🕒 Thời gian lấy báo cáo: " + tg : "";
-
-      // ===== TABLE =====
-      tableData = raw.slice(0,29).map(r=>{
-        let tp = Number(r.t_p_tkm||0) + Number(r.t_p_sc||0);
-
-        return {
-          huyen: r.huyen,
-          dm_tkm: Number(r.dm_tkm||0),
-          th_tkm: Number(r.th_tkm||0),
-          tl_tkm: Number(r.tl_tkm||0),
-
-          dm_sc: Number(r.dm_xlsc||0),
-          th_sc: Number(r.th_sc||0),
-          tl_sc: Number(r.tl_sc||0),
-
-          t_p: tp
-        };
-      });
-
-      // ===== NHÂN VIÊN =====
-      nvData = raw.slice(29).map(r=>({
-        nhan_vien: r["nhan vien"] || r.nhan_vien,
-        huyen: r.huyen,
-
-        dm_tkm: Number(r.dm_tkm||0),
-        dm_xlsc: Number(r.dm_xlsc||0),
-        th_tkm: Number(r.th_tkm||0),
-        th_sc: Number(r.th_sc||0),
-
-        t_dm: Number(r.t_dm||0),
-        t_th: Number(r.t_th||0),
-
-        cl: Number(r.cl||0),
-        tl: Number(r.tl||0),
-
-        t_p_tkm: Number(r.t_p_tkm||0),
-        t_p_sc: Number(r.t_p_sc||0),
-
-        t_p: Number(r.t_p_tkm||0) + Number(r.t_p_sc||0)
-      }));
-
-      applyFilter();
-
-    })
-    .catch(err => {
-      console.log("API lỗi", err);
-      document.getElementById("logtime").innerText = "⚠️ Lỗi tải dữ liệu";
-    });
+function showLoading(title="Đang tải KPI...",sub="Đang kết nối dữ liệu, vui lòng chờ"){
+ document.getElementById("loadingTitle").innerText=title;
+ document.getElementById("loadingSub").innerText=sub;
+ document.getElementById("retryBtn").style.display="none";
+ document.getElementById("loadingOverlay").style.display="flex";
+}
+function hideLoading(){document.getElementById("loadingOverlay").style.display="none"}
+function showLoadError(){
+ document.getElementById("loadingTitle").innerText="Không tải được dữ liệu";
+ document.getElementById("loadingSub").innerText="Kiểm tra kết nối hoặc thử tải lại.";
+ document.getElementById("retryBtn").style.display="inline-block";
 }
 
-// ===== KPI FAIL =====
-function getStatus(r){
-  let bad = [];
-
-  if(r.tl < 0) bad.push(`Tỉ lệ âm (${r.tl}%)`);
-  if(r.cl < 0) bad.push(`Chênh lệch âm (${num(r.cl)})`);
-
-  return bad;
+async function load(){
+ showLoading();
+ try{
+   const controller=new AbortController();
+   const timer=setTimeout(()=>controller.abort(),30000);
+   const r=await fetch(API,{signal:controller.signal,cache:"no-store"});
+   clearTimeout(timer);
+   if(!r.ok) throw new Error("HTTP "+r.status);
+   const res=await r.json();
+   const raw=Array.isArray(res.data)?res.data:[];
+   if(!raw.length) throw new Error("Không có dữ liệu");
+   let tg=raw[0]?.tg_update||"";
+   if(tg){try{tg=new Date(tg).toLocaleString("vi-VN")}catch(e){}}
+   document.getElementById("logtime").innerText=tg?"🕒 Thời gian lấy báo cáo: "+tg:"";
+   tableData=raw.slice(0,29).map(r=>({
+     huyen:r.huyen||"",
+     dm_tkm:Number(r.dm_tkm||0), th_tkm:Number(r.th_tkm||0), tl_tkm:Number(r.tl_tkm||0),
+     dm_sc:Number(r.dm_xlsc||0), th_sc:Number(r.th_sc||0), tl_sc:Number(r.tl_sc||0),
+     t_p:Number(r.t_p_tkm||0)+Number(r.t_p_sc||0)
+   }));
+   nvData=raw.slice(29).map(r=>({
+     nhan_vien:r["nhan vien"]||r.nhan_vien||"",
+     huyen:r.huyen||"",
+     dm_tkm:Number(r.dm_tkm||0), dm_xlsc:Number(r.dm_xlsc||0),
+     th_tkm:Number(r.th_tkm||0), th_sc:Number(r.th_sc||0),
+     t_dm:Number(r.t_dm||0), t_th:Number(r.t_th||0),
+     cl:Number(r.cl||0), tl:Number(r.tl||0),
+     t_p_tkm:Number(r.t_p_tkm||0), t_p_sc:Number(r.t_p_sc||0),
+     t_p:Number(r.t_p_tkm||0)+Number(r.t_p_sc||0)
+   }));
+   updateStats(); applyFilter(); hideLoading();
+ }catch(err){
+   console.error("API lỗi:",err);
+   document.getElementById("logtime").innerText="⚠️ Lỗi tải dữ liệu: "+(err.name==="AbortError"?"Quá thời gian chờ":err.message);
+   showLoadError();
+ }
 }
 
-// ===== FILTER =====
-function filter(){ applyFilter(); }
+function updateStats(){
+ const tong=nvData.reduce((s,r)=>s+r.t_p,0);
+ document.getElementById("stNV").innerText=num(nvData.length);
+ document.getElementById("stHuyen").innerText=num(new Set(nvData.map(r=>r.huyen).filter(Boolean)).size);
+ document.getElementById("stTong").innerText=(tong<0?"-":"")+num(Math.abs(tong));
+ document.getElementById("stTong").className="value "+(tong<0?"phat":"ok");
+ document.getElementById("stBad").innerText=num(nvData.filter(r=>r.t_p<0).length);
+ document.getElementById("stBad").className="value phat";
+}
+function getColorClass(v){return v>0?"ok":v<0?"phat":"neutral"}
 
 function applyFilter(){
-
-  let nv = document.getElementById("nv").value.toLowerCase();
-  let h = document.getElementById("huyen").value.toLowerCase();
-
-  let isSearching = nv !== "" || h !== "";
-
-  // 🔥 Ẩn/hiện TOP
-  document.getElementById("topSection").style.display =
-    isSearching ? "none" : "block";
-  let isSearchNV = nv !== "";
-
-  // 🔥 Ẩn bảng huyện khi tìm nhân viên
-  document.getElementById("tableSection").style.display =
-    isSearchNV ? "none" : "block";
-
-  let tableF = tableData.filter(r =>
-    (r.huyen||"").toLowerCase().includes(h)
-  );
-
-  let nvF = nvData.filter(r =>
-    (r.nhan_vien||"").toLowerCase().includes(nv) &&
-    (r.huyen||"").toLowerCase().includes(h)
-  );
-
-  renderTable(tableF);
-  renderTop(nvData);     // 🔥 luôn dùng full data
-  renderWorst(nvData);   // 🔥 luôn dùng full data
-  renderList(nvF);
+ const nv=norm(document.getElementById("nv").value), h=norm(document.getElementById("huyen").value);
+ const searching=nv!==""||h!=="";
+ document.getElementById("topSection").style.display=searching?"none":"block";
+ document.getElementById("tableSection").style.display=nv!==""?"none":"block";
+ const tableF=tableData.filter(r=>norm(r.huyen).includes(h));
+ const nvF=nvData.filter(r=>norm(r.nhan_vien).includes(nv)&&norm(r.huyen).includes(h));
+ renderTable(tableF); renderTop(nvData); renderWorst(nvData); renderList(nvF);
 }
-// ===== TÔ MÀU NẾU ÂM =====
-function getColorClass(v){
-  return v > 0 ? "ok" : v < 0 ? "phat" : "";
-}
-// ===== TABLE =====
 function renderTable(data){
-
-  let html = "";
-
-  html += `<tr>
-    <th rowspan="2">Huyện</th>
-    <th colspan="3">📦 TKM</th>
-    <th colspan="3">🔧 SC</th>
-    <th rowspan="2">Tổng Thưởng/Phạt</th>
-  </tr>
-
-  <tr>
-    <th>Định mức</th>
-    <th>Thực hiện</th>
-    <th>Tỉ lệ</th>
-
-    <th>Định mức</th>
-    <th>Thực hiện</th>
-    <th>Tỉ lệ</th>
-  </tr>`;
-
-data.forEach(r=>{
-  let color = r.t_p >= 0 ? "ok" : "phat";
-
-  html += `<tr>
-    <td>${r.huyen}</td>
-
-    <td>${num(r.dm_tkm)}</td>
-
-    <td class="${r.th_tkm < r.dm_tkm ? 'fail' : ''}">
-      ${num(r.th_tkm)}
-    </td>
-
-    <td class="${getColorClass(r.tl_tkm)}">
-      ${r.tl_tkm}%
-    </td>
-
-    <td>${num(r.dm_sc)}</td>
-
-    <td class="${r.th_sc < r.dm_sc ? 'fail' : ''}">
-      ${num(r.th_sc)}
-    </td>
-
-    <td class="${getColorClass(r.tl_sc)}">
-      ${r.tl_sc}%
-    </td>
-
-    <td class="${color}">
-      ${num(r.t_p)}
-    </td>
-  </tr>`;
-});
-
-  document.getElementById("myTable").innerHTML = html;
+ let html=`<colgroup>
+   <col style="width:16%">
+   <col style="width:12%">
+   <col style="width:12%">
+   <col style="width:8%">
+   <col style="width:12%">
+   <col style="width:12%">
+   <col style="width:8%">
+   <col style="width:20%">
+ </colgroup>
+ <tr><th rowspan="2">Huyện</th><th colspan="3">📦 TKM</th><th colspan="3">🔧 XLSC</th><th rowspan="2">Tổng thưởng/phạt</th></tr>
+ <tr><th>Định mức</th><th>Thực hiện</th><th>Tỉ lệ</th><th>Định mức</th><th>Thực hiện</th><th>Tỉ lệ</th></tr>`;
+ if(!data.length) html+=`<tr><td colspan="8">Không có dữ liệu phù hợp</td></tr>`;
+ data.forEach(r=>html+=`<tr>
+ <td>${esc(r.huyen)}</td><td>${num(r.dm_tkm)}</td><td class="${r.th_tkm<r.dm_tkm?'fail':''}">${num(r.th_tkm)}</td><td class="${getColorClass(r.tl_tkm)}">${r.tl_tkm}%</td>
+ <td>${num(r.dm_sc)}</td><td class="${r.th_sc<r.dm_sc?'fail':''}">${num(r.th_sc)}</td><td class="${getColorClass(r.tl_sc)}">${r.tl_sc}%</td><td class="${getColorClass(r.t_p)}">${num(r.t_p)}</td></tr>`);
+ document.getElementById("myTable").innerHTML=html;
 }
-
-// ===== TOP =====
 function renderTop(data){
-  let s = [...data].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
-
-  let html="";
-  s.forEach((r,i)=>{
-    html += `<div class="card top">
-      🏆 ${i+1}. ${r.nhan_vien} - ${r.huyen} (${num(r.t_p)})
-    </div>`;
-  });
-
-  document.getElementById("top").innerHTML = html;
+ const s=[...data].sort((a,b)=>b.t_p-a.t_p).slice(0,10);
+ document.getElementById("top").innerHTML=s.map((r,i)=>`<div class="card top">🏆 <b>${i+1}. ${esc(r.nhan_vien)}</b><br><span class="emp-huyen">${esc(r.huyen)}</span> · <span class="${getColorClass(r.t_p)}">${num(r.t_p)}</span></div>`).join("")||`<div class="empty">Chưa có dữ liệu</div>`;
 }
-
-// ===== WORST =====
 function renderWorst(data){
-  let s = [...data].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
-
-  let html="";
-  s.forEach((r,i)=>{
-    html += `<div class="card worst">
-      ❌ ${i+1}. ${r.nhan_vien} - ${r.huyen} (${num(r.t_p)})
-    </div>`;
-  });
-
-  document.getElementById("worst").innerHTML = html;
+ const s=[...data].sort((a,b)=>a.t_p-b.t_p).slice(0,10);
+ document.getElementById("worst").innerHTML=s.map((r,i)=>`<div class="card worst">⚠️ <b>${i+1}. ${esc(r.nhan_vien)}</b><br><span class="emp-huyen">${esc(r.huyen)}</span> · <span class="${getColorClass(r.t_p)}">${num(r.t_p)}</span></div>`).join("")||`<div class="empty">Chưa có dữ liệu</div>`;
 }
-
-// ===== LIST (Danh sách nhân viên) =====
 function renderList(data){
-
-  let html = "";
-
-  data.forEach(r=>{
-
-    if(showBadOnly && r.t_p >= 0) return;
-
-  let tkmColor = getColorClass(r.t_p_tkm);
-  let scColor  = getColorClass(r.t_p_sc);
-  
-  let tong = r.t_p_tkm + r.t_p_sc;
-  let tongColor = getColorClass(tong);
-
-    html += `
-    <div class="card">
-
-      <b>👤 ${r.nhan_vien} - ${r.huyen}</b><br>
-
-      💰 <b>Thưởng/Phạt:</b> 
-      <span class="${tongColor}">${num(tong)}</span><br><br>
-
-      📦 <b>TKM:</b><br>
-      - Định mức: ${num(r.dm_tkm)}<br>
-      - Thực hiện: ${num(r.th_tkm)}<br>
-      - Thưởng/Phạt: 
-        <span class="${tkmColor}">${num(r.t_p_tkm)}</span><br><br>
-
-      🔧 <b>XLSC:</b><br>
-      - Định mức: ${num(r.dm_xlsc)}<br>
-      - Thực hiện: ${num(r.th_sc)}<br>
-      - Thưởng/Phạt: 
-        <span class="${scColor}">${num(r.t_p_sc)}</span><br><br>
-
-      📊 <b>Tổng:</b> 
-      <span class="${tongColor}">${num(tong)}</span>
-
-    </div>`;
-  });
-
-  document.getElementById("list").innerHTML = html;
+ const filtered=data;
+ document.getElementById("listCount").innerText=`(${filtered.length})`;
+ document.getElementById("list").innerHTML=filtered.length?filtered.map(r=>`<div class="card employee-card">
+ <div class="emp-name">👤 ${esc(r.nhan_vien)}</div><div class="emp-huyen">📍 ${esc(r.huyen)}</div>
+ <div class="money ${getColorClass(r.t_p)}">${num(r.t_p)}</div>
+ <div class="mini"><div>📦 TKM<b>${num(r.th_tkm)} / ${num(r.dm_tkm)}</b><span class="${getColorClass(r.t_p_tkm)}">${num(r.t_p_tkm)}</span></div>
+ <div>🔧 XLSC<b>${num(r.th_sc)} / ${num(r.dm_xlsc)}</b><span class="${getColorClass(r.t_p_sc)}">${num(r.t_p_sc)}</span></div></div>
+ </div>`).join(""):`<div class="empty">Không tìm thấy nhân viên phù hợp</div>`;
 }
+function reloadPage(){showLoading("Đang tải lại trang...","Dữ liệu sẽ được làm mới");setTimeout(()=>location.reload(),250)}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 
-function onlyBad(v){
-  showBadOnly = v;
-  applyFilter();
+/* ================= CHAT PHÂN TÍCH ================= */
+function toggleChat(){document.getElementById("chatBox").classList.toggle("open")}
+function toggleMaxChat(){document.getElementById("chatBox").classList.toggle("max")}
+function addMsg(type,text){
+ const d=document.createElement("div");d.className="msg "+type;d.textContent=text;
+ const box=document.getElementById("chatMessages");box.appendChild(d);box.scrollTop=box.scrollHeight;
 }
-function reloadPage(){
-  // 🌫️ làm mờ màn hình
-  document.body.style.opacity = 0.3;
-  document.body.style.transition = "0.3s";
+function askQuick(q){document.getElementById("chatInput").value=q;sendChat()}
+function sendChat(){
+ const inp=document.getElementById("chatInput"),q=inp.value.trim();if(!q)return;
+ addMsg("user",q);inp.value="";
+ setTimeout(()=>addMsg("bot",analyzeQuestion(q)),120);
+}
+function analyzeQuestion(q){
+ if(!nvData.length)return "Dữ liệu chưa tải xong. Hãy tải lại dashboard trước.";
+ const n=norm(q);
+ const sorted=[...nvData].sort((a,b)=>a.t_p-b.t_p);
+ const best=[...nvData].sort((a,b)=>b.t_p-a.t_p)[0], worst=sorted[0];
 
-  // ⏳ delay rồi reload thật
-  setTimeout(()=>{
-    location.reload();
-  },300);
+ if(/^(help|tro giup|giup do|huong dan|lenh|cau lenh|\?)$/.test(n) || /\bhelp\b/.test(n))
+   return `HƯỚNG DẪN BOT PHÂN TÍCH
+
+Bạn có thể dùng các câu lệnh sau:
+
+1. Tóm tắt tình hình
+   → Tổng quan toàn bộ KPI hiện tại.
+
+2. Nhân viên nào kém nhất?
+   → Tìm nhân viên có tổng thưởng/phạt thấp nhất.
+
+3. Ai có thưởng cao nhất?
+   → Tìm nhân viên có kết quả cao nhất.
+
+4. Huyện nào tốt nhất?
+   → Tìm huyện có tổng kết quả cao nhất.
+
+5. Huyện nào kém nhất?
+   → Tìm huyện cần chú ý nhất.
+
+6. So sánh TKM và XLSC
+   → So sánh tổng thưởng/phạt của 2 mảng.
+
+7. Top 5
+   → Xem 5 nhân viên có kết quả cao nhất.
+
+8. Nhập tên nhân viên
+   → Ví dụ: “Nguyễn Văn A”
+   Bot sẽ phân tích KPI của nhân viên đó.
+
+Mẹo: Bạn có thể gõ “help” bất cứ lúc nào để xem lại hướng dẫn.`;
+ const tong=nvData.reduce((s,r)=>s+r.t_p,0), bad=nvData.filter(r=>r.t_p<0);
+ const byHuyen={};
+ nvData.forEach(r=>{if(!byHuyen[r.huyen])byHuyen[r.huyen]=[];byHuyen[r.huyen].push(r)});
+ const hs=Object.entries(byHuyen).map(([h,arr])=>({h, tong:arr.reduce((s,r)=>s+r.t_p,0), avg:arr.reduce((s,r)=>s+r.t_p,0)/arr.length, bad:arr.filter(r=>r.t_p<0).length, count:arr.length})).sort((a,b)=>b.tong-a.tong);
+ if(/(tom tat|tinh hinh|tong quan|phan tich chung)/.test(n))
+   return `TÓM TẮT HIỆN TẠI\n• ${nvData.length} nhân viên, ${hs.length} huyện.\n• Tổng thưởng/phạt: ${num(tong)}.\n• ${bad.length} nhân viên đang bị phạt.\n• Tốt nhất: ${best.nhan_vien} (${best.huyen}) — ${num(best.t_p)}.\n• Cần chú ý nhất: ${worst.nhan_vien} (${worst.huyen}) — ${num(worst.t_p)}.`;
+ if(/(kem nhat|te nhat|bi phat nhieu|can chu y nhat|worst)/.test(n))
+   return `Nhân viên cần chú ý nhất là ${worst.nhan_vien} (${worst.huyen}) với thưởng/phạt ${num(worst.t_p)}. TKM: ${num(worst.t_p_tkm)}, XLSC: ${num(worst.t_p_sc)}.`;
+ if(/(tot nhat|cao nhat|thuong cao nhat|best)/.test(n)&&/(nhan vien|nv|ai|nguoi)/.test(n))
+   return `Nhân viên tốt nhất hiện tại là ${best.nhan_vien} (${best.huyen}) với tổng thưởng/phạt ${num(best.t_p)}.`;
+ if(/huyen/.test(n)&&/(tot nhat|cao nhat|best)/.test(n)){
+   const x=hs[0];return `Huyện có tổng kết quả cao nhất là ${x.h}: ${num(x.tong)} với ${x.count} nhân viên, trong đó ${x.bad} nhân viên bị phạt.`;
+ }
+ if(/huyen/.test(n)&&/(kem nhat|thap nhat|worst)/.test(n)){
+   const x=[...hs].sort((a,b)=>a.tong-b.tong)[0];return `Huyện cần chú ý nhất là ${x.h}: tổng ${num(x.tong)}, có ${x.bad}/${x.count} nhân viên bị phạt.`;
+ }
+ if(/tkm/.test(n)&&/xlsc|sc/.test(n)){
+   const tkm=nvData.reduce((s,r)=>s+r.t_p_tkm,0), sc=nvData.reduce((s,r)=>s+r.t_p_sc,0);
+   return `SO SÁNH TKM VÀ XLSC\n• TKM thưởng/phạt: ${num(tkm)}.\n• XLSC thưởng/phạt: ${num(sc)}.\n• Mảng ${tkm>=sc?"TKM":"XLSC"} đang có kết quả tốt hơn theo tổng thưởng/phạt.`;
+ }
+ const found=nvData.filter(r=>n.includes(norm(r.nhan_vien))||norm(r.nhan_vien).includes(n));
+ if(found.length===1){
+   const r=found[0];
+   return `PHÂN TÍCH ${r.nhan_vien}\n• Huyện: ${r.huyen}\n• Tổng thưởng/phạt: ${num(r.t_p)}\n• TKM: thực hiện ${num(r.th_tkm)} / định mức ${num(r.dm_tkm)}, thưởng/phạt ${num(r.t_p_tkm)}\n• XLSC: thực hiện ${num(r.th_sc)} / định mức ${num(r.dm_xlsc)}, thưởng/phạt ${num(r.t_p_sc)}\n• Tỉ lệ tổng: ${r.tl}% | Chênh lệch: ${num(r.cl)}.`;
+ }
+ if(/top|xep hang/.test(n)){
+   const top=[...nvData].sort((a,b)=>b.t_p-a.t_p).slice(0,5);
+   return "TOP 5 HIỆN TẠI\n"+top.map((r,i)=>`${i+1}. ${r.nhan_vien} (${r.huyen}): ${num(r.t_p)}`).join("\n");
+ }
+ return "Tôi chưa nhận diện chính xác câu hỏi. Bạn có thể hỏi: “Ai kém nhất?”, “Ai tốt nhất?”, “Huyện nào tốt nhất?”, “So sánh TKM và XLSC”, “Tóm tắt tình hình”, hoặc nhập tên một nhân viên.";
 }
 load();
-
 </script>
-
 </body>
 </html>
