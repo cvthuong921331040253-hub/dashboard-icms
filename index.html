@@ -1439,6 +1439,231 @@ body{
   }
 }
 
+
+/* ===== BẢN 15: MOBILE 2x2 + CỐ ĐỊNH HEADER ===== */
+@media(max-width:700px){
+  .header-title > div:last-child,
+  .header-controls-equal{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:6px!important;
+    width:100%!important;
+  }
+
+  .header-title > div:last-child > .switch-btn,
+  .header-controls-equal > .switch-btn,
+  .header-controls-equal > .kpi-lookup-btn{
+    width:100%!important;
+    min-width:0!important;
+    min-height:38px!important;
+    padding:7px 5px!important;
+    font-size:10px!important;
+    line-height:1.15!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    border-radius:9px!important;
+  }
+
+  .header-controls-equal .kpi-lookup-row{
+    display:contents!important;
+  }
+
+  /* Cố định phần từ banner/header/KPI kém trở lên khi cuộn */
+  .marquee-banner{
+    position:sticky!important;
+    top:0!important;
+    z-index:7000!important;
+    margin-bottom:0!important;
+  }
+
+  .header-fixed{
+    position:sticky!important;
+    top:33px!important;
+    z-index:6900!important;
+    width:100%!important;
+    margin-top:0!important;
+    margin-bottom:9px!important;
+    padding:8px 7px 9px!important;
+    border-radius:0 0 12px 12px!important;
+    background:rgba(244,247,251,.97)!important;
+    backdrop-filter:blur(12px)!important;
+    box-shadow:0 4px 14px rgba(15,23,42,.08)!important;
+  }
+
+  .header-filter{
+    margin-top:7px!important;
+    gap:6px!important;
+  }
+
+  .header-filter input{
+    height:35px!important;
+    font-size:12px!important;
+  }
+
+  .checkbox-btn{
+    height:35px!important;
+    width:100%!important;
+    justify-content:center!important;
+    font-size:11px!important;
+  }
+
+  #sectionTable{
+    margin-top:4px!important;
+  }
+
+  h3{
+    margin:8px 2px 6px!important;
+  }
+}
+
+@media(max-width:420px){
+  .header-title > div:last-child,
+  .header-controls-equal{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:5px!important;
+  }
+
+  .header-title > div:last-child > .switch-btn,
+  .header-controls-equal > .switch-btn,
+  .header-controls-equal > .kpi-lookup-btn{
+    min-height:36px!important;
+    font-size:9px!important;
+    padding:6px 3px!important;
+  }
+
+  .header-fixed{
+    top:31px!important;
+  }
+}
+
+
+
+
+/* ===== MOBILE: CỐ ĐỊNH TỪ BANNER + KPI CĐBR + 4 NÚT + TÌM KIẾM + KPI KÉM ===== */
+@media(max-width:700px){
+
+  :root{
+    --mobile-banner-h:0px;
+    --mobile-header-h:0px;
+    --mobile-fixed-total:0px;
+  }
+
+  /* Banner cố định tuyệt đối ở đỉnh */
+  body > .marquee-banner{
+    position:fixed!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    margin:0!important;
+    z-index:10000!important;
+  }
+
+  /* Khối từ KPI CĐBR tới KPI kém cố định ngay dưới banner */
+  #kpiUI > .header-fixed{
+    position:fixed!important;
+    top:var(--mobile-banner-h)!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    z-index:9999!important;
+    padding:8px 7px 9px!important;
+    background:rgba(244,247,251,.98)!important;
+    backdrop-filter:blur(12px)!important;
+    -webkit-backdrop-filter:blur(12px)!important;
+    box-shadow:0 4px 16px rgba(15,23,42,.10)!important;
+  }
+
+  /* Nội dung không sticky từng phần; chỉ sticky bằng cả header-fixed */
+  #kpiUI > .header-fixed .header-title,
+  #kpiUI > .header-fixed .header-filter,
+  #kpiUI > .header-fixed .header-controls-equal{
+    position:static!important;
+  }
+
+  /* Đẩy phần bảng xuống đúng bằng chiều cao vùng cố định */
+  #kpiUI > #sectionTable{
+    padding-top:calc(var(--mobile-fixed-total) + 6px)!important;
+  }
+
+  /* Các section phía dưới vẫn bình thường */
+  #kpiUI > #sectionWorstKPI,
+  #kpiUI > #badHuyen,
+  #kpiUI > #sectionTop,
+  #kpiUI > #sectionWorst,
+  #kpiUI > #data{
+    position:relative!important;
+  }
+
+  /* 4 ô = 2 x 2 trên mobile */
+  .header-controls-equal{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:6px!important;
+    width:100%!important;
+  }
+
+  .header-controls-equal > .switch-btn,
+  .header-controls-equal > .kpi-lookup-btn{
+    width:100%!important;
+    min-width:0!important;
+    min-height:38px!important;
+    padding:7px 5px!important;
+    font-size:10px!important;
+    line-height:1.15!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    border-radius:9px!important;
+  }
+
+  /* 2 ô tìm kiếm cùng khối */
+  .header-filter{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:6px!important;
+    margin-top:7px!important;
+  }
+
+  .header-filter br{display:none!important}
+
+  .header-filter input{
+    width:100%!important;
+    min-width:0!important;
+    height:35px!important;
+    margin:0!important;
+  }
+
+  .checkbox-btn{
+    width:100%!important;
+    min-height:35px!important;
+    justify-content:center!important;
+  }
+
+  /* Sau khi page animation xong, bỏ transform của #kpiUI.
+     Nếu còn transform thì fixed bên trong #kpiUI có thể bị giới hạn theo ancestor. */
+  body.mobile-fixed-ready #kpiUI{
+    transform:none!important;
+    animation:none!important;
+    will-change:auto!important;
+  }
+}
+
+@media(max-width:420px){
+  .header-controls-equal{
+    gap:5px!important;
+  }
+  .header-controls-equal > .switch-btn,
+  .header-controls-equal > .kpi-lookup-btn{
+    min-height:36px!important;
+    font-size:9px!important;
+    padding:6px 3px!important;
+  }
+}
+
 </style>
 </head>
 
@@ -1500,7 +1725,7 @@ body{
 📅 KPI tháng trước
 </button>
       <button class="kpi-lookup-btn" onclick="openKpiLookup('sc','Tra cứu KPI quá hạn SC','https://cvthuong921331040253-hub.github.io/dashboard-icms/scqh.html')">🔎 Tra cứu KPI quá hạn SC</button>
-      <button class="kpi-lookup-btn" onclick="openKpiLookup('tkm','Tra cứu KPI quá hạn TKM','https://cvthuong921331040253-hub.github.io/dashboard-icms/quahantkm.html')">🔎 Tra cứu KPI quá hạn TKM</button>
+      <button class="kpi-lookup-btn" onclick="openKpiLookup('tkm','Tra cứu KPI quá hạn TKM','https://cvthuong921331040253-hub.github.io/dashboard-icms/tkmqh.html')">🔎 Tra cứu KPI quá hạn TKM</button>
     </div>
 </div>
   <div class="header-filter">
@@ -2934,6 +3159,82 @@ function sendKpiBot(){
     <iframe id="kpiLookupFrame" class="kpi-lookup-frame" src="about:blank"></iframe>
   </div>
 </div>
+
+
+
+
+
+
+
+
+<script>
+(function(){
+  function updateMobileFixedHeader(){
+    if(window.innerWidth > 700) return;
+
+    const banner=document.querySelector("body > .marquee-banner");
+    const header=document.querySelector("#kpiUI > .header-fixed");
+    const section=document.querySelector("#kpiUI > #sectionTable");
+    if(!banner || !header || !section) return;
+
+    const bannerH=banner.getBoundingClientRect().height;
+    const headerH=header.getBoundingClientRect().height;
+    const total=bannerH+headerH;
+
+    document.documentElement.style.setProperty("--mobile-banner-h", bannerH+"px");
+    document.documentElement.style.setProperty("--mobile-header-h", headerH+"px");
+    document.documentElement.style.setProperty("--mobile-fixed-total", total+"px");
+
+    /* Tự tạo khoảng trống phía trên bảng khi header đã fixed */
+    section.style.paddingTop = (total + 6) + "px";
+  }
+
+  function enableMobileFixed(){
+    if(window.innerWidth <= 700){
+      document.body.classList.add("mobile-fixed-ready");
+      updateMobileFixedHeader();
+    }else{
+      document.body.classList.remove("mobile-fixed-ready");
+      const section=document.querySelector("#kpiUI > #sectionTable");
+      if(section) section.style.paddingTop="";
+    }
+  }
+
+  window.addEventListener("load",()=>{
+    updateMobileFixedHeader();
+    enableMobileFixed();
+
+    setTimeout(()=>{
+      enableMobileFixed();
+      updateMobileFixedHeader();
+    },700);
+
+    setTimeout(()=>{
+      enableMobileFixed();
+      updateMobileFixedHeader();
+    },1200);
+  });
+
+  window.addEventListener("resize",()=>{
+    updateMobileFixedHeader();
+    enableMobileFixed();
+  },{passive:true});
+
+  if(window.ResizeObserver){
+    window.addEventListener("load",()=>{
+      const banner=document.querySelector("body > .marquee-banner");
+      const header=document.querySelector("#kpiUI > .header-fixed");
+      if(!banner && !header) return;
+
+      const ro=new ResizeObserver(()=>{
+        updateMobileFixedHeader();
+      });
+      if(banner) ro.observe(banner);
+      if(header) ro.observe(header);
+    },{once:true});
+  }
+})();
+</script>
 
 </body>
 </html>
