@@ -1675,6 +1675,19 @@ body{
   width:100%;
 }
 
+
+.bot-inline-btn{
+  border:1px solid #cbdcf5;
+  background:#f4f8ff;
+  color:#2563eb;
+  border-radius:999px;
+  padding:4px 8px;
+  margin:3px 3px 0 0;
+  font-size:10px;
+  cursor:pointer;
+}
+.bot-inline-btn:hover{background:#e9f2ff}
+
 </style>
 </head>
 
@@ -1701,10 +1714,13 @@ body{
     <div class="bot-msg bot">Tôi có thể so sánh điểm KPI, số KPI đạt/không đạt và từng chỉ tiêu giữa tháng hiện tại và tháng trước.</div>
   </div>
   <div class="bot-quick">
+  <button onclick="askKpiBot('Phân tích KPI hiện tại độc lập')">📊 T hiện tại</button>
+  <button onclick="askKpiBot('Phân tích KPI tháng trước độc lập')">📅 T-1 độc lập</button>
+  <button onclick="askKpiBot('Đánh giá từng huyện')">🏢 Từng huyện</button>
   <button onclick="askKpiBot('So sánh Gia Lai')">🏠 Gia Lai</button>
-  <button onclick="askKpiBot('Huyện tồi')">🏢 5 huyện tồi</button>
-  <button onclick="askKpiBot('Top 10 nhân viên kém')">⚠️ Top 10 kém</button>
-  <button onclick="askKpiBot('Top 10 nhân viên tốt')">🏆 Top 10 tốt</button>
+  <button onclick="askKpiBot('Huyện tồi')">⚠️ Huyện tồi</button>
+  <button onclick="askKpiBot('Top 10 nhân viên kém')">⚠️ Top kém</button>
+  <button onclick="askKpiBot('Top 10 nhân viên tốt')">🏆 Top tốt</button>
   <button onclick="askKpiBot('20 chỉ tiêu KPI')">🎯 20 KPI</button>
   <button onclick="showKpiHelp()">❔ Help</button>
 </div>
@@ -1735,8 +1751,8 @@ body{
       <button onclick="openOldKPI()" class="switch-btn">
 📅 KPI tháng trước
 </button>
-      <button class="kpi-lookup-btn" onclick="openKpiLookup('sc','Tra cứu KPI quá hạn SC','https://cvthuong921331040253-hub.github.io/dashboard-icms/quahansc.html')">🔎 Tra cứu KPI quá hạn SC</button>
-      <button class="kpi-lookup-btn" onclick="openKpiLookup('tkm','Tra cứu KPI quá hạn TKM','https://cvthuong921331040253-hub.github.io/dashboard-icms/quahantkm.html')">🔎 Tra cứu KPI quá hạn TKM</button>
+      <button class="kpi-lookup-btn" onclick="openKpiLookup('sc','Tra cứu KPI quá hạn SC','https://cvthuong921331040253-hub.github.io/dashboard-icms/scqh.html')">🔎 Tra cứu KPI quá hạn SC</button>
+      <button class="kpi-lookup-btn" onclick="openKpiLookup('tkm','Tra cứu KPI quá hạn TKM','https://cvthuong921331040253-hub.github.io/dashboard-icms/tkmqh.html')">🔎 Tra cứu KPI quá hạn TKM</button>
     </div>
 </div>
   <div class="header-filter">
@@ -2172,9 +2188,10 @@ function filter(){
   applyFilter();
 }
 
-function updateMobileContentOffset(offsetData){
+function updateMobileContentOffset(mode){
   const data=document.getElementById("data");
   const sectionTable=document.getElementById("sectionTable");
+  const sectionWorstKPIEl=document.getElementById("sectionWorstKPI");
 
   if(window.innerWidth <= 700){
     const total=parseFloat(
@@ -2182,16 +2199,27 @@ function updateMobileContentOffset(offsetData){
         .getPropertyValue("--mobile-fixed-total")
     ) || 0;
 
+    // Tìm nhân viên: danh sách nhân viên nằm dưới header cố định.
     if(data){
-      data.style.paddingTop = offsetData ? (total + 8) + "px" : "";
+      data.style.paddingTop = mode === "employee" ? (total + 8) + "px" : "";
     }
 
+    // Bình thường / tìm huyện: bảng nằm dưới header cố định.
     if(sectionTable){
-      sectionTable.style.paddingTop = offsetData ? "" : (total + 6) + "px";
+      sectionTable.style.paddingTop =
+        (mode === "table") ? (total + 6) + "px" : "";
     }
+
+    // KPI KÉM: chính phần báo cáo KPI bắt đầu ngay dưới header cố định.
+    if(sectionWorstKPIEl){
+      sectionWorstKPIEl.style.paddingTop =
+        (mode === "bad") ? (total + 8) + "px" : "";
+    }
+
   }else{
     if(data) data.style.paddingTop="";
     if(sectionTable) sectionTable.style.paddingTop="";
+    if(sectionWorstKPIEl) sectionWorstKPIEl.style.paddingTop="";
   }
 }
 
@@ -2222,7 +2250,7 @@ function applyFilter(){
 
     // Tuyệt đối không cho KPI huyện đang tồi xuất hiện khi tìm nhân viên.
     setBadHuyenVisible(false);
-    updateMobileContentOffset(true);
+    updateMobileContentOffset("employee");
 
     const result = allData
       .filter(r => (r.nhan_vien || "").toLowerCase().includes(nv))
@@ -2244,7 +2272,7 @@ function applyFilter(){
   // -------------------------------------------------
   if(showBadOnly){
 
-    updateMobileContentOffset(false);
+    updateMobileContentOffset("bad");
 
     const base = isSearchHuyen
       ? allData.filter(r => (r.huyen || "").toLowerCase().includes(h))
@@ -2317,6 +2345,26 @@ function applyFilter(){
 function onlyBad(v){
   showBadOnly = v;
   applyFilter();
+
+  if(v && window.innerWidth <= 700){
+    requestAnimationFrame(()=>{
+      const total=parseFloat(
+        getComputedStyle(document.documentElement)
+          .getPropertyValue("--mobile-fixed-total")
+      ) || 0;
+
+      const section=document.getElementById("sectionWorstKPI");
+      if(section){
+        section.style.paddingTop=(total + 8) + "px";
+      }
+
+      // Đưa đầu phần báo cáo ra khỏi vùng header cố định.
+      window.scrollTo({
+        top: Math.max(0, section ? section.getBoundingClientRect().top + window.scrollY - total - 4 : window.scrollY),
+        behavior:"auto"
+      });
+    });
+  }
 }
 
 // ===== TOP =====
@@ -2997,6 +3045,364 @@ function renderAllDistrictComparison(currentDistricts,oldDistricts){
   return out;
 }
 
+
+function renderIndependentMonthReport(rows, title){
+  const validRows = rows || [];
+
+  // 20 KPI dùng target cố định, đúng bộ BOT_KPI_DEFS.
+  const stats = BOT_KPI_DEFS.map(([name,val,target,type])=>{
+    let values = validRows
+      .filter(r => r[val] !== undefined && r[val] !== null)
+      .map(r => botNum(r[val]));
+
+    const avg = values.length
+      ? values.reduce((a,b)=>a+b,0)/values.length
+      : 0;
+
+    const e = botTargetState(avg, target, type);
+
+    let badCount=0, goodCount=0, gapSum=0;
+    validRows.forEach(r=>{
+      if(r[val]===undefined || r[val]===null) return;
+      const one=botTargetState(r[val],target,type);
+      if(one.status==="bad"){
+        badCount++;
+        gapSum += Math.max(0, one.targetGapPct);
+      }else if(one.status==="good"){
+        goodCount++;
+      }
+    });
+
+    return {
+      name,val,target,type,avg,
+      status:e.status,
+      gap:e.targetGapPct,
+      badCount,goodCount,
+      badPct:values.length ? badCount/values.length*100 : 0,
+      avgBadGap:badCount ? gapSum/badCount : 0,
+      n:values.length
+    };
+  });
+
+  let out=`<b>${title}</b>`;
+  out += `<div class="bot-note">Đánh giá độc lập theo toàn bộ dữ liệu của tháng; không cần ghép với tháng còn lại.</div>`;
+
+  stats.forEach((x,i)=>{
+    const state = x.avg;
+    let sentence;
+    if(x.status==="bad"){
+      sentence=`<span class="bot-bad">tồi hơn Target ${fmt(Math.abs(x.gap))}%</span>`;
+    }else if(x.status==="good"){
+      sentence=`<span class="bot-good">tốt hơn Target ${fmt(Math.abs(x.gap))}%</span>`;
+    }else{
+      sentence=`đạt Target`;
+    }
+
+    out += `
+      <div class="bot-report">
+        <b>${i+1}. ${botEscape(x.name)}:</b>
+        TB ${fmt(x.avg)}% / ${fmt(x.target)}%
+        → ${sentence};
+        <span class="${x.badCount?'bot-bad':'bot-good'}">
+          ${x.badCount}/${x.n} NV tồi
+        </span>
+        ${x.badCount ? `, lệch xấu TB ${fmt(x.avgBadGap)}%` : ""}.
+      </div>`;
+  });
+
+  return out;
+}
+
+function renderDistrictIndependentReports(currentDistricts, oldDistricts){
+  const rows = currentDistricts || [];
+  let out = `<b>🏢 Đánh giá độc lập từng huyện - tháng hiện tại</b>`;
+  out += `<div class="bot-note">Mỗi huyện được đánh giá trực tiếp trên 20 KPI và Target cố định.</div>`;
+
+  const ranked = rows.map(r=>{
+    const m=botRowMetrics(r,null);
+    return {r,m};
+  }).sort((a,b)=>{
+    return (b.m.totalGap-a.m.totalGap) || (b.m.badCount-a.m.badCount);
+  });
+
+  ranked.forEach((x,i)=>{
+    const r=x.r, m=x.m;
+    const details=m.items
+      .filter(k=>k.currentState==="bad")
+      .sort((a,b)=>b.currentGap-a.currentGap)
+      .map(k=>`<b>${botEscape(k.name)}</b> (${fmt(k.current)}%/${fmt(k.target)}%/ tồi Target ${fmt(k.currentGap)}%)`)
+      .join(", ");
+
+    out += `
+      <div class="bot-report">
+        <b>${i+1}. ${botEscape(r.huyen||"-")}:</b>
+        <span class="${m.badCount?'bot-bad':'bot-good'}">Tồi ${m.badCount}/20 KPI</span>
+        ${details ? `bao gồm ${details}.` : `đạt 20/20 KPI.`}
+      </div>`;
+  });
+
+  return out;
+}
+
+
+function botKpiStatsForMonth(rows, districtRows, excludeGiaLai=true){
+  const employeeRows=rows||[];
+  const districts=(districtRows||[]).filter(r=>r && r.huyen && (!excludeGiaLai || botNormalize(r.huyen)!=="gialai"));
+
+  return BOT_KPI_DEFS.map(([name,val,target,type])=>{
+    const vals=employeeRows
+      .filter(r=>r[val]!==undefined && r[val]!==null)
+      .map(r=>botNum(r[val]));
+
+    const avg=vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
+    const avgState=botTargetState(avg,target,type);
+
+    let employeeBad=0;
+    employeeRows.forEach(r=>{
+      if(r[val]===undefined || r[val]===null) return;
+      if(botTargetState(r[val],target,type).status==="bad") employeeBad++;
+    });
+
+    let districtBad=0;
+    districts.forEach(r=>{
+      if(r[val]===undefined || r[val]===null) return;
+      if(botTargetState(r[val],target,type).status==="bad") districtBad++;
+    });
+
+    return {
+      name,val,target,type,
+      avg,
+      gap:avgState.targetGapPct,
+      avgStatus:avgState.status,
+      employeeBad,
+      employeeTotal:vals.length,
+      districtBad,
+      districtTotal:districts.length
+    };
+  });
+}
+
+function renderIndependentMonthReportDetailed(rows,title,districtRows){
+  const stats=botKpiStatsForMonth(rows,districtRows,true);
+
+  let out=`<b>${title}</b>`;
+  out+=`<div class="bot-note">Tính độc lập theo toàn bộ nhân viên của tháng; huyện tồi tính trên 13 huyện, loại dòng tổng hợp Gia Lai.</div>`;
+
+  stats.forEach((x,i)=>{
+    let targetText="";
+    if(x.gap>0){
+      targetText=`<span class="bot-bad">tồi hơn Target ${fmt(Math.abs(x.gap))}%</span>`;
+    }else if(x.gap<0){
+      targetText=`<span class="bot-good">tốt hơn Target ${fmt(Math.abs(x.gap))}%</span>`;
+    }else{
+      targetText=`đạt đúng Target`;
+    }
+
+    const employeePct=x.employeeTotal ? (x.employeeBad/x.employeeTotal*100) : 0;
+    const districtPct=x.districtTotal ? (x.districtBad/x.districtTotal*100) : 0;
+
+    out+=`
+      <div class="bot-report">
+        <b>- ${botEscape(x.name)}:</b>
+        ${fmt(x.avg)}% / ${fmt(x.target)}% → ${targetText}
+        có <b>${x.employeeBad}/${x.employeeTotal}</b> nhân viên tồi
+        và <b>${x.districtBad}/${x.districtTotal}</b> huyện tồi.
+        <div class="bot-note">
+          💡 <button class="bot-inline-btn" onclick="askKpiBot('Danh sách nhân viên tồi ${botEscape(x.name)} hiện tại')">Tra đủ ${x.employeeBad} nhân viên tồi</button>
+          <button class="bot-inline-btn" onclick="askKpiBot('Danh sách huyện tồi ${botEscape(x.name)} hiện tại')">Tra đủ ${x.districtBad} huyện tồi</button>
+        </div>
+      </div>`;
+  });
+
+  return out;
+}
+
+function getDistrictEmployees(rows,districtName){
+  const key=botNormalize(districtName);
+  return (rows||[]).filter(r=>botNormalize(r.huyen)===key);
+}
+
+
+function getScopeEmployees(rows,scopeName){
+  const key=botNormalize(scopeName);
+  if(key==="gialai"){
+    return [...(rows||[])];
+  }
+  return getDistrictEmployees(rows,scopeName);
+}
+
+function renderDistrictDetailAdvanced(name,cur,old,currentRows,oldRows){
+  if(!cur){
+    return `<b>🏢 ${botEscape(name)}</b><br>Không tìm thấy dữ liệu huyện hiện tại.`;
+  }
+
+  const m=botRowMetrics(cur,old);
+  const employees=getScopeEmployees(currentRows,name);
+  const oldEmployees=getScopeEmployees(oldRows,name);
+
+  let out=`<b>🏢 KPI ${botEscape(name)} – phân tích chi tiết</b><br>`;
+  out+=`<span class="${m.badCount?'bot-bad':'bot-good'}"><b>Tồi ${m.badCount}/20 KPI</b></span>`;
+
+  if(m.badCount){
+    out+=` bao gồm `;
+    out+=m.bad
+      .sort((a,b)=>b.currentGap-a.currentGap)
+      .map(k=>`<b>${botEscape(k.name)}</b> (${fmt(k.current)}%/${fmt(k.target)}%/ ${k.currentGap>0?`tồi hơn Target ${fmt(k.currentGap)}%`:`tốt hơn Target ${fmt(Math.abs(k.currentGap))}%`})`)
+      .join(", ");
+    out+=".";
+  }
+
+  const scopeLabel=botNormalize(name)==="gialai" ? "toàn bộ Gia Lai" : `huyện ${name}`;
+  out+=`<div class="bot-note">Nhân viên trong phạm vi ${botEscape(scopeLabel)}: <b>${employees.length}</b>`;
+  if(oldEmployees.length) out+=` | Tháng trước: <b>${oldEmployees.length}</b>`;
+  out+=`</div>`;
+
+  let badByEmp=[];
+
+  if(employees.length){
+    badByEmp=employees.map(r=>({r,m:botRowMetrics(r,null)}))
+      .filter(x=>x.m.badCount>0)
+      .sort((a,b)=>b.m.totalGap-a.m.totalGap);
+
+    out+=`<div class="bot-note"><b>Nhân viên đang dẫn đến KPI tồi: ${badByEmp.length}/${employees.length}</b></div>`;
+
+    if(badByEmp.length){
+      badByEmp.forEach((x,i)=>{
+        out+=`<div class="bot-report">
+          ${i+1}. <b>${botEscape(botLabel(x.r))}</b> – Tồi ${x.m.badCount}/20 KPI:
+          ${x.m.bad.map(k=>`${botEscape(k.name)} (${fmt(k.current)}%/${fmt(k.target)}%)`).join(", ")}.
+        </div>`;
+      });
+    }else{
+      out+=`<div class="bot-note">Không có nhân viên tồi.</div>`;
+    }
+  }
+
+  // Gợi ý tra cứu full list, không giới hạn Top 10.
+  if(m.badCount && employees.length){
+    out+=`<div class="bot-note">
+      💡 <button class="bot-inline-btn" onclick="askKpiBot('Danh sách toàn bộ nhân viên tồi của ${botEscape(name)}')">Tra toàn bộ ${badByEmp.length} nhân viên tồi</button>
+    </div>`;
+  }
+
+  return out;
+}
+function renderEmployeeDetail(name,cur,old){
+  if(!cur) return `<b>👤 ${botEscape(name)}</b><br>Không tìm thấy nhân viên.`;
+
+  const m=botRowMetrics(cur,old);
+  let out=`<b>👤 KPI ${botEscape(name)}</b><br>`;
+  out+=`<span class="${m.badCount?'bot-bad':'bot-good'}"><b>${m.badCount ? `Tồi ${m.badCount}/20 KPI` : `Tốt ${m.goodCount}/20 KPI`}</b></span>`;
+
+  const items=(m.badCount ? m.bad : m.good)
+    .sort((a,b)=>Math.abs(b.currentGap)-Math.abs(a.currentGap));
+
+  out+=` bao gồm `;
+  out+=items.map(k=>{
+    const targetEval=k.currentGap>0
+      ? `tồi hơn Target ${fmt(k.currentGap)}%`
+      : k.currentGap<0
+        ? `tốt hơn Target ${fmt(Math.abs(k.currentGap))}%`
+        : `đạt Target`;
+    let prev="";
+    if(k.previous!==null && k.previous!==undefined){
+      const delta=k.delta;
+      const change=Math.abs(delta)<.0001 ? "không đổi" : (delta>0 ? `đang tốt hơn ${fmt(delta)}%` : `đang tồi hơn ${fmt(Math.abs(delta))}%`);
+      prev=`; tháng trước (${fmt(k.previous)}%/${fmt(k.target)}%) → ${change}`;
+    }
+    return `<b>${botEscape(k.name)}</b> (${fmt(k.current)}%/${fmt(k.target)}%/ ${targetEval}${prev})`;
+  }).join(", ");
+  out+=".";
+
+  return out;
+}
+
+function renderGiaLaiDeep(currentRows,oldRows,currentDistricts,oldDistricts){
+  const pair=getDistrictPair(currentDistricts,oldDistricts,"Gia Lai");
+  if(!pair.cur) return "Không tìm thấy dữ liệu Gia Lai.";
+
+  const detail=renderDistrictDetailAdvanced("Gia Lai",pair.cur,pair.old,currentRows,oldRows);
+
+  const allEmployees=currentRows||[];
+  const oldEmployees=oldRows||[];
+  const currentDistrict13=(currentDistricts||[]).filter(r=>botNormalize(r.huyen)!=="gialai");
+  const badDistricts=currentDistrict13
+    .map(r=>({r,m:botRowMetrics(r,null)}))
+    .filter(x=>x.m.badCount>0)
+    .sort((a,b)=>b.m.totalGap-a.m.totalGap);
+
+  let out=detail;
+
+  out+=`<div class="bot-report"><b>📌 Tổng quan Gia Lai:</b><br>`;
+  out+=`Nhân viên: <b>${allEmployees.length}</b> hiện tại`;
+  if(oldEmployees.length) out+=` | <b>${oldEmployees.length}</b> tháng trước`;
+  out+=`<br>Huyện tồi: <b>${badDistricts.length}/${currentDistrict13.length}</b>`;
+  out+=`</div>`;
+
+  if(badDistricts.length){
+    out+=`<div class="bot-note"><b>Danh sách ${badDistricts.length} huyện tồi:</b></div>`;
+    badDistricts.forEach((x,i)=>{
+      out+=`<div class="bot-report">${i+1}. <b>${botEscape(x.r.huyen)}</b> – Tồi ${x.m.badCount}/20 KPI.</div>`;
+    });
+  }else{
+    out+=`<div class="bot-note">Không có huyện tồi.</div>`;
+  }
+
+  const badEmployees=allEmployees
+    .map(r=>({r,m:botRowMetrics(r,null)}))
+    .filter(x=>x.m.badCount>0)
+    .sort((a,b)=>b.m.totalGap-a.m.totalGap);
+
+  out+=`<div class="bot-note"><b>Nhân viên tồi: ${badEmployees.length}/${allEmployees.length}</b></div>`;
+  if(badEmployees.length){
+    badEmployees.forEach((x,i)=>{
+      out+=`<div class="bot-report">${i+1}. <b>${botEscape(botLabel(x.r))}</b> – Tồi ${x.m.badCount}/20 KPI.</div>`;
+    });
+  }
+
+  return out;
+}
+
+
+function renderKpiEmployeeList(rows,kpiName,target,type,title){
+  const bad=(rows||[]).filter(r=>{
+    const val=r[kpiName];
+    return val!==undefined && botTargetState(val,target,type).status==="bad";
+  }).sort((a,b)=>{
+    const ag=Math.max(0,botTargetState(a[kpiName],target,type).targetGapPct);
+    const bg=Math.max(0,botTargetState(b[kpiName],target,type).targetGapPct);
+    return bg-ag;
+  });
+
+  let out=`<b>${title}</b><br>`;
+  if(!bad.length) return out+"Không có nhân viên tồi.";
+  bad.forEach((r,i)=>{
+    const e=botTargetState(r[kpiName],target,type);
+    out+=`<div class="bot-report">${i+1}. <b>${botEscape(botLabel(r))}</b> – ${fmt(r[kpiName])}%/${fmt(target)}% → tồi Target ${fmt(e.targetGapPct)}%.</div>`;
+  });
+  out+=`<div class="bot-note">Đã hiển thị đủ ${bad.length}/${rows.length} nhân viên tồi có dữ liệu.</div>`;
+  return out;
+}
+
+function renderKpiDistrictList(rows,kpiName,target,type,title){
+  const bad=(rows||[]).filter(r=>{
+    const val=r[kpiName];
+    return val!==undefined && botTargetState(val,target,type).status==="bad";
+  }).sort((a,b)=>{
+    const ag=Math.max(0,botTargetState(a[kpiName],target,type).targetGapPct);
+    const bg=Math.max(0,botTargetState(b[kpiName],target,type).targetGapPct);
+    return bg-ag;
+  });
+
+  let out=`<b>${title}</b><br>`;
+  if(!bad.length) return out+"Không có huyện tồi.";
+  bad.forEach((r,i)=>{
+    const e=botTargetState(r[kpiName],target,type);
+    out+=`<div class="bot-report">${i+1}. <b>${botEscape(r.huyen)}</b> – ${fmt(r[kpiName])}%/${fmt(target)}% → tồi Target ${fmt(e.targetGapPct)}%.</div>`;
+  });
+  return out;
+}
+
 async function askKpiBot(question){
   addBotMessage(botEscape(question),"user");
   addBotMessage("Đang phân tích 20 KPI, Target và dữ liệu tháng trước...");
@@ -3011,6 +3417,98 @@ async function askKpiBot(question){
     }
 
     const q=question.toLowerCase();
+
+    // KPI <Tên huyện> hoặc KPI <Tên nhân viên>
+    const entityMatch=question.match(/^kpi\s+(.+)$/i);
+    if(entityMatch){
+      const name=entityMatch[1].trim();
+      const district=d.currentDistricts.find(r=>botNormalize(r.huyen)===botNormalize(name));
+      if(district){
+        const oldDistrict=d.oldDistricts.find(r=>botNormalize(r.huyen)===botNormalize(name));
+        addBotMessage(renderDistrictDetailAdvanced(name,district,oldDistrict,d.currentRows,d.oldRows));
+        return;
+      }
+
+      const employee=d.currentRows.find(r=>botNormalize(botLabel(r))===botNormalize(name));
+      if(employee){
+        const oldEmployee=d.oldRows.find(r=>botNormalize(botLabel(r))===botNormalize(name));
+        addBotMessage(renderEmployeeDetail(name,employee,oldEmployee));
+        return;
+      }
+
+      // Cho phép tìm gần đúng tên nhân viên.
+      const matches=d.currentRows.filter(r=>botNormalize(botLabel(r)).includes(botNormalize(name))).slice(0,10);
+      if(matches.length){
+        let out=`<b>👤 Tìm thấy ${matches.length} nhân viên phù hợp:</b><br>`;
+        matches.forEach((r,i)=>{
+          out+=`<button class="bot-inline-btn" onclick="askKpiBot('KPI ${botEscape(botLabel(r))}')">${i+1}. ${botEscape(botLabel(r))}</button>`;
+        });
+        addBotMessage(out);
+      }else{
+        addBotMessage(`Không tìm thấy huyện hoặc nhân viên <b>${botEscape(name)}</b>.`);
+      }
+      return;
+    }
+
+
+    // Danh sách TOÀN BỘ nhân viên tồi trong một huyện / Gia Lai.
+    const badScopeEmployeeMatch=question.match(/^danh sách toàn bộ nhân viên tồi của (.+)$/i);
+    if(badScopeEmployeeMatch){
+      const scope=badScopeEmployeeMatch[1].trim();
+      const rows=getScopeEmployees(d.currentRows,scope);
+      if(!rows.length){
+        addBotMessage(`Không có dữ liệu nhân viên trong phạm vi <b>${botEscape(scope)}</b>.`);
+        return;
+      }
+
+      const bad=rows.map(r=>({r,m:botRowMetrics(r,null)}))
+        .filter(x=>x.m.badCount>0)
+        .sort((a,b)=>b.m.totalGap-a.m.totalGap);
+
+      let out=`<b>👤 Toàn bộ nhân viên tồi - ${botEscape(scope)}</b><br>`;
+      out+=`<div class="bot-note">Hiển thị ${bad.length}/${rows.length} nhân viên có ít nhất 1 KPI tồi.</div>`;
+
+      bad.forEach((x,i)=>{
+        out+=`<div class="bot-report">
+          ${i+1}. <b>${botEscape(botLabel(x.r))}</b> – Tồi ${x.m.badCount}/20 KPI:
+          ${x.m.bad.map(k=>`${botEscape(k.name)} (${fmt(k.current)}%/${fmt(k.target)}%)`).join(", ")}.
+        </div>`;
+      });
+      addBotMessage(out);
+      return;
+    }
+
+    // Danh sách nhân viên/huyện tồi của một KPI.
+    const badEmployeeMatch=question.match(/^danh sách nhân viên tồi\s+(.+)\s+(hiện tại|tháng trước)$/i);
+    if(badEmployeeMatch){
+      const kpiName=badEmployeeMatch[1].trim();
+      const month=badEmployeeMatch[2].toLowerCase();
+      const def=BOT_KPI_DEFS.find(x=>botNormalize(x[0])===botNormalize(kpiName));
+      if(!def){ addBotMessage(`Không tìm thấy chỉ tiêu <b>${botEscape(kpiName)}</b>.`); return; }
+      const [label,val,target,type]=def;
+      const rows=month.includes("tháng") ? d.oldRows : d.currentRows;
+      addBotMessage(renderKpiEmployeeList(rows,val,target,type,`👤 Nhân viên tồi KPI ${label} - ${month}`));
+      return;
+    }
+
+    const badDistrictMatch=question.match(/^danh sách huyện tồi\s+(.+)\s+(hiện tại|tháng trước)$/i);
+    if(badDistrictMatch){
+      const kpiName=badDistrictMatch[1].trim();
+      const month=badDistrictMatch[2].toLowerCase();
+      const def=BOT_KPI_DEFS.find(x=>botNormalize(x[0])===botNormalize(kpiName));
+      if(!def){ addBotMessage(`Không tìm thấy chỉ tiêu <b>${botEscape(kpiName)}</b>.`); return; }
+      const [label,val,target,type]=def;
+      const rows=(month.includes("tháng") ? d.oldDistricts : d.currentDistricts)
+        .filter(r=>botNormalize(r.huyen)!=="gialai");
+      addBotMessage(renderKpiDistrictList(rows,val,target,type,`🏢 Huyện tồi KPI ${label} - ${month}`));
+      return;
+    }
+
+    // Phân tích chuyên sâu Gia Lai.
+    if(q.includes("phân tích chuyên sâu gia lai") || q.includes("gia lai chuyên sâu")){
+      addBotMessage(renderGiaLaiDeep(d.currentRows,d.oldRows,d.currentDistricts,d.oldDistricts));
+      return;
+    }
 
     // So sánh trực tiếp một huyện khi bấm vào tên huyện trong bảng.
     const districtMatch = question.match(/^so sánh\s+(.+)$/i);
@@ -3037,6 +3535,42 @@ async function askKpiBot(question){
       return;
     }
 
+
+
+    // Phân tích độc lập tháng hiện tại.
+    if(q.includes("hiện tại độc lập") || q.includes("phân tích kpi hiện tại")){
+      addBotMessage(
+        renderIndependentMonthReportDetailed(
+          d.currentRows,
+          "📊 T. hiện tại",
+          d.currentDistricts
+        )
+      );
+      return;
+    }
+
+    // Phân tích độc lập tháng trước.
+    if(q.includes("tháng trước độc lập") || q.includes("t-1 độc lập") || q.includes("phân tích kpi tháng trước")){
+      addBotMessage(
+        renderIndependentMonthReportDetailed(
+          d.oldRows,
+          "📅 Tháng trước",
+          d.oldDistricts
+        )
+      );
+      return;
+    }
+
+    // Đánh giá toàn bộ từng huyện.
+    if(q.includes("đánh giá từng huyện")){
+      addBotMessage(
+        renderDistrictIndependentReports(
+          d.currentDistricts,
+          d.oldDistricts
+        )
+      );
+      return;
+    }
 
     // 1. 20 KPI
     if(q.includes("20 chỉ tiêu") || q.includes("từng chỉ tiêu") || q.includes("chỉ tiêu")){
@@ -3202,6 +3736,12 @@ function sendKpiBot(){
       <div><b>🏢 5 huyện tồi</b><br>Xếp 5 huyện có tổng KPI lệch Target xấu nhất.</div>
       <div><b>⚠️ Top 10 kém</b><br>Chỉ liệt kê các KPI đang tồi hơn Target.</div>
       <div><b>🏆 Top 10 tốt</b><br>Liệt kê các KPI đạt/tốt hơn Target.</div>
+      <div><b>📊 T hiện tại</b><br>Đánh giá độc lập 20 KPI của tháng hiện tại, không phụ thuộc tháng trước.</div>
+      <div><b>📅 T-1 độc lập</b><br>Đánh giá độc lập 20 KPI của tháng trước.</div>
+      <div><b>🏢 Từng huyện</b><br>Đánh giá riêng từng huyện theo 20 KPI và Target.</div>
+      <div><b>🔎 KPI Pleiku</b><br>Tra cứu chi tiết KPI của một huyện.</div>
+      <div><b>👤 KPI Nguyễn Văn Chiến</b><br>Tra cứu chi tiết KPI của một nhân viên.</div>
+      <div><b>🏠 Gia Lai chuyên sâu</b><br>Phân tích Gia Lai, KPI tồi và nhân viên ảnh hưởng nhiều nhất.</div>
       <div><b>🎯 20 KPI</b><br>So sánh giá trị hiện tại, Target và tháng trước cho từng chỉ tiêu.</div>
       <div class="bot-note">SC Lặp dùng Target riêng 8.0% và càng thấp càng tốt.</div>
     </div>
@@ -3283,7 +3823,7 @@ function sendKpiBot(){
 
     const nv=document.getElementById("nv");
     if(nv && nv.value.trim()!==""){
-      updateMobileContentOffset(true);
+      updateMobileContentOffset("employee");
     }else{
       updateMobileContentOffset(false);
     }
