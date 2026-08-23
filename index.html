@@ -269,10 +269,1215 @@ input[type="checkbox"]:checked + .checkbox-btn {
   font-size:13px;
   cursor:pointer;
 }  
+
+/* ===== MODERN RESPONSIVE DESKTOP + MOBILE ===== */
+:root{--bg:#f3f6fb;--surface:#fff;--line:#e5eaf2;--text:#172033;--muted:#6b7280;--primary:#2563eb;--danger:#dc2626;--radius:16px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;padding:12px;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;min-width:320px}
+#kpiUI{width:min(100%,1800px);margin:0 auto;padding-bottom:24px}
+.header-fixed{border-radius:0 0 var(--radius) var(--radius);padding:14px 16px 12px;background:rgba(243,246,251,.94);backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(15,23,42,.06)}
+.header-title h2{margin:0;font-size:clamp(20px,1.6vw,28px);letter-spacing:-.4px}
+.header-title{gap:12px}
+.header-title>div:last-child{flex-wrap:wrap;justify-content:flex-end}
+.header-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+.header-filter br{display:none}
+.header-filter input{height:38px;min-width:220px;background:#fff;border:1px solid var(--line);border-radius:11px;box-shadow:0 2px 8px rgba(15,23,42,.04)}
+.reload-btn,.switch-btn{height:38px;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
+.reload-btn:hover,.switch-btn:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(15,23,42,.10)}
+.checkbox-btn{height:38px;display:inline-flex;align-items:center;padding:0 14px}
+h3{font-size:18px;margin:22px 0 10px;color:#1e293b}
+.card{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;box-shadow:0 4px 14px rgba(15,23,42,.05);transition:transform .15s ease,box-shadow .15s ease}
+.card:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(15,23,42,.08)}
+.top{background:linear-gradient(135deg,#f0fdf4,#ecfdf5)}
+.worst{background:linear-gradient(135deg,#fff7f7,#fff1f2)}
+.kpi-wrapper{width:100%;overflow-x:visible;border-radius:var(--radius);box-shadow:0 4px 16px rgba(15,23,42,.05);background:#fff}
+#tableKPI{width:100%;overflow-x:visible}
+#tableKPI table{width:100%;min-width:0!important;table-layout:auto;border-collapse:separate!important;border-spacing:0;font-size:clamp(10px,.68vw,12px)!important}
+#tableKPI th,#tableKPI td{padding:7px 5px;border-color:var(--line);white-space:nowrap}
+#tableKPI th{position:sticky;top:0;z-index:2}
+#tableKPI th:first-child,#tableKPI td:first-child{position:static!important;width:auto;min-width:0;box-shadow:none;border-right:1px solid var(--line)}
+#data{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:10px}
+#data .card{margin-bottom:0}
+#top,#worst{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+#top .card,#worst .card{margin-bottom:0}
+#badHuyen,#worstKPI{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:8px}
+#badHuyen .card,#worstKPI .card{margin-bottom:0}
+.marquee-banner{position:sticky;top:0;z-index:3000;border-radius:0 0 12px 12px;box-shadow:0 3px 10px rgba(15,23,42,.08)}
+body.rotate-in #kpiUI{animation:pageIn .55s cubic-bezier(.22,1,.36,1)}
+@keyframes pageIn{0%{opacity:0;transform:perspective(1000px) rotateX(-7deg) translateY(14px)}100%{opacity:1;transform:perspective(1000px) rotateX(0) translateY(0)}}
+@media (min-width:1100px){
+ body{padding:14px 20px}
+ .header-filter input{min-width:260px}
+ #tableKPI table{font-size:11px!important}
+ #tableKPI th,#tableKPI td{padding:8px 4px}
+}
+@media (min-width:1500px){
+ #kpiUI{width:min(100%,2100px)}
+ #tableKPI table{font-size:12px!important}
+ #tableKPI th,#tableKPI td{padding:9px 6px}
+}
+@media (max-width:900px){
+ body{padding:8px}
+ #data{grid-template-columns:1fr}
+ #badHuyen,#worstKPI{grid-template-columns:1fr}
+ .kpi-wrapper,#tableKPI{overflow-x:auto}
+ #tableKPI table{min-width:1200px!important}
+ #tableKPI th:first-child,#tableKPI td:first-child{position:sticky!important;left:0;z-index:4}
+}
+@media (max-width:600px){
+ .header-title{align-items:flex-start}
+ .header-title>div:last-child{width:100%;justify-content:flex-start}
+ .header-filter input{width:100%;min-width:0}
+ #top,#worst{grid-template-columns:1fr}
+ .header-fixed{padding:10px}
+ h3{font-size:16px}
+ .card{border-radius:12px}
+}
+
+
+/* ===== BOT SO SÁNH ===== */
+#kpiBotBtn{
+  position:fixed!important;right:22px!important;bottom:22px!important;
+  width:60px!important;height:60px!important;padding:0!important;
+  border:0!important;border-radius:50%!important;z-index:99990!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  cursor:pointer!important;font-size:28px!important;line-height:1!important;
+  background:linear-gradient(135deg,#2563eb,#60a5fa)!important;color:#fff!important;
+  box-shadow:0 10px 28px rgba(37,99,235,.35)!important;
+}
+#kpiBot{
+  position:fixed!important;right:22px!important;bottom:94px!important;
+  width:min(430px,calc(100vw - 28px))!important;
+  height:min(610px,calc(100vh - 120px))!important;
+  display:none;flex-direction:column;overflow:hidden;
+  z-index:99991!important;background:#fff!important;
+  border:1px solid #e5eaf2!important;border-radius:20px!important;
+  box-shadow:0 20px 60px rgba(15,23,42,.20)!important;
+}
+#kpiBot.open{display:flex!important}
+.bot-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff}
+.bot-close{width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;cursor:pointer;font-size:18px}
+.bot-messages{flex:1;overflow:auto;padding:14px;background:#f8fafc}
+.bot-msg{max-width:92%;padding:10px 12px;margin:0 0 10px;border-radius:14px;font-size:13px;line-height:1.5;white-space:pre-wrap}
+.bot-msg.bot{background:#fff;color:#172033;border:1px solid #e5eaf2}
+.bot-msg.user{margin-left:auto;background:#2563eb;color:#fff}
+.bot-quick{display:flex;gap:7px;flex-wrap:wrap;padding:9px 12px;background:#fff;border-top:1px solid #edf0f4}
+.bot-quick button{border:1px solid #d8e3f3;background:#f4f8ff;color:#2563eb;border-radius:999px;padding:7px 9px;cursor:pointer;font-size:11px}
+.bot-input{display:flex;gap:8px;padding:12px;border-top:1px solid #edf0f4;background:#fff}
+.bot-input input{flex:1!important;min-width:0!important;margin:0!important;height:40px!important}
+.bot-send{border:0;border-radius:12px;padding:0 14px;background:#2563eb;color:#fff;cursor:pointer}
+.bot-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:6px}
+.bot-table th,.bot-table td{border:1px solid #e3e8ef;padding:5px;text-align:center}
+.bot-table th{background:#eef4ff;color:#1e3a8a}
+.bot-good{color:#15803d;font-weight:700}
+.bot-bad{color:#dc2626;font-weight:700}
+.bot-note{font-size:11px;color:#64748b}
+@media(max-width:600px){
+  #kpiBotBtn{right:14px!important;bottom:14px!important;width:56px!important;height:56px!important}
+  #kpiBot{right:14px!important;bottom:82px!important;width:calc(100vw - 28px)!important;height:min(560px,calc(100vh - 95px))!important}
+}
+
+
+/* ===== BẢN 1: DESKTOP FIT ===== */
+html,body{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
+}
+body{
+  padding:0 16px 24px;
+  background:#f4f7fb;
+  font-family:"Segoe UI",Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+
+#kpiUI{
+  width:100%;
+  max-width:1900px;
+  margin:0 auto;
+}
+
+.marquee-banner{
+  width:100%;
+  max-width:1900px;
+  margin:0 auto 8px;
+  border-radius:0 0 12px 12px;
+}
+
+.header-fixed{
+  width:100%;
+  max-width:1900px;
+  margin:0 auto 12px;
+}
+
+.kpi-wrapper{
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:hidden!important;
+  overflow-y:hidden!important;
+  border-radius:12px!important;
+}
+
+#tableKPI{
+  width:100%!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+}
+
+#tableKPI table{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  table-layout:fixed!important;
+  border-collapse:collapse!important;
+  font-size:10px!important;
+}
+
+#tableKPI th,
+#tableKPI td{
+  padding:5px 3px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  line-height:1.15!important;
+}
+
+#tableKPI th:first-child,
+#tableKPI td:first-child{
+  width:70px!important;
+  min-width:70px!important;
+}
+
+#tableKPI th:nth-child(2),
+#tableKPI td:nth-child(2),
+#tableKPI th:nth-child(3),
+#tableKPI td:nth-child(3),
+#tableKPI th:nth-child(4),
+#tableKPI td:nth-child(4){
+  width:52px!important;
+}
+
+#tableKPI tr{
+  height:29px;
+}
+
+#data{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px!important;
+}
+#data .card{margin:0!important;min-width:0!important}
+
+#badHuyen{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px!important;
+}
+#badHuyen .card{margin:0!important}
+
+#top,#worst{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px!important;
+}
+#top .card,#worst .card{margin:0!important}
+
+@media (max-width:1200px){
+  .kpi-wrapper{overflow-x:auto!important}
+  #tableKPI table{
+    min-width:1200px!important;
+    table-layout:auto!important;
+  }
+  #data{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #badHuyen{grid-template-columns:1fr!important}
+}
+@media (max-width:700px){
+  body{padding:0 6px 14px}
+  #data,#top,#worst,#badHuyen{grid-template-columns:1fr!important}
+}
+
+
+/* ===== LOADING + XOAY TRANG ===== */
+body.loading #kpiUI{
+  opacity:0!important;
+  visibility:hidden!important;
+}
+
+#pageLoader{
+  position:fixed!important;
+  inset:0!important;
+  z-index:999999!important;
+  display:flex!important;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  background:#f4f7fb;
+  transition:opacity .28s ease,visibility .28s ease;
+}
+#pageLoader.hide{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+.loader-spinner{
+  width:54px;
+  height:54px;
+  border:5px solid #dbe5f2;
+  border-top-color:#1976d2;
+  border-radius:50%;
+  animation:kpiLoaderSpin .75s linear infinite;
+}
+.loader-text{
+  font:600 14px/1.4 "Segoe UI",Arial,sans-serif;
+  color:#475569;
+}
+@keyframes kpiLoaderSpin{
+  to{transform:rotate(360deg)}
+}
+
+body.page-ready #kpiUI{
+  opacity:1!important;
+  visibility:visible!important;
+  transform-origin:center top;
+  animation:kpiPageIn .62s cubic-bezier(.18,.82,.24,1) both;
+}
+@keyframes kpiPageIn{
+  0%{
+    opacity:0;
+    transform:perspective(1400px) rotateX(9deg) translateY(18px) scale(.975);
+  }
+  55%{
+    opacity:.92;
+    transform:perspective(1400px) rotateX(-2deg) translateY(2px) scale(1.002);
+  }
+  100%{
+    opacity:1;
+    transform:perspective(1400px) rotateX(0) translateY(0) scale(1);
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  body.page-ready #kpiUI{animation:none!important;transform:none!important}
+}
+
+
+/* ===== BẢN 2: RESPONSIVE MOBILE ĐẦY ĐỦ ===== */
+
+/* Desktop giữ nguyên bố cục rộng; tablet/mobile điều chỉnh độc lập */
+@media (max-width: 1199px){
+  body{
+    padding:0 10px 18px!important;
+  }
+
+  #kpiUI,
+  .header-fixed,
+  .marquee-banner{
+    width:100%!important;
+    max-width:100%!important;
+  }
+
+  .header-fixed{
+    padding:10px 10px 9px!important;
+  }
+
+  #sectionTable,#sectionWorstKPI,#sectionTop,#sectionWorst,#badHuyen,#data{
+    width:100%!important;
+  }
+
+  /* Bảng bắt đầu scroll từ tablet */
+  .kpi-wrapper{
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+  }
+
+  #tableKPI{
+    overflow:visible!important;
+  }
+
+  #tableKPI table{
+    min-width:1200px!important;
+    width:max-content!important;
+    max-width:none!important;
+    table-layout:auto!important;
+    font-size:11px!important;
+  }
+
+  #tableKPI th,#tableKPI td{
+    padding:6px 5px!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+
+  #tableKPI th:first-child,#tableKPI td:first-child{
+    position:sticky!important;
+    left:0!important;
+    z-index:8!important;
+  }
+
+  #tableKPI th:first-child{
+    z-index:10!important;
+  }
+
+  #data{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+
+  #badHuyen{
+    grid-template-columns:1fr!important;
+  }
+
+  #top,#worst{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+
+@media (max-width: 760px){
+  html,body{
+    width:100%!important;
+    overflow-x:hidden!important;
+  }
+
+  body{
+    padding:0 6px 12px!important;
+    font-size:13px!important;
+  }
+
+  /* Banner */
+  .marquee-banner{
+    position:sticky!important;
+    top:0!important;
+    z-index:3000!important;
+    padding:7px 0!important;
+    font-size:11px!important;
+    border-radius:0 0 10px 10px!important;
+  }
+
+  /* Header mobile */
+  .header-fixed{
+    position:sticky!important;
+    top:34px!important;
+    z-index:2500!important;
+    margin:0 0 9px!important;
+    padding:9px 8px 10px!important;
+    border-radius:0 0 12px 12px!important;
+  }
+
+  .header-title{
+    align-items:flex-start!important;
+    gap:6px!important;
+  }
+
+  .header-title > div:first-child{
+    min-width:0!important;
+  }
+
+  #pageTitle{
+    font-size:17px!important;
+    line-height:1.15!important;
+  }
+
+  .logtime{
+    font-size:10px!important;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:220px;
+  }
+
+  .header-title > div:last-child,.header-controls-equal{
+    flex-shrink:0!important;
+    gap:4px!important;
+  }
+
+  .switch-btn{
+    padding:5px 7px!important;
+    font-size:11px!important;
+    border-radius:8px!important;
+    white-space:nowrap;
+  }
+
+  .header-filter{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:6px!important;
+    margin-top:7px!important;
+  }
+
+  .header-filter input{
+    width:100%!important;
+    min-width:0!important;
+    height:34px!important;
+    padding:7px 9px!important;
+    font-size:12px!important;
+  }
+
+  .checkbox-btn{
+    width:max-content!important;
+    min-width:0!important;
+    height:34px!important;
+    padding:6px 10px!important;
+    font-size:11px!important;
+  }
+
+  /* Sections */
+  h3{
+    margin:9px 2px 6px!important;
+    font-size:13px!important;
+  }
+
+  /* Table remains usable on phone */
+  .kpi-wrapper{
+    border-radius:10px!important;
+    overflow-x:auto!important;
+    box-shadow:none!important;
+  }
+
+  #tableKPI{
+    border-radius:10px!important;
+  }
+
+  #tableKPI table{
+    min-width:1180px!important;
+    font-size:10px!important;
+  }
+
+  #tableKPI th,#tableKPI td{
+    padding:6px 4px!important;
+    height:28px!important;
+  }
+
+  #tableKPI th:first-child,
+  #tableKPI td:first-child{
+    width:72px!important;
+    min-width:72px!important;
+    max-width:72px!important;
+  }
+
+  /* Mobile cards */
+  #data,
+  #badHuyen,
+  #top,
+  #worst,
+  #worstKPI{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:7px!important;
+  }
+
+  #data .card,
+  #badHuyen .card,
+  #top .card,
+  #worst .card,
+  #worstKPI .card{
+    width:100%!important;
+    margin:0!important;
+    padding:9px!important;
+    border-radius:11px!important;
+    font-size:12px!important;
+  }
+
+  /* KPI employee sections are denser on phone */
+  #data .card b{
+    font-size:12px!important;
+  }
+
+  #data .card .ok,
+  #data .card .fail{
+    font-size:11px!important;
+    line-height:1.4!important;
+  }
+
+  /* Bad district rows */
+  #badHuyen .card{
+    line-height:1.45!important;
+  }
+
+  /* Bot */
+  #kpiBotBtn{
+    right:12px!important;
+    bottom:12px!important;
+    width:54px!important;
+    height:54px!important;
+    font-size:25px!important;
+  }
+
+  #kpiBot{
+    right:10px!important;
+    bottom:76px!important;
+    width:calc(100vw - 20px)!important;
+    height:min(560px,calc(100vh - 88px))!important;
+    border-radius:17px!important;
+  }
+
+  .bot-head{
+    padding:12px 13px!important;
+  }
+
+  .bot-messages{
+    padding:11px!important;
+  }
+
+  .bot-msg{
+    max-width:94%!important;
+    font-size:12px!important;
+  }
+
+  .bot-quick{
+    gap:5px!important;
+    padding:8px 9px 5px!important;
+  }
+
+  .bot-quick button{
+    font-size:10px!important;
+    padding:6px 8px!important;
+  }
+
+  .bot-input{
+    padding:9px!important;
+  }
+
+  .bot-input input{
+    height:38px!important;
+    font-size:12px!important;
+  }
+}
+
+@media (max-width: 420px){
+  .header-title{
+    flex-direction:column!important;
+  }
+
+  .header-title > div:last-child{
+    width:100%!important;
+    display:flex!important;
+  }
+
+  .header-title > div:last-child .switch-btn{
+    flex:1!important;
+    text-align:center!important;
+  }
+
+  .header-filter{
+    grid-template-columns:1fr!important;
+  }
+
+  .checkbox-btn{
+    width:100%!important;
+    justify-content:center!important;
+  }
+
+  #pageTitle{
+    font-size:16px!important;
+  }
+
+  #tableKPI table{
+    min-width:1120px!important;
+  }
+}
+
+
+/* ===== BOT ANALYTICS ===== */
+.bot-note{
+  display:block;
+  margin-top:5px;
+  font-size:10px;
+  color:#64748b;
+  line-height:1.35;
+}
+.bot-table th,.bot-table td{
+  vertical-align:middle;
+}
+@media(max-width:600px){
+  .bot-table{
+    font-size:10px!important;
+  }
+  .bot-table th,.bot-table td{
+    padding:4px!important;
+  }
+}
+
+
+.bot-kpi-line{
+  padding:7px 0;
+  border-bottom:1px solid #eef2f7;
+  line-height:1.5;
+}
+.bot-kpi-line:last-child{border-bottom:0}
+
+
+.bot-report{
+  padding:8px 0;
+  border-bottom:1px solid #e8edf5;
+  line-height:1.55;
+}
+.bot-report:last-child{border-bottom:0}
+
+
+.kpi-help-modal{
+  position:fixed;inset:0;z-index:99995;display:none;
+  align-items:center;justify-content:center;
+  background:rgba(15,23,42,.42);backdrop-filter:blur(4px);
+}
+.kpi-help-modal.open{display:flex}
+.kpi-help-box{
+  width:min(460px,calc(100vw - 24px));
+  max-height:min(620px,calc(100vh - 32px));
+  overflow:auto;background:#fff;border-radius:18px;
+  box-shadow:0 22px 70px rgba(15,23,42,.25);
+}
+.kpi-help-head{
+  position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;
+  padding:13px 15px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;
+}
+.kpi-help-head button{
+  border:0;background:rgba(255,255,255,.18);color:#fff;
+  width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;
+}
+.kpi-help-body{padding:14px}
+.kpi-help-body>div{
+  padding:10px 0;border-bottom:1px solid #edf1f7;line-height:1.45;font-size:13px
+}
+.kpi-help-body>div:last-child{border-bottom:0}
+.kpi-district-link{
+  color:#1565c0!important;text-decoration:none;font-weight:700;cursor:pointer;
+}
+.kpi-district-link:hover{text-decoration:underline}
+@media(max-width:600px){
+  .kpi-help-box{width:calc(100vw - 18px);border-radius:15px}
+}
+
+
+/* ===== BẢN 12: RESPONSIVE + POPUP ===== */
+html,body{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden!important;
+}
+body{
+  margin:0;
+  padding:0 clamp(6px,1.2vw,24px) 24px!important;
+  background:#f4f7fb;
+}
+#kpiUI{
+  width:100%!important;
+  max-width:1920px!important;
+  margin:0 auto!important;
+}
+.header-fixed,.marquee-banner{
+  width:100%!important;
+  max-width:1920px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+#sectionTable,#sectionWorstKPI,#sectionTop,#sectionWorst,#badHuyen,#data{
+  width:100%!important;
+  max-width:100%!important;
+}
+
+/* Keep table fitted on desktop; scroll only when necessary. */
+.kpi-wrapper{
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch;
+}
+#tableKPI{
+  width:100%!important;
+  max-width:100%!important;
+  overflow:visible!important;
+}
+#tableKPI table{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  table-layout:fixed!important;
+}
+#tableKPI th,#tableKPI td{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+#tableKPI th:first-child,#tableKPI td:first-child{
+  width:72px!important;
+  min-width:72px!important;
+  max-width:90px!important;
+  position:sticky!important;
+  left:0!important;
+  z-index:12!important;
+}
+#tableKPI th:first-child{z-index:15!important}
+#data{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+}
+#badHuyen{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+#top,#worst{
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+}
+
+@media(max-width:1400px){
+  #data{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  #top,#worst{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+}
+@media(max-width:1100px){
+  #data{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #badHuyen{grid-template-columns:1fr!important}
+  #top,#worst{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #tableKPI table{
+    min-width:1180px!important;
+    width:max-content!important;
+    table-layout:auto!important;
+  }
+}
+@media(max-width:700px){
+  body{padding:0 5px 12px!important}
+  #data,#badHuyen,#top,#worst{grid-template-columns:1fr!important}
+  #tableKPI table{min-width:1120px!important}
+  .header-filter{grid-template-columns:1fr!important}
+}
+
+/* ===== BOT PHÓNG TO ===== */
+.bot-head-actions{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+.bot-head-actions button{
+  width:30px!important;
+  height:30px!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:rgba(255,255,255,.16)!important;
+  color:#fff!important;
+  cursor:pointer!important;
+  font-size:16px!important;
+}
+#kpiBot.bot-expanded{
+  width:min(920px,calc(100vw - 28px))!important;
+  height:min(860px,calc(100vh - 70px))!important;
+  right:14px!important;
+  bottom:14px!important;
+  border-radius:18px!important;
+}
+@media(max-width:600px){
+  #kpiBot.bot-expanded{
+    width:calc(100vw - 14px)!important;
+    height:calc(100vh - 14px)!important;
+    right:7px!important;
+    bottom:7px!important;
+  }
+}
+
+/* ===== 2 Ô TRA CỨU ===== */
+.kpi-lookup-row{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  margin-top:8px;
+}
+.kpi-lookup-btn{
+  width:100%;
+  min-height:38px;
+  padding:8px 12px;
+  border:1px solid #d9e3f1;
+  border-radius:10px;
+  background:#fff;
+  color:#2563eb;
+  font:600 12px/1.2 "Segoe UI",Arial,sans-serif;
+  cursor:pointer;
+  box-shadow:0 2px 8px rgba(15,23,42,.05);
+  transition:.18s ease;
+}
+.kpi-lookup-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 5px 14px rgba(37,99,235,.12);
+}
+@media(max-width:700px){
+  .kpi-lookup-row{grid-template-columns:1fr}
+}
+
+/* ===== POPUP TRA CỨU ===== */
+.kpi-lookup-modal{
+  position:fixed;
+  inset:0;
+  z-index:99996;
+  display:none;
+  background:rgba(15,23,42,.45);
+  backdrop-filter:blur(4px);
+}
+.kpi-lookup-modal.open{display:block}
+.kpi-lookup-window{
+  position:absolute;
+  inset:18px;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 24px 80px rgba(15,23,42,.28);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.kpi-lookup-head{
+  flex:0 0 auto;
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 12px 0 15px;
+  background:linear-gradient(135deg,#2563eb,#60a5fa);
+  color:#fff;
+}
+.kpi-lookup-head b{font-size:14px}
+.kpi-lookup-actions{display:flex;gap:5px}
+.kpi-lookup-actions button{
+  width:32px;height:32px;border:0;border-radius:50%;
+  background:rgba(255,255,255,.16);color:#fff;cursor:pointer;font-size:16px;
+}
+.kpi-lookup-frame{
+  flex:1;
+  width:100%;
+  border:0;
+  background:#f8fafc;
+}
+@media(max-width:700px){
+  .kpi-lookup-window{inset:6px;border-radius:12px}
+  .kpi-lookup-head{height:44px}
+}
+
+
+/* ===== BẢN 13: AUTO-FIT MÀN HÌNH + TRA CỨU MOBILE 1 HÀNG ===== */
+
+/* Không khóa chiều rộng dashboard theo một kích thước cố định */
+html, body{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  overflow-x:hidden!important;
+}
+
+body{
+  margin:0!important;
+  padding:0 clamp(4px,1vw,20px) 20px!important;
+}
+
+/* Dashboard luôn ăn theo chiều rộng viewport */
+#kpiUI,
+.marquee-banner,
+.header-fixed,
+#sectionTable,
+#sectionWorstKPI,
+#sectionTop,
+#sectionWorst,
+#badHuyen,
+#data{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+
+/* Bảng tự co trên desktop; chỉ scroll khi viewport thực sự nhỏ */
+.kpi-wrapper{
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+}
+
+#tableKPI{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  overflow:visible!important;
+}
+
+@media(min-width:1200px){
+  #tableKPI table{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    table-layout:fixed!important;
+    font-size:clamp(9px,.60vw,12px)!important;
+  }
+
+  #tableKPI th,
+  #tableKPI td{
+    padding:clamp(4px,.35vw,7px) clamp(2px,.25vw,5px)!important;
+  }
+
+  #tableKPI th:first-child,
+  #tableKPI td:first-child{
+    width:clamp(64px,4.2vw,86px)!important;
+    min-width:clamp(64px,4.2vw,86px)!important;
+    max-width:clamp(64px,4.2vw,86px)!important;
+  }
+
+  #tableKPI th:nth-child(2),
+  #tableKPI td:nth-child(2),
+  #tableKPI th:nth-child(3),
+  #tableKPI td:nth-child(3),
+  #tableKPI th:nth-child(4),
+  #tableKPI td:nth-child(4){
+    width:clamp(45px,3.1vw,65px)!important;
+  }
+}
+
+/* Nội dung danh sách tự chia theo độ rộng màn hình */
+#data{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr))!important;
+  gap:10px!important;
+}
+#badHuyen{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(360px,1fr))!important;
+  gap:8px!important;
+}
+#top,#worst{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr))!important;
+  gap:8px!important;
+}
+
+/* Các nút chuyển KPI và tra cứu tự co */
+.header-title > div:last-child{
+  flex-wrap:wrap!important;
+}
+.header-title .switch-btn{
+  white-space:nowrap!important;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:700px){
+  body{
+    padding:0 4px 12px!important;
+  }
+
+  .header-fixed{
+    padding:8px 7px 9px!important;
+  }
+
+  .header-title{
+    gap:6px!important;
+  }
+
+  /* Hai nút tra cứu luôn cùng 1 hàng trên mobile */
+  .kpi-lookup-row{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:6px!important;
+    width:100%!important;
+  }
+
+  .kpi-lookup-btn{
+    min-width:0!important;
+    width:100%!important;
+    padding:7px 5px!important;
+    min-height:35px!important;
+    font-size:10px!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  /* Bảng mobile có scroll ngang có kiểm soát */
+  .kpi-wrapper{
+    overflow-x:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+
+  #tableKPI table{
+    width:max-content!important;
+    min-width:1120px!important;
+    table-layout:auto!important;
+    font-size:10px!important;
+  }
+
+  #tableKPI th,#tableKPI td{
+    white-space:nowrap!important;
+  }
+
+  #tableKPI th:first-child,
+  #tableKPI td:first-child{
+    position:sticky!important;
+    left:0!important;
+    z-index:20!important;
+    min-width:70px!important;
+  }
+
+  #data,
+  #badHuyen,
+  #top,
+  #worst{
+    grid-template-columns:1fr!important;
+  }
+
+  /* Bot trên mobile không che nút tra cứu */
+  #kpiBot{
+    max-width:calc(100vw - 12px)!important;
+  }
+}
+
+/* Màn hình cực nhỏ */
+@media(max-width:380px){
+  .kpi-lookup-btn{
+    font-size:9px!important;
+    padding:6px 3px!important;
+  }
+}
+
+
+/* ===== BẢN 14: 4 Ô ĐỀU NHAU + HEADER CÓ CO GIÃN ===== */
+
+/* Header controls: 4 ô cùng kích thước */
+.header-title > div:last-child{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:7px!important;
+  width:min(100%,760px)!important;
+  align-items:stretch!important;
+}
+.header-title > div:last-child > .switch-btn,.header-controls-equal > .switch-btn,
+.header-title > div:last-child > .kpi-lookup-row{
+  width:100%!important;
+  min-width:0!important;
+}
+.header-title > div:last-child > .switch-btn,.header-controls-equal > .switch-btn{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  white-space:nowrap!important;
+}
+.header-title > div:last-child > .kpi-lookup-row{
+  display:contents!important;
+}
+.header-title > div:last-child > .kpi-lookup-row .kpi-lookup-btn{
+  width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+}
+
+/* Bảng: tiêu đề dài tự xuống dòng, thân bảng vẫn gọn */
+#tableKPI table{
+  table-layout:fixed!important;
+}
+#tableKPI th{
+  white-space:normal!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+  vertical-align:middle!important;
+  line-height:1.2!important;
+  height:auto!important;
+}
+#tableKPI td{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+/* Chiều rộng hợp lý cho cột huyện và 3 cột tổng */
+#tableKPI th:first-child,
+#tableKPI td:first-child{
+  width:72px!important;
+  min-width:72px!important;
+  max-width:88px!important;
+}
+#tableKPI th:nth-child(2),
+#tableKPI td:nth-child(2),
+#tableKPI th:nth-child(3),
+#tableKPI td:nth-child(3),
+#tableKPI th:nth-child(4),
+#tableKPI td:nth-child(4){
+  width:55px!important;
+}
+
+/* 4 ô trên màn hình nhỏ vẫn đều nhau */
+@media(max-width:850px){
+  .header-title > div:last-child{
+    width:100%!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:5px!important;
+  }
+  .header-title > div:last-child .switch-btn,
+  .header-title > div:last-child .kpi-lookup-btn{
+    padding:6px 4px!important;
+    font-size:10px!important;
+  }
+}
+
+/* Điện thoại: vẫn 4 ô trên một hàng */
+@media(max-width:600px){
+  .header-title > div:last-child{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:4px!important;
+  }
+  .header-title > div:last-child .switch-btn,
+  .header-title > div:last-child .kpi-lookup-btn{
+    min-height:34px!important;
+    padding:5px 2px!important;
+    font-size:9px!important;
+    border-radius:8px!important;
+    line-height:1.1!important;
+  }
+
+  /* Mobile: bảng cho phép scroll, nhưng header vẫn xuống dòng */
+  #tableKPI table{
+    table-layout:auto!important;
+    min-width:1120px!important;
+  }
+  #tableKPI th{
+    white-space:normal!important;
+    min-height:34px!important;
+  }
+}
+
 </style>
 </head>
 
-<body>
+<body class="rotate-in loading">
+
+<div id="pageLoader">
+  <div class="loader-spinner"></div>
+  <div class="loader-text">Đang tải dữ liệu KPI...</div>
+</div>
+
+
+<div id="kpiBot">
+  <div class="bot-head">
+  <div>
+    <b>🤖 KPI Bot</b>
+    <div style="font-size:11px;opacity:.85;margin-top:2px">20 KPI • Target • Tháng trước • Huyện • Nhân viên</div>
+  </div>
+  <div class="bot-head-actions">
+    <button onclick="toggleBotSize()" title="Phóng to/thu nhỏ">⛶</button>
+    <button onclick="toggleKpiBot()" title="Đóng">×</button>
+  </div>
+</div>
+<div id="botMessages" class="bot-messages">
+    <div class="bot-msg bot">Tôi có thể so sánh điểm KPI, số KPI đạt/không đạt và từng chỉ tiêu giữa tháng hiện tại và tháng trước.</div>
+  </div>
+  <div class="bot-quick">
+  <button onclick="askKpiBot('So sánh Gia Lai')">🏠 Gia Lai</button>
+  <button onclick="askKpiBot('Huyện tồi')">🏢 5 huyện tồi</button>
+  <button onclick="askKpiBot('Top 10 nhân viên kém')">⚠️ Top 10 kém</button>
+  <button onclick="askKpiBot('Top 10 nhân viên tốt')">🏆 Top 10 tốt</button>
+  <button onclick="askKpiBot('20 chỉ tiêu KPI')">🎯 20 KPI</button>
+  <button onclick="showKpiHelp()">❔ Help</button>
+</div>
+  <div class="bot-input">
+    <input id="botInput" placeholder="Ví dụ: KPI hiện tại so target..." onkeydown="if(event.key==='Enter')sendKpiBot()">
+    <button class="bot-send" onclick="sendKpiBot()">➤</button>
+  </div>
+</div>
+<button id="kpiBotBtn" onclick="toggleKpiBot()" title="KPI Bot">🤖</button>
 
 <div class="marquee-banner">
   <div class="marquee-text">
@@ -287,21 +1492,16 @@ input[type="checkbox"]:checked + .checkbox-btn {
     <h2 id="pageTitle">📊 KPI CĐBR</h2>
     <div id="logtime" class="logtime"></div>
   </div>
-  <div style="display:flex;gap:5px;">
-
-<button onclick="openCurrentKPI()" class="switch-btn">
+  <div class="header-controls-equal">
+      <button onclick="openCurrentKPI()" class="switch-btn">
 📊 KPI hiện tại
 </button>
-
-<button onclick="openOldKPI()" class="switch-btn">
+      <button onclick="openOldKPI()" class="switch-btn">
 📅 KPI tháng trước
 </button>
-
-<button onclick="reloadPage()" class="reload-btn">
-🔄
-</button>
-
-</div>
+      <button class="kpi-lookup-btn" onclick="openKpiLookup('sc','Tra cứu KPI quá hạn SC','https://cvthuong921331040253-hub.github.io/dashboard-icms/scqh.html')">🔎 Tra cứu KPI quá hạn SC</button>
+      <button class="kpi-lookup-btn" onclick="openKpiLookup('tkm','Tra cứu KPI quá hạn TKM','https://cvthuong921331040253-hub.github.io/dashboard-icms/tkmqh.html')">🔎 Tra cứu KPI quá hạn TKM</button>
+    </div>
 </div>
   <div class="header-filter">
   <input id="nv" placeholder="Tìm nhân viên..." onkeyup="filter()"><br>
@@ -368,7 +1568,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
 });
 let allData = [];
+window.allData = allData;
 let tableDataGlobal = [];
+window.tableDataGlobal = tableDataGlobal;
 let showBadOnly = false;
 
 const KPI_ORDER = [
@@ -592,6 +1794,10 @@ function kpi(label,v,t,type="up"){
 }
 
 // ===== LOAD =====
+window.addEventListener("load", () => {
+  setTimeout(() => document.body.classList.remove("rotate-in"), 700);
+});
+
 function load(){
   fetch(API)
   .then(r=>r.json())
@@ -633,6 +1839,10 @@ tableDataGlobal.forEach(r=>{
     Number(r.tong_sc || 0) > 0
   );
 
+    // Expose dữ liệu ngay lập tức để KPI Bot luôn đọc được dữ liệu thật.
+    window.allData = allData;
+    window.tableDataGlobal = tableDataGlobal;
+
     allData.forEach(r=> r.score = calcScore(r));
     allData.sort((a,b)=> b.score - a.score);
 
@@ -642,6 +1852,18 @@ tableDataGlobal.forEach(r=>{
     topWorst();
     renderBadHuyen()
     renderKPIBadByHuyen()
+    finishInitialLoading();
+  })
+  .catch(err=>{
+    console.error("KPI load error:", err);
+    const loader=document.getElementById("pageLoader");
+    const loaderText=document.querySelector("#pageLoader .loader-text");
+    if(loaderText) loaderText.textContent="Không tải được dữ liệu KPI";
+    setTimeout(()=>{
+      if(loader) loader.classList.add("hide");
+      document.body.classList.remove("loading");
+      document.body.classList.add("page-ready");
+    },700);
   });
 }
 
@@ -885,7 +2107,7 @@ function renderTableExcel(data){
 
   data.forEach(r=>{
     html += `<tr>
-      <td>${r.huyen||""}</td>
+      <td><a href="javascript:void(0)" class="kpi-district-link" onclick="openGiaLaiCompareByName(${JSON.stringify(r.huyen||"")})">${r.huyen||""}</a></td>
       <td>${r.tong_tk_moi||""}</td>
       <td>${r.tong_tk_co_san||""}</td>
       <td>${r.tong_sc||""}</td>
@@ -930,8 +2152,788 @@ function openOldKPI(){
   window.location.href =
     window.location.pathname + "?kpi=old";
 }
+
+
+
+
+
+function toggleBotSize(){
+  const bot=document.getElementById("kpiBot");
+  bot.classList.toggle("bot-expanded");
+  const btn=document.querySelector(".bot-head-actions button");
+  if(btn){
+    btn.textContent=bot.classList.contains("bot-expanded")?"⛶":"⛶";
+    btn.title=bot.classList.contains("bot-expanded")?"Thu nhỏ":"Phóng to";
+  }
+}
+
+function openKpiLookup(type,title,url){
+  const modal=document.getElementById("kpiLookupModal");
+  const frame=document.getElementById("kpiLookupFrame");
+  const titleEl=document.getElementById("kpiLookupTitle");
+
+  titleEl.textContent=title;
+  frame.src=url;
+  modal.classList.add("open");
+}
+
+function reloadKpiLookup(){
+  const frame=document.getElementById("kpiLookupFrame");
+  if(frame) frame.src=frame.src;
+}
+
+function closeKpiLookup(){
+  const modal=document.getElementById("kpiLookupModal");
+  const frame=document.getElementById("kpiLookupFrame");
+  modal.classList.remove("open");
+  if(frame) frame.src="about:blank";
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){
+    closeKpiLookup();
+    if(typeof closeKpiHelp==="function") closeKpiHelp();
+  }
+});
+
+function showKpiHelp(){
+  document.getElementById("kpiHelpModal").classList.add("open");
+}
+function closeKpiHelp(){
+  document.getElementById("kpiHelpModal").classList.remove("open");
+}
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape") closeKpiHelp();
+});
+
+
+function openGiaLaiCompareByName(name){
+  const bot=document.getElementById("kpiBot");
+  if(!bot.classList.contains("open")) bot.classList.add("open");
+  askKpiBot("So sánh "+name);
+}
+
+function openGiaLaiCompare(){
+  const bot=document.getElementById("kpiBot");
+  if(!bot.classList.contains("open")) bot.classList.add("open");
+  askKpiBot("So sánh Gia Lai");
+}
+
+// ===== KPI BOT: 20 KPI + HUYỆN + TOP 10 NV =====
+window.botCompareCache = window.botCompareCache || null;
+
+function toggleKpiBot(){
+  document.getElementById("kpiBot").classList.toggle("open");
+}
+
+function addBotMessage(text,type="bot"){
+  const box=document.getElementById("botMessages");
+  const div=document.createElement("div");
+  div.className="bot-msg "+type;
+  div.innerHTML=text;
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
+}
+
+function botEscape(v){
+  return String(v ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
+function botNum(v){
+  if(v===null || v===undefined || v==="") return 0;
+  if(typeof v==="number") return v;
+  if(typeof v==="string" && v.includes("T")) return 0;
+  return parseFloat(String(v).replace("%","").replace(",",".")) || 0;
+}
+
+function botNormalize(v){
+  return String(v ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,"")
+    .trim();
+}
+
+function botKey(r){
+  const name=r.nhan_vien ?? r.ho_ten ?? r.ten_nv ?? r.ma_nv ?? r.username ?? r.user ?? "";
+  return botNormalize(name);
+}
+
+function botLabel(r){
+  return String(r.nhan_vien || r.ho_ten || r.ten_nv || r.huyen || "-").trim();
+}
+
+const BOT_KPI_DEFS = [
+  ["TK mới 3h",      "tk_3h_moi",      40,  "up"],
+  ["TK mới 10h",     "tk_10h_moi",     50,  "up"],
+  ["TK mới 16h",     "tk_16h_moi",    100,  "up"],
+  ["TK mới 24h",     "tk_24h_moi",    100,  "up"],
+
+  ["TK có sẵn 3h",   "tk_3h_co_san",   40,  "up"],
+  ["TK có sẵn 10h",  "tk_10h_co_san",  50,  "up"],
+  ["TK có sẵn 16h",  "tk_16h_co_san", 100,  "up"],
+  ["TK có sẵn 24h",  "tk_24h_co_san", 100,  "up"],
+
+  ["TK tích hẹn",    "tich_hen",      100,  "up"],
+
+  ["SC 3h",          "sc_3h",          62,  "up"],
+  ["SC 10h",         "sc_10h",         80,  "up"],
+  ["SC 16h",         "sc_16h",        100,  "up"],
+  ["SC 24h",         "sc_24h",        100,  "up"],
+  ["SC HOT",         "sc_hot",         85,  "up"],
+  ["SC VIP",         "sc_vip",        100,  "up"],
+  ["SC HT 24h",      "sc_ht_24h",     100,  "up"],
+  ["SC SOC 24h",     "sc_soc_24h",     85,  "up"],
+  ["SC SOC 72h",     "sc_soc_72h",    100,  "up"],
+  ["SC Hẹn",         "sc_hen",        100,  "up"],
+
+  // SC Lặp: Target RIÊNG 8%, càng thấp càng tốt.
+  ["SC Lặp",         "sc_lap",          8, "down"]
+];
+
+function botTargetState(value,target,type){
+  const v=botNum(value);
+  const t=botNum(target);
+
+  if(t<=0){
+    return {
+      status:"na",
+      value:v,
+      target:t,
+      targetGapPct:0
+    };
+  }
+
+  if(type==="down"){
+    // Thấp hơn target là tốt. 10% với target 8% => tồi 2%.
+    const gap=v-t;
+    return {
+      status:v<=t ? "good":"bad",
+      value:v,
+      target:t,
+      targetGapPct:gap
+    };
+  }
+
+  // Cao hơn target là tốt. 97% với target 100% => tồi 3%.
+  const gap=t-v;
+  return {
+    status:v>=t ? "good":"bad",
+    value:v,
+    target:t,
+    targetGapPct:gap
+  };
+}
+
+function botCompareMetric(cur,prev,target,type){
+  const c=botTargetState(cur,target,type);
+  const p=botTargetState(prev,target,type);
+
+  // Tích cực = trạng thái hiện tại tốt hơn tháng trước.
+  // Với KPI tăng: current - previous
+  // Với KPI giảm: previous - current
+  const delta = type==="down"
+    ? botNum(prev)-botNum(cur)
+    : botNum(cur)-botNum(prev);
+
+  let changeText="";
+  if(Math.abs(delta)<0.0001){
+    changeText="không đổi";
+  }else if(delta>0){
+    changeText=`tốt hơn ${Math.abs(delta).toFixed(1)}%`;
+  }else{
+    changeText=`tồi hơn ${Math.abs(delta).toFixed(1)}%`;
+  }
+
+  return {
+    current:c.value,
+    previous:p.value,
+    target:c.target,
+    currentState:c.status,
+    previousState:p.status,
+    currentGap:c.targetGapPct,
+    previousGap:p.targetGapPct,
+    gapChange:
+      type==="down"
+        ? p.targetGapPct-c.targetGapPct
+        : c.targetGapPct-p.targetGapPct,
+    delta,
+    changeText
+  };
+}
+
+function botRowMetrics(cur,prev){
+  const items=[];
+
+  BOT_KPI_DEFS.forEach(([name,val,fixedTarget,type])=>{
+    if(!cur || cur[val]===undefined) return;
+
+    const prevVal=prev && prev[val]!==undefined ? prev[val] : null;
+
+    items.push({
+      name,
+      val,
+      target:fixedTarget,
+      type,
+      ...botCompareMetric(cur[val],prevVal,fixedTarget,type)
+    });
+  });
+
+  const valid=items.filter(x=>x.currentState!=="na");
+  const bad=valid.filter(x=>x.currentState==="bad");
+  const good=valid.filter(x=>x.currentState==="good");
+
+  return {
+    items,
+    valid,
+    bad,
+    good,
+    badCount:bad.length,
+    goodCount:good.length,
+    totalGap:bad.reduce((a,x)=>a+Math.max(0,x.currentGap),0),
+    avgGap:bad.length ? bad.reduce((a,x)=>a+Math.max(0,x.currentGap),0)/bad.length : 0,
+    score:cur && cur.score!==undefined ? botNum(cur.score) : 0
+  };
+}
+
+async function loadOldBotData(){
+  if(window.botCompareCache) return window.botCompareCache;
+
+  const oldApi =
+    "https://script.google.com/macros/s/AKfycbxkWbVLZ9H29HT2c91ezPlkT5saKjG4FK_klG7ykFoRv8ghOc10uSBvsu8o3sw86m33og/exec?sheet=Taget%20CDBRn";
+
+  const currentRows=[...(window.allData||[])];
+  const currentDistricts=[...(window.tableDataGlobal||[])];
+
+  let oldRows=[];
+  let oldDistricts=[];
+
+  try{
+    const res=await fetch(oldApi,{cache:"no-store"});
+    if(res.ok){
+      const json=await res.json();
+      const raw=json.data||[];
+      oldDistricts=raw.filter(r=>r.huyen&&r.huyen!=="").slice(0,14);
+      oldRows=raw.slice(14).filter(r=>
+        botNum(r.tong_tk_moi)>0 ||
+        botNum(r.tong_tk_co_san)>0 ||
+        botNum(r.tong_sc)>0
+      );
+      oldRows.forEach(r=>{
+        if(typeof calcScore==="function") r.score=calcScore(r);
+      });
+      oldRows.sort((a,b)=>botNum(b.score)-botNum(a.score));
+    }
+  }catch(err){
+    console.warn("Không lấy được tháng trước, vẫn phân tích được tháng hiện tại:",err);
+  }
+
+  window.botCompareCache={
+    currentRows,
+    currentDistricts,
+    oldRows,
+    oldDistricts
+  };
+  return window.botCompareCache;
+}
+
+function buildEmployeePairs(currentRows,oldRows){
+  const oldMap=new Map();
+  oldRows.forEach(r=>{
+    const k=botKey(r);
+    if(k) oldMap.set(k,r);
+  });
+
+  // Quan trọng: luôn giữ TOÀN BỘ nhân viên tháng hiện tại.
+  // Dữ liệu tháng trước chỉ dùng để so sánh nếu tìm thấy nhân viên tương ứng.
+  return currentRows.map(cur=>{
+    const old=oldMap.get(botKey(cur)) || null;
+    const metrics=botRowMetrics(cur,old);
+    const oldMetrics=old ? botRowMetrics(old,null) : null;
+
+    return {
+      name:botLabel(cur),
+      huyen:cur.huyen||old?.huyen||"-",
+      current:cur,
+      old,
+      metrics,
+      oldMetrics,
+      score:botNum(cur.score)
+    };
+  });
+}
+
+function fmt(v, forceOneDecimal=false){
+  const n=Number(v||0);
+  if(forceOneDecimal) return n.toFixed(1);
+  return Number.isInteger(n) ? String(n) : n.toFixed(1);
+}
+
+function fmtKpiValue(v,label,isTarget=false){
+  // SC Lặp target riêng 8.0%; các KPI khác bỏ .0 nếu là số nguyên.
+  if(label==="SC Lặp" && isTarget) return Number(v||0).toFixed(1);
+  return fmt(v);
+}
+
+function botGapSentence(m){
+  if(m.currentGap>0){
+    return `tồi hơn Target ${fmt(m.currentGap)}%`;
+  }
+  if(m.currentGap<0){
+    return `tốt hơn Target ${fmt(Math.abs(m.currentGap))}%`;
+  }
+  return "đạt đúng Target";
+}
+
+function botPrevSentence(m){
+  if(m.previous===undefined || m.previous===null){
+    return "không có dữ liệu tháng trước";
+  }
+  if(Math.abs(m.delta)<0.0001){
+    return `không đổi so với tháng trước (${fmt(m.previous)}%)`;
+  }
+  return `so với tháng trước (${fmt(m.previous)}%) → ${m.changeText}`;
+}
+
+function renderKpi20Comparison(rows){
+  let out=`<b>🎯 20 chỉ tiêu KPI: tháng hiện tại ↔ tháng trước</b>`;
+
+  rows.forEach((x,i)=>{
+    const current=fmtKpiValue(x.current,x.name,false);
+    const target=fmtKpiValue(x.target,x.name,true);
+    const previous=fmtKpiValue(x.previous,x.name,false);
+
+    let targetText="";
+    if(x.currentGap>0){
+      targetText=`<span class="bot-bad">tồi hơn so với Target ${fmt(x.currentGap)}%</span>`;
+    }else if(x.currentGap<0){
+      targetText=`<span class="bot-good">tốt hơn so với Target ${fmt(Math.abs(x.currentGap))}%</span>`;
+    }else{
+      targetText="đạt đúng Target";
+    }
+
+    let changeText="không đổi";
+    let changeClass="";
+    if(Math.abs(x.delta)>=0.0001){
+      if(x.delta>0){
+        changeText=`đang tốt hơn ${fmt(Math.abs(x.delta))}%`;
+        changeClass="bot-good";
+      }else{
+        changeText=`đang tồi hơn ${fmt(Math.abs(x.delta))}%`;
+        changeClass="bot-bad";
+      }
+    }
+
+    out+=`
+      <div class="bot-report">
+        <b>- ${i+1}. ${botEscape(x.name)}:</b>
+        (${current}% / ${target}%) → ${targetText},
+        so sánh với tháng trước (${previous}% / ${target}%) 
+        <span class="${changeClass}">→ ${changeText}</span>.
+      </div>`;
+  });
+
+  return out;
+}
+function buildEntitySummary(cur,old,entityLabel){
+  const currentMetrics=botRowMetrics(cur,old);
+  const previousMetrics=old ? botRowMetrics(old,null) : null;
+
+  return {
+    name:entityLabel,
+    current:cur,
+    old,
+    metrics:currentMetrics,
+    oldMetrics:previousMetrics,
+    score:botNum(cur?.score)
+  };
+}
+
+function renderEntityTop(rows,title,goodMode){
+  let out=`<b>${title}</b>`;
+
+  rows.forEach((x,i)=>{
+    const m=x.metrics;
+    const list=(goodMode ? m.items.filter(k=>k.currentState==="good")
+                         : m.items.filter(k=>k.currentState==="bad"))
+      .sort((a,b)=>Math.abs(b.currentGap)-Math.abs(a.currentGap));
+
+    const badCount=m.badCount;
+    const goodCount=m.goodCount;
+
+    const summary=goodMode
+      ? `Tốt ${goodCount}/20 KPI`
+      : `Tồi ${badCount}/20 KPI`;
+
+    const details=list.length
+      ? list.map(k=>{
+          const cur=fmtKpiValue(k.current,k.name,false);
+          const target=fmtKpiValue(k.target,k.name,true);
+
+          if(goodMode){
+            if(k.currentGap<0){
+              return `<b>${botEscape(k.name)}:</b> (${cur}%/${target}%/ <span class="bot-good">tốt hơn Target ${fmt(Math.abs(k.currentGap))}%</span>)`;
+            }
+            return `<b>${botEscape(k.name)}:</b> (${cur}%/${target}%/ <span class="bot-good">đạt Target</span>)`;
+          }
+
+          return `<b>${botEscape(k.name)}:</b> (${cur}%/${target}%/ <span class="bot-bad">tồi hơn Target ${fmt(k.currentGap)}%</span>)`;
+        }).join(", ")
+      : (goodMode ? "không có KPI đạt Target." : "không có KPI tồi.");
+
+    out+=`
+      <div class="bot-report">
+        <b>- ${i+1}. ${botEscape(x.name)}: ➜</b>
+        <span class="${goodMode?'bot-good':(badCount?'bot-bad':'bot-good')}">${summary}</span>
+        bao gồm ${details}.
+      </div>`;
+  });
+
+  return out;
+}
+function buildDistrictRanking(currentDistricts,oldDistricts){
+  const oldMap=new Map(
+    oldDistricts.map(r=>[botNormalize(r.huyen),r])
+  );
+
+  return currentDistricts.map(cur=>{
+    const old=oldMap.get(botNormalize(cur.huyen));
+    const curM=botRowMetrics(cur,old);
+    const oldM=old ? botRowMetrics(old,null) : null;
+    return {
+      name:cur.huyen||"-",
+      current:cur,
+      old,
+      metrics:curM,
+      oldMetrics:oldM,
+      rank:cur.rank||"-"
+    };
+  });
+}
+
+function renderDistrictRanking(rows){
+  let out=`<b>🏢 5 huyện tồi nhất</b>`;
+
+  rows.slice(0,5).forEach((x,i)=>{
+    const m=x.metrics;
+    const badItems=m.items
+      .filter(k=>k.currentState==="bad")
+      .sort((a,b)=>b.currentGap-a.currentGap);
+
+    const details=badItems.length
+      ? badItems.map(k=>
+          `<b>${botEscape(k.name)}:</b> (${fmtKpiValue(k.current,k.name,false)}%/${fmtKpiValue(k.target,k.name,true)}%/ <span class="bot-bad">tồi hơn Target ${fmt(k.currentGap)}%</span>)`
+        ).join(", ")
+      : "không có KPI tồi.";
+
+    out+=`
+      <div class="bot-report">
+        <b>- ${botEscape(x.name)}: ➜</b>
+        <span class="${m.badCount?'bot-bad':'bot-good'}">Tồi ${m.badCount}/20 KPI</span>
+        bao gồm ${details}.
+      </div>`;
+  });
+
+  return out;
+}
+function getDistrictPair(currentDistricts,oldDistricts,name){
+  const key=botNormalize(name);
+  const cur=currentDistricts.find(r=>botNormalize(r.huyen)===key);
+  const old=oldDistricts.find(r=>botNormalize(r.huyen)===key);
+  return {cur,old};
+}
+
+function renderDistrictDetail(name,cur,old){
+  if(!cur){
+    return `<b>🏢 ${botEscape(name)}</b><br>Không tìm thấy dữ liệu huyện trong tháng hiện tại.`;
+  }
+
+  const m=botRowMetrics(cur,old);
+  const reportItems=m.items; // Gia Lai: báo cáo đủ 20 KPI.
+
+  let lines=`<b>🏢 ${botEscape(name)}:</b>`;
+
+  reportItems.forEach(k=>{
+    const currentText=fmtKpiValue(k.current,k.name,false);
+    const targetText=fmtKpiValue(k.target,k.name,true);
+    let targetSentence="đạt Target";
+
+    if(k.currentGap>0){
+      targetSentence=`<span class="bot-bad">tồi hơn so với Target ${fmt(k.currentGap)}%</span>`;
+    }else if(k.currentGap<0){
+      targetSentence=`<span class="bot-good">tốt hơn so với Target ${fmt(Math.abs(k.currentGap))}%</span>`;
+    }else{
+      targetSentence=`<span>đạt đúng Target</span>`;
+    }
+
+    let previousPart="";
+    if(k.previous!==null && k.previous!==undefined){
+      const prevText=fmtKpiValue(k.previous,k.name,false);
+      let changeText="không đổi";
+      let changeClass="";
+
+      if(Math.abs(k.delta)>=0.0001){
+        if(k.delta>0){
+          changeText=`đang tốt hơn ${fmt(Math.abs(k.delta))}%`;
+          changeClass="bot-good";
+        }else{
+          changeText=`đang tồi hơn ${fmt(Math.abs(k.delta))}%`;
+          changeClass="bot-bad";
+        }
+      }
+
+      previousPart=`, so sánh với tháng trước (${prevText}% / ${targetText}%) <span class="${changeClass}">→ ${changeText}</span>`;
+    }
+
+    lines+=`
+      <div class="bot-report">
+        <b>- ${botEscape(k.name)}:</b>
+        (${currentText}% / ${targetText}%) → ${targetSentence}${previousPart}.
+      </div>`;
+  });
+
+  return lines;
+}
+function renderAllDistrictComparison(currentDistricts,oldDistricts){
+  const districts=currentDistricts.map(r=>r.huyen).filter(Boolean);
+  let out=`<b>🏢 So sánh 14 huyện: tháng hiện tại ↔ tháng trước</b>`;
+  out+=`<div class="bot-note">Gia Lai được hiển thị đầu tiên, sau đó là 13 huyện còn lại.</div>`;
+
+  districts.forEach((name,i)=>{
+    const pair=getDistrictPair(currentDistricts,oldDistricts,name);
+    out+=`<div style="margin-top:10px;padding-top:8px;border-top:2px solid #e8eef7">
+      ${renderDistrictDetail(name,pair.cur,pair.old)}
+    </div>`;
+  });
+
+  return out;
+}
+
+async function askKpiBot(question){
+  addBotMessage(botEscape(question),"user");
+  addBotMessage("Đang phân tích 20 KPI, Target và dữ liệu tháng trước...");
+
+  try{
+    const d=await loadOldBotData();
+    const pairs=buildEmployeePairs(d.currentRows,d.oldRows);
+
+    const msgs=document.querySelectorAll("#botMessages .bot-msg");
+    if(msgs.length && msgs[msgs.length-1].textContent.includes("Đang phân tích")){
+      msgs[msgs.length-1].remove();
+    }
+
+    const q=question.toLowerCase();
+
+    // So sánh trực tiếp một huyện khi bấm vào tên huyện trong bảng.
+    const districtMatch = question.match(/^so sánh\s+(.+)$/i);
+    if(districtMatch){
+      const districtName=districtMatch[1].trim();
+      const pair=getDistrictPair(d.currentDistricts,d.oldDistricts,districtName);
+      if(pair.cur){
+        addBotMessage(renderDistrictDetail(districtName,pair.cur,pair.old));
+      }else{
+        addBotMessage(`Không tìm thấy dữ liệu huyện <b>${botEscape(districtName)}</b> trong tháng hiện tại.`);
+      }
+      return;
+    }
+
+
+    if(q.includes("kiểm tra dữ liệu") || q==="data" || q.includes("dữ liệu")){
+      addBotMessage(
+        `<b>🔎 Dữ liệu Bot đang đọc</b><br>`+
+        `Nhân viên hiện tại: <b>${d.currentRows.length}</b><br>`+
+        `Huyện hiện tại: <b>${d.currentDistricts.length}</b><br>`+
+        `Nhân viên tháng trước: <b>${d.oldRows.length}</b><br>`+
+        `Huyện tháng trước: <b>${d.oldDistricts.length}</b>`
+      );
+      return;
+    }
+
+
+    // 1. 20 KPI
+    if(q.includes("20 chỉ tiêu") || q.includes("từng chỉ tiêu") || q.includes("chỉ tiêu")){
+      const items=BOT_KPI_DEFS.map(([name,val,fixedTarget,type])=>{
+        const currentVals=d.currentRows
+          .filter(r=>r[val]!==undefined)
+          .map(r=>botNum(r[val]));
+
+        const oldVals=d.oldRows
+          .filter(r=>r[val]!==undefined)
+          .map(r=>botNum(r[val]));
+
+        const currentAvg=currentVals.length
+          ? currentVals.reduce((a,x)=>a+x,0)/currentVals.length
+          : 0;
+
+        const oldAvg=oldVals.length
+          ? oldVals.reduce((a,x)=>a+x,0)/oldVals.length
+          : 0;
+
+        return {
+          name,
+          ...botCompareMetric(currentAvg,oldAvg,fixedTarget,type)
+        };
+      });
+
+      addBotMessage(renderKpi20Comparison(items));
+      return;
+    }
+
+    // 2. Huyện: xếp trực tiếp theo dữ liệu tháng hiện tại.
+    if(q.includes("huyện")){
+      const ranking=buildDistrictRanking(d.currentDistricts,d.oldDistricts)
+        .sort((a,b)=>{
+          const gap=b.metrics.totalGap-a.metrics.totalGap;
+          return gap || b.metrics.badCount-a.metrics.badCount;
+        })
+        .slice(0,5);
+
+      if(!ranking.length){
+        addBotMessage("Không có dữ liệu huyện của tháng hiện tại.");
+        return;
+      }
+
+      addBotMessage(renderDistrictRanking(ranking));
+      return;
+    }
+
+    // 3. Top 10 nhân viên kém: lấy trực tiếp toàn bộ NV tháng hiện tại.
+    if(q.includes("nhân viên kém") || q.includes("nv kém") || q.includes("top kém")){
+      const ranking=pairs
+        .sort((a,b)=>{
+          const d=b.metrics.totalGap-a.metrics.totalGap;
+          if(d) return d;
+          const bad=b.metrics.badCount-a.metrics.badCount;
+          if(bad) return bad;
+          return a.score-b.score;
+        })
+        .slice(0,10);
+
+      if(!ranking.length){
+        addBotMessage(`Không có dữ liệu nhân viên tháng hiện tại. Tổng NV: ${d.currentRows.length}.`);
+        return;
+      }
+
+      addBotMessage(renderEntityTop(
+        ranking,
+        "👤 Top 10 nhân viên kém",
+        false
+      ));
+      return;
+    }
+
+    // 4. Top 10 nhân viên tốt: lấy trực tiếp toàn bộ NV tháng hiện tại.
+    if(q.includes("nhân viên tốt") || q.includes("nv tốt") || q.includes("top tốt")){
+      const ranking=pairs
+        .sort((a,b)=>{
+          const score=b.score-a.score;
+          if(score) return score;
+          const bad=a.metrics.badCount-b.metrics.badCount;
+          return bad;
+        })
+        .slice(0,10);
+
+      if(!ranking.length){
+        addBotMessage(`Không có dữ liệu nhân viên tháng hiện tại. Tổng NV: ${d.currentRows.length}.`);
+        return;
+      }
+
+      addBotMessage(renderEntityTop(
+        ranking,
+        "🏆 Top 10 nhân viên tốt",
+        true
+      ));
+      return;
+    }
+
+    // 5. Tổng quan
+    if(q.includes("tổng quan") || q==="so sánh"){
+      const currentScore=pairs.length
+        ? pairs.reduce((a,x)=>a+x.score,0)/pairs.length : 0;
+
+      const oldPaired=pairs.filter(x=>x.old);
+      const oldScore=oldPaired.length
+        ? oldPaired.reduce((a,x)=>a+botNum(x.old.score),0)/oldPaired.length : 0;
+
+      const curBad=pairs.length
+        ? pairs.reduce((a,x)=>a+x.metrics.badCount,0)/pairs.length : 0;
+
+      const oldBad=oldPaired.length
+        ? oldPaired.reduce((a,x)=>a+(x.old ? botRowMetrics(x.old,null).badCount : 0),0)/oldPaired.length : 0;
+
+      addBotMessage(
+        `<b>📊 Tổng quan</b><br>`+
+        `Điểm KPI TB: T-1 <b>${fmt(oldScore)}</b> → hiện tại <b>${fmt(currentScore)}</b> `+
+        `<span class="${currentScore>=oldScore?'bot-good':'bot-bad'}">(${currentScore>=oldScore?'+':''}${fmt(currentScore-oldScore)})</span><br>`+
+        `KPI tồi TB/người: T-1 <b>${fmt(oldBad)}</b> → hiện tại <b>${fmt(curBad)}</b><br>`+
+        `Ghép được nhân viên hai tháng: <b>${oldPaired.length}</b>`
+      );
+      return;
+    }
+
+    // 6. Mặc định
+    addBotMessage(
+      "Bot hiện hỗ trợ:<br>"+
+      "• 20 chỉ tiêu KPI<br>"+
+      "• Huyện tồi nhất<br>"+
+      "• Top 10 nhân viên kém<br>"+
+      "• Top 10 nhân viên tốt<br>"+
+      "• So sánh tổng quan"
+    );
+
+  }catch(err){
+    console.error("KPI Bot error:",err);
+    const msgs=document.querySelectorAll("#botMessages .bot-msg");
+    if(msgs.length && msgs[msgs.length-1].textContent.includes("Đang phân tích")){
+      msgs[msgs.length-1].remove();
+    }
+    addBotMessage("Bot không thể tạo đánh giá cho yêu cầu này. Dữ liệu tháng hiện tại vẫn đang được giữ nguyên.");
+  }
+}
+
+function sendKpiBot(){
+  const input=document.getElementById("botInput");
+  const q=input.value.trim();
+  if(!q) return;
+  input.value="";
+  askKpiBot(q);
+}
+
 </script>
 </div>
 </div>
+
+<div id="kpiHelpModal" class="kpi-help-modal" onclick="if(event.target===this)closeKpiHelp()">
+  <div class="kpi-help-box">
+    <div class="kpi-help-head">
+      <b>❔ Hướng dẫn KPI Bot</b>
+      <button onclick="closeKpiHelp()">×</button>
+    </div>
+    <div class="kpi-help-body">
+      <div><b>🏠 Gia Lai</b><br>Nhấn trực tiếp chữ <b>Gia Lai</b> trong bảng KPI hoặc hỏi “So sánh Gia Lai”.</div>
+      <div><b>🏢 5 huyện tồi</b><br>Xếp 5 huyện có tổng KPI lệch Target xấu nhất.</div>
+      <div><b>⚠️ Top 10 kém</b><br>Chỉ liệt kê các KPI đang tồi hơn Target.</div>
+      <div><b>🏆 Top 10 tốt</b><br>Liệt kê các KPI đạt/tốt hơn Target.</div>
+      <div><b>🎯 20 KPI</b><br>So sánh giá trị hiện tại, Target và tháng trước cho từng chỉ tiêu.</div>
+      <div class="bot-note">SC Lặp dùng Target riêng 8.0% và càng thấp càng tốt.</div>
+    </div>
+  </div>
+</div>
+
+
+<div id="kpiLookupModal" class="kpi-lookup-modal" onclick="if(event.target===this)closeKpiLookup()">
+  <div class="kpi-lookup-window">
+    <div class="kpi-lookup-head">
+      <b id="kpiLookupTitle">Tra cứu KPI</b>
+      <div class="kpi-lookup-actions">
+        <button onclick="reloadKpiLookup()" title="Tải lại">↻</button>
+        <button onclick="closeKpiLookup()" title="Đóng">×</button>
+      </div>
+    </div>
+    <iframe id="kpiLookupFrame" class="kpi-lookup-frame" src="about:blank"></iframe>
+  </div>
+</div>
+
 </body>
 </html>
