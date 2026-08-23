@@ -1664,6 +1664,17 @@ body{
   }
 }
 
+
+/* ===== KPI HUYỆN ĐANG TỒI: MẶC ĐỊNH ẨN ===== */
+#sectionBadHuyen{
+  display:none;
+}
+
+
+#sectionBadHuyen{
+  width:100%;
+}
+
 </style>
 </head>
 
@@ -1724,8 +1735,8 @@ body{
       <button onclick="openOldKPI()" class="switch-btn">
 📅 KPI tháng trước
 </button>
-      <button class="kpi-lookup-btn" onclick="openKpiLookup('sc','Tra cứu KPI quá hạn SC','https://cvthuong921331040253-hub.github.io/dashboard-icms/scqh.html')">🔎 Tra cứu KPI quá hạn SC</button>
-      <button class="kpi-lookup-btn" onclick="openKpiLookup('tkm','Tra cứu KPI quá hạn TKM','https://cvthuong921331040253-hub.github.io/dashboard-icms/tkmqh.html')">🔎 Tra cứu KPI quá hạn TKM</button>
+      <button class="kpi-lookup-btn" onclick="openKpiLookup('sc','Tra cứu KPI quá hạn SC','https://cvthuong921331040253-hub.github.io/dashboard-icms/quahansc.html')">🔎 Tra cứu KPI quá hạn SC</button>
+      <button class="kpi-lookup-btn" onclick="openKpiLookup('tkm','Tra cứu KPI quá hạn TKM','https://cvthuong921331040253-hub.github.io/dashboard-icms/quahantkm.html')">🔎 Tra cứu KPI quá hạn TKM</button>
     </div>
 </div>
   <div class="header-filter">
@@ -1747,8 +1758,10 @@ body{
   <div id="worstKPI"></div>
 </div>
     
-  <h3>⚠️KPI huyện đang tồi</h3>
-  <div id="badHuyen"></div>
+  <div id="sectionBadHuyen">
+    <h3>⚠️ KPI huyện đang tồi</h3>
+    <div id="badHuyen"></div>
+  </div>
   
   <div id="sectionTop">
   <h3>🏆 Top 10 NV tốt</h3>
@@ -2158,97 +2171,146 @@ function render(data){
 function filter(){
   applyFilter();
 }
+
+function updateMobileContentOffset(offsetData){
+  const data=document.getElementById("data");
+  const sectionTable=document.getElementById("sectionTable");
+
+  if(window.innerWidth <= 700){
+    const total=parseFloat(
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--mobile-fixed-total")
+    ) || 0;
+
+    if(data){
+      data.style.paddingTop = offsetData ? (total + 8) + "px" : "";
+    }
+
+    if(sectionTable){
+      sectionTable.style.paddingTop = offsetData ? "" : (total + 6) + "px";
+    }
+  }else{
+    if(data) data.style.paddingTop="";
+    if(sectionTable) sectionTable.style.paddingTop="";
+  }
+}
+
 function applyFilter(){
 
-  let nv = document.getElementById("nv").value.toLowerCase().trim();
-  let h = document.getElementById("huyen").value.toLowerCase().trim();
+  const nvEl=document.getElementById("nv");
+  const huyenEl=document.getElementById("huyen");
 
-  let isSearchNV = nv !== "";
-  let isSearchHuyen = h !== "";
+  const nv=(nvEl?.value || "").toLowerCase().trim();
+  const h=(huyenEl?.value || "").toLowerCase().trim();
 
-  let f = allData.filter(r =>
-    (r.nhan_vien||"").toLowerCase().includes(nv) &&
-    (r.huyen||"").toLowerCase().includes(h)
-  );
+  const isSearchNV = nv !== "";
+  const isSearchHuyen = h !== "";
 
-  // =============================
-  // 🔴 MODE KPI KÉM
-  // =============================
+  const sectionBadHuyenEl=document.getElementById("sectionBadHuyen");
+
+  // Hàm duy nhất quyết định có được phép hiện KPI huyện đang tồi hay không.
+  function setBadHuyenVisible(show){
+    if(sectionBadHuyenEl){
+      sectionBadHuyenEl.style.display = show ? "block" : "none";
+    }
+  }
+
+  // -------------------------------------------------
+  // 1. TÌM NHÂN VIÊN — CHỈ THEO TÊN NHÂN VIÊN
+  // -------------------------------------------------
+  if(isSearchNV){
+
+    // Tuyệt đối không cho KPI huyện đang tồi xuất hiện khi tìm nhân viên.
+    setBadHuyenVisible(false);
+    updateMobileContentOffset(true);
+
+    const result = allData
+      .filter(r => (r.nhan_vien || "").toLowerCase().includes(nv))
+      .filter(r => !showBadOnly || getBadKPI(r).length > 0)
+      .sort((a,b)=>a.score-b.score);
+
+    render(result);
+
+    sectionTop.style.display="none";
+    sectionWorst.style.display="none";
+    sectionTable.style.display="none";
+    sectionWorstKPI.style.display="none";
+
+    return;
+  }
+
+  // -------------------------------------------------
+  // 2. KPI KÉM
+  // -------------------------------------------------
   if(showBadOnly){
 
-    let badNV = f
+    updateMobileContentOffset(false);
+
+    const base = isSearchHuyen
+      ? allData.filter(r => (r.huyen || "").toLowerCase().includes(h))
+      : allData;
+
+    const badNV = base
       .filter(r => getBadKPI(r).length > 0)
-      .sort((a,b)=> a.score - b.score);
+      .sort((a,b)=>a.score-b.score);
 
     render(badNV);
 
     renderBadHuyen(tableDataGlobal);
     renderKPIBadByHuyen(tableDataGlobal);
 
-    // UI
-    sectionTop.style.display = "none";
-    sectionWorst.style.display = "none";
-    sectionTable.style.display = "none";
+    // Chỉ đây mới được phép hiện "KPI huyện đang tồi".
+    setBadHuyenVisible(true);
 
-    badHuyen.style.display = "block";
-    sectionWorstKPI.style.display = "block";
-
-    return;
-  }
-
-  // =============================
-  // 🔍 SEARCH NHÂN VIÊN
-  // =============================
-  if(isSearchNV){
-
-    render(f);
-
-    sectionTop.style.display = "none";
-    sectionWorst.style.display = "none";
-    sectionTable.style.display = "none";
-    badHuyen.style.display = "none";
-    sectionWorstKPI.style.display = "none";
+    sectionTop.style.display="none";
+    sectionWorst.style.display="none";
+    sectionTable.style.display="none";
+    sectionWorstKPI.style.display="block";
 
     return;
   }
 
-  // =============================
-  // 🔍 SEARCH HUYỆN
-  // =============================
+  // -------------------------------------------------
+  // 3. TÌM HUYỆN
+  // -------------------------------------------------
   if(isSearchHuyen){
 
-    render(f);
+    setBadHuyenVisible(false);
+    updateMobileContentOffset(false);
 
-    // bảng KPI lọc theo huyện
-    let tableFiltered = tableDataGlobal.filter(r =>
-      (r.huyen||"").toLowerCase().includes(h)
+    const result=allData.filter(r =>
+      (r.huyen || "").toLowerCase().includes(h)
+    );
+
+    render(result);
+
+    const tableFiltered=tableDataGlobal.filter(r =>
+      (r.huyen || "").toLowerCase().includes(h)
     );
 
     renderTableExcel(tableFiltered);
 
-    sectionTop.style.display = "none";
-    sectionWorst.style.display = "none";
-    sectionTable.style.display = "block";
-    badHuyen.style.display = "none";
-    sectionWorstKPI.style.display = "none";
+    sectionTop.style.display="none";
+    sectionWorst.style.display="none";
+    sectionTable.style.display="block";
+    sectionWorstKPI.style.display="none";
 
     return;
   }
 
-  // =============================
-  // 🟢 DEFAULT
-  // =============================
-  render(f);
+  // -------------------------------------------------
+  // 4. MẶC ĐỊNH
+  // -------------------------------------------------
+  setBadHuyenVisible(false);
+  updateMobileContentOffset(false);
 
+  render(allData);
   renderTableExcel(tableDataGlobal);
-  renderBadHuyen(tableDataGlobal);          // 👈 QUAN TRỌNG
-  renderKPIBadByHuyen(tableDataGlobal);     // 👈 nếu muốn hiện luôn
 
-  sectionTop.style.display = "block";
-  sectionWorst.style.display = "block";
-  sectionTable.style.display = "block";
-  badHuyen.style.display = "block";
-  sectionWorstKPI.style.display = "none";
+  sectionTop.style.display="block";
+  sectionWorst.style.display="block";
+  sectionTable.style.display="block";
+  sectionWorstKPI.style.display="none";
 }
   
 // ===== CHECKBOX =====
@@ -3218,6 +3280,13 @@ function sendKpiBot(){
   window.addEventListener("resize",()=>{
     updateMobileFixedHeader();
     enableMobileFixed();
+
+    const nv=document.getElementById("nv");
+    if(nv && nv.value.trim()!==""){
+      updateMobileContentOffset(true);
+    }else{
+      updateMobileContentOffset(false);
+    }
   },{passive:true});
 
   if(window.ResizeObserver){
@@ -3235,6 +3304,9 @@ function sendKpiBot(){
   }
 })();
 </script>
+
+
+
 
 </body>
 </html>
