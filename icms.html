@@ -2,2392 +2,1500 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ICMS - Bảng chi tiết</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#f1f3f4;
-  overflow-x:hidden;
+:root{
+  --bg:#eef3f8;--card:#fff;--text:#17212b;--muted:#64748b;--line:#dce5ee;
+  --blue:#075fc8;--blue2:#0b75e8;--red:#dc3545;--green:#16804b;--amber:#d97706;
 }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
+.app{max-width:1900px;margin:auto;padding:14px}
+.header{background:linear-gradient(135deg,#063d73,#0b75d1);color:#fff;border-radius:18px;padding:16px 18px;display:flex;justify-content:space-between;gap:15px;align-items:center}
+.title b{font-size:21px}.title span{display:block;font-size:12px;opacity:.8;margin-top:4px}
+.source{font-size:12px;background:rgba(255,255,255,.15);padding:8px 10px;border-radius:999px}
+.filters{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;display:grid;grid-template-columns:minmax(260px,1.5fr) repeat(4,minmax(150px,1fr)) auto auto;gap:8px;align-items:center}
+input,select,button{font:inherit}
+.search,select{height:43px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:0 11px;color:var(--text);outline:none}
+.search:focus,select:focus{border-color:var(--blue)}
+button{height:43px;border:0;border-radius:10px;padding:0 13px;font-weight:750;cursor:pointer;white-space:nowrap}
+.btn-excel{background:#107c41;color:#fff}.btn-api{background:#334155;color:#fff}.btn-clear{background:#edf2f7;color:#334155}
+#excelInput{display:none}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:12px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:12px 14px}
+.stat span{display:block;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase}.stat b{display:block;font-size:22px;margin-top:4px}
+.stat.red b{color:var(--red)}.stat.green b{color:var(--green)}.stat.blue b{color:var(--blue)}
+.table-card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.table-head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.table-head b{font-size:15px}.table-head span{font-size:12px;color:var(--muted)}
+.table-wrap{overflow:auto;max-height:calc(100vh - 250px)}
+table{width:100%;min-width:1450px;border-collapse:collapse;font-size:12px}
+th{position:sticky;top:0;background:#f5f8fc;z-index:2;text-align:left;padding:11px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 9px;border-bottom:1px solid #edf1f5;vertical-align:top;max-width:260px}
+tr:hover td{background:#f8fbff}
+.tag{display:inline-block;padding:4px 7px;border-radius:999px;font-size:10px;font-weight:800}
+.over{background:#ffe7e8;color:#b42318}.ok{background:#e7f7ed;color:#13733e}.inos{background:#e8f1ff;color:#075fc8}.outos{background:#fff1df;color:#a65400}
+.empty{padding:35px;text-align:center;color:var(--muted)}
+#loading{position:fixed;inset:0;background:rgba(7,19,33,.55);display:flex;align-items:center;justify-content:center;z-index:9999}
+.loadbox{background:#fff;border-radius:20px;padding:25px 35px;text-align:center;min-width:270px}.spin{width:45px;height:45px;border:5px solid #dce8f5;border-top-color:var(--blue);border-radius:50%;margin:0 auto 12px;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.mobile-list{display:none}
 
-.header{
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  z-index:1000;
-  background:#0b5394;
-  color:white;
-  padding:8px;
-  text-align:center;
-  font-size:16px;
-  font-weight:bold;
+@media(max-width:900px){
+  .app{padding:8px}.header{border-radius:14px;padding:13px}.title b{font-size:18px}
+  .filters{grid-template-columns:1fr 1fr;border-radius:14px;padding:9px}.filters .search{grid-column:1/-1}
+  .filters button{width:100%}.stats{grid-template-columns:repeat(3,1fr);gap:7px}.stat{padding:10px}.stat b{font-size:18px}
+  .table-card{display:none}.mobile-list{display:block;margin-top:10px}
+  .list-head{display:flex;justify-content:space-between;padding:10px 4px;color:var(--muted);font-size:12px}
+  .item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px;box-shadow:0 3px 12px rgba(15,23,42,.04)}
+  .item-top{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px}.item-title{font-weight:800;font-size:14px;line-height:1.35}
+  .item-wo{font-size:11px;color:var(--muted);margin-top:3px}.item-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+  .kv{font-size:11px}.kv span{display:block;color:var(--muted);font-size:10px;margin-bottom:2px}.item-desc{margin-top:8px;padding-top:8px;border-top:1px solid #edf1f5;font-size:11px;color:#475569}
 }
-  
-.container{
-  padding:8px;
-  max-width:500px;
-  margin:auto;
-}
-  
-.fixed-space{
-  height:200px;
-}
-  
-.top-box{
-  display:grid;
-  grid-template-columns:
-    repeat(3,1fr);
-  gap:4px;
-  margin-bottom:4px;
-}
-
-.main-btn{
-  width:100%;
-  height:34px;
-  border:none;
-  border-radius:8px;
-  background:#0b5394;
-  color:white;
-  font-size:10px;
-  font-weight:bold;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:2px 4px;
-  box-sizing:border-box;
-}
-
-.card{
-  background:white;
-  padding:8px;
-  border-radius:12px;
-  margin-bottom:8px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.1);
-  overflow:hidden;
-}
-
-.group-title{
-  font-size:14px;
-  font-weight:bold;
-  margin-bottom:16px;
-  color:#0b5394;
-}
-
-.sub-btn{
-  width:100%;
-  border:none;
-  padding:6px 10px;
-  margin-bottom:4px;
-  border-radius:8px;
-  background:#e8f0fe;
-  text-align:left;
-  font-weight:bold;
-  font-size:12px;
-  min-height:32px;
-  display:flex;
-  align-items:center;
-  box-sizing:border-box;
-}
-
-.fade-in{
-  animation:
-    fadeIn 0.25s ease;
-}
-
-@keyframes fadeIn{
-
-  from{
-    opacity:0;
-    transform:
-      translateY(8px);
-  }
-
-  to{
-    opacity:1;
-    transform:
-      translateY(0);
-  }
-
-}
-
-.item{
-  background:white;
-  border-left:4px solid red;
-  padding:8px;
-  border-radius:8px;
-  margin-bottom:8px;
-}
-
-.item p{
-  margin:4px 0;
-  font-size:14px;
-}
-
-.red{
-  color:red;
-  font-weight:bold;
-}
-
-.green{
-  color:green;
-  font-weight:bold;
-}
-
-#loading{
-  text-align:center;
-  padding:4px;
-  font-size:10px;
-}
-.fixed-top{
-  position:fixed;
-  top:0px;
-  left:0;
-  right:0;
-  z-index:999;
-  background:#f1f3f4;
-  padding:6px;
-  box-shadow:
-  0 2px 5px rgba(0,0,0,0.08);
-  max-width:500px;
-  margin:auto;
-}
-
 </style>
+
+<style id="user-request-patch">
+.filters{grid-template-columns:minmax(240px,1.5fr) repeat(5,minmax(140px,1fr)) auto!important}
+.filters .btn-clear{min-width:118px}
+.table-head>div{display:flex;align-items:center;gap:12px}
+.btn-export{background:#107c41;color:#fff;height:40px;border:0;border-radius:9px;padding:0 13px;font-weight:800;cursor:pointer}
+.table-wrap table{text-align:center}
+.table-wrap th,.table-wrap td{text-align:center!important;white-space:normal!important;word-break:break-word;overflow-wrap:anywhere;line-height:1.35}
+.table-wrap th{vertical-align:middle}
+.open-detail{border:1px solid #cbd5e1;background:#f8fafc;color:#0f3f74;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:800;cursor:pointer}
+.open-detail:hover{background:#e8f1ff;border-color:#9ec5fe}
+#detailModal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:10000;padding:20px;align-items:center;justify-content:center}
+#detailModal.show{display:flex}
+.modal-box{width:min(900px,100%);max-height:min(75vh,720px);background:#fff;border-radius:18px;box-shadow:0 25px 80px rgba(0,0,0,.3);overflow:hidden}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);font-weight:800}
+.modal-close{border:0;background:#eef2f7;border-radius:8px;width:34px;height:34px;font-size:18px;cursor:pointer}
+.modal-body{padding:16px;overflow:auto;max-height:calc(min(75vh,720px) - 65px);white-space:pre-wrap;word-break:break-word;line-height:1.55;font-size:13px}
+@media(max-width:900px){
+ .filters{grid-template-columns:1fr 1fr!important}
+ .filters .search{grid-column:1/-1}
+ .filters .btn-clear{grid-column:1/-1}
+ .table-card{display:none}
+ .btn-export{height:38px;font-size:11px}
+}
+</style>
+
+
+<style id="compact-mobile-v3">
+/* Compact desktop */
+.header{padding:10px 14px!important;border-radius:14px!important}
+.title b{font-size:17px!important}.title span{font-size:10px!important;margin-top:2px!important}
+.source{font-size:10px!important;padding:6px 9px!important}
+.filters{
+  margin-top:8px!important;padding:8px!important;border-radius:13px!important;
+  grid-template-columns:minmax(220px,1.35fr) repeat(5,minmax(105px,1fr)) auto!important;
+  gap:6px!important
+}
+.search,select{height:34px!important;font-size:11px!important;border-radius:8px!important;padding:0 8px!important}
+.filters button{height:34px!important;font-size:10px!important;padding:0 9px!important;border-radius:8px!important}
+.filters .btn-clear{min-width:86px!important}
+.stats{margin:8px 0!important;gap:7px!important}
+.stat{border-radius:12px!important;padding:8px 10px!important}
+.stat span{font-size:9px!important}.stat b{font-size:18px!important;margin-top:2px!important}
+.table-card{border-radius:14px!important}
+.table-head{padding:8px 10px!important}
+.table-head b{font-size:13px!important}.table-head span{font-size:10px!important}
+.btn-export{height:32px!important;font-size:10px!important;padding:0 9px!important;border-radius:7px!important}
+.table-wrap{max-height:calc(100vh - 205px)!important}
+table{font-size:10.5px!important;min-width:1200px!important}
+th{font-size:10px!important;padding:7px 6px!important;line-height:1.15!important}
+td{padding:6px 6px!important;line-height:1.25!important}
+.open-detail{padding:4px 7px!important;font-size:9px!important;border-radius:6px!important}
+
+/* Requested left alignment for the two identifying columns */
+#tbody td:nth-child(2),#tbody td:nth-child(3){
+  text-align:left!important;
+  min-width:160px!important;
+}
+#tbody td:nth-child(3){min-width:145px!important}
+
+/* Mobile: real list layout, compact and touch friendly */
+@media(max-width:900px){
+  .app{padding:5px!important}
+  .header{padding:9px 10px!important;border-radius:11px!important;align-items:flex-start!important}
+  .title b{font-size:15px!important}.title span{font-size:9px!important}
+  .source{font-size:9px!important;padding:5px 7px!important}
+  .filters{
+    margin-top:6px!important;padding:6px!important;border-radius:11px!important;
+    grid-template-columns:1fr 1fr!important;gap:5px!important
+  }
+  .filters .search{grid-column:1/-1!important;height:33px!important;font-size:10px!important}
+  .filters select{height:32px!important;font-size:10px!important;padding:0 7px!important;min-width:0!important}
+  .filters .btn-clear{grid-column:1/-1!important;height:31px!important;min-width:0!important;font-size:10px!important}
+  .stats{grid-template-columns:repeat(3,1fr)!important;margin:6px 0!important;gap:5px!important}
+  .stat{padding:7px!important;border-radius:10px!important}
+  .stat span{font-size:8px!important;line-height:1.1!important}.stat b{font-size:15px!important}
+  .mobile-list{display:block!important;margin-top:4px!important}
+  .list-head{padding:7px 3px!important;font-size:10px!important}
+  .item{border-radius:11px!important;padding:9px!important;margin-bottom:6px!important}
+  .item-top{margin-bottom:5px!important}.item-title{font-size:12px!important}.item-wo{font-size:9px!important}
+  .tag{padding:3px 5px!important;font-size:8px!important}
+  .item-grid{gap:5px!important;margin-top:7px!important}
+  .kv{font-size:10px!important}.kv span{font-size:8px!important;margin-bottom:1px!important}
+  .item-desc{margin-top:6px!important;padding-top:6px!important;display:flex!important;gap:5px!important}
+  .item-desc .open-detail{flex:1!important;height:29px!important;font-size:8px!important}
+}
+</style>
+
+
+<style id="v4-request-patch">
+/* Header smaller and cleaner */
+.header{padding:7px 12px!important;min-height:0!important;border-radius:12px!important}
+.title b{font-size:15px!important;line-height:1.15!important}
+.title span{display:none!important}
+.source{font-size:9px!important;padding:4px 7px!important}
+
+/* Clear table grid + vertical center */
+.table-wrap table{border-collapse:separate!important;border-spacing:0!important}
+.table-wrap th,.table-wrap td{
+  border-right:1px solid #d7e0ea!important;
+  border-bottom:1px solid #d7e0ea!important;
+  vertical-align:middle!important;
+}
+.table-wrap th:first-child,.table-wrap td:first-child{border-left:1px solid #d7e0ea!important}
+.table-wrap thead th{border-top:1px solid #d7e0ea!important}
+.table-wrap th{background:#edf3f9!important}
+.table-wrap td{background:#fff!important}
+.table-wrap tbody tr:hover td{background:#f5f9fd!important}
+.table-wrap td:nth-child(2),.table-wrap td:nth-child(3){
+  text-align:left!important;
+  vertical-align:middle!important;
+}
+@media(max-width:900px){
+  .header{padding:7px 9px!important;border-radius:10px!important}
+  .title b{font-size:14px!important}
+  .item{border-color:#d7e0ea!important}
+}
+</style>
+
+
+<style id="v5-bot-mobile-export">
+.table-actions{display:flex;gap:6px;align-items:center}
+.btn-bot{background:#4f46e5;color:#fff;height:32px;border:0;border-radius:7px;padding:0 9px;font-size:10px;font-weight:800;cursor:pointer}
+.top-shell{position:relative;z-index:50}
+#botModal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.58);z-index:10001;padding:16px;align-items:center;justify-content:center}
+#botModal.show{display:flex}
+.bot-box{width:min(980px,100%);max-height:88vh;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.32)}
+.bot-head{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:1px solid #d7e0ea}
+.bot-head b{font-size:14px}.bot-head small{display:block;color:#64748b;font-size:10px;margin-top:3px}
+.bot-body{max-height:calc(88vh - 70px);overflow:auto;padding:14px}
+.bot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.bot-kpi{border:1px solid #d7e0ea;border-radius:12px;padding:10px;background:#f8fafc}
+.bot-kpi span{display:block;font-size:9px;color:#64748b;font-weight:800;text-transform:uppercase}
+.bot-kpi b{display:block;font-size:20px;margin-top:4px}
+.bot-section{border:1px solid #d7e0ea;border-radius:12px;padding:12px;margin-top:9px}
+.bot-section h3{margin:0 0 8px;font-size:12px}
+.bot-section p{margin:5px 0;font-size:12px;line-height:1.55}
+.bot-table{width:100%;border-collapse:collapse;font-size:11px}
+.bot-table th,.bot-table td{border:1px solid #d7e0ea;padding:6px;text-align:left;vertical-align:middle}
+.bot-table th{background:#f1f5f9;font-size:10px}
+.risk-high{color:#b42318;font-weight:800}.risk-mid{color:#b45309;font-weight:800}.risk-low{color:#13733e;font-weight:800}
+@media(max-width:900px){
+  body{overflow-x:hidden}
+  .app{padding:0 5px 8px!important}
+  .top-shell{
+    position:sticky!important;top:0!important;z-index:900!important;
+    background:var(--bg)!important;padding:5px 0 5px!important;
+    box-shadow:0 4px 12px rgba(15,23,42,.10)
+  }
+  .header{margin:0!important}
+  .filters{margin-top:5px!important}
+  .stats{margin-top:6px!important}
+  .table-actions{gap:4px}
+  .btn-bot,.btn-export{font-size:9px!important;padding:0 7px!important}
+  .bot-grid{grid-template-columns:repeat(2,1fr)}
+  #botModal{padding:6px}
+  .bot-box{max-height:94vh;border-radius:14px}
+  .bot-body{max-height:calc(94vh - 66px);padding:9px}
+  .bot-section{padding:9px}
+  .bot-table{font-size:10px}
+}
+</style>
+
+
+<style id="v6-bot-help-ui">
+.table-actions{flex-wrap:wrap}
+.btn-help{background:#0f766e;color:#fff;height:32px;border:0;border-radius:7px;padding:0 9px;font-size:10px;font-weight:900;cursor:pointer}
+
+/* Better bot visual hierarchy */
+.bot-box{background:#f5f7fb!important;border:1px solid #dbe3ee!important}
+.bot-head{background:#fff!important;padding:14px 16px!important}
+.bot-body{padding:12px!important}
+.bot-grid{grid-template-columns:repeat(4,1fr)!important;gap:7px!important}
+.bot-kpi{background:#fff!important;border:1px solid #dbe3ee!important;border-radius:10px!important;padding:9px!important}
+.bot-kpi span{font-size:8px!important;letter-spacing:.2px!important}
+.bot-kpi b{font-size:18px!important;line-height:1.1!important}
+.bot-section{background:#fff!important;border:1px solid #dbe3ee!important;border-radius:10px!important;padding:10px!important;margin-top:7px!important}
+.bot-section h3{display:flex!important;align-items:center!important;gap:6px!important;font-size:11px!important;padding-bottom:7px!important;margin:0 0 7px!important;border-bottom:1px solid #edf1f6!important}
+.bot-section p{font-size:11px!important;line-height:1.5!important;margin:4px 0!important}
+.bot-table{border-collapse:separate!important;border-spacing:0!important;overflow:hidden!important;border-radius:8px!important;border:1px solid #dbe3ee!important}
+.bot-table th,.bot-table td{border:0!important;border-bottom:1px solid #edf1f6!important;padding:7px 8px!important}
+.bot-table th{background:#f1f5f9!important;font-size:9px!important;text-transform:uppercase!important}
+.bot-table tr:last-child td{border-bottom:0!important}
+
+/* Help modal */
+#helpModal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.58);z-index:10002;padding:16px;align-items:center;justify-content:center}
+#helpModal.show{display:flex}
+.help-box{width:min(720px,100%);max-height:86vh;background:#f5f7fb;border-radius:16px;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.32)}
+.help-head{display:flex;justify-content:space-between;align-items:center;background:#fff;padding:14px 16px;border-bottom:1px solid #dbe3ee}
+.help-head b{font-size:14px}.help-head small{display:block;font-size:10px;color:#64748b;margin-top:3px}
+.help-body{padding:14px;overflow:auto;max-height:calc(86vh - 70px)}
+.help-intro,.help-note{background:#fff;border:1px solid #dbe3ee;border-radius:10px;padding:10px;font-size:11px;line-height:1.5;color:#334155}
+.cmd-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin:10px 0}
+.cmd-grid button{background:#fff;border:1px solid #dbe3ee;border-radius:10px;padding:10px;text-align:left;cursor:pointer}
+.cmd-grid button:hover{border-color:#94a3b8;transform:translateY(-1px)}
+.cmd-grid b{display:block;font-size:11px;color:#0f3f74}.cmd-grid span{display:block;font-size:10px;color:#64748b;margin-top:3px}
+.cmd-line{display:flex;gap:7px;margin:10px 0}
+.cmd-line input{flex:1;height:38px;border:1px solid #cbd5e1;border-radius:9px;padding:0 10px;font-size:11px;outline:none}
+.cmd-line button{height:38px;border:0;border-radius:9px;background:#0f3f74;color:#fff;font-weight:800;padding:0 14px;font-size:10px;cursor:pointer}
+
+@media(max-width:900px){
+ .bot-grid{grid-template-columns:repeat(2,1fr)!important}
+ .table-actions{justify-content:flex-end}
+ .btn-help,.btn-bot,.btn-export{height:30px!important;font-size:8px!important;padding:0 6px!important}
+ .cmd-grid{grid-template-columns:1fr!important}
+ #helpModal{padding:6px}
+ .help-box{max-height:94vh;border-radius:13px}
+ .help-body{max-height:calc(94vh - 65px);padding:9px}
+ .help-head{padding:11px 12px}
+ .help-intro,.help-note{font-size:10px;padding:9px}
+}
+</style>
+
+
+
+<style id="v8-fixed-mobile-floating-bot">
+.floating-bot{
+  display:none;
+  position:fixed;
+  right:16px;
+  bottom:calc(16px + env(safe-area-inset-bottom));
+  z-index:8500;
+  width:54px;height:54px;border:0;border-radius:50%;
+  background:#4f46e5;color:#fff;
+  box-shadow:0 10px 24px rgba(79,70,229,.32);
+  cursor:pointer;align-items:center;justify-content:center;flex-direction:column;
+}
+.floating-bot .bot-icon{font-size:20px;line-height:20px}
+.floating-bot .bot-label{font-size:8px;font-weight:900;line-height:10px}
+
+@media(max-width:900px){
+  html,body{overflow-x:hidden!important}
+  .app{padding:0 5px 10px!important}
+
+  /* Cố định chính xác toàn bộ phần từ XÓA LỌC trở lên */
+  .top-shell{
+    position:fixed!important;
+    top:0!important;left:0!important;right:0!important;
+    width:100%!important;
+    z-index:8000!important;
+    margin:0!important;
+    padding:5px 5px 6px!important;
+    background:#f4f7fb!important;
+    box-shadow:0 5px 14px rgba(15,23,42,.16)!important;
+  }
+
+  /* Chỉ phần phía dưới top-shell được cuộn */
+  .stats{
+    margin-top:calc(var(--fixedTopH, 215px) + 6px)!important;
+  }
+
+  .table-actions{display:none!important}
+  .floating-bot{display:flex!important}
+
+  #detailModal,#botModal,#helpModal{z-index:10000!important}
+}
+</style>
+<script>
+function syncFixedTopHeight(){
+  const top=document.querySelector('.top-shell');
+  if(!top) return;
+  if(window.innerWidth<=900){
+    const h=Math.ceil(top.getBoundingClientRect().height);
+    document.documentElement.style.setProperty('--fixedTopH', h+'px');
+  }else{
+    document.documentElement.style.removeProperty('--fixedTopH');
+  }
+}
+function syncFixedTopHeightDelayed(){
+  syncFixedTopHeight();
+  setTimeout(syncFixedTopHeight,100);
+  setTimeout(syncFixedTopHeight,300);
+}
+window.addEventListener('DOMContentLoaded',syncFixedTopHeightDelayed);
+window.addEventListener('load',syncFixedTopHeightDelayed);
+window.addEventListener('resize',syncFixedTopHeightDelayed);
+window.addEventListener('orientationchange',syncFixedTopHeightDelayed);
+</script>
+
+
+
+<style id="v8-bot-pro">
+/* BOT nổi dùng chung Web + Mobile */
+#floatingBot{
+  display:flex!important;
+  position:fixed!important;
+  right:18px!important;
+  bottom:18px!important;
+  z-index:8500!important;
+  width:58px!important;height:58px!important;
+  border:0!important;border-radius:50%!important;
+  background:#4f46e5!important;color:#fff!important;
+  box-shadow:0 12px 28px rgba(79,70,229,.35)!important;
+  cursor:pointer!important;align-items:center!important;justify-content:center!important;
+  flex-direction:column!important;
+}
+#floatingBot .bot-icon{font-size:22px!important}
+#floatingBot .bot-label{font-size:8px!important;font-weight:900!important}
+#floatingBot:hover{transform:translateY(-2px) scale(1.04)}
+@media(max-width:900px){
+  #floatingBot{right:14px!important;bottom:calc(14px + env(safe-area-inset-bottom))!important;width:56px!important;height:56px!important}
+}
+
+/* Bot panel */
+.bot-box{width:min(1050px,calc(100vw - 32px))!important;max-height:88vh!important;transition:width .2s ease,max-width .2s ease,max-height .2s ease!important}
+.bot-box.bot-mini{width:min(420px,calc(100vw - 22px))!important;max-height:78vh!important}
+.bot-box.bot-max{width:calc(100vw - 24px)!important;max-height:calc(100vh - 24px)!important}
+.bot-head{gap:10px!important}
+.bot-head-left{min-width:0!important}
+.bot-head-actions{display:flex!important;gap:5px!important;align-items:center!important}
+.bot-head-actions button{width:30px!important;height:30px!important;border:1px solid #dbe3ee!important;background:#fff!important;border-radius:7px!important;cursor:pointer!important;font-weight:900!important}
+.bot-tabs{display:flex!important;gap:6px!important;overflow-x:auto!important;padding:8px 0 2px!important}
+.bot-tabs button{white-space:nowrap!important;border:1px solid #dbe3ee!important;background:#fff!important;border-radius:7px!important;padding:6px 9px!important;font-size:9px!important;font-weight:800!important;cursor:pointer!important}
+.bot-tabs button.active{background:#0f3f74!important;color:#fff!important;border-color:#0f3f74!important}
+.bot-suggest{display:flex!important;flex-wrap:wrap!important;gap:6px!important;margin:0 0 9px!important}
+.bot-suggest button{border:1px solid #dbe3ee!important;background:#fff!important;border-radius:999px!important;padding:5px 8px!important;font-size:9px!important;cursor:pointer!important}
+.bot-suggest button:hover{border-color:#64748b!important}
+.bot-result-title{font-size:11px!important;font-weight:900!important;margin:0 0 8px!important}
+.bot-mini .bot-grid{grid-template-columns:repeat(2,1fr)!important}
+.bot-mini .bot-section{display:none!important}
+.bot-mini .bot-section:first-of-type{display:block!important}
+@media(max-width:900px){
+  .bot-box{width:calc(100vw - 12px)!important;max-height:94dvh!important;border-radius:14px!important}
+  .bot-box.bot-max{width:calc(100vw - 6px)!important;max-height:98dvh!important}
+  .bot-head{padding:10px 12px!important}
+  .bot-body{max-height:calc(94dvh - 65px)!important}
+  .bot-grid{grid-template-columns:repeat(2,1fr)!important}
+  .bot-head b{font-size:12px!important}
+  .bot-tabs button{font-size:8px!important;padding:5px 7px!important}
+}
+</style>
+
+
+<style id="v8-bot-modern-redesign">
+/* Remove the old HELP + PHÂN TÍCH action area on desktop and mobile */
+.table-actions,.btn-help,.btn-bot{display:none!important}
+
+/* Floating bot */
+#floatingBot{
+  display:flex!important;
+  position:fixed!important;
+  right:18px!important;
+  bottom:18px!important;
+  z-index:8500!important;
+  width:52px!important;
+  height:52px!important;
+  border:0!important;
+  border-radius:16px!important;
+  background:linear-gradient(135deg,#4f46e5,#2563eb)!important;
+  color:#fff!important;
+  box-shadow:0 14px 30px rgba(37,99,235,.28)!important;
+  cursor:pointer!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex-direction:column!important;
+  transition:transform .18s ease,box-shadow .18s ease!important;
+}
+#floatingBot:hover{transform:translateY(-3px)!important;box-shadow:0 18px 34px rgba(37,99,235,.36)!important}
+#floatingBot .bot-icon{font-size:21px!important;line-height:20px!important}
+#floatingBot .bot-label{font-size:8px!important;font-weight:900!important;letter-spacing:.4px!important}
+
+#botModal{backdrop-filter:blur(8px)!important}
+.bot-box{
+  width:min(980px,calc(100vw - 32px))!important;
+  max-height:88vh!important;
+  background:#f7f9fc!important;
+  border:1px solid rgba(255,255,255,.8)!important;
+  border-radius:22px!important;
+  overflow:hidden!important;
+  box-shadow:0 30px 90px rgba(15,23,42,.28)!important;
+  transition:width .2s ease,max-width .2s ease,max-height .2s ease!important;
+}
+.bot-box.bot-mini{width:min(430px,calc(100vw - 24px))!important}
+.bot-box.bot-max{width:calc(100vw - 28px)!important;max-height:calc(100vh - 28px)!important;border-radius:18px!important}
+
+.bot-head{
+  padding:15px 18px!important;
+  background:linear-gradient(135deg,#111827,#1e293b)!important;
+  border:0!important;
+  color:#fff!important;
+}
+.bot-head b{font-size:14px!important;letter-spacing:.2px!important}
+.bot-head small{color:#cbd5e1!important;font-size:10px!important}
+.bot-head-actions{gap:6px!important}
+.bot-head-actions button{
+  width:30px!important;height:30px!important;
+  border:1px solid rgba(255,255,255,.15)!important;
+  background:rgba(255,255,255,.10)!important;
+  color:#fff!important;border-radius:9px!important;
+  cursor:pointer!important;
+}
+.bot-head-actions button:hover{background:rgba(255,255,255,.18)!important}
+
+.bot-body{
+  padding:14px!important;
+  background:#f7f9fc!important;
+  max-height:calc(88vh - 66px)!important;
+}
+
+/* Command tabs */
+.bot-tabs{
+  display:flex!important;
+  gap:7px!important;
+  overflow-x:auto!important;
+  padding:0 0 10px!important;
+  scrollbar-width:none!important;
+}
+.bot-tabs::-webkit-scrollbar{display:none}
+.bot-tabs button{
+  flex:0 0 auto!important;
+  border:1px solid #e2e8f0!important;
+  background:#fff!important;
+  color:#64748b!important;
+  border-radius:999px!important;
+  padding:7px 10px!important;
+  font-size:9px!important;
+  font-weight:900!important;
+  letter-spacing:.2px!important;
+}
+.bot-tabs button.active{
+  background:#1e3a5f!important;
+  border-color:#1e3a5f!important;
+  color:#fff!important;
+}
+
+/* Suggestions */
+.bot-suggest{
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:7px!important;
+  margin:0 0 12px!important;
+}
+.bot-suggest button{
+  min-height:54px!important;
+  text-align:left!important;
+  border:1px solid #e2e8f0!important;
+  background:#fff!important;
+  color:#334155!important;
+  border-radius:13px!important;
+  padding:9px!important;
+  font-size:10px!important;
+  line-height:1.35!important;
+  box-shadow:0 2px 7px rgba(15,23,42,.035)!important;
+}
+.bot-suggest button:hover{border-color:#94a3b8!important;transform:translateY(-1px)!important}
+
+/* KPI */
+.bot-grid{
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:8px!important;
+  margin-bottom:10px!important;
+}
+.bot-kpi{
+  position:relative!important;
+  overflow:hidden!important;
+  min-height:72px!important;
+  background:#fff!important;
+  border:1px solid #e5eaf0!important;
+  border-radius:14px!important;
+  padding:11px!important;
+  box-shadow:0 2px 8px rgba(15,23,42,.035)!important;
+}
+.bot-kpi:after{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;top:0!important;bottom:0!important;
+  width:3px!important;background:#2563eb!important;
+}
+.bot-kpi span{font-size:8px!important;color:#64748b!important;font-weight:900!important;letter-spacing:.45px!important}
+.bot-kpi b{font-size:20px!important;color:#0f172a!important;margin-top:6px!important}
+
+/* Analysis cards */
+.bot-section{
+  background:#fff!important;
+  border:1px solid #e5eaf0!important;
+  border-radius:15px!important;
+  padding:13px!important;
+  margin-top:9px!important;
+  box-shadow:0 2px 8px rgba(15,23,42,.035)!important;
+}
+.bot-section h3{
+  font-size:11px!important;
+  color:#0f172a!important;
+  margin:0 0 10px!important;
+  padding:0 0 9px!important;
+  border-bottom:1px solid #eef2f6!important;
+}
+.bot-section p{
+  margin:7px 0!important;
+  padding-left:10px!important;
+  border-left:2px solid #e2e8f0!important;
+  font-size:11px!important;
+  line-height:1.55!important;
+  color:#475569!important;
+}
+.bot-section p b{color:#0f172a!important}
+
+.bot-table{
+  border:1px solid #e5eaf0!important;
+  border-radius:10px!important;
+  overflow:hidden!important;
+  border-collapse:separate!important;
+  border-spacing:0!important;
+}
+.bot-table th{
+  background:#f8fafc!important;
+  color:#64748b!important;
+  font-size:9px!important;
+  letter-spacing:.3px!important;
+  border-bottom:1px solid #e5eaf0!important;
+}
+.bot-table td{
+  color:#334155!important;
+  border-bottom:1px solid #eef2f6!important;
+}
+.bot-table th,.bot-table td{padding:8px 9px!important;border-left:0!important;border-right:0!important}
+.bot-table tr:last-child td{border-bottom:0!important}
+
+.risk-high{color:#dc2626!important}.risk-mid{color:#d97706!important}.risk-low{color:#16a34a!important}
+
+@media(max-width:900px){
+  #floatingBot{
+    width:46px!important;
+    height:46px!important;
+    right:12px!important;
+    bottom:calc(12px + env(safe-area-inset-bottom))!important;
+    border-radius:14px!important;
+  }
+  #floatingBot .bot-icon{font-size:18px!important;line-height:17px!important}
+  #floatingBot .bot-label{font-size:7px!important}
+
+  #botModal{padding:6px!important}
+  .bot-box{width:calc(100vw - 12px)!important;max-height:94dvh!important;border-radius:18px!important}
+  .bot-box.bot-max{width:calc(100vw - 4px)!important;max-height:98dvh!important;border-radius:14px!important}
+  .bot-head{padding:11px 12px!important}
+  .bot-head b{font-size:12px!important}
+  .bot-body{padding:9px!important;max-height:calc(94dvh - 58px)!important}
+  .bot-tabs{padding-bottom:8px!important}
+  .bot-tabs button{padding:6px 8px!important;font-size:8px!important}
+  .bot-suggest{grid-template-columns:1fr 1fr!important;gap:6px!important;margin-bottom:8px!important}
+  .bot-suggest button{min-height:48px!important;padding:8px!important;font-size:9px!important}
+  .bot-grid{grid-template-columns:1fr 1fr!important;gap:6px!important}
+  .bot-kpi{min-height:62px!important;padding:9px!important;border-radius:12px!important}
+  .bot-kpi b{font-size:17px!important}
+  .bot-section{padding:10px!important;border-radius:13px!important}
+  .bot-section p{font-size:10px!important}
+}
+</style>
+
+
+<style id="restore-excel-v8">
+.table-actions{display:none!important}
+.btn-export{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  white-space:nowrap!important;
+}
+.table-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important}
+.table-head-export{display:flex!important;justify-content:flex-end!important;padding:8px 10px!important}
+@media(max-width:900px){
+  .table-head .btn-export{display:none!important}
+  .table-head-export{display:flex!important}
+  .table-head-export .btn-export{height:30px!important;font-size:9px!important;padding:0 8px!important}
+}
+@media(min-width:901px){
+  .table-head-export{display:none!important}
+}
+</style>
+
+
+<style id="force-excel-visible-v8">
+#exportExcelBtn{
+  display:inline-flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 auto!important;
+}
+.table-head{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+}
+.table-title{min-width:0!important}
+.table-head .btn-export{
+  height:32px!important;
+  min-width:auto!important;
+  padding:0 10px!important;
+  font-size:10px!important;
+}
+.table-head-export{display:none!important}
+@media(max-width:900px){
+  .table-head{
+    padding:7px 8px!important;
+  }
+  .table-head .btn-export{
+    display:inline-flex!important;
+    height:29px!important;
+    padding:0 7px!important;
+    font-size:8px!important;
+    border-radius:7px!important;
+  }
+  .table-head .table-title b{font-size:11px!important}
+  .table-head .table-title span{font-size:8px!important}
+}
+</style>
+
+
+<style id="bot-auto-layout-fix">
+/* ===== BOT: KHUNG TỰ CO GIÃN THEO MÀN HÌNH ===== */
+#botModal{
+  display:none;
+  position:fixed!important;
+  inset:0!important;
+  padding:clamp(6px,1.2vw,18px)!important;
+  box-sizing:border-box!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:hidden!important;
+}
+#botModal.show{display:flex!important}
+
+#botModal .bot-box{
+  --bot-gap:10px;
+  position:relative!important;
+  width:min(1180px, calc(100vw - 36px))!important;
+  height:auto!important;
+  max-width:100%!important;
+  max-height:calc(100dvh - 36px)!important;
+  margin:0 auto!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+
+/* Trạng thái thu nhỏ */
+#botModal .bot-box.bot-mini{
+  width:min(520px, calc(100vw - 20px))!important;
+  max-height:min(620px, calc(100dvh - 20px))!important;
+}
+
+/* Trạng thái phóng to */
+#botModal .bot-box.bot-max{
+  width:calc(100vw - 12px)!important;
+  max-width:none!important;
+  max-height:calc(100dvh - 12px)!important;
+  height:calc(100dvh - 12px)!important;
+}
+
+/* Header luôn đúng chiều ngang */
+#botModal .bot-head{
+  flex:0 0 auto!important;
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+}
+
+/* Nội dung tự chiếm phần còn lại và chỉ cuộn trong BOT */
+#botModal .bot-body{
+  flex:1 1 auto!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:auto!important;
+  overscroll-behavior:contain!important;
+  box-sizing:border-box!important;
+}
+
+/* Tabs không làm rộng khung */
+#botModal .bot-tabs{
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+/* Gợi ý: tự chia theo chiều rộng */
+#botModal .bot-suggest{
+  width:100%!important;
+  min-width:0!important;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important;
+  box-sizing:border-box!important;
+}
+
+/* KPI: tự thay đổi số cột, không để lệch */
+#botModal .bot-grid{
+  width:100%!important;
+  min-width:0!important;
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important;
+  align-items:stretch!important;
+  box-sizing:border-box!important;
+}
+#botModal .bot-kpi{
+  width:auto!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+/* Các khối phân tích luôn đầy chiều ngang */
+#botModal .bot-section{
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+#botModal .bot-section *{
+  max-width:100%!important;
+}
+
+/* Bảng dài tự cuộn ngang bên trong, không làm vỡ modal */
+#botModal .bot-section:has(.bot-table){
+  overflow:hidden!important;
+}
+#botModal .bot-table{
+  width:100%!important;
+  min-width:620px!important;
+}
+#botModal .bot-section{
+  overflow-x:auto!important;
+}
+
+/* MINI: chỉ giữ KPI + phần kết luận đầu tiên */
+#botModal .bot-box.bot-mini .bot-suggest{
+  grid-template-columns:1fr 1fr!important;
+}
+#botModal .bot-box.bot-mini .bot-grid{
+  grid-template-columns:1fr 1fr!important;
+}
+
+/* ===== DESKTOP ===== */
+@media(min-width:901px){
+  #botModal .bot-box:not(.bot-mini):not(.bot-max){
+    width:min(1180px, calc(100vw - 36px))!important;
+  }
+  #botModal .bot-box.bot-mini .bot-body{
+    padding:10px!important;
+  }
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:900px){
+  #botModal{
+    padding:5px!important;
+    align-items:flex-end!important;
+  }
+
+  #botModal .bot-box,
+  #botModal .bot-box:not(.bot-mini):not(.bot-max){
+    width:100%!important;
+    max-width:100%!important;
+    max-height:calc(100dvh - 10px)!important;
+    border-radius:18px!important;
+  }
+
+  #botModal .bot-box.bot-mini{
+    width:calc(100vw - 10px)!important;
+    max-height:min(520px, calc(100dvh - 10px))!important;
+  }
+
+  #botModal .bot-box.bot-max{
+    width:100vw!important;
+    height:100dvh!important;
+    max-height:100dvh!important;
+    border-radius:0!important;
+  }
+
+  #botModal .bot-head{
+    padding:10px 12px!important;
+  }
+
+  #botModal .bot-head-left{
+    flex:1 1 auto!important;
+    min-width:0!important;
+  }
+
+  #botModal .bot-head-actions{
+    flex:0 0 auto!important;
+    display:flex!important;
+    gap:4px!important;
+  }
+
+  #botModal .bot-head-actions button{
+    width:28px!important;
+    height:28px!important;
+    flex:0 0 28px!important;
+  }
+
+  #botModal .bot-body{
+    padding:8px!important;
+  }
+
+  #botModal .bot-tabs{
+    gap:5px!important;
+  }
+
+  #botModal .bot-tabs button{
+    flex:0 0 auto!important;
+    min-width:max-content!important;
+  }
+
+  #botModal .bot-suggest{
+    grid-template-columns:1fr 1fr!important;
+    gap:6px!important;
+  }
+
+  #botModal .bot-grid{
+    grid-template-columns:1fr 1fr!important;
+    gap:6px!important;
+  }
+
+  #botModal .bot-kpi{
+    min-width:0!important;
+    min-height:58px!important;
+  }
+
+  #botModal .bot-section{
+    min-width:0!important;
+  }
+}
+
+/* Màn hình rất hẹp: giảm thêm để không lệch */
+@media(max-width:430px){
+  #botModal .bot-suggest{grid-template-columns:1fr!important}
+  #botModal .bot-head small{display:none!important}
+  #botModal .bot-head-actions button{width:26px!important;height:26px!important;flex-basis:26px!important}
+}
+
+/* Không cho body phía sau tạo thanh cuộn phụ khi BOT đang mở */
+body.bot-open{overflow:hidden!important}
+</style>
+
+<script id="bot-auto-layout-js">
+(function(){
+  function botBox(){
+    return document.querySelector('#botModal .bot-box');
+  }
+
+  function normalizeBot(){
+    const box=botBox();
+    const modal=document.getElementById('botModal');
+    if(!box || !modal || !modal.classList.contains('show')) return;
+
+    // Nếu đổi kích thước cửa sổ, trạng thái hiện tại vẫn tự co vừa màn hình.
+    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    document.documentElement.style.setProperty('--bot-vh', vh + 'px');
+
+    // Reset scroll nội bộ về vị trí hợp lệ nếu nội dung lớn hơn viewport.
+    const body=document.querySelector('#botModal .bot-body');
+    if(body){
+      body.style.maxHeight='';
+    }
+  }
+
+  const oldOpenBot = window.openBot;
+  if(typeof oldOpenBot === 'function'){
+    window.openBot = function(){
+      oldOpenBot.apply(this, arguments);
+      document.body.classList.add('bot-open');
+      requestAnimationFrame(normalizeBot);
+      setTimeout(normalizeBot,80);
+      setTimeout(normalizeBot,220);
+    };
+  }
+
+  const oldCloseBot = window.closeBot;
+  if(typeof oldCloseBot === 'function'){
+    window.closeBot = function(){
+      oldCloseBot.apply(this, arguments);
+      document.body.classList.remove('bot-open');
+    };
+  }
+
+  window.addEventListener('resize', normalizeBot);
+  window.addEventListener('orientationchange', function(){
+    setTimeout(normalizeBot,120);
+    setTimeout(normalizeBot,350);
+  });
+
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize', normalizeBot);
+  }
+
+  // Chuyển đổi phóng to/thu nhỏ ổn định, không giữ trạng thái cũ gây lệch.
+  const oldMini = window.toggleBotMini;
+  window.toggleBotMini = function(){
+    const box=botBox();
+    if(!box) return;
+    box.classList.toggle('bot-mini');
+    box.classList.remove('bot-max');
+    requestAnimationFrame(normalizeBot);
+  };
+
+  const oldMax = window.toggleBotMax;
+  window.toggleBotMax = function(){
+    const box=botBox();
+    if(!box) return;
+    box.classList.toggle('bot-max');
+    box.classList.remove('bot-mini');
+    requestAnimationFrame(normalizeBot);
+  };
+})();
+</script>
+
+
+<style id="bot-icon-button-alignment">
+/* Căn chính xác các biểu tượng: thu nhỏ / phóng to / help / đóng */
+#botModal .bot-head-actions{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  line-height:1!important;
+}
+
+#botModal .bot-head-actions button,
+#botModal .bot-head-actions .modal-close{
+  position:relative!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  line-height:1!important;
+  padding:0!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  font-family:Arial,"Segoe UI Symbol","Noto Sans Symbols",sans-serif!important;
+  font-size:18px!important;
+  font-weight:700!important;
+  vertical-align:middle!important;
+}
+
+/* Ký hiệu thu nhỏ có nét mảnh hơn và căn giữa quang học */
+#botModal .bot-head-actions button:nth-child(1){
+  padding-bottom:2px!important;
+}
+
+/* Phóng to */
+#botModal .bot-head-actions button:nth-child(2){
+  font-size:16px!important;
+  padding-bottom:1px!important;
+}
+
+/* Help */
+#botModal .bot-head-actions button:nth-child(3){
+  font-size:17px!important;
+  padding-bottom:1px!important;
+}
+
+/* Đóng */
+#botModal .bot-head-actions .modal-close{
+  font-size:24px!important;
+  font-weight:600!important;
+  padding-bottom:1px!important;
+}
+
+/* Mobile */
+@media(max-width:900px){
+  #botModal .bot-head-actions{
+    gap:5px!important;
+  }
+  #botModal .bot-head-actions button,
+  #botModal .bot-head-actions .modal-close{
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    line-height:1!important;
+    padding:0!important;
+  }
+  #botModal .bot-head-actions .modal-close{
+    font-size:22px!important;
+  }
+}
+</style>
+
+
+<style id="table-font-size-up">
+/* Tăng nhẹ chữ trong bảng chính */
+.table-wrap table tbody td,
+.table-wrap table tbody th{
+  font-size:13px!important;
+  line-height:1.45!important;
+}
+
+/* Tiêu đề cột tăng nhẹ nhưng vẫn gọn */
+.table-wrap table thead th{
+  font-size:11px!important;
+  line-height:1.3!important;
+}
+
+/* Bảng bên trong BOT cũng tăng nhẹ */
+#botModal .bot-table td{
+  font-size:11px!important;
+  line-height:1.45!important;
+}
+#botModal .bot-table th{
+  font-size:10px!important;
+}
+
+/* Mobile: tăng vừa phải để không làm vỡ bố cục */
+@media(max-width:900px){
+  .table-wrap table tbody td,
+  .table-wrap table tbody th{
+    font-size:12px!important;
+    line-height:1.4!important;
+  }
+
+  .table-wrap table thead th{
+    font-size:10px!important;
+  }
+
+  #botModal .bot-table td{
+    font-size:10px!important;
+  }
+
+  #botModal .bot-table th{
+    font-size:9px!important;
+  }
+}
+</style>
+
 </head>
-
 <body>
-<div class="container">
-  <div class="fixed-top">
-  <div class="top-box">
+<div id="loading"><div class="loadbox"><div class="spin"></div><b id="loadTitle">ĐANG TẢI DỮ LIỆU</b><div id="loadText" style="font-size:12px;color:#64748b;margin-top:7px">Đang tải ICMS...</div></div></div>
 
-    <button class="main-btn"
-      onclick="showType('InOS')">
-      INOS
-    </button>
-
-    <button class="main-btn"
-      onclick="showType('OutOS')">
-      OUT OS
-    </button>
-
-    <button class="main-btn"
-      style="background:#ff9900"
-      onclick="showChoCD()">
-      WO FT CHỜ CD DUYỆT
-    </button>
-
-    <button class="main-btn"
-      style="background:#6a1b9a"
-      onclick="showTimelineTTH()">
-      BIỂU ĐỒ TTH
-    </button>
-
-    <button class="main-btn"
-      style="background:#00897b"
-      onclick="showTimelineDV()">
-      BIỂU ĐỒ ĐẦU VIỆC
-    </button>
-
-    <button class="main-btn"
-      style="background:#d93025"
-      onclick="downloadSheet()">
-      TẢI FILE EXCEL
-    </button>
-  
-  </div>
-
-<div style="
-  display:flex;
-  gap:4px;
-  align-items:center;
-  margin-top:4px;
-">
-
-  <button class="main-btn"
-    onclick="reloadData()"
-    style="
-      background:green;
-      width:120px;
-      height:26px;
-      font-size:10px;
-      flex-shrink:0;
-    "
-  >
-    LOAD LẠI TRANG
-  </button>
-
-    <div id="loading"
-      style="
-        flex:1;
-        text-align:left;
-        font-size:10px;
-        padding-left:4px;
-      "
-    >
-      ⏳ Đang tải dữ liệu...vui lòng chờ!
+<div class="app">
+  <div class="top-shell">
+    <div class="header">
+      <div class="title"><b>ICMS · BẢNG CHI TIẾT</b></div>
+      <div class="source" id="sourceStatus">ICMS</div>
     </div>
-  
-  </div>
-  
-  <div id="logtime"
-    style="
-      font-size:10px;
-      color:#666;
-      margin-top:2px;
-    "
-  ></div>
 
-  <input
-  type="text"
-  id="searchInput"
-  placeholder="Tìm: Trạm, Huyện, Danh mục, Wo, Nhân viên..."
-  onkeyup="debounceSearch()"
-  style="
-    width:100%;
-    box-sizing:border-box;
-    padding:6px 8px;
-    border-radius:8px;
-    border:1px solid #ccc;
-    background:white;
-    color:black;
-    font-size:12px;
-    margin-top:6px;
-  "
->
-  <button
-    onclick="goBack()"
-    style="
-      width:100%;
-      margin-top:4px;
-      border:none;
-      padding:5px 8px;
-      border-radius:8px;
-      background:#666;
-      color:white;
-      font-size:10px;
-      font-weight:bold;
-    "
-  >
-    ← BACK
-  </button>
-  
+    <div class="filters">
+    <input class="search" id="q" placeholder="🔍 Tìm trạm, WO, mô tả, huyện, đầu việc..." oninput="applyFilters()">
+    <select id="fHuyen" onchange="applyFilters()"><option value="">Tất cả huyện</option></select>
+    <select id="fDm" onchange="applyFilters()"><option value="">Tất cả danh mục</option></select>
+    <select id="fDv" onchange="applyFilters()"><option value="">Tất cả đầu việc</option></select>
+    <select id="fType" onchange="applyFilters()"><option value="">InOS / OutOS</option></select>
+    <select id="fDg" onchange="applyFilters()"><option value="">Quá hạn / Trong hạn</option></select>
+      <button class="btn-clear" onclick="clearFilters()">✕ XÓA LỌC</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat blue"><span>Tổng WO</span><b id="sTotal">0</b></div>
+    <div class="stat red"><span>Quá hạn</span><b id="sOver">0</b></div>
+    <div class="stat green"><span>Trong hạn</span><b id="sOk">0</b></div>
+    <div class="stat"><span>InOS</span><b id="sIn">0</b></div>
+    <div class="stat"><span>OutOS</span><b id="sOut">0</b></div>
+  </div>
+
+  <div class="table-card"><div class="table-head">
+      <div><b>Danh sách chi tiết</b><span id="countDesk">0 dòng</span></div><button id="exportExcelBtn" class="btn-export" type="button" onclick="exportFilteredExcel()">📥 TẢI EXCEL ĐÃ LỌC</button></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>STT</th><th>Trạm/Tuyến/Tủ</th><th>Mã WO</th><th>Huyện</th><th>Danh mục</th><th>Đầu việc</th>
+          <th>Thời gian tồn</th><th>Đánh giá</th><th>In/Out</th><th>VCC</th><th>VTNet</th><th>Người tạo</th>
+          <th>Đầu việc báo hỏng</th><th>Mô tả</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mobile-list">
+    <div class="list-head"><b>Danh sách chi tiết</b><span id="countMobile">0 dòng</span></div>
+    <div id="list"></div>
+  </div>
 </div>
-<div class="fixed-space"></div>
-<div id="content"></div>
+
+
+<div id="detailModal" onclick="if(event.target===this)closeDetail()">
+  <div class="modal-box">
+    <div class="modal-head"><span id="modalTitle">Chi tiết</span><button class="modal-close" onclick="closeDetail()">×</button></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+
+
+<button id="floatingBot" class="floating-bot" onclick="openBot()" aria-label="Mở Bot phân tích">
+  <span class="bot-icon">🤖</span>
+  <span class="bot-label">BOT</span>
+</button>
+
+<div id="botModal" onclick="if(event.target===this)closeBot()">
+  <div class="bot-box">
+    <div class="bot-head">
+      <div class="bot-head-left"><b>🤖 BOT PHÂN TÍCH ICMS</b><small id="botScope">Phân tích dữ liệu đang lọc</small></div>
+      <div class="bot-head-actions">
+        <button onclick="toggleBotMini()" title="Thu nhỏ">−</button>
+        <button onclick="toggleBotMax()" title="Phóng to">□</button>
+        <button onclick="openHelp()" title="Help">?</button>
+        <button class="modal-close" onclick="closeBot()" title="Đóng">×</button>
+      </div>
+    </div>
+    <div class="bot-body" id="botBody"></div>
+  </div>
+</div>
+
+
+<div id="helpModal" onclick="if(event.target===this)closeHelp()">
+  <div class="help-box">
+    <div class="help-head">
+      <div><b>HƯỚNG DẪN BOT ICMS</b><small>Nhập câu lệnh hoặc sử dụng các nút gợi ý</small></div>
+      <button class="modal-close" onclick="closeHelp()">×</button>
+    </div>
+    <div class="help-body">
+      <div class="help-intro">
+        Bot phân tích toàn bộ dữ liệu hoặc đúng phần dữ liệu bạn đang lọc. Trước khi dùng, hãy lọc Huyện / Danh mục / Đầu việc nếu muốn phân tích riêng từng nhóm.
+      </div>
+      <div class="cmd-grid">
+        <button onclick="runHelpCmd('summary')"><b>/tongquan</b><span>Tổng quan & rủi ro</span></button>
+        <button onclick="runHelpCmd('overdue')"><b>/quahan</b><span>Phân tích quá hạn</span></button>
+        <button onclick="runHelpCmd('district')"><b>/huyen</b><span>Điểm nóng theo huyện</span></button>
+        <button onclick="runHelpCmd('job')"><b>/dauviec</b><span>Điểm nóng theo đầu việc</span></button>
+        <button onclick="runHelpCmd('category')"><b>/danhmuc</b><span>Phân tích danh mục</span></button>
+        <button onclick="runHelpCmd('quality')"><b>/chatluong</b><span>Kiểm tra dữ liệu</span></button>
+        <button onclick="runHelpCmd('priority')"><b>/uutien</b><span>Thứ tự xử lý</span></button>
+        <button onclick="runHelpCmd('all')"><b>/all</b><span>Phân tích đầy đủ</span></button>
+      </div>
+      <div class="cmd-line">
+        <input id="helpCommand" placeholder="Ví dụ: /quahan, /uutien..." onkeydown="if(event.key==='Enter')runTypedCommand()">
+        <button onclick="runTypedCommand()">CHẠY</button>
+      </div>
+      <div class="help-note"><b>Lưu ý:</b> Các lệnh trên phân tích đúng dữ liệu đang được lọc trên bảng.</div>
+    </div>
+  </div>
 </div>
 
 <script>
+const API='https://script.google.com/macros/s/AKfycbwgMDqernBjUfaKIORUoGT0XISbA2ZiBQlMqcilmz87lsztPN523eBRXzGOuPkJcaXZ/exec';
+let DATA=[], FILTERED=[];
 
-const API =
-'https://script.google.com/macros/s/AKfycbys8N9jdDVKyMxjVUOHD4bcemmJUHSU5e-OkxFEEXbLAKPNDFPIbaGh0WzM98yEZ6OO/exec?sheet=ICMS';
-
-let DATA = [];
-
-let PAGE_HISTORY = [];
-let CURRENT_LIST = [];
-let SEARCH_TIMER;
-let SEARCH_LIMIT = 100;
-loadData();
-
-function saveHistory(){
-
-  PAGE_HISTORY.push(
-    document.getElementById('content')
-      .innerHTML
-  );
-
-}
-
-function goBack(){
-  document.getElementById('searchInput')
-  .value = '';
-  if(PAGE_HISTORY.length > 0){
-
-    const lastPage =
-      PAGE_HISTORY.pop();
-
-    document.getElementById('content')
-      .innerHTML = lastPage;
-
+const $=id=>document.getElementById(id);
+function showLoading(title='ĐANG TẢI DỮ LIỆU',text='Đang xử lý...'){ $('loadTitle').textContent=title;$('loadText').textContent=text;$('loading').style.display='flex';}
+function hideLoading(){ $('loading').style.display='none';}
+function norm(v){return String(v??'').trim()}
+function pickKey(obj,...keys){
+  const map={};
+  Object.keys(obj||{}).forEach(k=>map[String(k).trim().toLowerCase()]=obj[k]);
+  for(const key of keys){
+    const v=map[String(key).trim().toLowerCase()];
+    if(v!==undefined && v!==null && String(v).trim()!=='') return v;
   }
-
+  return '';
 }
-
-function loadData(){
-
-  document.getElementById('loading')
-    .style.display = 'block';
-
-  fetch(API)
-  .then(res => res.json())
-  .then(data => {
-
-    DATA = data.map(x => ({
-
-      tram:
-        x.tram || '',
-
-      mawo:
-        x.mawo || x.wo || '',
-
-      dauviec:
-        x.dauviec || x.dv || '',
-
-      thoigian:
-        Number(x.thoigian) || 0,
-
-      mota:
-        x.mota || '',
-
-      danhmuc:
-        x.danhmuc || '',
-
-      tth:
-        x.tth || '',
-
-      wo_vvc:
-        x.wo_vvc || '',
-
-      wo_vtnet:
-        x.wo_vtnet || '',
-
-      nhanvien_tao:
-        x.nhanvien_tao || '',
-
-      nhanvien:
-        x.nhanvien || '',
-
-      tg_update:
-        x.tg_update || '',
-      
-      type:
-        x.type || '',
-
-      danhgia:
-        Number(x.thoigian) < 0
-          ? 'Quá hạn'
-          : 'Trong hạn'
-
-    }));
-
-    document.getElementById('loading')
-      .style.display = 'none';
-    if(DATA.length > 0){
-
-    document.getElementById('logtime')
-    .innerHTML =
-
-    '🕒 Thời gian lấy báo cáo: '
-    +
-    (
-      DATA[1]?.tg_update || ''
-    );
-
+function num(v){let n=Number(String(v??'').replace(',','.'));return Number.isFinite(n)?n:0}
+function normalize(x){
+  const tg=num(x.thoigian??x.tg);
+  return {
+    tram:norm(x.tram), wo:norm(x.mawo??x.wo), huyen:norm(x.tth??x.huyen),
+    dm:norm(x.danhmuc??x.dm), dv:norm(x.dauviec??x.dv),
+    dvbh:norm(pickKey(x,'dvbh','Đầu việc báo hỏng','dauviec_bao_hong','dhcb')),
+    tg, dg:norm(x.danhgia??x.dg)||(tg<0?'Quá hạn':'Trong hạn'),
+    type:norm(x.type??x.in_out), ttvcc:norm(x.wo_vvc??x.ttvcc), ttnet:norm(x.wo_vtnet??x.ttnet),
+    nvtao:norm(x.nhanvien_tao??x.nvtao), nv:norm(x.nhanvien??x.nv),
+    tg_update:norm(x.tg_update), mt:norm(x.mota??x.mt)
+  };
 }
+function unique(arr){return [...new Set(arr.filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'vi'))}
+function fillSelect(id,values,label){
+  const el=$(id), cur=el.value; el.innerHTML='<option value="">'+label+'</option>';
+  values.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;el.appendChild(o)});
+  if(values.includes(cur))el.value=cur;
+}
+function buildFilters(){
+  fillSelect('fHuyen',unique(DATA.map(x=>x.huyen)),'Tất cả huyện');
+  fillSelect('fDm',unique(DATA.map(x=>x.dm)),'Tất cả danh mục');
+  fillSelect('fDv',unique(DATA.map(x=>x.dv)),'Tất cả đầu việc');
+  fillSelect('fType',unique(DATA.map(x=>x.type)),'InOS / OutOS');
+  fillSelect('fDg',unique(DATA.map(x=>x.dg)),'Quá hạn / Trong hạn');
+}
+function applyFilters(){
+  const q=norm($('q').value).toLowerCase(), h=$('fHuyen').value, dm=$('fDm').value, dv=$('fDv').value, type=$('fType').value, dg=$('fDg').value;
+  FILTERED=DATA.filter(x=>{
+    const blob=[x.tram,x.wo,x.huyen,x.dm,x.dv,x.mt,x.ttvcc,x.ttnet,x.nvtao].join(' ').toLowerCase();
+    return (!q||blob.includes(q))&&(!h||x.huyen===h)&&(!dm||x.dm===dm)&&(!dv||x.dv===dv)&&(!type||x.type===type)&&(!dg||x.dg===dg);
   });
-
+  render();
 }
-
-function reloadData(){
-  document.getElementById('searchInput')
-  .value = '';
-
-  CURRENT_LIST = [];
-  DATA = [];
-
-  document.getElementById('content')
-    .innerHTML = '';
-
-  PAGE_HISTORY = [];
-
-  loadData();
-
-}
-
-function showType(type){
-
-  saveHistory();
-
-  const content =
-    document.getElementById('content');
-
-  const list =
-    DATA.filter(x =>
-
-      String(x.type)
-      .toLowerCase()
-      ==
-      String(type)
-      .toLowerCase()
-
-    );
-
-  const tths =
-    [...new Set(list.map(x => x.tth))];
-
-    const tongQuaHan =
-      list.filter(
-        x => x.danhgia == 'Quá hạn'
-      ).length;
-    
-    const tongTrongHan =
-      list.filter(
-        x => x.danhgia == 'Trong hạn'
-      ).length;
-    
-    const tongTatCa =
-      tongQuaHan + tongTrongHan;
-    
-    let html = `
-    
-      <div class="card fade-in">
-
-          <div class="group-title">
-            CNCT GLI
-          </div>
-        
-          <button class="sub-btn"
-        
-            onclick="
-              showALLCategory(
-                'Quá hạn'
-              )
-            "
-        
-          >
-        
-            Quá hạn
-            (${tongQuaHan})
-        
-          </button>
-        
-          <button class="sub-btn"
-            onclick="
-              showALLCategory(
-                'Trong hạn'
-              )
-            "
-        
-          >
-        
-            Trong hạn
-            (${tongTrongHan})
-        
-          </button>
-        
-        </div>
-      </div>
-    
-    `;
-
-tths.forEach(tth => {
-
-  const quaHan =
-    list.filter(
-      x =>
-        x.tth == tth
-        &&
-        x.danhgia == 'Quá hạn'
-    );
-
-  const trongHan =
-    list.filter(
-      x =>
-        x.tth == tth
-        &&
-        x.danhgia == 'Trong hạn'
-    );
-
-  html += `
-
-    <div class="card fade-in">
-
-      <div class="group-title">
-        ${tth}
-      </div>
-
-      <button class="sub-btn"
-        onclick="
-          showCategory(
-            '${type}',
-            '${tth}',
-            'Quá hạn'
-          )
-        ">
-
-        Quá hạn
-        (${quaHan.length})
-
-      </button>
-
-      <button class="sub-btn"
-        onclick="
-          showCategory(
-            '${type}',
-            '${tth}',
-            'Trong hạn'
-          )
-        ">
-
-        Trong hạn
-        (${trongHan.length})
-
-      </button>
-
+function tag(text,cls){return '<span class="tag '+cls+'">'+esc(text||'-')+'</span>'}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){
+  const over=FILTERED.filter(x=>x.dg==='Quá hạn').length, ins=FILTERED.filter(x=>x.type.toLowerCase()==='inos').length, outs=FILTERED.filter(x=>x.type.toLowerCase()==='outos').length;
+  $('sTotal').textContent=FILTERED.length;$('sOver').textContent=over;$('sOk').textContent=FILTERED.length-over;$('sIn').textContent=ins;$('sOut').textContent=outs;
+  $('countDesk').textContent=FILTERED.length+' dòng';$('countMobile').textContent=FILTERED.length+' dòng';
+  $('tbody').innerHTML=FILTERED.map((x,i)=>`<tr>
+    <td>${i+1}</td><td><b>${esc(x.tram)}</b></td><td>${esc(x.wo)}</td><td>${esc(x.huyen)}</td><td>${esc(x.dm)}</td><td>${esc(x.dv)}</td>
+    <td>${esc(x.tg)}</td><td>${tag(x.dg,x.dg==='Quá hạn'?'over':'ok')}</td><td>${tag(x.type,x.type.toLowerCase()==='inos'?'inos':'outos')}</td>
+    <td>${esc(x.ttvcc)}</td><td>${esc(x.ttnet)}</td><td>${esc(x.nvtao)}</td>
+    <td><button class="open-detail" onclick="openDetail('Đầu việc báo hỏng', ${i}, 'dvbh')">XEM</button></td>
+    <td><button class="open-detail" onclick="openDetail('Mô tả', ${i}, 'mt')">XEM</button></td>
+  </tr>`).join('')||'<tr><td colspan="14" class="empty">Không có dữ liệu phù hợp.</td></tr>';
+  $('list').innerHTML=FILTERED.map(x=>`<div class="item">
+    <div class="item-top"><div><div class="item-title">${esc(x.tram||'-')}</div><div class="item-wo">WO: ${esc(x.wo||'-')}</div></div><div>${tag(x.dg,x.dg==='Quá hạn'?'over':'ok')} ${tag(x.type,x.type.toLowerCase()==='inos'?'inos':'outos')}</div></div>
+    <div class="item-grid">
+      <div class="kv"><span>HUYỆN</span>${esc(x.huyen||'-')}</div><div class="kv"><span>DANH MỤC</span>${esc(x.dm||'-')}</div>
+      <div class="kv"><span>ĐẦU VIỆC</span>${esc(x.dv||'-')}</div><div class="kv"><span>THỜI GIAN TỒN</span>${esc(x.tg)}</div>
+      <div class="kv"><span>VCC</span>${esc(x.ttvcc||'-')}</div><div class="kv"><span>VTNET</span>${esc(x.ttnet||'-')}</div>
     </div>
-
-  `;
-
-});
-
-  content.innerHTML = html;
-
-}
-
-function showCategory(
-  type,
-  tth,
-  status
-){
-
-  saveHistory();
-
-  const content =
-    document.getElementById('content');
-
-  let list =
-    DATA.filter(x =>
-
-      String(x.type)
-      .toLowerCase()
-      ==
-      String(type)
-      .toLowerCase()
-
-      &&
-
-      x.tth == tth
-
-    );
-
-  list =
-    list.filter(
-      x => x.danhgia == status
-    );
-
-  const categories =
-    [...new Set(
-      list.map(x => x.danhmuc)
-    )];
-
-  let html = `
-    <div class="card fade-in">
-
-      <div class="group-title">
-        ${type}
-        /
-        ${tth}
-        /
-        ${status}
-      </div>
-  `;
-
-  categories.forEach(cat => {
-
-    const count =
-      list.filter(
-        x => x.danhmuc == cat
-      ).length;
-
-    html += `
-      <button class="sub-btn"
-
-        onclick="
-          showList(
-            '${type}',
-            '${tth}',
-            '${status}',
-            '${cat}'
-          )
-        ">
-
-        ${cat}
-        (${count})
-
-      </button>
-    `;
-
-  });
-
-  html += '</div>';
-
-  content.innerHTML = html;
-
-}
-
-function showList(
-  type,
-  tth,
-  status,
-  category
-){
-
-  saveHistory();
-
-  const content =
-    document.getElementById('content');
-
-  let list =
-    DATA.filter(x =>
-
-      String(x.type)
-      .toLowerCase()
-      ==
-      String(type)
-      .toLowerCase()
-
-      &&
-
-      x.tth == tth &&
-      x.danhmuc == category &&
-      x.danhgia == status
-
-    );
-  
-  CURRENT_LIST = list;
-  list.sort(
-    (a,b) =>
-      a.thoigian - b.thoigian
-  );
-
-  let html = `
-    <div class="card fade-in">
-
-      <div class="group-title">
-        ${category}
-      </div>
-  `;
-
-  list.forEach(item => {
-
-    html += `
-
-      <div class="item fade-in">
-
-        <p>
-          <b>Trạm, tuyến, tủ:</b>
-          ${item.tram}
-        </p>
-
-        <p style="
-          color:
-            ${String(item.mawo)
-              .toLowerCase()
-              .includes('chưa sinh')
-              ? '#00b0f0'
-              : '#000'};
-
-          font-weight:bold;
-        ">
-
-          <b>Mã wo:</b>
-          ${item.mawo || 'Chưa sinh wo'}
-        </p>
-
-        <p>
-            <b>Loại công việc:</b>
-            <span style="
-              color:
-                ${String(item.type)
-                  .toLowerCase()
-                  .includes('inos')
-                  ? '#0b5394'
-                  : '#ff6600'};
-          
-              font-weight:bold;
-            ">
-              ${item.type}
-            </span> 
-        </p>
-        
-        <p>
-          <b>Đầu việc:</b>
-          ${item.dauviec || ''}
-        </p>
-
-        <p>
-          <b>Nhân viên:</b>
-          ${item.nhanvien}
-        </p>
-
-        <p class="
-          ${item.thoigian < 0
-            ? 'red'
-            : 'green'}
-        ">
-          <b>Thời gian tồn:</b>
-          ${item.thoigian} ngày
-        </p>
-
-        <p>
-          <b>Mô tả:</b>
-          ${item.mota}
-        </p>
-
-        <p style="
-          color:
-            ${String(item.wo_vtnet)
-              .includes('Chờ CD duyệt')
-              ? '#ff9900'
-              : '#000'};
-
-          font-weight:
-            ${String(item.wo_vtnet)
-              .includes('Chờ CD duyệt')
-              ? 'bold'
-              : 'normal'};
-        ">
-          <b>Trạng thái wo vtnet:</b>
-          ${item.wo_vtnet}
-        </p>
-
-        <p>
-          <b>Trạng thái wo vcc:</b>
-          ${item.wo_vvc}
-        </p>
-
-        <p>
-          <b>Nhân viên tạo:</b>
-          ${item.nhanvien_tao}
-        </p>
-
-      </div>
-
-    `;
-
-  });
-
-  html += '</div>';
-
-  content.innerHTML = html;
-
-}
-
-function showChoCD(){
-
-  saveHistory();
-
-  const content =
-    document.getElementById('content');
-
-  let list =
-    DATA.filter(x =>
-  
-      String(x.wo_vvc)
-      .toLowerCase()
-      .includes('chờ cd duyệt')
-  );
-  
-  CURRENT_LIST = list;
-  list.sort(
-    (a,b) =>
-      a.thoigian - b.thoigian
-  );
-
-  let html = `
-
-          <div class="card fade-in">
-      
-            <div class="group-title">
-              WO FT ĐÓNG CHỜ CD DUYỆT
-            </div>
-      
-        `;
-      
-        list.forEach(item => {
-      
-          html += `
-      
-      <div class="item fade-in">
-      
-        <p>
-          <b>Trạm, tuyến, tủ:</b>
-          ${item.tram}
-        </p>
-      
-        <p style="
-          color:
-            ${String(item.mawo)
-              .toLowerCase()
-              .includes('chưa sinh')
-              ? '#00b0f0'
-              : '#000'};
-      
-          font-weight:bold;
-        ">
-      
-          <b>Mã wo:</b>
-          ${item.mawo || 'Chưa sinh wo'}
-      
-        </p>
-      
-        <p>
-      
-          <b>Loại công việc:</b>
-      
-          <span style="
-            color:
-              ${String(item.type)
-                .toLowerCase()
-                .includes('inos')
-                ? '#0b5394'
-                : '#ff6600'};
-      
-            font-weight:bold;
-          ">
-      
-            ${item.type}
-      
-          </span>
-      
-        </p>
-      
-        <p>
-          <b>Huyện:</b>
-          ${item.tth}
-        </p>
-      
-        <p>
-          <b>Danh mục:</b>
-          ${item.danhmuc}
-        </p>
-      
-        <p>
-          <b>Đầu việc:</b>
-          ${item.dauviec || 'Đầu việc trống'}
-        </p>
-      
-        <p>
-          <b>Nhân viên:</b>
-          ${item.nhanvien}
-        </p>
-      
-        <p class="
-          ${item.thoigian < 0
-            ? 'red'
-            : 'green'}
-        ">
-      
-          <b>Thời gian tồn:</b>
-          ${item.thoigian} ngày
-      
-        </p>
-      
-        <p>
-          <b>Mô tả:</b>
-          ${item.mota}
-        </p>
-      
-        <p style="
-          color:#ff9900;
-          font-weight:bold;
-        ">
-      
-          <b>WO VCC:</b>
-          ${item.wo_vvc}
-      
-        </p>
-      
-        <p>
-      
-          <b>WO VTNET:</b>
-          ${item.wo_vtnet}
-      
-        </p>
-      
-        <p>
-      
-          <b>Nhân viên tạo:</b>
-          ${item.nhanvien_tao}
-      
-        </p>
-      
-      </div>
-
-    `;
-
-  });
-
-  html += '</div>';
-
-  content.innerHTML = html;
-
-}
-
-function showTimelineTTH(){
-
-  saveHistory();
-
-  const content =
-    document.getElementById('content');
-
-  const list =
-    DATA.filter(x =>
-
-      String(x.type)
-      .toLowerCase()
-      .includes('inos')
-
-    );
-
-  const tths =
-    [...new Set(
-      list.map(x => x.tth)
-    )];
-
-  const tongQuaHan =
-  list.filter(
-    x => x.danhgia == 'Quá hạn'
-  ).length;
-
-const tongTrongHan =
-  list.filter(
-    x => x.danhgia == 'Trong hạn'
-  ).length;
-
-const tongTatCa =
-  tongQuaHan + tongTrongHan;
-
-  let html = `
-
-    <div class="card fade-in">
-
-    <div class="group-title">
-      BIỂU ĐỒ TTH HẠNG MỤC INOS
+    <div class="item-desc">
+      <button class="open-detail" onclick="openDetail('Đầu việc báo hỏng', ${FILTERED.indexOf(x)}, 'dvbh')">ĐẦU VIỆC BÁO HỎNG${x.dvbh?' • XEM':' • TRỐNG'}</button>
+      <button class="open-detail" onclick="openDetail('Mô tả', ${FILTERED.indexOf(x)}, 'mt')">MÔ TẢ${x.mt?' • XEM':' • TRỐNG'}</button>
     </div>
-    
-    <div style="
-      margin-bottom:16px;
-    
-      background:#f5f7fa;
-    
-      border-radius:10px;
-    
-      padding:8px;
-    
-      border:1px solid #ddd;
-    ">
-    
-      <div style="
-        font-size:13px;
-        font-weight:bold;
-        color:#0b5394;
-    
-        margin-bottom:5px;
-      ">
-        CNCT GLI
-      </div>
-    
-      <div style="
-        font-size:11px;
-        margin-bottom:5px;
-      ">
-    
-        Tổng:
-        <b>${tongTatCa}</b>
-    
-        |
-    
-        <span style="color:red">
-          Quá hạn:
-          <b>${tongQuaHan}</b>
-        </span>
-    
-        |
-    
-        <span style="color:green">
-          Trong hạn:
-          <b>${tongTrongHan}</b>
-        </span>
-    
-      </div>
-    
-        <div style="
-          display:flex;
-        
-          width:100%;
-        
-          height:10px;
-        
-          border-radius:20px;
-        
-          overflow:hidden;
-        
-          background:#ddd;
-        ">
-    
-        <div
-        
-          onclick="
-            showALLTTHDetail(
-              'Quá hạn'
-            )
-          "
-        
-          style="
-            width:${(
-              tongQuaHan /
-              tongTatCa
-            ) * 100}%;
-        
-            background:#ff3b30;
-        
-            cursor:pointer;
-          "
-        ></div>
-    
-        <div
-        
-          onclick="
-            showALLTTHDetail(
-              'Trong hạn'
-            )
-          "
-        
-          style="
-            width:${(
-              tongTrongHan /
-              tongTatCa
-            ) * 100}%;
-        
-            background:#34c759;
-        
-            cursor:pointer;
-          "
-        
-        ></div>
-    
-      </div>
-    
-    </div>
+  </div>`).join('')||'<div class="empty">Không có dữ liệu phù hợp.</div>';
+}
+function setData(rows,source){DATA=rows.map(normalize).filter(x=>x.tram||x.wo||x.mt);buildFilters();applyFilters();$('sourceStatus').textContent=source;}
 
-  `;
-
-  tths.forEach(tth => {
-
-    const tthData =
-      list.filter(x => x.tth == tth);
-
-    const quaHan =
-      tthData.filter(
-        x => x.danhgia == 'Quá hạn'
-      ).length;
-
-    const trongHan =
-      tthData.filter(
-        x => x.danhgia == 'Trong hạn'
-      ).length;
-
-    html += `
-        <div style="
-          margin-bottom:12px;
-        ">
-        
-          <div style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-        
-            font-size:12px;
-            font-weight:bold;
-        
-            margin-bottom:4px;
-          ">
-        
-            <span style="
-              color:#0b5394;
-            ">
-              ${tth}
-            </span>
-            <span style="
-              font-size:11px;
-            ">
-            
-              Tổng:
-              <b>${quaHan + trongHan}</b>
-            
-              |
-            
-              <span style="
-                color:red;
-              ">
-                Quá hạn:
-                <b>${quaHan}</b>
-              </span>
-            
-              |
-            
-              <span style="
-                color:green;
-              ">
-                Trong hạn:
-                <b>${trongHan}</b>
-              </span>
-          </div>
-        
-          <div style="
-            display:flex;
-        
-            width:100%;
-        
-            height:10px;
-        
-            border-radius:20px;
-        
-            overflow:hidden;
-        
-            background:#ddd;
-          ">
-        
-            <div
-        
-              onclick="
-                showTTHDetail(
-                  '${tth}',
-                  'Quá hạn'
-                )
-              "
-        
-              style="
-                width:${(
-                  quaHan /
-                  (quaHan + trongHan)
-                ) * 100}%;
-        
-                background:#ff3b30;
-        
-                cursor:pointer;
-              "
-        
-            ></div>
-        
-            <div
-        
-              onclick="
-                showTTHDetail(
-                  '${tth}',
-                  'Trong hạn'
-                )
-              "
-        
-              style="
-                width:${(
-                  trongHan /
-                  (quaHan + trongHan)
-                ) * 100}%;
-        
-                background:#34c759;
-        
-                cursor:pointer;
-              "
-        
-            ></div>
-        
-          </div>
-        
-        </div>
-    `;
-
-  });
-
-  html += '</div>';
-
-  content.innerHTML = html;
-
+function openDetail(title,index,field){
+  const x=FILTERED[index];
+  if(!x)return;
+  $('modalTitle').textContent=title+(x.wo?' • '+x.wo:'');
+  $('modalBody').textContent=x[field]||'Không có dữ liệu.';
+  $('detailModal').classList.add('show');
+}
+function closeDetail(){$('detailModal').classList.remove('show');}
+function exportFilteredExcel(){
+  if(!FILTERED.length){alert('Không có dữ liệu để tải.');return;}
+  if(!window.XLSX){alert('Không tải được thư viện xuất Excel.');return;}
+  showLoading('ĐANG TẠO FILE EXCEL','Đang định dạng và xuất '+FILTERED.length+' dòng đã lọc...');
+  setTimeout(()=>{
+    try{
+      const rows=FILTERED.map((x,i)=>({
+        'STT':i+1,
+        'Trạm/Tuyến/Tủ':x.tram,
+        'Mã WO':x.wo,
+        'Huyện':x.huyen,
+        'Danh mục':x.dm,
+        'Đầu việc':x.dv,
+        'Thời gian tồn':x.tg,
+        'Đánh giá':x.dg,
+        'In/Out':x.type,
+        'Trạng thái VCC':x.ttvcc,
+        'Trạng thái VTNet':x.ttnet,
+        'Người tạo':x.nvtao,
+        'Đầu việc báo hỏng':x.dvbh,
+        'Mô tả':x.mt
+      }));
+      const ws=XLSX.utils.json_to_sheet(rows);
+      const headers=Object.keys(rows[0]);
+      const range=XLSX.utils.decode_range(ws['!ref']);
+      const headerStyle={
+        font:{bold:true,color:{rgb:'FFFFFF'},sz:11},
+        fill:{fgColor:{rgb:'1F4E78'}},
+        alignment:{horizontal:'center',vertical:'center',wrapText:true},
+        border:{top:{style:'thin',color:{rgb:'AAB7C4'}},bottom:{style:'thin',color:{rgb:'AAB7C4'}},left:{style:'thin',color:{rgb:'AAB7C4'}},right:{style:'thin',color:{rgb:'AAB7C4'}}}
+      };
+      const bodyStyle={
+        alignment:{vertical:'center',wrapText:true},
+        border:{top:{style:'thin',color:{rgb:'D9E2F3'}},bottom:{style:'thin',color:{rgb:'D9E2F3'}},left:{style:'thin',color:{rgb:'D9E2F3'}},right:{style:'thin',color:{rgb:'D9E2F3'}}}
+      };
+      for(let c=range.s.c;c<=range.e.c;c++){
+        const cell=ws[XLSX.utils.encode_cell({r:0,c})];
+        if(cell) cell.s=headerStyle;
+      }
+      for(let r=1;r<=range.e.r;r++){
+        for(let c=range.s.c;c<=range.e.c;c++){
+          const cell=ws[XLSX.utils.encode_cell({r,c})];
+          if(cell) cell.s={...bodyStyle,alignment:{...bodyStyle.alignment,horizontal:(c===0?'center':(c===1||c===2?'left':'center'))}};
+        }
+      }
+      ws['!cols']=[{wch:7},{wch:30},{wch:26},{wch:18},{wch:24},{wch:28},{wch:15},{wch:14},{wch:12},{wch:20},{wch:22},{wch:20},{wch:38},{wch:65}];
+      ws['!rows']=Array.from({length:rows.length+1},(_,i)=>({hpt:i===0?28:Math.min(70,Math.max(22,Math.ceil(Math.max(...Object.values(rows[Math.max(0,i-1)]||{}).map(v=>String(v??'').length))/35)*16))}));
+      ws['!autofilter']={ref:`A1:${XLSX.utils.encode_col(headers.length-1)}${rows.length+1}`};
+      ws['!freeze']={xSplit:0,ySplit:1,topLeftCell:'A2',activePane:'bottomLeft',state:'frozen'};
+      const wb=XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb,ws,'ICMS_Da_Loc');
+      const d=new Date();
+      const stamp=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'_'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0');
+      XLSX.writeFile(wb,'ICMS_Da_Loc_'+stamp+'.xlsx',{cellStyles:true});
+    }catch(e){console.error(e);alert('Lỗi khi xuất Excel: '+e.message);}
+    finally{hideLoading();}
+  },80);
 }
 
-function showTimelineDV(){
-
-  saveHistory();
-
-  const content =
-    document.getElementById('content');
-
-  const list =
-    DATA.filter(x =>
-
-      String(x.type)
-      .toLowerCase()
-      .includes('inos')
-
-    );
-
-  const dvs =
-    [...new Set(
-      list.map(x =>
-
-        x.dauviec &&
-        String(x.dauviec).trim() != ''
-          ? x.dauviec
-          : 'Đầu việc trống'
-
-      )
-    )];
-
-  let html = `
-
-    <div class="card fade-in">
-
-      <div class="group-title">
-        BIỂU ĐỒ ĐẦU VIỆC HẠNG MỤC INOS
-      </div>
-
-  `;
-
-  dvs.forEach(dv => {
-
-    const quaHan =
-      list.filter(x => {
-
-        const value =
-
-          x.dauviec &&
-          String(x.dauviec).trim() != ''
-            ? x.dauviec
-            : 'Đầu việc trống';
-
-        return (
-          value == dv
-          &&
-          x.danhgia == 'Quá hạn'
-        );
-
-      }).length;
-
-    const trongHan =
-      list.filter(x => {
-
-        const value =
-
-          x.dauviec &&
-          String(x.dauviec).trim() != ''
-            ? x.dauviec
-            : 'Đầu việc trống';
-
-        return (
-          value == dv
-          &&
-          x.danhgia == 'Trong hạn'
-        );
-
-      }).length;
-
-    const tong =
-      quaHan + trongHan;
-
-    html += `
-
-      <div style="
-        margin-bottom:20px;
-      ">
-
-        <button
-
-          onclick="
-            showDVDetail(
-              '${String(dv)
-                .replace(/'/g,'')
-                .replace(/"/g,'')
-              }'
-            )
-          "
-
-          style="
-            width:100%;
-            border:none;
-            background:white;
-            text-align:left;
-
-            padding:0;
-            margin:0;
-
-            cursor:pointer;
-          "
-
-        >
-
-          <b style="
-            font-size:16px;
-            color:#0b5394;
-          ">
-            ${dv}
-          </b>
-
-          <div style="
-            margin-top:2px;
-            margin-bottom:6px;
-
-            font-size:11px;
-            color:#666;
-          ">
-
-            Tổng:
-            <b>${tong}</b>
-
-            |
-
-            <span style="color:red">
-              Quá hạn:
-              <b>${quaHan}</b>
-            </span>
-
-            |
-
-            <span style="color:green">
-              Trong hạn:
-              <b>${trongHan}</b>
-            </span>
-
-          </div>
-
-          <div style="
-            margin-top:5px;
-          ">
-
-            <div style="
-              height:8px;
-
-              width:${Math.max(
-                Math.min(quaHan * 0.5, 100),
-                5
-              )}%;
-
-              background:red;
-
-              border-radius:10px;
-            "></div>
-
-          </div>
-
-          <div style="
-            margin-top:5px;
-          ">
-
-            <div style="
-              height:8px;
-
-              width:${Math.max(
-                Math.min(trongHan * 0.5, 100),
-                5
-              )}%;
-
-              background:green;
-
-              border-radius:10px;
-            "></div>
-
-          </div>
-
-        </button>
-
-      </div>
-
-    `;
-
-  });
-
-  html += '</div>';
-
-  content.innerHTML = html;
-
+function openHelp(){$('helpModal').classList.add('show');$('helpCommand').value='';}
+function closeHelp(){$('helpModal').classList.remove('show');}
+function runTypedCommand(){
+  const v=norm($('helpCommand').value).toLowerCase();
+  const map={
+    '/tongquan':'summary','/quahan':'overdue','/huyen':'district','/dauviec':'job',
+    '/danhmuc':'category','/chatluong':'quality','/uutien':'priority','/all':'all'
+  };
+  runHelpCmd(map[v]||'all');
 }
-
-function debounceSearch(){
-
-  clearTimeout(SEARCH_TIMER);
-
-  SEARCH_TIMER =
-    setTimeout(() => {
-      SEARCH_LIMIT = 100;
-      searchData();
-
-    },300);
-
-}
-
-function searchData(){
-  
-  const keyword =
-    document.getElementById('searchInput')
-      .value
-      .toLowerCase()
-      .trim();
-
-  const content =
-    document.getElementById('content');
-
-  if(keyword == ''){
-  
-    if(PAGE_HISTORY.length > 0){
-  
-      const last =
-        PAGE_HISTORY[
-          PAGE_HISTORY.length - 1
-        ];
-  
-      content.innerHTML =
-        last.html;
-  
-    }else{
-  
-      content.innerHTML = '';
-  
-    }
-  
-    return;
-  
-  }
-
-let source =
-
-  CURRENT_LIST.length > 0
-    ? CURRENT_LIST
-    : DATA;
-
-let list =
-  source.filter(x =>
-
-      String(x.tram)
-        .toLowerCase()
-        .includes(keyword)
-
-      ||
-
-      String(x.tth)
-        .toLowerCase()
-        .includes(keyword)
-
-      ||
-
-      String(x.danhmuc)
-        .toLowerCase()
-        .includes(keyword)
-
-      ||
-
-      String(x.mawo)
-        .toLowerCase()
-        .includes(keyword)
-
-      ||
-
-      String(x.nhanvien)
-        .toLowerCase()
-        .includes(keyword)
-
-      ||
-
-      String(x.dauviec)
-        .toLowerCase()
-        .includes(keyword)
-
-    );
-
-  const totalResult =
-  list.length;
-  list = list.slice(0,SEARCH_LIMIT);
-  
-  list.sort(
-    (a,b) =>
-      a.thoigian - b.thoigian
-  );
-
-  let html = `
-
-    <div class="card fade-in">
-
-      <div class="group-title">
-        KẾT QUẢ TÌM KIẾM
-        (${list.length}/${totalResult})
-      </div>
-
-  `;
-
-  list.forEach(item => {
-
-    html += `
-
-      <div class="item fade-in">
-
-        <p>
-          <b>Trạm, tuyến, tủ:</b>
-          ${item.tram}
-        </p>
-
-        <p style="
-          color:
-            ${String(item.mawo)
-              .toLowerCase()
-              .includes('chưa sinh')
-              ? '#00b0f0'
-              : '#000'};
-
-          font-weight:bold;
-        ">
-
-          <b>Mã wo:</b>
-          ${item.mawo || 'Chưa sinh wo'}
-        </p>
-
-        <p>
-          <b>Loại công việc:</b>
-          <span style="
-            color:
-              ${String(item.type)
-                .toLowerCase()
-                .includes('inos')
-                ? '#0b5394'
-                : '#ff6600'}; 
-              font-weight:bold;
-            ">
-              ${item.type}
-            </span> 
-        </p>
-
-        <p>
-          <b>Huyện:</b>
-          ${item.tth}
-        </p>
-
-        <p>
-          <b>Danh mục:</b>
-          ${item.danhmuc}
-        </p>
-
-        <p>
-          <b>Đầu việc:</b>
-          ${item.dauviec}
-        </p>
-
-        <p>
-          <b>Nhân viên:</b>
-          ${item.nhanvien}
-        </p>
-
-        <p class="
-          ${item.thoigian < 0
-            ? 'red'
-            : 'green'}
-        ">
-          <b>Thời gian tồn:</b>
-          ${item.thoigian} ngày
-        </p>
-
-        <p>
-          <b>Mô tả:</b>
-          ${item.mota}
-        </p>
-
-      </div>
-
-    `;
-
-  });
-
-  html += '</div>';
-  if(totalResult > SEARCH_LIMIT){
-
-  html += `
-
-    <button
-
-      onclick="loadMoreSearch()"
-
-      style="
-        width:100%;
-        border:none;
-        padding:10px;
-        border-radius:10px;
-        background:#0b5394;
-        color:white;
-        font-weight:bold;
-        margin-top:8px;
-      "
-
-    >
-
-      XEM THÊM
-      (${SEARCH_LIMIT}/${totalResult})
-
-    </button>
-
-  `;
-
-}
-  content.innerHTML = html;
-
-}
-
-function showDVDetail(dv){
-
-  saveHistory();
-
-  const content =
-    document.getElementById('content');
-
-  let list =
-    DATA.filter(x => {
-
-      const value =
-
-        x.dauviec &&
-        String(x.dauviec).trim() != ''
-          ? x.dauviec
-          : 'Đầu việc trống';
-
-      return value == dv;
-
+function runHelpCmd(cmd){
+  closeHelp();
+  openBot();
+  setTimeout(()=>{
+    const sections=[...document.querySelectorAll('#botBody .bot-section')];
+    const kpis=document.querySelector('#botBody .bot-grid');
+    if(kpis)kpis.style.display=(cmd==='quality'||cmd==='priority')?'none':'grid';
+    sections.forEach((sec,i)=>{
+      const h=norm(sec.querySelector('h3')?.textContent).toLowerCase();
+      let show=cmd==='all'||cmd==='summary';
+      if(cmd==='overdue') show=h.includes('đánh giá')||h.includes('huyện')||h.includes('đầu việc')||h.includes('danh mục');
+      if(cmd==='district') show=h.includes('huyện');
+      if(cmd==='job') show=h.includes('đầu việc');
+      if(cmd==='category') show=h.includes('danh mục');
+      if(cmd==='quality') show=h.includes('chất lượng');
+      if(cmd==='priority') show=h.includes('đánh giá');
+      sec.style.display=show?'block':'none';
     });
-
-  CURRENT_LIST = list;
-
-  list.sort(
-    (a,b) =>
-      a.thoigian - b.thoigian
-  );
-
-  let html = `
-
-    <div class="card fade-in">
-
-      <div class="group-title">
-        ${dv}
-        (${list.length})
-      </div>
-
-  `;
-
-  list.forEach(item => {
-
-    html += `
-
-      <div class="item fade-in">
-
-        <p>
-          <b>Trạm, tuyến, tủ:</b>
-          ${item.tram}
-        </p>
-
-        <p style="
-          color:
-            ${String(item.mawo)
-              .toLowerCase()
-              .includes('chưa sinh')
-              ? '#00b0f0'
-              : '#000'};
-
-          font-weight:bold;
-        ">
-
-          <b>Mã wo:</b>
-          ${item.mawo || 'Chưa sinh wo'}
-
-        </p>
-
-        <p>
-
-          <b>Loại công việc:</b>
-
-          <span style="
-            color:
-              ${String(item.type)
-                .toLowerCase()
-                .includes('inos')
-                ? '#0b5394'
-                : '#ff6600'};
-
-            font-weight:bold;
-          ">
-
-            ${item.type}
-
-          </span>
-
-        </p>
-
-        <p>
-          <b>Huyện:</b>
-          ${item.tth}
-        </p>
-
-        <p>
-          <b>Danh mục:</b>
-          ${item.danhmuc}
-        </p>
-
-        <p>
-          <b>Đầu việc:</b>
-          ${item.dauviec || 'Đầu việc trống'}
-        </p>
-
-        <p>
-          <b>Nhân viên:</b>
-          ${item.nhanvien}
-        </p>
-
-        <p class="
-          ${item.thoigian < 0
-            ? 'red'
-            : 'green'}
-        ">
-
-          <b>Thời gian tồn:</b>
-          ${item.thoigian} ngày
-
-        </p>
-
-        <p>
-          <b>Mô tả:</b>
-          ${item.mota}
-        </p>
-
-        <p style="
-          color:
-            ${String(item.wo_vtnet)
-              .includes('Chờ CD duyệt')
-              ? '#ff9900'
-              : '#000'};
-
-          font-weight:
-            ${String(item.wo_vtnet)
-              .includes('Chờ CD duyệt')
-              ? 'bold'
-              : 'normal'};
-        ">
-
-          <b>Trạng thái wo vtnet:</b>
-          ${item.wo_vtnet}
-
-        </p>
-
-        <p>
-          <b>Trạng thái wo vcc:</b>
-          ${item.wo_vvc}
-        </p>
-
-        <p>
-          <b>Nhân viên tạo:</b>
-          ${item.nhanvien_tao}
-        </p>
-
-      </div>
-
-    `;
-
-  });
-
-  html += '</div>';
-
-  content.innerHTML = html;
-
+    const intro=document.querySelector('#botBody .bot-section');
+    if(cmd==='priority'&&intro){
+      intro.scrollIntoView({block:'start',behavior:'smooth'});
+    }
+  },50);
 }
 
-function showTTHDetail(
-  tth,
-  status
-){
-
-  saveHistory();
-
-  const content =
-    document.getElementById('content');
-
-  let list =
-    DATA.filter(x =>
-
-      String(x.type)
-      .toLowerCase()
-      .includes('inos')
-
-      &&
-
-      x.tth == tth
-
-      &&
-
-      x.danhgia == status
-
-    );
-  
-  CURRENT_LIST = list;
-  list.sort(
-    (a,b) =>
-      a.thoigian - b.thoigian
-  );
-
-  let html = `
-
-    <div class="card fade-in">
-
-      <div class="group-title">
-        ${tth}
-        /
-        ${status}
-        (${list.length})
-      </div>
-
-  `;
-
-  list.forEach(item => {
-
-    html += `
-
-      <div class="item fade-in">
-      
-        <p>
-          <b>Trạm, tuyến, tủ:</b>
-          ${item.tram}
-        </p>
-      
-        <p style="
-          color:
-            ${String(item.mawo)
-              .toLowerCase()
-              .includes('chưa sinh')
-              ? '#00b0f0'
-              : '#000'};
-      
-          font-weight:bold;
-        ">
-      
-          <b>Mã wo:</b>
-          ${item.mawo || 'Chưa sinh wo'}
-        </p>
-      
-        <p>
-          <b>Loại công việc:</b>
-      
-          <span style="
-            color:
-              ${String(item.type)
-                .toLowerCase()
-                .includes('inos')
-                ? '#0b5394'
-                : '#ff6600'};
-      
-            font-weight:bold;
-          ">
-      
-            ${item.type}
-      
-          </span>
-      
-        </p>
-      
-        <p>
-          <b>Huyện:</b>
-          ${item.tth}
-        </p>
-      
-        <p>
-          <b>Danh mục:</b>
-          ${item.danhmuc}
-        </p>
-      
-        <p>
-          <b>Đầu việc:</b>
-          ${item.dauviec || 'Đầu việc trống'}
-        </p>
-      
-        <p>
-          <b>Nhân viên:</b>
-          ${item.nhanvien}
-        </p>
-      
-        <p class="
-          ${item.thoigian < 0
-            ? 'red'
-            : 'green'}
-        ">
-      
-          <b>Thời gian tồn:</b>
-          ${item.thoigian} ngày
-      
-        </p>
-      
-        <p>
-          <b>Mô tả:</b>
-          ${item.mota}
-        </p>
-      
-        <p style="
-          color:
-            ${String(item.wo_vtnet)
-              .includes('Chờ CD duyệt')
-              ? '#ff9900'
-              : '#000'};
-      
-          font-weight:
-            ${String(item.wo_vtnet)
-              .includes('Chờ CD duyệt')
-              ? 'bold'
-              : 'normal'};
-        ">
-      
-          <b>Trạng thái wo vtnet:</b>
-          ${item.wo_vtnet}
-      
-        </p>
-      
-        <p>
-          <b>Trạng thái wo vcc:</b>
-          ${item.wo_vvc}
-        </p>
-      
-        <p>
-          <b>Nhân viên tạo:</b>
-          ${item.nhanvien_tao}
-        </p>
-      
-      </div>
-
-    `;
-
-  });
-
-  html += '</div>';
-
-  content.innerHTML = html;
-
+function setBotMode(mode){
+  const box=document.querySelector('.bot-box');
+  box.classList.remove('bot-mini','bot-max');
+  if(mode==='mini')box.classList.add('bot-mini');
+  if(mode==='max')box.classList.add('bot-max');
+}
+function toggleBotMini(){
+  const box=document.querySelector('.bot-box');
+  box.classList.toggle('bot-mini');
+  box.classList.remove('bot-max');
+}
+function toggleBotMax(){
+  const box=document.querySelector('.bot-box');
+  box.classList.toggle('bot-max');
+  box.classList.remove('bot-mini');
+}
+function botSuggested(cmd){
+  if(typeof runHelpCmd==='function')runHelpCmd(cmd);
 }
 
-function showALLTTHDetail(status){
-
-  saveHistory();
-
-  const content =
-    document.getElementById('content');
-
-  let list =
-    DATA.filter(x =>
-
-      String(x.type)
-      .toLowerCase()
-      .includes('inos')
-
-      &&
-
-      x.danhgia == status
-
-    );
-  
-  CURRENT_LIST = list;
-  list.sort(
-    (a,b) =>
-      a.thoigian - b.thoigian
-  );
-
-  let html = `
-
-    <div class="card fade-in">
-      <div class="group-title">
-        CNCT GLI
-        /
-        ${status}
-        (${list.length})
-      </div>
-
-  `;
-
-  list.forEach(item => {
-
-    html += `
-
-     <div class="item fade-in">
-      
-        <p>
-          <b>Trạm, tuyến, tủ:</b>
-          ${item.tram}
-        </p>
-      
-        <p style="
-          color:
-            ${String(item.mawo)
-              .toLowerCase()
-              .includes('chưa sinh')
-              ? '#00b0f0'
-              : '#000'};
-      
-          font-weight:bold;
-        ">
-      
-          <b>Mã wo:</b>
-          ${item.mawo || 'Chưa sinh wo'}
-        </p>
-      
-        <p>
-          <b>Loại công việc:</b>
-      
-          <span style="
-            color:
-              ${String(item.type)
-                .toLowerCase()
-                .includes('inos')
-                ? '#0b5394'
-                : '#ff6600'};
-      
-            font-weight:bold;
-          ">
-      
-            ${item.type}
-      
-          </span>
-      
-        </p>
-      
-        <p>
-          <b>Huyện:</b>
-          ${item.tth}
-        </p>
-      
-        <p>
-          <b>Danh mục:</b>
-          ${item.danhmuc}
-        </p>
-      
-        <p>
-          <b>Đầu việc:</b>
-          ${item.dauviec || 'Đầu việc trống'}
-        </p>
-      
-        <p>
-          <b>Nhân viên:</b>
-          ${item.nhanvien}
-        </p>
-      
-        <p class="
-          ${item.thoigian < 0
-            ? 'red'
-            : 'green'}
-        ">
-      
-          <b>Thời gian tồn:</b>
-          ${item.thoigian} ngày
-      
-        </p>
-      
-        <p>
-          <b>Mô tả:</b>
-          ${item.mota}
-        </p>
-      
-        <p style="
-          color:
-            ${String(item.wo_vtnet)
-              .includes('Chờ CD duyệt')
-              ? '#ff9900'
-              : '#000'};
-      
-          font-weight:
-            ${String(item.wo_vtnet)
-              .includes('Chờ CD duyệt')
-              ? 'bold'
-              : 'normal'};
-        ">
-      
-          <b>Trạng thái wo vtnet:</b>
-          ${item.wo_vtnet}
-      
-        </p>
-      
-        <p>
-          <b>Trạng thái wo vcc:</b>
-          ${item.wo_vvc}
-        </p>
-      
-        <p>
-          <b>Nhân viên tạo:</b>
-          ${item.nhanvien_tao}
-        </p>
-      
-      </div>
-    `;
-
-  });
-
-  html += '</div>';
-
-  content.innerHTML = html;
-
+function closeBot(){$('botModal').classList.remove('show');}
+function topCount(list,key,n=5){
+  const m={}; list.forEach(x=>{const v=norm(x[key])||'Không xác định';m[v]=(m[v]||0)+1;});
+  return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,n);
 }
-
-function showALLCategory(status){
-
-  saveHistory();
-
-  const content =
-    document.getElementById('content');
-
-  let list =
-    DATA.filter(x =>
-
-      String(x.type)
-      .toLowerCase()
-      .includes('inos')
-
-      &&
-
-      x.danhgia == status
-
-    );
-
-  const categories =
-    [...new Set(
-      list.map(x => x.danhmuc)
-    )];
-
-  let html = `
-
-    <div class="card fade-in">
-
-      <div class="group-title">
-        InOS
-        /
-        CNCT GLI
-        /
-        ${status}
-      </div>
-
-  `;
-
-  categories.forEach(cat => {
-
-    const count =
-      list.filter(
-        x => x.danhmuc == cat
-      ).length;
-
-    html += `
-
-      <button class="sub-btn"
-
-        onclick="
-          showALLList(
-            '${status}',
-            '${cat}'
-          )
-        "
-
-      >
-
-        ${cat}
-        (${count})
-
-      </button>
-
-    `;
-
-  });
-
-  html += '</div>';
-
-  content.innerHTML = html;
-
-}
-
-function showALLList(
-  status,
-  category
-){
-
-  saveHistory();
-
-  const content =
-    document.getElementById('content');
-
-  let list =
-    DATA.filter(x =>
-
-      String(x.type)
-      .toLowerCase()
-      .includes('inos')
-
-      &&
-
-      x.danhgia == status
-
-      &&
-
-      x.danhmuc == category
-
-    );
-  
-  CURRENT_LIST = list;
-  list.sort(
-    (a,b) =>
-      a.thoigian - b.thoigian
-  );
-
-  let html = `
-
-    <div class="card fade-in">
-
-      <div class="group-title">
-
-        ${category}
-
-        /
-
-        ${status}
-
-        (${list.length})
-
-      </div>
-
-  `;
-
-  list.forEach(item => {
-
-    html += `
-
-    <div class="item fade-in">
-    
-      <p>
-        <b>Trạm, tuyến, tủ:</b>
-        ${item.tram}
-      </p>
-    
-      <p style="
-        color:
-          ${String(item.mawo)
-            .toLowerCase()
-            .includes('chưa sinh')
-            ? '#00b0f0'
-            : '#000'};
-    
-        font-weight:bold;
-      ">
-    
-        <b>Mã wo:</b>
-        ${item.mawo || 'Chưa sinh wo'}
-      </p>
-    
-      <p>
-        <b>Loại công việc:</b>
-    
-        <span style="
-          color:
-            ${String(item.type)
-              .toLowerCase()
-              .includes('inos')
-              ? '#0b5394'
-              : '#ff6600'};
-    
-          font-weight:bold;
-        ">
-    
-          ${item.type}
-    
-        </span>
-    
-      </p>
-    
-      <p>
-        <b>Huyện:</b>
-        ${item.tth}
-      </p>
-    
-      <p>
-        <b>Danh mục:</b>
-        ${item.danhmuc}
-      </p>
-    
-      <p>
-        <b>Đầu việc:</b>
-        ${item.dauviec || 'Đầu việc trống'}
-      </p>
-    
-      <p>
-        <b>Nhân viên:</b>
-        ${item.nhanvien}
-      </p>
-    
-      <p class="
-        ${item.thoigian < 0
-          ? 'red'
-          : 'green'}
-      ">
-    
-        <b>Thời gian tồn:</b>
-        ${item.thoigian} ngày
-    
-      </p>
-    
-      <p>
-        <b>Mô tả:</b>
-        ${item.mota}
-      </p>
-    
-      <p style="
-        color:
-          ${String(item.wo_vtnet)
-            .includes('Chờ CD duyệt')
-            ? '#ff9900'
-            : '#000'};
-    
-        font-weight:
-          ${String(item.wo_vtnet)
-            .includes('Chờ CD duyệt')
-            ? 'bold'
-            : 'normal'};
-      ">
-    
-        <b>Trạng thái wo vtnet:</b>
-        ${item.wo_vtnet}
-    
-      </p>
-    
-      <p>
-        <b>Trạng thái wo vcc:</b>
-        ${item.wo_vvc}
-      </p>
-    
-      <p>
-        <b>Nhân viên tạo:</b>
-        ${item.nhanvien_tao}
-      </p>
-    
+function pct(a,b){return b?((a/b)*100).toFixed(1):'0.0'}
+function openBot(){
+  const d=FILTERED, total=d.length;
+  if(!total){alert('Không có dữ liệu đang lọc để phân tích.');return;}
+  const over=d.filter(x=>x.dg==='Quá hạn');
+  const inos=d.filter(x=>x.type.toLowerCase()==='inos');
+  const outos=d.filter(x=>x.type.toLowerCase()==='outos');
+  const absTg=d.map(x=>Math.abs(num(x.tg))).filter(Number.isFinite);
+  const avg=absTg.length?absTg.reduce((a,b)=>a+b,0)/absTg.length:0;
+  const maxRow=d.reduce((best,x)=>Math.abs(num(x.tg))>Math.abs(num(best?.tg))?x:best,d[0]);
+  const byH=topCount(over,'huyen',5), byDv=topCount(over,'dv',5), byDm=topCount(over,'dm',5);
+  const dvbhFilled=d.filter(x=>norm(x.dvbh)).length;
+  const mtFilled=d.filter(x=>norm(x.mt)).length;
+  const risk=over.length/total;
+  const riskText=risk>=0.4?'CAO':risk>=0.2?'TRUNG BÌNH':'THẤP';
+  const riskCls=risk>=0.4?'risk-high':risk>=0.2?'risk-mid':'risk-low';
+  const table=(arr,title)=>`<div class="bot-section"><h3>${title}</h3><table class="bot-table"><thead><tr><th>Nhóm</th><th>Số lượng quá hạn</th><th>Tỷ trọng</th></tr></thead><tbody>${arr.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v}</td><td>${pct(v,over.length)}%</td></tr>`).join('')||'<tr><td colspan="3">Không có dữ liệu</td></tr>'}</tbody></table></div>`;
+  const insights=[];
+  insights.push(`Tập dữ liệu đang phân tích có <b>${total}</b> WO, trong đó <b>${over.length}</b> WO quá hạn (${pct(over.length,total)}%). Mức rủi ro hiện tại được đánh giá là <span class="${riskCls}">${riskText}</span>.`);
+  if(byH[0]) insights.push(`Điểm nóng lớn nhất là <b>${esc(byH[0][0])}</b> với <b>${byH[0][1]}</b> WO quá hạn, chiếm ${pct(byH[0][1],over.length)}% tổng số quá hạn.`);
+  if(byDv[0]) insights.push(`Đầu việc cần ưu tiên xử lý là <b>${esc(byDv[0][0])}</b> với <b>${byDv[0][1]}</b> trường hợp quá hạn.`);
+  if(maxRow) insights.push(`Trường hợp có thời gian tồn tuyệt đối lớn nhất hiện tại là WO <b>${esc(maxRow.wo||'không xác định')}</b>, trạm/tuyến/tủ <b>${esc(maxRow.tram||'không xác định')}</b>, giá trị TG: <b>${esc(maxRow.tg)}</b>.`);
+  $('botScope').textContent=`Phân tích ${total.toLocaleString('vi-VN')} dòng dữ liệu đang lọc`;
+  $('botBody').innerHTML=`
+    <div class="bot-grid">
+      <div class="bot-kpi"><span>Tổng WO</span><b>${total}</b></div>
+      <div class="bot-kpi"><span>Quá hạn</span><b>${over.length}</b></div>
+      <div class="bot-kpi"><span>Tỷ lệ quá hạn</span><b>${pct(over.length,total)}%</b></div>
+      <div class="bot-kpi"><span>Rủi ro</span><b class="${riskCls}">${riskText}</b></div>
+      <div class="bot-kpi"><span>InOS</span><b>${inos.length}</b></div>
+      <div class="bot-kpi"><span>OutOS</span><b>${outos.length}</b></div>
+      <div class="bot-kpi"><span>TG tồn TB</span><b>${avg.toFixed(1)}</b></div>
+      <div class="bot-kpi"><span>Đủ dữ liệu DVBH</span><b>${pct(dvbhFilled,total)}%</b></div>
     </div>
-
-    `;
-
-  });
-
-  html += '</div>';
-
-  content.innerHTML = html;
-
+    <div class="bot-section"><h3>📌 Đánh giá chuyên sâu</h3>${insights.map(x=>`<p>• ${x}</p>`).join('')}</div>
+    ${table(byH,'📍 Top huyện có WO quá hạn')}
+    ${table(byDv,'🛠 Top đầu việc có WO quá hạn')}
+    ${table(byDm,'📂 Top danh mục có WO quá hạn')}
+    <div class="bot-section"><h3>✓ Kiểm tra chất lượng dữ liệu</h3>
+      <p>• Có mô tả: <b>${mtFilled}/${total}</b> dòng (${pct(mtFilled,total)}%).</p>
+      <p>• Có đầu việc báo hỏng (dvbh): <b>${dvbhFilled}/${total}</b> dòng (${pct(dvbhFilled,total)}%).</p>
+      <p>• Khuyến nghị: ưu tiên xử lý theo thứ tự <b>huyện có tỷ lệ quá hạn cao → đầu việc quá hạn nhiều → trường hợp TG tồn lớn nhất</b>, đồng thời bổ sung mô tả/dvbh cho các dòng còn thiếu để phân tích nguyên nhân chính xác hơn.</p>
+    </div>`;
+  const botBody=$('botBody');
+  if(botBody){
+    const oldHtml=botBody.innerHTML;
+    const tabs=`<div class="bot-tabs">
+      <button class="active" onclick="botSuggested('summary')">TỔNG QUAN</button>
+      <button onclick="botSuggested('overdue')">QUÁ HẠN</button>
+      <button onclick="botSuggested('district')">HUYỆN</button>
+      <button onclick="botSuggested('job')">ĐẦU VIỆC</button>
+      <button onclick="botSuggested('category')">DANH MỤC</button>
+      <button onclick="botSuggested('quality')">CHẤT LƯỢNG</button>
+      <button onclick="botSuggested('priority')">ƯU TIÊN</button>
+      <button onclick="botSuggested('all')">TẤT CẢ</button>
+    </div>`;
+    const suggest=`<div class="bot-suggest">
+      <button onclick="botSuggested('overdue')">⚠ Quá hạn<br><small>Phân tích rủi ro</small></button>
+      <button onclick="botSuggested('priority')">🎯 Ưu tiên<br><small>Việc cần xử lý trước</small></button>
+      <button onclick="botSuggested('district')">📍 Điểm nóng<br><small>Phân tích theo huyện</small></button>
+      <button onclick="botSuggested('quality')">✓ Chất lượng<br><small>Kiểm tra dữ liệu</small></button>
+    </div>`;
+    botBody.innerHTML=tabs+suggest+oldHtml;
+  }
+  setBotMode('normal');
+  $('botModal').classList.add('show');
 }
 
-function loadMoreSearch(){
-
-  SEARCH_LIMIT += 100;
-
-  searchData();
-
+async function loadAPI(){
+  showLoading('ĐANG TẢI ICMS','Đang tải ICMS...');
+  try{
+    const r=await fetch(API,{cache:'no-store'});if(!r.ok)throw new Error(r.status);
+    const raw=await r.json();setData(Array.isArray(raw)?raw:[],'ICMS · '+(Array.isArray(raw)?raw.length:0)+' dòng');
+  }catch(e){alert('Không tải được Google Sheet: '+e.message)}
+  finally{hideLoading()}
 }
-
-function downloadSheet(){
-
-  const fileUrl =
-    'https://docs.google.com/spreadsheets/d/1WTP6sZGYR_dZA-KS5U_taaod3iO4GiYRdcBpnSycYjw/export?format=xlsx&gid=1842858948';
-
-  window.open(fileUrl,'_blank');
-
+async function loadExcel(ev){
+  const file=ev.target.files[0];if(!file)return;
+  showLoading('ĐANG ĐỌC EXCEL',file.name);
+  try{
+    const buf=await file.arrayBuffer(), wb=XLSX.read(buf,{type:'array',raw:false});
+    const ws=wb.Sheets[wb.SheetNames[0]], rows=XLSX.utils.sheet_to_json(ws,{defval:'',raw:false});
+    setData(rows,'📁 Excel · '+file.name+' · '+rows.length+' dòng');
+  }catch(e){alert('Không đọc được Excel: '+e.message)}
+  finally{hideLoading();ev.target.value=''}
 }
+function clearFilters(){ $('q').value='';['fHuyen','fDm','fDv','fType','fDg'].forEach(id=>$(id).value='');applyFilters();}
+loadAPI();
+</script>
+
+<script>
+document.addEventListener('click',function(e){
+  const b=e.target.closest('.bot-tabs button');
+  if(b){
+    document.querySelectorAll('.bot-tabs button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+  }
+});
 </script>
 
 </body>
