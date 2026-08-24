@@ -4,8 +4,9 @@
 <title>DANH SÁCH QUÁ HẠN TKM</title>
 <style>
 :root{--bg:#f1f5fb;--panel:#fff;--text:#1f2937;--muted:#64748b;--line:#dbe5f0;--accent:#2563eb;--accent-soft:#eaf2ff;--green:#166534;--green-soft:#ecfdf5;--amber:#a16207;--amber-soft:#fff7db;--blue:#2563eb;--blue-soft:#eff6ff;--shadow:0 3px 12px rgba(30,64,175,.06)}
-*{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}body{min-height:100vh}
-.app{width:min(100%,1920px);margin:0 auto;padding:18px clamp(12px,2vw,34px) 34px}
+*{box-sizing:border-box}html,body{margin:0 !important;padding:0 !important;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}body{min-height:100vh}
+.app{width:min(100%,1920px);margin:0 auto;padding:0 clamp(8px,1.4vw,24px) 24px}
+.header.sticky-mobile{position:sticky;top:0;z-index:40;background:var(--panel);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .header{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow)}
 .header-top{display:flex;align-items:center;justify-content:space-between;gap:16px}.title{font-size:clamp(21px,2vw,30px);font-weight:800;letter-spacing:.2px}.badge{padding:8px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:800;white-space:nowrap}
 .search-row{display:flex;gap:10px;margin-top:15px}.search-box{position:relative;flex:1}.search-box span{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#94a3b8}.search-box input{width:100%;height:48px;border:1px solid #cbd5e1;border-radius:14px;padding:0 42px;font-size:16px;outline:none;background:#fbfdff}.search-box input:focus{border-color:#94a3b8;box-shadow:0 0 0 3px rgba(148,163,184,.18)}.btn{height:48px;border:0;border-radius:14px;padding:0 18px;font-weight:800;cursor:pointer;background:#334155;color:#fff}
@@ -14,7 +15,7 @@
 .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0 12px}.toolbar .left{font-weight:800}.toolbar .right{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}select{height:38px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:0 10px;color:var(--text)}
 .list{display:grid;gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}.card-top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:start}.avatar{width:44px;height:44px;border-radius:13px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:900;font-size:18px}.main-title{font-size:18px;font-weight:900;line-height:1.25;word-break:break-word}.main-sub{margin-top:3px;font-size:13px;color:var(--muted);font-weight:700}.chev{color:#94a3b8;font-size:22px;line-height:30px}
 .info-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:14px}.info{min-width:0;background:#f5f9ff;border:1px solid #e4edf7;border-radius:10px;padding:8px 9px}.info .k{font-size:10px;color:#64748b;font-weight:900;text-transform:uppercase;margin-bottom:5px}.info .v{font-size:13px;font-weight:800;word-break:break-word;white-space:normal}
-.card-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}.tags{display:flex;flex-wrap:wrap;gap:7px}.tag{padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900}.tag.warn{background:var(--amber-soft);color:var(--amber)}.tag.ok{background:var(--green-soft);color:var(--green)}.tag.hot{background:var(--accent-soft);color:var(--accent)}.tag.vip{background:#f3e8ff;color:#7e22ce}.tag.blue{background:var(--blue-soft);color:var(--blue)}.tag.neutral{background:#f1f5f9;color:#475569}.detail-btn{border:0;background:transparent;color:var(--accent);font-weight:900;cursor:pointer;padding:7px 0}
+.card-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}.tags{display:flex;flex-wrap:wrap;gap:6px;max-width:calc(100% - 70px)}.tag{padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900;line-height:1.15}.tag.warn{background:var(--amber-soft);color:var(--amber)}.tag.ok{background:var(--green-soft);color:var(--green)}.tag.hot{background:var(--accent-soft);color:var(--accent)}.tag.vip{background:#f3e8ff;color:#7e22ce}.tag.blue{background:var(--blue-soft);color:var(--blue)}.tag.neutral{background:#f1f5f9;color:#475569}.detail-btn{border:0;background:transparent;color:var(--accent);font-weight:900;cursor:pointer;padding:7px 0}
 .pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin:18px 0 0}.page-btn{min-width:40px;height:38px;border:1px solid var(--line);background:#fff;border-radius:10px;cursor:pointer;font-weight:800}.page-btn:disabled{opacity:.45;cursor:not-allowed}.page-info{font-size:13px;font-weight:800;color:var(--muted);padding:0 5px}
 .empty,.loading,.error{background:#fff;border:1px dashed #cbd5e1;border-radius:16px;padding:36px 20px;text-align:center;color:var(--muted);font-weight:700}.error{color:#b91c1c;border-color:#fecaca;background:#fffafa}
 .modal{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}.modal.show{display:flex}.modal-box{width:min(980px,100%);max-height:min(86vh,900px);overflow:hidden;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.25);display:flex;flex-direction:column}.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:17px 20px;border-bottom:1px solid var(--line)}.modal-title{font-size:19px;font-weight:900}.close{width:38px;height:38px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:22px;cursor:pointer}.modal-body{overflow:auto;padding:18px}.detail-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.detail{border:1px solid #e5e7eb;border-radius:12px;padding:10px}.detail .k{font-size:11px;color:#64748b;font-weight:900;margin-bottom:6px}.detail .v{font-size:14px;font-weight:800;word-break:break-word;white-space:pre-wrap}
@@ -69,43 +70,51 @@ select{height:30px;font-size:10px;border-radius:8px}
 
 /* Loading toàn trang khi mở website */
 #pageLoader{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(243,245,247,.72);
-  backdrop-filter:blur(6px);
-  -webkit-backdrop-filter:blur(6px);
-  opacity:1;
-  visibility:visible;
-  transition:opacity .28s ease,visibility .28s ease;
+  position:fixed !important;
+  left:0 !important;
+  top:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+  min-height:100dvh !important;
+  z-index:2147483647 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  background:rgba(241,245,251,.88) !important;
+  backdrop-filter:blur(8px) !important;
+  -webkit-backdrop-filter:blur(8px) !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
+  overflow:hidden !important;
+  transition:opacity .2s ease,visibility .2s ease !important;
 }
 #pageLoader.hide{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
+  opacity:0 !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
 }
 .loader-box{
-  min-width:160px;
-  padding:22px 26px;
-  border:1px solid rgba(226,232,240,.9);
+  width:190px;
+  padding:24px 26px;
+  border:1px solid #dbe5f0;
   border-radius:18px;
-  background:rgba(255,255,255,.94);
-  box-shadow:0 12px 35px rgba(15,23,42,.14);
+  background:rgba(255,255,255,.96);
+  box-shadow:0 18px 50px rgba(15,23,42,.16);
   display:flex;
   flex-direction:column;
   align-items:center;
+  justify-content:center;
   gap:12px;
 }
 .loader-spinner{
-  width:42px;
-  height:42px;
-  border:4px solid #e2e8f0;
+  width:46px;
+  height:46px;
+  border:4px solid #dbe5f0;
   border-top-color:#2563eb;
+  border-right-color:#2563eb;
   border-radius:50%;
-  animation:loaderSpin .8s linear infinite;
+  animation:loaderSpin .7s linear infinite;
 }
 .loader-text{
   font-size:13px;
@@ -117,191 +126,70 @@ select{height:30px;font-size:10px;border-radius:8px}
 }
 
 
-.sticky-top{
-  position:sticky;
-  top:0;
-  z-index:40;
-  padding:6px 0 7px;
-  background:rgba(241,245,251,.97);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-}
 @media(max-width:620px){
-  .sticky-top{
+  html,body{margin:0 !important;padding:0 !important}
+  .app{padding:0 5px 14px !important}
+  .header.sticky-mobile{
     top:0;
-    padding:3px 0 5px;
-    margin:0;
+    padding:7px 8px !important;
+    border-radius:0 0 10px 10px !important;
+    margin:0 !important;
+    box-shadow:0 3px 12px rgba(30,64,175,.08);
+    background:rgba(255,255,255,.96);
   }
-
-  .header{
-    padding:7px 8px;
-    border-radius:10px;
-  }
-
-  .header-top{
-    gap:6px;
-    align-items:center;
-  }
-
-  .title{
-    font-size:15px !important;
-    line-height:1.12;
-    letter-spacing:0;
-  }
-
-  .badge{
-    font-size:9px !important;
-    padding:4px 6px !important;
-  }
-
-  .search-row{
-    gap:5px;
-    margin-top:6px;
-  }
-
-  .search-box span{
-    left:11px;
-    font-size:12px;
-  }
-
+  .header-top{gap:5px !important;align-items:center !important}
+  .title{font-size:15px !important;line-height:1.1 !important;letter-spacing:0 !important}
+  .badge{font-size:8.5px !important;padding:4px 6px !important}
+  .search-row{gap:4px !important;margin-top:5px !important}
   .search-box input{
-    height:34px;
+    height:33px !important;
     font-size:11px !important;
     padding:0 27px !important;
-    border-radius:9px;
+    border-radius:8px !important;
   }
-
-  .search-box input::placeholder{
-    font-size:10px !important;
-  }
-
+  .search-box input::placeholder{font-size:10px !important}
   .btn{
-    height:34px;
-    padding:0 10px !important;
-    font-size:11px !important;
-    border-radius:9px;
-  }
-
-  .status-line{
-    margin-top:4px;
-    font-size:9px;
-  }
-
-  .stats{
-    gap:5px !important;
-    margin:5px 0 0 !important;
-  }
-
-  .stat{
-    min-height:50px !important;
-    padding:6px 8px !important;
-    border-radius:10px !important;
-  }
-
-  .stat .label{
-    font-size:8px !important;
-  }
-
-  .stat .value{
-    margin-top:2px !important;
-    font-size:15px !important;
-  }
-
-  .stat .sub{
-    margin-top:1px !important;
-    font-size:8px !important;
-  }
-
-  .toolbar{
-    margin:6px 1px 8px !important;
-  }
-
-  .toolbar .left{
+    height:33px !important;
     font-size:10px !important;
-    line-height:1.1;
+    padding:0 9px !important;
+    border-radius:8px !important;
   }
-
-  .toolbar .right{
-    font-size:9px !important;
-    gap:4px !important;
-  }
-
-  select{
-    height:28px !important;
-    font-size:9px !important;
-    padding:0 7px !important;
-  }
-
-  .card{
-    padding:8px !important;
-    border-radius:11px !important;
-  }
-
-  .card-top{
-    gap:7px !important;
-  }
-
-  .avatar{
-    width:32px !important;
-    height:32px !important;
+  .status-line{font-size:8.5px !important;margin-top:3px !important}
+  .stats{gap:4px !important;margin:4px 0 0 !important}
+  .stat{
+    min-height:48px !important;
+    padding:5px 7px !important;
     border-radius:9px !important;
-    font-size:13px !important;
   }
+  .stat .label{font-size:7.5px !important}
+  .stat .value{font-size:15px !important;margin-top:1px !important}
+  .stat .sub{font-size:7.5px !important;margin-top:1px !important}
+  .toolbar{margin:7px 1px 7px !important}
+  .toolbar .left{font-size:10px !important;line-height:1.1}
+  .toolbar .right{font-size:9px !important}
+  select{height:27px !important;font-size:9px !important}
+  .list{gap:8px !important}
+}
 
-  .main-title{
-    font-size:13px !important;
-  }
+body.page-loading{overflow:hidden !important;}
+body.page-ready{overflow:auto !important;}
 
-  .main-sub{
-    font-size:9px !important;
-    margin-top:1px !important;
-  }
-
-  .chev{
-    font-size:17px !important;
-    line-height:22px !important;
-  }
-
-  .info-grid{
-    grid-template-columns:1fr 1fr !important;
+@media(max-width:620px){
+  .card-bottom .tags{
+    max-width:calc(100% - 58px) !important;
     gap:4px !important;
-    margin-top:7px !important;
   }
-
-  .info{
-    padding:5px 6px !important;
-    border-radius:7px !important;
-  }
-
-  .info .k{
-    font-size:7px !important;
-    margin-bottom:2px !important;
-  }
-
-  .info .v{
-    font-size:9px !important;
-  }
-
-  .card-bottom{
-    margin-top:6px !important;
-  }
-
-  .tag{
-    padding:3px 5px !important;
+  .card-bottom .tag{
     font-size:8px !important;
-  }
-
-  .detail-btn{
-    font-size:9px !important;
-    padding:3px 0 !important;
+    padding:3px 5px !important;
   }
 }
 
 </style>
 </head>
-<body>
+<body class="page-loading">
 
-<div id="pageLoader" aria-live="polite">
+<div id="pageLoader" aria-live="polite" style="position:fixed;inset:0;width:100vw;height:100vh;z-index:2147483647;display:flex;align-items:center;justify-content:center;background:rgba(241,245,251,.88);">
   <div class="loader-box">
     <div class="loader-spinner"></div>
     <div class="loader-text">Đang tải dữ liệu...</div>
@@ -309,8 +197,7 @@ select{height:30px;font-size:10px;border-radius:8px}
 </div>
 
 <div class="app">
-<div class="sticky-top">
-<section class="header">
+<section class="header sticky-mobile">
   <div class="header-top"><div class="title">DANH SÁCH QUÁ HẠN TKM</div><div class="badge">QH TKM</div></div>
   <div class="search-row"><div class="search-box"><span>⌕</span><input id="searchInput" placeholder="Tìm account, nhân viên, huyện, công việc..." autocomplete="off"></div><button class="btn" id="searchBtn">Tra cứu</button></div>
   <div class="status-line" id="statusLine">Đang tải dữ liệu...</div>
@@ -319,7 +206,6 @@ select{height:30px;font-size:10px;border-radius:8px}
   <div class="stat total"><div class="label">Tổng</div><div class="value" id="stTotal">-</div><div class="sub">Bản ghi phù hợp</div></div>
   <div class="stat done"><div class="label">Có cảnh báo</div><div class="value" id="stDone">-</div><div class="sub">Có dữ liệu quá hạn</div></div>
 </section>
-</div>
 <div class="toolbar"><div class="left" id="resultTitle">Danh sách</div><div class="right">Hiển thị <select id="limitSelect"><option value="20">20</option><option value="50" selected>50</option><option value="100">100</option></select> / trang</div></div>
 <main class="list" id="list"></main><div class="pagination" id="pagination"></div>
 </div>
@@ -372,7 +258,10 @@ const LABELS={
   "htqh24h": "Sự cố hỗ trợ quá hạn 24h",
   "socqh24h": "SOC quá hạn 24h",
   "socqh72h": "SOC quá hạn 72h",
-  "scqhhen": "Sự cố quá hẹn"
+  "scqhhen": "Sự cố quá hẹn", 
+  "thoigiantichhen": "Thời gian tích hẹn",
+  "tongtghen": "Tổng TG hẹn",
+  "tgtinhhen": "TG tính hẹn",
 };
 const STATUS_DEFS=[
   {"key":"tkmq3h","label":"TKM quá 3h","class":"warn"},
@@ -381,14 +270,18 @@ const STATUS_DEFS=[
   {"key":"tkmq24h","label":"TKM quá 24h","class":"hot"},
   {"key":"tkmqhen","label":"TKM quá hẹn","class":"hot"}
 ];
-const PRIMARY=["account","congviec","nhanvien"], SECONDARY=["nhanvien","huyen"], INFO_KEYS=["account","congviec","dichvu","tttichhen","duongday","tongtgtkm","ngaydaunoi","ngaykethuc","tongthen","huyen"];
+const PRIMARY=["account","congviec","nhanvien"], SECONDARY=["nhanvien","huyen"], INFO_KEYS=["account","congviec","dichvu","tttichhen","duongday","tongtgtkm","ngaydaunoi","ngaykethuc","tongthen","huyen","thoigiantichhen","tongtghen","tgtinhhen"];
 const state={page:1,limit:50,q:"",columns:[],data:[],total:0,totalPages:1,searchTimer:null};
 const $=id=>document.getElementById(id), norm=v=>String(v??"").trim();
 const low=v=>norm(v).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d");
 function columnFor(needle){
   const n=low(needle);
-  return state.columns.find(c=>low(c.key)===n || low(c.raw)===n || low(c.label)===n ||
-    low(c.key).includes(n) || low(c.raw).includes(n) || low(c.label).includes(n));
+  return state.columns.find(c=>{
+    const key=low(c.key);
+    const raw=low(c.raw);
+    const label=low(c.label);
+    return key===n || raw===n || label===n;
+  });
 }
 function keyFor(needle){const c=columnFor(needle);return c?c.key:"";}
 function val(row,needle){const k=keyFor(needle);return k?norm(row[k]):"";}
@@ -403,17 +296,16 @@ function isActive(v){
 function rowStatuses(row){
   return STATUS_DEFS.map(s=>({...s,value:val(row,s.key)})).filter(s=>isActive(s.value));
 }
-function summaryStatus(row){
-  const statuses=rowStatuses(row);
-  if(!statuses.length) return null;
-
-  // Chỉ lấy 1 trạng thái tóm tắt để hiển thị ngoài card.
-  // Ưu tiên theo thứ tự STATUS_DEFS.
-  const s=statuses[0];
-  return {
-    label: s.value || s.label,
-    className: s.class
-  };
+function summaryStatuses(row){
+  return rowStatuses(row).map(function(s){
+    const value = norm(s.value);
+    return {
+      label: value && !["1","x","true"].includes(low(value))
+        ? value
+        : s.label,
+      className: s.class
+    };
+  });
 }
 function firstValue(row, keys){
   for(const k of keys){const v=val(row,k);if(v)return v;}
@@ -432,12 +324,14 @@ function infoFields(row){
   for(const k of INFO_KEYS){
     const v=val(row,k); if(v) out.push([LABELS[low(k)]||k,v]);
   }
-  return out.slice(0,10);
+  return out;
 }
 function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
 function hidePageLoader(){
   const loader=$("pageLoader");
   if(loader) loader.classList.add("hide");
+  document.body.classList.remove("page-loading");
+  document.body.classList.add("page-ready");
 }
 async function load(){
   $("list").innerHTML='<div class="loading">Đang tải dữ liệu...</div>'; $("statusLine").textContent="Đang kết nối dữ liệu...";
@@ -464,12 +358,16 @@ function render(){
   renderStats();$("resultTitle").textContent=state.q?'Kết quả: “'+state.q+'”':"DANH SÁCH QUÁ HẠN TKM";
   if(!state.data.length){$("list").innerHTML='<div class="empty">Không tìm thấy dữ liệu phù hợp.</div>';renderPagination();return;}
   $("list").innerHTML=state.data.map((row,i)=>{
-    const fields=infoFields(row), summary=summaryStatus(row);
+    const fields=infoFields(row), summaries=summaryStatuses(row);
     return `<article class="card">
       <div class="card-top"><div class="avatar">${escapeHtml(initials(row))}</div><div><div class="main-title">${escapeHtml(titleOf(row))}</div><div class="main-sub">${escapeHtml(subOf(row))}</div></div><div class="chev">›</div></div>
       <div class="info-grid">${fields.map(f=>`<div class="info"><div class="k">${escapeHtml(f[0])}</div><div class="v">${escapeHtml(f[1])}</div></div>`).join("")}</div>
       <div class="card-bottom"><div class="tags">
-        ${summary ? `<span class="tag ${summary.className}">${escapeHtml(summary.label)}</span>` : '<span class="tag neutral">Không có cảnh báo quá hạn</span>'}
+        ${summaries.length
+          ? summaries.map(function(s){
+              return `<span class="tag ${s.className}">${escapeHtml(s.label)}</span>`;
+            }).join("")
+          : '<span class="tag neutral">Không có cảnh báo quá hạn</span>'}
       </div><button class="detail-btn" data-index="${i}">Chi tiết</button></div>
     </article>`;
   }).join("");
