@@ -924,6 +924,23 @@ loadThuHoi();
     const raw=String(q0||"").trim();
     const q=norm(raw);
 
+    // LỌC ĐÚNG THEO TRẠNG THÁI NGƯỜI DÙNG NHẬP:
+    // "520CE lấy" => chỉ tìm hàng chứa 520CE có trạng thái LẤY
+    // "520CE bỏ"  => chỉ tìm hàng chứa 520CE có trạng thái BỎ
+    const suffixMatch=raw.match(/^(.*?)(?:\s+)(lấy|lay|bỏ|bo)$/i);
+    if(suffixMatch && suffixMatch[1].trim()){
+      const keyword=suffixMatch[1].trim();
+      const requested=norm(suffixMatch[2]);
+      const requestedStatus=(requested==="lay") ? "LẤY" : "BỎ";
+
+      return {
+        action:"search",
+        keyword:keyword,
+        label:`TRA CỨU ${requestedStatus}`,
+        requestedStatus:requestedStatus
+      };
+    }
+
     if(q==="lay" || q==="lấy") return {action:"lay",keyword:"",label:"DANH SÁCH LẤY"};
     if(q==="bo" || q==="bỏ") return {action:"bo",keyword:"",label:"DANH SÁCH BỎ"};
 
@@ -965,8 +982,15 @@ loadThuHoi();
   }
 
   function catalogResponse(data,request){
-    const items=Array.isArray(data.data) ? data.data : [];
-    const total=Number(data.total ?? items.length);
+    let items=Array.isArray(data.data) ? data.data : [];
+
+    // Nếu nhập "mã/từ khóa + Lấy/Bỏ", chỉ lấy đúng trạng thái đã nhập.
+    if(request.requestedStatus){
+      const target=norm(request.requestedStatus);
+      items=items.filter(item=>norm(item.tt)===target);
+    }
+
+    const total=items.length;
     if(!items.length) return null;
 
     let text=`<b>📦 ${esc(request.label)}</b><br>`;
@@ -1081,7 +1105,9 @@ loadThuHoi();
         • Nhập trực tiếp tên hoặc mã hàng hóa: <b>W520CE</b>, <b>H196A</b>, <b>WA8021</b><br>
         • <b>lấy</b> — xem danh sách hàng cần Lấy<br>
         • <b>bỏ</b> — xem danh sách hàng cần Bỏ<br>
-        • <b>lấy W520CE</b> hoặc <b>tra cứu W520CE</b> — tìm theo từ khóa<br><br>
+        • <b>lấy W520CE</b> hoặc <b>tra cứu W520CE</b> — tìm theo từ khóa<br>
+        • <b>W520CE lấy</b> — chỉ tìm W520CE có trạng thái <b>LẤY</b><br>
+        • <b>W520CE bỏ</b> — chỉ tìm W520CE có trạng thái <b>BỎ</b><br><br>
         <b>🔎 Tìm account Thu hồi:</b><br>
         Nhập trực tiếp 2–4 ký tự/số, ví dụ <b>056</b>, <b>ABC</b>, <b>123</b>.<br>
         BOT sẽ tìm account có chứa chuỗi đó.<br><br>
