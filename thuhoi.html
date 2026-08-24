@@ -813,6 +813,10 @@ loadThuHoi();
 <script>
 (function(){
 
+  /* ===== API DANH SÁCH LẤY / BỎ ===== */
+  const LAY_BO_API = "https://script.google.com/macros/s/AKfycbw7oWWNKujq_vxFMA4xDv6yLpxipGPpcLyiyLpDXh3Aj759zmZ19rXyOLsl_SuboP3T/exec";
+  const layBoCache = new Map();
+
   function norm(s){
     return String(s||"")
       .toLowerCase()
@@ -905,7 +909,118 @@ loadThuHoi();
     box.scrollTop=box.scrollHeight;
   }
 
-  window.botSend=function(){
+  function isAnalysisCommand(q0){
+    const q=norm(q0);
+    return q==="/help" || q==="help" || q==="?" ||
+           q==="cnct" || q==="mesh" || q==="tth" || q==="nv" ||
+           q.includes("tong quan") ||
+           q.includes("ty le tth") || q.includes("tth toi nhat") ||
+           q.includes("ty le nhan vien") || q.includes("nhan vien toi nhat") ||
+           q.includes("phat cao nhat") ||
+           q.startsWith("tth ") || q.startsWith("nv ");
+  }
+
+  function parseCatalogRequest(q0){
+    const raw=String(q0||"").trim();
+    const q=norm(raw);
+
+    if(q==="lay" || q==="lấy") return {action:"lay",keyword:"",label:"DANH SÁCH LẤY"};
+    if(q==="bo" || q==="bỏ") return {action:"bo",keyword:"",label:"DANH SÁCH BỎ"};
+
+    let keyword=raw;
+    const prefixes=[
+      /^(lay|lấy)\s*[:\-]?\s*/i,
+      /^(bo|bỏ)\s*[:\-]?\s*/i,
+      /^(tra cuu|tra cứu|hang|hàng|thiet bi|thiết bị)\s*[:\-]?\s*/i
+    ];
+
+    for(const p of prefixes){
+      if(p.test(keyword)){
+        keyword=keyword.replace(p,"").trim();
+        break;
+      }
+    }
+
+    return {action:"search",keyword,label:"TRA CỨU LẤY / BỎ"};
+  }
+
+  async function fetchLayBo(action,keyword=""){
+    const key=action+"|"+norm(keyword);
+    if(layBoCache.has(key)) return layBoCache.get(key);
+
+    const url=new URL(LAY_BO_API);
+    url.searchParams.set("action",action);
+    if(keyword) url.searchParams.set("q",keyword);
+
+    const response=await fetch(url.toString(),{method:"GET",cache:"no-store"});
+    if(!response.ok) throw new Error("API trả về lỗi HTTP "+response.status);
+
+    const data=await response.json();
+    if(!data || data.success===false){
+      throw new Error(data?.message || "API không trả về dữ liệu hợp lệ");
+    }
+
+    layBoCache.set(key,data);
+    return data;
+  }
+
+  function catalogResponse(data,request){
+    const items=Array.isArray(data.data) ? data.data : [];
+    const total=Number(data.total ?? items.length);
+    if(!items.length) return null;
+
+    let text=`<b>📦 ${esc(request.label)}</b><br>`;
+    if(request.keyword) text+=`Từ khóa: <b>${esc(request.keyword)}</b><br>`;
+    text+=`Tìm thấy <b>${total}</b> kết quả.<br><br>`;
+
+    items.slice(0,30).forEach((item,i)=>{
+      const status=norm(item.tt)==="lay" ? "🟢 LẤY" : "🔴 BỎ";
+      text+=`${i+1}. <b>${esc(item.tenhh)}</b><br><span style="font-size:11px">Trạng thái: <b>${status}</b></span><br>`;
+    });
+
+    if(total>30){
+      text+=`<br>... đang hiển thị 30/${total} kết quả. Hãy nhập thêm từ khóa để thu hẹp kết quả.`;
+    }
+
+    return {
+      text,
+      actions:[
+        {label:"🟢 Xem Lấy",command:"lấy"},
+        {label:"🔴 Xem Bỏ",command:"bỏ"},
+        {label:"🔎 Tra cứu khác",command:"tra cứu "}
+      ]
+    };
+  }
+
+  async function answerWithCatalog(q){
+    const request=parseCatalogRequest(q);
+
+    try{
+      const data=await fetchLayBo(request.action,request.keyword);
+      const catalog=catalogResponse(data,request);
+      if(catalog) return catalog;
+
+      return {
+        text:`🔎 Không tìm thấy hàng hóa <b>${esc(request.keyword || q)}</b> trong danh sách Lấy/Bỏ.<br><span style="font-size:11px">Dữ liệu được lấy trực tiếp từ Google Sheet.</span>`,
+        actions:[
+          {label:"🟢 Xem Lấy",command:"lấy"},
+          {label:"🔴 Xem Bỏ",command:"bỏ"},
+          {label:"/help",command:"/help"}
+        ]
+      };
+    }catch(error){
+      console.warn("Lỗi API Lấy/Bỏ:",error);
+      return {
+        text:`⚠️ Không kết nối được API danh sách Lấy/Bỏ.<br><span style="font-size:11px">${esc(error.message || "Lỗi không xác định")}</span>`,
+        actions:[
+          {label:"🔄 Thử lại",command:q},
+          {label:"/help",command:"/help"}
+        ]
+      };
+    }
+  }
+
+  window.botSend=async function(){
     const input=document.getElementById("botInput");
     const q=input.value.trim();
     if(!q)return;
@@ -913,10 +1028,26 @@ loadThuHoi();
     add(esc(q),"user",[]);
     input.value="";
 
-    setTimeout(()=>{
-      const r=analyze(q);
-      add(r.text,"bot",r.actions||[]);
-    },120);
+    let r;
+
+    if(isAnalysisCommand(q)){
+      r=analyze(q);
+    }else{
+      const localShort=norm(q).length>=2 && norm(q).length<=4;
+
+      if(localShort){
+        const local=analyze(q);
+        if(!String(local.text||"").includes("Không tìm thấy account")){
+          r=local;
+        }else{
+          r=await answerWithCatalog(q);
+        }
+      }else{
+        r=await answerWithCatalog(q);
+      }
+    }
+
+    add(r.text,"bot",r.actions||[]);
   };
 
   function analyze(q0){
@@ -946,7 +1077,12 @@ loadThuHoi();
         • <b>nhân viên tồi nhất</b> — NV cần chú ý<br>
         • <b>phạt cao nhất</b> — tiền phạt<br>
         • <b>mesh</b> — thống kê Mesh<br><br>
-        <b>🔎 Tìm account:</b><br>
+        <b>📦 Tra cứu danh sách Lấy/Bỏ:</b><br>
+        • Nhập trực tiếp tên hoặc mã hàng hóa: <b>W520CE</b>, <b>H196A</b>, <b>WA8021</b><br>
+        • <b>lấy</b> — xem danh sách hàng cần Lấy<br>
+        • <b>bỏ</b> — xem danh sách hàng cần Bỏ<br>
+        • <b>lấy W520CE</b> hoặc <b>tra cứu W520CE</b> — tìm theo từ khóa<br><br>
+        <b>🔎 Tìm account Thu hồi:</b><br>
         Nhập trực tiếp 2–4 ký tự/số, ví dụ <b>056</b>, <b>ABC</b>, <b>123</b>.<br>
         BOT sẽ tìm account có chứa chuỗi đó.<br><br>
         Sau mỗi kết quả BOT sẽ đưa ra các lựa chọn để xem tiếp.
