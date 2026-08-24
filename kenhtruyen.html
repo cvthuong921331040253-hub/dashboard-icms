@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kênh truyền</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--border:#dfe6ee;--text:#1f2937;--muted:#64748b;--primary:#2563eb}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+.app{max-width:100%;height:100vh;margin:0;padding:8px 12px;display:flex;flex-direction:column;overflow:hidden}
+.header{background:linear-gradient(135deg,#1e293b,#334155);color:#fff;padding:9px 16px;border-radius:12px;margin-bottom:10px;display:flex;align-items:center}
+.header h1{font-size:16px;margin:0;font-weight:700}
+.search-panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:14px;display:flex;gap:10px;align-items:center}
+.search-box{position:relative;flex:1}.search-box input{width:100%;padding:13px 15px;border:1px solid var(--border);border-radius:10px;font-size:15px;outline:none}.search-box input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.work-filter{width:240px}.work-filter select{width:100%;padding:13px;border:1px solid var(--border);border-radius:10px;background:#fff;font-size:14px}
+.result-panel{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+.toolbar{padding:8px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;flex:none}#resultArea{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}.info{font-size:13px;color:var(--muted)}.view-note{font-size:12px;color:var(--muted)}
+.table-wrap{flex:1 1 auto;min-height:0;height:0;overflow-x:auto;overflow-y:scroll;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;table-layout:fixed;font-size:12px;white-space:normal}thead{position:sticky;top:0;z-index:2}th{background:#e8eef5;padding:7px 8px;text-align:center;font-size:11px;line-height:1.25;border-bottom:1px solid var(--border);white-space:normal;overflow-wrap:anywhere;vertical-align:middle}td{padding:6px 8px;border-bottom:1px solid #edf1f5;vertical-align:middle;text-align:center;line-height:1.3;white-space:normal;overflow-wrap:anywhere;word-break:break-word}tbody tr:hover{background:#f8fafc}th:first-child,td:first-child{width:42px;text-align:center;padding-left:4px;padding-right:4px}th:nth-child(2),td:nth-child(2){width:8%}th:nth-child(3),td:nth-child(3){width:10%}th:nth-child(4),td:nth-child(4){width:11%}th:nth-child(5),td:nth-child(5){width:8%}th:nth-child(6),td:nth-child(6){width:12%}th:nth-child(7),td:nth-child(7){width:8%}th:nth-child(8),td:nth-child(8){width:8%}th:nth-child(9),td:nth-child(9){width:7%}.days{width:72px;max-width:72px;text-align:center;font-variant-numeric:tabular-nums}
+.days{font-weight:bold}.empty{padding:45px;text-align:center;color:var(--muted)}
+.list{display:none;padding:12px;max-height:72vh;overflow:auto}.item{border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;background:#fff}.item-title{font-size:14px;font-weight:bold;margin-bottom:8px}.row{display:grid;grid-template-columns:115px minmax(0,1fr);gap:8px;padding:5px 0;border-bottom:1px dashed #e5e7eb;font-size:12px}.row:last-child{border-bottom:0}.key{font-weight:bold;color:#64748b}.value{word-break:break-word}
+.bot{position:fixed;right:18px;bottom:18px;width:min(430px,calc(100vw - 36px));height:min(560px,calc(100vh - 36px));z-index:1000;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 12px 35px rgba(15,23,42,.18)}.bot-title{padding:10px 12px;font-weight:bold;border-bottom:1px solid var(--border);background:#f8fafc;display:flex;justify-content:space-between;align-items:center;cursor:move;user-select:none}.bot-controls{display:flex;gap:6px}.bot-control{width:30px;height:30px;border:1px solid var(--border);background:#fff;border-radius:7px;cursor:pointer;font-size:16px;line-height:1}.bot-toggle{border:0;background:transparent;font-size:18px;cursor:pointer;line-height:1}.chat{height:auto;flex:1;min-height:0;overflow:auto;padding:12px;background:#f8fafc}.msg{max-width:88%;padding:10px 12px;margin-bottom:9px;border-radius:10px;white-space:pre-wrap;line-height:1.45;font-size:13px}.botmsg{background:#fff;border:1px solid var(--border)}.usermsg{background:var(--primary);color:#fff;margin-left:auto}.suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px;border-top:1px solid var(--border);background:#fff}.chip{border:1px solid #dbe4ee;background:#f8fafc;color:#334155;border-radius:14px;padding:5px 9px;font-size:11px;cursor:pointer;white-space:nowrap}.chip:hover{border-color:var(--primary);color:var(--primary)}.chat-input{display:flex;gap:8px;padding:10px;border-top:1px solid var(--border)}.chat-input input{flex:1;padding:11px;border:1px solid var(--border);border-radius:8px}.chat-input button{width:90px;border:0;border-radius:8px;background:var(--primary);color:#fff;font-weight:bold}.bot.collapsed{width:auto;height:auto;border-radius:50%;overflow:visible}.bot.collapsed .bot-title{width:58px;height:58px;border-radius:50%;border:0;background:var(--primary);color:#fff;box-shadow:0 8px 25px rgba(37,99,235,.3);justify-content:center;font-size:0}.bot.collapsed .bot-title::before{content:"🤖";font-size:25px}.bot.collapsed .bot-controls{display:none}.bot.collapsed .chat,.bot.collapsed .chat-input{display:none}.bot.fullscreen{right:10px!important;bottom:10px!important;left:10px!important;top:10px!important;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important}
+@media(max-width:700px){
+ body{background:#fff;overflow:auto}.app{height:auto;min-height:100vh;padding:0;overflow:visible}.header{border-radius:0;margin:0;padding:9px 12px}.header h1{font-size:16px}
+ .search-panel{position:sticky;top:0;z-index:5;border-radius:0;border-left:0;border-right:0;margin:0;padding:9px;flex-direction:column;align-items:stretch;gap:8px}
+ .work-filter{width:100%}.search-box input,.work-filter select{padding:11px;font-size:14px}
+ .result-panel{border:0;border-radius:0}.toolbar{padding:9px 12px}.table-wrap{display:none;height:auto}.list{display:block;max-height:none}.row{grid-template-columns:105px minmax(0,1fr)}
+ .bot{right:12px;bottom:12px;width:calc(100vw - 24px);max-width:380px;height:min(560px,calc(100vh - 24px));margin:0;border-radius:14px}.chat{height:auto}.msg{max-width:94%}.bot.collapsed{width:auto;height:auto}.bot.fullscreen{inset:6px!important}.suggestions{max-height:115px;overflow-y:auto}.chip{font-size:10px;padding:5px 8px}
+}
+
+/* ===== BOT FIX: stable layout on web / mobile ===== */
+.bot{
+  position:fixed!important;
+  right:16px!important;
+  bottom:16px!important;
+  left:auto!important;
+  top:auto!important;
+  width:400px!important;
+  max-width:calc(100vw - 32px)!important;
+  height:520px!important;
+  max-height:calc(100vh - 32px)!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+  z-index:1000!important;
+}
+.bot-title{
+  flex:0 0 auto!important;
+  min-height:46px!important;
+  padding:8px 10px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  cursor:default!important;
+}
+.bot-title > span{
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.bot-controls{
+  flex:0 0 auto!important;
+  display:flex!important;
+  gap:6px!important;
+}
+.bot-control{
+  flex:0 0 32px!important;
+  width:32px!important;
+  height:32px!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+}
+.chat{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  height:auto!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+}
+.suggestions{
+  flex:0 0 auto!important;
+  max-height:125px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+}
+.chat-input{
+  flex:0 0 auto!important;
+  min-height:58px!important;
+}
+.bot.fullscreen{
+  left:12px!important;
+  right:12px!important;
+  top:12px!important;
+  bottom:12px!important;
+  width:auto!important;
+  height:auto!important;
+  max-width:none!important;
+  max-height:none!important;
+}
+.bot.fullscreen .chat{
+  min-height:0!important;
+}
+.bot.collapsed{
+  width:58px!important;
+  height:58px!important;
+  min-width:58px!important;
+  min-height:58px!important;
+  max-width:58px!important;
+  max-height:58px!important;
+  border-radius:50%!important;
+  overflow:hidden!important;
+  display:block!important;
+  cursor:pointer!important;
+}
+.bot.collapsed .bot-title{
+  width:58px!important;
+  height:58px!important;
+  min-height:58px!important;
+  padding:0!important;
+  border:0!important;
+  justify-content:center!important;
+  background:var(--primary)!important;
+}
+.bot.collapsed .bot-title > span{
+  display:none!important;
+}
+.bot.collapsed .bot-title::before{
+  content:"🤖"!important;
+  font-size:25px!important;
+}
+.bot.collapsed .bot-controls,
+.bot.collapsed .chat,
+.bot.collapsed .suggestions,
+.bot.collapsed .chat-input{
+  display:none!important;
+}
+@media(max-width:700px){
+  .bot{
+    right:8px!important;
+    bottom:8px!important;
+    width:calc(100vw - 16px)!important;
+    max-width:none!important;
+    height:min(560px,calc(100vh - 16px))!important;
+    max-height:calc(100vh - 16px)!important;
+  }
+  .bot.fullscreen{
+    left:4px!important;
+    right:4px!important;
+    top:4px!important;
+    bottom:4px!important;
+    width:auto!important;
+    height:auto!important;
+  }
+  .bot.collapsed{
+    width:58px!important;
+    height:58px!important;
+  }
+}
+
+
+@media(max-width:700px){
+  .bot.collapsed{
+    width:48px!important;
+    height:48px!important;
+    min-width:48px!important;
+    min-height:48px!important;
+    max-width:48px!important;
+    max-height:48px!important;
+  }
+  .bot.collapsed .bot-title{
+    width:48px!important;
+    height:48px!important;
+    min-height:48px!important;
+  }
+  .bot.collapsed .bot-title::before{
+    font-size:20px!important;
+  }
+}
+
+
+/* ===== BỘ LỌC KIỂU EXCEL ===== */
+th.filterable{position:relative;padding-right:30px}
+.filter-btn{
+  position:absolute;right:4px;top:50%;transform:translateY(-50%);
+  width:22px;height:22px;border:1px solid #cbd5e1;background:#fff;
+  border-radius:5px;cursor:pointer;font-size:11px;line-height:1;
+  display:inline-grid;place-items:center;
+}
+.filter-btn.active{border-color:#2563eb;color:#2563eb;background:#eff6ff}
+.filter-menu{
+  position:fixed;z-index:3000;width:270px;max-width:calc(100vw - 20px);
+  max-height:min(430px,calc(100vh - 20px));background:#fff;border:1px solid #cbd5e1;
+  border-radius:10px;box-shadow:0 12px 30px rgba(15,23,42,.18);overflow:hidden;
+}
+.filter-menu-head{padding:9px;border-bottom:1px solid #e5e7eb;display:flex;gap:6px;align-items:center}
+.filter-menu-head input{width:100%;padding:8px;border:1px solid #d1d5db;border-radius:6px;font-size:12px}
+.filter-actions{display:flex;gap:6px;padding:7px 9px;border-bottom:1px solid #e5e7eb}
+.filter-actions button,.filter-apply{border:1px solid #d1d5db;background:#fff;border-radius:6px;padding:6px 8px;font-size:11px;cursor:pointer}
+.filter-list{max-height:260px;overflow:auto;padding:4px 0}
+.filter-option{display:flex;gap:8px;align-items:flex-start;padding:6px 10px;font-size:12px;cursor:pointer}
+.filter-option:hover{background:#f8fafc}
+.filter-option span{word-break:break-word}
+.number-filter{padding:9px;border-bottom:1px solid #e5e7eb}
+.number-filter-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+.number-filter select,.number-filter input{width:100%;padding:7px;border:1px solid #d1d5db;border-radius:6px;font-size:12px}
+.filter-footer{padding:8px 9px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:6px}
+.filter-footer button{border:0;border-radius:6px;padding:7px 12px;font-size:12px;cursor:pointer}
+.filter-cancel{background:#f1f5f9}.filter-ok{background:#2563eb;color:#fff}
+.clear-filters{border:1px solid #d1d5db;background:#fff;border-radius:7px;padding:6px 9px;font-size:11px;cursor:pointer}
+@media(max-width:700px){.filter-menu{width:calc(100vw - 16px)}}
+
+</style>
+</head>
+<body>
+<div class="app">
+<div class="header"><h1>📡 Kênh truyền</h1></div>
+
+<div class="search-panel">
+ <div class="search-box"><input id="searchInput" placeholder="Tìm kiếm" oninput="handleSearch()" onkeydown="if(event.key==='Enter') runSearch()"></div>
+ <div class="work-filter"><select id="workFilter" onchange="filterByWorkType()"><option value="">Tất cả Loại công việc</option></select></div>
+</div>
+
+<div class="result-panel">
+ <div class="toolbar">
+  <div class="info" id="resultInfo">Đang tải dữ liệu...</div><button class="clear-filters" onclick="clearAllFilters()">Xóa lọc</button>
+  
+ </div>
+ <div id="resultArea"><div class="empty">Đang tải dữ liệu...</div></div>
+</div>
+
+<div class="bot collapsed" id="botBox">
+ <div class="bot-title" id="botTitle"><span>🤖 Hỏi BOT Kênh truyền</span><div class="bot-controls">
+ <button class="bot-control" onclick="toggleBot(event)" title="Thu nhỏ">−</button>
+ <button class="bot-control" onclick="toggleFullscreen(event)" title="Phóng to / thu nhỏ">⛶</button>
+ </div></div>
+ <div class="chat" id="chat"></div>
+ <div class="suggestions" id="suggestions"></div>
+ <div class="chat-input"><input id="question" placeholder="Nhập nội dung hoặc chọn gợi ý..." onkeydown="if(event.key==='Enter') askBot()"><button onclick="askBot()">GỬI</button></div>
+</div>
+</div>
+<div id="pageLoader" style="position:fixed;inset:0;background:rgba(255,255,255,.96);z-index:2000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;font-family:Arial">
+ <div style="width:42px;height:42px;border:4px solid #dbeafe;border-top-color:#2563eb;border-radius:50%;animation:spin 0.8s linear infinite"></div>
+ <div style="font-size:14px;color:#475569">Đang tải dữ liệu...</div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbyhPP7pOw87nAxUka0X2KZ19vCraVS85xw8K79WyB5pj7VKz733n9RtzxZIFQwkvHcU6w/exec";
+let allData=[],filteredData=[],columns=[],lastBotResults=[];let columnFilters={},activeFilterColumn=null;
+
+window.addEventListener("load",loadData);
+
+async function loadData(){
+ try{
+  const r=await fetch(API_URL+"?action=data&t="+Date.now());
+  if(!r.ok)throw new Error("Không thể kết nối API");
+  const x=await r.json();
+  if(!x.success)throw new Error(x.message||"API trả về lỗi");
+  allData=x.data||[];filteredData=[...allData];columns=x.columns||[];
+  buildWorkFilter();renderData();
+  pageLoader.style.display="none";
+  buildSuggestions();
+  addMessage(`Chọn loại công việc bên dưới để tra cứu nhanh. Với nhóm có hỗ trợ ngày tồn, chọn thêm mốc ngày.`, "botmsg");
+ }catch(e){pageLoader.style.display="none";resultArea.innerHTML=`<div class="empty"><b>Không thể tải dữ liệu.</b><br><br>${escapeHtml(e.message)}</div>`;addMessage("Không thể kết nối API: "+e.message,"botmsg")}
+}
+
+const QUICK_WORK_TYPES=[
+ "Triển khai thay đổi địa chỉ lắp đặt",
+ "Lắp đặt thiết bị cho khách hàng",
+ "Triển khai",
+ "Lắp đặt thay đổi gói cước",
+ "Thu hồi hàng hóa",
+ "Thu hồi hàng hóa, rút dây",
+ "Triển khai thay đổi mô hình",
+ "Rút dây",
+ "Khảo sát",
+ "Cắm port",
+ "Rút port"
+];
+
+const TON_WORK_TYPES=[
+ "Triển khai thay đổi địa chỉ lắp đặt",
+ "Triển khai",
+ "Thu hồi hàng hóa",
+ "Thu hồi hàng hóa, rút dây",
+ "Rút dây",
+ "Khảo sát"
+];
+
+function buildSuggestions(){
+ const box=document.getElementById("suggestions");
+ if(!box)return;
+ const available=QUICK_WORK_TYPES.filter(v=>allData.some(r=>normalize(r["Loại công việc"])===normalize(v)));
+ box.innerHTML=`<button type="button" class="chip help-chip" data-help="1">Help</button>`+available.map(v=>`<button type="button" class="chip work-chip" data-work="${escapeHtml(v)}">${escapeHtml(v)}</button>`).join("");
+}
+
+function quickWork(workType){
+ question.value=workType;
+ addMessage(workType,"usermsg");
+ showWorkResult(workType);
+}
+
+function showWorkResult(workType,days=null){
+ const exists=TON_WORK_TYPES.some(v=>normalize(v)===normalize(workType));
+ workFilter.value=workType;
+ searchInput.value=days===null ? "" : `${workType} lớn hơn ${days} ngày`;
+ if(days===null && exists){
+   const buttons=[1,2,3,18,19,20].map(d=>`<button type="button" class="chip day-chip" data-work="${escapeHtml(workType)}" data-days="${d}">&gt;${d} ngày</button>`).join("");
+   const count=allData.filter(r=>normalize(r["Loại công việc"])===normalize(workType)).length;
+   addMessage(`"${workType}": ${count} công việc. Chọn ngày tồn:`, "botmsg");
+   const chatEl=document.getElementById("chat");
+   const holder=document.createElement("div");holder.className="suggestions";holder.innerHTML=buttons;
+   chatEl.appendChild(holder);chatEl.scrollTop=chatEl.scrollHeight;
+ }else{
+   addMessage(days===null ? `"${workType}" đang được lọc.` : `"${workType}" > ${days} ngày đang được lọc.`, "botmsg");
+ }
+ renderData();
+}
+
+function quickDays(workType,days){
+ addMessage(`${workType} > ${days} ngày`,"usermsg");
+ showWorkResult(workType,days);
+}
+
+document.addEventListener("click",function(e){
+ const helpBtn=e.target.closest(".help-chip");
+ if(helpBtn){
+   e.preventDefault();
+   question.value="help";
+   askBot();
+   return;
+ }
+ const workBtn=e.target.closest(".work-chip");
+ if(workBtn){
+   e.preventDefault();
+   quickWork(workBtn.dataset.work || "");
+   return;
+ }
+ const dayBtn=e.target.closest(".day-chip");
+ if(dayBtn){
+   e.preventDefault();
+   quickDays(dayBtn.dataset.work || "", Number(dayBtn.dataset.days));
+ }
+});
+
+function buildWorkFilter(){
+ const sel=workFilter;
+ sel.innerHTML='<option value="">Tất cả Loại công việc</option>';
+ if(!columns.includes("Loại công việc"))return;
+ const values=[...new Set(allData.map(r=>String(r["Loại công việc"]??"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"vi"));
+ values.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;sel.appendChild(o)});
+}
+
+function filterByWorkType(){
+ searchInput.value="";
+ renderData();
+}
+
+function handleSearch(){
+ const q=searchInput.value.trim();
+ if(!q){filterByWorkType();return}
+ runSearch(false);
+}
+
+function runSearch(showBot=true){
+ const q=searchInput.value.trim();
+ if(!q){renderData();return}
+ renderData();
+ const parsed=parseQuery(q);
+ if(showBot)addMessage(answerForQuery(q,parsed,filteredData),"botmsg");
+}
+
+function parseQuery(text){
+ const n=normalize(text);
+ const dayMatch=n.match(/(?:lon hon|tren|qua hon|hon|tu)\s*(\d+(?:[.,]\d+)?)\s*ngay/);
+ const days=dayMatch?parseFloat(dayMatch[1].replace(",",".")):null;
+ const workTypes=columns.includes("Loại công việc")?[...new Set(allData.map(r=>String(r["Loại công việc"]??"").trim()).filter(Boolean))]:[];
+ let workType=workTypes.find(v=>n.includes(normalize(v)))||"";
+ return {raw:text,n,days,workType};
+}
+
+function matchesQuery(row,p){
+ if(p.workType&&normalize(row["Loại công việc"])!==normalize(p.workType))return false;
+ if(p.days!==null&&parseNumber(row["Số ngày tồn"])<=p.days)return false;
+ if(p.workType||p.days!==null)return true;
+ return Object.values(row).some(v=>normalize(v).includes(p.n));
+}
+
+function answerForQuery(q,p,rows){
+ if(p.workType&&p.days!==null)return `Có ${rows.length} công việc "${p.workType}" có số ngày tồn lớn hơn ${formatDay(p.days)} ngày. Tôi đã lọc danh sách bên trên.`;
+ if(p.workType)return `Có ${rows.length} công việc thuộc loại "${p.workType}". Tôi đã hiển thị danh sách bên trên.`;
+ if(p.days!==null)return `Có ${rows.length} công việc có số ngày tồn lớn hơn ${formatDay(p.days)} ngày. Tôi đã lọc danh sách bên trên.`;
+ return `Tìm thấy ${rows.length} kết quả phù hợp với: "${q}".`;
+}
+
+function getBaseData(){
+ const work=workFilter.value;
+ const q=searchInput.value.trim();
+ const parsed=q?parseQuery(q):null;
+ return allData.filter(row=>{
+   if(work && normalize(row["Loại công việc"])!==normalize(work))return false;
+   if(q){
+     if(parsed && (parsed.workType || parsed.days!==null)){
+       if(!matchesQuery(row,parsed))return false;
+     }else if(!Object.values(row).some(v=>normalize(v).includes(parsed.n)))return false;
+   }
+   return true;
+ });
+}
+
+function applyColumnFilters(rows){
+ return rows.filter(row=>Object.entries(columnFilters).every(([col,f])=>{
+   if(!f)return true;
+   const raw=String(row[col]??"").trim();
+   if(f.type==="values") return !f.values || f.values.size===0 ? true : f.values.has(raw);
+   if(f.type==="number"){
+     const n=parseNumber(row[col]);
+     if(f.op==="gt")return n>f.a;
+     if(f.op==="gte")return n>=f.a;
+     if(f.op==="lt")return n<f.a;
+     if(f.op==="lte")return n<=f.a;
+     if(f.op==="eq")return n===f.a;
+     if(f.op==="between")return n>=Math.min(f.a,f.b)&&n<=Math.max(f.a,f.b);
+   }
+   return true;
+ }));
+}
+
+function updateFilteredData(){
+ filteredData=applyColumnFilters(getBaseData());
+}
+
+function renderData(){
+ updateFilteredData();
+ resultInfo.textContent=`Hiển thị ${filteredData.length}/${allData.length} công việc`;
+ if(!filteredData.length){resultArea.innerHTML='<div class="empty">Không tìm thấy dữ liệu phù hợp.</div>';return}
+
+ let table='<div class="table-wrap"><table><thead><tr><th>STT</th>';
+ columns.forEach(c=>{
+   const active=columnFilters[c]?"active":"";
+   table+=`<th class="filterable">${escapeHtml(c)}<button type="button" class="filter-btn ${active}" data-col="${escapeHtml(c)}" title="Lọc">▼</button></th>`;
+ });
+ table+='</tr></thead><tbody>';
+ filteredData.forEach((row,i)=>{
+   table+=`<tr><td>${i+1}</td>`;
+   columns.forEach(c=>{
+     let val=row[c]??"";
+     if(c==="Số ngày tồn")val=formatDays(val);
+     const cls=c==="Số ngày tồn"?"days":"";
+     table+=`<td class="${cls}" title="${escapeHtml(val)}">${escapeHtml(val)}</td>`;
+   });
+   table+='</tr>';
+ });
+ table+='</tbody></table></div>';
+
+ let list='<div class="list">';
+ filteredData.forEach((row,i)=>{
+   const title=row["Tên công việc"]||row["Loại công việc"]||`Công việc ${i+1}`;
+   list+=`<div class="item"><div class="item-title">${i+1}. ${escapeHtml(title)}</div>`;
+   columns.forEach(c=>{
+     let val=row[c]??"";
+     if(c==="Số ngày tồn")val=formatDays(val);
+     list+=`<div class="row"><div class="key">${escapeHtml(c)}</div><div class="value">${escapeHtml(val)}</div></div>`;
+   });
+   list+='</div>';
+ });
+ list+='</div>';
+ resultArea.innerHTML=table+list;
+}
+
+function getColumnValues(col){
+ const rows=getBaseData();
+ return [...new Set(rows.map(r=>String(r[col]??"").trim()))].sort((a,b)=>a.localeCompare(b,"vi",{numeric:true}));
+}
+
+function closeFilterMenu(){
+ const old=document.getElementById("filterMenu");
+ if(old)old.remove();
+ activeFilterColumn=null;
+}
+
+function openFilterMenu(col,btn){
+ closeFilterMenu();
+ activeFilterColumn=col;
+ const isNumber=col==="Số ngày tồn";
+ const current=columnFilters[col];
+ const menu=document.createElement("div");
+ menu.id="filterMenu";menu.className="filter-menu";
+ const rect=btn.getBoundingClientRect();
+ menu.style.left=Math.max(8,Math.min(window.innerWidth-280,rect.right-270))+"px";
+ menu.style.top=Math.min(window.innerHeight-20,rect.bottom+4)+"px";
+
+ if(isNumber){
+   const f=current&&current.type==="number"?current:{op:"gt",a:"",b:""};
+   menu.innerHTML=`<div class="filter-menu-head"><b>Lọc: ${escapeHtml(col)}</b></div>
+   <div class="number-filter">
+    <div class="number-filter-row"><select id="numOp">
+      <option value="gt">Lớn hơn</option><option value="gte">Lớn hơn hoặc bằng</option>
+      <option value="lt">Nhỏ hơn</option><option value="lte">Nhỏ hơn hoặc bằng</option>
+      <option value="eq">Bằng</option><option value="between">Trong khoảng</option>
+    </select><input id="numA" type="number" step="any" placeholder="Giá trị"></div>
+    <div id="numBWrap" style="display:none"><input id="numB" type="number" step="any" placeholder="Đến giá trị"></div>
+   </div>
+   <div class="filter-footer"><button class="filter-cancel">Hủy</button><button class="filter-ok">Áp dụng</button></div>`;
+   document.body.appendChild(menu);
+   numOp.value=f.op;numA.value=f.a??"";numB.value=f.b??"";
+   const toggle=()=>numBWrap.style.display=numOp.value==="between"?"block":"none";
+   toggle();numOp.onchange=toggle;
+   menu.querySelector(".filter-ok").onclick=()=>{
+     const a=parseFloat(numA.value),b=parseFloat(numB.value);
+     if(Number.isNaN(a)){delete columnFilters[col]}else columnFilters[col]={type:"number",op:numOp.value,a:a,b:Number.isNaN(b)?a:b};
+     closeFilterMenu();renderData();
+   };
+ }else{
+   const vals=getColumnValues(col);
+   const selected=current&&current.type==="values"?new Set(current.values):new Set(vals);
+   menu.innerHTML=`<div class="filter-menu-head"><input id="filterValueSearch" placeholder="Tìm trong bộ lọc"></div>
+   <div class="filter-actions"><button id="selectAllFilter">Chọn tất cả</button><button id="clearFilterSelection">Bỏ chọn</button></div>
+   <div class="filter-list" id="filterList"></div>
+   <div class="filter-footer"><button class="filter-cancel">Hủy</button><button class="filter-ok">Áp dụng</button></div>`;
+   document.body.appendChild(menu);
+   const list=filterList;
+   function draw(search=""){
+     list.innerHTML="";
+     vals.filter(v=>normalize(v).includes(normalize(search))).forEach(v=>{
+       const label=document.createElement("label");label.className="filter-option";
+       const cb=document.createElement("input");cb.type="checkbox";cb.value=v;cb.checked=selected.has(v);
+       cb.onchange=()=>cb.checked?selected.add(v):selected.delete(v);
+       const span=document.createElement("span");span.textContent=v||"(Trống)";
+       label.append(cb,span);list.appendChild(label);
+     });
+   }
+   draw();
+   filterValueSearch.oninput=e=>draw(e.target.value);
+   selectAllFilter.onclick=()=>{vals.forEach(v=>selected.add(v));draw(filterValueSearch.value)};
+   clearFilterSelection.onclick=()=>{selected.clear();draw(filterValueSearch.value)};
+   menu.querySelector(".filter-ok").onclick=()=>{
+     if(selected.size===vals.length || selected.size===0) delete columnFilters[col];
+     else columnFilters[col]={type:"values",values:new Set(selected)};
+     closeFilterMenu();renderData();
+   };
+ }
+ menu.querySelector(".filter-cancel").onclick=closeFilterMenu;
+}
+function clearAllFilters(){
+ columnFilters={};
+ searchInput.value="";
+ workFilter.value="";
+ closeFilterMenu();
+ renderData();
+}
+
+document.addEventListener("click",function(e){
+ const btn=e.target.closest(".filter-btn");
+ if(btn){
+   e.stopPropagation();
+   openFilterMenu(btn.dataset.col,btn);
+   return;
+ }
+ const menu=document.getElementById("filterMenu");
+ if(menu && !menu.contains(e.target))closeFilterMenu();
+});
+window.addEventListener("resize",closeFilterMenu);
+window.addEventListener("scroll",closeFilterMenu,true);
+
+function formatDays(v){
+ const n=parseNumber(v);
+ if(!n)return String(v??"");
+ return n.toFixed(3).replace(/\.?0+$/,"");
+}
+function formatDay(n){return Number.isInteger(n)?String(n):String(n).replace(/\.0+$/,"")}
+
+function askBot(){
+ const q=question.value.trim();if(!q)return;
+ addMessage(q,"usermsg");question.value="";
+ if(!allData.length){addMessage("Dữ liệu chưa tải xong.","botmsg");return}
+ const qNorm=normalize(q);
+ if(qNorm==="help" || qNorm==="tro giup" || qNorm==="huong dan"){
+   addMessage("HƯỚNG DẪN NHANH\n• Chọn loại công việc bên dưới BOT để tra cứu.\n• Với công việc có tồn: chọn >1, >2, >3, >18, >19 hoặc >20 ngày.\n• Hoặc nhập: Triển khai, Khảo sát, Rút dây...\n• Ví dụ: Triển khai lớn hơn 2 ngày.","botmsg");
+   return;
+ }
+ const p=parseQuery(q);
+ if(p.workType){
+   showWorkResult(p.workType,p.days);
+   return;
+ }
+ workFilter.value="";
+ searchInput.value=q;
+ renderData();
+ addMessage(answerForQuery(q,p,filteredData),"botmsg");
+}
+
+
+function toggleBot(e){
+ if(e)e.stopPropagation();
+ const box=document.getElementById("botBox");
+ if(box.classList.contains("collapsed")){
+   box.classList.remove("collapsed","fullscreen");
+ }else{
+   box.classList.remove("fullscreen");
+   box.classList.add("collapsed");
+ }
+}
+function toggleFullscreen(e){
+ if(e)e.stopPropagation();
+ const box=document.getElementById("botBox");
+ box.classList.remove("collapsed");
+ box.classList.toggle("fullscreen");
+}
+document.getElementById("botBox").addEventListener("click",function(e){
+ if(this.classList.contains("collapsed") && !e.target.closest("button")){
+   this.classList.remove("collapsed","fullscreen");
+ }
+});
+
+// Vị trí BOT được cố định để tránh lệch khi chuyển giữa thu nhỏ và phóng to.
+
+function addMessage(t,cls){const d=document.createElement("div");d.className="msg "+cls;d.textContent=t;chat.appendChild(d);chat.scrollTop=chat.scrollHeight}
+function normalize(v){return String(v??"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").replace(/\s+/g," ").trim()}
+function parseNumber(v){let s=String(v??"").trim().replace(/\s/g,"");if(s.includes(".")&&s.includes(","))s=s.replace(/\./g,"").replace(",",".");else s=s.replace(",",".");const n=parseFloat(s);return isNaN(n)?0:n}
+function escapeHtml(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+</script>
+</body>
+</html>
