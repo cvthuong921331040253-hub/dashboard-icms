@@ -19,8 +19,6 @@ body{margin:0;overflow-x:hidden;font-family:Inter,Segoe UI,Arial,sans-serif;back
 .hero{display:flex;justify-content:space-between;gap:14px;align-items:center;background:linear-gradient(135deg,#172554,#2563eb);color:#fff;padding:18px 20px;border-radius:var(--radius);box-shadow:var(--shadow)}
 .hero h1{margin:0;font-size:24px}.hero p{margin:5px 0 0;color:#dbeafe;font-size:13px}
 .reload-btn,.icon-btn,.send-btn,.quick-btn{border:0;cursor:pointer;transition:.2s}
-.reload-btn{width:42px;height:42px;border-radius:13px;background:rgba(255,255,255,.18);color:#fff;font-size:18px}
-.reload-btn:hover{transform:rotate(90deg);background:rgba(255,255,255,.28)}
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;padding:10px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 4px 16px rgba(15,23,42,.04)}
 .search{flex:1;min-width:180px;position:relative}
 .search input{width:100%;border:1px solid var(--line);background:#f8fafc;border-radius:12px;padding:11px 12px;outline:none;font-size:13px}
@@ -68,7 +66,6 @@ td:first-child{font-weight:650;text-align:left}.fail{background:#fff7f7}.ok{colo
   .hero{padding:14px 15px;border-radius:15px}
   .hero h1{font-size:19px}
   .hero p{font-size:11px;line-height:1.45}
-  .reload-btn{width:38px;height:38px;border-radius:11px}
   .toolbar{padding:8px;gap:7px;border-radius:14px}
   .search{min-width:100%;flex-basis:100%}
   .search input{font-size:13px;padding:10px 11px}
@@ -159,8 +156,6 @@ td:first-child{font-weight:650;text-align:left}.fail{background:#fff7f7}.ok{colo
   .hero{padding:22px 26px;border-radius:22px}
   .hero h1{font-size:28px}
   .hero p{font-size:13px}
-  .reload-btn{width:46px;height:46px}
-
   .toolbar{
     display:grid;
     grid-template-columns:minmax(0,1fr) minmax(0,1fr);
@@ -323,13 +318,6 @@ td:first-child{font-weight:650;text-align:left}.fail{background:#fff7f7}.ok{colo
   }
   .hero p{
     font-size:clamp(10px,.68vw,14px);
-  }
-
-  .reload-btn{
-    width:clamp(40px,2.7vw,52px);
-    height:clamp(40px,2.7vw,52px);
-    border-radius:clamp(10px,.75vw,15px);
-    font-size:clamp(16px,1.1vw,21px);
   }
 
   .toolbar{
@@ -565,13 +553,54 @@ td:first-child{font-weight:650;text-align:left}.fail{background:#fff7f7}.ok{colo
   .employee-section{margin-top:10px}
 }
 
+
+.stat-clickable{cursor:pointer;transition:.18s ease}
+.stat-clickable:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(15,23,42,.1)}
+.stat-clickable.active{outline:2px solid #2563eb;outline-offset:1px;background:#eff6ff}
+@media(min-width:801px){
+  .hero{min-height:62px!important;padding:12px 18px!important;border-radius:15px!important}
+  .hero h1{font-size:clamp(18px,1.15vw,24px)!important}
+  .stats{gap:9px!important;margin:10px 0 12px!important}
+  .stat{min-height:64px!important;padding:10px 13px!important;border-radius:13px!important}
+  .stat .label{font-size:clamp(9px,.55vw,12px)!important}
+  .stat .value{font-size:clamp(17px,1.2vw,25px)!important}
+  .toolbar{margin-top:8px!important;padding:8px 10px!important}
+  .search input{height:36px!important}
+}
+@media(max-width:800px){
+  .hero{min-height:54px!important;padding:10px 12px!important;border-radius:13px!important}
+  .hero h1{font-size:17px!important}
+  .stats{gap:6px!important;margin:8px 0!important}
+  .stat{min-height:60px!important;padding:9px!important;border-radius:12px!important}
+  .stat .label{font-size:10px!important}
+  .stat .value{font-size:17px!important}
+}
+
+
+@media(min-width:801px){
+  .hero{
+    min-height:52px!important;
+    padding:9px 15px!important;
+    border-radius:12px!important;
+  }
+  .hero h1{font-size:clamp(16px,1vw,21px)!important}
+}
+@media(max-width:800px){
+  .hero{
+    min-height:46px!important;
+    padding:8px 10px!important;
+    border-radius:11px!important;
+  }
+  .hero h1{font-size:15px!important}
+}
+
 </style>
 </head>
 <body>
 <div id="loadingOverlay">
   <div class="loader-box">
     <div class="spinner"></div>
-    <div class="loader-title" id="loadingTitle">Đang tải KPI...</div>
+    <div class="loader-title" id="loadingTitle">Đang load trang...</div>
     <div class="loader-sub" id="loadingSub">Đang kết nối dữ liệu, vui lòng chờ</div>
     <button id="retryBtn" class="retry-btn" style="display:none" onclick="load()">🔄 Tải lại</button>
   </div>
@@ -580,8 +609,8 @@ td:first-child{font-weight:650;text-align:left}.fail{background:#fff7f7}.ok{colo
 <div class="app">
   <div class="header">
     <div class="hero">
-      <div><h1>📊 KPI Khoán Vật Tư</h1><p>Dashboard theo dõi huyện và nhân viên • Phân tích trực tiếp từ dữ liệu hiện tại</p></div>
-      <button onclick="reloadPage()" class="reload-btn" title="Tải lại">↻</button>
+      <div><h1>📊 KPI Khoán Vật Tư</h1></div>
+      
     </div>
     <div class="toolbar">
       <div class="search"><input id="nv" placeholder="🔎 Tìm nhân viên..." oninput="applyFilter()"></div>
@@ -593,8 +622,8 @@ td:first-child{font-weight:650;text-align:left}.fail{background:#fff7f7}.ok{colo
   <div class="stats">
     <div class="stat"><div class="label">Tổng nhân viên</div><div class="value" id="stNV">0</div></div>
     <div class="stat"><div class="label">Số huyện</div><div class="value" id="stHuyen">0</div></div>
-    <div class="stat"><div class="label">Tổng thưởng/phạt</div><div class="value" id="stTong">0</div></div>
-    <div class="stat"><div class="label">NV bị phạt</div><div class="value" id="stBad">0</div></div>
+    <div class="stat stat-clickable" id="tongStat" title="Tổng thưởng/phạt Gia Lai"><div class="label">Tổng thưởng/phạt Gia Lai</div><div class="value" id="stTong">0</div></div>
+    <div class="stat stat-clickable" id="badStat" title="Bấm để xem danh sách nhân viên bị phạt"><div class="label">NV bị phạt</div><div class="value" id="stBad">0</div></div>
   </div>
 
   <div class="desktop-main-grid">
@@ -662,13 +691,13 @@ Bạn có thể hỏi:
 
 <script>
 const API="https://script.google.com/macros/s/AKfycby2YYZVK6r1QXP_TgnB0i99prYJmEG8cJwGDQILU1tph0i38b80BhN6Oa9bT5IMuQft0A/exec?sheet=Khoan vt";
-let tableData=[], nvData=[];
+let tableData=[], nvData=[], showBadOnly=false;
 
 const num=v=>Number(v||0).toLocaleString("vi-VN");
 const totalMoney=r=>Number(r.t_p||0);
 const norm=s=>(s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 
-function showLoading(title="Đang tải KPI...",sub="Đang kết nối dữ liệu, vui lòng chờ"){
+function showLoading(title="Đang load trang...",sub="Đang kết nối dữ liệu, vui lòng chờ"){
  document.getElementById("loadingTitle").innerText=title;
  document.getElementById("loadingSub").innerText=sub;
  document.getElementById("retryBtn").style.display="none";
@@ -697,6 +726,7 @@ async function load(){
    document.getElementById("logtime").innerText=tg?"🕒 Thời gian lấy báo cáo: "+tg:"";
    tableData=raw.slice(0,29).map(r=>({
      huyen:r.huyen||"",
+     gia_lai:r.gia_lai||r.tinh||r.tinh_tp||r.province||r.don_vi||"",
      dm_tkm:Number(r.dm_tkm||0), th_tkm:Number(r.th_tkm||0), tl_tkm:Number(r.tl_tkm||0),
      dm_sc:Number(r.dm_xlsc||0), th_sc:Number(r.th_sc||0), tl_sc:Number(r.tl_sc||0),
      t_p:Number(r.t_p_tkm||0)+Number(r.t_p_sc||0)
@@ -704,6 +734,7 @@ async function load(){
    nvData=raw.slice(29).map(r=>({
      nhan_vien:r["nhan vien"]||r.nhan_vien||"",
      huyen:r.huyen||"",
+     gia_lai:r.gia_lai||r.tinh||r.tinh_tp||r.province||r.don_vi||"",
      dm_tkm:Number(r.dm_tkm||0), dm_xlsc:Number(r.dm_xlsc||0),
      th_tkm:Number(r.th_tkm||0), th_sc:Number(r.th_sc||0),
      t_dm:Number(r.t_dm||0), t_th:Number(r.t_th||0),
@@ -719,8 +750,15 @@ async function load(){
  }
 }
 
+function isGiaLaiRow(r){
+ const text=norm([r.gia_lai,r.tinh,r.tinh_tp,r.province,r.don_vi,r.huyen].filter(Boolean).join(" "));
+ return text.includes("gia lai");
+}
 function updateStats(){
- const tong=nvData.reduce((s,r)=>s+r.t_p,0);
+ const giaLaiNV=nvData.filter(isGiaLaiRow);
+ const giaLaiTable=tableData.filter(isGiaLaiRow);
+ const sourceGiaLai=giaLaiNV.length?giaLaiNV:giaLaiTable;
+ const tong=sourceGiaLai.reduce((s,r)=>s+Number(r.t_p||0),0);
  document.getElementById("stNV").innerText=num(nvData.length);
  document.getElementById("stHuyen").innerText=num(new Set(nvData.map(r=>r.huyen).filter(Boolean)).size);
  document.getElementById("stTong").innerText=(tong<0?"-":"")+num(Math.abs(tong));
@@ -732,11 +770,13 @@ function getColorClass(v){return v>0?"ok":v<0?"phat":"neutral"}
 
 function applyFilter(){
  const nv=norm(document.getElementById("nv").value), h=norm(document.getElementById("huyen").value);
- const searching=nv!==""||h!=="";
+ const searching=nv!==""||h!==""||showBadOnly;
  document.getElementById("topSection").style.display=searching?"none":"block";
  document.getElementById("tableSection").style.display=nv!==""?"none":"block";
  const tableF=tableData.filter(r=>norm(r.huyen).includes(h));
- const nvF=nvData.filter(r=>norm(r.nhan_vien).includes(nv)&&norm(r.huyen).includes(h));
+ let nvF=nvData.filter(r=>norm(r.nhan_vien).includes(nv)&&norm(r.huyen).includes(h));
+ if(showBadOnly) nvF=nvF.filter(r=>r.t_p<0);
+ nvF.sort((a,b)=>a.t_p-b.t_p);
  renderTable(tableF); renderTop(nvData); renderWorst(nvData); renderList(nvF);
 }
 function renderTable(data){
@@ -776,7 +816,15 @@ function renderList(data){
  <div>🔧 XLSC<b>${num(r.th_sc)} / ${num(r.dm_xlsc)}</b><span class="${getColorClass(r.t_p_sc)}">${num(r.t_p_sc)}</span></div></div>
  </div>`).join(""):`<div class="empty">Không tìm thấy nhân viên phù hợp</div>`;
 }
-function reloadPage(){showLoading("Đang tải lại trang...","Dữ liệu sẽ được làm mới");setTimeout(()=>location.reload(),250)}
+function showBadEmployees(){
+ showBadOnly=!showBadOnly;
+ const el=document.getElementById("badStat");
+ if(el) el.classList.toggle("active",showBadOnly);
+ applyFilter();
+ const target=document.querySelector(".employee-section");
+ if(target) target.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function reloadPage(){showLoading("Đang load trang...","Dữ liệu sẽ được làm mới");setTimeout(()=>location.reload(),250)}
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 
 /* ================= CHAT PHÂN TÍCH ================= */
@@ -860,6 +908,7 @@ Mẹo: Bạn có thể gõ “help” bất cứ lúc nào để xem lại hư�
  }
  return "Tôi chưa nhận diện chính xác câu hỏi. Bạn có thể hỏi: “Ai kém nhất?”, “Ai tốt nhất?”, “Huyện nào tốt nhất?”, “So sánh TKM và XLSC”, “Tóm tắt tình hình”, hoặc nhập tên một nhân viên.";
 }
+document.getElementById("badStat")?.addEventListener("click",showBadEmployees);
 load();
 </script>
 </body>
