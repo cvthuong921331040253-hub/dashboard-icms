@@ -1625,7 +1625,7 @@
 
 /* Bảng TKM / SC tháng 7 */
 .evaluation-notebook .july-two-columns{
-  gap:10px !important;
+  gap:8px !important;
 }
 
 .evaluation-notebook .july-column{
@@ -11553,6 +11553,27 @@
     background:#ffffff !important;
   }
 
+  /* ===== BỐ TRÍ 3 CỘT: SC KPI vào ô trống hàng 2 ===== */
+  @media(min-width:1200px){
+    /* 2 biểu đồ N-1 / N chỉ chiếm 2 cột đầu */
+    .chart-grid > .dichvu-13-huyen-row{
+      grid-column:1 / 3 !important;
+      grid-row:2 !important;
+    }
+
+    /* SC KPI vào ô trống cột 3, hàng 2 */
+    .chart-grid > .chart-box:has(#chartSCHuyenKPI){
+      grid-column:3 !important;
+      grid-row:2 !important;
+    }
+
+    /* TKM KPI giữ ở cột 3, hàng 3 */
+    .chart-grid > .chart-box:has(#chartTKMHuyenKPI){
+      grid-column:3 !important;
+      grid-row:3 !important;
+    }
+  }
+
   /* ===== SC KPI TRỌNG TÂM – legend gọn ===== */
   #chartSCHuyenKPI{
     max-width:100% !important;
@@ -12159,6 +12180,715 @@ body.dashboard-is-loading{
 }
 
 </style>
+<style>
+/* ===== TKM DỊCH VỤ: 2 BIỂU ĐỒ N-1 / N CÙNG 1 DÒNG ===== */
+.dichvu-13-huyen-row{
+  grid-column:1 / -1 !important;
+  width:100% !important;
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:10px !important;
+  align-items:stretch !important;
+  margin:0 !important;
+}
+.dichvu-13-huyen-row > .chart-box{
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:12px 14px 10px !important;
+  box-sizing:border-box !important;
+}
+.dichvu-13-huyen-row > .chart-box .chart-title{
+  font-size:13px !important;
+  font-weight:800 !important;
+  margin-bottom:7px !important;
+  line-height:1.25 !important;
+}
+.dichvu-13-huyen-row > .chart-box canvas{
+  height:310px !important;
+}
+@media(max-width:900px){
+  .dichvu-13-huyen-row{
+    grid-template-columns:1fr !important;
+  }
+}
+</style>
+
+<style id="FIX_TKM_DICHVU_13_HUYEN_SIZE_V5">
+/* ===== 2 BIỂU ĐỒ N-1 / N: NHỎ GỌN, ĐỒNG BỘ VỚI TỒN TKM THEO HUYỆN ===== */
+.dichvu-13-huyen-row{
+  align-items:start !important;
+  height:auto !important;
+}
+.dichvu-13-huyen-row > .chart-box{
+  height:285px !important;
+  max-height:285px !important;
+  min-height:0 !important;
+  padding:10px 12px 8px !important;
+  overflow:hidden !important;
+}
+.dichvu-13-huyen-row > .chart-box .chart-title{
+  font-size:13px !important;
+  line-height:1.2 !important;
+  margin-bottom:4px !important;
+}
+.dichvu-13-huyen-row > .chart-box > div[style*="height:310px"],
+.dichvu-13-huyen-row > .chart-box > div[style*="height: 310px"]{
+  height:245px !important;
+  min-height:245px !important;
+  max-height:245px !important;
+}
+.dichvu-13-huyen-row > .chart-box canvas{
+  height:245px !important;
+  max-height:245px !important;
+}
+@media(max-width:900px){
+  .dichvu-13-huyen-row > .chart-box{
+    height:285px !important;
+    max-height:285px !important;
+  }
+}
+</style>
+
+<style id="FIX_TKM_DICHVU_SIZE_FINAL_V7">
+/* ===== N-1 / N: KÍCH THƯỚC BẰNG CHÍNH CARD TỒN TKM THEO HUYỆN ===== */
+.dichvu-13-huyen-row{
+  grid-column:1 / -1 !important;
+  width:100% !important;
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:10px !important;
+  align-items:start !important;
+  margin:0 !important;
+}
+.dichvu-13-huyen-row > .chart-box{
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+  padding:12px 14px 10px !important;
+}
+.dichvu-13-huyen-row > .chart-box .chart-title{
+  margin-bottom:7px !important;
+}
+.dichvu-13-huyen-row > .chart-box > div[style*="height:310px"],
+.dichvu-13-huyen-row > .chart-box > div[style*="height: 310px"]{
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  position:relative !important;
+}
+.dichvu-13-huyen-row > .chart-box canvas{
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+@media(max-width:900px){
+  .dichvu-13-huyen-row{grid-template-columns:1fr !important;}
+}
+</style>
+
+
+<style id="FIX_TKM_DICHVU_SIZE_EXACT_9">
+/* =========================================================
+   N-1 / N: 2 CARD RIÊNG, CÙNG 1 DÒNG
+   MỖI CARD = ĐÚNG 1 CỘT CỦA .chart-grid
+   → KÍCH THƯỚC NGANG BẰNG CARD "TỒN TKM THEO HUYỆN - LINE"
+   ========================================================= */
+.dichvu-13-huyen-row{
+  grid-column:span 2 !important;
+  width:auto !important;
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:12px !important;
+  height:340px !important;
+  min-height:340px !important;
+  max-height:340px !important;
+  align-items:stretch !important;
+  margin:0 !important;
+}
+.dichvu-13-huyen-row > .chart-box{
+  width:100% !important;
+  height:340px !important;
+  min-height:340px !important;
+  max-height:340px !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:12px !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+}
+.dichvu-13-huyen-row > .chart-box .chart-title{
+  height:18px !important;
+  min-height:18px !important;
+  margin:0 0 10px 0 !important;
+  font-size:13px !important;
+  line-height:18px !important;
+}
+.dichvu-13-huyen-row > .chart-box > div[style*="height:310px"],
+.dichvu-13-huyen-row > .chart-box > div[style*="height: 310px"]{
+  height:290px !important;
+  min-height:290px !important;
+  max-height:290px !important;
+  position:relative !important;
+}
+.dichvu-13-huyen-row > .chart-box canvas{
+  width:100% !important;
+  height:290px !important;
+  min-height:290px !important;
+  max-height:290px !important;
+  display:block !important;
+}
+@media(max-width:1400px){
+  .dichvu-13-huyen-row{
+    grid-column:span 2 !important;
+  }
+}
+@media(max-width:900px){
+  .dichvu-13-huyen-row{
+    grid-column:1 / -1 !important;
+    grid-template-columns:1fr !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+  }
+  .dichvu-13-huyen-row > .chart-box{
+    height:340px !important;
+    min-height:340px !important;
+    max-height:340px !important;
+  }
+}
+</style>
+
+
+<style id="FIX_LAYOUT_SC_KPI_FINAL_12">
+/* BỐ CỤC CỐ ĐỊNH: hàng 2 có SC KPI ở cột 3; hàng 3 có N-1/N ở cột 1-2 và TKM KPI ở cột 3 */
+@media (min-width:1200px){
+  .chart-grid > #chartTong13HuyenDichVuLineWrap{
+    grid-column:span 2 !important;
+    grid-row:auto !important;
+    width:100% !important;
+    align-self:start !important;
+  }
+  .chart-grid > .chart-box:has(#chartSCHuyenKPI){
+    grid-column:auto !important;
+    grid-row:auto !important;
+  }
+  .chart-grid > .chart-box:has(#chartTKMHuyenKPI){
+    grid-column:auto !important;
+    grid-row:auto !important;
+  }
+}
+</style>
+
+<style id="FIX_KPI_TKM_SC_BAR_SIZE_V19">
+/* SC KPI + TKM KPI dùng cùng cỡ khối chuẩn với các biểu đồ chính */
+.chart-box:has(#chartTKMHuyenKPI),
+.chart-box:has(#chartSCHuyenKPI){
+  height:340px !important;
+  min-height:340px !important;
+  max-height:340px !important;
+  padding:12px 14px 10px !important;
+  box-sizing:border-box !important;
+  overflow:visible !important;
+}
+.chart-box:has(#chartTKMHuyenKPI) canvas,
+.chart-box:has(#chartSCHuyenKPI) canvas{
+  height:300px !important;
+  min-height:300px !important;
+  max-height:300px !important;
+}
+.chart-box:has(#chartTKMHuyenKPI) .chart-title,
+.chart-box:has(#chartSCHuyenKPI) .chart-title{
+  font-size:13px !important;
+  margin-bottom:7px !important;
+}
+@media(max-width:900px){
+  .chart-box:has(#chartTKMHuyenKPI),
+  .chart-box:has(#chartSCHuyenKPI){
+    height:300px !important;
+    min-height:300px !important;
+    max-height:300px !important;
+  }
+  .chart-box:has(#chartTKMHuyenKPI) canvas,
+  .chart-box:has(#chartSCHuyenKPI) canvas{
+    height:260px !important;
+    min-height:260px !important;
+    max-height:260px !important;
+  }
+}
+</style>
+
+<style id="KPI_ANALYSIS_BOT_V25">
+/* ===== BOT PHÂN TÍCH KPI ===== */
+#kpiAnalysisBotButton{
+  position:fixed;right:18px;bottom:18px;z-index:9990;
+  border:1px solid #cbd5e1;background:#0f172a;color:#fff;
+  border-radius:999px;padding:11px 16px;font-size:13px;font-weight:800;
+  cursor:pointer;box-shadow:0 8px 24px rgba(15,23,42,.22);
+}
+#kpiAnalysisBotButton:hover{transform:translateY(-1px)}
+#kpiAnalysisBotModal{
+  position:fixed;inset:0;background:rgba(15,23,42,.42);z-index:10020;
+  display:none;align-items:center;justify-content:center;padding:18px;
+}
+#kpiAnalysisBotModal.is-open{display:flex}
+.kpi-bot-shell{
+  width:min(1180px,96vw);height:min(88vh,900px);background:#f8fafc;
+  border:1px solid #dbe3ec;border-radius:14px;box-shadow:0 20px 70px rgba(15,23,42,.28);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.kpi-bot-head{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 14px;background:#fff;border-bottom:1px solid #e2e8f0}
+.kpi-bot-title{font-size:15px;font-weight:900;color:#0f172a}
+.kpi-bot-sub{font-size:10px;color:#64748b;margin-top:2px}
+.kpi-bot-close{border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:5px 8px;cursor:pointer;font-weight:700}
+.kpi-bot-toolbar{display:flex;flex-wrap:wrap;gap:7px;padding:9px 12px;background:#f8fafc;border-bottom:1px solid #e2e8f0}
+.kpi-bot-toolbar button,.kpi-bot-toolbar select,.kpi-bot-toolbar input{height:32px;border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:0 10px;font-size:11px}
+.kpi-bot-toolbar button{cursor:pointer;font-weight:800}
+.kpi-bot-toolbar .primary{background:#2563eb;color:#fff;border-color:#2563eb}
+.kpi-bot-toolbar input{flex:1;min-width:220px}
+.kpi-bot-body{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 280px;min-height:0}
+.kpi-bot-chat{display:flex;flex-direction:column;min-width:0;min-height:0}
+.kpi-bot-messages{flex:1;overflow:auto;padding:12px;background:#eef2f7}
+.kpi-bot-message{max-width:96%;background:#fff;border:1px solid #dbe3ec;border-radius:10px;padding:11px 12px;margin-bottom:9px;color:#1f2937;font-size:12px;line-height:1.55}
+.kpi-bot-message.bot{border-left:3px solid #2563eb}
+.kpi-bot-message.user{margin-left:auto;background:#eff6ff;border-color:#bfdbfe}
+.kpi-bot-message h3{margin:0 0 6px;font-size:13px;color:#0f172a}
+.kpi-bot-message h4{margin:9px 0 4px;font-size:12px;color:#334155}
+  .kpi-bot-number{font-weight:800;color:#111827;}
+  .kpi-bot-number.bad{color:#b91c1c;}
+
+.kpi-bot-message table{width:100%;border-collapse:collapse;margin-top:6px;font-size:11px}
+.kpi-bot-message th,.kpi-bot-message td{border:1px solid #e2e8f0;padding:4px 5px;text-align:center;vertical-align:middle}.kpi-bot-message th:nth-child(2),.kpi-bot-message td:nth-child(2){text-align:left}
+.kpi-bot-message th{background:#f8fafc}
+.kpi-bot-message .bad{color:#b91c1c;font-weight:800}
+.kpi-bot-message .warn{color:#b45309;font-weight:800}
+.kpi-bot-message .good{color:#047857;font-weight:800}
+.kpi-bot-side{border-left:1px solid #e2e8f0;background:#fff;padding:11px;overflow:auto}
+.kpi-bot-help-mini{display:flex;flex-direction:column;gap:5px;margin-top:8px}.kpi-bot-help-mini>div{display:flex;flex-direction:column;gap:1px;padding:7px 8px;border:1px solid #e2e8f0;border-radius:8px;background:#fff}.kpi-bot-help-mini b{font-size:10.5px;color:#0f172a}.kpi-bot-help-mini span{font-size:9.5px;color:#64748b;line-height:1.3}
+.kpi-bot-highlight-line{margin:4px 0;padding:6px 8px;border:1px solid #e2e8f0;border-radius:7px;background:linear-gradient(90deg,#f8fafc,#ffffff)}.kpi-bot-highlight-line .muted{color:#94a3b8;font-weight:400}.kpi-help-examples{margin-top:10px;padding:8px 10px;border-radius:8px;background:#f8fafc;border:1px dashed #cbd5e1;color:#475569;font-size:10.5px;line-height:1.5}.kpi-help-examples code{font-family:inherit;font-weight:700;color:#0f172a;background:#eef2ff;border-radius:5px;padding:2px 4px}
+.kpi-bot-side-title{font-size:11px;font-weight:900;color:#334155;margin:0 0 7px}
+.kpi-bot-side button{width:100%;text-align:left;border:1px solid #e2e8f0;background:#fff;border-radius:8px;padding:7px 8px;margin-bottom:6px;cursor:pointer;font-size:11px}
+.kpi-bot-side button:hover{background:#f8fafc}
+.kpi-bot-input{display:flex;gap:7px;padding:9px;background:#fff;border-top:1px solid #e2e8f0}
+.kpi-bot-input input{flex:1;height:34px;border:1px solid #cbd5e1;border-radius:8px;padding:0 10px;font-size:11px}
+.kpi-bot-input button{height:34px;border:0;background:#2563eb;color:#fff;border-radius:8px;padding:0 13px;font-weight:800;cursor:pointer}
+@media(max-width:900px){
+  #kpiAnalysisBotButton{right:12px;bottom:12px}
+  .kpi-bot-shell{width:100%;height:94vh}
+  .kpi-bot-body{grid-template-columns:1fr}
+  .kpi-bot-side{display:none}
+}
+</style>
+
+<style id="KPI_BOT_MOBILE_ICON_V37">
+@media(max-width:768px){
+  #kpiAnalysisBotButton{
+    width:44px !important;
+    height:44px !important;
+    min-width:44px !important;
+    min-height:44px !important;
+    padding:0 !important;
+    border-radius:50% !important;
+    font-size:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    right:12px !important;
+    bottom:12px !important;
+    line-height:1 !important;
+  }
+  #kpiAnalysisBotButton::before{
+    content:"🤖";
+    font-size:21px !important;
+    line-height:1 !important;
+  }
+}
+</style>
+
+<style id="KPI_BOT_PRO_V26">
+/* ===== BOT KPI - GIAO DIỆN CHUYÊN NGHIỆP ===== */
+#kpiAnalysisBotButton{
+  box-shadow:0 8px 24px rgba(37,99,235,.22) !important;
+  border-radius:12px !important;
+  padding:9px 13px !important;
+  font-size:12px !important;
+  letter-spacing:.1px;
+}
+#kpiAnalysisBotModal{
+  background:rgba(15,23,42,.42) !important;
+  backdrop-filter:blur(3px);
+}
+.kpi-bot-shell{
+  width:min(1040px,94vw) !important;
+  height:min(88vh,820px) !important;
+  border:1px solid #d7e0ea !important;
+  border-radius:16px !important;
+  box-shadow:0 24px 70px rgba(15,23,42,.24) !important;
+  overflow:hidden !important;
+}
+.kpi-bot-head{
+  padding:12px 15px !important;
+  background:linear-gradient(135deg,#f8fbff 0%,#eef5ff 100%) !important;
+  border-bottom:1px solid #dbe6f1 !important;
+}
+.kpi-bot-title{
+  font-size:16px !important;
+  letter-spacing:.15px;
+}
+.kpi-bot-sub{
+  font-size:10px !important;
+  color:#64748b !important;
+}
+.kpi-bot-close{
+  width:32px !important;
+  height:32px !important;
+  padding:0 !important;
+  border-radius:9px !important;
+  display:grid !important;
+  place-items:center;
+  color:#475569;
+}
+.kpi-bot-toolbar{
+  padding:8px 12px !important;
+  background:#fff !important;
+  gap:6px !important;
+}
+.kpi-bot-toolbar button,.kpi-bot-toolbar select,.kpi-bot-toolbar input{
+  height:34px !important;
+  border-radius:9px !important;
+}
+.kpi-bot-toolbar button{
+  transition:.15s ease;
+}
+.kpi-bot-toolbar button:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(15,23,42,.08);
+}
+.kpi-bot-body{
+  grid-template-columns:minmax(0,1fr) !important;
+  background:#f8fafc !important;
+  width:100% !important;
+}
+.kpi-bot-messages{
+  padding:14px !important;
+  background:#f1f5f9 !important;
+}
+.kpi-bot-message{
+  max-width:98% !important;
+  border:1px solid #dbe4ee !important;
+  border-radius:12px !important;
+  padding:12px 13px !important;
+  margin-bottom:10px !important;
+  box-shadow:0 2px 8px rgba(15,23,42,.035);
+}
+.kpi-bot-message.bot{
+  border-left:4px solid #2563eb !important;
+}
+.kpi-bot-message.user{
+  border-right:3px solid #60a5fa !important;
+}
+.kpi-bot-message h3{
+  font-size:14px !important;
+  margin-bottom:8px !important;
+}
+.kpi-bot-message h4{
+  margin:12px 0 6px !important;
+  padding-left:8px;
+  border-left:3px solid #93c5fd;
+  font-size:12px !important;
+  color:#1e3a5f !important;
+}
+.kpi-bot-message > div{
+  word-break:break-word;
+}
+/* Bảng báo cáo */
+.kpi-bot-message table{
+  width:100% !important;
+  margin:8px 0 12px !important;
+  border-collapse:separate !important;
+  border-spacing:0 !important;
+  border:1px solid #d8e1eb !important;
+  border-radius:10px !important;
+  overflow:hidden !important;
+  background:#fff !important;
+  font-size:11px !important;
+  box-shadow:0 2px 8px rgba(15,23,42,.035);
+}
+.kpi-bot-message th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  background:#eef4fb !important;
+  color:#334155 !important;
+  font-weight:800 !important;
+  text-align:center !important;
+  padding:7px 6px !important;
+  border-bottom:1px solid #cfd9e4 !important;
+  white-space:nowrap;
+}
+.kpi-bot-message td{
+  padding:7px 7px !important;
+  border-bottom:1px solid #e5ebf2 !important;
+  color:#334155;
+  vertical-align:middle !important;
+  white-space:nowrap;
+}
+.kpi-bot-message tbody tr:nth-child(even){
+  background:#f8fafc !important;
+}
+.kpi-bot-message tbody tr:hover{
+  background:#eef6ff !important;
+}
+.kpi-bot-message tbody tr:last-child td{
+  border-bottom:0 !important;
+}
+.kpi-bot-message td:first-child,.kpi-bot-message th:first-child{
+  text-align:center !important;
+}
+.kpi-bot-message td.bad{
+  color:#b91c1c !important;
+  font-weight:900 !important;
+}
+.kpi-bot-message td.warn{
+  color:#b45309 !important;
+  font-weight:900 !important;
+}
+.kpi-bot-message table + div{
+  line-height:1.5;
+}
+.kpi-bot-side{
+  padding:12px !important;
+  background:#fff !important;
+}
+.kpi-bot-side-title{
+  font-size:11px !important;
+  letter-spacing:.3px;
+  margin-bottom:8px !important;
+}
+.kpi-bot-side button{
+  min-height:36px;
+  border-radius:9px !important;
+  transition:.15s ease;
+  font-weight:700;
+}
+.kpi-bot-side button:hover{
+  background:#eff6ff !important;
+  border-color:#bfdbfe !important;
+  color:#1d4ed8;
+  transform:translateX(2px);
+}
+.kpi-bot-input{
+  padding:10px 12px !important;
+  gap:8px !important;
+  background:#fff !important;
+}
+.kpi-bot-input input{
+  height:38px !important;
+  border-radius:10px !important;
+  background:#f8fafc;
+}
+.kpi-bot-input button{
+  height:38px !important;
+  min-width:76px;
+  border-radius:10px !important;
+}
+@media(max-width:900px){
+  .kpi-bot-shell{
+    width:97vw !important;
+    height:92vh !important;
+    border-radius:14px !important;
+  }
+}
+
+.kpi-bot-body>.kpi-bot-chat{width:100% !important;min-width:0}.kpi-bot-message table td:nth-child(n+3),.kpi-bot-message table th:nth-child(n+3){text-align:center !important}.kpi-bot-message table td:first-child,.kpi-bot-message table th:first-child{text-align:center !important}.kpi-bot-message table td:nth-child(2),.kpi-bot-message table th:nth-child(2){text-align:left !important}
+@media(max-width:768px){
+  .kpi-bot-message table{font-size:10px !important;}
+  .kpi-bot-message th,.kpi-bot-message td{padding:6px 5px !important;}
+  .kpi-bot-toolbar input{min-width:150px !important;}
+}
+</style>
+
+
+<style id="KPI_BOT_PRO_V27">
+/* ===== BOT KPI V27: màu + căn số + mobile ===== */
+.kpi-bot-message .kpi-bot-table-wrap{overflow:auto;max-width:100%;border-radius:10px}
+.kpi-bot-message table{min-width:720px}
+.kpi-bot-message th:nth-child(n+3),
+.kpi-bot-message td:nth-child(n+3){text-align:center !important}
+.kpi-bot-message td:first-child,
+.kpi-bot-message th:first-child{width:46px}
+.kpi-bot-number{font-weight:800 !important;color:#1f2937}
+.kpi-bot-number.bad{color:#dc2626 !important}
+.kpi-bot-message tbody tr:nth-child(4n+1){background:#f8fbff !important}
+.kpi-bot-message tbody tr:nth-child(4n+2){background:#f6fbf9 !important}
+.kpi-bot-message tbody tr:nth-child(4n+3){background:#fffaf5 !important}
+.kpi-bot-message tbody tr:hover{background:#eaf3ff !important}
+.kpi-bot-message .kpi-mini-chip{display:inline-flex;align-items:center;gap:4px;margin:2px 4px 2px 0;padding:4px 7px;border-radius:999px;border:1px solid #dbe5f0;background:#fff;box-shadow:0 1px 4px rgba(15,23,42,.05)}
+.kpi-bot-message .kpi-mini-chip b{color:#334155}
+.kpi-bot-message .kpi-mini-chip .kpi-bot-number{margin-left:2px}
+.kpi-bot-toolbar{flex-wrap:wrap !important}
+.kpi-bot-toolbar .bot-action-main{background:#2563eb !important;color:#fff !important;border-color:#2563eb !important}
+.kpi-bot-toolbar .bot-action-warn{background:#fff7ed !important;color:#c2410c !important;border-color:#fed7aa !important}
+.kpi-bot-toolbar .bot-action-info{background:#eff6ff !important;color:#1d4ed8 !important;border-color:#bfdbfe !important}
+@media(max-width:768px){
+  #kpiAnalysisBotModal{padding:6px !important}
+  .kpi-bot-shell{width:100% !important;height:96vh !important;border-radius:12px !important}
+  .kpi-bot-head{padding:9px 10px !important}
+  .kpi-bot-title{font-size:14px !important}
+  .kpi-bot-sub{font-size:9px !important}
+  .kpi-bot-toolbar{padding:6px !important;gap:5px !important}
+  .kpi-bot-toolbar button,.kpi-bot-toolbar select{flex:1 1 calc(50% - 5px);min-width:0;font-size:10px !important;height:32px !important;padding:0 7px !important}
+  .kpi-bot-toolbar input{order:5;flex:1 1 100%;min-width:0 !important;height:34px !important}
+  .kpi-bot-body{min-height:0 !important}
+  .kpi-bot-messages{padding:8px !important}
+  .kpi-bot-message{max-width:100% !important;padding:9px 9px !important;font-size:11px !important;border-radius:10px !important}
+  .kpi-bot-message h3{font-size:12px !important}
+  .kpi-bot-message h4{font-size:11px !important;margin:9px 0 5px !important}
+  .kpi-bot-message table{font-size:9px !important;min-width:680px !important}
+  .kpi-bot-message th,.kpi-bot-message td{padding:5px 5px !important}
+  .kpi-bot-input{padding:7px !important;gap:6px !important}
+  .kpi-bot-input input{height:36px !important;font-size:11px !important}
+  .kpi-bot-input button{height:36px !important;min-width:64px !important}
+  .kpi-bot-side{display:none !important}
+}
+</style>
+
+
+<style id="KPI_BOT_PRO_V29">
+.kpi-bot-message table td:first-child,.kpi-bot-message table th:first-child{width:54px;text-align:center !important}
+.kpi-bot-message table td:nth-child(n+3),.kpi-bot-message table th:nth-child(n+3){text-align:center !important;font-variant-numeric:tabular-nums}
+.kpi-bot-message .kpi-bot-number{font-weight:900 !important}
+.kpi-bot-message tbody tr:nth-child(6n+1){background:#f3f8ff !important}
+.kpi-bot-message tbody tr:nth-child(6n+2){background:#f3fbf7 !important}
+.kpi-bot-message tbody tr:nth-child(6n+3){background:#fff8f1 !important}
+.kpi-bot-message tbody tr:nth-child(6n+4){background:#faf5ff !important}
+.kpi-bot-message tbody tr:nth-child(6n+5){background:#fff5f7 !important}
+.kpi-bot-message tbody tr:nth-child(6n+6){background:#f7fbff !important}
+.kpi-bot-message td.bad,.kpi-bot-message .kpi-bot-number.bad{background:transparent !important}
+.kpi-help-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}
+.kpi-help-grid>div{padding:8px 9px;border:1px solid #dbe5ef;border-radius:9px;background:linear-gradient(135deg,#fff,#f8fbff);box-shadow:0 2px 6px rgba(15,23,42,.04)}
+.kpi-help-grid b{display:block;color:#1d4ed8;font-size:11px}
+.kpi-help-grid span{display:block;margin-top:2px;color:#64748b;font-size:10px;line-height:1.35}
+.kpi-bot-side-title{padding:6px 7px;border-radius:8px;background:#eff6ff;color:#1d4ed8 !important;text-align:center}
+@media(max-width:768px){
+ .kpi-help-grid{grid-template-columns:1fr}
+ .kpi-bot-message table{min-width:760px !important}
+ .kpi-bot-message td,.kpi-bot-message th{padding:6px 5px !important}
+}
+</style>
+<style id="KPI_BOT_V31_UI_FIX">
+.kpi-bot-message table th,.kpi-bot-message table td{text-align:left !important;}
+.kpi-bot-message table th:first-child,.kpi-bot-message table td:first-child,.kpi-bot-message table th:nth-child(n+3),.kpi-bot-message table td:nth-child(n+3){text-align:center !important;}
+.kpi-bot-number{font-weight:900 !important;}
+.kpi-action-item{margin:6px 0;padding:6px 8px;border-radius:7px;background:linear-gradient(90deg,#eff6ff,#f0fdf4);border:1px solid #dbeafe;}
+@media(max-width:768px){#kpiAnalysisBotModal{padding:6px !important;} .kpi-bot-shell{width:100% !important;height:96vh !important;border-radius:12px !important;} .kpi-bot-message{max-width:100% !important;font-size:11px !important;} .kpi-bot-message table{min-width:720px;} .kpi-bot-message .kpi-bot-table-wrap{overflow-x:auto !important;-webkit-overflow-scrolling:touch;} .kpi-bot-message h3{font-size:13px !important;} .kpi-bot-message h4{font-size:11px !important;}}
+</style>
+
+<style id="KPI_BOT_V32_LAYOUT">
+.kpi-bot-shell{width:min(1400px,98vw)!important;}
+.kpi-bot-body{width:100%!important;box-sizing:border-box!important;}
+.kpi-bot-message table th,.kpi-bot-message table td{text-align:left!important;}
+.kpi-bot-message table th:first-child,.kpi-bot-message table td:first-child,.kpi-bot-message table th:nth-child(n+3),.kpi-bot-message table td:nth-child(n+3){text-align:center!important;}
+.kpi-bot-highlight-line{margin:5px 0;padding:6px 8px;border-radius:8px;background:linear-gradient(90deg,#eff6ff,#fefce8);border:1px solid #dbeafe;}
+@media(max-width:768px){.kpi-bot-shell{width:100%!important;height:96vh!important}.kpi-bot-message table{min-width:720px!important}.kpi-bot-message{overflow-x:hidden!important}}
+</style>
+
+<style id="KPI_BOT_SUMMARY_CENTER_FIX">
+/* Bảng tổng quan/tổng SC/tổng TKM: các ô số ở giữa hàng */
+.kpi-bot-message table.kpi-bot-summary-table td{ text-align:center !important; vertical-align:middle !important; }
+.kpi-bot-message table.kpi-bot-summary-table th{ text-align:left !important; vertical-align:middle !important; }
+</style>
+<style id="KPI_BOT_V34_LAYOUT">
+/* BOT: rộng hơn, bỏ khoảng trắng bên phải, tăng chiều dài khu chat */
+#kpiAnalysisBotModal{padding:10px !important;}
+#kpiAnalysisBotModal .kpi-bot-shell{
+  width:min(1480px,99vw) !important;
+  height:min(96vh,1080px) !important;
+}
+#kpiAnalysisBotModal .kpi-bot-body{
+  grid-template-columns:minmax(0,1fr) !important;
+}
+#kpiAnalysisBotModal .kpi-bot-messages{
+  min-height:0 !important;
+  padding:12px !important;
+}
+#kpiAnalysisBotModal .kpi-bot-message{max-width:100% !important;}
+@media(max-width:768px){
+  #kpiAnalysisBotModal{padding:3px !important;}
+  #kpiAnalysisBotModal .kpi-bot-shell{width:100% !important;height:98vh !important;border-radius:10px !important;}
+  #kpiAnalysisBotModal .kpi-bot-messages{padding:8px !important;}
+}
+</style>
+
+<style id="KPI_BOT_V35_FINAL">
+#kpiAnalysisBotModal .kpi-bot-body{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  width:100% !important;
+  min-width:0 !important;
+}
+#kpiAnalysisBotModal .kpi-bot-chat{
+  width:100% !important;
+  min-width:0 !important;
+  grid-column:1 / -1 !important;
+}
+#kpiAnalysisBotModal .kpi-bot-side{display:none !important;}
+#kpiAnalysisBotModal .kpi-bot-messages{
+  width:100% !important;
+  box-sizing:border-box !important;
+  min-height:0 !important;
+}
+#kpiAnalysisBotModal .kpi-bot-help-corner{
+  position:absolute;right:12px;bottom:56px;z-index:8;
+  border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;
+  border-radius:999px;padding:4px 9px;font-size:10px;font-weight:800;
+  cursor:pointer;box-shadow:0 3px 10px rgba(15,23,42,.10);
+}
+#kpiAnalysisBotModal .kpi-bot-help-corner:hover{background:#dbeafe}
+#kpiAnalysisBotModal .kpi-bot-shell{position:relative;}
+#kpiAnalysisBotModal .kpi-bot-message .kpi-bot-suggest{
+  margin-top:10px;padding:9px 10px;border-radius:9px;
+  border:1px solid #fde68a;
+  background:linear-gradient(90deg,#fffbeb,#f0fdf4);
+}
+#kpiAnalysisBotModal .kpi-bot-suggest b{color:#92400e}
+@media(max-width:768px){
+  #kpiAnalysisBotModal .kpi-bot-shell{width:100% !important;height:96vh !important;}
+  #kpiAnalysisBotModal .kpi-bot-help-corner{right:9px;bottom:52px;font-size:9px;padding:4px 8px;}
+}
+</style>
+
+<style id="KPI_BOT_V36_CLEAN">
+  .kpi-bot-toolbar{grid-template-columns:repeat(6,max-content)!important;}
+  .kpi-bot-toolbar input#kpiBotQuickInput{display:none!important;}
+  @media(max-width:900px){.kpi-bot-toolbar{grid-template-columns:repeat(2,1fr)!important;}}
+</style>
+
+<style id="KPI_BOT_V38_MOBILE_HELP">
+@media(max-width:768px){
+  #kpiAnalysisBotButton{
+    width:36px !important;
+    height:36px !important;
+    min-width:36px !important;
+    min-height:36px !important;
+    right:10px !important;
+    bottom:10px !important;
+    border-radius:50% !important;
+    padding:0 !important;
+    font-size:0 !important;
+  }
+  #kpiAnalysisBotButton::before{
+    content:"🤖" !important;
+    font-size:17px !important;
+    line-height:1 !important;
+  }
+}
+</style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -12335,6 +13065,39 @@ body.dashboard-is-loading{
 
   
   <h1>📊 TỒN TÁC VỤ CĐBR</h1>
+
+<button id="kpiAnalysisBotButton" type="button" onclick="openKpiAnalysisBot()">🤖 BOT PHÂN TÍCH</button>
+<div id="kpiAnalysisBotModal" aria-hidden="true">
+  <div class="kpi-bot-shell" role="dialog" aria-modal="true" aria-label="BOT phân tích KPI">
+    <div class="kpi-bot-head">
+      <div>
+        <div class="kpi-bot-title">🤖 BOT PHÂN TÍCH KPI</div>
+        <div class="kpi-bot-sub">Phân tích trực tiếp dữ liệu API hiện tại • không thay đổi API</div>
+      </div>
+      <button class="kpi-bot-close" type="button" onclick="closeKpiAnalysisBot()">✕</button>
+    </div>
+    <div class="kpi-bot-toolbar">
+      <button class="primary bot-action-main" type="button" onclick="kpiBotRun('TỔNG QUAN')">Tổng quan</button>
+      <button class="bot-action-warn" type="button" onclick="kpiBotRun('TỔNG SỰ CỐ')">Tổng sự cố</button>
+      <button class="bot-action-info" type="button" onclick="kpiBotRun('TỔNG TKM')">Tổng TKM</button>
+      <button type="button" onclick="kpiBotRun('NHÂN VIÊN TỒI')">Nhân viên tồi</button>
+      <button type="button" onclick="kpiBotRun('DỊCH VỤ')">Dịch vụ</button>
+      <select id="kpiBotDistrictSelect" onchange="kpiBotRun('HUYỆN '+this.value)"></select>
+    </div>
+    <button type="button" class="kpi-bot-help-corner" onclick="kpiBotRun('/help')">help</button>
+<div class="kpi-bot-body">
+      <div class="kpi-bot-chat">
+        <div id="kpiBotMessages" class="kpi-bot-messages"></div>
+        <div class="kpi-bot-input">
+          <input id="kpiBotInput" placeholder="Nhập yêu cầu phân tích..." onkeydown="if(event.key==='Enter')kpiBotSend()">
+          <button type="button" onclick="kpiBotSend()">Gửi</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
   
   <div class="update" id="updateTime">⏳ Đang tải dữ liệu...</div>
   
@@ -12400,9 +13163,9 @@ body.dashboard-is-loading{
 
   <div class="chart-box">
   <div class="chart-title">
-  📈 TKM KPI TRỌNG TÂM
+  📊 TỒN TKM THEO DỊCH VỤ
   </div>
-  <canvas id="chartTKMHuyenKPI"></canvas>
+  <canvas id="chartTongTKMDichVu"></canvas>
   </div>
 
   <div class="chart-box">
@@ -12410,6 +13173,15 @@ body.dashboard-is-loading{
   📈 SC KPI TRỌNG TÂM
   </div>
   <canvas id="chartSCHuyenKPI"></canvas>
+  </div>
+
+  <div id="chartTong13HuyenDichVuLineWrap" class="dichvu-13-huyen-row"></div>
+
+  <div class="chart-box">
+  <div class="chart-title">
+  📈 TKM KPI TRỌNG TÂM
+  </div>
+  <canvas id="chartTKMHuyenKPI"></canvas>
   </div>
 
   </div>
@@ -12420,6 +13192,14 @@ body.dashboard-is-loading{
 
   <div class="daily-notebook-layout">
     <div id="dailyTrendGrid" class="chart-grid"></div>
+  </div>
+
+  <div class="section-title">
+  📈 TKM THEO DỊCH VỤ THEO NGÀY
+  </div>
+
+  <div class="daily-notebook-layout">
+    <div id="dichvuTrendGrid" class="chart-grid"></div>
   </div>
 
   <div class="section-title">
@@ -17388,6 +18168,10 @@ async function renderCharts(){
 
   renderTongTKMChart();
 
+  renderTongTKMDichVuChart();
+
+  await renderTong13HuyenDichVuLineChart();
+
   renderHuyenKPICharts();
 
   try{
@@ -17545,7 +18329,7 @@ async function renderCharts(){
     padding:2
   },
   title:{
-    display:true,
+    display:false,
     text:"Huyện",
     font:{size:10,weight:"600"}
   }
@@ -17826,7 +18610,7 @@ const k=String(x.kpi||"")
   scales:{
   x:{
   ticks:{maxRotation:45,minRotation:45,font:{size:11,weight:"600"},padding:6},
-  title:{display:true,text:"Huyện",font:{size:11,weight:"600"}}
+  title:{display:false,text:"Huyện",font:{size:11,weight:"600"}}
   },
   y:{beginAtZero:true,title:{display:true,text:"Số lượng",font:{size:11,weight:"700"}}}
   },
@@ -18255,7 +19039,7 @@ onClick:function(event){
           },
 
           title:{
-            display:true,
+            display:false,
             text:"Huyện",
             font:{
               family:"Arial",
@@ -18383,6 +19167,603 @@ onClick:function(event){
 }
 
 
+
+
+  function renderTongTKMDichVuChart(){
+
+    const canvas=document.getElementById("chartTongTKMDichVu");
+    if(!canvas)return;
+
+    const rows=Array.isArray(tkmThuc) ? tkmThuc : [];
+
+    const validRows=rows.filter(row=>{
+      const tt=String(row?.tt || "")
+        .replace(/\u00A0/g," ")
+        .replace(/\s+/g," ")
+        .trim()
+        .toUpperCase();
+
+      return tt!=="CẬP NHẬT HỒ SƠ" &&
+             tt!=="KẾT THÚC";
+    });
+
+    const getDichVu=row=>{
+      const raw=String(
+        row?.dichvu ?? row?.gline ?? ""
+      )
+        .replace(/\u00A0/g," ")
+        .replace(/\s+/g," ")
+        .trim();
+
+      const dv=raw.toUpperCase();
+      const cv=String(row?.cv ?? "")
+        .replace(/\u00A0/g," ")
+        .replace(/\s+/g," ")
+        .trim()
+        .toUpperCase();
+
+      /* FTTH tách riêng LĐTB và TKM */
+      if(dv.includes("FTTH LĐTB")) return "FTTH LĐTB";
+      if(dv.includes("FTTH TKM")) return "FTTH TKM";
+
+      if(dv === "FTTH" || dv.startsWith("FTTH ")){
+        if(cv.includes("LĐTB")) return "FTTH LĐTB";
+        if(cv.includes("TKM")) return "FTTH TKM";
+      }
+
+      return raw || "Không xác định";
+    };
+
+    const dichvus=[...new Set(
+      validRows.map(getDichVu)
+    )].sort((a,b)=>a.localeCompare(b,"vi"));
+
+    const counts={};
+    dichvus.forEach(d=>counts[d]=0);
+
+    validRows.forEach(row=>{
+      const dv=getDichVu(row);
+      counts[dv]=(counts[dv]||0)+1;
+    });
+
+    const ranked=dichvus
+      .slice()
+      .sort((a,b)=>counts[b]-counts[a] || a.localeCompare(b,"vi"));
+
+    const old=Chart.getChart(canvas);
+    if(old)old.destroy();
+
+    new Chart(canvas,{
+      type:"bar",
+      data:{
+        labels:ranked,
+        datasets:[{
+          label:"Tồn TKM",
+          data:ranked.map(d=>counts[d]),
+          backgroundColor:"#2563eb",
+          borderColor:"#2563eb",
+          borderWidth:1,
+          borderRadius:0
+        }]
+      },
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        interaction:{mode:"index",intersect:false},
+        plugins:{
+          legend:{display:false},
+          tooltip:{
+            callbacks:{
+              label:item=>"Tồn TKM: "+item.raw
+            }
+          }
+        },
+        scales:{
+          x:{
+            ticks:{
+              autoSkip:false,
+              maxRotation:45,
+              minRotation:45,
+              font:{size:10,weight:"600"}
+            },
+            title:{
+              display:true,
+              text:"Dịch vụ",
+              font:{size:10,weight:"600"}
+            }
+          },
+          y:{
+            beginAtZero:true,
+            ticks:{precision:0},
+            title:{
+              display:true,
+              text:"Số lượng",
+              font:{size:10,weight:"700"}
+            }
+          }
+        },
+        onClick:function(event){
+          const active=this.getElementsAtEventForMode(
+            event,"nearest",{intersect:true},true
+          );
+
+          if(!active.length)return;
+
+          const index=active[0].index;
+          const dichvu=ranked[index];
+          if(!dichvu)return;
+
+          const rowsDichVu=validRows.filter(row=>
+            getDichVu(row)===dichvu
+          );
+
+          showTable(
+            "TỒN TKM • DỊCH VỤ "+
+            dichvu+
+            " ("+
+            rowsDichVu.length+
+            ")",
+            rowsDichVu
+          );
+        }
+      }
+    });
+  }
+
+  function renderTong13HuyenDichVuLineChart(){
+
+    const wrap=document.getElementById("chartTong13HuyenDichVuLineWrap");
+    if(!wrap)return;
+
+    /* 2 bảng riêng, chung 1 dòng */
+    wrap.innerHTML="";
+
+    const normalizeText=value=>String(value??"")
+      .replace(/\u00A0/g," ")
+      .replace(/\s+/g," ")
+      .trim();
+
+    const getDichVu=row=>{
+      const raw=normalizeText(
+        row?.dichvu ?? row?.gline ?? ""
+      );
+
+      const dv=raw.toUpperCase();
+      const cv=normalizeText(row?.cv ?? "").toUpperCase();
+
+      /* FTTH tách riêng LĐTB / TKM */
+      if(dv.includes("FTTH LĐTB")) return "FTTH LĐTB";
+      if(dv.includes("FTTH TKM")) return "FTTH TKM";
+
+      if(dv === "FTTH" || dv.startsWith("FTTH ")){
+        if(cv.includes("LĐTB")) return "FTTH LĐTB";
+        if(cv.includes("TKM")) return "FTTH TKM";
+      }
+
+      return raw || "Không xác định";
+    };
+
+    const validTKM=row=>{
+      const tt=normalizeText(row?.tt).toUpperCase();
+      return tt!=="CẬP NHẬT HỒ SƠ" && tt!=="KẾT THÚC";
+    };
+
+    const parseDateVN=value=>{
+      if(value instanceof Date && !Number.isNaN(value.getTime())){
+        return value;
+      }
+
+      const s=normalizeText(value);
+      if(!s)return null;
+
+      let m=s.match(
+        /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/
+      );
+
+      if(m){
+        const d=new Date(
+          Number(m[3]),
+          Number(m[2])-1,
+          Number(m[1]),
+          Number(m[4]||0),
+          Number(m[5]||0),
+          Number(m[6]||0)
+        );
+        return Number.isNaN(d.getTime()) ? null : d;
+      }
+
+      m=s.match(
+        /^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/
+      );
+
+      if(m){
+        const d=new Date(
+          Number(m[1]),
+          Number(m[2])-1,
+          Number(m[3]),
+          Number(m[4]||0),
+          Number(m[5]||0),
+          Number(m[6]||0)
+        );
+        return Number.isNaN(d.getTime()) ? null : d;
+      }
+
+      const d=new Date(s);
+      return Number.isNaN(d.getTime()) ? null : d;
+    };
+
+    /* =========================================================
+       NGUỒN DUY NHẤT: API CHÍNH
+       loadData() đã lấy json.tontkm vào tontkmHistory.
+       Không dùng HISTORY_API / backup API cho phần này.
+
+       Cách tính giống biểu đồ TKM theo ngày mức tỉnh:
+       - lấy ntdn của từng dòng TKM
+       - chọn đúng tháng N / N-1
+       - bỏ Cập nhật hồ sơ + Kết thúc
+       - gom theo Huyện + Dịch vụ
+       ========================================================= */
+    const apiRows=
+      Array.isArray(tontkmHistory)
+        ? tontkmHistory
+        : [];
+
+    const now=new Date();
+    const currentYear=now.getFullYear();
+    const currentMonth=now.getMonth();
+    const prev=new Date(currentYear,currentMonth-1,1);
+
+    const configs=[
+      {
+        key:"N1",
+        label:"N-1",
+        year:prev.getFullYear(),
+        month:prev.getMonth()
+      },
+      {
+        key:"N",
+        label:"N",
+        year:currentYear,
+        month:currentMonth
+      }
+    ];
+
+    configs.forEach(cfg=>{
+
+      const monthNumber=cfg.month+1;
+
+      /* TKM thuộc đúng tháng theo NGÀY ĐẤU NỐI (API chính). */
+      const monthRows=apiRows.filter(row=>{
+        if(!validTKM(row))return false;
+
+        const d=parseDateVN(row?.ntdn);
+        if(!d)return false;
+
+        return d.getFullYear()===cfg.year &&
+               d.getMonth()===cfg.month;
+      });
+
+      /* Giữ đủ danh sách huyện có trong API của tháng đó. */
+      const huyens=[...new Set(
+        monthRows
+          .map(row=>normalizeText(row?.huyen))
+          .filter(Boolean)
+      )].sort((a,b)=>
+        normalizeHuyen(a).localeCompare(
+          normalizeHuyen(b),
+          "vi"
+        )
+      );
+
+      const services=[...new Set(
+        monthRows.map(getDichVu)
+      )].sort((a,b)=>
+        a.localeCompare(b,"vi")
+      );
+
+      const counts={};
+      huyens.forEach(h=>{
+        counts[h]={};
+        services.forEach(service=>{
+          counts[h][service]=0;
+        });
+      });
+
+      monthRows.forEach(row=>{
+        const h=normalizeText(row?.huyen);
+        const service=getDichVu(row);
+        if(!h || !counts[h])return;
+        counts[h][service]=(counts[h][service]||0)+1;
+      });
+
+      const rankedServices=services.slice().sort((a,b)=>{
+        const totalA=huyens.reduce(
+          (sum,h)=>sum+(counts[h]?.[a]||0),
+          0
+        );
+        const totalB=huyens.reduce(
+          (sum,h)=>sum+(counts[h]?.[b]||0),
+          0
+        );
+        return totalB-totalA || a.localeCompare(b,"vi");
+      });
+
+      const card=document.createElement("div");
+      card.className="chart-box";
+      card.style.cssText="min-width:0;width:100%;height:100%;box-sizing:border-box;";
+
+      card.innerHTML=`
+        <div class="chart-title" style="font-size:13px;margin-bottom:2px;">
+          📈 THEO DỊCH VỤ MỨC TTH • THÁNG ${String(monthNumber).padStart(2,"0")}/${cfg.year}
+        </div>
+        <div style="height:310px;position:relative;">
+          <canvas id="chartTong13HuyenDichVu_${cfg.key}"></canvas>
+        </div>
+      `;
+
+      wrap.appendChild(card);
+
+      const canvas=document.getElementById(
+        "chartTong13HuyenDichVu_"+cfg.key
+      );
+      if(!canvas)return;
+
+      if(!huyens.length || !rankedServices.length){
+        const empty=document.createElement("div");
+        empty.style.cssText=`
+          height:310px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:#9ca3af;
+          font-size:12px;
+        `;
+        empty.textContent="Không có dữ liệu TKM tháng này từ API chính";
+        canvas.replaceWith(empty);
+        return;
+      }
+
+      new Chart(canvas,{
+        type:"bar",
+        data:{
+          labels:huyens,
+          datasets:rankedServices.map(dichvu=>({
+            label:dichvu,
+            data:huyens.map(h=>counts[h]?.[dichvu]||0),
+            borderWidth:1,
+            borderRadius:0,
+            barPercentage:0.82,
+            categoryPercentage:0.72
+          }))
+        },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          interaction:{mode:"index",intersect:false},
+          plugins:{
+            legend:{
+              display:true,
+              position:"top",
+              labels:{
+                font:{size:8},
+                boxWidth:10,
+                boxHeight:7,
+                padding:4
+              }
+            },
+            tooltip:{
+              mode:"index",
+              intersect:false,
+              callbacks:{
+                title:items=>items?.length
+                  ? "Huyện: "+items[0].label
+                  : ""
+              }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{
+                autoSkip:false,
+                maxRotation:45,
+                minRotation:45,
+                font:{size:10,weight:"600"},
+                padding:2
+              },
+              title:{
+                display:false,
+                text:"13 huyện",
+                font:{size:10,weight:"700"}
+              }
+            },
+            y:{
+              beginAtZero:true,
+              ticks:{precision:0,font:{size:9}},
+              title:{
+                display:true,
+                text:"Số lượng TKM",
+                font:{size:9,weight:"700"}
+              }
+            }
+          },
+          onClick:function(event){
+            const active=this.getElementsAtEventForMode(
+              event,
+              "nearest",
+              {intersect:true},
+              true
+            );
+
+            if(!active.length)return;
+
+            const el=active[0];
+            const huyen=huyens[el.index];
+            const dichvu=rankedServices[el.datasetIndex];
+
+            if(!huyen || !dichvu)return;
+
+            const rowsDetail=monthRows.filter(row=>
+              normalizeHuyen(row?.huyen)===normalizeHuyen(huyen) &&
+              getDichVu(row)===dichvu
+            );
+
+            showTable(
+              "TKM • "+cfg.label+" • THÁNG "+
+              String(monthNumber).padStart(2,"0")+"/"+
+              cfg.year+" • "+huyen+" • "+dichvu+
+              " ("+rowsDetail.length+")",
+              rowsDetail
+            );
+          }
+        }
+      });
+
+    });
+
+    /* Đồng bộ chính xác chiều cao 2 biểu đồ N-1 / N với card TỒN TKM THEO HUYỆN - LINE. */
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        const source=document
+          .getElementById("chartTongTKM")
+          ?.closest(".chart-box");
+
+        if(!source)return;
+
+        const sourceHeight=Math.round(
+          source.getBoundingClientRect().height
+        );
+
+        const cards=[...wrap.querySelectorAll(
+          ":scope > .chart-box"
+        )];
+
+        cards.forEach(card=>{
+          card.style.setProperty(
+            "height",
+            sourceHeight+"px",
+            "important"
+          );
+          card.style.setProperty(
+            "max-height",
+            sourceHeight+"px",
+            "important"
+          );
+          card.style.setProperty(
+            "min-height",
+            sourceHeight+"px",
+            "important"
+          );
+
+          const inner=card.querySelector(
+            'div[style*="height:310px"], div[style*="height: 310px"]'
+          );
+
+          if(!inner)return;
+
+          const title=card.querySelector(".chart-title");
+          const cs=getComputedStyle(card);
+          const paddingTop=parseFloat(cs.paddingTop)||0;
+          const paddingBottom=parseFloat(cs.paddingBottom)||0;
+          const titleHeight=title
+            ? title.getBoundingClientRect().height
+            : 18;
+          const titleMargin=title
+            ? (parseFloat(getComputedStyle(title).marginBottom)||0)
+            : 4;
+
+          const innerHeight=Math.max(120,Math.floor(
+            sourceHeight -
+            paddingTop -
+            paddingBottom -
+            titleHeight -
+            titleMargin
+          ));
+
+          inner.style.setProperty(
+            "height",
+            innerHeight+"px",
+            "important"
+          );
+          inner.style.setProperty(
+            "min-height",
+            innerHeight+"px",
+            "important"
+          );
+          inner.style.setProperty(
+            "max-height",
+            innerHeight+"px",
+            "important"
+          );
+
+          const canvas=inner.querySelector("canvas");
+          if(canvas){
+            canvas.style.setProperty(
+              "height",
+              innerHeight+"px",
+              "important"
+            );
+            canvas.style.setProperty(
+              "max-height",
+              innerHeight+"px",
+              "important"
+            );
+          }
+        });
+      });
+    });
+  }
+
+
+  function syncDichVu13HuyenHeights(){
+    /* Kích thước đã được khóa bằng CSS cuối cùng: 340px,
+       đúng bằng .chart-box chuẩn của nhóm biểu đồ phía trên. */
+    return;
+
+    const ref=document.querySelector('.chart-box:has(#chartTongTKM)');
+    const row=document.getElementById('chartTong13HuyenDichVuLineWrap');
+    if(!ref || !row)return;
+
+    const refHeight=Math.round(ref.getBoundingClientRect().height);
+    if(!Number.isFinite(refHeight) || refHeight<=0)return;
+
+    row.style.height=refHeight+'px';
+    row.style.maxHeight=refHeight+'px';
+    row.style.minHeight=refHeight+'px';
+
+    row.querySelectorAll(':scope > .chart-box').forEach(card=>{
+      card.style.height=refHeight+'px';
+      card.style.maxHeight=refHeight+'px';
+      card.style.minHeight=refHeight+'px';
+
+      const title=card.querySelector('.chart-title');
+      const holder=card.querySelector(':scope > div[style*="height:310px"], :scope > div[style*="height: 310px"]');
+      if(holder){
+        const cs=getComputedStyle(card);
+        const paddingTop=parseFloat(cs.paddingTop)||0;
+        const paddingBottom=parseFloat(cs.paddingBottom)||0;
+        const titleH=title ? title.getBoundingClientRect().height : 0;
+        const titleMB=title ? (parseFloat(getComputedStyle(title).marginBottom)||0) : 0;
+        const h=Math.max(80, refHeight-paddingTop-paddingBottom-titleH-titleMB);
+        holder.style.height=h+'px';
+        holder.style.minHeight=h+'px';
+        holder.style.maxHeight=h+'px';
+      }
+
+      const canvas=card.querySelector('canvas');
+      if(canvas){
+        canvas.style.width='100%';
+        canvas.style.height='100%';
+      }
+    });
+
+    row.querySelectorAll('canvas').forEach(canvas=>{
+      try{Chart.getChart(canvas)?.resize();}catch(e){}
+    });
+    requestAnimationFrame(()=>{
+      syncDichVu13HuyenHeights();
+      requestAnimationFrame(syncDichVu13HuyenHeights);
+    });
+  }
 
   function parseTrendDate(value){
 
@@ -18631,27 +20012,28 @@ onClick:function(event){
       const tkmHen=huyens.map(h=>countTKM(h,"QUÁ HẸN"));
 
       chartTKMHuyenKPI=new Chart(canvasTKM,{
-          type:"line",
+          type:"bar",
           data:{
               labels:huyens,
               datasets:[
-                  lineDataset("Quá 24h",tkm24),
-                  lineDataset("Quá 16h",tkm16),
-                  lineDataset("Quá hẹn",tkmHen)
+                  {label:"Quá 24h",data:tkm24,borderWidth:1,borderRadius:0,barPercentage:0.72,categoryPercentage:0.72},
+                  {label:"Quá 16h",data:tkm16,borderWidth:1,borderRadius:0,barPercentage:0.72,categoryPercentage:0.72},
+                  {label:"Quá hẹn",data:tkmHen,borderWidth:1,borderRadius:0,barPercentage:0.72,categoryPercentage:0.72}
               ]
           },
           options:{
               responsive:true,
               maintainAspectRatio:false,
               interaction:{mode:"index",intersect:false},
+              layout:{padding:{top:0,right:4,bottom:22,left:4}},
               plugins:{
                   legend:{display:true,position:"top"},
                   tooltip:{mode:"index",intersect:false}
               },
               scales:{
                   x:{
-                      ticks:{autoSkip:false,maxRotation:45,minRotation:45},
-                      title:{display:true,text:"Huyện"}
+                      ticks:{autoSkip:false,maxRotation:45,minRotation:45,font:{size:9,weight:"600"},padding:5},
+                      title:{display:false,text:"Huyện"}
                   },
                   y:{beginAtZero:true,title:{display:true,text:"Số lượng",font:{size:11,weight:"700"}}}
               },
@@ -18778,28 +20160,31 @@ onClick:function(event){
           }
       ];
 
-      const scDatasets=scHuyenMetrics.map(metric=>
-          lineDataset(
-              metric.label,
-              huyens.map(h=>countSC(h,metric.fn))
-          )
-      );
+      const scDatasets=scHuyenMetrics.map(metric=>({
+          label:metric.label,
+          data:huyens.map(h=>countSC(h,metric.fn)),
+          borderWidth:1,
+          borderRadius:0,
+          barPercentage:0.72,
+          categoryPercentage:0.72
+      }));
 
       chartSCHuyenKPI=new Chart(canvasSC,{
-          type:"line",
+          type:"bar",
           data:{labels:huyens,datasets:scDatasets},
           options:{
               responsive:true,
               maintainAspectRatio:false,
               interaction:{mode:"index",intersect:false},
+              layout:{padding:{top:0,right:4,bottom:22,left:4}},
               plugins:{
                   legend:{display:true,position:"top"},
                   tooltip:{mode:"index",intersect:false}
               },
               scales:{
                   x:{
-                      ticks:{autoSkip:false,maxRotation:45,minRotation:45},
-                      title:{display:true,text:"Huyện"}
+                      ticks:{autoSkip:false,maxRotation:45,minRotation:45,font:{size:9,weight:"600"},padding:5},
+                      title:{display:false,text:"Huyện"}
                   },
                   y:{beginAtZero:true,title:{display:true,text:"Số lượng",font:{size:11,weight:"700"}}}
               },
@@ -18998,7 +20383,7 @@ onClick:function(event){
       }
 
       const tkmCols=[
-          ["Tên nv",["nv"]],["Thời gian",["tg"]],["Huyện",["huyen"]],["Account",["account"]],["Bypass",["bypass"]],["Tính KPI",["kpi"]],["Loại cv",["cv"]],["Trạng thái cv",["tt"]],["Trạng thái tích hẹn",["tthen"]],["Ngày đấu nối",["ntdn"]],["Ngày nghiệm thu",["ntnt"]],["Nguyên nhân tồn",["nnt"]],["Nguyên nhân tích hủy",["nnth"]]
+          ["Tên nv",["nv"]],["Thời gian",["tg"]],["Huyện",["huyen"]],["Account",["account"]],["Dịch vụ",["dichvu","gline"]],["Bypass",["bypass"]],["Tính KPI",["kpi"]],["Loại cv",["cv"]],["Trạng thái cv",["tt"]],["Trạng thái tích hẹn",["tthen"]],["Ngày đấu nối",["ntdn"]],["Ngày nghiệm thu",["ntnt"]],["Nguyên nhân tồn",["nnt"]],["Nguyên nhân tích hủy",["nnth"]]
       ];
 
       const scCols=[
@@ -19234,7 +20619,7 @@ onClick:function(event){
                       scales:{
                           x:{
                               title:{
-                                  display:true,
+                                  display:false,
                                   text:"Ngày"
                               },
 
@@ -19278,6 +20663,542 @@ onClick:function(event){
       
       
       
+
+      /* =========================================================
+         TKM: DIỄN BIẾN THEO DỊCH VỤ TỪNG NGÀY
+         - N-1 và N
+         - Mỗi dịch vụ = 1 line
+         - Dùng ntdn + tontkmHistory
+         - Bỏ CNHS / KẾT THÚC
+         ========================================================= */
+
+      const dichvuWrap=document.getElementById("dichvuTrendGrid");
+
+      if(dichvuWrap){
+        const dichvuCharts={};
+        dichvuWrap.innerHTML="";
+
+        configs.forEach(cfg=>{
+          const monthNumber=cfg.month+1;
+          const monthKey=
+            cfg.year+"-"+
+            String(monthNumber).padStart(2,"0");
+
+          const getDichVu=row=>{
+            const raw=String(
+              row?.dichvu ?? row?.gline ?? ""
+            )
+              .replace(/\u00A0/g," ")
+              .replace(/\s+/g," ")
+              .trim();
+
+            const dv=raw.toUpperCase();
+            const cv=String(row?.cv ?? "")
+              .replace(/\u00A0/g," ")
+              .replace(/\s+/g," ")
+              .trim()
+              .toUpperCase();
+
+            /* FTTH có 2 nhóm riêng: FTTH LĐTB / FTTH TKM.
+               Ưu tiên giá trị dịch vụ nếu nguồn đã ghi rõ;
+               nếu dịch vụ chỉ là FTTH thì tách theo Loại cv. */
+            if(dv.includes("FTTH LĐTB")){
+              return "FTTH LĐTB";
+            }
+
+            if(dv.includes("FTTH TKM")){
+              return "FTTH TKM";
+            }
+
+            if(dv === "FTTH" || dv.startsWith("FTTH ")){
+              if(cv.includes("LĐTB")) return "FTTH LĐTB";
+              if(cv.includes("TKM")) return "FTTH TKM";
+            }
+
+            return raw || "Không xác định";
+          };
+
+          const serviceSet=new Set();
+          const byDateAndService={};
+
+          (tontkmHistory||[]).forEach(row=>{
+            const tt=String(row?.tt||"")
+              .replace(/\s+/g," ")
+              .trim()
+              .toUpperCase();
+
+            if(
+              tt==="CẬP NHẬT HỒ SƠ" ||
+              tt==="KẾT THÚC"
+            ){
+              return;
+            }
+
+            const key=trendDateKey(row?.ntdn);
+            if(!key)return;
+
+            if(
+              key.slice(0,4)!==String(cfg.year) ||
+              Number(key.slice(5,7))!==monthNumber
+            ){
+              return;
+            }
+
+            const dichvu=getDichVu(row);
+            serviceSet.add(dichvu);
+
+            if(!byDateAndService[key]){
+              byDateAndService[key]={};
+            }
+
+            byDateAndService[key][dichvu]=
+              (byDateAndService[key][dichvu]||0)+1;
+          });
+
+          const services=[...serviceSet].sort((a,b)=>
+            a.localeCompare(b,"vi")
+          );
+
+          const labels=[];
+          for(let day=1;day<=cfg.lastDay;day++){
+            labels.push(String(day).padStart(2,"0"));
+          }
+
+          const datasets=services.map((dichvu,index)=>({
+            label:dichvu,
+            data:labels.map((_,dayIndex)=>{
+              const key=
+                cfg.year+"-"+
+                String(monthNumber).padStart(2,"0")+"-"+
+                String(dayIndex+1).padStart(2,"0");
+
+              return Number(
+                byDateAndService[key]?.[dichvu] || 0
+              );
+            }),
+            borderWidth:2,
+            pointRadius:3,
+            pointHoverRadius:5,
+            tension:0.2,
+            spanGaps:false
+          }));
+
+          const canvasId=
+            "dichvuTrend_"+
+            monthKey.replace("-","_");
+
+          const box=document.createElement("div");
+          box.className="chart-box";
+          box.innerHTML=`
+            <div style="
+              font-size:14px;
+              font-weight:700;
+              margin-bottom:8px;
+              color:#111827;
+            ">
+              📈 TKM THEO DỊCH VỤ - THÁNG ${String(monthNumber).padStart(2,"0")}/${cfg.year}
+            </div>
+            <div style="
+              font-size:9px;
+              color:#64748b;
+              margin-bottom:6px;
+            ">
+              Mỗi đường = 1 dịch vụ • Trục X = ngày trong tháng
+            </div>
+            <div style="height:285px;position:relative;">
+              <canvas id="${canvasId}"></canvas>
+            </div>
+          `;
+
+          dichvuWrap.appendChild(box);
+
+          const canvas=document.getElementById(canvasId);
+          if(!canvas)return;
+
+          dichvuCharts[monthKey]=new Chart(canvas,{
+            type:"line",
+            data:{
+              labels:labels,
+              datasets:datasets
+            },
+            options:{
+              responsive:true,
+              maintainAspectRatio:false,
+              interaction:{mode:"index",intersect:false},
+              plugins:{
+                legend:{
+                  display:true,
+                  position:"top",
+                  labels:{font:{size:9}}
+                },
+                tooltip:{
+                  callbacks:{
+                    title:function(items){
+                      if(!items?.length)return "";
+                      return "Ngày "+
+                        items[0].label+"/"+
+                        String(monthNumber).padStart(2,"0")+"/"+
+                        cfg.year;
+                    }
+                  }
+                }
+              },
+              scales:{
+                x:{
+                  title:{
+                    display:false,
+                    text:"Ngày"
+                  },
+                  ticks:{
+                    maxRotation:45,
+                    minRotation:45,
+                    autoSkip:false,
+                    maxTicksLimit:31
+                  }
+                },
+                y:{
+                  beginAtZero:true,
+                  ticks:{precision:0},
+                  title:{
+                    display:true,
+                    text:"Số lượng TKM",
+                    font:{size:11,weight:"bold"}
+                  }
+                }
+              },
+              onClick:function(event){
+                const active=this.getElementsAtEventForMode(
+                  event,"nearest",{intersect:true},true
+                );
+
+                if(!active.length)return;
+
+                const el=active[0];
+                const service=datasets[el.datasetIndex]?.label;
+                const day=labels[el.index];
+
+                if(!service || !day)return;
+
+                const targetKey=
+                  cfg.year+"-"+
+                  String(monthNumber).padStart(2,"0")+"-"+
+                  String(Number(day)).padStart(2,"0");
+
+                const rows=(tontkmHistory||[]).filter(row=>{
+                  const tt=String(row?.tt||"")
+                    .replace(/\s+/g," ")
+                    .trim()
+                    .toUpperCase();
+
+                  if(
+                    tt==="CẬP NHẬT HỒ SƠ" ||
+                    tt==="KẾT THÚC"
+                  )return false;
+
+                  return (
+                    trendDateKey(row?.ntdn)===targetKey &&
+                    getDichVu(row)===service
+                  );
+                });
+
+                showTable(
+                  "TKM • "+service+" • NGÀY "+day+"/"+
+                  String(monthNumber).padStart(2,"0")+"/"+
+                  cfg.year+" ("+rows.length+")",
+                  rows
+                );
+              }
+            }
+          });
+        });
+      }
+
+
+
+
+      /* =========================================================
+         BẢNG MỚI: TRIỂN KHAI MỚI THEO DỊCH VỤ - THEO NGÀY
+         - N tháng hiện tại
+         - Lọc huyện bằng dropdown
+         - Nguồn: tontkmHistory từ API chính
+         - Ngày dùng ntdn (ngày đấu nối/triển khai)
+         ========================================================= */
+
+      const deployBox=document.createElement("div");
+      deployBox.className="chart-box deploy-service-daily-box";
+      deployBox.style.cssText=`
+          min-width:0;
+          width:100%;
+          box-sizing:border-box;
+          padding:12px 14px 10px;
+      `;
+
+      deployBox.innerHTML=`
+          <div class="chart-title" style="font-size:13px;font-weight:800;margin-bottom:6px;">
+              🚀 TRIỂN KHAI MỚI THEO DỊCH VỤ
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+              <span style="font-size:9px;color:#64748b;white-space:nowrap;">Huyện:</span>
+              <select id="deployServiceHuyenFilter" style="
+                  flex:1;
+                  min-width:0;
+                  height:30px;
+                  border:1px solid #d1d5db;
+                  border-radius:7px;
+                  padding:0 8px;
+                  background:#fff;
+                  color:#111827;
+                  font-size:10px;
+                  outline:none;
+              "></select>
+          </div>
+          <div style="font-size:9px;color:#64748b;margin-bottom:5px;">
+              Theo ngày • THÁNG ${String(new Date().getMonth()+1).padStart(2,"0")}/${new Date().getFullYear()}
+          </div>
+          <div style="height:235px;position:relative;">
+              <canvas id="chartDeployServiceDaily"></canvas>
+          </div>
+      `;
+
+      if(dichvuWrap){
+          dichvuWrap.appendChild(deployBox);
+      }
+
+      const deploySelect=document.getElementById("deployServiceHuyenFilter");
+      const deployCanvas=document.getElementById("chartDeployServiceDaily");
+      let deployServiceChart=null;
+
+      if(deploySelect && deployCanvas){
+
+          const normalizeDeployText=value=>String(value??"")
+              .replace(/\u00A0/g," ")
+              .replace(/\s+/g," ")
+              .trim();
+
+          const getDeployService=row=>{
+              const raw=normalizeDeployText(
+                  row?.dichvu ?? row?.gline ?? ""
+              );
+
+              const dv=raw.toUpperCase();
+              const cv=normalizeDeployText(row?.cv ?? "").toUpperCase();
+
+              if(dv.includes("FTTH LĐTB"))return "FTTH LĐTB";
+              if(dv.includes("FTTH TKM"))return "FTTH TKM";
+
+              if(dv === "FTTH" || dv.startsWith("FTTH ")){
+                  if(cv.includes("LĐTB"))return "FTTH LĐTB";
+                  if(cv.includes("TKM"))return "FTTH TKM";
+              }
+
+              /* Không đưa alias kỹ thuật g_line / gl_line vào biểu đồ. */
+              if(/^G[L]?[_\-\s]?LINE[_\-\s]?/i.test(raw)){
+                  return "";
+              }
+
+              return raw;
+          };
+
+          const validDeployRow=row=>{
+              const tt=normalizeDeployText(row?.tt).toUpperCase();
+              const service=getDeployService(row);
+
+              return tt!=="CẬP NHẬT HỒ SƠ" &&
+                     tt!=="KẾT THÚC" &&
+                     !!service;
+          };
+
+          const nowDeploy=new Date();
+          const deployYear=nowDeploy.getFullYear();
+          const deployMonth=nowDeploy.getMonth();
+          const deployLastDay=nowDeploy.getDate();
+
+          const deployRows=(tontkmHistory||[]).filter(row=>{
+              if(!validDeployRow(row))return false;
+
+              const key=trendDateKey(row?.ntdn);
+              if(!key)return false;
+
+              return key.slice(0,4)===String(deployYear) &&
+                     Number(key.slice(5,7))===deployMonth+1;
+          });
+
+          const deployHuyens=[...new Set(
+              deployRows
+                  .map(row=>normalizeDeployText(row?.huyen))
+                  .filter(Boolean)
+          )].sort((a,b)=>
+              normalizeHuyen(a).localeCompare(normalizeHuyen(b),"vi")
+          );
+
+          deploySelect.innerHTML='';
+
+          const allOption=document.createElement("option");
+          allOption.value="__ALL__";
+          allOption.textContent="Tất cả huyện";
+          deploySelect.appendChild(allOption);
+
+          deployHuyens.forEach(h=>{
+              const option=document.createElement("option");
+              option.value=h;
+              option.textContent=h;
+              deploySelect.appendChild(option);
+          });
+
+          const renderDeployServiceChart=()=>{
+
+              const selected=deploySelect.value;
+              const filtered=selected==="__ALL__"
+                  ? deployRows
+                  : deployRows.filter(row=>
+                      normalizeHuyen(row?.huyen)===normalizeHuyen(selected)
+                  );
+
+              const serviceSet=new Set();
+              const byDateAndService={};
+
+              filtered.forEach(row=>{
+                  const key=trendDateKey(row?.ntdn);
+                  const service=getDeployService(row);
+
+                  if(!key || !service)return;
+
+                  serviceSet.add(service);
+
+                  if(!byDateAndService[key])byDateAndService[key]={};
+
+                  byDateAndService[key][service]=
+                      (byDateAndService[key][service]||0)+1;
+              });
+
+              const services=[...serviceSet].sort((a,b)=>a.localeCompare(b,"vi"));
+
+              const labels=[];
+              for(let day=1;day<=deployLastDay;day++){
+                  labels.push(String(day).padStart(2,"0"));
+              }
+
+              const datasets=services.map(service=>({
+                  label:service,
+                  data:labels.map(day=>{
+                      const key=deployYear+"-"+
+                          String(deployMonth+1).padStart(2,"0")+"-"+
+                          String(Number(day)).padStart(2,"0");
+
+                      return Number(byDateAndService[key]?.[service]||0);
+                  }),
+                  borderWidth:2,
+                  pointRadius:2.5,
+                  pointHoverRadius:5,
+                  tension:0.2,
+                  spanGaps:false
+              }));
+
+              if(deployServiceChart){
+                  try{deployServiceChart.destroy();}catch(e){}
+              }
+
+              deployServiceChart=new Chart(deployCanvas,{
+                  type:"line",
+                  data:{labels,datasets},
+                  options:{
+                      responsive:true,
+                      maintainAspectRatio:false,
+                      interaction:{mode:"index",intersect:false},
+                      plugins:{
+                          legend:{
+                              display:true,
+                              position:"top",
+                              labels:{
+                                  font:{size:8},
+                                  boxWidth:10,
+                                  boxHeight:7,
+                                  padding:3
+                              }
+                          },
+                          tooltip:{
+                              mode:"index",
+                              intersect:false,
+                              callbacks:{
+                                  title:items=>items?.length
+                                      ? "Ngày "+items[0].label+"/"+
+                                        String(deployMonth+1).padStart(2,"0")+"/"+
+                                        deployYear
+                                      : ""
+                              }
+                          }
+                      },
+                      scales:{
+                          x:{
+                              title:{display:false},
+                              ticks:{
+                                  autoSkip:false,
+                                  maxTicksLimit:31,
+                                  maxRotation:45,
+                                  minRotation:45,
+                                  font:{size:8}
+                              }
+                          },
+                          y:{
+                              beginAtZero:true,
+                              ticks:{precision:0,font:{size:8}},
+                              title:{
+                                  display:true,
+                                  text:"Số lượng",
+                                  font:{size:9,weight:"700"}
+                              }
+                          }
+                      },
+                      onClick:function(event){
+                          const active=this.getElementsAtEventForMode(
+                              event,
+                              "nearest",
+                              {intersect:true},
+                              true
+                          );
+
+                          if(!active.length)return;
+
+                          const el=active[0];
+                          const service=datasets[el.datasetIndex]?.label;
+                          const day=labels[el.index];
+
+                          if(!service || !day)return;
+
+                          const targetKey=deployYear+"-"+
+                              String(deployMonth+1).padStart(2,"0")+"-"+
+                              String(Number(day)).padStart(2,"0");
+
+                          const rows=(tontkmHistory||[]).filter(row=>{
+                              if(!validDeployRow(row))return false;
+
+                              if(selected!=="__ALL__" &&
+                                  normalizeHuyen(row?.huyen)!==normalizeHuyen(selected)){
+                                  return false;
+                              }
+
+                              return trendDateKey(row?.ntdn)===targetKey &&
+                                     getDeployService(row)===service;
+                          });
+
+                          showTable(
+                              "TRIỂN KHAI MỚI • "+service+
+                              " • NGÀY "+day+"/"+
+                              String(deployMonth+1).padStart(2,"0")+"/"+
+                              deployYear+
+                              (selected!=="__ALL__" ? " • "+selected : "")+
+                              " ("+rows.length+")",
+                              rows
+                          );
+                      }
+                  }
+              });
+          };
+
+          deploySelect.addEventListener("change",renderDeployServiceChart);
+          renderDeployServiceChart();
+      }
+
       /* =========================================================
          BẢNG THỨ 3: DIỄN BIẾN SOC + SOC HOME THEO HUYỆN
          - Giữ 2 line cũ: >24H và >72H
@@ -19567,7 +21488,7 @@ onClick:function(event){
                               },
 
                               title:{
-                                  display:true,
+                                  display:false,
                                   text:"Huyện",
                                   font:{
                                       size:10,
@@ -20031,7 +21952,7 @@ onClick:function(event){
                       scales:{
                           x:{
                               title:{
-                                  display:true,
+                                  display:false,
                                   text:"Ngày"
                               },
 
@@ -21670,7 +23591,7 @@ onClick:function(event){
                 <table class="huyen-summary-topstaff-table">
                   <thead>
                     <tr>
-                      <th>#</th>
+                      <th>STT</th>
                       <th>Nhân viên</th>
                       <th>&gt;24H</th>
                       <th>&gt;72H</th>
@@ -23714,6 +25635,7 @@ function showTable(title,data){
   ${row.mdb || ""}
   ${row.tt || ""}
   ${row.nd || ""}
+  ${row.dichvu || row.gline || ""}
   `
   .toLowerCase();
   
@@ -23790,6 +25712,7 @@ function showTable(title,data){
   bypass:"Bypass",
   cv:"Loại cv",
   gline:"Gline",
+  dichvu:"Dịch vụ",
   ntdn:"Ngày đấu nối",
   ntnt:"Ngày nghiệm thu",
   tt:"Trạng thái cv",
@@ -23847,6 +25770,7 @@ function showTable(title,data){
   "tg",
   "huyen",
   "account",
+  "dichvu",
   "bypass",
   "kpi",
   "cv",
@@ -24892,6 +26816,12 @@ const url =
   "Đã mở khóa sửa 1 lần"
   );
   
+
+  window.addEventListener('resize',()=>{
+    clearTimeout(window.__syncDichVuSizeTimer);
+    window.__syncDichVuSizeTimer=setTimeout(syncDichVu13HuyenHeights,120);
+  });
+
   loadData();
   
   }else{
@@ -25363,7 +27293,7 @@ const url =
   const EXCEL_COLUMNS = [
     ["cv","Loại cv"],
     ["account","Account"],
-    ["gline","line"],
+    ["dichvu","Dịch vụ"],
     ["ntdn","Ngày đấu nối"],
     ["nv","Tên nv"],
     ["huyen","Huyện"],
@@ -26377,7 +28307,7 @@ ${rels.join("")}
   const EXCEL_TKM_COLUMNS = [
     ["cv","Loại cv"],
     ["account","Account"],
-    ["gline","line"],
+    ["dichvu","Dịch vụ"],
     ["ntdn","Ngày đấu nối"],
     ["nv","Tên nv"],
     ["huyen","Huyện"],
@@ -27860,6 +29790,174 @@ function setSevenDayChartStatus(state, text){
   }
 }
 
+</script>
+
+
+<script id="KPI_ANALYSIS_BOT_JS_V31">
+(function(){
+  const norm=v=>String(v??"").replace(/\u00A0/g," ").replace(/\s+/g," ").trim();
+  const upper=v=>norm(v).toUpperCase();
+  const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+  const staff=r=>norm(r?.nv||r?.ten_nv||r?.tennv||r?.["Tên nv"]||r?.user||"Không rõ");
+  const huyen=r=>norm(r?.huyen||"Không rõ");
+  const service=r=>{
+    const raw=norm(r?.dichvu||r?.gline||""); const dv=upper(raw), cv=upper(r?.cv);
+    if(dv.includes("FTTH LĐTB"))return "FTTH LĐTB";
+    if(dv.includes("FTTH TKM"))return "FTTH TKM";
+    if(dv==="FTTH"||dv.startsWith("FTTH ")){if(cv.includes("LĐTB"))return "FTTH LĐTB";if(cv.includes("TKM"))return "FTTH TKM";}
+    const known=["CAMERA","BOXTV360 TRẢ SAU","SMARTTV360 TRẢ SAU","MULTISCREEN 2 CHIỀU"];
+    return known.find(x=>dv===x||dv.includes(x))||raw||"Không xác định";
+  };
+  const tkm=()=>Array.isArray(window.tkmThuc)?window.tkmThuc:[];
+  const cap=()=>Array.isArray(window.capnhaths)?window.capnhaths:[];
+  const scRows=()=>Array.isArray(window.tonsc)?window.tonsc:(typeof tonsc!=="undefined"&&Array.isArray(tonsc)?tonsc:[]);
+  const tkmKpi=r=>upper(r?.kpi);
+  const scType=r=>upper(r?.sc||r?.loai_sc||r?.loai_su_co);
+  const hours=r=>{const raw=String(r?.tg??"").trim().replace(",","."); const m=raw.match(/^(\d+):([0-5]\d)(?::([0-5]\d))?$/); if(m)return Number(m[1])+Number(m[2])/60+Number(m[3]||0)/3600; const n=parseFloat(raw); return Number.isFinite(n)?n:0;};
+  const scReal=r=>!!scType(r)&&!['SOC','SOC HOME'].includes(scType(r));
+  const districtList=()=>[...new Set([...tkm(),...cap(),...scRows()].map(huyen).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'vi'));
+  const botNum=(v,kind="")=>{const n=Number(v)||0;if(n===0)return '0';return '<span class="kpi-bot-number '+(kind==='bad'?'bad':'')+'">'+n+'</span>';};
+  const pct=(v,t)=>t?((v/t)*100).toFixed(1)+'%':'0%';
+
+  function metricsForRows(tkmR,capR,scR){
+    const soc=scR.filter(r=>scType(r)==='SOC'), sh=scR.filter(r=>scType(r)==='SOC HOME'), real=scR.filter(scReal);
+    return {tkm:tkmR.length,cap:capR.length,sc:real.length,soc:soc.length,socHome:sh.length,
+      tkm16:tkmR.filter(r=>tkmKpi(r)==='QUÁ 16H').length,tkm24:tkmR.filter(r=>tkmKpi(r)==='QUÁ 24H').length,tkmHen:tkmR.filter(r=>tkmKpi(r)==='QUÁ HẸN').length,
+      sc16:real.filter(r=>hours(r)>16).length,sc24:real.filter(r=>hours(r)>24).length,sc72:real.filter(r=>hours(r)>72).length,
+      soc24:soc.filter(r=>hours(r)>24).length,soc72:soc.filter(r=>hours(r)>72).length,
+      sochome24:sh.filter(r=>hours(r)>24).length,sochome72:sh.filter(r=>hours(r)>72).length};
+  }
+  function score(m){return m.tkm+m.cap+m.sc*2+m.soc*2+m.socHome*2+m.tkm16*2+m.tkm24*3+m.tkmHen*3+m.sc16*2+m.sc24*4+m.soc24*3+m.sochome24*3+m.sc72*5+m.soc72*4+m.sochome72*4;}
+  function rowsForDistrict(d){const t=tkm().filter(r=>huyen(r)===d),c=cap().filter(r=>huyen(r)===d),s=scRows().filter(r=>huyen(r)===d);return {t,c,s,m:metricsForRows(t,c,s)};}
+  function rowsForStaff(name,district){const sk=upper(name),t=tkm().filter(r=>upper(staff(r))===sk&&(!district||huyen(r)===district)),c=cap().filter(r=>upper(staff(r))===sk&&(!district||huyen(r)===district)),s=scRows().filter(r=>upper(staff(r))===sk&&(!district||huyen(r)===district));return {t,c,s,m:metricsForRows(t,c,s)};}
+  function countBy(rows,keyFn){const m={};(rows||[]).forEach(r=>{const k=keyFn(r)||"Không rõ";m[k]=(m[k]||0)+1});return Object.entries(m).map(([name,count])=>({name,count})).sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'vi'));}
+  function serviceBreakdown(rows,limit=5){return countBy(rows,service).slice(0,limit);}
+  function topStaff(district,limit=15){const names=new Map();[...tkm(),...cap(),...scRows()].forEach(r=>{const n=staff(r);if(n&&(!district||huyen(r)===district))names.set(upper(n),n)});return [...names.values()].map(n=>{const x=rowsForStaff(n,district);return {name:n,t:x.t,c:x.c,s:x.s,m:x.m,score:score(x.m),...x.m}}).sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,'vi')).slice(0,Math.max(1,limit));}
+  function topDistricts(){return districtList().map(d=>{const x=rowsForDistrict(d);return {name:d,...x.m,score:score(x.m)}}).sort((a,b)=>b.score-a.score||b.tkm-a.tkm||a.name.localeCompare(b.name,'vi'));}
+  function causes(m){return [['TKM tồn',m.tkm],['Cập nhật hồ sơ',m.cap],['SC',m.sc],['SOC',m.soc],['SOC HOME',m.socHome],['TKM >24H',m.tkm24],['TKM quá hẹn',m.tkmHen],['SC >24H',m.sc24],['SC >72H',m.sc72],['SOC >24H',m.soc24],['SOC >72H',m.soc72],['SOC HOME >24H',m.sochome24],['SOC HOME >72H',m.sochome72]].filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,7);}
+  function detailTable(rows,label,isSC){const safe=Array.isArray(rows)?rows:[];const cols=isSC?[['STT','__stt'],['Nhân viên','nv'],['Huyện','huyen'],['Loại','sc'],['TG','tg'],['Account','account']]:[['STT','__stt'],['Nhân viên','nv'],['Huyện','huyen'],['Dịch vụ','dichvu'],['KPI','kpi'],['TG','tg'],['Account','account']];return `<div class="kpi-bot-table-wrap"><table><thead><tr>${cols.map(c=>`<th>${c[0]}</th>`).join('')}</tr></thead><tbody>${safe.map((r,i)=>`<tr>${cols.map(c=>`<td>${c[1]==='__stt'?i+1:esc(c[1]==='dichvu'?service(r):(r?.[c[1]]??''))}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${cols.length}">Không có dữ liệu ${label}</td></tr>`}</tbody></table></div>`;}
+  function staffTable(top){return `<div class="kpi-bot-table-wrap"><table><thead><tr><th>STT</th><th>Nhân viên</th><th>Điểm</th><th>TKM</th><th>CNHS</th><th>SC</th><th>SOC</th><th>SOC HOME</th><th>TKM >24H</th><th>TKM QH</th><th>SOC >24H</th><th>SOC >72H</th></tr></thead><tbody>${top.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b></td><td class="bad"><b>${x.score}</b></td><td>${botNum(x.tkm)}</td><td>${botNum(x.cap)}</td><td>${botNum(x.sc)}</td><td>${botNum(x.soc)}</td><td>${botNum(x.socHome)}</td><td>${botNum(x.tkm24,'bad')}</td><td>${botNum(x.tkmHen,'bad')}</td><td>${botNum(x.soc24,'bad')}</td><td>${botNum(x.soc72,'bad')}</td></tr>`).join('')||'<tr><td colspan="12">Không có dữ liệu nhân viên</td></tr>'}</tbody></table></div>`;}
+
+  function totalOverview(){try{const m=metricsForRows(tkm(),cap(),scRows());const districts=topDistricts();return `<h3>📊 TỔNG QUAN KPI HIỆN TẠI</h3><table class="kpi-bot-summary-table"><tbody><tr><th>TKM tồn</th><td>${botNum(m.tkm)}</td><th>CNHS</th><td>${botNum(m.cap)}</td></tr><tr><th>SC</th><td>${botNum(m.sc)}</td><th>SOC</th><td>${botNum(m.soc)}</td></tr><tr><th>SOC HOME</th><td>${botNum(m.socHome)}</td><th>TKM &gt;24H</th><td>${botNum(m.tkm24,'bad')}</td></tr><tr><th>TKM quá hẹn</th><td>${botNum(m.tkmHen,'bad')}</td><th>SC &gt;24H</th><td>${botNum(m.sc24,'bad')}</td></tr><tr><th>SC &gt;72H</th><td>${botNum(m.sc72,'bad')}</td><th>SOC &gt;24H</th><td>${botNum(m.soc24,'bad')}</td></tr><tr><th>SOC &gt;72H</th><td>${botNum(m.soc72,'bad')}</td><th>SOC HOME &gt;24H</th><td>${botNum(m.sochome24,'bad')}</td></tr><tr><th>SOC HOME &gt;72H</th><td>${botNum(m.sochome72,'bad')}</td><th>Tổng quá hạn</th><td>${botNum(m.tkm24+m.tkmHen+m.sc24+m.sc72+m.soc24+m.soc72+m.sochome24+m.sochome72,'bad')}</td></tr></tbody></table><h4>13 HUYỆN</h4><div class="kpi-bot-table-wrap"><table><thead><tr><th>STT</th><th>Huyện</th><th>TKM</th><th>CNHS</th><th>SC</th><th>SOC</th><th>SOC HOME</th><th>TKM &gt;24H</th><th>TKM QH</th><th>SOC &gt;24H</th><th>SOC &gt;72H</th><th>Điểm</th></tr></thead><tbody>${districts.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b></td><td>${botNum(x.tkm)}</td><td>${botNum(x.cap)}</td><td>${botNum(x.sc)}</td><td>${botNum(x.soc)}</td><td>${botNum(x.socHome)}</td><td>${botNum(x.tkm24,'bad')}</td><td>${botNum(x.tkmHen,'bad')}</td><td>${botNum(x.soc24,'bad')}</td><td>${botNum(x.soc72,'bad')}</td><td class="bad"><b>${x.score}</b></td></tr>`).join('')||'<tr><td colspan="12">Không có dữ liệu huyện</td></tr>'}</tbody></table></div><div class="kpi-bot-note">Gợi ý hành động bên dưới là đánh giá <b>Top 5 huyện</b> cần ưu tiên xử lý.</div>${recommendation()}`;}catch(e){console.error('BOT tổng quan',e);return '<h3>📊 TỔNG QUAN KPI</h3><div>Không thể dựng bảng tổng quan. Hãy thử <b>/help</b> hoặc nhập <b>tổng quan</b> lại.</div>';}}
+  function tableTopDistricts(){const arr=topDistricts().slice(0,5);return `<h4>Top 5 huyện có tải tồn xấu</h4><div class="kpi-bot-table-wrap"><table><thead><tr><th>STT</th><th>Huyện</th><th>TKM</th><th>CNHS</th><th>SC</th><th>SOC</th><th>SOC HOME</th><th>TKM >24H</th><th>TKM QH</th><th>SOC >24H</th><th>SOC >72H</th><th>Điểm</th></tr></thead><tbody>${arr.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b></td><td>${botNum(x.tkm)}</td><td>${botNum(x.cap)}</td><td>${botNum(x.sc)}</td><td>${botNum(x.soc)}</td><td>${botNum(x.socHome)}</td><td>${botNum(x.tkm24,'bad')}</td><td>${botNum(x.tkmHen,'bad')}</td><td>${botNum(x.soc24,'bad')}</td><td>${botNum(x.soc72,'bad')}</td><td class="bad"><b>${x.score}</b></td></tr>`).join('')}</tbody></table></div>`;}
+  function recommendation(){const td=topDistricts().slice(0,3);return `<h3>🎯 GỢI Ý HÀNH ĐỘNG</h3>${td.map((d,i)=>{const s=topStaff(d.name).slice(0,2);const sv=serviceBreakdown(rowsForDistrict(d.name).t,3);return `<div class="kpi-action-item"><b>${i+1}. Huyện ${esc(d.name)}</b>: tập trung ${sv.map(x=>esc(x.name)+' '+botNum(x.count)).join(', ')||'không có dịch vụ nổi bật'}; ưu tiên ${s.map(x=>esc(x.name)).join(', ')||'không xác định'}.</div>`}).join('')}`;}
+  function districtDetail(d){const x=rowsForDistrict(d),top=topStaff(d).slice(0,5),sv=serviceBreakdown(x.t,6),c=causes(x.m);return `<h3>🏚️ PHÂN TÍCH HUYỆN ${esc(d)}</h3><div><b>TTH:</b> ${esc(d)}</div><div><b>Tổng tồn:</b> TKM ${botNum(x.m.tkm)} • CNHS ${botNum(x.m.cap)} • SC ${botNum(x.m.sc)} • SOC ${botNum(x.m.soc)} • SOC HOME ${botNum(x.m.socHome)}.</div><div><b>KPI:</b> TKM >16H ${botNum(x.m.tkm16)} • TKM >24H ${botNum(x.m.tkm24,'bad')} • TKM QH ${botNum(x.m.tkmHen,'bad')} • SC >16H ${botNum(x.m.sc16)} • SC >24H ${botNum(x.m.sc24,'bad')} • SC >72H ${botNum(x.m.sc72,'bad')} • SOC >24H ${botNum(x.m.soc24,'bad')} • SOC >72H ${botNum(x.m.soc72,'bad')}.</div><h4>Tồn TKM theo dịch vụ</h4><table><thead><tr><th>STT</th><th>Dịch vụ</th><th>Tồn</th><th>%</th></tr></thead><tbody>${sv.map((v,i)=>`<tr><td>${i+1}</td><td><b>${esc(v.name)}</b></td><td>${botNum(v.count)}</td><td>${pct(v.count,x.m.tkm)}</td></tr>`).join('')}</tbody></table><h4>Nội dung gây tải chính</h4><div>${c.map(v=>`<span class="kpi-mini-chip"><b>${esc(v[0])}</b>: ${botNum(v[1],'bad')}</span>`).join('')}</div><h4>Nhân viên cần ưu tiên</h4>${staffTable(top)}`;}
+  function scBreakdown(rows,limit=3){const arr=countBy(rows,r=>scType(r)||'Khác');return arr.slice(0,limit);}
+  function staffOverview(){const top=topStaff(null,15);return `<h3>👤 TOP 15 NHÂN VIÊN TỒI / TẢI TỒN CAO</h3>${staffTable(top)}<h4>🔥 Dịch vụ TKM nổi bật</h4>${top.map(x=>{const sv=serviceBreakdown(x.t||[],4);return `<div class="kpi-bot-highlight-line"><b>${esc(x.name)}</b>: ${sv.length?sv.map(v=>esc(v.name)+' '+botNum(v.count)).join(' • '):'<span class="muted">Không có TKM</span>'}</div>`}).join('')}<h4>🚨 Sự cố nổi bật</h4>${top.map(x=>{const sv=scBreakdown(x.s||[],4);return `<div class="kpi-bot-highlight-line"><b>${esc(x.name)}</b>: ${sv.length?sv.map(v=>esc(v.name)+' '+botNum(v.count,'bad')).join(' • '):'<span class="muted">Không có sự cố</span>'}</div>`}).join('')}`;}
+  function staffDetail(name){const x=rowsForStaff(name),sv=serviceBreakdown(x.t,8),c=causes(x.m);const all=[...x.t,...x.c,...x.s];const districts=[...new Set(all.map(huyen).filter(Boolean))];return `<h3>👤 PHÂN TÍCH NHÂN VIÊN ${esc(name)}</h3><div><b>TTH:</b> ${esc(districts.join(', ')||'Không rõ')}</div><div><b>Tổng tồn:</b> TKM ${botNum(x.m.tkm)} • CNHS ${botNum(x.m.cap)} • SC ${botNum(x.m.sc)} • SOC ${botNum(x.m.soc)} • SOC HOME ${botNum(x.m.socHome)}.</div><div><b>KPI:</b> TKM >24H ${botNum(x.m.tkm24,'bad')} • TKM QH ${botNum(x.m.tkmHen,'bad')} • SC >24H ${botNum(x.m.sc24,'bad')} • SC >72H ${botNum(x.m.sc72,'bad')} • SOC >24H ${botNum(x.m.soc24,'bad')} • SOC >72H ${botNum(x.m.soc72,'bad')}.</div><h4>TKM theo dịch vụ</h4><table><thead><tr><th>STT</th><th>Dịch vụ</th><th>Tồn</th><th>%</th></tr></thead><tbody>${sv.map((v,i)=>`<tr><td>${i+1}</td><td><b>${esc(v.name)}</b></td><td>${botNum(v.count)}</td><td>${pct(v.count,x.m.tkm)}</td></tr>`).join('')}</tbody></table><h4>TKM chi tiết</h4>${detailTable(x.t.slice(0,80),'TKM',false)}<h4>Sự cố chi tiết</h4>${detailTable(x.s.slice(0,80),'Sự cố',true)}<h4>Nội dung ưu tiên</h4><div>${c.map(v=>`<span class="kpi-mini-chip"><b>${esc(v[0])}</b>: ${botNum(v[1],'bad')}</span>`).join('')}</div>`;}
+  function totalSC(){const m=metricsForRows([],[],scRows());return `<h3>🚨 TỔNG SỰ CỐ HIỆN TẠI</h3><table class="kpi-bot-summary-table"><tbody><tr><th>SC</th><td>${botNum(m.sc)}</td><th>SOC</th><td>${botNum(m.soc)}</td></tr><tr><th>SOC HOME</th><td>${botNum(m.socHome)}</td><th>SC >24H</th><td>${botNum(m.sc24,'bad')}</td></tr><tr><th>SC >72H</th><td>${botNum(m.sc72,'bad')}</td><th>SOC >24H</th><td>${botNum(m.soc24,'bad')}</td></tr><tr><th>SOC >72H</th><td>${botNum(m.soc72,'bad')}</td><th>SOC HOME >24H</th><td>${botNum(m.sochome24,'bad')}</td></tr><tr><th>SOC HOME >72H</th><td>${botNum(m.sochome72,'bad')}</td><th>Tổng sự cố</th><td>${botNum(m.sc+m.soc+m.socHome)}</td></tr></tbody></table>`;}
+  function totalTKM(){const m=metricsForRows(tkm(),cap(),[]);return `<h3>📦 TỔNG TKM HIỆN TẠI</h3><table class="kpi-bot-summary-table"><tbody><tr><th>TKM</th><td>${botNum(m.tkm)}</td><th>CNHS</th><td>${botNum(m.cap)}</td></tr><tr><th>TKM >16H</th><td>${botNum(m.tkm16)}</td><th>TKM >24H</th><td>${botNum(m.tkm24,'bad')}</td></tr><tr><th>TKM QH</th><td>${botNum(m.tkmHen,'bad')}</td><th>Tổng</th><td>${botNum(m.tkm+m.cap)}</td></tr></tbody></table>`;}
+  function getMonthTarget(q){const u=upper(q),now=new Date();if(/THÁNG\s+TRƯỚC|THÁNG\s+N-1|\bN-1\b/.test(u)){const d=new Date(now.getFullYear(),now.getMonth()-1,1);return {month:d.getMonth(),year:d.getFullYear(),label:`${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`};}const m=u.match(/THÁNG\s*(\d{1,2})(?:\s*[/\-]\s*(\d{4}))?/);if(!m)return null;return {month:Number(m[1])-1,year:Number(m[2]||now.getFullYear()),label:`${String(Number(m[1])).padStart(2,'0')}/${Number(m[2]||now.getFullYear())}`};}
+  const parseHist=v=>{if(typeof parseHistoryDate==='function')return parseHistoryDate(v);const d=new Date(v);return Number.isFinite(d.getTime())?d.getTime():0;};
+  async function getMonthlyRows(year,month){
+    const now=new Date();
+    // Ưu tiên dữ liệu hiện tại nếu có ngày thuộc đúng tháng.
+    const curTkm=tkm().filter(r=>{const d=parseHist(r?.ntdn);return d&&new Date(d).getFullYear()===year&&new Date(d).getMonth()===month;});
+    const curSc=scRows().filter(r=>{const d=parseHist(r?.ngay);return d&&new Date(d).getFullYear()===year&&new Date(d).getMonth()===month;});
+    const curCap=cap().filter(r=>{const d=parseHist(r?.ntdn);return d&&new Date(d).getFullYear()===year&&new Date(d).getMonth()===month;});
+    if(curTkm.length||curSc.length||curCap.length)return {tkm:[...curTkm,...curCap],sc:curSc,tg:"Dữ liệu hiện tại theo tháng"};
+    if(typeof loadRemoteHistorySnapshots!=='function'||typeof fetchRemoteSnapshotRows!=='function')return {tkm:[],sc:[],tg:""};
+    const snaps=await loadRemoteHistorySnapshots();
+    const cand=snaps.map(s=>({s,ts:parseHist(s?.tgupdate)})).filter(x=>x.ts);
+    const start=new Date(year,month,1).getTime(), end=new Date(year,month+1,1).getTime()-1;
+    const within=cand.filter(x=>x.ts>=start&&x.ts<=end).sort((a,b)=>b.ts-a.ts);
+    const fallback=cand.filter(x=>x.ts<=end).sort((a,b)=>b.ts-a.ts);
+    const pick=(within[0]||fallback[0]);
+    if(!pick)return {tkm:[],sc:[],tg:""};
+    const rows=await fetchRemoteSnapshotRows(pick.s.snapshotId);
+    return {tkm:rows.tkm||[],sc:rows.sc||[],tg:pick.s.tgupdate||""};
+  }
+  function splitTkmRows(rows){return {tkm:rows.filter(r=>upper(r?.tt)!=='CẬP NHẬT HỒ SƠ'),cap:rows.filter(r=>upper(r?.tt)==='CẬP NHẬT HỒ SƠ')};}
+  function monthlyOverviewFor(data,label){const sp=splitTkmRows(data.tkm);const m=metricsForRows(sp.tkm,sp.cap,data.sc);return `<h3>📅 TỒN THÁNG ${label}</h3><div><b>Tổng:</b> TKM ${botNum(m.tkm)} • CNHS ${botNum(m.cap)} • SC ${botNum(m.sc)} • SOC ${botNum(m.soc)} • SOC HOME ${botNum(m.socHome)}</div><h4>TKM theo nhân viên</h4>${monthlyTable(sp.tkm,'TKM')}<h4>Sự cố theo nhân viên</h4>${monthlyTable(data.sc,'SC')}`;}
+  function monthlyTable(rows,kind){const map=new Map();rows.forEach(r=>{const n=staff(r);if(!map.has(upper(n)))map.set(upper(n),n)});const arr=[...map.values()].map(n=>{const rr=rows.filter(r=>upper(staff(r))===upper(n));return {name:n,count:rr.length,huyen:huyen(rr[0]),over24:kind==='TKM'?rr.filter(r=>tkmKpi(r)==='QUÁ 24H').length:rr.filter(r=>hours(r)>24).length,services:kind==='TKM'?serviceBreakdown(rr,3):[]};}).sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'vi')).slice(0,15);return `<div class="kpi-bot-table-wrap"><table><thead><tr><th>STT</th><th>Nhân viên</th><th>Huyện</th><th>${kind}</th><th>Quá 24H</th><th>Chi tiết</th></tr></thead><tbody>${arr.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b></td><td>${esc(x.huyen)}</td><td>${botNum(x.count)}</td><td>${botNum(x.over24,x.over24?'bad':'')}</td><td>${x.services.map(v=>esc(v.name)+' '+botNum(v.count)).join(' • ')}</td></tr>`).join('')||'<tr><td colspan="6">Không có dữ liệu</td></tr>'}</tbody></table></div>`;}
+  async function monthStaff(q,name){const mt=getMonthTarget(q);const data=await getMonthlyRows(mt.year,mt.month);if(!data.tkm.length&&!data.sc.length)return `<h3>👤 ${esc(name)} • THÁNG ${mt.label}</h3><div>Không có dữ liệu tháng này.</div>`;const sp=splitTkmRows(data.tkm),tr=sp.tkm.filter(r=>upper(staff(r))===upper(name)),cr=sp.cap.filter(r=>upper(staff(r))===upper(name)),sr=data.sc.filter(r=>upper(staff(r))===upper(name)),m=metricsForRows(tr,cr,sr);return `<h3>👤 ${esc(name)} • THÁNG ${mt.label}</h3><div><b>TTH:</b> ${esc([...new Set([...tr,...cr,...sr].map(huyen).filter(Boolean))].join(', ')||'Không rõ')}</div><div><b>Tổng:</b> TKM ${botNum(m.tkm)} • CNHS ${botNum(m.cap)} • SC ${botNum(m.sc)} • SOC ${botNum(m.soc)} • SOC HOME ${botNum(m.socHome)}.</div><h4>TKM theo dịch vụ</h4>${serviceBreakdown(tr,8).map((v,i)=>`<div class="kpi-action-item"><b>${i+1}. ${esc(v.name)}</b>: ${botNum(v.count)}</div>`).join('')||'Không có TKM'}<h4>TKM chi tiết</h4>${detailTable(tr.slice(0,80),'TKM',false)}<h4>Sự cố chi tiết</h4>${detailTable(sr.slice(0,80),'Sự cố',true)}`;}
+  async function monthDistrict(q,d){const mt=getMonthTarget(q);const data=await getMonthlyRows(mt.year,mt.month);if(!data.tkm.length&&!data.sc.length)return `<h3>🏚️ ${esc(d)} • THÁNG ${mt.label}</h3><div>Không có dữ liệu tháng này.</div>`;const sp=splitTkmRows(data.tkm),tr=sp.tkm.filter(r=>huyen(r)===d),cr=sp.cap.filter(r=>huyen(r)===d),sr=data.sc.filter(r=>huyen(r)===d),m=metricsForRows(tr,cr,sr);return `<h3>🏚️ ${esc(d)} • THÁNG ${mt.label}</h3><div><b>Tổng:</b> TKM ${botNum(m.tkm)} • CNHS ${botNum(m.cap)} • SC ${botNum(m.sc)} • SOC ${botNum(m.soc)} • SOC HOME ${botNum(m.socHome)}.</div><h4>TKM theo dịch vụ</h4>${serviceBreakdown(tr,8).map((v,i)=>`<div class="kpi-action-item"><b>${i+1}. ${esc(v.name)}</b>: ${botNum(v.count)}</div>`).join('')||'Không có TKM'}<h4>Nhân viên tồn</h4>${monthlyTable([...tr,...cr],'TKM')}<h4>Sự cố theo nhân viên</h4>${monthlyTable(sr,'SC')}`;}
+  function findAccount(q,rows=null){
+    const source=Array.isArray(rows)?rows:[...tkm(),...cap(),...scRows()];
+    const accounts=[...new Set(source.map(r=>String(r?.account||"").trim()).filter(Boolean))].sort((a,b)=>b.length-a.length);
+    const u=upper(q);
+    return accounts.find(a=>u.includes(upper(a)))||null;
+  }
+  function accountDetail(account,rows=null){
+    const key=upper(account);
+    const tr=tkm().filter(r=>upper(r?.account)===key);
+    const cr=cap().filter(r=>upper(r?.account)===key);
+    const sr=scRows().filter(r=>upper(r?.account)===key);
+    const all=[...tr,...cr,...sr];
+    if(!all.length)return `<h3>🔎 TRA ACCOUNT ${esc(account)}</h3><div>Không tìm thấy account.</div>`;
+    const x=metricsForRows(tr,cr,sr);
+    return `<h3>🔎 TRA CỨU ACCOUNT</h3><div><b>Account:</b> ${esc(account)}</div><div><b>TTH:</b> ${esc([...new Set(all.map(huyen).filter(Boolean))].join(', ')||'Không rõ')}</div><div><b>Nhân viên:</b> ${esc([...new Set(all.map(staff).filter(Boolean))].join(', ')||'Không rõ')}</div><div><b>Tổng:</b> TKM ${botNum(x.tkm)} • CNHS ${botNum(x.cap)} • SC ${botNum(x.sc)} • SOC ${botNum(x.soc)} • SOC HOME ${botNum(x.socHome)}.</div><h4>TKM</h4>${detailTable([...tr,...cr].slice(0,80),'TKM',false)}<h4>Sự cố</h4>${detailTable(sr.slice(0,80),'Sự cố',true)}`;
+  }
+    function findStaffName(q,rows=null){const source=Array.isArray(rows)?rows:[...tkm(),...cap(),...scRows()];const names=[...new Map(source.map(r=>[upper(staff(r)),staff(r)])).values()].filter(Boolean).sort((a,b)=>b.length-a.length);const u=upper(q);return names.find(n=>u.includes(upper(n)))||null;}
+  function findDistrictName(q,rows=null){const source=Array.isArray(rows)?rows:[...tkm(),...cap(),...scRows()];const names=[...new Set(source.map(huyen).filter(Boolean))].sort((a,b)=>b.length-a.length);const u=upper(q);return names.find(n=>u.includes(upper(n)))||null;}
+  function helpOverview(){return `<h3>🆘 LỆNH BOT KPI</h3><div class="kpi-help-grid"><div><b>/help</b><span>Xem hướng dẫn.</span></div><div><b>tổng quan</b><span>Đủ 13 huyện + đánh giá Top 5 ưu tiên.</span></div><div><b>tên nhân viên</b><span>Nhập đúng tên → tổng TTH + TKM + SC + SOC/SOC HOME và chi tiết.</span></div><div><b>tên huyện</b><span>Phân tích tổng tồn và nhân viên cần ưu tiên.</span></div><div><b>tổng sự cố</b><span>SC, SOC, SOC HOME + KPI quá hạn.</span></div><div><b>tổng TKM</b><span>TKM, CNHS, KPI quá hạn + dịch vụ.</span></div><div><b>tháng trước + tên nhân viên</b><span>Ra <b>tổng SC + TKM + CNHS + SOC/SOC HOME</b> tháng trước và chi tiết TKM + sự cố.</span></div><div><b>tháng trước + tên huyện</b><span>Ra <b>tổng SC + TKM + CNHS + SOC/SOC HOME</b> tháng trước của huyện + dịch vụ + nhân viên tồn.</span></div><div><b>tra cứu TKM + tên/account</b><span>Trả danh sách TKM chi tiết.</span></div><div><b>tra cứu sự cố + tên/account</b><span>Trả danh sách sự cố chi tiết.</span></div><div><b>Nhập trực tiếp account</b><span>Ví dụ: <code>ABC123456</code> → tra toàn bộ thông tin account.</span></div></div><div class="kpi-help-examples"><b>Ví dụ:</b> <code>Nguyễn Văn A</code> • <code>Pleiku</code> • <code>tháng trước Nguyễn Văn A</code> • <code>tháng trước Pleiku</code> • <code>tra cứu TKM ABC123456</code> • <code>tra cứu sự cố ABC123456</code> • <code>ABC123456</code></div>`;}
+
+  
+  async function answer(q){try{const u=upper(q);if(u==='/HELP'||u==='HELP'||u.includes('TRỢ GIÚP'))return helpOverview();if(u.includes('TỔNG QUAN'))return totalOverview();const mt=getMonthTarget(q);
+    if(mt){
+      const monthData=await getMonthlyRows(mt.year,mt.month);
+      const monthRows=[...(monthData.tkm||[]),...(monthData.sc||[])];
+      const nm=findStaffName(q,monthRows)||findStaffName(q);
+      const d=findDistrictName(q,monthRows)||findDistrictName(q);
+      if(nm)return monthStaff(q,nm);
+      if(d)return monthDistrict(q,d);
+      if(u.includes('TKM')||u.includes('TỒN')||u.includes('SỰ CỐ')||u.includes('SC'))return monthlyOverviewFor(monthData,mt.label);
+    }
+    const account=findAccount(q);
+    if(account && (u.includes('ACCOUNT')||/^[A-Z0-9._\/-]{6,}$/i.test(q.trim())))return accountDetail(account);
+    const nm=findStaffName(q);
+    const d=districtList().find(x=>u.includes(upper(x)));
+    if(nm)return staffDetail(nm);
+    if(u.includes('TỔNG SỰ CỐ')||u.includes('TỔNG SC'))return totalSC();
+    if(u.includes('TỔNG TKM'))return totalTKM();
+    if(u.includes('TRA CỨU SỰ CỐ')||u.includes('TRA SỰ CỐ')){const key=(q.replace(/.*TRA\s*(CỨU\s*)?SỰ\s*CỐ/i,'').trim());const rows=scRows().filter(r=>!key||upper(staff(r)).includes(upper(key))||upper(huyen(r)).includes(upper(key))||upper(r?.account).includes(upper(key)));return detailTable(rows.slice(0,80),'Sự cố',true);}
+    if(u.includes('TRA CỨU TKM')||u.includes('TRA TKM')){const key=(q.replace(/.*TRA\s*(CỨU\s*)?TKM/i,'').trim());const rows=tkm().filter(r=>!key||upper(staff(r)).includes(upper(key))||upper(huyen(r)).includes(upper(key))||upper(r?.account).includes(upper(key)));return detailTable(rows.slice(0,80),'TKM',false);}
+    if(d)return districtDetail(d);
+    if(u.includes('NHÂN VIÊN')||u.includes('NV'))return staffOverview();
+    if(u.includes('DỊCH VỤ'))return `<h3>📦 TỒN TKM THEO DỊCH VỤ</h3>${serviceBreakdown(tkm(),10).map((v,i)=>`<div class="kpi-action-item"><b>${i+1}. ${esc(v.name)}</b>: ${botNum(v.count)} (${pct(v.count,tkm().length)})</div>`).join('')}`;
+    if(u.includes('GỢI Ý')||u.includes('LÀM TỒI')||u.includes('TOP 15 NHÂN VIÊN')||u.includes('NHÂN VIÊN TỒI'))return recommendation()+staffOverview();
+    return helpOverview();}catch(err){console.error('KPI BOT answer',err);return `<div class="bad"><b>BOT không phân tích được yêu cầu này.</b><br>Hãy thử <b>/help</b>, <b>tổng quan</b>, <b>tổng sự cố</b>, hoặc nhập tên nhân viên.</div>`;}}
+  async function buildBotSuggestions(q){
+    try{
+      const u=upper(q);
+      if(u==='/HELP'||u==='HELP'||u.includes('TRỢ GIÚP')) return '';
+      let t=[],c=[],sc=[]; let scope='Kết quả vừa tra';
+      const mt=getMonthTarget(q);
+      if(mt){
+        const md=await getMonthlyRows(mt.year,mt.month);
+        const monthRows=[...(md.tkm||[]),...(md.sc||[])];
+        const nm=findStaffName(q,monthRows)||findStaffName(q);
+        const d=findDistrictName(q,monthRows)||findDistrictName(q);
+        const sp=splitTkmRows(md.tkm||[]);
+        if(nm){ t=sp.tkm.filter(r=>upper(staff(r))===upper(nm)); c=sp.cap.filter(r=>upper(staff(r))===upper(nm)); sc=(md.sc||[]).filter(r=>upper(staff(r))===upper(nm)); scope=nm+' • '+mt.label; }
+        else if(d){ t=sp.tkm.filter(r=>huyen(r)===d); c=sp.cap.filter(r=>huyen(r)===d); sc=(md.sc||[]).filter(r=>huyen(r)===d); scope=d+' • '+mt.label; }
+        else { t=sp.tkm; c=sp.cap; sc=md.sc||[]; scope='Mức tỉnh • '+mt.label; }
+      }else{
+        const nm=findStaffName(q), d=districtList().find(x=>upper(q).includes(upper(x))), acc=findAccount(q);
+        if(nm){const x=rowsForStaff(nm); t=x.t;c=x.c;sc=x.s;scope=nm;}
+        else if(d){const x=rowsForDistrict(d);t=x.t;c=x.c;sc=x.s;scope=d;}
+        else if(acc){t=tkm().filter(r=>upper(r?.account)===upper(acc)); c=cap().filter(r=>upper(r?.account)===upper(acc)); sc=scRows().filter(r=>upper(r?.account)===upper(acc));scope='Account '+acc;}
+        else {return '<div class="kpi-bot-suggest"><b>💡 Đề xuất</b><br>Nhập tên nhân viên, tên huyện, tháng trước + tên, hoặc account để BOT đưa ra khuyến nghị xử lý cụ thể.</div>';}
+      }
+      const m=metricsForRows(t,c,sc);
+      const causes=[['TKM quá hẹn',m.tkmHen],['TKM >24H',m.tkm24],['SC >24H',m.sc24],['SC >72H',m.sc72],['SOC >24H',m.soc24],['SOC >72H',m.soc72],['SOC HOME >24H',m.sochome24],['TKM tồn',m.tkm],['Cập nhật hồ sơ',m.cap]]
+        .filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,3);
+      const sv=serviceBreakdown(t,3);
+      const svText=sv.length?sv.map(v=>`${esc(v.name)} <b>${v.count}</b>`).join(' • '):'chưa có TKM theo dịch vụ';
+      const causeText=causes.length?causes.map(v=>`${esc(v[0])} <b>${v[1]}</b>`).join(' • '):'chưa có KPI quá hạn';
+      let action='Ưu tiên xử lý các KPI quá hạn trước, sau đó giảm tồn TKM/CNHS.';
+      if(m.sc72+m.soc72+m.sochome72>0) action='Ưu tiên xử lý nhóm >72H trước vì đây là tồn rủi ro cao.';
+      else if(m.tkmHen+m.tkm24>0) action='Ưu tiên xử lý TKM quá hẹn và TKM >24H trước.';
+      return `<div class="kpi-bot-suggest"><b>💡 ĐỀ XUẤT • ${esc(scope)}</b><br><span>Nguyên nhân nổi bật:</span> ${causeText}.<br><span>Dịch vụ TKM nổi bật:</span> ${svText}.<br><span>Hành động:</span> ${esc(action)}</div>`;
+    }catch(e){return ''}
+  }
+  function addMsg(html,cls){const box=document.getElementById('kpiBotMessages');if(!box)return;const d=document.createElement('div');d.className='kpi-bot-message '+cls;d.innerHTML=html;box.appendChild(d);box.scrollTop=box.scrollHeight;}
+  window.openKpiAnalysisBot=function(){const m=document.getElementById('kpiAnalysisBotModal');if(!m)return;m.classList.add('is-open');m.setAttribute('aria-hidden','false');const sel=document.getElementById('kpiBotDistrictSelect');if(sel&&!sel.dataset.loaded){sel.innerHTML='<option value="">Chọn huyện...</option>'+districtList().map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');sel.dataset.loaded='1';}const box=document.getElementById('kpiBotMessages');if(box){box.innerHTML='';addMsg(helpOverview(),'bot');box.scrollTop=0;}};
+  window.closeKpiAnalysisBot=function(){const m=document.getElementById('kpiAnalysisBotModal');if(m){m.classList.remove('is-open');m.setAttribute('aria-hidden','true')}};
+  window.kpiBotRun=function(q){addMsg(esc(q),'user');setTimeout(async()=>{const html=await answer(q);const suggest=await buildBotSuggestions(q);addMsg(html+suggest,'bot');},30)};
+  window.kpiBotSend=function(){const a=document.getElementById('kpiBotInput'),q=(a?.value||'').trim();if(!q)return;if(a)a.value='';kpiBotRun(q)};
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeKpiAnalysisBot();});
+})();
 </script>
 
 </body>
