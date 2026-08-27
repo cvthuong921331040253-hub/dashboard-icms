@@ -29497,7 +29497,7 @@ function setSevenDayChartStatus(state, text){
   function districtDetail(d){const x=rowsForDistrict(d),top=topStaff(d).slice(0,5),sv=serviceBreakdown(x.t,6),c=causes(x.m);return `<h3>🏚️ PHÂN TÍCH HUYỆN ${esc(d)}</h3><div><b>TTH:</b> ${esc(d)}</div><div><b>Tổng tồn:</b> TKM ${botNum(x.m.tkm)} • CNHS ${botNum(x.m.cap)} • SC ${botNum(x.m.sc)} • SOC ${botNum(x.m.soc)} • SOC HOME ${botNum(x.m.socHome)}.</div><div><b>KPI:</b> TKM >16H ${botNum(x.m.tkm16)} • TKM >24H ${botNum(x.m.tkm24,'bad')} • TKM QH ${botNum(x.m.tkmHen,'bad')} • SC >16H ${botNum(x.m.sc16)} • SC >24H ${botNum(x.m.sc24,'bad')} • SC >72H ${botNum(x.m.sc72,'bad')} • SOC >24H ${botNum(x.m.soc24,'bad')} • SOC >72H ${botNum(x.m.soc72,'bad')}.</div><h4>Tồn TKM theo dịch vụ</h4><table><thead><tr><th>STT</th><th>Dịch vụ</th><th>Tồn</th><th>%</th></tr></thead><tbody>${sv.map((v,i)=>`<tr><td>${i+1}</td><td><b>${esc(v.name)}</b></td><td>${botNum(v.count)}</td><td>${pct(v.count,x.m.tkm)}</td></tr>`).join('')}</tbody></table><h4>Nội dung gây tải chính</h4><div>${c.map(v=>`<span class="kpi-mini-chip"><b>${esc(v[0])}</b>: ${botNum(v[1],'bad')}</span>`).join('')}</div><h4>Nhân viên cần ưu tiên</h4>${staffTable(top)}`;}
   function scBreakdown(rows,limit=3){const arr=countBy(rows,r=>scType(r)||'Khác');return arr.slice(0,limit);}
   function staffOverview(){const top=topStaff(null,15);return `<h3>👤 TOP 15 NHÂN VIÊN TỒI / TẢI TỒN CAO</h3>${staffTable(top)}<h4>🔥 Dịch vụ TKM nổi bật</h4>${top.map(x=>{const sv=serviceBreakdown(x.t||[],4);return `<div class="kpi-bot-highlight-line"><b>${esc(x.name)}</b>: ${sv.length?sv.map(v=>esc(v.name)+' '+botNum(v.count)).join(' • '):'<span class="muted">Không có TKM</span>'}</div>`}).join('')}<h4>🚨 Sự cố nổi bật</h4>${top.map(x=>{const sv=scBreakdown(x.s||[],4);return `<div class="kpi-bot-highlight-line"><b>${esc(x.name)}</b>: ${sv.length?sv.map(v=>esc(v.name)+' '+botNum(v.count,'bad')).join(' • '):'<span class="muted">Không có sự cố</span>'}</div>`}).join('')}`;}
-  function staffDetail(name){const x=rowsForStaff(name),sv=serviceBreakdown(x.t,8),c=causes(x.m);const all=[...x.t,...x.c,...x.s];const districts=[...new Set(all.map(huyen).filter(Boolean))];return `<h3>👤 PHÂN TÍCH NHÂN VIÊN ${esc(name)}</h3><div><b>TTH:</b> ${esc(districts.join(', ')||'Không rõ')}</div><div><b>Tổng tồn:</b> TKM ${botNum(x.m.tkm)} • CNHS ${botNum(x.m.cap)} • SC ${botNum(x.m.sc)} • SOC ${botNum(x.m.soc)} • SOC HOME ${botNum(x.m.socHome)}.</div><div><b>KPI:</b> TKM >24H ${botNum(x.m.tkm24,'bad')} • TKM QH ${botNum(x.m.tkmHen,'bad')} • SC >24H ${botNum(x.m.sc24,'bad')} • SC >72H ${botNum(x.m.sc72,'bad')} • SOC >24H ${botNum(x.m.soc24,'bad')} • SOC >72H ${botNum(x.m.soc72,'bad')}.</div><h4>TKM theo dịch vụ</h4><table><thead><tr><th>STT</th><th>Dịch vụ</th><th>Tồn</th><th>%</th></tr></thead><tbody>${sv.map((v,i)=>`<tr><td>${i+1}</td><td><b>${esc(v.name)}</b></td><td>${botNum(v.count)}</td><td>${pct(v.count,x.m.tkm)}</td></tr>`).join('')}</tbody></table><h4>TKM chi tiết</h4>${detailTable(x.t.slice(0,80),'TKM',false)}<h4>Sự cố chi tiết</h4>${detailTable(x.s.slice(0,80),'Sự cố',true)}<h4>Nội dung ưu tiên</h4><div>${c.map(v=>`<span class="kpi-mini-chip"><b>${esc(v[0])}</b>: ${botNum(v[1],'bad')}</span>`).join('')}</div>`;}
+  function staffDetail(name){const x=rowsForStaff(name),sv=serviceBreakdown(x.t,8),c=causes(x.m);const all=[...x.t,...x.c,...x.s];const districts=[...new Set(all.map(huyen).filter(Boolean))];return `<h3>👤 PHÂN TÍCH NHÂN VIÊN ${esc(name)}</h3><div><b>TTH:</b> ${esc(districts.join(', ')||'Không rõ')}</div><div><b>Tổng tồn:</b> TKM ${botNum(x.m.tkm)} • CNHS ${botNum(x.m.cap)} • SC ${botNum(x.m.sc)} • SOC ${botNum(x.m.soc)} • SOC HOME ${botNum(x.m.socHome)}.</div><div><b>KPI:</b> TKM >24H ${botNum(x.m.tkm24,'bad')} • TKM QH ${botNum(x.m.tkmHen,'bad')} • SC >24H ${botNum(x.m.sc24,'bad')} • SC >72H ${botNum(x.m.sc72,'bad')} • SOC >24H ${botNum(x.m.soc24,'bad')} • SOC >72H ${botNum(x.m.soc72,'bad')}.</div><h4>TKM theo dịch vụ</h4><table class="kpi-bot-service-table"><thead><tr><th>STT</th><th>Dịch vụ</th><th>Tồn</th><th>%</th></tr></thead><tbody>${sv.map((v,i)=>`<tr><td>${i+1}</td><td><b>${esc(v.name)}</b></td><td>${botNum(v.count)}</td><td>${pct(v.count,x.m.tkm)}</td></tr>`).join('')}</tbody></table><h4>TKM chi tiết</h4>${detailTable(x.t.slice(0,80),'TKM',false)}<h4>Sự cố chi tiết</h4>${detailTable(x.s.slice(0,80),'Sự cố',true)}<h4>Nội dung ưu tiên</h4><div>${c.map(v=>`<span class="kpi-mini-chip"><b>${esc(v[0])}</b>: ${botNum(v[1],'bad')}</span>`).join('')}</div>`;}
   function totalSC(){const m=metricsForRows([],[],scRows());return `<h3>🚨 TỔNG SỰ CỐ HIỆN TẠI</h3><table class="kpi-bot-summary-table"><tbody><tr><th>SC</th><td>${botNum(m.sc)}</td><th>SOC</th><td>${botNum(m.soc)}</td></tr><tr><th>SOC HOME</th><td>${botNum(m.socHome)}</td><th>SC >24H</th><td>${botNum(m.sc24,'bad')}</td></tr><tr><th>SC >72H</th><td>${botNum(m.sc72,'bad')}</td><th>SOC >24H</th><td>${botNum(m.soc24,'bad')}</td></tr><tr><th>SOC >72H</th><td>${botNum(m.soc72,'bad')}</td><th>SOC HOME >24H</th><td>${botNum(m.sochome24,'bad')}</td></tr><tr><th>SOC HOME >72H</th><td>${botNum(m.sochome72,'bad')}</td><th>Tổng sự cố</th><td>${botNum(m.sc+m.soc+m.socHome)}</td></tr></tbody></table>`;}
   function totalTKM(){const m=metricsForRows(tkm(),cap(),[]);return `<h3>📦 TỔNG TKM HIỆN TẠI</h3><table class="kpi-bot-summary-table"><tbody><tr><th>TKM</th><td>${botNum(m.tkm)}</td><th>CNHS</th><td>${botNum(m.cap)}</td></tr><tr><th>TKM >16H</th><td>${botNum(m.tkm16)}</td><th>TKM >24H</th><td>${botNum(m.tkm24,'bad')}</td></tr><tr><th>TKM QH</th><td>${botNum(m.tkmHen,'bad')}</td><th>Tổng</th><td>${botNum(m.tkm+m.cap)}</td></tr></tbody></table>`;}
   function getMonthTarget(q){const u=upper(q),now=new Date();if(/THÁNG\s+TRƯỚC|THÁNG\s+N-1|\bN-1\b/.test(u)){const d=new Date(now.getFullYear(),now.getMonth()-1,1);return {month:d.getMonth(),year:d.getFullYear(),label:`${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`};}const m=u.match(/THÁNG\s*(\d{1,2})(?:\s*[/\-]\s*(\d{4}))?/);if(!m)return null;return {month:Number(m[1])-1,year:Number(m[2]||now.getFullYear()),label:`${String(Number(m[1])).padStart(2,'0')}/${Number(m[2]||now.getFullYear())}`};}
@@ -29855,6 +29855,30 @@ function setSevenDayChartStatus(state, text){
     line-height:1 !important;
     align-items:center !important;
     justify-content:center !important;
+  }
+}
+/* TKM theo dịch vụ: mobile co gọn, không ép cuộn ngang */
+.kpi-bot-message table.kpi-bot-service-table{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:100% !important;
+  table-layout:fixed !important;
+}
+.kpi-bot-service-table th:nth-child(1),.kpi-bot-service-table td:nth-child(1){width:12%;text-align:center !important}
+.kpi-bot-service-table th:nth-child(2),.kpi-bot-service-table td:nth-child(2){width:48%;text-align:left !important;white-space:normal !important}
+.kpi-bot-service-table th:nth-child(3),.kpi-bot-service-table td:nth-child(3){width:20%;text-align:center !important}
+.kpi-bot-service-table th:nth-child(4),.kpi-bot-service-table td:nth-child(4){width:20%;text-align:center !important}
+@media(max-width:768px){
+  .kpi-bot-message table.kpi-bot-service-table{
+    width:100% !important;min-width:0 !important;max-width:100% !important;
+    table-layout:fixed !important;font-size:10px !important;
+  }
+  .kpi-bot-message table.kpi-bot-service-table th,
+  .kpi-bot-message table.kpi-bot-service-table td{
+    padding:5px 4px !important;
+  }
+  .kpi-bot-message table.kpi-bot-service-table td:nth-child(2){
+    white-space:normal !important;word-break:break-word !important;
   }
 }
 </style>
