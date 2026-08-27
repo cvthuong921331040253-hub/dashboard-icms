@@ -13014,6 +13014,36 @@ body.dashboard-is-loading{
 }
 </style>
 
+
+<style id="KPI_BOT_SERVICE_TABLE_MOBILE_FINAL_V60">
+/* Override rule table min-width:680px that was clipping the service table on Android WebView */
+@media(max-width:768px){
+  #kpiAnalysisBotModal .kpi-bot-message table.kpi-bot-service-table,
+  #kpiAnalysisBotModal .kpi-bot-message .kpi-bot-service-table{
+    display:table !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    table-layout:fixed !important;
+    margin:6px 0 !important;
+  }
+  #kpiAnalysisBotModal .kpi-bot-message table.kpi-bot-service-table th,
+  #kpiAnalysisBotModal .kpi-bot-message table.kpi-bot-service-table td{
+    box-sizing:border-box !important;
+    padding:5px 3px !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+  #kpiAnalysisBotModal .kpi-bot-message table.kpi-bot-service-table th:nth-child(1),
+  #kpiAnalysisBotModal .kpi-bot-message table.kpi-bot-service-table td:nth-child(1){width:13% !important;text-align:center !important;}
+  #kpiAnalysisBotModal .kpi-bot-message table.kpi-bot-service-table th:nth-child(2),
+  #kpiAnalysisBotModal .kpi-bot-message table.kpi-bot-service-table td:nth-child(2){width:47% !important;text-align:left !important;}
+  #kpiAnalysisBotModal .kpi-bot-message table.kpi-bot-service-table th:nth-child(3),
+  #kpiAnalysisBotModal .kpi-bot-message table.kpi-bot-service-table td:nth-child(3){width:20% !important;text-align:center !important;}
+  #kpiAnalysisBotModal .kpi-bot-message table.kpi-bot-service-table th:nth-child(4),
+  #kpiAnalysisBotModal .kpi-bot-message table.kpi-bot-service-table td:nth-child(4){width:20% !important;text-align:center !important;}
+}
+</style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -29494,7 +29524,7 @@ function setSevenDayChartStatus(state, text){
   function totalOverview(){try{const m=metricsForRows(tkm(),cap(),scRows());const districts=topDistricts();return `<h3>📊 TỔNG QUAN KPI HIỆN TẠI</h3><table class="kpi-bot-summary-table"><tbody><tr><th>TKM tồn</th><td>${botNum(m.tkm)}</td><th>CNHS</th><td>${botNum(m.cap)}</td></tr><tr><th>SC</th><td>${botNum(m.sc)}</td><th>SOC</th><td>${botNum(m.soc)}</td></tr><tr><th>SOC HOME</th><td>${botNum(m.socHome)}</td><th>TKM &gt;24H</th><td>${botNum(m.tkm24,'bad')}</td></tr><tr><th>TKM quá hẹn</th><td>${botNum(m.tkmHen,'bad')}</td><th>SC &gt;24H</th><td>${botNum(m.sc24,'bad')}</td></tr><tr><th>SC &gt;72H</th><td>${botNum(m.sc72,'bad')}</td><th>SOC &gt;24H</th><td>${botNum(m.soc24,'bad')}</td></tr><tr><th>SOC &gt;72H</th><td>${botNum(m.soc72,'bad')}</td><th>SOC HOME &gt;24H</th><td>${botNum(m.sochome24,'bad')}</td></tr><tr><th>SOC HOME &gt;72H</th><td>${botNum(m.sochome72,'bad')}</td><th>Tổng quá hạn</th><td>${botNum(m.tkm24+m.tkmHen+m.sc24+m.sc72+m.soc24+m.soc72+m.sochome24+m.sochome72,'bad')}</td></tr></tbody></table><h4>13 HUYỆN</h4><div class="kpi-bot-table-wrap"><table><thead><tr><th>STT</th><th>Huyện</th><th>TKM</th><th>CNHS</th><th>SC</th><th>SOC</th><th>SOC HOME</th><th>TKM &gt;24H</th><th>TKM QH</th><th>SOC &gt;24H</th><th>SOC &gt;72H</th><th>Điểm</th></tr></thead><tbody>${districts.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b></td><td>${botNum(x.tkm)}</td><td>${botNum(x.cap)}</td><td>${botNum(x.sc)}</td><td>${botNum(x.soc)}</td><td>${botNum(x.socHome)}</td><td>${botNum(x.tkm24,'bad')}</td><td>${botNum(x.tkmHen,'bad')}</td><td>${botNum(x.soc24,'bad')}</td><td>${botNum(x.soc72,'bad')}</td><td class="bad"><b>${x.score}</b></td></tr>`).join('')||'<tr><td colspan="12">Không có dữ liệu huyện</td></tr>'}</tbody></table></div><div class="kpi-bot-note">Gợi ý hành động bên dưới là đánh giá <b>Top 5 huyện</b> cần ưu tiên xử lý.</div>${recommendation()}`;}catch(e){console.error('BOT tổng quan',e);return '<h3>📊 TỔNG QUAN KPI</h3><div>Không thể dựng bảng tổng quan. Hãy thử <b>/help</b> hoặc nhập <b>tổng quan</b> lại.</div>';}}
   function tableTopDistricts(){const arr=topDistricts().slice(0,5);return `<h4>Top 5 huyện có tải tồn xấu</h4><div class="kpi-bot-table-wrap"><table><thead><tr><th>STT</th><th>Huyện</th><th>TKM</th><th>CNHS</th><th>SC</th><th>SOC</th><th>SOC HOME</th><th>TKM >24H</th><th>TKM QH</th><th>SOC >24H</th><th>SOC >72H</th><th>Điểm</th></tr></thead><tbody>${arr.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b></td><td>${botNum(x.tkm)}</td><td>${botNum(x.cap)}</td><td>${botNum(x.sc)}</td><td>${botNum(x.soc)}</td><td>${botNum(x.socHome)}</td><td>${botNum(x.tkm24,'bad')}</td><td>${botNum(x.tkmHen,'bad')}</td><td>${botNum(x.soc24,'bad')}</td><td>${botNum(x.soc72,'bad')}</td><td class="bad"><b>${x.score}</b></td></tr>`).join('')}</tbody></table></div>`;}
   function recommendation(){const td=topDistricts().slice(0,3);return `<h3>🎯 GỢI Ý HÀNH ĐỘNG</h3>${td.map((d,i)=>{const s=topStaff(d.name).slice(0,2);const sv=serviceBreakdown(rowsForDistrict(d.name).t,3);return `<div class="kpi-action-item"><b>${i+1}. Huyện ${esc(d.name)}</b>: tập trung ${sv.map(x=>esc(x.name)+' '+botNum(x.count)).join(', ')||'không có dịch vụ nổi bật'}; ưu tiên ${s.map(x=>esc(x.name)).join(', ')||'không xác định'}.</div>`}).join('')}`;}
-  function districtDetail(d){const x=rowsForDistrict(d),top=topStaff(d).slice(0,5),sv=serviceBreakdown(x.t,6),c=causes(x.m);return `<h3>🏚️ PHÂN TÍCH HUYỆN ${esc(d)}</h3><div><b>TTH:</b> ${esc(d)}</div><div><b>Tổng tồn:</b> TKM ${botNum(x.m.tkm)} • CNHS ${botNum(x.m.cap)} • SC ${botNum(x.m.sc)} • SOC ${botNum(x.m.soc)} • SOC HOME ${botNum(x.m.socHome)}.</div><div><b>KPI:</b> TKM >16H ${botNum(x.m.tkm16)} • TKM >24H ${botNum(x.m.tkm24,'bad')} • TKM QH ${botNum(x.m.tkmHen,'bad')} • SC >16H ${botNum(x.m.sc16)} • SC >24H ${botNum(x.m.sc24,'bad')} • SC >72H ${botNum(x.m.sc72,'bad')} • SOC >24H ${botNum(x.m.soc24,'bad')} • SOC >72H ${botNum(x.m.soc72,'bad')}.</div><h4>Tồn TKM theo dịch vụ</h4><table><thead><tr><th>STT</th><th>Dịch vụ</th><th>Tồn</th><th>%</th></tr></thead><tbody>${sv.map((v,i)=>`<tr><td>${i+1}</td><td><b>${esc(v.name)}</b></td><td>${botNum(v.count)}</td><td>${pct(v.count,x.m.tkm)}</td></tr>`).join('')}</tbody></table><h4>Nội dung gây tải chính</h4><div>${c.map(v=>`<span class="kpi-mini-chip"><b>${esc(v[0])}</b>: ${botNum(v[1],'bad')}</span>`).join('')}</div><h4>Nhân viên cần ưu tiên</h4>${staffTable(top)}`;}
+  function districtDetail(d){const x=rowsForDistrict(d),top=topStaff(d).slice(0,5),sv=serviceBreakdown(x.t,6),c=causes(x.m);return `<h3>🏚️ PHÂN TÍCH HUYỆN ${esc(d)}</h3><div><b>TTH:</b> ${esc(d)}</div><div><b>Tổng tồn:</b> TKM ${botNum(x.m.tkm)} • CNHS ${botNum(x.m.cap)} • SC ${botNum(x.m.sc)} • SOC ${botNum(x.m.soc)} • SOC HOME ${botNum(x.m.socHome)}.</div><div><b>KPI:</b> TKM >16H ${botNum(x.m.tkm16)} • TKM >24H ${botNum(x.m.tkm24,'bad')} • TKM QH ${botNum(x.m.tkmHen,'bad')} • SC >16H ${botNum(x.m.sc16)} • SC >24H ${botNum(x.m.sc24,'bad')} • SC >72H ${botNum(x.m.sc72,'bad')} • SOC >24H ${botNum(x.m.soc24,'bad')} • SOC >72H ${botNum(x.m.soc72,'bad')}.</div><h4>Tồn TKM theo dịch vụ</h4><table class="kpi-bot-service-table"><thead><tr><th>STT</th><th>Dịch vụ</th><th>Tồn</th><th>%</th></tr></thead><tbody>${sv.map((v,i)=>`<tr><td>${i+1}</td><td><b>${esc(v.name)}</b></td><td>${botNum(v.count)}</td><td>${pct(v.count,x.m.tkm)}</td></tr>`).join('')}</tbody></table><h4>Nội dung gây tải chính</h4><div>${c.map(v=>`<span class="kpi-mini-chip"><b>${esc(v[0])}</b>: ${botNum(v[1],'bad')}</span>`).join('')}</div><h4>Nhân viên cần ưu tiên</h4>${staffTable(top)}`;}
   function scBreakdown(rows,limit=3){const arr=countBy(rows,r=>scType(r)||'Khác');return arr.slice(0,limit);}
   function staffOverview(){const top=topStaff(null,15);return `<h3>👤 TOP 15 NHÂN VIÊN TỒI / TẢI TỒN CAO</h3>${staffTable(top)}<h4>🔥 Dịch vụ TKM nổi bật</h4>${top.map(x=>{const sv=serviceBreakdown(x.t||[],4);return `<div class="kpi-bot-highlight-line"><b>${esc(x.name)}</b>: ${sv.length?sv.map(v=>esc(v.name)+' '+botNum(v.count)).join(' • '):'<span class="muted">Không có TKM</span>'}</div>`}).join('')}<h4>🚨 Sự cố nổi bật</h4>${top.map(x=>{const sv=scBreakdown(x.s||[],4);return `<div class="kpi-bot-highlight-line"><b>${esc(x.name)}</b>: ${sv.length?sv.map(v=>esc(v.name)+' '+botNum(v.count,'bad')).join(' • '):'<span class="muted">Không có sự cố</span>'}</div>`}).join('')}`;}
   function staffDetail(name){const x=rowsForStaff(name),sv=serviceBreakdown(x.t,8),c=causes(x.m);const all=[...x.t,...x.c,...x.s];const districts=[...new Set(all.map(huyen).filter(Boolean))];return `<h3>👤 PHÂN TÍCH NHÂN VIÊN ${esc(name)}</h3><div><b>TTH:</b> ${esc(districts.join(', ')||'Không rõ')}</div><div><b>Tổng tồn:</b> TKM ${botNum(x.m.tkm)} • CNHS ${botNum(x.m.cap)} • SC ${botNum(x.m.sc)} • SOC ${botNum(x.m.soc)} • SOC HOME ${botNum(x.m.socHome)}.</div><div><b>KPI:</b> TKM >24H ${botNum(x.m.tkm24,'bad')} • TKM QH ${botNum(x.m.tkmHen,'bad')} • SC >24H ${botNum(x.m.sc24,'bad')} • SC >72H ${botNum(x.m.sc72,'bad')} • SOC >24H ${botNum(x.m.soc24,'bad')} • SOC >72H ${botNum(x.m.soc72,'bad')}.</div><h4>TKM theo dịch vụ</h4><table class="kpi-bot-service-table"><thead><tr><th>STT</th><th>Dịch vụ</th><th>Tồn</th><th>%</th></tr></thead><tbody>${sv.map((v,i)=>`<tr><td>${i+1}</td><td><b>${esc(v.name)}</b></td><td>${botNum(v.count)}</td><td>${pct(v.count,x.m.tkm)}</td></tr>`).join('')}</tbody></table><h4>TKM chi tiết</h4>${detailTable(x.t.slice(0,80),'TKM',false)}<h4>Sự cố chi tiết</h4>${detailTable(x.s.slice(0,80),'Sự cố',true)}<h4>Nội dung ưu tiên</h4><div>${c.map(v=>`<span class="kpi-mini-chip"><b>${esc(v[0])}</b>: ${botNum(v[1],'bad')}</span>`).join('')}</div>`;}
@@ -29807,17 +29837,31 @@ function setSevenDayChartStatus(state, text){
 <style id="MOBILE_UI_FIX_V56">
 /* ===== MOBILE: các nút thao tác đồng đều ===== */
 @media (max-width:768px){
+  .modal-header{
+    display:flex !important;
+    align-items:center !important;
+    gap:6px !important;
+    width:100% !important;
+  }
+  .modal-header > h2{
+    flex:0 1 34% !important;
+    min-width:0 !important;
+    margin:0 !important;
+  }
   .modal-header > div{
     display:grid !important;
     grid-template-columns:repeat(4,minmax(0,1fr)) !important;
-    gap:6px !important;
-    width:100% !important;
+    gap:4px !important;
+    width:auto !important;
+    flex:1 1 66% !important;
+    min-width:0 !important;
+    margin:0 !important;
   }
   .modal-header > div > button{
     width:100% !important;
     min-width:0 !important;
     height:36px !important;
-    padding:0 5px !important;
+    padding:0 4px !important;
     margin:0 !important;
     border-radius:8px !important;
     display:flex !important;
@@ -29879,6 +29923,97 @@ function setSevenDayChartStatus(state, text){
   }
   .kpi-bot-message table.kpi-bot-service-table td:nth-child(2){
     white-space:normal !important;word-break:break-word !important;
+  }
+}
+
+/* FINAL MOBILE FIX: TKM theo dịch vụ trong phân tích nhân viên/huyện */
+@media(max-width:768px){
+  .kpi-bot-message .kpi-bot-service-table{
+    display:table !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    table-layout:fixed !important;
+  }
+  .kpi-bot-message .kpi-bot-service-table th:nth-child(1),
+  .kpi-bot-message .kpi-bot-service-table td:nth-child(1){width:13% !important;}
+  .kpi-bot-message .kpi-bot-service-table th:nth-child(2),
+  .kpi-bot-message .kpi-bot-service-table td:nth-child(2){width:47% !important;}
+  .kpi-bot-message .kpi-bot-service-table th:nth-child(3),
+  .kpi-bot-message .kpi-bot-service-table td:nth-child(3){width:20% !important;}
+  .kpi-bot-message .kpi-bot-service-table th:nth-child(4),
+  .kpi-bot-message .kpi-bot-service-table td:nth-child(4){width:20% !important;}
+}
+</style>
+
+<style id="MOBILE_MODAL_BUTTONS_V62">
+@media (max-width:768px){
+  .modal-header{
+    display:grid !important;
+    grid-template-columns:30% minmax(0,1fr) !important;
+    align-items:center !important;
+    gap:6px !important;
+  }
+  .modal-header > h2{
+    width:100% !important;
+    flex:none !important;
+    min-width:0 !important;
+    margin:0 !important;
+    font-size:11px !important;
+    line-height:1.15 !important;
+    overflow:hidden !important;
+    word-break:break-word !important;
+  }
+  .modal-header > div{
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:4px !important;
+    width:100% !important;
+    min-width:0 !important;
+    flex:none !important;
+    margin:0 !important;
+  }
+  .modal-header > div > button{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    height:34px !important;
+    min-height:34px !important;
+    margin:0 !important;
+    padding:0 2px !important;
+    border-radius:7px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    overflow:hidden !important;
+    white-space:nowrap !important;
+    text-overflow:ellipsis !important;
+    box-sizing:border-box !important;
+    font-size:0 !important;
+  }
+  .modal-header > div > button:nth-child(1)::after{
+    content:"Tải lọc" !important;
+    font-size:9px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+  }
+  .modal-header > div > button:nth-child(2)::after{
+    content:"Tải full" !important;
+    font-size:9px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+  }
+  .modal-header > div > button:nth-child(3)::after{
+    content:"Xóa" !important;
+    font-size:9px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+  }
+  .modal-header > div > button:nth-child(4)::after{
+    content:"Đóng" !important;
+    font-size:9px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
   }
 }
 </style>
