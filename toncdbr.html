@@ -25924,6 +25924,17 @@ function showTable(title,data){
   </div>
 
   ${
+  row.dichvu || row.gline
+  ? `
+  <div class="mobile-row">
+  <span class="mobile-label">Dịch vụ:</span>
+  ${row.dichvu || row.gline || ""}
+  </div>
+  `
+  : ""
+  }
+
+  ${
   row.bypass
   ?
   
@@ -26102,26 +26113,44 @@ function showTable(title,data){
   `;
   
   }
-  const nd=row.nd||row.nnt||row.nnth||"";
-  
-  if(nd){
-  
-  const shortText=String(nd).substring(0,120);
-  
+  if(row.nnt){
+  const nnt=String(row.nnt);
   html+=`
   <div class="mobile-content">
-  
-  <div class="text-preview">${shortText}</div>
-  
-  <div class="nd-full" id="mfull_${index}" data-full="${encodeURIComponent(nd)}"></div>
-  
-  <div class="mobile-more" onclick="openTextModal('${encodeURIComponent(nd)}')">
-  Xem thêm
-  </div>
-  
+  <div class="text-preview"><span class="mobile-label">Nguyên nhân tồn:</span> ${nnt.substring(0,120)}</div>
+  <div class="mobile-more" onclick="openTextModal('${encodeURIComponent(nnt)}')">Xem thêm</div>
   </div>
   `;
-  
+  }
+
+  if(row.nnth){
+  const nnth2=String(row.nnth);
+  html+=`
+  <div class="mobile-content">
+  <div class="text-preview"><span class="mobile-label">Nguyên nhân tích hủy:</span> ${nnth2.substring(0,120)}</div>
+  <div class="mobile-more" onclick="openTextModal('${encodeURIComponent(nnth2)}')">Xem thêm</div>
+  </div>
+  `;
+  }
+
+  if(row.nd){
+  const nd2=String(row.nd);
+  html+=`
+  <div class="mobile-content">
+  <div class="text-preview"><span class="mobile-label">Nội dung:</span> ${nd2.substring(0,120)}</div>
+  <div class="mobile-more" onclick="openTextModal('${encodeURIComponent(nd2)}')">Xem thêm</div>
+  </div>
+  `;
+  }
+
+  if(row.nnc){
+  const nnc=String(row.nnc);
+  html+=`
+  <div class="mobile-content">
+  <div class="text-preview"><span class="mobile-label">Nguyên nhân chuẩn:</span> ${nnc.substring(0,120)}</div>
+  <div class="mobile-more" onclick="openTextModal('${encodeURIComponent(nnc)}')">Xem thêm</div>
+  </div>
+  `;
   }
   
   html+=`</div>`;
