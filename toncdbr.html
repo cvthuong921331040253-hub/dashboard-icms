@@ -29740,3 +29740,58 @@ function setSevenDayChartStatus(state, text){
 </body>
   </html>
 
+
+<style id="MOBILE_UI_FIX_V56">
+/* ===== MOBILE: các nút thao tác đồng đều ===== */
+@media (max-width:768px){
+  .modal-header > div{
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:6px !important;
+    width:100% !important;
+  }
+  .modal-header > div > button{
+    width:100% !important;
+    min-width:0 !important;
+    height:36px !important;
+    padding:0 5px !important;
+    margin:0 !important;
+    border-radius:8px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    text-align:center !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  /* Rút gọn chữ trên mobile */
+  .modal-header > div > button:nth-child(1),
+  .modal-header > div > button:nth-child(2),
+  .modal-header > div > button:nth-child(3),
+  .modal-header > div > button:nth-child(4){
+    font-size:0 !important;
+  }
+  .modal-header > div > button:nth-child(1)::after{content:"Tải lọc";font-size:11px;font-weight:800;}
+  .modal-header > div > button:nth-child(2)::after{content:"Tải full";font-size:11px;font-weight:800;}
+  .modal-header > div > button:nth-child(3)::after{content:"Xóa";font-size:11px;font-weight:800;}
+  .modal-header > div > button:nth-child(4)::after{content:"Đóng";font-size:11px;font-weight:800;}
+
+  /* Bot mobile: chỉ dùng icon thật trong HTML, không dùng pseudo-element
+     để tránh xuất hiện 2 biểu tượng robot. */
+  #kpiAnalysisBotButton::before{
+    content:none !important;
+    display:none !important;
+  }
+  #kpiAnalysisBotButton .kpi-bot-icon{
+    display:flex !important;
+    width:100% !important;
+    height:100% !important;
+    font-size:16px !important;
+    line-height:1 !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+}
+</style>
