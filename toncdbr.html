@@ -4344,6 +4344,64 @@
 }
 
 
+/* ===== LỌC THÁNG CHO NHÓM BIỂU ĐỒ THỐNG KÊ ===== */
+.global-chart-month-filter{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0 0 10px;
+  padding:7px 9px;
+  border:1px solid #dbe5f0;
+  border-radius:9px;
+  background:#f8fbff;
+  box-sizing:border-box;
+  width:100%;
+}
+.global-chart-month-filter label{
+  font-size:10px;
+  font-weight:800;
+  color:#334155;
+  white-space:nowrap;
+}
+.global-chart-month-filter select{
+  height:30px;
+  min-width:150px;
+  padding:0 9px;
+  border:1px solid #cbd5e1;
+  border-radius:7px;
+  background:#fff;
+  color:#0f172a;
+  font-size:10px;
+  font-weight:700;
+}
+.global-chart-month-filter span{
+  margin-left:auto;
+  font-size:9px;
+  font-weight:700;
+  color:#64748b;
+  text-align:right;
+}
+@media(max-width:700px){
+  .global-chart-month-filter{
+    gap:6px;
+    padding:6px 7px;
+  }
+  .global-chart-month-filter label{font-size:9px;}
+  .global-chart-month-filter select{
+    min-width:120px;
+    width:120px;
+    height:29px;
+    font-size:9px;
+  }
+  .global-chart-month-filter span{
+    font-size:8px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:145px;
+  }
+}
+
 /* ===== TĂNG CỠ CHỮ TIÊU ĐỀ DASHBOARD ĐIỀU HÀNH N-1 / N ===== */
 #opsDashboardSection .ops-title{
   font-size:20px !important;
@@ -13044,6 +13102,81 @@ body.dashboard-is-loading{
   #kpiAnalysisBotModal .kpi-bot-message table.kpi-bot-service-table td:nth-child(4){width:20% !important;text-align:center !important;}
 }
 </style>
+
+<style id="BOT_ANALYSIS_SCREENSHOT_V97">
+.kpi-bot-capture-bar{
+  display:flex;
+  justify-content:flex-end;
+  margin:7px 0 3px;
+}
+.kpi-bot-capture-btn{
+  border:1px solid #cbd5e1;
+  background:#fff;
+  color:#334155;
+  border-radius:7px;
+  padding:5px 9px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.kpi-bot-capture-btn:active{transform:scale(.97)}
+.kpi-bot-capture-btn:hover{background:#f8fafc}
+.kpi-bot-capture-full{
+  margin-top:9px;
+  border-top:1px dashed #cbd5e1;
+  padding-top:8px;
+}
+@media(max-width:600px){
+  .kpi-bot-capture-btn{font-size:10px;padding:5px 8px}
+}
+</style>
+
+
+<style id="BOT_CLIPBOARD_CAPTURE_V98">
+.kpi-bot-copy-toast{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  transform:translate(-50%,16px);
+  opacity:0;
+  z-index:999999;
+  background:#111827;
+  color:#fff;
+  padding:9px 14px;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:700;
+  pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+}
+.kpi-bot-copy-toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+</style>
+
+
+<style id="PERIOD_COMPARE_CURRENT_ONLY_V104">
+#periodCompareSection.current-only-mode #periodCompareMetricHead2,
+#periodCompareSection.current-only-mode .period-table:not(.period-district-detail-table) th:nth-child(n+4),
+#periodCompareSection.current-only-mode .period-table:not(.period-district-detail-table) td:nth-child(n+4){
+  display:none !important;
+}
+#periodCompareSection.current-only-mode .period-kpi-value .period-current-only-value{
+  display:inline-block;
+}
+</style>
+
+<style id="PERIOD_COMPARE_CURRENT_COLOR_V105">
+#periodCompareSection.current-only-mode .current-positive{
+  color:#dc2626!important;
+  font-weight:800!important;
+}
+#periodCompareSection.current-only-mode .current-zero{
+  color:inherit!important;
+}
+</style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -13273,6 +13406,14 @@ body.dashboard-is-loading{
   <div class="dashboard" id="tontkmDashboard"></div>
   
   <div class="section-title">📊 BIỂU ĐỒ THỐNG KÊ</div>
+
+  <div id="globalChartMonthFilter" class="global-chart-month-filter" aria-label="Lọc tháng cho biểu đồ">
+    <label for="globalChartMonthSelect">Lọc tháng</label>
+    <select id="globalChartMonthSelect">
+      <option value="">Tất cả tháng</option>
+    </select>
+    <span id="globalChartMonthStatus">Đang xem tất cả dữ liệu</span>
+  </div>
   
   <div class="chart-grid">
   
@@ -13280,7 +13421,7 @@ body.dashboard-is-loading{
   
   <div class="chart-title">
   
-  📈 BIỂU ĐỒ SC
+  📈 TỒN SỰ CỐ MỨC TTH
   
   </div>
   
@@ -13304,7 +13445,7 @@ body.dashboard-is-loading{
   
   <div class="chart-title">
   
-  🚨 15 NHÂN VIÊN TỒN SỰ CỐ CAO
+  🚨 DANH SÁCH 15 NHÂN VIÊN TỒN SỰ CỐ CAO
   
   </div>
   
@@ -13316,7 +13457,7 @@ body.dashboard-is-loading{
   
   <div class="chart-title">
   
-  📦 15 NHÂN VIÊN TỒN TKM THEO DỊCH VỤ
+  📦 DANH SÁCH 15 NHÂN VIÊN TỒN CAO TKM THEO DỊCH VỤ
   
   </div>
   
@@ -13407,7 +13548,7 @@ body.dashboard-is-loading{
         <button type="button" class="report-capture-btn" data-html2canvas-ignore="true" onclick="captureReportSection('periodCompareSection','SO_SANH_TON_TANG_GIAM_MUC_TINH')">📸 Chụp báo cáo</button>
       </div>
       <div class="period-compare-sub">
-        Dashboard hiện tại ↔ Backup cũ hoặc Backup cũ ↔ Backup cũ
+        Mặc định chỉ hiển thị số liệu tồn của Mốc 1 • Chọn Mốc 2 để bắt đầu so sánh
       </div>
     </div>
 
@@ -13416,8 +13557,8 @@ body.dashboard-is-loading{
       <label>
         <span>MỐC 1</span>
         <select id="compareSource1">
+          <option value="dashboard" selected>Dashboard hiện tại</option>
           <option value="backup">Backup</option>
-          <option value="dashboard">Dashboard hiện tại</option>
         </select>
       </label>
 
@@ -13429,8 +13570,9 @@ body.dashboard-is-loading{
       <label>
         <span>MỐC 2</span>
         <select id="compareSource2">
+          <option value="none" selected>Chưa chọn mốc so sánh</option>
+          <option value="backup">Backup để so sánh</option>
           <option value="dashboard">Dashboard hiện tại</option>
-          <option value="backup">Backup</option>
         </select>
       </label>
 
@@ -15074,7 +15216,7 @@ let tonsc=[];
     const source2=
       document.getElementById(
         "compareSource2"
-      )?.value || "backup";
+      )?.value || "none";
 
     const wrap1=
       document.getElementById(
@@ -16601,6 +16743,247 @@ let tonsc=[];
 
 
 
+
+  function highlightCurrentOnlyValues(){
+
+    const root=document.getElementById("periodCompareSection");
+    if(!root)return;
+
+    root.querySelectorAll(".period-kpi-value, .district-metric-main").forEach(el=>{
+      const text=String(el.textContent||"").trim();
+      if(/^\d+(?:[.,]\d+)?$/.test(text)){
+        const value=Number(text.replace(/,/g,""));
+        el.classList.toggle("current-positive",value>0);
+        el.classList.toggle("current-zero",value<=0);
+      }
+    });
+
+  }
+
+  function applyPeriodCompareCurrentOnlyMode(
+    data,
+    stats,
+    source1,
+    meta1,
+    current
+  ){
+
+    const section =
+      document.getElementById(
+        "periodCompareSection"
+      );
+
+    if(section){
+      section.classList.add(
+        "current-only-mode"
+      );
+    }
+
+    const metricHead1 =
+      document.getElementById(
+        "periodMetricHead1"
+      );
+
+    const metricHead2 =
+      document.getElementById(
+        "periodMetricHead2"
+      );
+
+    const m1 =
+      source1==="dashboard"
+        ? (
+            current.tgupdate
+              ? formatHistoryDate(current.tgupdate)
+              : "Dashboard hiện tại"
+          )
+        : (
+            meta1
+              ? formatHistoryDate(snapshotTg(meta1))
+              : "Mốc hiện tại"
+          );
+
+    if(metricHead1){
+      metricHead1.textContent =
+        "Số tồn hiện tại • " + m1;
+    }
+
+    if(metricHead2){
+      metricHead2.textContent = "";
+    }
+
+    const kpiWrap =
+      document.getElementById(
+        "periodCompareKpis"
+      );
+
+    if(kpiWrap){
+
+      const items = [
+        ["TỔNG TKM",stats.TKM],
+        ["TKM QUÁ 16H",stats.TKM16],
+        ["TKM QUÁ 24H",stats.TKM24],
+        ["TKM QUÁ HẸN",stats.TKMHEN],
+        ["CẬP NHẬT HỒ SƠ",stats.CNHS],
+        ["TỔNG SC",stats.SC],
+        ["SC QUÁ 3H",stats.SC3],
+        ["SC QUÁ 10H",stats.SC10],
+        ["SC QUÁ 16H",stats.SC16],
+        ["SC QUÁ 24H",stats.SC24],
+        ["SOC",stats.SOC],
+        ["SOC HOME",stats.SOCHOME],
+        ["SOC + SOC HOME >24H",stats.SOC24],
+        ["SOC + SOC HOME >72H",stats.SOC72]
+      ];
+
+      kpiWrap.innerHTML =
+        items.map(
+          item=>`
+            <div class="period-kpi">
+              <div class="period-kpi-label">
+                ${item[0]}
+              </div>
+              <div class="period-kpi-value">
+                <span class="period-current-only-value">
+                  ${item[1]||0}
+                </span>
+              </div>
+            </div>
+          `
+        ).join("");
+    }
+
+    const metricTitle =
+      section?.querySelector(
+        ".period-compare-panel-title"
+      );
+
+    if(metricTitle){
+      metricTitle.textContent =
+        "📌 BÁO CÁO SỐ LIỆU TỒN MỨC TỈNH";
+    }
+
+    const districtTitle =
+      document.getElementById(
+        "periodDistrictTitle"
+      );
+
+    if(districtTitle){
+      districtTitle.innerHTML =
+        `
+          <span>
+            🏠 SỐ LIỆU TỒN THEO MỨC HUYỆN • ${m1}
+          </span>
+          <button
+            type="button"
+            class="report-capture-btn"
+            data-html2canvas-ignore="true"
+            onclick="captureReportSection('districtCompareReport','SO_LIEU_TON_MUC_HUYEN')"
+          >
+            📸 Chụp báo cáo
+          </button>
+        `;
+    }
+
+    /*
+      Bảng huyện và nhân viên vẫn giữ nguyên đầy đủ các cột/chỉ tiêu.
+      Chỉ bỏ dạng "A → B" và dòng chênh lệch, lấy đúng số liệu của Mốc 1.
+    */
+    document.querySelectorAll(
+      "#periodCompareSection .district-metric-cell"
+    ).forEach(
+      cell=>{
+        const main =
+          cell.querySelector(
+            ".district-metric-main"
+          );
+
+        const delta =
+          cell.querySelector(
+            ".district-metric-delta"
+          );
+
+        if(main){
+          const text =
+            String(main.textContent||"").trim();
+
+          main.textContent =
+            text.includes("→")
+              ? text.split("→")[0].trim()
+              : text;
+        }
+
+        if(delta){
+          delta.style.display = "none";
+        }
+
+        cell.classList.remove(
+          "delta-up",
+          "delta-down",
+          "delta-flat",
+          "good",
+          "bad",
+          "flat"
+        );
+      }
+    );
+
+    const staffTitleText =
+      document.getElementById(
+        "periodStaffTitleText"
+      );
+
+    if(staffTitleText){
+      staffTitleText.innerHTML =
+        `👨‍💼 SỐ LIỆU TỒN MỨC NHÂN VIÊN • ${m1}`;
+    }
+
+    const staffSummary =
+      document.getElementById(
+        "periodStaffSummary"
+      );
+
+    if(staffSummary){
+      /*
+        Không dùng tổng Mốc 2 trong chế độ chưa so sánh.
+        Giữ nguyên phần tử, không ảnh hưởng layout khu vực khác.
+      */
+      staffSummary.style.display = "none";
+      staffSummary.innerHTML = "";
+    }
+
+    const status =
+      document.getElementById(
+        "periodCompareStatus"
+      );
+
+    highlightCurrentOnlyValues();
+
+    if(status){
+      status.innerHTML =
+        `
+          <span class="compare-ready-text">
+            ✓ Đang hiển thị số liệu tồn của Mốc 1 • Chưa thực hiện so sánh
+          </span>
+        `;
+    }
+
+  }
+
+  function clearPeriodCompareCurrentOnlyMode(){
+
+    const section =
+      document.getElementById(
+        "periodCompareSection"
+      );
+
+    if(section){
+      section.classList.remove(
+        "current-only-mode"
+      );
+    }
+
+  }
+
   async function renderPeriodComparisonCore(){
 
     const kpiWrap=
@@ -16638,7 +17021,27 @@ let tonsc=[];
       return;
     }
 
+    const source1=
+      document.getElementById(
+        "compareSource1"
+      )?.value ||
+      "dashboard";
+
+    const source2=
+      document.getElementById(
+        "compareSource2"
+      )?.value ||
+      "none";
+
+    const currentOnlyMode =
+      source2==="none";
+
+    const needsHistory =
+      source1==="backup" ||
+      source2==="backup";
+
     if(
+      needsHistory &&
       !historyApiReady()
     ){
 
@@ -16650,9 +17053,14 @@ let tonsc=[];
     }
 
     const snapshots=
-      compareSnapshotList();
+      needsHistory
+        ? compareSnapshotList()
+        : [];
 
-    if(!snapshots.length){
+    if(
+      needsHistory &&
+      !snapshots.length
+    ){
 
       status.textContent=
         "⚠️ HISTORY_SNAPSHOTS chưa có backup.";
@@ -16660,18 +17068,6 @@ let tonsc=[];
       return;
 
     }
-
-    const source1=
-      document.getElementById(
-        "compareSource1"
-      )?.value ||
-      "dashboard";
-
-    const source2=
-      document.getElementById(
-        "compareSource2"
-      )?.value ||
-      "backup";
 
     const current=
       getCurrentDashboardSnapshot_();
@@ -16717,6 +17113,12 @@ let tonsc=[];
     }
 
     if(
+      currentOnlyMode
+    ){
+
+      data2=data1;
+
+    }else if(
       source2==="dashboard"
     ){
 
@@ -16765,8 +17167,8 @@ let tonsc=[];
     setCompareHeaderTimes(
       source1,
       meta1,
-      source2,
-      meta2,
+      currentOnlyMode ? source1 : source2,
+      currentOnlyMode ? meta1 : meta2,
       current
     );
 
@@ -17294,10 +17696,15 @@ let tonsc=[];
                       sc1Huyen
                     ),
                   viewStats2:
-                    compareAllStats(
-                      tkm2Huyen,
-                      sc2Huyen
-                    )
+                    currentOnlyMode
+                      ? compareAllStats(
+                          tkm1Huyen,
+                          sc1Huyen
+                        )
+                      : compareAllStats(
+                          tkm2Huyen,
+                          sc2Huyen
+                        )
                 };
 
               }
@@ -17327,8 +17734,11 @@ let tonsc=[];
 
           staffTitleText.innerHTML =
             `
-              👨‍💼 BÁO CÁO TỒN TĂNG/GIẢM MỨC NHÂN VIÊN • ${staffM1.replace(/^BACKUP\s*•\s*/i,"")}
-              → ${staffM2.replace(/^BACKUP\s*•\s*/i,"")}
+              ${
+                currentOnlyMode
+                  ? `👨‍💼 BÁO CÁO SỐ LIỆU TỒN MỨC NHÂN VIÊN • ${staffM1.replace(/^BACKUP\s*•\s*/i,"")}`
+                  : `👨‍💼 BÁO CÁO TỒN TĂNG/GIẢM MỨC NHÂN VIÊN • ${staffM1.replace(/^BACKUP\s*•\s*/i,"")} → ${staffM2.replace(/^BACKUP\s*•\s*/i,"")}`
+              }
               ${
                 huyenNorm
                   ? `
@@ -17369,7 +17779,9 @@ let tonsc=[];
               filteredRows.reduce(
                 (acc,row)=>{
                   const s=
-                    row.viewStats2;
+                    currentOnlyMode
+                      ? row.viewStats1
+                      : row.viewStats2;
 
                   compareMetricDefs()
                     .forEach(
@@ -17392,7 +17804,11 @@ let tonsc=[];
             staffSummary.innerHTML =
               `
                 <span class="summary-title">
-                  Tính đến ${staffM2.replace(/^BACKUP\s*•\s*/i,"")} →
+                  Tính đến ${
+                    currentOnlyMode
+                      ? staffM1.replace(/^BACKUP\s*•\s*/i,"")
+                      : staffM2.replace(/^BACKUP\s*•\s*/i,"")
+                  }${currentOnlyMode ? "" : " →"}
                 </span>
 
                 ${
@@ -17489,13 +17905,25 @@ let tonsc=[];
                                           }"
                                         >
 
-                                          <div class="district-metric-main">
-                                            ${a} → ${b}
-                                          </div>
+                                          ${
+                                            currentOnlyMode
+                                              ? `
+                                                  <div class="district-metric-main ${
+                                                    a>0 ? "current-positive" : "current-zero"
+                                                  }">
+                                                    ${a}
+                                                  </div>
+                                                `
+                                              : `
+                                                  <div class="district-metric-main">
+                                                    ${a} → ${b}
+                                                  </div>
 
-                                          <div class="district-metric-delta">
-                                            ${delta>0?"+":""}${delta}
-                                          </div>
+                                                  <div class="district-metric-delta">
+                                                    ${delta>0?"+":""}${delta}
+                                                  </div>
+                                                `
+                                          }
 
                                         </td>
                                       `;
@@ -17548,6 +17976,22 @@ let tonsc=[];
       staffHuyenFilter?.value ||
       ""
     );
+
+    if(currentOnlyMode){
+
+      applyPeriodCompareCurrentOnlyMode(
+        data1,
+        stats1,
+        source1,
+        meta1,
+        current
+      );
+
+    }else{
+
+      clearPeriodCompareCurrentOnlyMode();
+
+    }
 
     status.innerHTML=
       `
@@ -17672,12 +18116,26 @@ async function renderPeriodComparison(){
     }
 
     if(status){
+
+      const currentOnlyMode =
+        (
+          document.getElementById(
+            "compareSource2"
+          )?.value || "none"
+        )==="none";
+
       status.innerHTML =
-        `
-          <span class="compare-ready-text">
-            ✓ Đã lọc xong 2 mốc
-          </span>
-        `;
+        currentOnlyMode
+          ? `
+              <span class="compare-ready-text">
+                ✓ Đang hiển thị số liệu tồn Mốc 1 • Chưa thực hiện so sánh
+              </span>
+            `
+          : `
+              <span class="compare-ready-text">
+                ✓ Đã lọc xong 2 mốc
+              </span>
+            `;
     }
 
   }catch(err){
@@ -17926,6 +18384,11 @@ const nhaplieu =
   renderTonSC();
   renderTonTKM();
   await renderCharts();
+  try{
+    await initGlobalChartMonthFilter();
+  }catch(filterErr){
+    console.warn("Khởi tạo lọc tháng biểu đồ:",filterErr);
+  }
 
   /*
     BACKUP LỊCH SỬ:
@@ -18320,6 +18783,178 @@ try{
   Chart.defaults.elements.bar.borderSkipped=false;
   Chart.defaults.elements.point.hoverRadius=5;
 }catch(e){}
+
+/* ===== GLOBAL MONTH FILTER CHO NHÓM BIỂU ĐỒ THỐNG KÊ ===== */
+window.__globalChartMonthFilter = null;
+window.__globalChartMonthBusy = false;
+
+function chartMonthKeyFromTg(value){
+  const s=String(value||"").trim();
+  const m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if(!m)return "";
+  return `${m[3]}-${String(Number(m[2])).padStart(2,"0")}`;
+}
+
+function chartMonthLabel(key){
+  if(!key)return "Tất cả tháng";
+  const [y,m]=String(key).split("-");
+  return `THÁNG ${String(m).padStart(2,"0")}/${y}`;
+}
+
+async function initGlobalChartMonthFilter(){
+  const select=document.getElementById("globalChartMonthSelect");
+  const status=document.getElementById("globalChartMonthStatus");
+  if(!select)return;
+
+  const monthMap=new Map();
+
+  const addMonth=(key)=>{
+    if(!key)return;
+    monthMap.set(key,true);
+  };
+
+  // Các dòng hiện tại có thể đã có ngày thực tế của tháng.
+  (Array.isArray(tonsc)?tonsc:[]).forEach(r=>{
+    const raw=r?.ngay;
+    if(raw){
+      const p=String(raw).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+      if(p)addMonth(`${p[3]}-${String(Number(p[2])).padStart(2,"0")}`);
+    }
+  });
+
+  (Array.isArray(tontkmHistory)?tontkmHistory:[]).forEach(r=>{
+    const raw=r?.ntdn;
+    if(raw){
+      const p=String(raw).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+      if(p)addMonth(`${p[3]}-${String(Number(p[2])).padStart(2,"0")}`);
+    }
+  });
+
+  try{
+    const snaps=await loadRemoteHistorySnapshots();
+    (Array.isArray(snaps)?snaps:[]).forEach(s=>addMonth(chartMonthKeyFromTg(snapshotTg(s))));
+  }catch(err){
+    console.warn("Không lấy được danh sách tháng cho biểu đồ:",err);
+  }
+
+  [...monthMap.keys()].sort((a,b)=>b.localeCompare(a)).forEach(key=>{
+    const o=document.createElement("option");
+    o.value=key;
+    o.textContent=chartMonthLabel(key);
+    select.appendChild(o);
+  });
+
+  if(!select.dataset.bound){
+    select.dataset.bound="1";
+    select.addEventListener("change",()=>applyGlobalChartMonthFilter(select.value));
+  }
+
+  if(status)status.textContent="Đang xem tất cả dữ liệu";
+}
+
+async function getSnapshotForChartMonth(monthKey){
+  if(!monthKey)return null;
+  const snaps=Array.isArray(periodHistoryCache)&&periodHistoryCache.length
+    ? periodHistoryCache
+    : await loadRemoteHistorySnapshots();
+
+  const candidates=(Array.isArray(snaps)?snaps:[])
+    .map(s=>({
+      s,
+      key:chartMonthKeyFromTg(snapshotTg(s)),
+      ts:parseHistoryDate(snapshotTg(s))
+    }))
+    .filter(x=>x.key===monthKey && x.s?.snapshotId)
+    .sort((a,b)=>b.ts-a.ts);
+
+  if(!candidates.length)return null;
+  const rows=await fetchRemoteSnapshotRows(candidates[0].s.snapshotId);
+  return {rows,candidate:candidates[0].s};
+}
+
+function splitChartMonthTkm(rows){
+  const all=Array.isArray(rows)?rows:[];
+  const cap=all.filter(r=>String(r?.tt||"").replace(/\s+/g," ").trim().toUpperCase()==="CẬP NHẬT HỒ SƠ");
+  const tkm=all.filter(r=>String(r?.tt||"").replace(/\s+/g," ").trim().toUpperCase()!=="CẬP NHẬT HỒ SƠ");
+  return {tkm,cap};
+}
+
+async function applyGlobalChartMonthFilter(monthKey){
+  if(window.__globalChartMonthBusy)return;
+  window.__globalChartMonthBusy=true;
+
+  const select=document.getElementById("globalChartMonthSelect");
+  const status=document.getElementById("globalChartMonthStatus");
+  if(select)select.disabled=true;
+  if(status)status.textContent=monthKey?`Đang lọc ${chartMonthLabel(monthKey)}...`:`Đang khôi phục tất cả dữ liệu...`;
+
+  const saved={
+    tonsc:tonsc,
+    tontkm:tontkm,
+    tontkmHistory:tontkmHistory,
+    tkmThuc:window.tkmThuc,
+    capnhaths:window.capnhaths,
+    tongsc:window.tongsc,
+    tongtkm:window.tongtkm,
+    filter:window.__globalChartMonthFilter
+  };
+
+  try{
+    if(monthKey){
+      const pack=await getSnapshotForChartMonth(monthKey);
+      if(!pack || !pack.rows)throw new Error("Không tìm thấy snapshot của "+monthKey);
+
+      const scRows=Array.isArray(pack.rows.sc)?pack.rows.sc:[];
+      const tkmRows=Array.isArray(pack.rows.tkm)?pack.rows.tkm:[];
+      const split=splitChartMonthTkm(tkmRows);
+      const [y,m]=monthKey.split("-").map(Number);
+
+      tonsc=scRows;
+      tontkm=tkmRows;
+      tontkmHistory=tkmRows.slice();
+      window.tkmThuc=split.tkm;
+      window.capnhaths=split.cap;
+      window.tongsc=tonsc;
+      window.tongtkm=split.tkm;
+      window.__globalChartMonthFilter={year:y,month:m,key:monthKey};
+    }else{
+      window.__globalChartMonthFilter=null;
+      tonsc=saved.tonsc;
+      tontkm=saved.tontkm;
+      tontkmHistory=saved.tontkmHistory;
+      window.tkmThuc=saved.tkmThuc;
+      window.capnhaths=saved.capnhaths;
+      window.tongsc=saved.tongsc;
+      window.tongtkm=saved.tongtkm;
+    }
+
+    renderSCHuyen();
+    renderHSChart();
+    renderKPIChart();
+    renderTongTKMChart();
+    renderTongTKMDichVuChart();
+    await renderTong13HuyenDichVuLineChart();
+    renderHuyenKPICharts();
+
+    if(status)status.textContent=monthKey?`${chartMonthLabel(monthKey)} • đang xem dữ liệu theo tháng`:`Đang xem tất cả dữ liệu`;
+  }catch(err){
+    console.error("Lọc tháng biểu đồ lỗi:",err);
+    window.__globalChartMonthFilter=saved.filter||null;
+    if(status)status.textContent="Không lấy được dữ liệu tháng đã chọn";
+    if(select)select.value="";
+  }finally{
+    // Khôi phục source data toàn Dashboard sau khi render, để BOT và các phần khác vẫn dùng dữ liệu hiện tại.
+    tonsc=saved.tonsc;
+    tontkm=saved.tontkm;
+    tontkmHistory=saved.tontkmHistory;
+    window.tkmThuc=saved.tkmThuc;
+    window.capnhaths=saved.capnhaths;
+    window.tongsc=saved.tongsc;
+    window.tongtkm=saved.tongtkm;
+    if(select)select.disabled=false;
+    window.__globalChartMonthBusy=false;
+  }
+}
 
 async function renderCharts(){
 
@@ -19086,20 +19721,34 @@ async function renderCharts(){
     const currentMonth=now.getMonth();
     const prev=new Date(currentYear,currentMonth-1,1);
 
-    const configs=[
-      {
-        key:"N1",
-        label:"N-1",
-        year:prev.getFullYear(),
-        month:prev.getMonth()
-      },
-      {
-        key:"N",
-        label:"N",
-        year:currentYear,
-        month:currentMonth
-      }
-    ];
+    const selectedGlobalMonth =
+      (window.__globalChartMonthFilter &&
+       typeof window.__globalChartMonthFilter.year === "number" &&
+       typeof window.__globalChartMonthFilter.month === "number")
+        ? window.__globalChartMonthFilter
+        : null;
+
+    const configs = selectedGlobalMonth
+      ? [{
+          key:"FILTER",
+          label:`THÁNG ${String(selectedGlobalMonth.month+1).padStart(2,"0")}/${selectedGlobalMonth.year}`,
+          year:selectedGlobalMonth.year,
+          month:selectedGlobalMonth.month
+        }]
+      : [
+          {
+            key:"N1",
+            label:"N-1",
+            year:prev.getFullYear(),
+            month:prev.getMonth()
+          },
+          {
+            key:"N",
+            label:"N",
+            year:currentYear,
+            month:currentMonth
+          }
+        ];
 
     configs.forEach(cfg=>{
 
@@ -19167,7 +19816,7 @@ async function renderCharts(){
 
       card.innerHTML=`
         <div class="chart-title" style="font-size:13px;margin-bottom:2px;">
-          📈 THEO DỊCH VỤ MỨC TTH • THÁNG ${String(monthNumber).padStart(2,"0")}/${cfg.year}
+          📈 TỒN TKM THEO DỊCH VỤ MỨC TTH • THÁNG ${String(monthNumber).padStart(2,"0")}/${cfg.year}
         </div>
         <div style="height:310px;position:relative;">
           <canvas id="chartTong13HuyenDichVu_${cfg.key}"></canvas>
@@ -28411,13 +29060,25 @@ ${rels.join("")}
         Biểu đồ
       </div>
 
-      <button
-        type="button"
-        class="chart-zoom-close"
-        aria-label="Đóng"
-        onclick="closeChartZoom()">
-        ✕
-      </button>
+      <div class="chart-zoom-head-actions">
+        <button
+          type="button"
+          class="chart-zoom-capture"
+          aria-label="Chụp màn hình biểu đồ"
+          title="Chụp màn hình biểu đồ"
+          data-html2canvas-ignore="true"
+          onclick="captureZoomChart(event)">
+          📸
+        </button>
+        <button
+          type="button"
+          class="chart-zoom-close"
+          aria-label="Đóng"
+          data-html2canvas-ignore="true"
+          onclick="closeChartZoom()">
+          ✕
+        </button>
+      </div>
     </div>
 
     <div class="chart-zoom-body">
@@ -29552,14 +30213,54 @@ function setSevenDayChartStatus(state, text){
 
   function totalOverview(){try{const m=metricsForRows(tkm(),cap(),scRows());const districts=topDistricts();return `<h3>📊 TỔNG QUAN KPI HIỆN TẠI</h3><table class="kpi-bot-summary-table"><tbody><tr><th>TKM tồn</th><td>${botNum(m.tkm)}</td><th>CNHS</th><td>${botNum(m.cap)}</td></tr><tr><th>SC</th><td>${botNum(m.sc)}</td><th>SOC</th><td>${botNum(m.soc)}</td></tr><tr><th>SOC HOME</th><td>${botNum(m.socHome)}</td><th>TKM &gt;24H</th><td>${botNum(m.tkm24,'bad')}</td></tr><tr><th>TKM quá hẹn</th><td>${botNum(m.tkmHen,'bad')}</td><th>SC &gt;24H</th><td>${botNum(m.sc24,'bad')}</td></tr><tr><th>SC &gt;72H</th><td>${botNum(m.sc72,'bad')}</td><th>SOC &gt;24H</th><td>${botNum(m.soc24,'bad')}</td></tr><tr><th>SOC &gt;72H</th><td>${botNum(m.soc72,'bad')}</td><th>SOC HOME &gt;24H</th><td>${botNum(m.sochome24,'bad')}</td></tr><tr><th>SOC HOME &gt;72H</th><td>${botNum(m.sochome72,'bad')}</td><th>Tổng quá hạn</th><td>${botNum(m.tkm24+m.tkmHen+m.sc24+m.sc72+m.soc24+m.soc72+m.sochome24+m.sochome72,'bad')}</td></tr></tbody></table><h4>13 HUYỆN</h4><div class="kpi-bot-table-wrap"><table><thead><tr><th>STT</th><th>Huyện</th><th>TKM</th><th>CNHS</th><th>SC</th><th>SOC</th><th>SOC HOME</th><th>TKM &gt;24H</th><th>TKM QH</th><th>SOC &gt;24H</th><th>SOC &gt;72H</th><th>Điểm</th></tr></thead><tbody>${districts.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b></td><td>${botNum(x.tkm)}</td><td>${botNum(x.cap)}</td><td>${botNum(x.sc)}</td><td>${botNum(x.soc)}</td><td>${botNum(x.socHome)}</td><td>${botNum(x.tkm24,'bad')}</td><td>${botNum(x.tkmHen,'bad')}</td><td>${botNum(x.soc24,'bad')}</td><td>${botNum(x.soc72,'bad')}</td><td class="bad"><b>${x.score}</b></td></tr>`).join('')||'<tr><td colspan="12">Không có dữ liệu huyện</td></tr>'}</tbody></table></div><div class="kpi-bot-note">Gợi ý hành động bên dưới là đánh giá <b>Top 5 huyện</b> cần ưu tiên xử lý.</div>${recommendation()}`;}catch(e){console.error('BOT tổng quan',e);return '<h3>📊 TỔNG QUAN KPI</h3><div>Không thể dựng bảng tổng quan. Hãy thử <b>/help</b> hoặc nhập <b>tổng quan</b> lại.</div>';}}
   function tableTopDistricts(){const arr=topDistricts().slice(0,5);return `<h4>Top 5 huyện có tải tồn xấu</h4><div class="kpi-bot-table-wrap"><table><thead><tr><th>STT</th><th>Huyện</th><th>TKM</th><th>CNHS</th><th>SC</th><th>SOC</th><th>SOC HOME</th><th>TKM >24H</th><th>TKM QH</th><th>SOC >24H</th><th>SOC >72H</th><th>Điểm</th></tr></thead><tbody>${arr.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b></td><td>${botNum(x.tkm)}</td><td>${botNum(x.cap)}</td><td>${botNum(x.sc)}</td><td>${botNum(x.soc)}</td><td>${botNum(x.socHome)}</td><td>${botNum(x.tkm24,'bad')}</td><td>${botNum(x.tkmHen,'bad')}</td><td>${botNum(x.soc24,'bad')}</td><td>${botNum(x.soc72,'bad')}</td><td class="bad"><b>${x.score}</b></td></tr>`).join('')}</tbody></table></div>`;}
-  function recommendation(){const td=topDistricts().slice(0,3);return `<h3>🎯 GỢI Ý HÀNH ĐỘNG</h3>${td.map((d,i)=>{const s=topStaff(d.name).slice(0,2);const sv=serviceBreakdown(rowsForDistrict(d.name).t,3);return `<div class="kpi-action-item"><b>${i+1}. Huyện ${esc(d.name)}</b>: tập trung ${sv.map(x=>esc(x.name)+' '+botNum(x.count)).join(', ')||'không có dịch vụ nổi bật'}; ưu tiên ${s.map(x=>esc(x.name)).join(', ')||'không xác định'}.</div>`}).join('')}`;}
+  function recommendation(){
+  const td=topDistricts().slice(0,5);
+  return `<h3>🎯 GỢI Ý HÀNH ĐỘNG</h3>${td.map((d,i)=>{
+    const x=rowsForDistrict(d.name);
+    const s=topStaff(d.name).slice(0,2);
+    const sv=serviceBreakdown(x.t,3);
+    const risk=causes(x.m).slice(0,4);
+    const incident=[
+      ['SC',x.m.sc],
+      ['SOC',x.m.soc],
+      ['SOC HOME',x.m.socHome]
+    ].filter(v=>v[1]>0).sort((a,b)=>b[1]-a[1]);
+    const tkmParts=sv.map(v=>`${esc(v.name)} <b>${v.count}</b>`).join(' • ') || 'không có TKM';
+    const incidentParts=incident.map(v=>`${esc(v[0])} <b>${v[1]}</b>`).join(' • ') || 'không có sự cố';
+    const riskParts=risk.map(v=>`${esc(v[0])} <b>${v[1]}</b>`).join(' • ');
+    let action='Ưu tiên xử lý các KPI quá hạn và phân bổ nhân viên theo nhóm tồn cao.';
+    if(x.m.sc72+x.m.soc72+x.m.sochome72>0) action='Ưu tiên xử lý các trường hợp >72H trước, sau đó giảm tồn TKM/CNHS.';
+    else if(x.m.tkmHen+x.m.tkm24>0) action='Ưu tiên xử lý TKM quá hẹn và >24H trước.';
+    else if(x.m.sc24+x.m.soc24+x.m.sochome24>0) action='Ưu tiên xử lý sự cố quá 24H trước và kiểm soát phát sinh mới.';
+    return `<div class="kpi-action-item"><b>${i+1}. Huyện ${esc(d.name)}</b><br>
+      <span><b>Tồn TKM theo dịch vụ:</b> ${tkmParts}</span><br>
+      <span><b>Sự cố:</b> ${incidentParts}</span><br>
+      <span><b>KPI cần chú ý:</b> ${riskParts||'không có KPI nổi bật'}</span><br>
+      <span><b>Nhân viên cần ưu tiên:</b> ${s.map(x=>esc(x.name)).join(', ')||'không xác định'}</span><br>
+      <span><b>Đề xuất:</b> ${esc(action)}</span>
+    </div>`;
+  }).join('')}`;
+}
   function districtDetail(d){const x=rowsForDistrict(d),top=topStaff(d).slice(0,5),sv=serviceBreakdown(x.t,6),c=causes(x.m);return `<h3>🏚️ PHÂN TÍCH HUYỆN ${esc(d)}</h3><div><b>TTH:</b> ${esc(d)}</div><div><b>Tổng tồn:</b> TKM ${botNum(x.m.tkm)} • CNHS ${botNum(x.m.cap)} • SC ${botNum(x.m.sc)} • SOC ${botNum(x.m.soc)} • SOC HOME ${botNum(x.m.socHome)}.</div><div><b>KPI:</b> TKM >16H ${botNum(x.m.tkm16)} • TKM >24H ${botNum(x.m.tkm24,'bad')} • TKM QH ${botNum(x.m.tkmHen,'bad')} • SC >16H ${botNum(x.m.sc16)} • SC >24H ${botNum(x.m.sc24,'bad')} • SC >72H ${botNum(x.m.sc72,'bad')} • SOC >24H ${botNum(x.m.soc24,'bad')} • SOC >72H ${botNum(x.m.soc72,'bad')}.</div><h4>Tồn TKM theo dịch vụ</h4><table class="kpi-bot-service-table"><thead><tr><th>STT</th><th>Dịch vụ</th><th>Tồn</th><th>%</th></tr></thead><tbody>${sv.map((v,i)=>`<tr><td>${i+1}</td><td><b>${esc(v.name)}</b></td><td>${botNum(v.count)}</td><td>${pct(v.count,x.m.tkm)}</td></tr>`).join('')}</tbody></table><h4>Nội dung gây tải chính</h4><div>${c.map(v=>`<span class="kpi-mini-chip"><b>${esc(v[0])}</b>: ${botNum(v[1],'bad')}</span>`).join('')}</div><h4>Nhân viên cần ưu tiên</h4>${staffTable(top)}`;}
   function scBreakdown(rows,limit=3){const arr=countBy(rows,r=>scType(r)||'Khác');return arr.slice(0,limit);}
   function staffOverview(){const top=topStaff(null,15);return `<h3>👤 TOP 15 NHÂN VIÊN TỒI / TẢI TỒN CAO</h3>${staffTable(top)}<h4>🔥 Dịch vụ TKM nổi bật</h4>${top.map(x=>{const sv=serviceBreakdown(x.t||[],4);return `<div class="kpi-bot-highlight-line"><b>${esc(x.name)}</b>: ${sv.length?sv.map(v=>esc(v.name)+' '+botNum(v.count)).join(' • '):'<span class="muted">Không có TKM</span>'}</div>`}).join('')}<h4>🚨 Sự cố nổi bật</h4>${top.map(x=>{const sv=scBreakdown(x.s||[],4);return `<div class="kpi-bot-highlight-line"><b>${esc(x.name)}</b>: ${sv.length?sv.map(v=>esc(v.name)+' '+botNum(v.count,'bad')).join(' • '):'<span class="muted">Không có sự cố</span>'}</div>`}).join('')}`;}
   function staffDetail(name){const x=rowsForStaff(name),sv=serviceBreakdown(x.t,8),c=causes(x.m);const all=[...x.t,...x.c,...x.s];const districts=[...new Set(all.map(huyen).filter(Boolean))];return `<h3>👤 PHÂN TÍCH NHÂN VIÊN ${esc(name)}</h3><div><b>TTH:</b> ${esc(districts.join(', ')||'Không rõ')}</div><div><b>Tổng tồn:</b> TKM ${botNum(x.m.tkm)} • CNHS ${botNum(x.m.cap)} • SC ${botNum(x.m.sc)} • SOC ${botNum(x.m.soc)} • SOC HOME ${botNum(x.m.socHome)}.</div><div><b>KPI:</b> TKM >24H ${botNum(x.m.tkm24,'bad')} • TKM QH ${botNum(x.m.tkmHen,'bad')} • SC >24H ${botNum(x.m.sc24,'bad')} • SC >72H ${botNum(x.m.sc72,'bad')} • SOC >24H ${botNum(x.m.soc24,'bad')} • SOC >72H ${botNum(x.m.soc72,'bad')}.</div><h4>TKM theo dịch vụ</h4><table class="kpi-bot-service-table"><thead><tr><th>STT</th><th>Dịch vụ</th><th>Tồn</th><th>%</th></tr></thead><tbody>${sv.map((v,i)=>`<tr><td>${i+1}</td><td><b>${esc(v.name)}</b></td><td>${botNum(v.count)}</td><td>${pct(v.count,x.m.tkm)}</td></tr>`).join('')}</tbody></table><h4>TKM chi tiết</h4>${detailTable(x.t.slice(0,80),'TKM',false)}<h4>Sự cố chi tiết</h4>${detailTable(x.s.slice(0,80),'Sự cố',true)}<h4>Nội dung ưu tiên</h4><div>${c.map(v=>`<span class="kpi-mini-chip"><b>${esc(v[0])}</b>: ${botNum(v[1],'bad')}</span>`).join('')}</div>`;}
   function totalSC(){const m=metricsForRows([],[],scRows());return `<h3>🚨 TỔNG SỰ CỐ HIỆN TẠI</h3><table class="kpi-bot-summary-table"><tbody><tr><th>SC</th><td>${botNum(m.sc)}</td><th>SOC</th><td>${botNum(m.soc)}</td></tr><tr><th>SOC HOME</th><td>${botNum(m.socHome)}</td><th>SC >24H</th><td>${botNum(m.sc24,'bad')}</td></tr><tr><th>SC >72H</th><td>${botNum(m.sc72,'bad')}</td><th>SOC >24H</th><td>${botNum(m.soc24,'bad')}</td></tr><tr><th>SOC >72H</th><td>${botNum(m.soc72,'bad')}</td><th>SOC HOME >24H</th><td>${botNum(m.sochome24,'bad')}</td></tr><tr><th>SOC HOME >72H</th><td>${botNum(m.sochome72,'bad')}</td><th>Tổng sự cố</th><td>${botNum(m.sc+m.soc+m.socHome)}</td></tr></tbody></table>`;}
   function totalTKM(){const m=metricsForRows(tkm(),cap(),[]);return `<h3>📦 TỔNG TKM HIỆN TẠI</h3><table class="kpi-bot-summary-table"><tbody><tr><th>TKM</th><td>${botNum(m.tkm)}</td><th>CNHS</th><td>${botNum(m.cap)}</td></tr><tr><th>TKM >16H</th><td>${botNum(m.tkm16)}</td><th>TKM >24H</th><td>${botNum(m.tkm24,'bad')}</td></tr><tr><th>TKM QH</th><td>${botNum(m.tkmHen,'bad')}</td><th>Tổng</th><td>${botNum(m.tkm+m.cap)}</td></tr></tbody></table>`;}
-  function getMonthTarget(q){const u=upper(q),now=new Date();if(/THÁNG\s+TRƯỚC|THÁNG\s+N-1|\bN-1\b/.test(u)){const d=new Date(now.getFullYear(),now.getMonth()-1,1);return {month:d.getMonth(),year:d.getFullYear(),label:`${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`};}const m=u.match(/THÁNG\s*(\d{1,2})(?:\s*[/\-]\s*(\d{4}))?/);if(!m)return null;return {month:Number(m[1])-1,year:Number(m[2]||now.getFullYear()),label:`${String(Number(m[1])).padStart(2,'0')}/${Number(m[2]||now.getFullYear())}`};}
+  function getMonthTarget(q){const u=upper(q),now=new Date();
+  if(/THÁNG\s+TRƯỚC|THÁNG\s+N-1|\bN-1\b/.test(u)){
+    const d=new Date(now.getFullYear(),now.getMonth()-1,1);
+    return {month:d.getMonth(),year:d.getFullYear(),label:`${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`,key:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`};
+  }
+  if(/THÁNG\s+(?:N|NAY|NÀY|HIỆN\s*TẠI|HIỆN\s*NAY|NÀY)|\bTHÁNG\s*HIỆN\s*TẠI\b/.test(u)){
+    const d=new Date(now.getFullYear(),now.getMonth(),1);
+    return {month:d.getMonth(),year:d.getFullYear(),label:`${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`,key:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`};
+  }
+  const m=u.match(/THÁNG\s*(\d{1,2})(?:\s*[/\-]\s*(\d{4}))?/);
+  if(!m)return null;
+  const month=Number(m[1])-1,year=Number(m[2]||now.getFullYear());
+  return {month,year,label:`${String(month+1).padStart(2,'0')}/${year}`,key:`${year}-${String(month+1).padStart(2,'0')}`};
+}
   const parseHist=v=>{if(typeof parseHistoryDate==='function')return parseHistoryDate(v);const d=new Date(v);return Number.isFinite(d.getTime())?d.getTime():0;};
   async function getMonthlyRows(year,month){
     const now=new Date();
@@ -29583,7 +30284,81 @@ function setSevenDayChartStatus(state, text){
   function monthlyOverviewFor(data,label){const sp=splitTkmRows(data.tkm);const m=metricsForRows(sp.tkm,sp.cap,data.sc);return `<h3>📅 TỒN THÁNG ${label}</h3><div><b>Tổng:</b> TKM ${botNum(m.tkm)} • CNHS ${botNum(m.cap)} • SC ${botNum(m.sc)} • SOC ${botNum(m.soc)} • SOC HOME ${botNum(m.socHome)}</div><h4>TKM theo nhân viên</h4>${monthlyTable(sp.tkm,'TKM')}<h4>Sự cố theo nhân viên</h4>${monthlyTable(data.sc,'SC')}`;}
   function monthlyTable(rows,kind){const map=new Map();rows.forEach(r=>{const n=staff(r);if(!map.has(upper(n)))map.set(upper(n),n)});const arr=[...map.values()].map(n=>{const rr=rows.filter(r=>upper(staff(r))===upper(n));return {name:n,count:rr.length,huyen:huyen(rr[0]),over24:kind==='TKM'?rr.filter(r=>tkmKpi(r)==='QUÁ 24H').length:rr.filter(r=>hours(r)>24).length,services:kind==='TKM'?serviceBreakdown(rr,3):[]};}).sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'vi')).slice(0,15);return `<div class="kpi-bot-table-wrap"><table><thead><tr><th>STT</th><th>Nhân viên</th><th>Huyện</th><th>${kind}</th><th>Quá 24H</th><th>Chi tiết</th></tr></thead><tbody>${arr.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b></td><td>${esc(x.huyen)}</td><td>${botNum(x.count)}</td><td>${botNum(x.over24,x.over24?'bad':'')}</td><td>${x.services.map(v=>esc(v.name)+' '+botNum(v.count)).join(' • ')}</td></tr>`).join('')||'<tr><td colspan="6">Không có dữ liệu</td></tr>'}</tbody></table></div>`;}
   async function monthStaff(q,name){const mt=getMonthTarget(q);const data=await getMonthlyRows(mt.year,mt.month);if(!data.tkm.length&&!data.sc.length)return `<h3>👤 ${esc(name)} • THÁNG ${mt.label}</h3><div>Không có dữ liệu tháng này.</div>`;const sp=splitTkmRows(data.tkm),tr=sp.tkm.filter(r=>upper(staff(r))===upper(name)),cr=sp.cap.filter(r=>upper(staff(r))===upper(name)),sr=data.sc.filter(r=>upper(staff(r))===upper(name)),m=metricsForRows(tr,cr,sr);return `<h3>👤 ${esc(name)} • THÁNG ${mt.label}</h3><div><b>TTH:</b> ${esc([...new Set([...tr,...cr,...sr].map(huyen).filter(Boolean))].join(', ')||'Không rõ')}</div><div><b>Tổng:</b> TKM ${botNum(m.tkm)} • CNHS ${botNum(m.cap)} • SC ${botNum(m.sc)} • SOC ${botNum(m.soc)} • SOC HOME ${botNum(m.socHome)}.</div><h4>TKM theo dịch vụ</h4>${serviceBreakdown(tr,8).map((v,i)=>`<div class="kpi-action-item"><b>${i+1}. ${esc(v.name)}</b>: ${botNum(v.count)}</div>`).join('')||'Không có TKM'}<h4>TKM chi tiết</h4>${detailTable(tr.slice(0,80),'TKM',false)}<h4>Sự cố chi tiết</h4>${detailTable(sr.slice(0,80),'Sự cố',true)}`;}
-  async function monthDistrict(q,d){const mt=getMonthTarget(q);const data=await getMonthlyRows(mt.year,mt.month);if(!data.tkm.length&&!data.sc.length)return `<h3>🏚️ ${esc(d)} • THÁNG ${mt.label}</h3><div>Không có dữ liệu tháng này.</div>`;const sp=splitTkmRows(data.tkm),tr=sp.tkm.filter(r=>huyen(r)===d),cr=sp.cap.filter(r=>huyen(r)===d),sr=data.sc.filter(r=>huyen(r)===d),m=metricsForRows(tr,cr,sr);return `<h3>🏚️ ${esc(d)} • THÁNG ${mt.label}</h3><div><b>Tổng:</b> TKM ${botNum(m.tkm)} • CNHS ${botNum(m.cap)} • SC ${botNum(m.sc)} • SOC ${botNum(m.soc)} • SOC HOME ${botNum(m.socHome)}.</div><h4>TKM theo dịch vụ</h4>${serviceBreakdown(tr,8).map((v,i)=>`<div class="kpi-action-item"><b>${i+1}. ${esc(v.name)}</b>: ${botNum(v.count)}</div>`).join('')||'Không có TKM'}<h4>Nhân viên tồn</h4>${monthlyTable([...tr,...cr],'TKM')}<h4>Sự cố theo nhân viên</h4>${monthlyTable(sr,'SC')}`;}
+  async function monthDistrict(q,d){
+    const mt=getMonthTarget(q);
+    const data=await getMonthlyRows(mt.year,mt.month);
+
+    if(!data.tkm.length && !data.sc.length){
+      return `<h3>🏚️ PHÂN TÍCH HUYỆN ${esc(d)} • THÁNG ${esc(mt.label)}</h3>
+        <div>Không có dữ liệu tháng này.</div>`;
+    }
+
+    const sp=splitTkmRows(data.tkm);
+    const tr=sp.tkm.filter(r=>huyen(r)===d);
+    const cr=sp.cap.filter(r=>huyen(r)===d);
+    const sr=data.sc.filter(r=>huyen(r)===d);
+    const m=metricsForRows(tr,cr,sr);
+
+    // FULL nhân viên của huyện trong tháng, không giới hạn Top 5.
+    const staffNames=[...new Set([
+      ...tr.map(staff),
+      ...cr.map(staff),
+      ...sr.map(staff)
+    ].filter(Boolean))];
+
+    const fullStaff=staffNames.map(name=>{
+      const tr1=tr.filter(r=>upper(staff(r))===upper(name));
+      const cr1=cr.filter(r=>upper(staff(r))===upper(name));
+      const sr1=sr.filter(r=>upper(staff(r))===upper(name));
+      const mm=metricsForRows(tr1,cr1,sr1);
+      return {name,score:score(mm),...mm,t:tr1,c:cr1,s:sr1};
+    }).sort((a,b)=>
+      b.score-a.score ||
+      (b.tkm+b.cap+b.sc+b.soc+b.socHome)-
+      (a.tkm+a.cap+a.sc+a.soc+a.socHome) ||
+      a.name.localeCompare(b.name,"vi")
+    );
+
+    const sv=serviceBreakdown(tr,8);
+    const c=causes(m);
+
+    return `<h3>🏚️ PHÂN TÍCH HUYỆN ${esc(d)} • THÁNG ${esc(mt.label)}</h3>
+      <div><b>TTH:</b> ${esc(d)}</div>
+
+      <div><b>Tổng tồn:</b>
+        TKM ${botNum(m.tkm)} • CNHS ${botNum(m.cap)} • SC ${botNum(m.sc)} •
+        SOC ${botNum(m.soc)} • SOC HOME ${botNum(m.socHome)}.
+      </div>
+
+      <div><b>KPI:</b>
+        TKM >16H ${botNum(m.tkm16)} •
+        TKM >24H ${botNum(m.tkm24,'bad')} •
+        TKM QH ${botNum(m.tkmHen,'bad')} •
+        SC >16H ${botNum(m.sc16)} •
+        SC >24H ${botNum(m.sc24,'bad')} •
+        SC >72H ${botNum(m.sc72,'bad')} •
+        SOC >24H ${botNum(m.soc24,'bad')} •
+        SOC >72H ${botNum(m.soc72,'bad')} •
+        SOC HOME >24H ${botNum(m.sochome24,'bad')} •
+        SOC HOME >72H ${botNum(m.sochome72,'bad')}.
+      </div>
+
+      <h4>Tồn TKM theo dịch vụ</h4>
+      <table class="kpi-bot-service-table">
+        <thead><tr><th>STT</th><th>Dịch vụ</th><th>Tồn</th><th>%</th></tr></thead>
+        <tbody>${sv.map((v,i)=>`<tr>
+          <td>${i+1}</td><td><b>${esc(v.name)}</b></td>
+          <td>${botNum(v.count)}</td><td>${pct(v.count,m.tkm)}</td>
+        </tr>`).join('') || '<tr><td colspan="4">Không có TKM</td></tr>'}</tbody>
+      </table>
+
+      <h4>Nội dung gây tải chính</h4>
+      <div>${c.map(v=>`<span class="kpi-mini-chip"><b>${esc(v[0])}</b>: ${botNum(v[1],'bad')}</span>`).join('') || 'Không có chỉ số nổi bật'}</div>
+
+      <h4>👤 TOÀN BỘ NHÂN VIÊN CỦA HUYỆN</h4>
+      ${staffTable(fullStaff)}`;
+  }
+
   function findAccount(q,rows=null){
     const source=Array.isArray(rows)?rows:[...tkm(),...cap(),...scRows()];
     const accounts=[...new Set(source.map(r=>String(r?.account||"").trim()).filter(Boolean))].sort((a,b)=>b.length-a.length);
@@ -29602,12 +30377,37 @@ function setSevenDayChartStatus(state, text){
   }
     function findStaffName(q,rows=null){const source=Array.isArray(rows)?rows:[...tkm(),...cap(),...scRows()];const names=[...new Map(source.map(r=>[upper(staff(r)),staff(r)])).values()].filter(Boolean).sort((a,b)=>b.length-a.length);const u=upper(q);return names.find(n=>u.includes(upper(n)))||null;}
   function findDistrictName(q,rows=null){const source=Array.isArray(rows)?rows:[...tkm(),...cap(),...scRows()];const names=[...new Set(source.map(huyen).filter(Boolean))].sort((a,b)=>b.length-a.length);const u=upper(q);return names.find(n=>u.includes(upper(n)))||null;}
-  function helpOverview(){return `<h3>🆘 LỆNH BOT KPI</h3><div class="kpi-help-grid"><div><b>/help</b><span>Xem hướng dẫn.</span></div><div><b>tổng quan</b><span>Đủ 13 huyện + đánh giá Top 5 ưu tiên.</span></div><div><b>tên nhân viên</b><span>Nhập đúng tên → tổng TTH + TKM + SC + SOC/SOC HOME và chi tiết.</span></div><div><b>tên huyện</b><span>Phân tích tổng tồn và nhân viên cần ưu tiên.</span></div><div><b>tổng sự cố</b><span>SC, SOC, SOC HOME + KPI quá hạn.</span></div><div><b>tổng TKM</b><span>TKM, CNHS, KPI quá hạn + dịch vụ.</span></div><div><b>tháng trước + tên nhân viên</b><span>Ra <b>tổng SC + TKM + CNHS + SOC/SOC HOME</b> tháng trước và chi tiết TKM + sự cố.</span></div><div><b>tháng trước tổng quan</b><span>Ra tổng quan tháng trước: tổng TKM + CNHS + SC + SOC + SOC HOME và bảng 13 huyện.</span></div><div><b>tháng trước + tên huyện</b><span>Ra <b>tổng SC + TKM + CNHS + SOC/SOC HOME</b> tháng trước của huyện + dịch vụ + nhân viên tồn.</span></div><div><b>tra cứu TKM + tên/account</b><span>Trả danh sách TKM chi tiết.</span></div><div><b>tra cứu sự cố + tên/account</b><span>Trả danh sách sự cố chi tiết.</span></div><div><b>Nhập trực tiếp account</b><span>Ví dụ: <code>ABC123456</code> → tra toàn bộ thông tin account.</span></div></div><div class="kpi-help-examples"><b>Ví dụ:</b> <code>Nguyễn Văn A</code> • <code>Pleiku</code> • <code>tháng trước Nguyễn Văn A</code> • <code>tháng trước Pleiku</code> • <code>tra cứu TKM ABC123456</code> • <code>tra cứu sự cố ABC123456</code> • <code>ABC123456</code></div>`;}
+  function helpOverview(){return `<h3>🆘 LỆNH BOT KPI</h3><div class="kpi-help-grid"><div><b>/help</b><span>Xem hướng dẫn.</span></div><div><b>tổng quan</b><span>Đủ 13 huyện + đánh giá Top 5 ưu tiên.</span></div><div><b>tên nhân viên</b><span>Nhập đúng tên → tổng TTH + TKM + SC + SOC/SOC HOME và chi tiết.</span></div><div><b>tên huyện</b><span>Phân tích tổng tồn và nhân viên cần ưu tiên.</span></div><div><b>tổng sự cố</b><span>SC, SOC, SOC HOME + KPI quá hạn.</span></div><div><b>tổng TKM</b><span>TKM, CNHS, KPI quá hạn + dịch vụ.</span></div><div><b>tháng này + tên nhân viên</b><span>Ra <b>tổng SC + TKM + CNHS + SOC/SOC HOME</b> tháng hiện tại và chi tiết TKM + sự cố.</span></div><div><b>tháng trước + tên nhân viên</b><span>Ra <b>tổng SC + TKM + CNHS + SOC/SOC HOME</b> tháng trước và chi tiết TKM + sự cố.</span></div><div><b>tháng này tổng quan</b><span>Ra tổng quan tháng hiện tại: tổng TKM + CNHS + SC + SOC + SOC HOME và bảng 13 huyện.</span></div><div><b>tháng trước tổng quan</b><span>Ra tổng quan tháng trước: tổng TKM + CNHS + SC + SOC + SOC HOME và bảng 13 huyện.</span></div><div><b>tháng này + tên huyện</b><span>Phân tích huyện tháng hiện tại giống <b>phân tích huyện</b>: tổng KPI + dịch vụ + nội dung gây tải + <b>toàn bộ nhân viên</b>.</span></div><div><b>tháng trước + tên huyện</b><span>Phân tích huyện tháng trước giống <b>phân tích huyện</b>: tổng KPI + dịch vụ + nội dung gây tải + <b>toàn bộ nhân viên</b>.</span></div><div><b>tra cứu TKM + tên/account</b><span>Trả danh sách TKM chi tiết.</span></div><div><b>tra cứu sự cố + tên/account</b><span>Trả danh sách sự cố chi tiết.</span></div><div><b>Nhập trực tiếp account</b><span>Ví dụ: <code>ABC123456</code> → tra toàn bộ thông tin account.</span></div></div><div class="kpi-help-examples"><b>Ví dụ:</b> <code>Nguyễn Văn A</code> • <code>Pleiku</code> • <code>tháng này Nguyễn Văn A</code> • <code>tháng này Pleiku</code> • <code>tháng trước Nguyễn Văn A</code> • <code>tháng trước Pleiku</code> • <code>tra cứu TKM ABC123456</code> • <code>tra cứu sự cố ABC123456</code> • <code>ABC123456</code></div>`;}
 
   
-  async function monthlyTotalOverview(q){const mt=getMonthTarget(q);if(!mt)return totalOverview();const data=await getMonthlyRows(mt.year,mt.month);if(!data.tkm.length&&!data.sc.length)return `<h3>📅 TỔNG QUAN THÁNG ${esc(mt.label)}</h3><div>Không có dữ liệu tháng này.</div>`;const sp=splitTkmRows(data.tkm),m=metricsForRows(sp.tkm,sp.cap,data.sc);const map=new Map();[...sp.tkm,...sp.cap,...data.sc].forEach(r=>{const d=huyen(r);if(!d)return; if(!map.has(d))map.set(d,{name:d,tkm:0,cap:0,sc:0,soc:0,socHome:0});const x=map.get(d);const t=upper(r?.tt||'');if(t==='CẬP NHẬT HỒ SƠ')x.cap++;else if(data.tkm.includes(r))x.tkm++;const typ=upper(r?.sc||r?.loai_sc||r?.loai_su_co||'');if(data.sc.includes(r)){if(['SOC','SOC HOME'].includes(typ)){if(typ==='SOC')x.soc++;else x.socHome++;}else x.sc++;}});const arr=[...map.values()].sort((a,b)=>(b.tkm+b.sc+b.soc+b.socHome)-(a.tkm+a.sc+a.soc+b.socHome));return `<h3>📅 TỔNG QUAN THÁNG ${esc(mt.label)}</h3><div><b>Tổng:</b> TKM ${botNum(m.tkm)} • CNHS ${botNum(m.cap)} • SC ${botNum(m.sc)} • SOC ${botNum(m.soc)} • SOC HOME ${botNum(m.socHome)}.</div><h4>13 HUYỆN</h4><div class="kpi-bot-table-wrap"><table><thead><tr><th>STT</th><th>Huyện</th><th>TKM</th><th>CNHS</th><th>SC</th><th>SOC</th><th>SOC HOME</th></tr></thead><tbody>${arr.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b></td><td>${botNum(x.tkm)}</td><td>${botNum(x.cap)}</td><td>${botNum(x.sc)}</td><td>${botNum(x.soc)}</td><td>${botNum(x.socHome)}</td></tr>`).join('')||'<tr><td colspan="7">Không có dữ liệu huyện</td></tr>'}</tbody></table></div><h4>Nhân viên TKM tháng</h4>${monthlyTable(sp.tkm,'TKM')}<h4>Nhân viên sự cố tháng</h4>${monthlyTable(data.sc,'SC')}`;}
+  async function monthlyTotalOverview(q){
+  const mt=getMonthTarget(q); if(!mt)return totalOverview();
+  try{
+    const data=await getMonthlyRows(mt.year,mt.month);
+    const allTkm=Array.isArray(data?.tkm)?data.tkm:[];
+    const allSc=Array.isArray(data?.sc)?data.sc:[];
+    if(!allTkm.length&&!allSc.length)return `<h3>📊 TỔNG QUAN KPI • THÁNG ${esc(mt.label)}</h3><div>Không có dữ liệu tháng này.</div>`;
+    const sp=splitTkmRows(allTkm), m=metricsForRows(sp.tkm,sp.cap,allSc);
+    const names=[...new Set([...allTkm.map(huyen),...allSc.map(huyen)].filter(Boolean))];
+    const districts=names.map(name=>{
+      const tr=sp.tkm.filter(r=>huyen(r)===name), cr=sp.cap.filter(r=>huyen(r)===name), sr=allSc.filter(r=>huyen(r)===name);
+      const dm=metricsForRows(tr,cr,sr); return {name,...dm,tr,cr,sr,t:[...tr,...cr],s:sr,score:score(dm)};
+    }).sort((a,b)=>b.score-a.score||(b.tkm+b.cap+b.sc+b.soc+b.socHome)-(a.tkm+a.cap+a.sc+a.soc+a.socHome)||a.name.localeCompare(b.name,'vi'));
+    const districtTable=`<h4>13 HUYỆN</h4><div class="kpi-bot-table-wrap"><table><thead><tr><th>STT</th><th>Huyện</th><th>TKM</th><th>CNHS</th><th>SC</th><th>SOC</th><th>SOC HOME</th><th>TKM &gt;24H</th><th>TKM QH</th><th>SC &gt;24H</th><th>SC &gt;72H</th><th>Điểm</th></tr></thead><tbody>${districts.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b></td><td>${botNum(x.tkm)}</td><td>${botNum(x.cap)}</td><td>${botNum(x.sc)}</td><td>${botNum(x.soc)}</td><td>${botNum(x.socHome)}</td><td>${botNum(x.tkm24,'bad')}</td><td>${botNum(x.tkmHen,'bad')}</td><td>${botNum(x.sc24,'bad')}</td><td>${botNum(x.sc72,'bad')}</td><td class="bad"><b>${x.score}</b></td></tr>`).join('')||'<tr><td colspan="12">Không có dữ liệu huyện</td></tr>'}</tbody></table></div>`;
+    const actions=districts.slice(0,5).map((d,i)=>{
+      const causes=[['TKM tồn',d.tkm],['CNHS',d.cap],['SC',d.sc],['SOC',d.soc],['SOC HOME',d.socHome],['TKM >24H',d.tkm24],['TKM quá hẹn',d.tkmHen],['SC >24H',d.sc24],['SC >72H',d.sc72],['SOC >24H',d.soc24],['SOC >72H',d.soc72],['SOC HOME >24H',d.sochome24],['SOC HOME >72H',d.sochome72]].filter(v=>Number(v[1])>0).sort((a,b)=>b[1]-a[1]).slice(0,4);
+      const services=serviceBreakdown(d.t,4);
+      const staffNames=[...new Set([...d.t,...d.s].map(staff).filter(Boolean))];
+      const badStaff=staffNames.map(n=>{const tr=d.tr.filter(r=>upper(staff(r))===upper(n)),cr=d.cr.filter(r=>upper(staff(r))===upper(n)),sr=d.sr.filter(r=>upper(staff(r))===upper(n)),mm=metricsForRows(tr,cr,sr);return {name:n,score:score(mm),total:mm.tkm+mm.cap+mm.sc+mm.soc+mm.socHome};}).sort((a,b)=>b.score-a.score||b.total-a.total).slice(0,2);
+      return `<div class="kpi-action-item"><b>${i+1}. Huyện ${esc(d.name)}</b>: ${causes.map(v=>`${esc(v[0])} <b>${botNum(v[1])}</b>`).join(', ')||'chưa có chỉ số nổi bật'}.${services.length?` Dịch vụ nổi bật: ${services.map(v=>`${esc(v.name)} <b>${botNum(v.count)}</b>`).join(' • ')}.`:''}${badStaff.length?` Ưu tiên kiểm tra <b>${badStaff.map(v=>esc(v.name)).join(', ')}</b>.`:''}</div>`;
+    }).join('');
+    const staffNames=[...new Set([...sp.tkm.map(staff),...sp.cap.map(staff),...allSc.map(staff)].filter(Boolean))];
+    const top15=staffNames.map(n=>{const tr=sp.tkm.filter(r=>upper(staff(r))===upper(n)),cr=sp.cap.filter(r=>upper(staff(r))===upper(n)),sr=allSc.filter(r=>upper(staff(r))===upper(n)),mm=metricsForRows(tr,cr,sr);return {name:n,score:score(mm),...mm};}).sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,'vi')).slice(0,15);
+    return `<h3>📊 TỔNG QUAN KPI • THÁNG ${esc(mt.label)}</h3><table class="kpi-bot-summary-table"><tbody><tr><th>TKM tồn</th><td>${botNum(m.tkm)}</td><th>CNHS</th><td>${botNum(m.cap)}</td></tr><tr><th>SC</th><td>${botNum(m.sc)}</td><th>SOC</th><td>${botNum(m.soc)}</td></tr><tr><th>SOC HOME</th><td>${botNum(m.socHome)}</td><th>TKM &gt;24H</th><td>${botNum(m.tkm24,'bad')}</td></tr><tr><th>TKM quá hẹn</th><td>${botNum(m.tkmHen,'bad')}</td><th>SC &gt;24H</th><td>${botNum(m.sc24,'bad')}</td></tr><tr><th>SC &gt;72H</th><td>${botNum(m.sc72,'bad')}</td><th>SOC &gt;24H</th><td>${botNum(m.soc24,'bad')}</td></tr><tr><th>SOC &gt;72H</th><td>${botNum(m.soc72,'bad')}</td><th>SOC HOME &gt;24H</th><td>${botNum(m.sochome24,'bad')}</td></tr><tr><th>SOC HOME &gt;72H</th><td>${botNum(m.sochome72,'bad')}</td><th>Tổng quá hạn</th><td>${botNum(m.tkm24+m.tkmHen+m.sc24+m.sc72+m.soc24+m.soc72+m.sochome24+m.sochome72,'bad')}</td></tr></tbody></table>${districtTable}<div class="kpi-bot-note">Các đánh giá dưới đây được tính trực tiếp từ dữ liệu <b>THÁNG ${esc(mt.label)}</b>.</div><h3>🎯 GỢI Ý HÀNH ĐỘNG</h3>${actions||'<div>Không có huyện nổi bật trong tháng này.</div>'}<h4>👤 TOP 15 NHÂN VIÊN TẢI TỒN CAO</h4>${staffTable(top15)}`;
+  }catch(err){console.error('BOT tổng quan tháng',err);return `<h3>📊 TỔNG QUAN KPI • THÁNG ${esc(mt.label)}</h3><div>Không thể dựng dữ liệu tháng này.</div>`;}
+}
 
-  async function answer(q){try{const u=upper(q);if(u==='/HELP'||u==='HELP'||u.includes('TRỢ GIÚP'))return helpOverview();const mt=getMonthTarget(q);if(mt&&u.includes('TỔNG QUAN'))return monthlyTotalOverview(q);if(u.includes('TỔNG QUAN'))return totalOverview();
+async function answer(q){try{const u=upper(q);if(u==='/HELP'||u==='HELP'||u.includes('TRỢ GIÚP'))return helpOverview();const mt=getMonthTarget(q);if(mt&&u.includes('TỔNG QUAN'))return monthlyTotalOverview(q);if(u.includes('TỔNG QUAN'))return totalOverview();
     if(mt){
       const monthData=await getMonthlyRows(mt.year,mt.month);
       const monthRows=[...(monthData.tkm||[]),...(monthData.sc||[])];
@@ -29665,7 +30465,128 @@ function setSevenDayChartStatus(state, text){
       return `<div class="kpi-bot-suggest"><b>💡 ĐỀ XUẤT • ${esc(scope)}</b><br><span>Nguyên nhân nổi bật:</span> ${causeText}.<br><span>Dịch vụ TKM nổi bật:</span> ${svText}.<br><span>Hành động:</span> ${esc(action)}</div>`;
     }catch(e){return ''}
   }
-  function addMsg(html,cls){const box=document.getElementById('kpiBotMessages');if(!box)return;const d=document.createElement('div');d.className='kpi-bot-message '+cls;d.innerHTML=html;box.appendChild(d);box.scrollTop=box.scrollHeight;}
+  function kpiBotCaptureElement(el,filename){
+    if(!el)return;
+    if(typeof html2canvas!=='function'){
+      alert('Chưa tải được chức năng chụp màn hình. Vui lòng thử lại.');
+      return;
+    }
+
+    const btns=el.querySelectorAll?el.querySelectorAll('.kpi-bot-capture-bar'):[];
+    const old=[];
+    btns.forEach(b=>{old.push([b,b.style.display]);b.style.display='none';});
+
+    // html2canvas đôi khi mất chữ trong các chip inline-flex khi chụp từ BOT.
+    // Ép bản sao dùng layout thường và màu chữ cố định trước khi render.
+    const renderShot=async()=>{
+      if(document.fonts && document.fonts.ready){
+        try{await document.fonts.ready;}catch(_){}
+      }
+      return html2canvas(el,{
+        scale:2,
+        backgroundColor:'#ffffff',
+        useCORS:true,
+        logging:false,
+        windowWidth:Math.max(el.scrollWidth,el.clientWidth),
+        windowHeight:Math.max(el.scrollHeight,el.clientHeight),
+        onclone:(doc)=>{
+          const clone=doc.body;
+          clone.querySelectorAll('.kpi-mini-chip').forEach(chip=>{
+            chip.style.display='inline-block';
+            chip.style.whiteSpace='nowrap';
+            chip.style.color='#1f2937';
+            chip.style.visibility='visible';
+            chip.style.opacity='1';
+          });
+          clone.querySelectorAll('.kpi-mini-chip b').forEach(node=>{
+            node.style.display='inline';
+            node.style.color='#334155';
+            node.style.visibility='visible';
+            node.style.opacity='1';
+          });
+          clone.querySelectorAll('.kpi-mini-chip .kpi-bot-number').forEach(node=>{
+            node.style.display='inline';
+            node.style.color='#dc2626';
+            node.style.visibility='visible';
+            node.style.opacity='1';
+          });
+        }
+      });
+    };
+
+    renderShot().then(async canvas=>{
+      old.forEach(x=>x[0].style.display=x[1]);
+
+      try{
+        const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+        if(!blob)throw new Error('Không tạo được ảnh');
+
+        if(!navigator.clipboard || !window.ClipboardItem){
+          throw new Error('Trình duyệt không hỗ trợ ClipboardItem');
+        }
+
+        await navigator.clipboard.write([
+          new ClipboardItem({'image/png':blob})
+        ]);
+
+        // Thông báo ngắn, không tải/lưu file ảnh.
+        const note=document.createElement('div');
+        note.className='kpi-bot-copy-toast';
+        note.textContent='✓ Đã chụp và lưu vào Clipboard';
+        document.body.appendChild(note);
+        requestAnimationFrame(()=>note.classList.add('show'));
+        setTimeout(()=>{
+          note.classList.remove('show');
+          setTimeout(()=>note.remove(),250);
+        },1800);
+      }catch(err){
+        console.error('BOT clipboard screenshot',err);
+        alert('Không thể đưa ảnh vào Clipboard. Hãy mở trang bằng Chrome/HTTPS và thử lại.');
+      }
+    }).catch(err=>{
+      old.forEach(x=>x[0].style.display=x[1]);
+      console.error('BOT screenshot',err);
+      alert('Không thể chụp kết quả phân tích này.');
+    });
+  }
+
+  function addBotCaptureControls(d){
+    if(!d || !d.classList.contains('bot'))return;
+    const tables=[...d.querySelectorAll('table')];
+    tables.forEach((table,i)=>{
+      const bar=document.createElement('div');
+      bar.className='kpi-bot-capture-bar';
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='kpi-bot-capture-btn';
+      btn.textContent='📋 Chụp vào Clipboard';
+      btn.addEventListener('click',()=>kpiBotCaptureElement(table,'BOT-BANG-'+(i+1)));
+      bar.appendChild(btn);
+      table.parentNode.insertBefore(bar,table);
+    });
+
+    // Mỗi lần BOT phân tích xong luôn có thêm 1 nút chụp toàn bộ kết quả.
+    const full=document.createElement('div');
+    full.className='kpi-bot-capture-bar kpi-bot-capture-full';
+    const fullBtn=document.createElement('button');
+    fullBtn.type='button';
+    fullBtn.className='kpi-bot-capture-btn';
+    fullBtn.textContent='📋 Chụp toàn bộ vào Clipboard';
+    fullBtn.addEventListener('click',()=>kpiBotCaptureElement(d,'BOT-PHAN-TICH'));
+    full.appendChild(fullBtn);
+    d.appendChild(full);
+  }
+
+  function addMsg(html,cls){
+    const box=document.getElementById('kpiBotMessages');
+    if(!box)return;
+    const d=document.createElement('div');
+    d.className='kpi-bot-message '+cls;
+    d.innerHTML=html;
+    addBotCaptureControls(d);
+    box.appendChild(d);
+    box.scrollTop=box.scrollHeight;
+  }
   window.openKpiAnalysisBot=function(){const m=document.getElementById('kpiAnalysisBotModal');if(!m)return;m.classList.add('is-open');m.setAttribute('aria-hidden','false');const sel=document.getElementById('kpiBotDistrictSelect');if(sel&&!sel.dataset.loaded){sel.innerHTML='<option value="">Chọn huyện...</option>'+districtList().map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');sel.dataset.loaded='1';}const box=document.getElementById('kpiBotMessages');if(box){box.innerHTML='';addMsg(helpOverview(),'bot');box.scrollTop=0;}};
   window.closeKpiAnalysisBot=function(){const m=document.getElementById('kpiAnalysisBotModal');if(m){m.classList.remove('is-open');m.setAttribute('aria-hidden','true')}};
   window.kpiBotRun=function(q){addMsg(esc(q),'user');setTimeout(async()=>{const html=await answer(q);const suggest=await buildBotSuggestions(q);addMsg(html+suggest,'bot');},30)};
@@ -29840,7 +30761,7 @@ function setSevenDayChartStatus(state, text){
       body.insertBefore(toolbar,body.querySelector('.chart-zoom-canvas-wrap'));
       const sel=toolbar.querySelector('#top15ZoomMonthFilter');const opts=await monthOptionsFor(sourceCanvas);sel.innerHTML=opts.map(k=>`<option value="${k}">${k?monthLabel(k):'Tất cả tháng'}</option>`).join('');
       const selected=opts.find(Boolean)||opts[0]||'';sel.value=selected;
-      const update=async()=>{const month=sel.value||'';const meta=toolbar.querySelector('#top15ZoomMonthMeta');if(meta)meta.textContent=month?`${monthLabel(month)} • biểu đồ theo tháng`:'Tất cả tháng • biểu đồ tổng hợp';const title=document.getElementById('chartZoomTitle');if(title)title.textContent=(sourceCanvas.id==='chartTKM'?'15 NHÂN VIÊN TỒN SỰ CỐ CAO':'15 NHÂN VIÊN TỒN TKM THEO DỊCH VỤ')+(month?` • ${monthLabel(month)}`:'');await drawZoom(sourceCanvas,month);};
+      const update=async()=>{const month=sel.value||'';const meta=toolbar.querySelector('#top15ZoomMonthMeta');if(meta)meta.textContent=month?`${monthLabel(month)} • biểu đồ theo tháng`:'Tất cả tháng • biểu đồ tổng hợp';const title=document.getElementById('chartZoomTitle');if(title)title.textContent=(sourceCanvas.id==='chartTKM'?'DANH SÁCH 15 NHÂN VIÊN TỒN SỰ CỐ CAO':'DANH SÁCH 15 NHÂN VIÊN TỒN CAO TKM THEO DỊCH VỤ')+(month?` • ${monthLabel(month)}`:'');await drawZoom(sourceCanvas,month);};
       sel.onchange=update;await update();
     },100);
   };
@@ -29859,8 +30780,368 @@ function setSevenDayChartStatus(state, text){
   }
 })();
 </script>
+
+<script id="CHART_ZOOM_CAPTURE_V81">
+(function(){
+  window.captureZoomChart = async function(event){
+    if(event){event.preventDefault();event.stopPropagation();}
+    const box=document.getElementById('chartZoomCaptureArea');
+    const btn=event && event.currentTarget ? event.currentTarget : document.querySelector('.chart-zoom-capture');
+    if(!box || typeof html2canvas!=="function") {
+      alert('Chưa tải được thư viện chụp màn hình. Hãy mở lại trang và thử lại.');
+      return;
+    }
+    const old=btn ? btn.innerHTML : '📸';
+    try{
+      if(btn){btn.disabled=true;btn.innerHTML='⏳';}
+      if(document.fonts && document.fonts.ready) await document.fonts.ready;
+      await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+
+      /*
+        Chụp nguyên khung để không mất nội dung, sau đó tự tìm vùng
+        có pixel thực tế và cắt bỏ toàn bộ khoảng trắng thừa.
+        Cách này ổn định hơn tính theo scrollHeight vì modal luôn cao
+        gần/full viewport.
+      */
+      const shot=await html2canvas(box,{
+        scale:2,
+        useCORS:true,
+        allowTaint:false,
+        backgroundColor:'#ffffff',
+        logging:false,
+        imageTimeout:15000,
+        scrollX:0,
+        scrollY:-window.scrollY,
+        windowWidth:Math.max(document.documentElement.clientWidth,box.scrollWidth,box.clientWidth),
+        windowHeight:Math.max(document.documentElement.clientHeight,box.scrollHeight,box.clientHeight)
+      });
+
+      const sw=shot.width, sh=shot.height;
+      const ctx=shot.getContext('2d',{willReadFrequently:true});
+      const img=ctx.getImageData(0,0,sw,sh);
+      const px=img.data;
+
+      /*
+        Tìm bounding-box của nội dung khác nền trắng.
+        Bỏ qua sai số nén/viền cực nhạt bằng ngưỡng 8.
+        Quét theo block rồi quét lại vùng tìm được để nhanh hơn.
+      */
+      let minX=sw, minY=sh, maxX=-1, maxY=-1;
+      const step=2;
+      for(let y=0;y<sh;y+=step){
+        for(let x=0;x<sw;x+=step){
+          const i=(y*sw+x)*4;
+          const a=px[i+3];
+          if(a<10) continue;
+          const r=px[i], g=px[i+1], b=px[i+2];
+          const diff=Math.max(255-r,255-g,255-b);
+          if(diff>8){
+            if(x<minX)minX=x;
+            if(y<minY)minY=y;
+            if(x>maxX)maxX=x;
+            if(y>maxY)maxY=y;
+          }
+        }
+      }
+
+      let outputCanvas=shot;
+      if(maxX>=0 && maxY>=0){
+        const pad=Math.round(12*2); // 12 CSS px ở scale 2
+        minX=Math.max(0,minX-pad);
+        minY=Math.max(0,minY-pad);
+        maxX=Math.min(sw-1,maxX+pad);
+        maxY=Math.min(sh-1,maxY+pad);
+
+        const cropW=maxX-minX+1;
+        const cropH=maxY-minY+1;
+        outputCanvas=document.createElement('canvas');
+        outputCanvas.width=cropW;
+        outputCanvas.height=cropH;
+        const out=outputCanvas.getContext('2d');
+        out.fillStyle='#ffffff';
+        out.fillRect(0,0,cropW,cropH);
+        out.drawImage(shot,minX,minY,cropW,cropH,0,0,cropW,cropH);
+      }
+
+      const blob=await new Promise(resolve=>outputCanvas.toBlob(resolve,'image/png'));
+      if(!blob) throw new Error('Không tạo được ảnh.');
+      if(navigator.clipboard && window.ClipboardItem){
+        await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+        if(btn){btn.innerHTML='✅';}
+        setTimeout(()=>{if(btn){btn.innerHTML='📸';btn.disabled=false;}},1000);
+      }else{
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');
+        a.href=url;
+        a.download='BIEU_DO_PHONG_TO_CDBR.png';
+        a.click();
+        setTimeout(()=>URL.revokeObjectURL(url),1000);
+        if(btn)btn.innerHTML='✅';
+      }
+    }catch(err){
+      console.error('captureZoomChart:',err);
+      alert('Không chụp được biểu đồ: '+(err?.message||err));
+    }finally{
+      if(btn && btn.innerHTML==='⏳'){btn.innerHTML=old;btn.disabled=false;}
+      else if(btn && btn.innerHTML!=='✅'){btn.disabled=false;}
+    }
+  };
+
+
+  const css=document.createElement('style');
+  css.id='CHART_ZOOM_CAPTURE_CSS_V81';
+  css.textContent=`
+    .chart-zoom-head{position:relative !important;}
+    .chart-zoom-head-actions{display:flex !important;align-items:center !important;gap:6px !important;}
+    .chart-zoom-capture{
+      width:30px !important;height:28px !important;padding:0 !important;
+      display:inline-flex !important;align-items:center !important;justify-content:center !important;
+      border:1px solid #cbd5e1 !important;border-radius:7px !important;
+      background:#fff !important;color:#2563eb !important;
+      font:700 13px/1 Arial,sans-serif !important;cursor:pointer !important;
+      box-shadow:0 2px 7px rgba(15,23,42,.10) !important;
+    }
+    .chart-zoom-capture:hover{background:#eff6ff !important;}
+    .chart-zoom-capture:disabled{opacity:.65 !important;cursor:wait !important;}
+    @media(max-width:700px){
+      .chart-zoom-head-actions{gap:4px !important;}
+      .chart-zoom-capture{width:28px !important;height:26px !important;font-size:12px !important;}
+    }
+  `;
+  document.head.appendChild(css);
+})();
+</script>
+
+
+
+
+
+<script id="ZOOM_MONTH_FILTER_SINGLE_V91">
+(function(){
+  /*
+   * V91: DUY NHẤT 1 bộ lọc tháng cho từng biểu đồ phóng to.
+   * Top 15: giữ nguyên bộ lọc riêng đang có.
+   * Các biểu đồ thường: 1 toolbar duy nhất + dữ liệu tháng lấy từ pipeline V88.
+   */
+  const TOP15_IDS = new Set(['chartTKM','chartTongTKM']);
+  const REGULAR = {
+    chartSC:'TỒN SỰ CỐ MỨC TTH',
+    chartCNHS:'BIỂU ĐỒ CNHS',
+    chartTongTKMDichVu:'TỒN TKM THEO DỊCH VỤ',
+    chartSCHuyenKPI:'SC KPI TRỌNG TÂM',
+    chartTKMHuyenKPI:'TKM KPI TRỌNG TÂM'
+  };
+
+  const baseOpen = window.openChartZoomFromCanvas;
+  const baseClose = window.closeChartZoom;
+  if(typeof baseOpen!=='function') return;
+  if(window.__zoomMonthSingleV91Installed) return;
+  window.__zoomMonthSingleV91Installed=true;
+
+  function zoomCanvas(){return document.getElementById('chartZoomCanvas');}
+  function modal(){return document.getElementById('chartZoomModal');}
+  function chartOf(canvas){
+    if(!canvas) return null;
+    try{
+      if(typeof Chart!=='undefined' && typeof Chart.getChart==='function'){
+        const c=Chart.getChart(canvas); if(c) return c;
+      }
+    }catch(e){}
+    try{
+      if(typeof window.getChartInstanceFromCanvas==='function') return window.getChartInstanceFromCanvas(canvas);
+    }catch(e){}
+    return null;
+  }
+  function destroyZoom(){
+    const z=zoomCanvas();
+    try{const c=chartOf(z); if(c)c.destroy();}catch(e){}
+    try{if(window.activeChartZoomChart){window.activeChartZoomChart.destroy();}}catch(e){}
+    window.activeChartZoomChart=null;
+    try{
+      if(typeof Chart!=='undefined' && Chart.instances){
+        Object.values(Chart.instances).forEach(c=>{
+          try{if(c?.canvas?.id==='chartZoomCanvas')c.destroy();}catch(e){}
+        });
+      }
+    }catch(e){}
+  }
+  function cleanRegularBars(m){
+    if(!m)return;
+    m.querySelectorAll('.zoom-month-toolbar-v91,.zoom-month-toolbar-v83,.zoom-month-toolbar-v89,.zoom-month-toolbar-v90').forEach(e=>e.remove());
+    m.classList.remove('zoom-month-filter-mode-v91','zoom-month-filter-mode-v83','zoom-month-filter-mode-v89','zoom-month-filter-mode-v90');
+    delete m.dataset.zoomMonthChart;
+  }
+  function parseKey(v){
+    if(v===null||v===undefined||String(v).trim()==='')return '';
+    try{
+      if(typeof parseHistoryDate==='function'){
+        const t=parseHistoryDate(v);
+        if(Number.isFinite(t)&&t>0){const d=new Date(t);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;}
+      }
+    }catch(e){}
+    const s=String(v).trim();
+    let m=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
+    if(m)return `${m[3]}-${String(Number(m[2])).padStart(2,'0')}`;
+    const d=new Date(s);
+    return Number.isFinite(d.getTime())?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`:'';
+  }
+  function monthLabel(k){
+    if(!k)return 'Tất cả tháng';
+    const [y,m]=String(k).split('-');
+    return `THÁNG ${String(m).padStart(2,'0')}/${y}`;
+  }
+  async function monthOptions(){
+    const set=new Set();
+    const now=new Date();
+    set.add(`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`);
+    const p=new Date(now.getFullYear(),now.getMonth()-1,1);
+    set.add(`${p.getFullYear()}-${String(p.getMonth()+1).padStart(2,'0')}`);
+    const add=(arr,field)=>{if(Array.isArray(arr))arr.forEach(r=>{const k=parseKey(r?.[field]);if(k)set.add(k);});};
+    add(window.tonsc,'ngay');
+    add(window.tkmThuc,'ntdn');
+    add(window.capnhaths,'ntdn');
+    add(window.tontkm,'ntdn');
+    add(window.tontkmHistory,'ntdn');
+    try{
+      if(typeof loadRemoteHistorySnapshots==='function'){
+        const ss=await loadRemoteHistorySnapshots();
+        (ss||[]).forEach(x=>{const k=parseKey(x?.tgupdate);if(k)set.add(k);});
+      }
+    }catch(e){console.warn('V91 month list',e);}
+    return ['',...Array.from(set).sort().reverse()];
+  }
+  function clone(v){
+    try{if(typeof cloneChartValue==='function')return cloneChartValue(v);return JSON.parse(JSON.stringify(v));}
+    catch(e){return v;}
+  }
+  async function buildConfig(sourceCanvas,k){
+    if(typeof window.buildMonthlyConfig==='function'){
+      const cfg=await window.buildMonthlyConfig(sourceCanvas,k);
+      if(cfg?.data)return cfg;
+    }
+    throw new Error('Không có dữ liệu tháng.');
+  }
+  async function drawMonth(sourceCanvas,k,title){
+    const z=zoomCanvas(); if(!z)throw new Error('Không tìm thấy biểu đồ phóng to.');
+    destroyZoom();
+    const cfg=await buildConfig(sourceCanvas,k);
+    cfg.options=clone(cfg.options||{});
+    cfg.options.responsive=true;
+    cfg.options.maintainAspectRatio=false;
+    cfg.options.animation=false;
+    const c=new Chart(z.getContext('2d'),cfg);
+    window.activeChartZoomChart=c;
+    const t=document.getElementById('chartZoomTitle');
+    if(t)t.textContent=`${title} • ${monthLabel(k)}`;
+    return c;
+  }
+  function ensureToolbar(body){
+    let bar=body.querySelector('.zoom-month-toolbar-v91');
+    if(bar)return bar;
+    bar=document.createElement('div');
+    bar.className='zoom-month-toolbar-v91';
+    bar.innerHTML='<label>Lọc tháng</label><select class="zoom-month-select-v91"></select><span class="zoom-month-meta-v91"></span>';
+    const wrap=body.querySelector('.chart-zoom-canvas-wrap');
+    if(wrap)body.insertBefore(bar,wrap); else body.insertBefore(bar,body.firstChild);
+    return bar;
+  }
+  async function openRegular(sourceCanvas,title){
+    /* Chỉ regular mới vào đây; Top15 đi qua handler cũ. */
+    destroyZoom();
+    baseOpen(sourceCanvas);
+    await new Promise(r=>setTimeout(r,100));
+    const m=modal(),body=m?.querySelector('.chart-zoom-body');
+    if(!m||!body)return;
+    cleanRegularBars(m);
+    m.classList.add('zoom-month-filter-mode-v91');
+    m.dataset.zoomMonthChart=sourceCanvas.id;
+    const bar=ensureToolbar(body);
+    const sel=bar.querySelector('.zoom-month-select-v91');
+    const meta=bar.querySelector('.zoom-month-meta-v91');
+    const opts=await monthOptions();
+    sel.innerHTML=opts.map(k=>`<option value="${k}">${monthLabel(k)}</option>`).join('');
+    sel.value='';
+    const h=document.getElementById('chartZoomTitle'); if(h)h.textContent=title;
+    if(meta)meta.textContent='Tất cả tháng • biểu đồ tổng hợp';
+    let changeSeq=0;
+    sel.onchange=async()=>{
+      const seq=++changeSeq;
+      const k=sel.value||'';
+      sel.disabled=true;
+      try{
+        if(k){
+          await drawMonth(sourceCanvas,k,title);
+          if(seq!==changeSeq)return;
+          if(meta)meta.textContent=`${monthLabel(k)} • biểu đồ theo tháng`;
+        }else{
+          destroyZoom();
+          baseOpen(sourceCanvas);
+          await new Promise(r=>setTimeout(r,80));
+          if(seq!==changeSeq)return;
+          const mm=modal(),bb=mm?.querySelector('.chart-zoom-body');
+          if(mm&&bb){
+            cleanRegularBars(mm);
+            mm.classList.add('zoom-month-filter-mode-v91');
+            mm.dataset.zoomMonthChart=sourceCanvas.id;
+            const nb=ensureToolbar(bb);
+            const ns=nb.querySelector('.zoom-month-select-v91');
+            const nm=nb.querySelector('.zoom-month-meta-v91');
+            ns.innerHTML=opts.map(x=>`<option value="${x}">${monthLabel(x)}</option>`).join('');
+            ns.value='';
+            ns.onchange=sel.onchange;
+            if(nm)nm.textContent='Tất cả tháng • biểu đồ tổng hợp';
+          }
+          if(h)h.textContent=title;
+        }
+      }catch(e){
+        console.error('V91 lọc tháng:',e);
+        if(meta)meta.textContent='Không lấy được dữ liệu tháng';
+      }finally{sel.disabled=false;}
+    };
+  }
+  window.openChartZoomFromCanvas=function(sourceCanvas){
+    const id=sourceCanvas?.id||'';
+    if(REGULAR[id]){openRegular(sourceCanvas,REGULAR[id]).catch(e=>console.error('V91 open regular:',e));return;}
+    /* Top15 + 7 ngày: giữ nguyên handler đang có. */
+    baseOpen(sourceCanvas);
+  };
+  if(typeof baseClose==='function'){
+    window.closeChartZoom=function(){
+      destroyZoom();
+      try{baseClose();}finally{cleanRegularBars(modal());}
+    };
+  }
+  const css=document.createElement('style');
+  css.id='ZOOM_MONTH_FILTER_SINGLE_V91_CSS';
+  css.textContent=`
+    #chartZoomModal.zoom-month-filter-mode-v91 .zoom-month-toolbar-v91{
+      display:flex!important;align-items:center!important;gap:8px!important;flex-wrap:wrap!important;
+      margin:0 0 8px!important;background:#fff!important;border:1px solid #dbe3ec!important;
+      border-radius:10px!important;padding:8px 10px!important;box-shadow:0 2px 8px rgba(15,23,42,.05)!important;
+    }
+    #chartZoomModal.zoom-month-filter-mode-v91 .zoom-month-toolbar-v91 label{
+      font-size:11px!important;font-weight:900!important;color:#334155!important;white-space:nowrap!important;
+    }
+    #chartZoomModal.zoom-month-filter-mode-v91 .zoom-month-select-v91{
+      height:32px!important;min-width:190px!important;border:1px solid #64748b!important;border-radius:8px!important;
+      background:#fff!important;padding:0 10px!important;font-size:11px!important;font-weight:800!important;color:#0f172a!important;
+    }
+    #chartZoomModal.zoom-month-filter-mode-v91 .zoom-month-meta-v91{
+      margin-left:auto!important;font-size:10px!important;color:#64748b!important;font-weight:700!important;
+    }
+    @media(max-width:700px){
+      #chartZoomModal.zoom-month-filter-mode-v91 .zoom-month-toolbar-v91{gap:6px!important;padding:7px!important;}
+      #chartZoomModal.zoom-month-filter-mode-v91 .zoom-month-select-v91{flex:1!important;min-width:150px!important;}
+      #chartZoomModal.zoom-month-filter-mode-v91 .zoom-month-meta-v91{width:100%!important;margin-left:0!important;}
+    }
+  `;
+  document.head.appendChild(css);
+})();
+</script>
+
 </body>
-  </html>
+  
+</html>
 
 
 <style id="MOBILE_UI_FIX_V56">
@@ -30117,3 +31398,111 @@ function setSevenDayChartStatus(state, text){
   .modal-header > div > button:nth-child(4)::after{content:"Đóng" !important;}
 }
 </style>
+<script id="ZOOM_MONTH_DATA_DIRECT_V88">
+(function(){
+  /* V88: dựng dữ liệu tháng trực tiếp từ pipeline getMonthlyRows của BOT.
+     Không render lại chart thật, không phụ thuộc snapshot binding nội bộ của Chart.js. */
+  const oldBuild=window.buildMonthlyConfig;
+  const clean=v=>String(v??'').replace(/\u00A0/g,' ').replace(/\s+/g,' ').trim();
+  const upper=v=>clean(v).toUpperCase();
+  const n=v=>Number(v)||0;
+  const parseDate=v=>{
+    if(typeof parseHistoryDate==='function'){
+      const t=parseHistoryDate(v); if(t) return new Date(t);
+    }
+    const s=clean(v);
+    let m=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
+    if(m) return new Date(+m[3],+m[2]-1,+m[1]);
+    const d=new Date(s); return Number.isFinite(d.getTime())?d:null;
+  };
+  const dateField=(r,kind)=>kind==='sc'?(r?.ngay??r?.date??r?.ngaytn??r?.created_at): (r?.ntdn??r?.date??r?.ngaytn??r?.created_at);
+  const monthRows=async(key)=>{
+    const [y,m]=String(key).split('-').map(Number);
+    if(!y||!m) return null;
+    if(typeof window.__kpiGetMonthlyRows==='function'){
+      const x=await window.__kpiGetMonthlyRows(y,m-1);
+      if(x && (Array.isArray(x.tkm)||Array.isArray(x.sc))) return {tkm:Array.isArray(x.tkm)?x.tkm:[],sc:Array.isArray(x.sc)?x.sc:[]};
+    }
+    /* fallback cuối: dữ liệu local theo ngày */
+    const t=Array.isArray(window.tkmThuc)?window.tkmThuc:[];
+    const c=Array.isArray(window.capnhaths)?window.capnhaths:[];
+    const s=Array.isArray(window.tonsc)?window.tonsc:[];
+    const inM=(r,k)=>{const d=parseDate(dateField(r,k));return d&&d.getFullYear()===y&&d.getMonth()===m-1;};
+    return {tkm:[...t.filter(r=>inM(r,'tkm')), ...c.filter(r=>inM(r,'tkm') )], sc:s.filter(r=>inM(r,'sc'))};
+  };
+  const validTkm=r=>{
+    const tt=upper(r?.tt); return tt!=='CẬP NHẬT HỒ SƠ'&&tt!=='KẾT THÚC';
+  };
+  const service=r=>{
+    const raw=clean(r?.dichvu??r?.gline??r?.DichVu??r?.service??'');
+    const cv=upper(r?.cv??r?.loai_cv??'');
+    const d=upper(raw);
+    if(d.includes('FTTH LĐTB'))return 'FTTH LĐTB';
+    if(d.includes('FTTH TKM'))return 'FTTH TKM';
+    if(d==='FTTH'||d.startsWith('FTTH ')){
+      if(cv.includes('LĐTB'))return 'FTTH LĐTB';
+      if(cv.includes('TKM'))return 'FTTH TKM';
+    }
+    if(d.includes('CAMERA'))return 'Camera';
+    if(d.includes('BOXTV360'))return 'BoxTV360 trả sau';
+    if(d.includes('SMARTTV360'))return 'SmartTV360 trả sau';
+    return raw||'Không xác định';
+  };
+  const huyen=r=>clean(r?.huyen??r?.Huyen??r?.tth??'')||'Khác';
+  const hours=r=>{
+    const v=r?.tg;
+    if(typeof v==='number')return v;
+    const s=clean(v).replace(',','.');
+    if(/^[-+]?\d+(?:\.\d+)?$/.test(s))return Number(s);
+    const m=s.match(/(\d{1,3}):(\d{2})(?::(\d{2}))?/);
+    return m?Number(m[1])+Number(m[2])/60+Number(m[3]||0)/3600:0;
+  };
+  const scType=r=>upper(r?.sc??r?.loai_sc??r?.loai??'');
+  const isRealSc=r=>['SC','SC HOT','SC VIP','HT','HT HOT','HT VIP'].includes(scType(r));
+  const snapshotOrMonthly=async(key)=>await monthRows(key);
+  function byHuyen(rows){ return [...new Set(rows.map(huyen))].sort((a,b)=>a.localeCompare(b,'vi')); }
+  function baseOptions(){ return {responsive:true,maintainAspectRatio:false,animation:false,interaction:{mode:'index',intersect:false}}; }
+  function cfgSC(data){
+    const rows=data.sc||[], hs=byHuyen(rows), mk=(pred)=>hs.map(h=>rows.filter(r=>huyen(r)===h&&pred(r)).length);
+    return {type:'bar',data:{labels:hs,datasets:[
+      {label:'SOC HOME',data:mk(r=>scType(r)==='SOC HOME'),backgroundColor:'#2563eb',borderRadius:2},
+      {label:'SOC',data:mk(r=>scType(r)==='SOC'),backgroundColor:'#f97316',borderRadius:2},
+      {label:'SỰ CỐ',data:mk(r=>isRealSc(r)),backgroundColor:'#dc2626',borderRadius:2}
+    ]},options:{...baseOptions(),plugins:{legend:{display:true,position:'top'},tooltip:{mode:'index',intersect:false}},scales:{x:{offset:true,ticks:{autoSkip:false,maxRotation:45,minRotation:40,font:{size:8,weight:'600'}},title:{display:false}},y:{beginAtZero:true,ticks:{precision:0},title:{display:true,text:'Số lượng'}}}}};
+  }
+  function cfgCNHS(data){
+    const rows=data.tkm||[], hs=byHuyen(rows), vals=hs.map(h=>rows.filter(r=>huyen(r)===h&&upper(r?.tt).includes('CẬP NHẬT HỒ SƠ')).length);
+    return {type:'bar',data:{labels:hs,datasets:[{label:'Tồn cập nhật hồ sơ',data:vals,backgroundColor:'#16a34a',borderRadius:2}]},options:{...baseOptions(),plugins:{legend:{display:true,position:'top'},tooltip:{mode:'index',intersect:false}},scales:{x:{ticks:{autoSkip:false,maxRotation:45,minRotation:40,font:{size:8,weight:'600'}},title:{display:false}},y:{beginAtZero:true,ticks:{precision:0},title:{display:true,text:'Số lượng'}}}}};
+  }
+  function cfgDV(data){
+    const rows=(data.tkm||[]).filter(validTkm), cnt={}; rows.forEach(r=>{const s=service(r);cnt[s]=(cnt[s]||0)+1;});
+    const labels=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]||a.localeCompare(b,'vi'));
+    return {type:'bar',data:{labels,datasets:[{label:'Tồn TKM',data:labels.map(x=>cnt[x]),backgroundColor:'#2563eb',borderRadius:3}]},options:{...baseOptions(),plugins:{legend:{display:false},tooltip:{callbacks:{label:i=>'Tồn TKM: '+i.raw}}},scales:{x:{ticks:{autoSkip:false,maxRotation:45,minRotation:45,font:{size:9,weight:'600'}},title:{display:false}},y:{beginAtZero:true,ticks:{precision:0},title:{display:true,text:'Số lượng'}}}}};
+  }
+  function cfgKPI(data,kind){
+    const allH=new Set(); [...(data.tkm||[]),...(data.sc||[])].forEach(r=>allH.add(huyen(r))); const hs=[...allH].sort((a,b)=>a.localeCompare(b,'vi'));
+    if(kind==='TKM'){
+      const rows=(data.tkm||[]).filter(validTkm);
+      const count=(h,k)=>rows.filter(r=>huyen(r)===h&&upper(r?.kpi)===k).length;
+      return {type:'bar',data:{labels:hs,datasets:[{label:'Quá 24h',data:hs.map(h=>count(h,'QUÁ 24H')),backgroundColor:'#dc2626',borderRadius:2},{label:'Quá 16h',data:hs.map(h=>count(h,'QUÁ 16H')),backgroundColor:'#f97316',borderRadius:2},{label:'Quá hẹn',data:hs.map(h=>count(h,'QUÁ HẸN')),backgroundColor:'#7c3aed',borderRadius:2}]},options:{...baseOptions(),plugins:{legend:{display:true,position:'top'},tooltip:{mode:'index',intersect:false}},scales:{x:{ticks:{autoSkip:false,maxRotation:45,minRotation:45,font:{size:9,weight:'600'}},title:{display:false}},y:{beginAtZero:true,ticks:{precision:0},title:{display:true,text:'Số lượng'}}}}};
+    }
+    const rows=(data.sc||[]).filter(isRealSc);
+    const bands=[['Quá 3-10h',v=>v>3&&v<=10,'#eab308'],['Quá 10-16h',v=>v>10&&v<=16,'#f97316'],['Quá 16-24h',v=>v>16&&v<=24,'#ef4444'],['Quá 24h',v=>v>24,'#991b1b']];
+    return {type:'bar',data:{labels:hs,datasets:bands.map(([lab,pred,col])=>({label:lab,data:hs.map(h=>rows.filter(r=>huyen(r)===h&&pred(hours(r))).length),backgroundColor:col,borderRadius:2}))},options:{...baseOptions(),plugins:{legend:{display:true,position:'top'},tooltip:{mode:'index',intersect:false}},scales:{x:{ticks:{autoSkip:false,maxRotation:45,minRotation:45,font:{size:9,weight:'600'}},title:{display:false}},y:{beginAtZero:true,ticks:{precision:0},title:{display:true,text:'Số lượng'}}}}};
+  }
+  async function directBuild(sourceCanvas,monthKey){
+    const id=sourceCanvas?.id||'';
+    const data=await snapshotOrMonthly(monthKey);
+    if(!data)throw new Error('Không lấy được dữ liệu tháng '+monthKey);
+    if(id==='chartSC')return cfgSC(data);
+    if(id==='chartCNHS')return cfgCNHS(data);
+    if(id==='chartTongTKMDichVu')return cfgDV(data);
+    if(id==='chartSCHuyenKPI')return cfgKPI(data,'SC');
+    if(id==='chartTKMHuyenKPI')return cfgKPI(data,'TKM');
+    return oldBuild?oldBuild(sourceCanvas,monthKey):null;
+  }
+  window.buildMonthlyConfig=directBuild;
+  window.__zoomMonthDataDirectV88=true;
+})();
+</script>
+
