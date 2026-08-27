@@ -30017,3 +30017,74 @@ function setSevenDayChartStatus(state, text){
   }
 }
 </style>
+
+<style id="MOBILE_MODAL_BUTTONS_V63_FINAL">
+@media (max-width:768px){
+  /* Hàng tiêu đề + 4 nút: chia cứng, đều tuyệt đối */
+  .modal-header{
+    width:100% !important;
+    display:grid !important;
+    grid-template-columns:30% minmax(0,1fr) !important;
+    column-gap:6px !important;
+    align-items:center !important;
+    box-sizing:border-box !important;
+  }
+  .modal-header > h2{
+    width:100% !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    font-size:10px !important;
+    line-height:1.08 !important;
+    box-sizing:border-box !important;
+    overflow-wrap:anywhere !important;
+  }
+  .modal-header > div{
+    width:100% !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:5px !important;
+    box-sizing:border-box !important;
+  }
+  .modal-header > div > button,
+  .modal-header > div > button.excel-btn,
+  .modal-header > div > button.close-btn{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:0 2px !important;
+    height:32px !important;
+    min-height:32px !important;
+    box-sizing:border-box !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    text-align:center !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    border-radius:7px !important;
+    font-size:0 !important;
+    line-height:1 !important;
+  }
+  .modal-header > div > button:nth-child(1)::after,
+  .modal-header > div > button:nth-child(2)::after,
+  .modal-header > div > button:nth-child(3)::after,
+  .modal-header > div > button:nth-child(4)::after{
+    display:block !important;
+    margin:0 !important;
+    padding:0 !important;
+    font-size:8px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+    white-space:nowrap !important;
+  }
+  .modal-header > div > button:nth-child(1)::after{content:"Tải lọc" !important;}
+  .modal-header > div > button:nth-child(2)::after{content:"Tải full" !important;}
+  .modal-header > div > button:nth-child(3)::after{content:"Xóa" !important;}
+  .modal-header > div > button:nth-child(4)::after{content:"Đóng" !important;}
+}
+</style>
