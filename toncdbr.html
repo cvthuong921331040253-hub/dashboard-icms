@@ -4344,63 +4344,6 @@
 }
 
 
-/* ===== LỌC THÁNG CHO NHÓM BIỂU ĐỒ THỐNG KÊ ===== */
-.global-chart-month-filter{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin:0 0 10px;
-  padding:7px 9px;
-  border:1px solid #dbe5f0;
-  border-radius:9px;
-  background:#f8fbff;
-  box-sizing:border-box;
-  width:100%;
-}
-.global-chart-month-filter label{
-  font-size:10px;
-  font-weight:800;
-  color:#334155;
-  white-space:nowrap;
-}
-.global-chart-month-filter select{
-  height:30px;
-  min-width:150px;
-  padding:0 9px;
-  border:1px solid #cbd5e1;
-  border-radius:7px;
-  background:#fff;
-  color:#0f172a;
-  font-size:10px;
-  font-weight:700;
-}
-.global-chart-month-filter span{
-  margin-left:auto;
-  font-size:9px;
-  font-weight:700;
-  color:#64748b;
-  text-align:right;
-}
-@media(max-width:700px){
-  .global-chart-month-filter{
-    gap:6px;
-    padding:6px 7px;
-  }
-  .global-chart-month-filter label{font-size:9px;}
-  .global-chart-month-filter select{
-    min-width:120px;
-    width:120px;
-    height:29px;
-    font-size:9px;
-  }
-  .global-chart-month-filter span{
-    font-size:8px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    max-width:145px;
-  }
-}
 
 /* ===== TĂNG CỠ CHỮ TIÊU ĐỀ DASHBOARD ĐIỀU HÀNH N-1 / N ===== */
 #opsDashboardSection .ops-title{
@@ -13406,14 +13349,6 @@ body.dashboard-is-loading{
   <div class="dashboard" id="tontkmDashboard"></div>
   
   <div class="section-title">📊 BIỂU ĐỒ THỐNG KÊ</div>
-
-  <div id="globalChartMonthFilter" class="global-chart-month-filter" aria-label="Lọc tháng cho biểu đồ">
-    <label for="globalChartMonthSelect">Lọc tháng</label>
-    <select id="globalChartMonthSelect">
-      <option value="">Tất cả tháng</option>
-    </select>
-    <span id="globalChartMonthStatus">Đang xem tất cả dữ liệu</span>
-  </div>
   
   <div class="chart-grid">
   
@@ -18384,12 +18319,6 @@ const nhaplieu =
   renderTonSC();
   renderTonTKM();
   await renderCharts();
-  try{
-    await initGlobalChartMonthFilter();
-  }catch(filterErr){
-    console.warn("Khởi tạo lọc tháng biểu đồ:",filterErr);
-  }
-
   /*
     BACKUP LỊCH SỬ:
     Apps Script tự kiểm tra API mỗi 5 phút và chỉ backup
@@ -18783,178 +18712,6 @@ try{
   Chart.defaults.elements.bar.borderSkipped=false;
   Chart.defaults.elements.point.hoverRadius=5;
 }catch(e){}
-
-/* ===== GLOBAL MONTH FILTER CHO NHÓM BIỂU ĐỒ THỐNG KÊ ===== */
-window.__globalChartMonthFilter = null;
-window.__globalChartMonthBusy = false;
-
-function chartMonthKeyFromTg(value){
-  const s=String(value||"").trim();
-  const m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-  if(!m)return "";
-  return `${m[3]}-${String(Number(m[2])).padStart(2,"0")}`;
-}
-
-function chartMonthLabel(key){
-  if(!key)return "Tất cả tháng";
-  const [y,m]=String(key).split("-");
-  return `THÁNG ${String(m).padStart(2,"0")}/${y}`;
-}
-
-async function initGlobalChartMonthFilter(){
-  const select=document.getElementById("globalChartMonthSelect");
-  const status=document.getElementById("globalChartMonthStatus");
-  if(!select)return;
-
-  const monthMap=new Map();
-
-  const addMonth=(key)=>{
-    if(!key)return;
-    monthMap.set(key,true);
-  };
-
-  // Các dòng hiện tại có thể đã có ngày thực tế của tháng.
-  (Array.isArray(tonsc)?tonsc:[]).forEach(r=>{
-    const raw=r?.ngay;
-    if(raw){
-      const p=String(raw).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-      if(p)addMonth(`${p[3]}-${String(Number(p[2])).padStart(2,"0")}`);
-    }
-  });
-
-  (Array.isArray(tontkmHistory)?tontkmHistory:[]).forEach(r=>{
-    const raw=r?.ntdn;
-    if(raw){
-      const p=String(raw).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-      if(p)addMonth(`${p[3]}-${String(Number(p[2])).padStart(2,"0")}`);
-    }
-  });
-
-  try{
-    const snaps=await loadRemoteHistorySnapshots();
-    (Array.isArray(snaps)?snaps:[]).forEach(s=>addMonth(chartMonthKeyFromTg(snapshotTg(s))));
-  }catch(err){
-    console.warn("Không lấy được danh sách tháng cho biểu đồ:",err);
-  }
-
-  [...monthMap.keys()].sort((a,b)=>b.localeCompare(a)).forEach(key=>{
-    const o=document.createElement("option");
-    o.value=key;
-    o.textContent=chartMonthLabel(key);
-    select.appendChild(o);
-  });
-
-  if(!select.dataset.bound){
-    select.dataset.bound="1";
-    select.addEventListener("change",()=>applyGlobalChartMonthFilter(select.value));
-  }
-
-  if(status)status.textContent="Đang xem tất cả dữ liệu";
-}
-
-async function getSnapshotForChartMonth(monthKey){
-  if(!monthKey)return null;
-  const snaps=Array.isArray(periodHistoryCache)&&periodHistoryCache.length
-    ? periodHistoryCache
-    : await loadRemoteHistorySnapshots();
-
-  const candidates=(Array.isArray(snaps)?snaps:[])
-    .map(s=>({
-      s,
-      key:chartMonthKeyFromTg(snapshotTg(s)),
-      ts:parseHistoryDate(snapshotTg(s))
-    }))
-    .filter(x=>x.key===monthKey && x.s?.snapshotId)
-    .sort((a,b)=>b.ts-a.ts);
-
-  if(!candidates.length)return null;
-  const rows=await fetchRemoteSnapshotRows(candidates[0].s.snapshotId);
-  return {rows,candidate:candidates[0].s};
-}
-
-function splitChartMonthTkm(rows){
-  const all=Array.isArray(rows)?rows:[];
-  const cap=all.filter(r=>String(r?.tt||"").replace(/\s+/g," ").trim().toUpperCase()==="CẬP NHẬT HỒ SƠ");
-  const tkm=all.filter(r=>String(r?.tt||"").replace(/\s+/g," ").trim().toUpperCase()!=="CẬP NHẬT HỒ SƠ");
-  return {tkm,cap};
-}
-
-async function applyGlobalChartMonthFilter(monthKey){
-  if(window.__globalChartMonthBusy)return;
-  window.__globalChartMonthBusy=true;
-
-  const select=document.getElementById("globalChartMonthSelect");
-  const status=document.getElementById("globalChartMonthStatus");
-  if(select)select.disabled=true;
-  if(status)status.textContent=monthKey?`Đang lọc ${chartMonthLabel(monthKey)}...`:`Đang khôi phục tất cả dữ liệu...`;
-
-  const saved={
-    tonsc:tonsc,
-    tontkm:tontkm,
-    tontkmHistory:tontkmHistory,
-    tkmThuc:window.tkmThuc,
-    capnhaths:window.capnhaths,
-    tongsc:window.tongsc,
-    tongtkm:window.tongtkm,
-    filter:window.__globalChartMonthFilter
-  };
-
-  try{
-    if(monthKey){
-      const pack=await getSnapshotForChartMonth(monthKey);
-      if(!pack || !pack.rows)throw new Error("Không tìm thấy snapshot của "+monthKey);
-
-      const scRows=Array.isArray(pack.rows.sc)?pack.rows.sc:[];
-      const tkmRows=Array.isArray(pack.rows.tkm)?pack.rows.tkm:[];
-      const split=splitChartMonthTkm(tkmRows);
-      const [y,m]=monthKey.split("-").map(Number);
-
-      tonsc=scRows;
-      tontkm=tkmRows;
-      tontkmHistory=tkmRows.slice();
-      window.tkmThuc=split.tkm;
-      window.capnhaths=split.cap;
-      window.tongsc=tonsc;
-      window.tongtkm=split.tkm;
-      window.__globalChartMonthFilter={year:y,month:m,key:monthKey};
-    }else{
-      window.__globalChartMonthFilter=null;
-      tonsc=saved.tonsc;
-      tontkm=saved.tontkm;
-      tontkmHistory=saved.tontkmHistory;
-      window.tkmThuc=saved.tkmThuc;
-      window.capnhaths=saved.capnhaths;
-      window.tongsc=saved.tongsc;
-      window.tongtkm=saved.tongtkm;
-    }
-
-    renderSCHuyen();
-    renderHSChart();
-    renderKPIChart();
-    renderTongTKMChart();
-    renderTongTKMDichVuChart();
-    await renderTong13HuyenDichVuLineChart();
-    renderHuyenKPICharts();
-
-    if(status)status.textContent=monthKey?`${chartMonthLabel(monthKey)} • đang xem dữ liệu theo tháng`:`Đang xem tất cả dữ liệu`;
-  }catch(err){
-    console.error("Lọc tháng biểu đồ lỗi:",err);
-    window.__globalChartMonthFilter=saved.filter||null;
-    if(status)status.textContent="Không lấy được dữ liệu tháng đã chọn";
-    if(select)select.value="";
-  }finally{
-    // Khôi phục source data toàn Dashboard sau khi render, để BOT và các phần khác vẫn dùng dữ liệu hiện tại.
-    tonsc=saved.tonsc;
-    tontkm=saved.tontkm;
-    tontkmHistory=saved.tontkmHistory;
-    window.tkmThuc=saved.tkmThuc;
-    window.capnhaths=saved.capnhaths;
-    window.tongsc=saved.tongsc;
-    window.tongtkm=saved.tongtkm;
-    if(select)select.disabled=false;
-    window.__globalChartMonthBusy=false;
-  }
-}
 
 async function renderCharts(){
 
@@ -19721,21 +19478,7 @@ async function renderCharts(){
     const currentMonth=now.getMonth();
     const prev=new Date(currentYear,currentMonth-1,1);
 
-    const selectedGlobalMonth =
-      (window.__globalChartMonthFilter &&
-       typeof window.__globalChartMonthFilter.year === "number" &&
-       typeof window.__globalChartMonthFilter.month === "number")
-        ? window.__globalChartMonthFilter
-        : null;
-
-    const configs = selectedGlobalMonth
-      ? [{
-          key:"FILTER",
-          label:`THÁNG ${String(selectedGlobalMonth.month+1).padStart(2,"0")}/${selectedGlobalMonth.year}`,
-          year:selectedGlobalMonth.year,
-          month:selectedGlobalMonth.month
-        }]
-      : [
+    const configs = [
           {
             key:"N1",
             label:"N-1",
