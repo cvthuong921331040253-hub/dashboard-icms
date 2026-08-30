@@ -1108,6 +1108,496 @@ body:not(.page-loading){
   border-radius:0 !important;
 }
 
+
+/* ===== 2 Ô TÌM KIẾM CÙNG 1 DÒNG ===== */
+.search-row{
+  display:flex;
+  gap:6px;
+  width:100%;
+}
+
+.search-row input{
+  flex:1;
+  min-width:0;
+  margin:0;
+}
+
+@media (max-width:600px){
+  .search-row{
+    gap:5px;
+  }
+  .search-row input{
+    width:50%;
+    font-size:12px;
+    padding:7px 9px;
+  }
+}
+
+
+/* ===== BO TRÒN KHUNG BẢNG NHƯ MẪU ===== */
+/* Giữ hàng tiêu đề bảng phẳng, chỉ bo tròn khung ngoài */
+.table-wrap{
+  border-radius:10px !important;
+  overflow:hidden !important;
+}
+
+.table-custom{
+  border-radius:0 !important;
+}
+
+.table-custom tr:first-child,
+.table-custom tr:first-child th,
+.table-custom tr:first-child th:first-child,
+.table-custom tr:first-child th:last-child{
+  border-radius:0 !important;
+}
+
+/* Khung header/tìm kiếm bo tròn nhẹ như hình */
+.header{
+  border-radius:0 0 10px 10px;
+  overflow:hidden;
+}
+
+.search-row input{
+  border-radius:10px !important;
+}
+
+
+/* ===== BO TRÒN CẢ 4 GÓC KHUNG BẢNG ===== */
+.table-wrap{
+  border-radius:10px !important;
+  overflow:hidden !important;
+}
+
+/* Bo tròn luôn 2 góc trên của hàng tiêu đề */
+.table-custom tr:first-child th:first-child{
+  border-top-left-radius:10px !important;
+}
+
+.table-custom tr:first-child th:last-child{
+  border-top-right-radius:10px !important;
+}
+
+/* Giữ phần thân bảng nguyên trạng */
+.table-custom tr:last-child td:first-child{
+  border-bottom-left-radius:10px !important;
+}
+
+.table-custom tr:last-child td:last-child{
+  border-bottom-right-radius:10px !important;
+}
+
+
+/* ===== BO 2 GÓC TRÊN CỦA KHUNG HEADER NHƯ VỊ TRÍ ĐÁNH DẤU ===== */
+.header{
+  border-top-left-radius:12px !important;
+  border-top-right-radius:12px !important;
+  border-bottom-left-radius:10px !important;
+  border-bottom-right-radius:10px !important;
+  overflow:hidden !important;
+}
+
+/* Giữ phần thông báo nằm gọn theo góc bo phía trên */
+.header #marqueeBox{
+  border-top-left-radius:0 !important;
+  border-top-right-radius:0 !important;
+  margin-top:0 !important;
+}
+
+/* Phần viền đỏ trên header bo theo 2 góc trên */
+.header::before{
+  border-top-left-radius:12px !important;
+  border-top-right-radius:12px !important;
+}
+
+
+/* ===== FIX LOADER BỊ XOAY MÃI =====
+   #pageLoader ban đầu dùng display:flex !important để chống nháy trang.
+   Khi tải xong, class hidden phải có !important để thực sự ẩn loader.
+*/
+#pageLoader.hidden{
+  display:none !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+
+/* Khung header vẫn bo tròn 2 góc trên như yêu cầu */
+.header{
+  border-top-left-radius:12px !important;
+  border-top-right-radius:12px !important;
+  overflow:hidden !important;
+}
+
+
+/* ===== FIX: THANH CHẠY CHỮ BO THEO 2 GÓC TRÊN HEADER ===== */
+.header{
+  border-top-left-radius:12px !important;
+  border-top-right-radius:12px !important;
+  overflow:hidden !important;
+}
+
+/* Thanh thông báo phải bám theo góc bo của khung ngoài */
+.header #marqueeBox{
+  margin-top:0 !important;
+  border-top-left-radius:12px !important;
+  border-top-right-radius:12px !important;
+  border-bottom-left-radius:6px !important;
+  border-bottom-right-radius:6px !important;
+  overflow:hidden !important;
+}
+
+/* Phần chữ chạy không được tạo nền vuông tràn ra ngoài */
+.header #marqueeText{
+  border-radius:inherit;
+}
+
+
+/* ===== THANH CHẠY CHỮ: BO KHÔNG ĐỀU TRÊN / DƯỚI ===== */
+/* Góc trên lớn hơn để khớp khung header; góc dưới bo nhẹ hơn */
+.header #marqueeBox{
+  border-radius:12px 12px 6px 6px !important;
+  overflow:hidden !important;
+}
+
+/* Không để rule cũ ghi đè từng góc */
+.header #marqueeBox{
+  border-top-left-radius:12px !important;
+  border-top-right-radius:12px !important;
+  border-bottom-left-radius:6px !important;
+  border-bottom-right-radius:6px !important;
+}
+
+
+/* ===== FIX CUỐI: KHUNG CHẠY CHỮ BO ĐỀU 4 GÓC ===== */
+/* Xóa toàn bộ bo góc không đồng nhất từ các bản trước */
+.header #marqueeBox{
+  box-sizing:border-box !important;
+  border-radius:8px !important;
+  border-top-left-radius:8px !important;
+  border-top-right-radius:8px !important;
+  border-bottom-right-radius:8px !important;
+  border-bottom-left-radius:8px !important;
+  overflow:hidden !important;
+  clip-path:inset(0 round 8px) !important;
+}
+
+/* Không cho phần tử con làm lệch cảm giác góc bo */
+.header #marqueeText{
+  border-radius:0 !important;
+}
+
+
+/* ===== FIX MOBILE: CỘT TTH KHÔNG BỊ LẤN CHỮ ===== */
+@media (max-width:600px){
+  .table-wrap{
+    overflow-x:hidden !important;
+  }
+
+  .table-custom{
+    width:100% !important;
+    table-layout:fixed !important;
+    font-size:12px !important;
+  }
+
+  /* Cột TTH rộng hơn để tên dài không chồng sang cột số */
+  .table-custom th:first-child,
+  .table-custom td:first-child{
+    width:42% !important;
+    min-width:0 !important;
+    max-width:42% !important;
+    text-align:left !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    line-height:1.25 !important;
+  }
+
+  /* Các cột số chia phần còn lại */
+  .table-custom th:not(:first-child),
+  .table-custom td:not(:first-child){
+    width:14.5% !important;
+    min-width:0 !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+    padding-left:3px !important;
+    padding-right:3px !important;
+  }
+
+  .table-custom th,
+  .table-custom td{
+    box-sizing:border-box !important;
+    vertical-align:middle !important;
+  }
+}
+
+
+/* ===== MOBILE: BẢNG TTH CUỘN NGANG, KHÔNG ÉP CHỮ ===== */
+@media (max-width:600px){
+  #tableHuyen .table-wrap{
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:auto !important;
+    overflow-y:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  #tableHuyen .table-custom{
+    width:100% !important;
+    min-width:560px !important;
+    table-layout:auto !important;
+    font-size:12px !important;
+  }
+
+  #tableHuyen .table-custom th,
+  #tableHuyen .table-custom td{
+    white-space:nowrap !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+    word-break:normal !important;
+    overflow-wrap:normal !important;
+  }
+
+  /* Cột TTH đủ rộng, không lấn sang cột bên cạnh */
+  #tableHuyen .table-custom th:first-child,
+  #tableHuyen .table-custom td:first-child{
+    min-width:165px !important;
+    width:165px !important;
+    white-space:nowrap !important;
+    text-align:left !important;
+  }
+
+  #tableHuyen .table-custom th:not(:first-child),
+  #tableHuyen .table-custom td:not(:first-child){
+    min-width:80px !important;
+    padding-left:6px !important;
+    padding-right:6px !important;
+  }
+}
+
+
+/* ===== MOBILE: THU GỌN CỘT TTH, TỰ CÂN CHỮ ===== */
+@media (max-width:600px){
+  #tableHuyen .table-wrap{
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  #tableHuyen .table-custom{
+    min-width:500px !important;
+    width:max-content !important;
+    table-layout:auto !important;
+  }
+
+  /* Thu nhỏ cột TTH nhưng vẫn tự xuống dòng theo chữ */
+  #tableHuyen .table-custom th:first-child,
+  #tableHuyen .table-custom td:first-child{
+    width:135px !important;
+    min-width:135px !important;
+    max-width:135px !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    line-height:1.28 !important;
+    text-align:left !important;
+  }
+
+  /* Các cột số tự giữ đủ độ rộng để không bị cắt chữ */
+  #tableHuyen .table-custom th:not(:first-child),
+  #tableHuyen .table-custom td:not(:first-child){
+    width:auto !important;
+    min-width:68px !important;
+    white-space:nowrap !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+    padding-left:5px !important;
+    padding-right:5px !important;
+  }
+
+  #tableHuyen .table-custom th,
+  #tableHuyen .table-custom td{
+    box-sizing:border-box !important;
+    vertical-align:middle !important;
+  }
+}
+
+
+/* ===== BẢN 14: THANH ĐỎ DƯỚI TIÊU ĐỀ BẢNG ===== */
+#tableHuyen .table-wrap{
+  position:relative !important;
+}
+
+#tableHuyen .table-custom tr:first-child th{
+  border-bottom:3px solid #ff0033 !important;
+}
+
+/* ===== BIỂU TƯỢNG BOT: ĐEN / ĐỎ NHƯ MẪU ===== */
+#botButton{
+  background:#111315 !important;
+  border:2px solid #ff0033 !important;
+  border-radius:50% !important;
+  box-shadow:0 0 0 4px rgba(0,0,0,.10), 0 4px 14px rgba(0,0,0,.28) !important;
+  color:#fff !important;
+}
+
+#botButton:hover{
+  background:#1b1b1b !important;
+  box-shadow:0 0 0 4px rgba(255,0,51,.10), 0 5px 16px rgba(0,0,0,.35) !important;
+}
+
+/* Nếu icon bên trong là emoji/ảnh, giữ nguyên kích thước và không tạo nền xanh */
+#botButton img,
+#botButton .bot-icon{
+  background:transparent !important;
+  border-radius:0 !important;
+}
+
+
+/* ===== TTH TỒI NHẤT THEO TỶ LỆ THU HỒI ===== */
+#tableHuyen .table-custom tr.worst-rate td{
+  background:#fff0f2 !important;
+  font-weight:700 !important;
+}
+
+#tableHuyen .table-custom tr.worst-rate td:first-child{
+  border-left:4px solid #ff0033 !important;
+}
+
+#tableHuyen .table-custom tr.worst-rate td:nth-child(4){
+  color:#ff0033 !important;
+  font-weight:800 !important;
+}
+
+
+/* ===== TOP 5 TTH TỒN CAO ===== */
+#tableHuyen .table-custom tr.top-ton td{
+  background:#fff0f2 !important;
+}
+
+#tableHuyen .table-custom tr.top-ton td:first-child{
+  border-left:4px solid #ff0033 !important;
+  font-weight:700 !important;
+}
+
+#tableHuyen .table-custom tr.top-ton td:first-child::before{
+  content:attr(data-rank) " ";
+  color:#ff0033;
+  font-weight:800;
+}
+
+
+
+/* ===== BẢN 18: TOP 5 CHỈ BÔI MÀU, KHÔNG HIỆN SỐ THỨ HẠNG ===== */
+#tableHuyen .table-custom tr.top-ton td:first-child::before{
+  content:none !important;
+  display:none !important;
+}
+
+/* ===== TIÊU ĐỀ BẢNG: ĐƯỜNG NGĂN TRẮNG GIỮA CÁC Ô ===== */
+#tableHuyen .table-custom thead th{
+  border-top:0 !important;
+  border-bottom:3px solid #ff0033 !important;
+  border-left:1px solid rgba(255,255,255,.78) !important;
+  border-right:1px solid rgba(255,255,255,.78) !important;
+}
+
+#tableHuyen .table-custom thead th:first-child{
+  border-left:0 !important;
+}
+
+#tableHuyen .table-custom thead th:last-child{
+  border-right:0 !important;
+}
+
+/* Đường trắng nhẹ, rõ trên mobile */
+@media (max-width:600px){
+  #tableHuyen .table-custom thead th{
+    border-left:1px solid rgba(255,255,255,.9) !important;
+    border-right:1px solid rgba(255,255,255,.9) !important;
+  }
+
+  #tableHuyen .table-custom thead th:first-child{
+    border-left:0 !important;
+  }
+
+  #tableHuyen .table-custom thead th:last-child{
+    border-right:0 !important;
+  }
+}
+
+
+/* ===== BẢN 19: BẢNG GỌN HƠN + VẠCH DỌC XÁM NHẸ ===== */
+#tableHuyen .table-custom{
+  font-size:12px !important;
+}
+
+#tableHuyen .table-custom th{
+  padding:6px 5px !important;
+  line-height:1.2 !important;
+}
+
+#tableHuyen .table-custom td{
+  padding:5px 5px !important;
+  line-height:1.2 !important;
+}
+
+/* Phân cách cột bằng vạch dọc xám rất nhẹ */
+#tableHuyen .table-custom th,
+#tableHuyen .table-custom td{
+  border-right:1px solid rgba(0,0,0,.12) !important;
+}
+
+#tableHuyen .table-custom th:last-child,
+#tableHuyen .table-custom td:last-child{
+  border-right:0 !important;
+}
+
+/* Header vẫn có khoảng ngăn trắng nhẹ giữa các ô */
+#tableHuyen .table-custom thead th{
+  border-right:1px solid rgba(255,255,255,.72) !important;
+}
+
+#tableHuyen .table-custom thead th:last-child{
+  border-right:0 !important;
+}
+
+/* Mobile gọn thêm một chút */
+@media (max-width:600px){
+  #tableHuyen .table-custom{
+    font-size:11px !important;
+  }
+
+  #tableHuyen .table-custom th{
+    padding:5px 4px !important;
+  }
+
+  #tableHuyen .table-custom td{
+    padding:4px 4px !important;
+  }
+}
+
+
+/* ===== BẢN 22: GIỮ NGUYÊN BẢN 19 - CHỈ BỎ GẠCH ĐỎ ===== */
+#tableHuyen .table-custom tr.top-ton td:first-child{
+  border-left:0 !important;
+}
+
+
+/* ===== BẢN 23: THU NHỎ VẠCH NGĂN TRẮNG Ở TIÊU ĐỀ ===== */
+#tableHuyen .table-custom thead th{
+  border-left:0.5px solid rgba(255,255,255,.55) !important;
+  border-right:0.5px solid rgba(255,255,255,.55) !important;
+}
+
+#tableHuyen .table-custom thead th:first-child{
+  border-left:0 !important;
+}
+
+#tableHuyen .table-custom thead th:last-child{
+  border-right:0 !important;
+}
+
 </style>
 
 
@@ -1138,8 +1628,10 @@ body:not(.page-loading){
 
   <div id="logtimeTH"></div>
 
-  <input id="nv_th" placeholder="Tìm nhân viên..." onkeyup="filterTH()">
-  <input id="huyen_th" placeholder="Tìm TTH..." onkeyup="filterTH()">
+  <div class="search-row">
+    <input id="nv_th" placeholder="Tìm nhân viên..." onkeyup="filterTH()">
+    <input id="huyen_th" placeholder="Tìm TTH..." onkeyup="filterTH()">
+  </div>
 </div>
 
 <div id="loadingTH">⏳ Đang tải dữ liệu...</div>
@@ -1216,8 +1708,26 @@ function renderHuyen(data){
     tongPhat += Number(r.tong_phat || 0);
   });
 
-  let tongTyLe = tongCan === 0 ? 1 : tongDa / tongCan;
-  let tongPercent = (tongTyLe * 100).toFixed(0);
+  // Tồn = Tổng giao - Đã thu.
+  // Sắp xếp TTH từ tồn cao xuống thấp.
+  const dataSapXep = [...data]
+    .filter(r => String(r.huyen || "").trim().toUpperCase() !== "CNCT")
+    .map(r => {
+      const can = Number(r.tong_can || 0);
+      const da = Number(r.tong_da || 0);
+      return {
+        ...r,
+        ton: Math.max(0, can - da)
+      };
+    })
+    .sort((a, b) => b.ton - a.ton || b.tong_can - a.tong_can);
+
+  // Top 5 TTH tồn cao nhất
+  const top5Ton = new Set(dataSapXep.slice(0, 5).map(r => String(r.huyen || "").trim()));
+
+  const tongTyLe = tongCan === 0 ? 1 : tongDa / tongCan;
+  const tongPercent = (tongTyLe * 100).toFixed(0);
+  const tongTon = Math.max(0, tongCan - tongDa);
 
   let html = `
   <div class="table-wrap">
@@ -1227,6 +1737,7 @@ function renderHuyen(data){
         <th>TTH</th>
         <th>Tổng giao</th>
         <th>Đã thu</th>
+        <th>Tồn</th>
         <th>Tỷ lệ</th>
         <th>Tiền phạt</th>
       </tr>
@@ -1236,22 +1747,30 @@ function renderHuyen(data){
         <td>CNCT</td>
         <td>${tongCan}</td>
         <td>${tongDa}</td>
+        <td>${tongTon}</td>
         <td class="${tongTyLe<1?'rate-bad':'rate-good'}">${tongPercent}%</td>
         <td class="money">${tongPhat.toLocaleString('vi-VN')}</td>
       </tr>
   `;
 
-  data.forEach(r=>{
-    let ty_le = r.tong_can === 0 ? 1 : r.tong_da / r.tong_can;
-    let percent = (ty_le * 100).toFixed(0);
+  dataSapXep.forEach((r, index)=>{
+    const can = Number(r.tong_can || 0);
+    const da = Number(r.tong_da || 0);
+    const phat = Number(r.tong_phat || 0);
+    const ton = Math.max(0, can - da);
+    const ty_le = can === 0 ? 1 : da / can;
+    const percent = (ty_le * 100).toFixed(0);
+    const isTop5 = index < 5 && top5Ton.has(String(r.huyen || "").trim());
+    const rankClass = isTop5 ? "top-ton" : "";
 
     html += `
-      <tr>
+      <tr class="${rankClass}">
         <td>${r.huyen}</td>
-        <td>${r.tong_can}</td>
-        <td>${r.tong_da}</td>
+        <td>${can}</td>
+        <td>${da}</td>
+        <td>${ton}</td>
         <td class="${ty_le<1?'rate-bad':'rate-good'}">${percent}%</td>
-        <td class="money">${r.tong_phat.toLocaleString('vi-VN')}</td>
+        <td class="money">${phat.toLocaleString('vi-VN')}</td>
       </tr>
     `;
   });
@@ -1452,6 +1971,15 @@ function filterTH(){
 }
 
 loadThuHoi();
+
+/* Bảo hiểm: loader toàn màn hình không được phép xoay vô hạn */
+setTimeout(()=>{
+  const loader = document.getElementById("pageLoader");
+  if(loader && !loader.classList.contains("hidden")){
+    loader.classList.add("hidden");
+    document.body.classList.remove("page-loading");
+  }
+}, 15000);
 </script>
 
 <!-- =========================================================
