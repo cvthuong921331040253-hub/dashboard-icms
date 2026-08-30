@@ -1216,9 +1216,2587 @@ html,body,.app{background:#f7f7f7!important;color:#0f0f0f!important}
 }
 </style>
 
+
+<style id="mobile-filter-row-and-red-bar-fix">
+/* Thanh đỏ dưới khu vực cố định dày hơn một chút */
+@media(max-width:900px){
+  .top-shell{
+    border-bottom:4px solid #ff0000!important;
+    box-shadow:0 6px 16px rgba(0,0,0,.20)!important;
+  }
+
+  /* Mobile: XÓA LỌC nằm cùng hàng với Quá hạn / Trong hạn */
+  .filters{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    grid-auto-flow:row!important;
+    gap:6px!important;
+    padding:7px!important;
+    align-items:center!important;
+  }
+
+  /* Ô tìm kiếm chiếm trọn 1 hàng */
+  .filters .search{
+    grid-column:1 / -1!important;
+  }
+
+  /* Ép đúng thứ tự các ô lọc */
+  #fHuyen{grid-column:1!important}
+  #fDm{grid-column:2!important}
+  #fDv{grid-column:1!important}
+  #fType{grid-column:2!important}
+
+  /* Quá hạn / Trong hạn + Xóa lọc cùng một hàng */
+  #fDg{
+    grid-column:1!important;
+    grid-row:auto!important;
+    min-width:0!important;
+  }
+
+  .filters .btn-clear{
+    grid-column:2!important;
+    grid-row:auto!important;
+    width:100%!important;
+    min-width:0!important;
+    height:34px!important;
+    padding:0 8px!important;
+    font-size:10px!important;
+    white-space:nowrap!important;
+  }
+
+  .filters select,
+  .filters .search{
+    min-width:0!important;
+  }
+}
+</style>
+<script>
+(function(){
+  function refreshFixedHeaderHeight(){
+    const top=document.querySelector('.top-shell');
+    if(!top || window.innerWidth>900) return;
+    requestAnimationFrame(()=>{
+      const h=Math.ceil(top.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--fixedTopH',h+'px');
+    });
+  }
+  window.addEventListener('load',refreshFixedHeaderHeight);
+  window.addEventListener('resize',refreshFixedHeaderHeight);
+  window.addEventListener('orientationchange',()=>setTimeout(refreshFixedHeaderHeight,150));
+})();
+</script>
+
+
+<style id="mobile-list-font-up">
+/* Mobile: tăng nhẹ chữ trong danh sách để dễ đọc hơn */
+@media(max-width:900px){
+  /* Các dòng dữ liệu dạng bảng/list */
+  .table-wrap table tbody td,
+  .table-wrap table tbody th{
+    font-size:13.5px!important;
+    line-height:1.5!important;
+  }
+
+  /* Nếu mobile dùng card/list riêng */
+  .mobile-list,
+  .mobile-list *,
+  .mobile-card,
+  .mobile-card *,
+  .list-item,
+  .list-item *{
+    font-size:13px!important;
+    line-height:1.45!important;
+  }
+
+  /* Tiêu đề chính trong từng dòng ưu tiên lớn hơn */
+  .mobile-list .title,
+  .mobile-card .title,
+  .list-item .title,
+  .mobile-list b,
+  .mobile-card b{
+    font-size:14px!important;
+  }
+
+  /* Nhãn/label nhỏ hơn nội dung chính nhưng vẫn dễ đọc */
+  .mobile-list .label,
+  .mobile-card .label,
+  .list-item .label{
+    font-size:11px!important;
+  }
+}
+</style>
+
+
+<style id="mobile-status-badge-font-fix">
+/* Mobile: thu nhỏ riêng 2 nhãn trạng thái Quá hạn / OutOS */
+@media(max-width:900px){
+  .badge,
+  .status,
+  .tag,
+  .status-overdue,
+  .quahan,
+  .outos{
+    font-size:10px!important;
+    line-height:1.1!important;
+    padding:5px 7px!important;
+    min-height:auto!important;
+  }
+}
+</style>
+
+
+<style id="new-bot-from-scratch">
+/* ===== BOT MỚI: LÀM LẠI HOÀN TOÀN ===== */
+#floatingBot{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  flex-direction:column!important;gap:1px!important;
+  background:#0f0f0f!important;border:2px solid #ff0000!important;
+}
+#floatingBot .bot-icon{font-size:18px!important;color:#ff0000!important;line-height:1!important}
+#floatingBot .bot-icon:after{content:none!important}
+#floatingBot .bot-label{font-size:8px!important;font-weight:900!important;letter-spacing:.5px!important;color:#fff!important}
+
+#botModal .icms-ai-box{
+  width:min(1080px,calc(100vw - 32px))!important;
+  background:#fff!important;border:1px solid #ff0000!important;
+}
+.ai-head{background:#0f0f0f!important;border-bottom:3px solid #ff0000!important}
+.ai-mark{color:#ff0000!important;margin-right:4px}
+.ai-body{padding:14px!important;background:#f8f8f8!important}
+
+.ai-dashboard{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}
+.ai-main,.ai-side{min-width:0}
+.ai-intro{
+  background:#0f0f0f;color:#fff;border-radius:14px;padding:16px;
+  border-left:4px solid #ff0000;margin-bottom:10px
+}
+.ai-intro h2{margin:0 0 5px;font-size:17px;color:#fff}
+.ai-intro p{margin:0;color:#cfcfcf;font-size:12px;line-height:1.55}
+
+.ai-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.ai-kpi{
+  background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:10px;
+  min-height:72px;box-sizing:border-box
+}
+.ai-kpi span{display:block;color:#606060;font-size:9px;font-weight:900;text-transform:uppercase}
+.ai-kpi b{display:block;margin-top:5px;font-size:21px;color:#0f0f0f}
+.ai-kpi.danger{border-left:4px solid #ff0000}
+.ai-kpi.danger b{color:#d60000!important}
+
+.ai-panel{background:#fff;border:1px solid #e5e5e5;border-radius:14px;padding:12px;margin-bottom:10px}
+.ai-panel-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.ai-panel-title b{font-size:12px;color:#0f0f0f}
+.ai-panel-title span{font-size:10px;color:#606060}
+.ai-list{display:grid;gap:7px}
+.ai-row{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;
+  border-bottom:1px solid #eee;padding:7px 0;font-size:12px
+}
+.ai-row:last-child{border-bottom:0}
+.ai-row b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ai-count{font-size:11px;font-weight:900;background:#fff0f0;color:#d60000;border:1px solid #ffd0d0;padding:4px 7px;border-radius:999px}
+
+.ai-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ai-action{
+  border:1px solid #ddd;background:#fff;border-radius:12px;padding:12px;text-align:left;cursor:pointer;
+  transition:.15s
+}
+.ai-action:hover{border-color:#ff0000;transform:translateY(-1px)}
+.ai-action b{display:block;font-size:12px;color:#111;margin-bottom:3px}
+.ai-action span{display:block;font-size:10px;color:#666;line-height:1.4}
+
+.ai-result{min-height:220px}
+.ai-result .ai-result-title{font-size:15px;margin:0 0 8px;color:#111}
+.ai-result .ai-result-text{font-size:12px;line-height:1.7;color:#333;margin:0}
+.ai-result ul{margin:8px 0 0;padding-left:18px}
+.ai-result li{font-size:12px;line-height:1.65;margin:3px 0}
+.ai-alert{padding:10px 11px;border-radius:10px;background:#fff5f5;border:1px solid #ffd3d3;color:#8a0000;font-size:12px;line-height:1.5}
+.ai-ok{padding:10px 11px;border-radius:10px;background:#f7f7f7;border-left:3px solid #0f0f0f;font-size:12px;line-height:1.5}
+
+.ai-query{display:flex;gap:7px;margin-top:10px}
+.ai-query input{
+  flex:1;min-width:0;height:38px;border:1px solid #d7d7d7;border-radius:10px;padding:0 11px;
+  background:#fff;color:#111;outline:none
+}
+.ai-query input:focus{border-color:#ff0000}
+.ai-query button{
+  height:38px;border:0;border-radius:10px;padding:0 13px;background:#ff0000;color:#fff;
+  font-size:10px;font-weight:900;cursor:pointer
+}
+
+.ai-quality{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.ai-quality-item{border:1px solid #eee;border-radius:10px;padding:10px}
+.ai-quality-item span{display:block;font-size:10px;color:#666}
+.ai-quality-item b{display:block;font-size:17px;margin-top:4px}
+
+.ai-table-wrap{overflow:auto}
+.ai-table{width:100%;border-collapse:collapse;font-size:11px}
+.ai-table th,.ai-table td{border-bottom:1px solid #e8e8e8;padding:7px;text-align:left}
+.ai-table th{background:#0f0f0f;color:#fff;font-size:10px;position:sticky;top:0}
+
+.ai-help-box{width:min(650px,calc(100vw - 24px))!important;border-color:#ff0000!important}
+.ai-cmd-grid button{background:#fff!important;border-color:#e1e1e1!important}
+.ai-cmd-grid button:hover{border-color:#ff0000!important}
+.ai-cmd-grid button b{color:#111!important}
+.ai-cmd-grid button span{color:#666!important}
+.help-body .cmd-line button{background:#ff0000!important;color:#fff!important;border-radius:9px!important}
+
+@media(max-width:900px){
+  #floatingBot{width:42px!important;height:42px!important;border-radius:12px!important}
+  #floatingBot .bot-icon{font-size:16px!important}
+  #floatingBot .bot-label{font-size:7px!important}
+  .ai-body{padding:8px!important}
+  .ai-dashboard{grid-template-columns:1fr!important;gap:8px!important}
+  .ai-intro{padding:12px!important;border-radius:12px!important}
+  .ai-intro h2{font-size:14px!important}
+  .ai-intro p{font-size:11px!important}
+  .ai-kpis{grid-template-columns:1fr 1fr!important;gap:6px!important}
+  .ai-kpi{min-height:64px!important;padding:9px!important}
+  .ai-kpi b{font-size:18px!important}
+  .ai-panel{padding:10px!important;margin-bottom:8px!important}
+  .ai-actions{gap:6px!important}
+  .ai-action{padding:10px!important}
+  .ai-action b{font-size:11px!important}
+  .ai-action span{font-size:9px!important}
+  .ai-query input{height:35px!important;font-size:11px!important}
+  .ai-query button{height:35px!important;font-size:9px!important;padding:0 9px!important}
+}
+</style>
+
+
+<style id="bot-syntax-help">
+.syntax-help{margin-top:10px;padding:10px 12px;border:1px solid #ffd0d0;background:#fff7f7;border-radius:10px;font-size:11px;line-height:1.6;color:#333}
+.syntax-help b{color:#d60000}
+</style>
+
+
+<style id="v11-chat-bot-style">
+#botModal .chat-bot-box{
+  width:min(920px,calc(100vw - 28px))!important;
+  height:min(760px,calc(100vh - 28px))!important;
+  display:flex!important;flex-direction:column!important;
+  background:#f6f6f6!important;border:1px solid #ff0000!important;
+}
+.chat-head{flex:0 0 auto!important;background:#0f0f0f!important;border-bottom:3px solid #ff0000!important}
+.chat-messages{
+  flex:1 1 auto;overflow:auto;padding:16px!important;
+  background:linear-gradient(180deg,#fafafa,#f1f1f1);
+}
+.chat-msg{display:flex;gap:9px;margin:0 0 12px;align-items:flex-start}
+.chat-msg.user{justify-content:flex-end}
+.chat-avatar{
+  width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  flex:0 0 auto;background:#0f0f0f;color:#ff0000;border:1px solid #333;font-weight:900
+}
+.chat-msg.user .chat-avatar{order:2;background:#ff0000;color:#fff;border-color:#ff0000}
+.chat-bubble{
+  max-width:min(82%,700px);background:#fff;border:1px solid #e1e1e1;border-radius:14px;
+  padding:10px 12px;color:#222;font-size:12px;line-height:1.65;box-shadow:0 2px 8px rgba(0,0,0,.04)
+}
+.chat-msg.user .chat-bubble{background:#0f0f0f;color:#fff;border-color:#0f0f0f}
+.chat-bubble h3{font-size:14px;margin:0 0 8px;color:#111}
+.chat-bubble p{margin:4px 0}
+.chat-bubble ul{margin:6px 0;padding-left:18px}
+.chat-bubble li{margin:3px 0}
+.chat-msg.user .chat-bubble h3{color:#fff}
+.chat-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:9px 0}
+.chat-stat{border:1px solid #e7e7e7;border-radius:10px;padding:8px;background:#fff}
+.chat-stat span{display:block;font-size:9px;color:#666;text-transform:uppercase;font-weight:800}
+.chat-stat b{display:block;font-size:17px;margin-top:3px;color:#111}
+.chat-table-wrap{overflow:auto;margin-top:9px;border:1px solid #e1e1e1;border-radius:10px}
+.chat-table{border-collapse:collapse;width:100%;min-width:760px;font-size:10px;background:#fff}
+.chat-table th{background:#111;color:#fff;position:sticky;top:0;z-index:1}
+.chat-table th,.chat-table td{padding:7px;border-bottom:1px solid #ececec;text-align:left;vertical-align:middle}
+.chat-table td:nth-child(1),.chat-table td:nth-child(8),.chat-table td:nth-child(9){text-align:center}
+.chat-empty{padding:10px;border-left:3px solid #ff0000;background:#fff5f5;color:#8d0000;border-radius:7px}
+.chat-input-bar{display:flex;gap:8px;padding:10px 12px;background:#fff;border-top:1px solid #e4e4e4}
+.chat-input-bar input{
+  flex:1;min-width:0;height:40px;border:1px solid #d6d6d6;border-radius:11px;
+  padding:0 12px;outline:none;font-size:12px
+}
+.chat-input-bar input:focus{border-color:#ff0000}
+.chat-input-bar button{
+  width:76px;border:0;border-radius:11px;background:#ff0000;color:#fff;font-size:10px;font-weight:900;cursor:pointer
+}
+.chat-help-box{width:min(700px,calc(100vw - 24px))!important;border-color:#ff0000!important}
+.chat-help-body{display:grid;gap:10px}
+.help-card,.help-table,
+@media(max-width:700px){
+  #botModal .chat-bot-box{width:100vw!important;height:100dvh!important;max-height:none!important;border-radius:0!important}
+  .chat-messages{padding:10px!important}
+  .chat-bubble{max-width:88%;font-size:11px;padding:9px 10px}
+  .chat-stat-grid{grid-template-columns:1fr 1fr}
+  .chat-input-bar{padding:8px 9px}
+  .chat-input-bar input{height:38px;font-size:11px}
+  .chat-input-bar button{width:62px}
+  .help-table>div{grid-template-columns:82px 1fr;font-size:10px}
+}
+</style>
+
+
+<style id="v14-mobile-bot-list">
+/* =========================================================
+   V14.1 - BOT: MOBILE HIỂN THỊ KẾT QUẢ DẠNG LIST
+   Desktop vẫn dùng bảng như V14
+   ========================================================= */
+@media (max-width:700px){
+  #botModal .chat-table-wrap{
+    overflow:visible!important;
+    margin-top:8px!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+  }
+
+  #botModal .chat-table,
+  #botModal .chat-table thead,
+  #botModal .chat-table tbody,
+  #botModal .chat-table tr,
+  #botModal .chat-table th,
+  #botModal .chat-table td{
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Ẩn hàng tiêu đề bảng trên mobile */
+  #botModal .chat-table thead{
+    display:none!important;
+  }
+
+  /* Mỗi kết quả là một list item */
+  #botModal .chat-table tbody{
+    display:flex!important;
+    flex-direction:column!important;
+    gap:8px!important;
+  }
+
+  #botModal .chat-table tr{
+    position:relative!important;
+    padding:10px 11px!important;
+    background:#fff!important;
+    border:1px solid #dedede!important;
+    border-radius:11px!important;
+    box-shadow:0 1px 4px rgba(0,0,0,.04)!important;
+  }
+
+  #botModal .chat-table td{
+    position:relative!important;
+    padding:3px 0 3px 96px!important;
+    border:0!important;
+    min-height:22px!important;
+    text-align:left!important;
+    font-size:10.5px!important;
+    line-height:1.4!important;
+    overflow-wrap:anywhere!important;
+  }
+
+  #botModal .chat-table td::before{
+    position:absolute!important;
+    left:0!important;
+    top:3px!important;
+    width:86px!important;
+    color:#777!important;
+    font-size:8px!important;
+    font-weight:800!important;
+    text-transform:uppercase!important;
+    content:''!important;
+  }
+
+  #botModal .chat-table td:nth-child(1){
+    display:none!important;
+  }
+
+  #botModal .chat-table td:nth-child(2){
+    padding-left:0!important;
+    padding-bottom:7px!important;
+    margin-bottom:5px!important;
+    border-bottom:1px solid #ededed!important;
+    font-size:13px!important;
+    font-weight:900!important;
+    color:#111!important;
+  }
+  #botModal .chat-table td:nth-child(2)::before{display:none!important}
+
+  #botModal .chat-table td:nth-child(3)::before{content:'MÃ WO'!important}
+  #botModal .chat-table td:nth-child(4)::before{content:'DANH MỤC'!important}
+  #botModal .chat-table td:nth-child(5)::before{content:'ĐẦU VIỆC'!important}
+  #botModal .chat-table td:nth-child(6)::before{content:'BÁO HỎNG'!important}
+  #botModal .chat-table td:nth-child(7)::before{content:'HUYỆN'!important}
+  #botModal .chat-table td:nth-child(8)::before{content:'LOẠI'!important}
+  #botModal .chat-table td:nth-child(9)::before{content:'ĐÁNH GIÁ'!important}
+
+  #botModal .chat-table td:nth-child(8),
+  #botModal .chat-table td:nth-child(9){
+    margin-top:3px!important;
+    padding-top:6px!important;
+    border-top:1px solid #f0f0f0!important;
+  }
+
+  #botModal .chat-bubble{
+    max-width:100%!important;
+  }
+
+  #botModal .chat-stat-grid{
+    grid-template-columns:1fr 1fr!important;
+  }
+}
+
+@media (min-width:701px){
+  /* Giữ nguyên bảng Desktop của V14 */
+  #botModal .chat-table{
+    display:table!important;
+    min-width:760px!important;
+  }
+  #botModal .chat-table thead{display:table-header-group!important}
+  #botModal .chat-table tbody{display:table-row-group!important}
+  #botModal .chat-table tr{display:table-row!important}
+  #botModal .chat-table th,
+  #botModal .chat-table td{display:table-cell!important}
+}
+</style>
+
+
+
+<style id="v14-3-bot-modern">
+/* =============== RESET KHU VỰC BOT =============== */
+#botModal{
+  --bot-red:#ff2020;
+  --bot-red-dark:#d91515;
+  --bot-ink:#15171b;
+  --bot-panel:#ffffff;
+  --bot-soft:#f5f6f8;
+  --bot-line:#e6e8ec;
+  --bot-muted:#747983;
+  --bot-radius:16px;
+}
+
+/* Khung BOT */
+#botModal .chat-bot-box,
+#botModal .bot-box,
+#botModal .chat-window{
+  background:#f4f5f7!important;
+  border:1px solid #cfd4db!important;
+  border-radius:18px!important;
+  overflow:hidden!important;
+  box-shadow:0 20px 70px rgba(0,0,0,.22)!important;
+}
+
+/* Header */
+#botModal .bot-header,
+#botModal .chat-header{
+  min-height:58px!important;
+  padding:0 14px!important;
+  background:#15171b!important;
+  border-bottom:2px solid var(--bot-red)!important;
+  color:#fff!important;
+}
+
+#botModal .bot-header h2,
+#botModal .chat-header h2,
+#botModal .bot-header h3,
+#botModal .chat-header h3{
+  font-size:14px!important;
+  font-weight:800!important;
+  letter-spacing:.1px!important;
+}
+
+#botModal .bot-header small,
+#botModal .chat-header small{
+  color:#9ea4ad!important;
+  font-size:9px!important;
+}
+
+/* Nút header: căn chuẩn tuyệt đối */
+#botModal .bot-header button,
+#botModal .chat-header button,
+#botModal .bot-control,
+#botModal .window-control{
+  width:30px!important;
+  height:30px!important;
+  min-width:30px!important;
+  min-height:30px!important;
+  margin:0!important;
+  padding:0!important;
+  display:inline-grid!important;
+  place-items:center!important;
+  line-height:1!important;
+  border:1px solid #3a414b!important;
+  border-radius:8px!important;
+  background:#252a31!important;
+  color:#f4f5f6!important;
+  font-size:15px!important;
+  box-sizing:border-box!important;
+}
+#botModal .bot-header button:hover,
+#botModal .chat-header button:hover,
+#botModal .bot-control:hover,
+#botModal .window-control:hover{
+  background:#353c46!important;
+}
+
+/* Nền vùng chat */
+#botModal .chat-body,
+#botModal .bot-body{
+  padding:14px!important;
+  background:
+    radial-gradient(circle at 100% 0,rgba(255,32,32,.055),transparent 28%),
+    linear-gradient(#f7f8fa,#f1f3f6)!important;
+}
+
+/* Tin nhắn chung */
+#botModal .chat-bubble,
+#botModal .bot-message{
+  width:auto!important;
+  max-width:100%!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:14px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+/* =============== LỜI CHÀO =============== */
+#botModal .chat-bubble:not(:has(.chat-table)),
+#botModal .bot-message:not(:has(.chat-table)){
+  color:#3f4650!important;
+}
+
+/* =============== KẾT QUẢ BOT =============== */
+#botModal .bot-result,
+#botModal .result-box{
+  padding:14px!important;
+  border:1px solid var(--bot-line)!important;
+  border-radius:16px!important;
+  background:var(--bot-panel)!important;
+  box-shadow:0 10px 28px rgba(25,30,36,.07)!important;
+}
+
+/* Tiêu đề kết quả */
+#botModal .result-title,
+#botModal .analysis-title,
+#botModal .bot-result h3,
+#botModal .chat-bubble h3:first-child,
+#botModal .bot-message h3:first-child{
+  display:flex!important;
+  align-items:center!important;
+  min-height:20px!important;
+  margin:0 0 12px!important;
+  padding:0 0 11px!important;
+  border-bottom:1px solid var(--bot-line)!important;
+  color:var(--bot-ink)!important;
+  font-size:15px!important;
+  font-weight:850!important;
+}
+
+/* =============== THỐNG KÊ =============== */
+#botModal .chat-stat-grid,
+#botModal .stat-grid,
+#botModal .result-stats{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:8px!important;
+  margin:0 0 13px!important;
+}
+
+#botModal .chat-stat,
+#botModal .stat-card,
+#botModal .result-stat{
+  min-height:66px!important;
+  padding:10px 11px!important;
+  border:1px solid var(--bot-line)!important;
+  border-radius:11px!important;
+  background:#fafbfc!important;
+  box-shadow:none!important;
+  position:relative!important;
+  overflow:hidden!important;
+}
+
+#botModal .chat-stat::after,
+#botModal .stat-card::after,
+#botModal .result-stat::after{
+  content:''!important;
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  width:3px!important;
+  height:100%!important;
+  background:#cfd4da!important;
+}
+#botModal .chat-stat:nth-child(2)::after,
+#botModal .stat-card:nth-child(2)::after,
+#botModal .result-stat:nth-child(2)::after{background:var(--bot-red)!important}
+#botModal .chat-stat:nth-child(3)::after,
+#botModal .stat-card:nth-child(3)::after,
+#botModal .result-stat:nth-child(3)::after{background:#1e78d7!important}
+#botModal .chat-stat:nth-child(4)::after,
+#botModal .stat-card:nth-child(4)::after,
+#botModal .result-stat:nth-child(4)::after{background:#8b929b!important}
+
+#botModal .chat-stat small,
+#botModal .stat-card small,
+#botModal .result-stat small{
+  display:block!important;
+  color:#858b94!important;
+  font-size:8px!important;
+  line-height:1!important;
+  font-weight:850!important;
+  letter-spacing:.45px!important;
+  text-transform:uppercase!important;
+}
+
+#botModal .chat-stat b,
+#botModal .stat-card b,
+#botModal .result-stat b{
+  display:block!important;
+  margin-top:8px!important;
+  color:#1a1d22!important;
+  font-size:19px!important;
+  line-height:1!important;
+}
+
+/* =============== PHÂN NHÓM NỘI DUNG =============== */
+#botModal .analysis-section,
+#botModal .result-section,
+#botModal .chat-analysis{
+  margin:10px 0 0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+
+#botModal .analysis-section h4,
+#botModal .result-section h4,
+#botModal .chat-analysis h4{
+  margin:13px 0 7px!important;
+  color:#3b414a!important;
+  font-size:10px!important;
+  font-weight:850!important;
+  text-transform:uppercase!important;
+  letter-spacing:.35px!important;
+}
+
+#botModal .analysis-section ul,
+#botModal .result-section ul,
+#botModal .chat-analysis ul{
+  display:grid!important;
+  gap:5px!important;
+  margin:0!important;
+  padding:0!important;
+  list-style:none!important;
+}
+
+#botModal .analysis-section li,
+#botModal .result-section li,
+#botModal .chat-analysis li{
+  margin:0!important;
+  padding:8px 10px!important;
+  border:1px solid #eceef1!important;
+  border-radius:9px!important;
+  background:#fafbfc!important;
+  color:#4f5660!important;
+  font-size:10.5px!important;
+  line-height:1.45!important;
+}
+
+/* =============== DESKTOP TABLE =============== */
+@media(min-width:701px){
+  #botModal .chat-table-wrap{
+    margin-top:12px!important;
+    border:1px solid #e1e4e8!important;
+    border-radius:12px!important;
+    overflow:auto!important;
+    background:#fff!important;
+    box-shadow:none!important;
+  }
+
+  #botModal .chat-table{
+    width:100%!important;
+    min-width:820px!important;
+    border-collapse:separate!important;
+    border-spacing:0!important;
+    font-size:10px!important;
+  }
+
+  #botModal .chat-table th{
+    padding:9px 8px!important;
+    background:#191c21!important;
+    color:#fff!important;
+    border:0!important;
+    font-size:8px!important;
+    font-weight:800!important;
+    text-transform:uppercase!important;
+    letter-spacing:.35px!important;
+    white-space:nowrap!important;
+  }
+
+  #botModal .chat-table td{
+    padding:9px 8px!important;
+    border:0!important;
+    border-bottom:1px solid #edf0f2!important;
+    color:#444a53!important;
+    vertical-align:middle!important;
+    line-height:1.42!important;
+  }
+
+  #botModal .chat-table tbody tr:last-child td{
+    border-bottom:0!important;
+  }
+
+  #botModal .chat-table tbody tr:hover{
+    background:#fff8f8!important;
+  }
+}
+
+/* =============== MOBILE: LIST KẾT QUẢ =============== */
+@media(max-width:700px){
+  #botModal .chat-body,
+  #botModal .bot-body{
+    padding:8px!important;
+  }
+
+  #botModal .bot-result,
+  #botModal .result-box{
+    padding:11px!important;
+    border-radius:14px!important;
+  }
+
+  #botModal .chat-stat-grid,
+  #botModal .stat-grid,
+  #botModal .result-stats{
+    grid-template-columns:1fr 1fr!important;
+    gap:7px!important;
+  }
+
+  #botModal .chat-stat,
+  #botModal .stat-card,
+  #botModal .result-stat{
+    min-height:60px!important;
+    padding:9px!important;
+  }
+
+  #botModal .chat-stat b,
+  #botModal .stat-card b,
+  #botModal .result-stat b{
+    font-size:17px!important;
+  }
+
+  /* Chuyển bảng thành list */
+  #botModal .chat-table-wrap{
+    margin-top:10px!important;
+    overflow:visible!important;
+    border:0!important;
+    background:transparent!important;
+  }
+
+  #botModal .chat-table,
+  #botModal .chat-table thead,
+  #botModal .chat-table tbody,
+  #botModal .chat-table tr,
+  #botModal .chat-table th,
+  #botModal .chat-table td{
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+  }
+
+  #botModal .chat-table thead{display:none!important}
+
+  #botModal .chat-table tbody{
+    display:flex!important;
+    flex-direction:column!important;
+    gap:8px!important;
+  }
+
+  #botModal .chat-table tr{
+    padding:11px!important;
+    border:1px solid #e4e7eb!important;
+    border-left:3px solid var(--bot-red)!important;
+    border-radius:12px!important;
+    background:#fff!important;
+    box-shadow:0 4px 14px rgba(20,25,31,.055)!important;
+  }
+
+  #botModal .chat-table td{
+    position:relative!important;
+    min-height:20px!important;
+    padding:4px 0 4px 90px!important;
+    border:0!important;
+    color:#30353d!important;
+    font-size:10px!important;
+    line-height:1.45!important;
+    text-align:left!important;
+    overflow-wrap:anywhere!important;
+  }
+
+  #botModal .chat-table td::before{
+    content:''!important;
+    position:absolute!important;
+    left:0!important;
+    top:6px!important;
+    width:82px!important;
+    color:#90959d!important;
+    font-size:7.5px!important;
+    font-weight:850!important;
+    line-height:1.1!important;
+    letter-spacing:.25px!important;
+    text-transform:uppercase!important;
+  }
+
+  #botModal .chat-table td:nth-child(1){display:none!important}
+
+  #botModal .chat-table td:nth-child(2){
+    padding:0 0 9px!important;
+    margin:0 0 7px!important;
+    border-bottom:1px solid #edf0f2!important;
+    color:#171a1f!important;
+    font-size:13px!important;
+    font-weight:850!important;
+    line-height:1.35!important;
+  }
+  #botModal .chat-table td:nth-child(2)::before{display:none!important}
+
+  #botModal .chat-table td:nth-child(3)::before{content:'MÃ WO'!important}
+  #botModal .chat-table td:nth-child(4)::before{content:'DANH MỤC'!important}
+  #botModal .chat-table td:nth-child(5)::before{content:'ĐẦU VIỆC'!important}
+  #botModal .chat-table td:nth-child(6)::before{content:'BÁO HỎNG'!important}
+  #botModal .chat-table td:nth-child(7)::before{content:'HUYỆN'!important}
+  #botModal .chat-table td:nth-child(8)::before{content:'LOẠI'!important}
+  #botModal .chat-table td:nth-child(9)::before{content:'ĐÁNH GIÁ'!important}
+
+  #botModal .chat-table td:nth-child(8),
+  #botModal .chat-table td:nth-child(9){
+    margin-top:5px!important;
+    padding-top:7px!important;
+    border-top:1px dashed #e7e9ec!important;
+  }
+
+  /* Thống nhất badge */
+  #botModal .chat-table .tag,
+  #botModal .chat-table .badge,
+  #botModal .chat-table .status{
+    display:inline-flex!important;
+    align-items:center!important;
+    min-height:23px!important;
+    padding:3px 8px!important;
+    border-radius:999px!important;
+    font-size:8.5px!important;
+    font-weight:850!important;
+  }
+}
+
+/* =============== HELP REDESIGN =============== */
+#helpModal .help-box,
+#botHelpModal .help-box,
+.help-modal .help-box{
+  width:min(700px,calc(100vw - 28px))!important;
+  max-width:700px!important;
+  border:1px solid #dce0e5!important;
+  border-radius:16px!important;
+  overflow:hidden!important;
+  background:#fff!important;
+  box-shadow:0 24px 80px rgba(0,0,0,.26)!important;
+}
+
+#helpModal .help-header,
+#botHelpModal .help-header,
+.help-modal .help-header{
+  padding:15px 16px!important;
+  background:#181b20!important;
+  border-bottom:2px solid var(--bot-red)!important;
+  color:#fff!important;
+}
+
+#helpModal .help-header h2,
+#botHelpModal .help-header h2,
+.help-modal .help-header h2{
+  margin:0!important;
+  color:#fff!important;
+  font-size:14px!important;
+  font-weight:850!important;
+}
+
+#helpModal .help-header small,
+#botHelpModal .help-header small,
+.help-modal .help-header small{
+  display:block!important;
+  margin-top:4px!important;
+  color:#9da4ad!important;
+  font-size:9px!important;
+}
+
+#helpModal .help-body,
+#botHelpModal .help-body,
+.help-modal .help-body{
+  padding:14px!important;
+  background:#f6f7f9!important;
+}
+
+/* Card cú pháp đầu tiên */
+#helpModal .help-card,
+#botHelpModal .help-card,
+.help-modal .help-card{
+  margin:0 0 12px!important;
+  padding:13px!important;
+  border:1px solid #e3e6ea!important;
+  border-radius:12px!important;
+  background:#fff!important;
+  box-shadow:none!important;
+}
+
+#helpModal .help-card>b,
+#botHelpModal .help-card>b,
+.help-modal .help-card>b{
+  display:block!important;
+  margin-bottom:7px!important;
+  color:#1b1e23!important;
+  font-size:11px!important;
+  font-weight:850!important;
+}
+
+#helpModal .help-card p,
+#botHelpModal .help-card p,
+.help-modal .help-card p{
+  margin:7px 0 0!important;
+  color:#646b75!important;
+  font-size:10.5px!important;
+  line-height:1.55!important;
+}
+
+#helpModal code,
+#botHelpModal code,
+.help-modal code{
+  display:block!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  padding:9px 10px!important;
+  border:1px solid #e2e5e8!important;
+  border-left:3px solid var(--bot-red)!important;
+  border-radius:8px!important;
+  background:#fafbfc!important;
+  color:#b51616!important;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace!important;
+  font-size:9px!important;
+  white-space:normal!important;
+}
+
+/* Các dòng lệnh: biến thành grid card */
+#helpModal .help-command,
+#botHelpModal .help-command,
+.help-modal .help-command{
+  display:grid!important;
+  grid-template-columns:112px 1fr!important;
+  gap:10px!important;
+  align-items:center!important;
+  padding:10px 11px!important;
+  margin:0 0 7px!important;
+  border:1px solid #e5e8ec!important;
+  border-radius:10px!important;
+  background:#fff!important;
+}
+
+#helpModal .help-command:last-child,
+#botHelpModal .help-command:last-child,
+.help-modal .help-command:last-child{
+  margin-bottom:0!important;
+}
+
+#helpModal .help-command b,
+#botHelpModal .help-command b,
+.help-modal .help-command b{
+  display:inline-flex!important;
+  align-items:center!important;
+  width:max-content!important;
+  max-width:100%!important;
+  min-height:24px!important;
+  padding:4px 8px!important;
+  border-radius:7px!important;
+  background:#f1f3f5!important;
+  color:#22262c!important;
+  font-size:9px!important;
+  font-weight:850!important;
+}
+
+#helpModal .help-command span,
+#botHelpModal .help-command span,
+.help-modal .help-command span{
+  color:#6d747d!important;
+  font-size:10px!important;
+  line-height:1.45!important;
+}
+
+/* Nếu HELP đang render dạng b + span không bọc class */
+#helpModal .help-body > b,
+#botHelpModal .help-body > b,
+.help-modal .help-body > b{
+  display:inline-block!important;
+  margin:4px 0!important;
+  color:#20242a!important;
+  font-size:11px!important;
+}
+
+#helpModal .help-body > span,
+#botHelpModal .help-body > span,
+.help-modal .help-body > span{
+  display:block!important;
+  margin:0 0 7px!important;
+  color:#6a717b!important;
+  font-size:10.5px!important;
+  line-height:1.45!important;
+}
+
+@media(max-width:700px){
+  #helpModal .help-box,
+  #botHelpModal .help-box,
+  .help-modal .help-box{
+    width:calc(100vw - 20px)!important;
+    max-height:86dvh!important;
+    border-radius:14px!important;
+  }
+
+  #helpModal .help-body,
+  #botHelpModal .help-body,
+  .help-modal .help-body{
+    padding:10px!important;
+  }
+
+  #helpModal .help-command,
+  #botHelpModal .help-command,
+  .help-modal .help-command{
+    grid-template-columns:1fr!important;
+    gap:5px!important;
+    padding:9px 10px!important;
+  }
+}
+
+/* =============== INPUT BAR =============== */
+#botModal .chat-input-bar,
+#botModal .bot-input-bar{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:10px!important;
+  background:#fff!important;
+  border-top:1px solid #e4e7eb!important;
+}
+
+#botModal .chat-input-bar input,
+#botModal .bot-input-bar input{
+  flex:1!important;
+  min-width:0!important;
+  height:40px!important;
+  min-height:40px!important;
+  padding:0 12px!important;
+  border:1px solid #dce1e6!important;
+  border-radius:11px!important;
+  background:#f7f8fa!important;
+  color:#20242a!important;
+  font-size:10.5px!important;
+  box-shadow:none!important;
+}
+
+#botModal .chat-input-bar input:focus,
+#botModal .bot-input-bar input:focus{
+  border-color:#ff8b8b!important;
+  background:#fff!important;
+  outline:0!important;
+}
+
+#botModal .chat-input-bar button,
+#botModal .bot-input-bar button{
+  width:auto!important;
+  min-width:58px!important;
+  height:40px!important;
+  min-height:40px!important;
+  padding:0 14px!important;
+  border:0!important;
+  border-radius:11px!important;
+  background:var(--bot-red)!important;
+  color:#fff!important;
+  font-size:9px!important;
+  font-weight:850!important;
+  box-shadow:0 5px 14px rgba(255,32,32,.18)!important;
+}
+#botModal .chat-input-bar button:hover,
+#botModal .bot-input-bar button:hover{
+  background:var(--bot-red-dark)!important;
+}
+</style>
+
+
+<style id="v14-4-bot-columns">
+/* V14.4: bổ sung Mô tả + Thời gian cho kết quả BOT */
+
+/* Desktop: ưu tiên bảng rộng, đọc được dữ liệu dài */
+@media (min-width:701px){
+  #botModal .chat-table{
+    min-width:1180px!important;
+    table-layout:auto!important;
+  }
+  #botModal .chat-table th:nth-child(2){min-width:170px!important}
+  #botModal .chat-table th:nth-child(3){min-width:185px!important}
+  #botModal .chat-table th:nth-child(4){min-width:120px!important}
+  #botModal .chat-table th:nth-child(5){min-width:170px!important}
+  #botModal .chat-table th:nth-child(6){min-width:210px!important}
+  #botModal .chat-table th:nth-child(7){min-width:230px!important}
+  #botModal .chat-table th:nth-child(12){min-width:135px!important}
+
+  #botModal .chat-table td:nth-child(6),
+  #botModal .chat-table td:nth-child(7){
+    max-width:300px!important;
+    white-space:normal!important;
+  }
+
+  #botModal .chat-table td:nth-child(11),
+  #botModal .chat-table td:nth-child(12){
+    white-space:nowrap!important;
+    text-align:center!important;
+  }
+
+  #botModal .chat-limit-note{
+    margin:8px 2px 0!important;
+    color:#8a9098!important;
+    font-size:9px!important;
+  }
+}
+
+/* Mobile: mỗi kết quả là card, thêm Mô tả và 2 trường thời gian */
+@media (max-width:700px){
+  #botModal .chat-table td:nth-child(8){
+    padding:4px 0 4px 90px!important;
+  }
+  #botModal .chat-table td:nth-child(8)::before{content:'HUYỆN'!important}
+
+  #botModal .chat-table td:nth-child(9)::before{content:'LOẠI'!important}
+  #botModal .chat-table td:nth-child(10)::before{content:'ĐÁNH GIÁ'!important}
+
+  #botModal .chat-table td:nth-child(7){
+    margin-top:4px!important;
+    padding-top:7px!important;
+    border-top:1px dashed #e8ebee!important;
+  }
+  #botModal .chat-table td:nth-child(7)::before{content:'MÔ TẢ'!important}
+
+  #botModal .chat-table td:nth-child(11),
+  #botModal .chat-table td:nth-child(12){
+    margin-top:3px!important;
+  }
+  #botModal .chat-table td:nth-child(11)::before{content:'TG TỒN'!important}
+  #botModal .chat-table td:nth-child(12)::before{content:'THỜI GIAN'!important}
+
+  #botModal .chat-table td:nth-child(9),
+  #botModal .chat-table td:nth-child(10){
+    margin-top:4px!important;
+    padding-top:7px!important;
+    border-top:1px dashed #e7e9ec!important;
+  }
+
+  /* Sửa mapping cột cũ khi đã thêm Mô tả */
+  #botModal .chat-table td:nth-child(6)::before{content:'BÁO HỎNG'!important}
+}
+</style>
+
+
+<style id="v14-5-bot-polish">
+/* ===================== V14.5 BOT POLISH ===================== */
+
+/* Bubble câu hỏi của người dùng */
+#botModal .user-message,
+#botModal .user-bubble,
+#botModal .message-user{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  width:max-content!important;
+  max-width:min(76%,620px)!important;
+  margin-left:auto!important;
+  padding:8px 10px 8px 12px!important;
+  border:1px solid #ff2b2b!important;
+  border-radius:14px 14px 4px 14px!important;
+  background:#fff!important;
+  color:#202329!important;
+  font-size:11px!important;
+  font-weight:750!important;
+  line-height:1.35!important;
+  box-shadow:0 6px 18px rgba(0,0,0,.08)!important;
+}
+
+/* Nếu phần câu hỏi đang dùng class query-chip */
+#botModal .query-chip,
+#botModal .user-query{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:7px!important;
+  padding:8px 9px 8px 12px!important;
+  border:1px solid #e3e6ea!important;
+  border-left:3px solid #ff2020!important;
+  border-radius:12px!important;
+  background:#fff!important;
+  color:#272b31!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  box-shadow:0 5px 14px rgba(20,25,31,.06)!important;
+}
+
+#botModal .user-label,
+#botModal .query-label{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:31px!important;
+  height:25px!important;
+  padding:0 7px!important;
+  border-radius:8px!important;
+  background:#ff2020!important;
+  color:#fff!important;
+  font-size:8px!important;
+  font-weight:900!important;
+  letter-spacing:.2px!important;
+}
+
+/* Icon chung trong các card */
+#botModal .bot-icon,
+#botModal .field-icon,
+#botModal .result-icon{
+  display:inline-grid!important;
+  place-items:center!important;
+  width:23px!important;
+  height:23px!important;
+  flex:0 0 23px!important;
+  border-radius:7px!important;
+  background:#f1f3f5!important;
+  color:#e31b23!important;
+  font-size:12px!important;
+}
+
+/* Các ô thống kê */
+#botModal .chat-stat,
+#botModal .stat-card,
+#botModal .result-stat{
+  padding-left:12px!important;
+}
+
+#botModal .chat-stat small::before,
+#botModal .stat-card small::before,
+#botModal .result-stat small::before{
+  display:inline-grid!important;
+  place-items:center!important;
+  width:18px!important;
+  height:18px!important;
+  margin-right:6px!important;
+  border-radius:6px!important;
+  background:#f1f3f5!important;
+  color:#e31b23!important;
+  font-size:10px!important;
+  vertical-align:middle!important;
+}
+#botModal .chat-stat:nth-child(1) small::before,
+#botModal .stat-card:nth-child(1) small::before,
+#botModal .result-stat:nth-child(1) small::before{content:'✓'!important}
+#botModal .chat-stat:nth-child(2) small::before,
+#botModal .stat-card:nth-child(2) small::before,
+#botModal .result-stat:nth-child(2) small::before{content:'!'!important}
+#botModal .chat-stat:nth-child(3) small::before,
+#botModal .stat-card:nth-child(3) small::before,
+#botModal .result-stat:nth-child(3) small::before{content:'↓'!important}
+#botModal .chat-stat:nth-child(4) small::before,
+#botModal .stat-card:nth-child(4) small::before,
+#botModal .result-stat:nth-child(4) small::before{content:'↑'!important}
+
+/* Kết quả / tiêu đề */
+#botModal .result-title::before,
+#botModal .analysis-title::before,
+#botModal .bot-result h3::before{
+  content:'✦'!important;
+  display:inline-grid!important;
+  place-items:center!important;
+  width:24px!important;
+  height:24px!important;
+  margin-right:8px!important;
+  border-radius:7px!important;
+  background:#fff1f1!important;
+  color:#e31b23!important;
+  font-size:12px!important;
+}
+
+/* ===================== HELP ===================== */
+#helpModal .help-header h2::before,
+#botHelpModal .help-header h2::before,
+.help-modal .help-header h2::before{
+  content:'?'!important;
+  display:inline-grid!important;
+  place-items:center!important;
+  width:25px!important;
+  height:25px!important;
+  margin-right:8px!important;
+  border-radius:8px!important;
+  background:#ff2020!important;
+  color:#fff!important;
+  font-size:14px!important;
+  vertical-align:middle!important;
+}
+
+/* Tạo layout đẹp cho phần lệnh HELP */
+#helpModal .help-body,
+#botHelpModal .help-body,
+.help-modal .help-body{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+}
+
+#helpModal .help-card,
+#botHelpModal .help-card,
+.help-modal .help-card{
+  grid-column:1 / -1!important;
+  margin:0!important;
+}
+
+#helpModal .help-command,
+#botHelpModal .help-command,
+.help-modal .help-command{
+  min-height:76px!important;
+  margin:0!important;
+  grid-template-columns:34px 1fr!important;
+  gap:9px!important;
+  align-items:start!important;
+  padding:10px!important;
+  border-radius:12px!important;
+  background:#fff!important;
+  transition:transform .15s ease, box-shadow .15s ease!important;
+}
+
+#helpModal .help-command:hover,
+#botHelpModal .help-command:hover,
+.help-modal .help-command:hover{
+  transform:translateY(-1px)!important;
+  box-shadow:0 7px 18px rgba(20,25,31,.07)!important;
+}
+
+#helpModal .help-command b,
+#botHelpModal .help-command b,
+.help-modal .help-command b{
+  grid-row:1 / span 2!important;
+  display:grid!important;
+  place-items:center!important;
+  width:34px!important;
+  height:34px!important;
+  min-height:34px!important;
+  padding:0!important;
+  border-radius:10px!important;
+  background:#fff0f0!important;
+  color:#e31b23!important;
+  font-size:0!important;
+}
+
+/* Icon riêng từng lệnh */
+#helpModal .help-command:nth-of-type(2) b::after,
+#botHelpModal .help-command:nth-of-type(2) b::after,
+.help-modal .help-command:nth-of-type(2) b::after{content:'⌕'!important}
+#helpModal .help-command:nth-of-type(3) b::after,
+#botHelpModal .help-command:nth-of-type(3) b::after,
+.help-modal .help-command:nth-of-type(3) b::after{content:'↓'!important}
+#helpModal .help-command:nth-of-type(4) b::after,
+#botHelpModal .help-command:nth-of-type(4) b::after,
+.help-modal .help-command:nth-of-type(4) b::after{content:'↑'!important}
+#helpModal .help-command:nth-of-type(5) b::after,
+#botHelpModal .help-command:nth-of-type(5) b::after,
+.help-modal .help-command:nth-of-type(5) b::after{content:'!'!important}
+#helpModal .help-command:nth-of-type(6) b::after,
+#botHelpModal .help-command:nth-of-type(6) b::after,
+.help-modal .help-command:nth-of-type(6) b::after{content:'✓'!important}
+
+#helpModal .help-command b::after,
+#botHelpModal .help-command b::after,
+.help-modal .help-command b::after{
+  color:#e31b23!important;
+  font-size:17px!important;
+  font-weight:900!important;
+}
+
+#helpModal .help-command span,
+#botHelpModal .help-command span,
+.help-modal .help-command span{
+  display:block!important;
+  padding-top:1px!important;
+  color:#4e5660!important;
+  font-size:10px!important;
+  line-height:1.45!important;
+}
+
+/* Nội dung HELP chính xác theo yêu cầu */
+#helpModal .help-command b,
+#botHelpModal .help-command b,
+.help-modal .help-command b{
+  text-indent:-9999px!important;
+}
+
+/* Mobile */
+@media(max-width:700px){
+  #botModal .user-message,
+  #botModal .user-bubble,
+  #botModal .message-user{
+    max-width:84%!important;
+    font-size:10px!important;
+  }
+
+  #helpModal .help-body,
+  #botHelpModal .help-body,
+  .help-modal .help-body{
+    grid-template-columns:1fr!important;
+    gap:7px!important;
+  }
+
+  #helpModal .help-command,
+  #botHelpModal .help-command,
+  .help-modal .help-command{
+    min-height:68px!important;
+  }
+}
+</style>
+
+
+<style id="v15-help-stable-style">
+/* HELP V15: chỉ còn card cú pháp và 5 ô hướng dẫn */
+#helpModal .help-command,
+#botHelpModal .help-command,
+.help-modal .help-command{
+  display:grid!important;
+  grid-template-columns:44px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:10px!important;
+}
+
+#helpModal .help-command > b,
+#botHelpModal .help-command > b,
+.help-modal .help-command > b{
+  display:grid!important;
+  place-items:center!important;
+  width:44px!important;
+  min-width:44px!important;
+  height:38px!important;
+  margin:0!important;
+  padding:0 6px!important;
+  font-size:10px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+
+#helpModal .help-command > span,
+#botHelpModal .help-command > span,
+.help-modal .help-command > span{
+  display:block!important;
+  min-width:0!important;
+}
+
+#helpModal .help-command strong,
+#botHelpModal .help-command strong,
+.help-modal .help-command strong{
+  display:block!important;
+  margin:0 0 3px!important;
+}
+
+#helpModal .help-command small,
+#botHelpModal .help-command small,
+.help-modal .help-command small{
+  display:block!important;
+  font-size:10px!important;
+  line-height:1.45!important;
+  color:#68717b!important;
+}
+
+@media(max-width:700px){
+  #helpModal .help-command,
+  #botHelpModal .help-command,
+  .help-modal .help-command{
+    grid-template-columns:40px minmax(0,1fr)!important;
+    gap:9px!important;
+  }
+
+  #helpModal .help-command > b,
+  #botHelpModal .help-command > b,
+  .help-modal .help-command > b{
+    width:40px!important;
+    min-width:40px!important;
+    height:36px!important;
+    font-size:9px!important;
+  }
+}
+</style>
+
+
+<style id="v16-bot-result-modern">
+/* ================= V16 - KẾT QUẢ BOT THEO MẪU ẢNH ================= */
+.bot-message.assistant,
+.bot-response,
+.ai-result,
+.bot-result-card{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+
+/* Khung kết quả */
+.bot-analysis-card,
+.result-analysis-card,
+.bot-result-content{
+  width:100%!important;
+  max-width:1120px!important;
+  margin:0 auto!important;
+  padding:18px!important;
+  background:#fff!important;
+  border:1px solid #eceef1!important;
+  border-radius:22px!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.07)!important;
+  color:#202124!important;
+}
+
+/* Tiêu đề */
+.result-title,
+.bot-result-title,
+.analysis-title{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  padding:4px 0 14px!important;
+  margin:0 0 18px!important;
+  border-bottom:1px solid #e8eaed!important;
+  font-size:22px!important;
+  font-weight:850!important;
+  color:#202124!important;
+}
+
+.result-title .result-icon,
+.bot-result-title .result-icon,
+.analysis-title .result-icon{
+  width:38px!important;
+  height:38px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:12px!important;
+  background:#111317!important;
+  color:#ff2020!important;
+  font-size:19px!important;
+  flex:0 0 38px!important;
+}
+
+/* 4 ô thống kê */
+.bot-stats,
+.result-stats,
+.analysis-stats{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  margin:0 0 22px!important;
+}
+
+.stat-card,
+.bot-stat,
+.metric-card{
+  position:relative!important;
+  min-height:104px!important;
+  padding:16px 16px 14px 88px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  border:1px solid #e5e8ec!important;
+  border-radius:18px!important;
+  background:#fff!important;
+  box-shadow:0 4px 14px rgba(0,0,0,.035)!important;
+  overflow:hidden!important;
+}
+
+.stat-card::before,
+.bot-stat::before,
+.metric-card::before{
+  content:attr(data-icon)!important;
+  position:absolute!important;
+  left:16px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:54px!important;
+  height:54px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:16px!important;
+  background:#f5f6f8!important;
+  font-size:26px!important;
+  line-height:1!important;
+}
+
+/* Nhãn + số */
+.stat-card .label,
+.stat-card .stat-label,
+.bot-stat .label,
+.metric-card .label{
+  font-size:11px!important;
+  font-weight:850!important;
+  letter-spacing:.45px!important;
+  text-transform:uppercase!important;
+  color:#606772!important;
+  margin-bottom:7px!important;
+}
+
+.stat-card .value,
+.stat-card .stat-value,
+.bot-stat .value,
+.metric-card .value{
+  font-size:28px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  color:#111317!important;
+}
+
+/* Tô màu từng ô */
+.stat-card:nth-child(1),
+.bot-stat:nth-child(1),
+.metric-card:nth-child(1){
+  border-left:4px solid #2563eb!important;
+}
+.stat-card:nth-child(1)::before,
+.bot-stat:nth-child(1)::before,
+.metric-card:nth-child(1)::before{
+  background:#edf4ff!important;
+}
+.stat-card:nth-child(2),
+.bot-stat:nth-child(2),
+.metric-card:nth-child(2){
+  border-left:4px solid #ef1d1d!important;
+}
+.stat-card:nth-child(2) .label,
+.bot-stat:nth-child(2) .label,
+.metric-card:nth-child(2) .label{
+  color:#c51c1c!important;
+}
+.stat-card:nth-child(2)::before,
+.bot-stat:nth-child(2)::before,
+.metric-card:nth-child(2)::before{
+  background:#fff0f0!important;
+}
+.stat-card:nth-child(3),
+.bot-stat:nth-child(3),
+.metric-card:nth-child(3){
+  border-left:4px solid #1687d8!important;
+}
+.stat-card:nth-child(4),
+.bot-stat:nth-child(4),
+.metric-card:nth-child(4){
+  border-left:4px solid #9aa0a6!important;
+}
+
+/* Khu vực thống kê theo đầu việc / huyện */
+.result-section,
+.analysis-section,
+.bot-result-section{
+  padding:16px 4px!important;
+  border-bottom:1px solid #eceef1!important;
+}
+
+.result-section:last-child,
+.analysis-section:last-child,
+.bot-result-section:last-child{
+  border-bottom:0!important;
+}
+
+.section-heading,
+.result-section h4,
+.analysis-section h4{
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin:0 0 11px!important;
+  font-size:17px!important;
+  font-weight:900!important;
+  color:#252932!important;
+}
+
+.section-heading .section-icon{
+  width:36px!important;
+  height:36px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:11px!important;
+  background:#f5f7fb!important;
+  font-size:19px!important;
+}
+
+.result-section ul,
+.analysis-section ul{
+  margin:0!important;
+  padding-left:38px!important;
+}
+
+.result-section li,
+.analysis-section li{
+  margin:7px 0!important;
+  font-size:14px!important;
+  line-height:1.55!important;
+  color:#3f4650!important;
+}
+
+.result-section li b,
+.analysis-section li b{
+  font-size:17px!important;
+  font-weight:950!important;
+  color:#111317!important;
+}
+
+/* Badge "Bạn" nhỏ hơn */
+.user-badge,
+.message-user-badge,
+.bot-user-label,
+.you-label{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:34px!important;
+  height:26px!important;
+  padding:0 8px!important;
+  border-radius:8px!important;
+  background:#f20d0d!important;
+  color:#fff!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  box-shadow:none!important;
+}
+
+/* Mobile: vẫn giữ 2 cột gọn như ảnh */
+@media(max-width:700px){
+  .bot-analysis-card,
+  .result-analysis-card,
+  .bot-result-content{
+    padding:12px!important;
+    border-radius:18px!important;
+  }
+
+  .result-title,
+  .bot-result-title,
+  .analysis-title{
+    font-size:18px!important;
+    margin-bottom:14px!important;
+    padding-bottom:12px!important;
+  }
+
+  .bot-stats,
+  .result-stats,
+  .analysis-stats{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+    margin-bottom:15px!important;
+  }
+
+  .stat-card,
+  .bot-stat,
+  .metric-card{
+    min-height:92px!important;
+    padding:12px 10px 12px 64px!important;
+    border-radius:15px!important;
+  }
+
+  .stat-card::before,
+  .bot-stat::before,
+  .metric-card::before{
+    left:10px!important;
+    width:42px!important;
+    height:42px!important;
+    border-radius:13px!important;
+    font-size:20px!important;
+  }
+
+  .stat-card .label,
+  .stat-card .stat-label,
+  .bot-stat .label,
+  .metric-card .label{
+    font-size:9px!important;
+    margin-bottom:6px!important;
+  }
+
+  .stat-card .value,
+  .stat-card .stat-value,
+  .bot-stat .value,
+  .metric-card .value{
+    font-size:24px!important;
+    font-weight:950!important;
+  }
+
+  .result-section,
+  .analysis-section,
+  .bot-result-section{
+    padding:13px 2px!important;
+  }
+
+  .section-heading,
+  .result-section h4,
+  .analysis-section h4{
+    font-size:15px!important;
+    margin-bottom:8px!important;
+  }
+
+  .result-section li,
+  .analysis-section li{
+    font-size:13px!important;
+  }
+}
+</style>
+
+
+<style id="v17-bot-result-exact">
+/* V17 - CSS áp trực tiếp vào class BOT đang render */
+#botModal .chat-msg.user .chat-avatar{
+  width:28px!important;
+  height:28px!important;
+  min-width:28px!important;
+  min-height:28px!important;
+  border-radius:8px!important;
+  padding:0 6px!important;
+  font-size:9px!important;
+  font-weight:900!important;
+  line-height:1!important;
+}
+
+#botModal .chat-msg.user{
+  gap:7px!important;
+}
+
+/* Khối kết quả */
+#botModal .bot-result-v17{
+  width:100%!important;
+  box-sizing:border-box!important;
+  padding:16px!important;
+  background:#fff!important;
+  border:1px solid #e5e8ed!important;
+  border-radius:20px!important;
+  box-shadow:0 10px 30px rgba(20,24,30,.07)!important;
+}
+
+#botModal .bot-result-title-v17{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  padding:0 0 15px!important;
+  margin:0 0 18px!important;
+  border-bottom:1px solid #e5e8ed!important;
+}
+
+#botModal .bot-result-title-v17 h3{
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  font-size:22px!important;
+  line-height:1.2!important;
+  font-weight:900!important;
+  color:#222831!important;
+}
+
+#botModal .bot-result-mark-v17{
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:13px!important;
+  background:#111317!important;
+  color:#ff1515!important;
+  font-size:23px!important;
+  box-shadow:0 5px 14px rgba(0,0,0,.12)!important;
+}
+
+/* 4 ô theo đúng ảnh mẫu */
+#botModal .bot-stat-grid-v17{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:14px!important;
+  margin:0 0 22px!important;
+}
+
+#botModal .chat-stat.bot-stat-v17{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:15px!important;
+  min-height:110px!important;
+  padding:16px 18px!important;
+  border:1px solid #e1e5ea!important;
+  border-radius:19px!important;
+  background:#fff!important;
+  box-shadow:0 4px 15px rgba(20,24,30,.045)!important;
+  overflow:hidden!important;
+}
+
+#botModal .chat-stat.bot-stat-v17::after{
+  content:''!important;
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  width:4px!important;
+  height:100%!important;
+  background:#2563eb!important;
+}
+
+#botModal .chat-stat.bot-stat-v17.overdue::after{background:#f11919!important}
+#botModal .chat-stat.bot-stat-v17.inos::after{background:#1687e0!important}
+#botModal .chat-stat.bot-stat-v17.outos::after{background:#8b929b!important}
+
+#botModal .bot-stat-icon-v17{
+  width:58px!important;
+  height:58px!important;
+  min-width:58px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:17px!important;
+  background:#eef4ff!important;
+  color:#1858c9!important;
+  font-size:29px!important;
+  font-weight:900!important;
+  line-height:1!important;
+}
+
+#botModal .bot-stat-v17.overdue .bot-stat-icon-v17{
+  background:#fff0f0!important;
+  color:#e21d1d!important;
+}
+#botModal .bot-stat-v17.inos .bot-stat-icon-v17{
+  background:#eef9f3!important;
+  color:#16834a!important;
+}
+#botModal .bot-stat-v17.outos .bot-stat-icon-v17{
+  background:#fff7ed!important;
+  color:#e87513!important;
+}
+
+#botModal .chat-stat.bot-stat-v17 div{
+  min-width:0!important;
+}
+
+#botModal .chat-stat.bot-stat-v17 small{
+  display:block!important;
+  margin:0 0 7px!important;
+  color:#344052!important;
+  font-size:14px!important;
+  line-height:1.1!important;
+  font-weight:900!important;
+  letter-spacing:.2px!important;
+  text-transform:uppercase!important;
+}
+
+#botModal .chat-stat.bot-stat-v17.overdue small{color:#cf1c1c!important}
+#botModal .chat-stat.bot-stat-v17.inos small{color:#17733f!important}
+#botModal .chat-stat.bot-stat-v17.outos small{color:#bd5d0d!important}
+
+#botModal .chat-stat.bot-stat-v17 b{
+  display:block!important;
+  margin:0!important;
+  color:#111317!important;
+  font-size:39px!important;
+  line-height:.95!important;
+  font-weight:950!important;
+}
+
+/* Phần Theo đầu việc / Theo huyện */
+#botModal .bot-summary-section-v17{
+  padding:16px 0!important;
+  border-bottom:1px solid #e7eaee!important;
+}
+
+#botModal .bot-summary-section-v17 h4,
+#botModal .bot-list-section-v17 h4{
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin:0 0 10px!important;
+  padding:0!important;
+  color:#272e38!important;
+  font-size:18px!important;
+  line-height:1.3!important;
+  font-weight:900!important;
+  text-transform:none!important;
+  letter-spacing:0!important;
+}
+
+#botModal .bot-summary-section-v17 h4 span{
+  width:38px!important;
+  height:38px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:12px!important;
+  background:#f2f6ff!important;
+  color:#1e63d0!important;
+  font-size:23px!important;
+}
+
+#botModal .bot-summary-section-v17:nth-of-type(2) h4 span{
+  background:#eff9f3!important;
+  color:#18854b!important;
+}
+
+#botModal .bot-summary-section-v17 ul{
+  display:block!important;
+  margin:0!important;
+  padding:0 0 0 42px!important;
+  list-style:disc!important;
+}
+
+#botModal .bot-summary-section-v17 li{
+  margin:7px 0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#3f4650!important;
+  font-size:15px!important;
+  line-height:1.55!important;
+}
+
+#botModal .bot-summary-section-v17 li b{
+  font-weight:900!important;
+  color:#20262f!important;
+}
+
+#botModal .bot-list-section-v17{
+  padding-top:16px!important;
+}
+
+/* Desktop bảng rộng */
+@media(min-width:701px){
+  #botModal .chat-bubble:has(.bot-result-v17){
+    max-width:min(96%,1180px)!important;
+    width:min(96%,1180px)!important;
+  }
+  #botModal .bot-result-v17{
+    padding:20px!important;
+  }
+}
+
+/* Mobile */
+@media(max-width:700px){
+  #botModal .bot-result-v17{
+    padding:11px!important;
+    border-radius:17px!important;
+  }
+
+  #botModal .bot-result-title-v17{
+    gap:9px!important;
+    padding-bottom:11px!important;
+    margin-bottom:13px!important;
+  }
+
+  #botModal .bot-result-title-v17 h3{
+    font-size:17px!important;
+  }
+
+  #botModal .bot-result-mark-v17{
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    border-radius:10px!important;
+    font-size:18px!important;
+  }
+
+  #botModal .bot-stat-grid-v17{
+    gap:8px!important;
+    margin-bottom:14px!important;
+  }
+
+  #botModal .chat-stat.bot-stat-v17{
+    min-height:88px!important;
+    padding:11px 10px!important;
+    gap:10px!important;
+    border-radius:15px!important;
+  }
+
+  #botModal .bot-stat-icon-v17{
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    border-radius:13px!important;
+    font-size:21px!important;
+  }
+
+  #botModal .chat-stat.bot-stat-v17 small{
+    margin-bottom:5px!important;
+    font-size:10px!important;
+  }
+
+  #botModal .chat-stat.bot-stat-v17 b{
+    font-size:27px!important;
+    font-weight:950!important;
+  }
+
+  #botModal .bot-summary-section-v17{
+    padding:13px 0!important;
+  }
+
+  #botModal .bot-summary-section-v17 h4,
+  #botModal .bot-list-section-v17 h4{
+    font-size:15px!important;
+  }
+
+  #botModal .bot-summary-section-v17 h4 span{
+    width:32px!important;
+    height:32px!important;
+    border-radius:10px!important;
+    font-size:18px!important;
+  }
+
+  #botModal .bot-summary-section-v17 ul{
+    padding-left:28px!important;
+  }
+
+  #botModal .bot-summary-section-v17 li{
+    font-size:13px!important;
+  }
+}
+</style>
+
+
+<style id="v18-size-tuning">
+/* V18: Thu nhỏ nhẹ giao diện phần kết quả BOT */
+@media(min-width:701px){
+  #botModal .bot-result-v17{
+    padding:16px!important;
+    border-radius:18px!important;
+  }
+
+  #botModal .bot-result-title-v17{
+    padding-bottom:12px!important;
+    margin-bottom:14px!important;
+    gap:10px!important;
+  }
+
+  #botModal .bot-result-title-v17 h3{
+    font-size:20px!important;
+  }
+
+  #botModal .bot-result-mark-v17{
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    border-radius:11px!important;
+    font-size:20px!important;
+  }
+
+  #botModal .bot-stat-grid-v17{
+    gap:10px!important;
+    margin-bottom:17px!important;
+  }
+
+  #botModal .chat-stat.bot-stat-v17{
+    min-height:96px!important;
+    padding:13px 15px!important;
+    gap:12px!important;
+    border-radius:16px!important;
+  }
+
+  #botModal .bot-stat-icon-v17{
+    width:50px!important;
+    height:50px!important;
+    min-width:50px!important;
+    border-radius:14px!important;
+    font-size:24px!important;
+  }
+
+  #botModal .chat-stat.bot-stat-v17 small{
+    font-size:12px!important;
+    margin-bottom:5px!important;
+  }
+
+  #botModal .chat-stat.bot-stat-v17 b{
+    font-size:33px!important;
+  }
+
+  #botModal .bot-summary-section-v17{
+    padding:13px 0!important;
+  }
+
+  #botModal .bot-summary-section-v17 h4,
+  #botModal .bot-list-section-v17 h4{
+    font-size:16px!important;
+    margin-bottom:8px!important;
+  }
+
+  #botModal .bot-summary-section-v17 h4 span{
+    width:34px!important;
+    height:34px!important;
+    border-radius:10px!important;
+    font-size:20px!important;
+  }
+}
+
+/* Tăng chữ trong bảng Danh sách đầu mục trên giao diện WEB */
+@media(min-width:701px){
+  #botModal .bot-list-section-v17 table,
+  #botModal .bot-list-section-v17 .bot-result-table{
+    font-size:13px!important;
+  }
+
+  #botModal .bot-list-section-v17 th{
+    font-size:11px!important;
+    font-weight:900!important;
+    padding:12px 10px!important;
+  }
+
+  #botModal .bot-list-section-v17 td{
+    font-size:13px!important;
+    line-height:1.45!important;
+    padding:11px 10px!important;
+    vertical-align:middle!important;
+  }
+
+  #botModal .bot-list-section-v17 td b,
+  #botModal .bot-list-section-v17 td strong{
+    font-size:13px!important;
+    font-weight:800!important;
+  }
+}
+</style>
+
+
+<style id="v19-loading-red">
+/* =========================================================
+   V19 - LOADING ICMS: nền đen, vòng đỏ/xám, 1 dòng chữ
+   ========================================================= */
+
+/* Các lớp/ID loading phổ biến của file hiện tại */
+#loadingOverlay,
+.loading-overlay,
+#loadingScreen,
+.loading-screen,
+.app-loader,
+.page-loader,
+.preloader,
+#preloader {
+    background: #0d0f12 !important;
+    color: #ffffff !important;
+}
+
+/* Khối nội dung loading */
+#loadingOverlay > *,
+.loading-overlay > *,
+#loadingScreen > *,
+.loading-screen > *,
+.app-loader > *,
+.page-loader > *,
+.preloader > *,
+#preloader > * {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Ẩn dòng mô tả phụ: ví dụ "Đang tải ICMS..." */
+#loadingOverlay p,
+.loading-overlay p,
+#loadingScreen p,
+.loading-screen p,
+.app-loader p,
+.page-loader p,
+.preloader p,
+#preloader p,
+#loadingText + *,
+.loading-text + * {
+    display: none !important;
+}
+
+/* Spinner đỏ/xám */
+#loadingOverlay .spinner,
+.loading-overlay .spinner,
+#loadingScreen .spinner,
+.loading-screen .spinner,
+.app-loader .spinner,
+.page-loader .spinner,
+.preloader .spinner,
+#preloader .spinner,
+#loadingOverlay .loader-spinner,
+.loading-overlay .loader-spinner,
+#loadingScreen .loader-spinner,
+.loading-screen .loader-spinner,
+.app-loader .loader-spinner,
+.page-loader .loader-spinner,
+.preloader .loader-spinner,
+#preloader .loader-spinner {
+    width: 92px !important;
+    height: 92px !important;
+    border: 12px solid rgba(255,255,255,.22) !important;
+    border-top-color: #ff1a1a !important;
+    border-left-color: #ff1a1a !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    animation: v19Spin .85s linear infinite !important;
+}
+
+/* Trường hợp spinner là pseudo-element */
+#loadingOverlay .spinner::before,
+.loading-overlay .spinner::before,
+#loadingScreen .spinner::before,
+.loading-screen .spinner::before,
+.app-loader .spinner::before,
+.page-loader .spinner::before {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+@keyframes v19Spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Tiêu đề loading */
+#loadingOverlay h1,
+#loadingOverlay h2,
+#loadingOverlay h3,
+.loading-overlay h1,
+.loading-overlay h2,
+.loading-overlay h3,
+#loadingScreen h1,
+#loadingScreen h2,
+#loadingScreen h3,
+.loading-screen h1,
+.loading-screen h2,
+.loading-screen h3,
+.app-loader h1,
+.app-loader h2,
+.app-loader h3,
+.page-loader h1,
+.page-loader h2,
+.page-loader h3 {
+    color: #ffffff !important;
+    font-size: clamp(28px, 4vw, 48px) !important;
+    font-weight: 900 !important;
+    letter-spacing: 1px !important;
+    margin: 34px 0 0 !important;
+    text-shadow: 0 2px 10px rgba(0,0,0,.35) !important;
+}
+
+/* Nếu chữ loading dùng class/id thay vì h1-h3 */
+#loadingTitle,
+.loading-title,
+#loadingText,
+.loading-text {
+    color: #ffffff !important;
+    font-size: clamp(28px, 4vw, 48px) !important;
+    font-weight: 900 !important;
+    letter-spacing: 1px !important;
+    margin-top: 34px !important;
+}
+
+/* Loại bỏ card/trắng ở chính giữa nếu loader có wrapper */
+#loadingOverlay .loading-box,
+.loading-overlay .loading-box,
+#loadingScreen .loading-box,
+.loading-screen .loading-box,
+.loader-box,
+.loading-card {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Mobile: giữ đúng tỷ lệ, không quá lớn */
+@media (max-width: 700px) {
+    #loadingOverlay .spinner,
+    .loading-overlay .spinner,
+    #loadingScreen .spinner,
+    .loading-screen .spinner,
+    .app-loader .spinner,
+    .page-loader .spinner,
+    .preloader .spinner,
+    #preloader .spinner,
+    #loadingOverlay .loader-spinner,
+    .loading-overlay .loader-spinner,
+    #loadingScreen .loader-spinner,
+    .loading-screen .loader-spinner,
+    .app-loader .loader-spinner,
+    .page-loader .loader-spinner,
+    .preloader .loader-spinner,
+    #preloader .loader-spinner {
+        width: 72px !important;
+        height: 72px !important;
+        border-width: 9px !important;
+    }
+
+    #loadingOverlay h1,
+    #loadingOverlay h2,
+    #loadingOverlay h3,
+    .loading-overlay h1,
+    .loading-overlay h2,
+    .loading-overlay h3,
+    #loadingScreen h1,
+    #loadingScreen h2,
+    #loadingScreen h3,
+    .loading-screen h1,
+    .loading-screen h2,
+    .loading-screen h3,
+    #loadingTitle,
+    .loading-title,
+    #loadingText,
+    .loading-text {
+        font-size: 25px !important;
+        margin-top: 25px !important;
+    }
+}
+</style>
+
+
+<style id="v20-exact-loading-fix">
+/* V20 - SỬA ĐÚNG CẤU TRÚC LOADING THỰC TẾ */
+#loading{
+  position:fixed!important;
+  inset:0!important;
+  z-index:999999!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:#0d0f12!important;
+}
+
+#loading .loadbox{
+  width:auto!important;
+  min-width:0!important;
+  padding:0!important;
+  margin:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+
+/* Vòng load: đỏ + xám */
+#loading .spin{
+  width:88px!important;
+  height:88px!important;
+  box-sizing:border-box!important;
+  border:12px solid rgba(255,255,255,.28)!important;
+  border-top-color:#ff1b1b!important;
+  border-left-color:#ff1b1b!important;
+  border-right-color:rgba(255,255,255,.28)!important;
+  border-bottom-color:rgba(255,255,255,.28)!important;
+  border-radius:50%!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  animation:v20Spin .8s linear infinite!important;
+}
+
+@keyframes v20Spin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+/* Chỉ giữ đúng một dòng tiêu đề */
+#loading #loadTitle{
+  display:block!important;
+  margin-top:34px!important;
+  color:#fff!important;
+  font-size:clamp(28px,4vw,48px)!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:1.2px!important;
+  text-align:center!important;
+}
+
+/* XÓA hẳn dòng thứ 2 */
+#loading #loadText{
+  display:none!important;
+}
+
+/* Mobile nhỏ hơn nhưng vẫn rõ */
+@media(max-width:700px){
+  #loading .spin{
+    width:72px!important;
+    height:72px!important;
+    border-width:9px!important;
+  }
+  #loading #loadTitle{
+    margin-top:26px!important;
+    font-size:25px!important;
+    letter-spacing:.8px!important;
+  }
+}
+</style>
+
+
+<style id="v21-final-loading-fix">
+/* V21 - FIX LOADER: nhỏ lại + không lỗi xoay */
+#loading{
+  position:fixed!important;
+  inset:0!important;
+  z-index:999999!important;
+  background:#0d0f12!important;
+  display:flex;
+  align-items:center!important;
+  justify-content:center!important;
+}
+
+#loading .loadbox{
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  min-width:0!important;
+  width:auto!important;
+  padding:0!important;
+  margin:0!important;
+  text-align:center!important;
+}
+
+/* Kích thước nhỏ gọn như giao diện cũ */
+#loading .spin{
+  width:46px!important;
+  height:46px!important;
+  box-sizing:border-box!important;
+  margin:0 auto 14px!important;
+  border:5px solid #555b63!important;
+  border-top-color:#ff1a1a!important;
+  border-left-color:#ff1a1a!important;
+  border-right-color:#555b63!important;
+  border-bottom-color:#555b63!important;
+  border-radius:50%!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  animation:spin .8s linear infinite!important;
+}
+
+/* Chỉ hiện một dòng tiêu đề */
+#loading #loadTitle{
+  display:block!important;
+  color:#fff!important;
+  font-size:16px!important;
+  line-height:1.2!important;
+  font-weight:900!important;
+  letter-spacing:.5px!important;
+  margin:0!important;
+  text-shadow:none!important;
+}
+
+#loading #loadText{
+  display:none!important;
+}
+
+/* Mobile nhỏ hơn nhẹ */
+@media(max-width:700px){
+  #loading .spin{
+    width:42px!important;
+    height:42px!important;
+    border-width:5px!important;
+    margin-bottom:12px!important;
+  }
+  #loading #loadTitle{
+    font-size:15px!important;
+  }
+}
+</style>
+
 </head>
 <body>
-<div id="loading"><div class="loadbox"><div class="spin"></div><b id="loadTitle">ĐANG TẢI DỮ LIỆU</b><div id="loadText" style="font-size:12px;color:#64748b;margin-top:7px">Đang tải ICMS...</div></div></div>
+<div id="loading"><div class="loadbox"><div class="spin"></div><b id="loadTitle">ĐANG TẢI ICMS</b><span id="loadText" aria-hidden="true"></span></div></div>
 
 <div class="app">
   <div class="top-shell">
@@ -1276,63 +3854,78 @@ html,body,.app{background:#f7f7f7!important;color:#0f0f0f!important}
 
 
 
-<button id="floatingBot" class="floating-bot" onclick="openBot()" aria-label="Mở Bot phân tích">
-  <span class="bot-icon">🤖</span>
-  <span class="bot-label">BOT</span>
+
+
+<button id="floatingBot" class="floating-bot" onclick="openBot()" aria-label="Mở Trợ lý ICMS">
+  <span class="bot-icon">✦</span><span class="bot-label">AI</span>
 </button>
 
 <div id="botModal" onclick="if(event.target===this)closeBot()">
-  <div class="bot-box">
-    <div class="bot-head">
-      <div class="bot-head-left"><b>🤖 BOT PHÂN TÍCH ICMS</b><small id="botScope">Phân tích dữ liệu đang lọc</small></div>
+  <div class="bot-box chat-bot-box">
+    <div class="bot-head chat-head">
+      <div class="bot-head-left">
+        <b><span class="ai-mark">✦</span> TRỢ LÝ ICMS</b>
+        <small id="botScope">Sẵn sàng phân tích dữ liệu đang hiển thị</small>
+      </div>
       <div class="bot-head-actions">
         <button onclick="toggleBotMini()" title="Thu nhỏ">−</button>
         <button onclick="toggleBotMax()" title="Phóng to">□</button>
-        <button onclick="openHelp()" title="Help">?</button>
+        <button onclick="openHelp()" title="Hướng dẫn">?</button>
         <button class="modal-close" onclick="closeBot()" title="Đóng">×</button>
       </div>
     </div>
-    <div class="bot-body" id="botBody"></div>
+
+    <div id="chatMessages" class="chat-messages"></div>
+
+    <div class="chat-input-bar">
+      <input id="botQuery" placeholder="Nhập Mã WO, Trạm... hoặc điều kiện tìm kiếm" onkeydown="if(event.key==='Enter')sendBotCommand()">
+      <button onclick="sendBotCommand()">GỬI</button>
+    </div>
   </div>
 </div>
-
 
 <div id="helpModal" onclick="if(event.target===this)closeHelp()">
-  <div class="help-box">
+  <div class="help-box chat-help-box">
     <div class="help-head">
-      <div><b>HƯỚNG DẪN BOT ICMS</b><small>Nhập câu lệnh hoặc sử dụng các nút gợi ý</small></div>
+      <div>
+        <b>HELP · CÚ PHÁP BOT ICMS</b>
+        <small>TRỢ GIÚP TÌM KIẾM ICMS</small>
+      </div>
       <button class="modal-close" onclick="closeHelp()">×</button>
     </div>
-    <div class="help-body">
-      <div class="help-intro">
-        Bot phân tích toàn bộ dữ liệu hoặc đúng phần dữ liệu bạn đang lọc. Trước khi dùng, hãy lọc Huyện / Danh mục / Đầu việc nếu muốn phân tích riêng từng nhóm.
+    <div class="help-body chat-help-body">
+      <div class="help-card">
+        <b>1. Cách tìm kiếm</b>
+        <code>Mã WO · Trạm/Tuyến/Tủ · từ khóa · INOS/OUTOS · QH/TH</code>
+        <p>Nhập trực tiếp Mã WO, Trạm/Tuyến/Tủ hoặc kết hợp điều kiện INOS, OUTOS, QH, TH. BOT sẽ tự lọc và trả về danh sách kết quả phù hợp.</p>
       </div>
-      <div class="cmd-grid">
-        <button onclick="runHelpCmd('summary')"><b>/tongquan</b><span>Tổng quan & rủi ro</span></button>
-        <button onclick="runHelpCmd('overdue')"><b>/quahan</b><span>Phân tích quá hạn</span></button>
-        <button onclick="runHelpCmd('district')"><b>/huyen</b><span>Điểm nóng theo huyện</span></button>
-        <button onclick="runHelpCmd('job')"><b>/dauviec</b><span>Điểm nóng theo đầu việc</span></button>
-        <button onclick="runHelpCmd('category')"><b>/danhmuc</b><span>Phân tích danh mục</span></button>
-        <button onclick="runHelpCmd('quality')"><b>/chatluong</b><span>Kiểm tra dữ liệu</span></button>
-        <button onclick="runHelpCmd('priority')"><b>/uutien</b><span>Thứ tự xử lý</span></button>
-        <button onclick="runHelpCmd('all')"><b>/all</b><span>Phân tích đầy đủ</span></button>
+      <div class="help-table">
+        <div><b>Từ khóa</b><span>Tìm trong Danh mục, Đầu việc, Đầu việc báo hỏng, Mô tả, Trạm, Huyện, WO.</span></div>
+        <div><b>INOS</b><span>Lọc các công việc thuộc loại INOS.</span></div>
+        <div><b>OUTOS</b><span>Lọc các công việc thuộc loại OUTOS.</span></div>
+        <div><b>QH</b><span>Lọc các WO đang Quá hạn.</span></div>
+        <div><b>TH</b><span>Lọc các WO đang Trong hạn.</span></div>
       </div>
-      <div class="cmd-line">
-        <input id="helpCommand" placeholder="Ví dụ: /quahan, /uutien..." onkeydown="if(event.key==='Enter')runTypedCommand()">
-        <button onclick="runTypedCommand()">CHẠY</button>
-      </div>
-      <div class="help-note"><b>Lưu ý:</b> Các lệnh trên phân tích đúng dữ liệu đang được lọc trên bảng.</div>
-    </div>
+</div>
   </div>
 </div>
-
 <script>
 const API='https://script.google.com/macros/s/AKfycbwgMDqernBjUfaKIORUoGT0XISbA2ZiBQlMqcilmz87lsztPN523eBRXzGOuPkJcaXZ/exec';
 let DATA=[], FILTERED=[];
 
 const $=id=>document.getElementById(id);
-function showLoading(title='ĐANG TẢI DỮ LIỆU',text='Đang xử lý...'){ $('loadTitle').textContent=title;$('loadText').textContent=text;$('loading').style.display='flex';}
-function hideLoading(){ $('loading').style.display='none';}
+function showLoading(title='ĐANG TẢI ICMS',text=''){
+  const titleEl = $('loadTitle');
+  const textEl = $('loadText');
+  const loading = $('loading');
+  if(titleEl) titleEl.textContent = title || 'ĐANG TẢI ICMS';
+  if(textEl) textEl.textContent = '';
+  if(loading) loading.style.setProperty('display','flex','important');
+}
+function hideLoading(){
+  const loading = $('loading');
+  if(loading) loading.style.setProperty('display','none','important');
+}
 function norm(v){return String(v??'').trim()}
 function pickKey(obj,...keys){
   const map={};
@@ -1601,12 +4194,50 @@ function openBot(){
 }
 
 async function loadAPI(){
-  showLoading('ĐANG TẢI ICMS','Đang tải ICMS...');
+  showLoading('ĐANG TẢI ICMS','');
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
   try{
-    const r=await fetch(API,{cache:'no-store'});if(!r.ok)throw new Error(r.status);
-    const raw=await r.json();setData(Array.isArray(raw)?raw:[],'ICMS · '+(Array.isArray(raw)?raw.length:0)+' dòng');
-  }catch(e){alert('Không tải được Google Sheet: '+e.message)}
-  finally{hideLoading()}
+    const r = await fetch(API,{
+      cache:'no-store',
+      signal:controller.signal
+    });
+
+    if(!r.ok) throw new Error('HTTP '+r.status);
+
+    const raw = await r.json();
+    setData(Array.isArray(raw) ? raw : [], 'ICMS · '+(Array.isArray(raw)?raw.length:0)+' dòng');
+
+  }catch(e){
+    console.error('ICMS API:', e);
+
+    // Không để màn hình loading treo khi mở file HTML trực tiếp.
+    // Trang vẫn vào được để người dùng xem giao diện hoặc tải Excel.
+    const msg = e && e.name === 'AbortError'
+      ? 'Kết nối ICMS quá lâu.'
+      : 'Không thể tải dữ liệu ICMS.';
+
+    const status = $('sourceStatus');
+    if(status) status.textContent = msg;
+
+    if(typeof DATA !== 'undefined' && !Array.isArray(DATA)) DATA = [];
+    if(typeof FILTERED !== 'undefined' && !Array.isArray(FILTERED)) FILTERED = [];
+
+    // Hiển thị giao diện rỗng thay vì khóa toàn bộ trang.
+    try{
+      if(typeof setData === 'function' && (!Array.isArray(DATA) || DATA.length === 0)){
+        setData([], 'ICMS · Chưa tải được dữ liệu');
+      }
+    }catch(renderError){
+      console.error('ICMS render fallback:', renderError);
+    }
+
+  }finally{
+    clearTimeout(timeoutId);
+    hideLoading();
+  }
 }
 async function loadExcel(ev){
   const file=ev.target.files[0];if(!file)return;
@@ -1630,6 +4261,402 @@ document.addEventListener('click',function(e){
     b.classList.add('active');
   }
 });
+</script>
+
+
+
+<script id="v11-chat-bot-js">
+(function(){
+  const byId=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const txt=v=>String(v??'').trim();
+  const fold=v=>txt(v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/\s+/g,' ').trim();
+  const n=v=>{const x=Number(v);return Number.isFinite(x)?x:0};
+
+  function getRows(){
+    try{
+      if(typeof FILTERED!=='undefined' && Array.isArray(FILTERED) && FILTERED.length) return FILTERED;
+      if(typeof DATA!=='undefined' && Array.isArray(DATA) && DATA.length) return DATA;
+    }catch(e){}
+    return [];
+  }
+  function overdue(r){return fold(r.dg||r.danhgia)==='qua han'||n(r.tg||r.thoigian)<0}
+  function group(rows,key,limit=6){
+    const m={};
+    rows.forEach(r=>{const k=txt(r[key])||'Không xác định';m[k]=(m[k]||0)+1});
+    return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,limit);
+  }
+  function pct(a,b){return b?(a*100/b).toFixed(1):'0.0'}
+
+  function addMessage(role, html){
+    const box=byId('chatMessages');
+    if(!box)return;
+    const wrap=document.createElement('div');
+    wrap.className='chat-msg '+role;
+    const icon=role==='user'?'Bạn':'✦';
+    wrap.innerHTML=role==='user'
+      ? `<div class="chat-bubble">${html}</div><div class="chat-avatar">${icon}</div>`
+      : `<div class="chat-avatar">${icon}</div><div class="chat-bubble">${html}</div>`;
+    box.appendChild(wrap);
+    requestAnimationFrame(()=>box.scrollTop=box.scrollHeight);
+  }
+  function resetChat(){
+    const box=byId('chatMessages'); if(!box)return;
+    box.innerHTML='';
+    const rows=getRows();
+    byId('botScope').textContent=rows.length?`Đang sử dụng ${rows.length} dòng dữ liệu hiện tại`:'Chưa nhận được dữ liệu để phân tích';
+    addMessage('bot', rows.length
+      ? `<h3>Trợ lý ICMS sẵn sàng</h3><p>Nhập nội dung cần tìm hoặc nhấn nút <b>?</b> ở góc trên để xem đầy đủ câu lệnh và cú pháp tìm kiếm.</p><p>Tôi có thể tìm theo <b>Mã WO, Trạm/Tuyến/Tủ, INOS, OUTOS, QH, TH</b> và kết hợp nhiều điều kiện.</p>`
+      : `<div class="chat-empty"><b>Chưa có dữ liệu trong BOT.</b><br>Hãy đợi bảng ICMS tải xong hoặc bỏ bộ lọc nếu hiện tại không có kết quả.</div>`);
+  }
+
+  function parse(q){
+    const raw=txt(q);
+    const f=fold(raw);
+    let type='';
+    if(/\binos\b/.test(f)) type='INOS';
+    else if(/\boutos\b/.test(f)) type='OUTOS';
+
+    let state=null;
+    if(/\bqh\b|\bqua han\b/.test(f)) state='QH';
+    else if(/\bth\b|\btrong han\b/.test(f)) state='TH';
+
+    // Hỗ trợ cú pháp có nhãn:
+    // WO: WO_ICMS..., Mã WO: ..., TRAM: BDH..., Trạm: ...
+    let woQuery='';
+    let tramQuery='';
+    let work=f;
+
+    const woMatch=raw.match(/(?:^|\s)(?:wo|ma\s*wo|mã\s*wo)\s*[:=]\s*(.+?)(?=$|\s+(?:inos|outos|qh|th)\b)/i);
+    const tramMatch=raw.match(/(?:^|\s)(?:tram|trạm|tuyen|tuyến|tu)\s*[:=]\s*(.+?)(?=$|\s+(?:inos|outos|qh|th)\b)/i);
+
+    if(woMatch) woQuery=fold(woMatch[1]);
+    if(tramMatch) tramQuery=fold(tramMatch[1]);
+
+    // Nếu người dùng dán trực tiếp mã WO thì ưu tiên tìm trong cột WO
+    if(!woQuery && /wo[_\-\s]*icms|^wo[_-]/i.test(raw.trim())){
+      woQuery=fold(raw.replace(/\b(?:inos|outos|qh|th)\b/ig,''));
+    }
+
+    // Loại bỏ các toán tử và nhãn để phần còn lại là từ khóa chung
+    const stop=new Set([
+      'inos','outos','qh','qua','han','th','trong',
+      'phan','tich','tim','loc','xem','danh','sach','cac','tat','ca',
+      'wo','ma','tram','tuyen','tu'
+    ]);
+
+    // Nếu có cú pháp WO:/TRAM: thì không dùng phần giá trị đó làm keyword chung nữa
+    work=work
+      .replace(/(?:^|\s)(?:wo|ma wo)\s*[:=]\s*[^]+?/i, m=>m)
+      .replace(/\binos\b|\boutos\b|\bqh\b|\bth\b|\bqua han\b|\btrong han\b/g,' ');
+
+    let keywords=[];
+    if(!woQuery && !tramQuery){
+      keywords=work.split(' ').filter(x=>x&&!stop.has(x));
+    }
+
+    return {type,state,keywords,woQuery,tramQuery,raw};
+  }
+
+  function matchRow(r,p){
+    const wo=fold(r.wo);
+    const tram=fold(r.tram);
+
+    // Tìm chính xác/gần đúng trong Mã WO
+    if(p.woQuery && !wo.includes(p.woQuery)) return false;
+
+    // Tìm chính xác/gần đúng trong Trạm/Tuyến/Tủ
+    if(p.tramQuery && !tram.includes(p.tramQuery)) return false;
+
+    if(p.type && fold(r.type)!==fold(p.type)) return false;
+    if(p.state==='QH'&&!overdue(r)) return false;
+    if(p.state==='TH'&&overdue(r)) return false;
+
+    if(p.keywords.length){
+      const hay=[
+        r.tram,r.wo,r.huyen,r.dm,r.dv,r.dvbh,r.mt,r.type,
+        r.wo_vvc,r.wo_vtnet
+      ].map(fold).join(' ');
+
+      // Ưu tiên tìm cả cụm từ, sau đó mới tách từng từ
+      const phrase=p.keywords.join(' ');
+      if(phrase && hay.includes(phrase)) return true;
+      return p.keywords.every(k=>hay.includes(k));
+    }
+    return true;
+  }
+
+  function renderTable(rows){
+    if(!rows.length)return `<div class="chat-empty">Không tìm thấy đầu mục phù hợp với cú pháp đã nhập.</div>`;
+
+    const body=rows.slice(0,200).map((r,i)=>`<tr>
+      <td>${i+1}</td>
+      <td>${esc(r.tram)}</td>
+      <td>${esc(r.wo)}</td>
+      <td>${esc(r.dm)}</td>
+      <td>${esc(r.dv)}</td>
+      <td>${esc(r.dvbh)}</td>
+      <td>${esc(r.mt)}</td>
+      <td>${esc(r.huyen)}</td>
+      <td>${esc(r.type)}</td>
+      <td>${overdue(r)?'Quá hạn':'Trong hạn'}</td>
+      <td>${esc(r.tg)}</td>
+      <td>${esc(r.tg_update||'-')}</td>
+    </tr>`).join('');
+
+    return `<div class="chat-table-wrap"><table class="chat-table"><thead><tr>
+      <th>STT</th>
+      <th>Trạm/Tuyến/Tủ</th>
+      <th>Mã WO</th>
+      <th>Danh mục</th>
+      <th>Đầu việc</th>
+      <th>Đầu việc báo hỏng</th>
+      <th>Mô tả</th>
+      <th>Huyện</th>
+      <th>Loại</th>
+      <th>Đánh giá</th>
+      <th>TG tồn</th>
+      <th>Thời gian</th>
+    </tr></thead><tbody>${body}</tbody></table></div>${rows.length>200?'<p class="chat-limit-note">Đang hiển thị 200 dòng đầu tiên.</p>':''}`;
+  }
+  function renderSyntax(q){
+    const rows=getRows(), p=parse(q), hit=rows.filter(r=>matchRow(r,p));
+    const qh=hit.filter(overdue).length;
+    const inos=hit.filter(r=>fold(r.type)==='inos').length;
+    const outos=hit.filter(r=>fold(r.type)==='outos').length;
+    const topDv=group(hit,'dv').map(x=>`<li><b>${esc(x[0])}</b>: ${x[1]}</li>`).join('')||'<li>Không có dữ liệu</li>';
+    const topH=group(hit,'huyen').map(x=>`<li><b>${esc(x[0])}</b>: ${x[1]}</li>`).join('')||'<li>Không có dữ liệu</li>';
+    return `<div class="bot-result-v17">
+      <div class="bot-result-title-v17">
+        <span class="bot-result-mark-v17">✦</span>
+        <h3>Kết quả: ${esc(q)}</h3>
+      </div>
+
+      <div class="chat-stat-grid bot-stat-grid-v17">
+        <div class="chat-stat bot-stat-v17 match">
+          <span class="bot-stat-icon-v17">📋</span>
+          <div><small>Phù hợp</small><b>${hit.length}</b></div>
+        </div>
+        <div class="chat-stat bot-stat-v17 overdue">
+          <span class="bot-stat-icon-v17">◷</span>
+          <div><small>Quá hạn</small><b>${qh}</b></div>
+        </div>
+        <div class="chat-stat bot-stat-v17 inos">
+          <span class="bot-stat-icon-v17">⌁</span>
+          <div><small>INOS</small><b>${inos}</b></div>
+        </div>
+        <div class="chat-stat bot-stat-v17 outos">
+          <span class="bot-stat-icon-v17">↻</span>
+          <div><small>OUTOS</small><b>${outos}</b></div>
+        </div>
+      </div>
+
+      <section class="bot-summary-section-v17">
+        <h4><span>☷</span>Theo đầu việc</h4>
+        <ul>${topDv}</ul>
+      </section>
+
+      <section class="bot-summary-section-v17">
+        <h4><span>⌖</span>Theo huyện</h4>
+        <ul>${topH}</ul>
+      </section>
+
+      <section class="bot-list-section-v17">
+        <h4>Danh sách đầu mục</h4>
+        ${renderTable(hit)}
+      </section>
+    </div>`;
+  }
+  function renderOverview(rows){
+    const over=rows.filter(overdue);
+    const topH=group(over,'huyen',3).map(x=>`${esc(x[0])} (${x[1]})`).join(', ')||'Chưa có';
+    return `<h3>Tổng quan ICMS</h3><div class="chat-stat-grid">
+      <div class="chat-stat"><span>Tổng WO</span><b>${rows.length}</b></div>
+      <div class="chat-stat"><span>Quá hạn</span><b>${over.length}</b></div>
+      <div class="chat-stat"><span>Tỷ lệ QH</span><b>${pct(over.length,rows.length)}%</b></div>
+      <div class="chat-stat"><span>INOS</span><b>${rows.filter(r=>fold(r.type)==='inos').length}</b></div>
+    </div><p>Điểm cần chú ý theo huyện: <b>${topH}</b>.</p>`;
+  }
+  function renderPriority(rows){
+    const over=rows.filter(overdue), h=group(over,'huyen',5), d=group(over,'dv',5);
+    return `<h3>Ưu tiên xử lý</h3><p>Hiện có <b>${over.length}</b> WO quá hạn trên <b>${rows.length}</b> dòng.</p>
+      <p><b>Ưu tiên theo huyện:</b></p><ul>${h.map(x=>`<li>${esc(x[0])}: <b>${x[1]}</b> WO quá hạn</li>`).join('')||'<li>Không có WO quá hạn</li>'}</ul>
+      <p><b>Ưu tiên theo đầu việc:</b></p><ul>${d.map(x=>`<li>${esc(x[0])}: <b>${x[1]}</b> WO quá hạn</li>`).join('')||'<li>Không có WO quá hạn</li>'}</ul>`;
+  }
+  function renderHotspot(rows){
+    const over=rows.filter(overdue), h=group(over,'huyen',8), d=group(over,'dv',8), dm=group(over,'dm',8);
+    const list=(arr)=>`<ul>${arr.map(x=>`<li><b>${esc(x[0])}</b>: ${x[1]}</li>`).join('')||'<li>Không có dữ liệu</li>'}</ul>`;
+    return `<h3>Điểm nóng</h3><p><b>Huyện</b>${list(h)}</p><p><b>Đầu việc</b>${list(d)}</p><p><b>Danh mục</b>${list(dm)}</p>`;
+  }
+
+  window.openBot=function(){
+    byId('botModal').classList.add('show');
+    document.body.classList.add('bot-open');
+    resetChat();
+  };
+  window.closeBot=function(){byId('botModal').classList.remove('show');document.body.classList.remove('bot-open')};
+  window.openHelp=function(){byId('helpModal').classList.add('show')};
+  window.closeHelp=function(){byId('helpModal').classList.remove('show')};
+  window.toggleBotMini=function(){document.querySelector('#botModal .bot-box').classList.toggle('bot-mini')};
+  window.toggleBotMax=function(){document.querySelector('#botModal .bot-box').classList.toggle('bot-max')};
+  window.useHelpCommand=function(q){closeHelp();byId('botQuery').value=q;sendBotCommand(q)};
+
+  window.sendBotCommand=function(forced){
+    const input=byId('botQuery');
+    const q=txt(forced??input.value);
+    if(!q)return;
+    addMessage('user',esc(q));
+    if(input) input.value='';
+    const rows=getRows();
+    if(!rows.length){
+      addMessage('bot','<div class="chat-empty">BOT chưa nhận được dữ liệu. Hãy đợi bảng tải xong hoặc thử bỏ bộ lọc hiện tại.</div>');
+      return;
+    }
+    const f=fold(q);
+    let html='';
+    if(/\b(help|huong dan)\b/.test(f)){openHelp();return}
+
+    // Lệnh phân tích tổng quan giữ nguyên.
+    if(/^(tong quan|tong hop|summary)$/.test(f)) html=renderOverview(rows);
+    else if(/^(uu tien|priority)$/.test(f)) html=renderPriority(rows);
+    else if(/^(diem nong|hotspot)$/.test(f)) html=renderHotspot(rows);
+    else {
+      // Mọi nội dung khác đều là lệnh tìm kiếm trực tiếp:
+      // Mã WO, Trạm/Tuyến/Tủ, INOS, OUTOS, QH, TH hoặc kết hợp nhiều điều kiện.
+      html=renderSyntax(q);
+    }
+    addMessage('bot',html);
+  };
+})();
+</script>
+
+
+
+<script id="v15-help-stable">
+(function(){
+  const helpData = [
+    ['Từ khóa', 'Tìm trong Danh mục, Đầu việc, Đầu việc báo hỏng, Mô tả, Trạm, Huyện, WO.'],
+    ['INOS', 'Lọc các công việc thuộc loại INOS.'],
+    ['OUTOS', 'Lọc các công việc thuộc loại OUTOS.'],
+    ['QH', 'Lọc các WO đang Quá hạn.'],
+    ['TH', 'Lọc các WO đang Trong hạn.']
+  ];
+
+  function buildHelp(root){
+    if(!root || root.dataset.v15HelpReady === '1') return;
+
+    const body = root.querySelector('.help-body');
+    if(!body) return;
+
+    const syntaxCard = body.querySelector('.help-card');
+
+    // Chỉ xóa phần chữ dư nằm NGOÀI các ô hướng dẫn.
+    // Giữ nguyên hoàn toàn card "1. Cách tìm kiếm".
+    [...body.childNodes].forEach(node => {
+      if(node === syntaxCard) return;
+      if(node.nodeType === Node.TEXT_NODE) {
+        if(node.textContent.trim()) node.remove();
+        return;
+      }
+      if(node.nodeType === Node.ELEMENT_NODE) {
+        node.remove();
+      }
+    });
+
+    // Tạo lại 5 ô lệnh, mỗi ô có đầy đủ tiêu đề + mô tả.
+    helpData.forEach(([title, text]) => {
+      const item = document.createElement('div');
+      item.className = 'help-command';
+
+      const badge = document.createElement('b');
+      badge.textContent = title;
+
+      const content = document.createElement('span');
+      const strong = document.createElement('strong');
+      strong.textContent = title;
+
+      const desc = document.createElement('small');
+      desc.textContent = text;
+
+      content.appendChild(strong);
+      content.appendChild(desc);
+
+      item.appendChild(badge);
+      item.appendChild(content);
+      body.appendChild(item);
+    });
+
+    root.dataset.v15HelpReady = '1';
+  }
+
+  function run(){
+    document
+      .querySelectorAll('#helpModal, #botHelpModal, .help-modal')
+      .forEach(buildHelp);
+  }
+
+  run();
+
+  // Chỉ quan sát để xử lý trường hợp modal được tạo động sau khi tải trang.
+  // Không sửa lại modal đã xử lý nên không tạo vòng lặp vô hạn.
+  const observer = new MutationObserver(run);
+  observer.observe(document.body, {childList:true, subtree:true});
+})();
+</script>
+
+
+<script id="v16-safe-result-icons">
+(function(){
+  function applyIcons(){
+    const selectors = ['.stat-card','.bot-stat','.metric-card'];
+    const cards = document.querySelectorAll(selectors.join(','));
+    const icons = ['📋','⏱','📶','🔄'];
+
+    cards.forEach((card, index) => {
+      if(card.dataset.v16IconReady === '1') return;
+      const pos = index % 4;
+      card.setAttribute('data-icon', icons[pos]);
+      card.dataset.v16IconReady = '1';
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', applyIcons);
+  window.addEventListener('load', applyIcons);
+  setTimeout(applyIcons, 300);
+  setTimeout(applyIcons, 1000);
+})();
+</script>
+
+
+<script id="v23-loader-fix">
+/* V23 - sửa dứt điểm lỗi loading xoay mãi.
+   Nguyên nhân chính: CSS V21 dùng display:flex!important nên hideLoading()
+   bằng style.display='none' không thắng được rule !important. */
+(function(){
+  function closeLoader(){
+    var loading = document.getElementById('loading');
+    if(!loading) return;
+    loading.style.setProperty('display','none','important');
+    loading.setAttribute('aria-hidden','true');
+  }
+
+  /* Failsafe chạy ngay, không phụ thuộc window.load. */
+  setTimeout(function(){
+    var loading = document.getElementById('loading');
+    if(loading && getComputedStyle(loading).display !== 'none'){
+      console.warn('ICMS loader V23 safety: forcing overlay closed.');
+      closeLoader();
+    }
+  }, 11500);
+
+  window.addEventListener('error', function(){
+    setTimeout(closeLoader, 0);
+  });
+
+  window.addEventListener('unhandledrejection', function(){
+    setTimeout(closeLoader, 0);
+  });
+})();
 </script>
 
 </body>
