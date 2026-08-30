@@ -59,96 +59,8 @@ td:first-child{font-weight:650;text-align:left}.fail{background:#fff7f7}.ok{colo
   .stats{grid-template-columns:repeat(2,1fr)}
   .employee-grid{grid-template-columns:repeat(2,minmax(260px,1fr))}
 }
-@media(max-width:800px){
-  body{padding:6px}
-  .app{max-width:none}
-  .header{padding-top:0}
-  .hero{padding:14px 15px;border-radius:15px}
-  .hero h1{font-size:19px}
-  .hero p{font-size:11px;line-height:1.45}
-  .toolbar{padding:8px;gap:7px;border-radius:14px}
-  .search{min-width:100%;flex-basis:100%}
-  .search input{font-size:13px;padding:10px 11px}
-  .stats{grid-template-columns:repeat(2,1fr);gap:7px;margin:9px 0}
-  .stat{padding:11px;border-radius:13px}
-  .stat .value{font-size:18px}
-  .section{margin-top:10px}
-  .section-title{font-size:15px;padding:0 2px}
-  .table-wrap{max-height:62vh;border:2px solid #94a3b8;border-radius:14px}
-  #myTable{
-    width:max-content;
-    min-width:760px;
-    max-width:none;
-    table-layout:auto;
-    border-collapse:separate;
-    border-spacing:0;
-  }
-  .table-wrap{overflow-x:auto;overflow-y:auto}
-  #myTable th,#myTable td{box-sizing:border-box;padding:8px 7px;font-size:11px;border-right:1px solid #cbd5e1;border-bottom:1px solid #cbd5e1}
 
-  /* Chiều cao cố định để 2 hàng tiêu đề không bị lệch */
-  #myTable tr:nth-child(1) th{
-    height:34px;
-    min-height:34px;
-    line-height:16px;
-    vertical-align:middle;
-  }
-  #myTable tr:nth-child(2) th{
-    height:34px;
-    min-height:34px;
-    line-height:16px;
-    vertical-align:middle;
-  }
 
-  /* Cố định cả 2 hàng tiêu đề khi cuộn dọc */
-  #myTable tr:nth-child(1) th{
-    position:sticky;
-    top:0;
-    z-index:30;
-    background:#dbeafe;
-    box-shadow:0 1px 0 #94a3b8;
-  }
-  #myTable tr:nth-child(2) th{
-    position:sticky;
-    top:34px;
-    z-index:29;
-    background:#eaf1fb;
-    box-shadow:0 2px 0 #94a3b8;
-  }
-
-  /* Ô Huyện rowspan = 2 hàng: cố định đúng chiều cao 68px */
-  #myTable tr:nth-child(1) th[rowspan]{
-    position:sticky;
-    top:0;
-    left:0;
-    height:68px;
-    min-height:68px;
-    z-index:50;
-    background:#dbeafe;
-    vertical-align:middle;
-    box-shadow:3px 0 8px rgba(15,23,42,.10),0 2px 0 #94a3b8;
-  }
-
-  /* Cố định cột Huyện khi cuộn ngang */
-  #myTable th:first-child,#myTable td:first-child{
-    position:sticky;
-    left:0;
-    box-shadow:3px 0 8px rgba(15,23,42,.10);
-  }
-  #myTable th:first-child{
-    z-index:50;
-    background:#dbeafe;
-  }
-  #myTable td:first-child{z-index:10;background:#f8fafc}
-  #myTable tr:nth-child(even) td:first-child{background:#f1f5f9}
-  .rank-grid{grid-template-columns:1fr;gap:10px}
-  .rank-panel{padding:10px;border-radius:14px}
-  .employee-grid{grid-template-columns:1fr;gap:8px}
-  .card{border-radius:13px;padding:11px}
-  .chat-box{right:8px;bottom:72px;width:calc(100vw - 16px);height:min(72vh,560px);border-radius:18px}
-  .chat-box.max{right:4px;bottom:4px;width:calc(100vw - 8px);height:calc(100vh - 8px)}
-  .chat-launcher{right:14px;bottom:14px;width:52px;height:52px;border-radius:16px}
-}
 @media(min-width:801px){
   body{padding:18px;overflow-x:hidden}
   .app{width:min(100%,1800px);max-width:1800px;margin:0 auto}
@@ -538,20 +450,8 @@ td:first-child{font-weight:650;text-align:left}.fail{background:#fff7f7}.ok{colo
     height:clamp(48px,3vw,62px);
   }
 }
-@media(max-width:800px){
-  .desktop-main-grid{
-    display:block;
-  }
-  .insight-section{
-    position:static;
-    max-height:none;
-    overflow:visible;
-  }
-  .section-heading-row,.insight-head{
-    align-items:flex-start;
-  }
-  .employee-section{margin-top:10px}
-}
+
+
 
 
 .stat-clickable{cursor:pointer;transition:.18s ease}
@@ -567,14 +467,8 @@ td:first-child{font-weight:650;text-align:left}.fail{background:#fff7f7}.ok{colo
   .toolbar{margin-top:8px!important;padding:8px 10px!important}
   .search input{height:36px!important}
 }
-@media(max-width:800px){
-  .hero{min-height:54px!important;padding:10px 12px!important;border-radius:13px!important}
-  .hero h1{font-size:17px!important}
-  .stats{gap:6px!important;margin:8px 0!important}
-  .stat{min-height:60px!important;padding:9px!important;border-radius:12px!important}
-  .stat .label{font-size:10px!important}
-  .stat .value{font-size:17px!important}
-}
+
+
 
 
 @media(min-width:801px){
@@ -585,14 +479,8 @@ td:first-child{font-weight:650;text-align:left}.fail{background:#fff7f7}.ok{colo
   }
   .hero h1{font-size:clamp(16px,1vw,21px)!important}
 }
-@media(max-width:800px){
-  .hero{
-    min-height:46px!important;
-    padding:8px 10px!important;
-    border-radius:11px!important;
-  }
-  .hero h1{font-size:15px!important}
-}
+
+
 
 
 /* ===== BLACK / WHITE / RED ===== */
@@ -653,12 +541,8 @@ body{background:#fff!important;color:#111!important}
  .hero{min-height:48px!important;padding:8px 14px!important;border-radius:11px!important}
  .hero h1{font-size:clamp(16px,1vw,21px)!important}
 }
-@media(max-width:800px){
- .hero{min-height:44px!important;padding:7px 9px!important;border-radius:10px!important}
- .hero h1{font-size:15px!important}
- .section-title{padding-left:6px}
- .chat-launcher{width:50px!important;height:50px!important;font-size:21px!important}
-}
+
+
 
 
 /* ===== KPI COLOR CODING: CHỈ ĐỔI MÀU SỐ, KHÔNG TÔ CẢ Ô ===== */
@@ -734,16 +618,8 @@ body{background:#fff!important;color:#111!important}
   box-shadow:none!important;
 }
 
-@media(max-width:800px){
-  #myTable th:first-child,#myTable td:first-child,
-  #myTable th:nth-child(4),#myTable td:nth-child(4),
-  #myTable th:nth-child(7),#myTable td:nth-child(7){
-    border-right-width:2px!important;
-  }
-  #myTable th:last-child,#myTable td:last-child{
-    border-left-width:1px!important;
-  }
-}
+
+
 
 
 /* ===== CỘT THỰC HIỆN: KHÔNG TÔ MÀU NỀN ===== */
@@ -756,6 +632,1006 @@ body{background:#fff!important;color:#111!important}
 #myTable tr:hover td:nth-child(3),
 #myTable tr:hover td:nth-child(6){
   background:#fff!important;
+}
+
+
+/* =========================================================
+   MOBILE - KHỐI DUY NHẤT
+   Cuộn ngang + cuộn dọc + sticky 2 hàng tiêu đề + cột Huyện
+   ========================================================= */
+@media (max-width:800px){
+
+  html{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    overflow-x:hidden;
+  }
+
+  body{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    margin:0;
+    padding:6px;
+    overflow-x:hidden;
+  }
+
+  .app{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+  }
+
+  .header{
+    width:100%;
+    padding-top:0;
+  }
+
+  .hero{
+    width:100%;
+    padding:8px 10px;
+    min-height:44px;
+    border-radius:10px;
+  }
+
+  .hero h1{
+    font-size:15px;
+    margin:0;
+  }
+
+  .toolbar{
+    width:100%;
+    padding:7px;
+    gap:6px;
+    border-radius:11px;
+  }
+
+  .search{
+    width:100%;
+    min-width:0;
+    flex-basis:100%;
+  }
+
+  .search input{
+    width:100%;
+    height:34px;
+    padding:8px 10px;
+    font-size:12px;
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px;
+    margin:8px 0;
+  }
+
+  .stat{
+    min-width:0;
+    min-height:58px;
+    padding:8px;
+    border-radius:11px;
+  }
+
+  .stat .label{font-size:9px}
+  .stat .value{font-size:16px}
+
+  .section{
+    width:100%;
+    min-width:0;
+    margin-top:10px;
+  }
+
+  .section-heading-row{
+    margin:3px 0 4px;
+    min-height:0;
+  }
+
+  .section-title{
+    font-size:14px;
+    line-height:1.1;
+  }
+
+  /* QUAN TRỌNG:
+     table-wrap là vùng cuộn độc lập thật sự */
+  .table-wrap{
+    display:block;
+    position:relative;
+    width:100%;
+    max-width:100%;
+    min-width:0;
+
+    height:62vh;
+    min-height:260px;
+    max-height:62vh;
+
+    overflow-x:auto;
+    overflow-y:auto;
+
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+    touch-action:pan-x pan-y;
+
+    border:1px solid #d6d6d6;
+    border-radius:8px;
+    background:#fff;
+    box-shadow:none;
+  }
+
+  /* Bảng cố ý rộng hơn màn hình => luôn có cuộn ngang */
+  #myTable{
+    display:table;
+    width:max-content !important;
+    min-width:980px !important;
+    max-width:none !important;
+
+    margin:0;
+    table-layout:auto !important;
+
+    border-collapse:separate !important;
+    border-spacing:1px !important;
+    background:#ececec;
+  }
+
+  #myTable th{
+    min-width:62px;
+    height:32px;
+    padding:5px 6px;
+    font-size:9.5px;
+    line-height:1.05;
+    white-space:normal;
+    vertical-align:middle;
+    background:#111;
+    color:#fff;
+  }
+
+  #myTable tr:nth-child(2) th{
+    height:30px;
+  }
+
+  #myTable td{
+    min-width:62px;
+    height:28px;
+    padding:5px 6px;
+    font-size:10px;
+    line-height:1.05;
+    white-space:nowrap;
+    vertical-align:middle;
+    background:#fff;
+  }
+
+  /* Sticky hàng tiêu đề 1 */
+  #myTable tr:nth-child(1) th{
+    position:sticky !important;
+    top:0 !important;
+    z-index:30 !important;
+    background:#111 !important;
+    color:#fff !important;
+  }
+
+  /* Sticky hàng tiêu đề 2 */
+  #myTable tr:nth-child(2) th{
+    position:sticky !important;
+    top:32px !important;
+    z-index:29 !important;
+    background:#111 !important;
+    color:#fff !important;
+  }
+
+  /* Sticky cột Huyện */
+  #myTable th:first-child,
+  #myTable td:first-child{
+    position:sticky !important;
+    left:0 !important;
+    z-index:40 !important;
+    width:72px !important;
+    min-width:72px !important;
+    max-width:72px !important;
+    box-shadow:2px 0 4px rgba(0,0,0,.10) !important;
+  }
+
+  /* Ô Huyện rowspan = 2 hàng */
+  #myTable tr:nth-child(1) th[rowspan]{
+    position:sticky !important;
+    top:0 !important;
+    left:0 !important;
+    z-index:60 !important;
+    width:72px !important;
+    min-width:72px !important;
+    max-width:72px !important;
+    height:62px !important;
+    background:#111 !important;
+    color:#fff !important;
+  }
+
+  #myTable td:first-child{
+    background:#fff !important;
+    text-align:left !important;
+    font-weight:750 !important;
+  }
+
+  #myTable tr:nth-child(even) td:first-child{
+    background:#fafafa !important;
+  }
+
+  /* Góc trái trên cùng luôn nổi */
+  #myTable tr:first-child th:first-child{
+    z-index:70 !important;
+  }
+
+  /* Ranh giới mảnh */
+  #myTable th:first-child,
+  #myTable td:first-child,
+  #myTable th:nth-child(4),
+  #myTable td:nth-child(4),
+  #myTable th:nth-child(7),
+  #myTable td:nth-child(7){
+    border-right:1px solid #fff !important;
+  }
+
+  /* Không để phần khác khóa overflow */
+  .insight-section{
+    position:static !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+
+  .rank-grid{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+
+  .rank-panel{
+    padding:10px;
+    border-radius:12px;
+  }
+
+  .employee-grid{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+
+  .card{
+    padding:10px;
+    border-radius:11px;
+  }
+
+  .chat-box{
+    right:8px;
+    bottom:72px;
+    width:calc(100vw - 16px);
+    height:min(72vh,560px);
+    border-radius:16px;
+  }
+
+  .chat-box.max{
+    right:4px;
+    bottom:4px;
+    width:calc(100vw - 8px);
+    height:calc(100vh - 8px);
+  }
+
+  .chat-launcher{
+    right:14px;
+    bottom:14px;
+    width:50px;
+    height:50px;
+    border-radius:15px;
+  }
+}
+
+
+/* ===== V36 - MOBILE: KHÍT RANH GIỚI TKM / XLSC ===== */
+@media(max-width:800px){
+  #myTable{
+    border-spacing:0!important;
+  }
+
+  /* Không tạo khe kép tại ranh giới TKM -> XLSC */
+  #myTable th:nth-child(4),
+  #myTable td:nth-child(4){
+    border-right:1px solid #fff!important;
+  }
+
+  #myTable th:nth-child(5),
+  #myTable td:nth-child(5){
+    border-left:0!important;
+  }
+}
+
+
+/* ===== V37 - MOBILE: RANH GIỚI TKM/XLSC NHỎ HƠN ===== */
+@media(max-width:800px){
+  /* Không tạo khoảng trống từ border-spacing */
+  #myTable{
+    border-spacing:0!important;
+  }
+
+  /* Ranh giới TKM -> XLSC chỉ 1px */
+  #myTable th:nth-child(4),
+  #myTable td:nth-child(4){
+    border-right:1px solid #fff!important;
+  }
+  #myTable th:nth-child(5),
+  #myTable td:nth-child(5){
+    border-left:0!important;
+  }
+
+  /* Giảm bóng ở cột Huyện để cảm giác sát hơn */
+  #myTable th:first-child,
+  #myTable td:first-child{
+    box-shadow:1px 0 2px rgba(0,0,0,.08)!important;
+  }
+}
+
+
+/* ===== V38 - MOBILE: TKM / XLSC SÁT NHAU ===== */
+@media(max-width:800px){
+  #myTable{
+    border-spacing:0!important;
+    border-collapse:separate!important;
+  }
+
+  /* Cột Tỉ lệ của TKM: chỉ 1px trắng bên phải */
+  #myTable th:nth-child(4),
+  #myTable td:nth-child(4){
+    border-right:1px solid #fff!important;
+    margin-right:0!important;
+    padding-right:6px!important;
+  }
+
+  /* Cột Định mức của XLSC: không có border trái */
+  #myTable th:nth-child(5),
+  #myTable td:nth-child(5){
+    border-left:0!important;
+    margin-left:0!important;
+    padding-left:6px!important;
+  }
+
+  /* Không tạo khe bằng background của table */
+  #myTable{
+    background:#fff!important;
+  }
+}
+
+
+/* ===== V39 - MOBILE: RANH GIỚI TKM/XLSC GẦN NHƯ LIỀN ===== */
+@media(max-width:800px){
+  #myTable{
+    border-spacing:0!important;
+  }
+
+  /* Không để 2 mép border tạo thành khe rộng */
+  #myTable tr:nth-child(1) th:nth-child(2),
+  #myTable tr:nth-child(1) th:nth-child(3){
+    border-left:0!important;
+    border-right:0!important;
+  }
+
+  /* Các ô thân bảng: bỏ border hai phía tại ranh giới */
+  #myTable th:nth-child(4),
+  #myTable td:nth-child(4){
+    border-right:0!important;
+    padding-right:5px!important;
+  }
+
+  #myTable th:nth-child(5),
+  #myTable td:nth-child(5){
+    border-left:0!important;
+    padding-left:5px!important;
+  }
+
+  /* Chỉ giữ 1px trắng ở sát mép phải ô Tỉ lệ TKM */
+  #myTable th:nth-child(4),
+  #myTable td:nth-child(4){
+    box-shadow:inset -1px 0 0 #fff!important;
+  }
+}
+
+
+/* ===== V40 - MOBILE: MỖI BÊN 0.5px TẠI RANH GIỚI TKM/XLSC ===== */
+@media(max-width:800px){
+  #myTable{
+    border-spacing:0!important;
+  }
+
+  /* Mỗi phía chỉ 0.5px: tổng khe khoảng 1px, không bị rộng */
+  #myTable th:nth-child(4),
+  #myTable td:nth-child(4){
+    border-right:0.5px solid #fff!important;
+    box-shadow:none!important;
+    padding-right:5px!important;
+  }
+
+  #myTable th:nth-child(5),
+  #myTable td:nth-child(5){
+    border-left:0.5px solid #fff!important;
+    padding-left:5px!important;
+  }
+
+  /* Không tạo thêm khoảng cách bằng border ở header nhóm */
+  #myTable tr:first-child th:nth-child(2){
+    border-right:0.5px solid #fff!important;
+    box-shadow:none!important;
+  }
+
+  #myTable tr:first-child th:nth-child(3){
+    border-left:0.5px solid #fff!important;
+    box-shadow:none!important;
+  }
+}
+
+
+/* ===== V41 - 1 ĐƯỜNG ĐỎ NGANG XUYÊN SUỐT BẢNG ===== */
+#myTable{
+  position:relative!important;
+}
+
+/* Kẻ đúng 1 đường đỏ liên tục từ trái sang phải ngay dưới phần tiêu đề */
+#myTable tr:nth-child(2){
+  position:relative!important;
+}
+#myTable tr:nth-child(2)::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-1px;
+  height:2px;
+  background:#e50914;
+  z-index:90;
+  pointer-events:none;
+}
+
+/* Không để các đường xám phía dưới tiêu đề tạo cảm giác kép */
+#myTable tr:nth-child(2) th{
+  border-bottom-color:transparent!important;
+}
+
+/* Mobile: đường đỏ đi hết chiều rộng bảng đang cuộn */
+@media(max-width:800px){
+  #myTable tr:nth-child(2)::after{
+    height:2px;
+    bottom:-1px;
+  }
+}
+
+
+/* ===== V42 - MOBILE: ĐƯỜNG ĐỎ DÍNH THEO HEADER KHI CUỘN ===== */
+@media(max-width:800px){
+
+  /* Không dùng pseudo-element cũ vì nó bám theo nội dung bảng và trôi khi cuộn */
+  #myTable tr:nth-child(2)::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  /* Kẻ đường đỏ trực tiếp ở đáy từng ô header hàng 2.
+     Vì cả hàng 2 đang sticky, đường đỏ sẽ luôn nằm ngay dưới header khi cuộn dọc. */
+  #myTable tr:nth-child(2) th{
+    border-bottom:2px solid #e50914!important;
+    box-shadow:none!important;
+  }
+
+  /* Ô Huyện rowspan cũng phải nối đường đỏ ở đúng đáy */
+  #myTable tr:nth-child(1) th[rowspan]{
+    border-bottom:2px solid #e50914!important;
+  }
+
+  /* Đảm bảo không còn đường xám chồng phía dưới */
+  #myTable tr:nth-child(2) th{
+    outline:none!important;
+  }
+}
+
+
+/* ===== V43 - MOBILE: XLSC GỌN HƠN ===== */
+@media(max-width:800px){
+  /* Giảm khoảng cách giữa các ô trong riêng nhóm XLSC */
+  #myTable tr:nth-child(2) th:nth-child(5),
+  #myTable tr:nth-child(2) th:nth-child(6),
+  #myTable tr:nth-child(2) th:nth-child(7),
+  #myTable tr:not(:nth-child(1)):not(:nth-child(2)) td:nth-child(5),
+  #myTable tr:not(:nth-child(1)):not(:nth-child(2)) td:nth-child(6),
+  #myTable tr:not(:nth-child(1)):not(:nth-child(2)) td:nth-child(7){
+    padding-left:4px!important;
+    padding-right:4px!important;
+    min-width:58px!important;
+  }
+
+  /* Tiêu đề nhóm XLSC gọn hơn */
+  #myTable tr:first-child th:nth-child(3){
+    padding-left:4px!important;
+    padding-right:4px!important;
+  }
+}
+
+
+/* ===== V44 - MOBILE: TKM VÀ XLSC DÙNG CÙNG KÍCH THƯỚC ===== */
+@media(max-width:800px){
+  #myTable{
+    width:max-content!important;
+    min-width:0!important;
+    table-layout:fixed!important;
+  }
+
+  /* 3 cột TKM = 3 cột XLSC, kích thước tuyệt đối giống nhau */
+  #myTable col:nth-child(2),
+  #myTable col:nth-child(5){
+    width:110px!important;
+  }
+  #myTable col:nth-child(3),
+  #myTable col:nth-child(6){
+    width:110px!important;
+  }
+  #myTable col:nth-child(4),
+  #myTable col:nth-child(7){
+    width:72px!important;
+  }
+
+  /* Đồng nhất ô thực tế */
+  #myTable tr:nth-child(2) th:nth-child(1),
+  #myTable tr:nth-child(2) th:nth-child(2),
+  #myTable tr:nth-child(2) th:nth-child(4),
+  #myTable tr:nth-child(2) th:nth-child(5){
+    width:auto!important;
+  }
+
+  /* Giữ cột Huyện và Tổng nhỏ gọn nhưng không ép TKM/XLSC lệch nhau */
+  #myTable col:nth-child(1){
+    width:72px!important;
+  }
+  #myTable col:nth-child(8){
+    width:120px!important;
+  }
+
+  #myTable th,
+  #myTable td{
+    min-width:0!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+    padding-left:5px!important;
+    padding-right:5px!important;
+  }
+
+  /* Hai nhóm cách nhau đúng 1px, không có khe phụ */
+  #myTable th:nth-child(4),
+  #myTable td:nth-child(4){
+    border-right:1px solid #fff!important;
+    padding-right:5px!important;
+  }
+  #myTable th:nth-child(5),
+  #myTable td:nth-child(5){
+    border-left:0!important;
+    padding-left:5px!important;
+  }
+}
+
+
+/* ===== V45 - MOBILE: THU GỌN Ô THỰC HIỆN + TỈ LỆ ===== */
+@media(max-width:800px){
+  /* TKM */
+  #myTable col:nth-child(2),
+  #myTable col:nth-child(3),
+  #myTable col:nth-child(4){
+    width:88px!important;
+  }
+
+  /* XLSC: đúng kích thước tương ứng */
+  #myTable col:nth-child(5),
+  #myTable col:nth-child(6),
+  #myTable col:nth-child(7){
+    width:88px!important;
+  }
+
+  /* Tỉ lệ cần hẹp hơn một chút */
+  #myTable col:nth-child(4),
+  #myTable col:nth-child(7){
+    width:64px!important;
+  }
+
+  /* Huyện + Tổng giữ vừa đủ */
+  #myTable col:nth-child(1){
+    width:72px!important;
+  }
+  #myTable col:nth-child(8){
+    width:105px!important;
+  }
+
+  #myTable th,
+  #myTable td{
+    padding-left:4px!important;
+    padding-right:4px!important;
+  }
+
+  /* Tỉ lệ thật gọn */
+  #myTable th:nth-child(3),
+  #myTable td:nth-child(3),
+  #myTable th:nth-child(6),
+  #myTable td:nth-child(6){
+    width:64px!important;
+    min-width:64px!important;
+    max-width:64px!important;
+  }
+}
+
+
+/* ===== V46 - DESKTOP: BO TRÒN BẢNG ĐÚNG 4 GÓC ===== */
+@media(min-width:801px){
+
+  .table-wrap{
+    width:100%!important;
+    max-width:100%!important;
+    overflow:hidden!important;
+    border:1px solid #cfcfcf!important;
+    border-radius:12px!important;
+    background:#fff!important;
+    box-shadow:0 4px 14px rgba(0,0,0,.07)!important;
+  }
+
+  #myTable{
+    width:100%!important;
+    min-width:100%!important;
+    max-width:none!important;
+    border-collapse:separate!important;
+    border-spacing:0!important;
+    border-radius:11px!important;
+    overflow:hidden!important;
+    background:#111!important;
+  }
+
+  #myTable th,
+  #myTable td{
+    border:1px solid #e2e2e2!important;
+    border-left:0!important;
+    border-top:0!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Header đen và bo đúng 4 góc ngoài */
+  #myTable tr:first-child th:first-child{
+    border-top-left-radius:11px!important;
+  }
+  #myTable tr:first-child th:last-child{
+    border-top-right-radius:11px!important;
+  }
+
+  #myTable tr:last-child td:first-child{
+    border-bottom-left-radius:11px!important;
+  }
+  #myTable tr:last-child td:last-child{
+    border-bottom-right-radius:11px!important;
+  }
+
+  /* Không để đường viền ngoài bị hở */
+  #myTable tr:first-child th{
+    border-top:0!important;
+  }
+  #myTable tr:last-child td{
+    border-bottom:0!important;
+  }
+  #myTable tr td:first-child,
+  #myTable tr th:first-child{
+    border-left:0!important;
+  }
+  #myTable tr td:last-child,
+  #myTable tr th:last-child{
+    border-right:0!important;
+  }
+
+  /* Khe phân nhóm vẫn trắng nhưng mảnh */
+  #myTable tr:first-child th:nth-child(2){
+    border-right:1px solid #fff!important;
+  }
+  #myTable tr:first-child th:nth-child(3){
+    border-left:0!important;
+  }
+  #myTable tr:nth-child(2) th:nth-child(4),
+  #myTable tr:nth-child(2) th:nth-child(7),
+  #myTable tr td:nth-child(4),
+  #myTable tr td:nth-child(7){
+    border-right:1px solid #fff!important;
+  }
+}
+
+
+/* ===== V47 - DESKTOP: KHÔNG TÔ ĐEN Ô DỮ LIỆU ===== */
+@media(min-width:801px){
+
+  /* Header vẫn đen */
+  #myTable th{
+    background:#111!important;
+    color:#fff!important;
+  }
+
+  /* Toàn bộ ô dữ liệu luôn nền trắng */
+  #myTable td,
+  #myTable tr:nth-child(even) td,
+  #myTable tr:hover td,
+  #myTable td.ok,
+  #myTable td.phat,
+  #myTable td.neutral,
+  #myTable td.fail{
+    background:#fff!important;
+  }
+
+  /* Chỉ màu chữ KPI */
+  #myTable td.ok,
+  #myTable td.ok *{
+    color:#16a34a!important;
+    font-weight:800!important;
+  }
+
+  #myTable td.phat,
+  #myTable td.phat *{
+    color:#e50914!important;
+    font-weight:800!important;
+  }
+
+  #myTable td.neutral,
+  #myTable td.neutral *{
+    color:#777!important;
+    font-weight:600!important;
+  }
+
+  /* Ô tỷ lệ/tổng âm chỉ dùng màu chữ đỏ, không nền đen */
+  #myTable td:nth-child(4).phat,
+  #myTable td:nth-child(7).phat,
+  #myTable td:last-child.phat{
+    background:#fff!important;
+    color:#e50914!important;
+  }
+
+  /* Thực hiện luôn trắng */
+  #myTable td:nth-child(3),
+  #myTable td:nth-child(6){
+    background:#fff!important;
+    color:#111!important;
+  }
+
+  /* Huyện trắng */
+  #myTable td:first-child{
+    background:#fff!important;
+    color:#111!important;
+  }
+}
+
+
+/* ===== V48 - THỜI GIAN DƯỚI TIÊU ĐỀ ===== */
+.hero-title-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  min-width:0;
+}
+.hero-title-wrap h1{margin:0!important}
+.hero-logtime{
+  margin-top:3px;
+  color:#d6d6d6;
+  font-size:10px;
+  line-height:1.1;
+  font-weight:500;
+}
+@media(max-width:800px){
+  .hero-logtime{
+    font-size:9px;
+    margin-top:2px;
+  }
+}
+
+
+/* ===== V49 - GIỮ THANH TÌM KIẾM CỐ ĐỊNH KHI CUỘN ===== */
+@media(min-width:801px){
+  .header{
+    position:sticky!important;
+    top:0!important;
+    z-index:1000!important;
+    background:#fff!important;
+    padding-top:4px!important;
+    padding-bottom:8px!important;
+  }
+  .toolbar{
+    position:relative!important;
+    z-index:1001!important;
+  }
+}
+
+@media(max-width:800px){
+  .header{
+    position:sticky!important;
+    top:0!important;
+    z-index:1000!important;
+    background:#fff!important;
+    padding-top:0!important;
+    padding-bottom:5px!important;
+  }
+  .toolbar{
+    position:relative!important;
+    z-index:1001!important;
+  }
+}
+
+
+/* ===== V50 - MOBILE CŨNG CỐ ĐỊNH THANH TÌM KIẾM ===== */
+@media(max-width:800px){
+  .header{
+    position:sticky!important;
+    top:0!important;
+    z-index:1000!important;
+    background:#fff!important;
+    padding-top:0!important;
+    padding-bottom:5px!important;
+  }
+
+  /* Đảm bảo vùng tìm kiếm nằm trên bảng và không bị che */
+  .hero{
+    position:relative!important;
+    z-index:1001!important;
+  }
+  .toolbar{
+    position:relative!important;
+    z-index:1002!important;
+    background:#fff!important;
+  }
+
+  /* Khi bảng cuộn riêng, header trang vẫn nằm trên cùng */
+  .table-wrap{
+    position:relative!important;
+    z-index:1!important;
+  }
+}
+
+
+/* ===== V51 - MOBILE: HEADER TÌM KIẾM CỐ ĐỊNH THẬT SỰ ===== */
+@media(max-width:800px){
+  /* Không dùng sticky cho header nữa vì bảng có vùng scroll riêng.
+     Fixed giúp thanh tìm kiếm luôn nằm trên màn hình khi cuộn bảng hoặc cuộn trang. */
+  .header{
+    position:fixed!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    z-index:1000!important;
+    padding:5px 5px 6px!important;
+    background:#fff!important;
+    backdrop-filter:none!important;
+    box-shadow:0 2px 8px rgba(0,0,0,.08)!important;
+  }
+
+  .hero,
+  .toolbar,
+  .logtime{
+    width:100%!important;
+  }
+
+  /* Chừa khoảng phía trên cho header fixed */
+  .app{
+    padding-top:96px!important;
+  }
+
+  /* Không để bảng sticky vượt lên che thanh tìm kiếm */
+  .table-wrap{
+    z-index:1!important;
+  }
+
+  /* Header trang cao hơn toàn bộ sticky header của bảng */
+  .hero,
+  .toolbar{
+    position:relative!important;
+    z-index:1001!important;
+  }
+
+  /* Nếu nội dung header thực tế cao hơn, không để khoảng thừa quá lớn */
+  .hero{
+    margin:0 0 4px!important;
+  }
+  .toolbar{
+    margin-top:0!important;
+  }
+}
+
+
+/* ===== V52 - MOBILE: CHỪA ĐỦ KHOẢNG CHO HEADER FIXED ===== */
+@media(max-width:800px){
+  /* Header fixed gồm Hero + 2 ô tìm kiếm + thời gian.
+     Chừa toàn bộ chiều cao thực tế, không che 2 ô KPI phía dưới. */
+  .app{
+    padding-top:148px!important;
+  }
+
+  .header{
+    height:auto!important;
+    min-height:0!important;
+    padding:5px 5px 7px!important;
+  }
+
+  .header .hero{
+    min-height:44px!important;
+    height:44px!important;
+    box-sizing:border-box!important;
+  }
+
+  .header .toolbar{
+    margin-top:4px!important;
+    padding:5px!important;
+    box-sizing:border-box!important;
+  }
+
+  .header .search{
+    margin:0!important;
+  }
+
+  .header .search input{
+    height:34px!important;
+    box-sizing:border-box!important;
+  }
+
+  .header .logtime{
+    margin-top:4px!important;
+    line-height:12px!important;
+    min-height:12px!important;
+  }
+
+  /* Đảm bảo vùng KPI bắt đầu sau header, không bị che */
+  .stats{
+    position:relative!important;
+    z-index:1!important;
+    margin-top:7px!important;
+  }
+}
+
+
+/* ===== V53 - MOBILE: BẢNG TỰ CO THEO KẾT QUẢ TÌM KIẾM ===== */
+@media(max-width:800px){
+  /* Không khóa chiều cao 62vh nữa.
+     Kết quả ít dòng -> bảng tự co theo nội dung.
+     Kết quả nhiều dòng -> tối đa 62vh và tự cuộn dọc. */
+  .table-wrap{
+    height:auto!important;
+    min-height:0!important;
+    max-height:62vh!important;
+    overflow-x:auto!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+
+  /* Giữ chiều rộng lớn của bảng để vẫn có cuộn ngang */
+  #myTable{
+    width:max-content!important;
+    min-width:980px!important;
+    max-width:none!important;
+  }
+}
+
+
+/* ===== V54 - BOT ICON THEO ẢNH THAM KHẢO ===== */
+.chat-launcher{
+  width:56px!important;
+  height:56px!important;
+  border-radius:50%!important;
+  background:#111!important;
+  border:2px solid #e50914!important;
+  color:#fff!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:25px!important;
+  line-height:1!important;
+  padding:0!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.20)!important;
+}
+.chat-launcher:hover{
+  transform:scale(1.03);
+  box-shadow:0 10px 26px rgba(229,9,20,.20)!important;
+}
+@media(max-width:800px){
+  .chat-launcher{
+    width:52px!important;
+    height:52px!important;
+    border-radius:50%!important;
+    font-size:23px!important;
+  }
 }
 
 </style>
@@ -773,15 +1649,16 @@ body{background:#fff!important;color:#111!important}
 <div class="app">
   <div class="header">
     <div class="hero">
-      <div><h1>📊 KPI Khoán Vật Tư</h1></div>
-      
+      <div class="hero-title-wrap">
+        <h1>📊 KPI Khoán Vật Tư</h1>
+        <div id="logtime" class="hero-logtime"></div>
+      </div>
     </div>
     <div class="toolbar">
       <div class="search"><input id="nv" placeholder="🔎 Tìm nhân viên..." oninput="applyFilter()"></div>
       <div class="search"><input id="huyen" placeholder="📍 Tìm huyện..." oninput="applyFilter()"></div>
     </div>
-    <div id="logtime" class="logtime"></div>
-  </div>
+</div>
 
   <div class="stats">
     <div class="stat"><div class="label">Tổng nhân viên</div><div class="value" id="stNV">0</div></div>
@@ -794,7 +1671,7 @@ body{background:#fff!important;color:#111!important}
     <section id="tableSection" class="section table-section">
       <div class="section-heading-row">
         <h2 class="section-title">📊 Tổng hợp theo huyện</h2>
-        <span class="section-note">Theo dõi toàn bộ chỉ tiêu</span>
+        
       </div>
       <div class="table-wrap"><table id="myTable"></table></div>
     </section>
@@ -803,9 +1680,9 @@ body{background:#fff!important;color:#111!important}
       <div class="insight-head">
         <div>
           <h2 class="section-title">📈 Phân tích nhanh</h2>
-          <span class="section-note">Xếp hạng hiệu suất</span>
+          
         </div>
-        <span class="live-dot">● Live</span>
+        
       </div>
       <div class="rank-panel desktop-rank-panel">
         <h3>🏆 Top 10 nhân viên tốt</h3>
@@ -824,10 +1701,10 @@ body{background:#fff!important;color:#111!important}
   </section>
 </div>
 
-<button class="chat-launcher" onclick="toggleChat()" title="Mở phân tích">●</button>
+<button class="chat-launcher" onclick="toggleChat()" title="Mở phân tích">🤖</button>
 <div id="chatBox" class="chat-box">
   <div class="chat-head">
-    <div><b>● Phân tích KPI</b><small>Phân tích trực tiếp dữ liệu đang hiển thị</small></div>
+    <div><b>🤖 Phân tích KPI</b><small>Phân tích trực tiếp dữ liệu đang hiển thị</small></div>
     <div class="chat-actions">
       <button class="icon-btn" onclick="toggleMaxChat()" title="Phóng to">⛶</button>
       <button class="icon-btn" onclick="toggleChat()" title="Đóng">×</button>
