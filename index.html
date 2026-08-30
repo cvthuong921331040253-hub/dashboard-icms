@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>KPI FINAL</title>
+<title>KPI CĐBR</title>
 
 <style>
 /* 👈 đổi màu điều kiện xanh đỏ */
@@ -1688,7 +1688,700 @@ body{
 }
 .bot-inline-btn:hover{background:#e9f2ff}
 
+
+/* ===== THEME WHITE / BLACK / RED - YOUTUBE STYLE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+
+:root{
+  --yt-red:#ff0000;
+  --yt-black:#0f0f0f;
+  --yt-white:#ffffff;
+  --yt-gray:#f2f2f2;
+  --yt-line:#e5e5e5;
+  --yt-text:#0f0f0f;
+  --yt-muted:#606060;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  background:var(--yt-white)!important;
+  color:var(--yt-text)!important;
+  font-family:'Roboto',Arial,sans-serif!important;
+}
+
+body{
+  background:var(--yt-white)!important;
+}
+
+/* Tiêu đề */
+#pageTitle,h2,h3{
+  color:var(--yt-text)!important;
+  font-family:'Roboto',Arial,sans-serif!important;
+}
+
+/* Banner */
+.marquee-banner{
+  background:var(--yt-black)!important;
+  color:var(--yt-white)!important;
+  border-bottom:3px solid var(--yt-red)!important;
+}
+
+.marquee-text{
+  color:var(--yt-white)!important;
+}
+
+/* Header */
+.header-fixed{
+  background:rgba(255,255,255,.97)!important;
+  color:var(--yt-text)!important;
+  border-bottom:1px solid var(--yt-line)!important;
+  box-shadow:0 3px 12px rgba(0,0,0,.07)!important;
+}
+
+/* Nút */
+.switch-btn,
+.kpi-lookup-btn{
+  background:var(--yt-white)!important;
+  color:var(--yt-text)!important;
+  border:1px solid #cfcfcf!important;
+  font-family:'Roboto',Arial,sans-serif!important;
+}
+
+.switch-btn:hover,
+.kpi-lookup-btn:hover{
+  background:var(--yt-gray)!important;
+  border-color:#999!important;
+}
+
+input{
+  background:var(--yt-white)!important;
+  color:var(--yt-text)!important;
+  border:1px solid #cfcfcf!important;
+  font-family:'Roboto',Arial,sans-serif!important;
+}
+
+input:focus{
+  border-color:var(--yt-red)!important;
+  box-shadow:0 0 0 2px rgba(255,0,0,.10)!important;
+}
+
+/* KPI kém */
+.checkbox-btn{
+  background:var(--yt-gray)!important;
+  color:var(--yt-text)!important;
+  border:1px solid #d0d0d0!important;
+}
+
+input[type="checkbox"]:checked + .checkbox-btn{
+  background:var(--yt-red)!important;
+  color:var(--yt-white)!important;
+  border-color:var(--yt-red)!important;
+}
+
+/* Card */
+.card{
+  background:var(--yt-white)!important;
+  color:var(--yt-text)!important;
+  border:1px solid var(--yt-line)!important;
+  box-shadow:0 2px 8px rgba(0,0,0,.08)!important;
+}
+
+.card:hover{
+  box-shadow:0 4px 14px rgba(0,0,0,.12)!important;
+}
+
+.top{
+  background:#f7f7f7!important;
+  border-left:4px solid var(--yt-black)!important;
+}
+
+.worst{
+  background:#fff4f4!important;
+  border-left:4px solid var(--yt-red)!important;
+}
+
+/* Bảng KPI */
+#tableKPI table{
+  background:var(--yt-white)!important;
+  color:var(--yt-text)!important;
+}
+
+#tableKPI th{
+  background:var(--yt-black)!important;
+  color:var(--yt-white)!important;
+  border-color:#2b2b2b!important;
+  font-weight:600!important;
+}
+
+#tableKPI td{
+  background:var(--yt-white)!important;
+  color:var(--yt-text)!important;
+  border-color:var(--yt-line)!important;
+}
+
+#tableKPI tr:nth-child(even) td:not(.bad){
+  background:#fafafa!important;
+}
+
+#tableKPI td.bad{
+  background:#ffd6d6!important;
+  color:#b00000!important;
+  font-weight:600!important;
+}
+
+#tableKPI th:first-child{
+  background:var(--yt-black)!important;
+  color:var(--yt-white)!important;
+}
+
+#tableKPI td:first-child:not(.bad){
+  background:var(--yt-gray)!important;
+  color:var(--yt-text)!important;
+}
+
+#tableKPI td.bad:first-child{
+  background:#ffcccc!important;
+  color:#b00000!important;
+}
+
+/* Link huyện */
+.kpi-district-link{
+  color:#c00000!important;
+}
+
+/* Trạng thái */
+.ok,.bot-good{
+  color:#111!important;
+}
+
+.fail,.bot-bad{
+  color:#d00000!important;
+}
+
+/* Bot */
+#kpiBot{
+  background:var(--yt-white)!important;
+  color:var(--yt-text)!important;
+  border:1px solid var(--yt-line)!important;
+}
+
+.bot-head{
+  background:var(--yt-black)!important;
+  color:var(--yt-white)!important;
+  border-bottom:3px solid var(--yt-red)!important;
+}
+
+.bot-msg.bot{
+  background:var(--yt-white)!important;
+  color:var(--yt-text)!important;
+  border-color:var(--yt-line)!important;
+}
+
+.bot-msg.user{
+  background:var(--yt-black)!important;
+  color:var(--yt-white)!important;
+}
+
+.bot-quick{
+  background:var(--yt-white)!important;
+  border-color:var(--yt-line)!important;
+}
+
+.bot-quick button,
+.bot-inline-btn{
+  background:var(--yt-white)!important;
+  color:var(--yt-text)!important;
+  border:1px solid #cfcfcf!important;
+}
+
+.bot-quick button:hover,
+.bot-inline-btn:hover{
+  background:var(--yt-gray)!important;
+  color:var(--yt-red)!important;
+  border-color:var(--yt-red)!important;
+}
+
+.bot-send{
+  background:var(--yt-red)!important;
+  color:var(--yt-white)!important;
+}
+
+.bot-send:hover{
+  background:#cc0000!important;
+}
+
+/* Help / Popup */
+.kpi-help-box,
+.kpi-lookup-window{
+  background:var(--yt-white)!important;
+  color:var(--yt-text)!important;
+}
+
+.kpi-help-head,
+.kpi-lookup-head{
+  background:var(--yt-black)!important;
+  color:var(--yt-white)!important;
+  border-bottom:3px solid var(--yt-red)!important;
+}
+
+/* Loading */
+#pageLoader{
+  background:var(--yt-white)!important;
+}
+
+.loader-spinner{
+  border-color:#e5e5e5!important;
+  border-top-color:var(--yt-red)!important;
+}
+
+.loader-text{
+  color:var(--yt-text)!important;
+}
+
+/* Scrollbar */
+*{
+  scrollbar-color:#999 #f2f2f2;
+  scrollbar-width:thin;
+}
+
+
+/* ===== BẢN 28: MOBILE HEADER KPI 2 DÒNG + BẢNG SỐ 1 CHỮ SỐ THẬP PHÂN ===== */
+
+@media (max-width:700px){
+  /* Tiêu đề KPI được xuống dòng tự nhiên, ví dụ:
+     TK mới 3h
+     Số (40%)
+  */
+  #tableKPI th{
+    white-space:normal!important;
+    word-break:normal!important;
+    overflow-wrap:anywhere!important;
+    line-height:1.05!important;
+    vertical-align:middle!important;
+    padding:4px 2px!important;
+    font-size:9px!important;
+  }
+
+  #tableKPI td{
+    padding:4px 2px!important;
+    font-size:9px!important;
+  }
+
+  /* Thu nhỏ các cột KPI, nhưng giữ cột Huyện đủ đọc */
+  #tableKPI th:first-child,
+  #tableKPI td:first-child{
+    min-width:62px!important;
+    width:62px!important;
+    max-width:62px!important;
+  }
+
+  #tableKPI th:nth-child(n+5),
+  #tableKPI td:nth-child(n+5){
+    min-width:46px!important;
+    width:46px!important;
+    max-width:46px!important;
+  }
+
+  #tableKPI table{
+    min-width:1030px!important;
+  }
+}
+
+/* Desktop/tablet: tiêu đề dài cũng được phép xuống dòng */
+#tableKPI th{
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+  line-height:1.15!important;
+}
+
+/* ===== ĐỊNH DẠNG SỐ BẢNG KPI ===== */
+#tableKPI td{
+  font-variant-numeric:tabular-nums;
+}
+
+
+/* ===== LOADING BLACK / RED / WHITE ===== */
+#pageLoader{
+  background:#0f0f0f!important;
+  color:#fff!important;
+}
+
+#pageLoader .loader-text{
+  color:#fff!important;
+}
+
+#pageLoader .loader-spinner{
+  border-color:#333!important;
+  border-top-color:#ff0000!important;
+}
+
+#pageLoader .loader-spinner::after{
+  border-color:transparent!important;
+}
+
+body.loading{
+  background:#0f0f0f!important;
+}
+
+
+.bot-status-cell{line-height:1.45;white-space:normal}
+.bot-status-item{display:block;margin:2px 0}
+.bot-status-empty{color:#777}
+@media(max-width:600px){
+  .bot-status-cell{font-size:10px}
+}
 </style>
+
+<style>
+/* ===== BOT ICON: ĐEN / ĐỎ / TRẮNG + NHỎ HƠN ===== */
+#kpiBotBtn{
+  width:52px!important;
+  height:52px!important;
+  right:18px!important;
+  bottom:18px!important;
+  font-size:23px!important;
+  background:#0f0f0f!important;
+  color:#fff!important;
+  border:2px solid #ff0000!important;
+  box-shadow:0 6px 18px rgba(0,0,0,.24)!important;
+}
+
+#kpiBotBtn:hover{
+  background:#ff0000!important;
+  color:#fff!important;
+  border-color:#0f0f0f!important;
+}
+
+@media(max-width:600px){
+  #kpiBotBtn{
+    width:48px!important;
+    height:48px!important;
+    right:10px!important;
+    bottom:10px!important;
+    font-size:21px!important;
+  }
+}
+</style>
+
+
+<style>
+/* ===== BOT CHAT UI - TRẮNG / ĐEN / ĐỎ, PHONG CÁCH YOUTUBE ===== */
+#kpiBot{
+  position:fixed!important;
+  right:20px!important;
+  bottom:82px!important;
+  width:min(460px,calc(100vw - 24px))!important;
+  height:min(680px,calc(100vh - 105px))!important;
+  display:none;
+  flex-direction:column;
+  overflow:hidden;
+  z-index:99991!important;
+  background:#fff!important;
+  color:#0f0f0f!important;
+  border:1px solid #dcdcdc!important;
+  border-radius:18px!important;
+  box-shadow:0 18px 55px rgba(0,0,0,.22)!important;
+}
+
+#kpiBot.open{display:flex!important}
+
+/* Header */
+#kpiBot .bot-head{
+  flex:0 0 auto;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  min-height:64px!important;
+  padding:11px 13px!important;
+  background:#0f0f0f!important;
+  color:#fff!important;
+  border-bottom:3px solid #ff0000!important;
+}
+
+#kpiBot .bot-head b{
+  font-size:15px!important;
+  font-weight:700!important;
+  letter-spacing:.1px;
+}
+
+#kpiBot .bot-head-actions{
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+}
+
+#kpiBot .bot-head-actions button{
+  width:32px!important;
+  height:32px!important;
+  padding:0!important;
+  border:1px solid #3b3b3b!important;
+  border-radius:50%!important;
+  background:#242424!important;
+  color:#fff!important;
+  cursor:pointer!important;
+  font-size:15px!important;
+}
+
+#kpiBot .bot-head-actions button:hover{
+  background:#ff0000!important;
+  border-color:#ff0000!important;
+}
+
+/* Tin nhắn */
+#kpiBot .bot-messages{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+  padding:14px 12px 12px!important;
+  background:#f9f9f9!important;
+  scroll-behavior:smooth;
+}
+
+#kpiBot .bot-messages::-webkit-scrollbar{width:7px}
+#kpiBot .bot-messages::-webkit-scrollbar-thumb{
+  background:#b7b7b7;
+  border-radius:20px;
+}
+
+/* Bong bóng */
+#kpiBot .bot-msg{
+  max-width:94%!important;
+  padding:11px 13px!important;
+  margin:0 0 10px!important;
+  border-radius:14px!important;
+  font-size:13px!important;
+  line-height:1.55!important;
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere!important;
+}
+
+#kpiBot .bot-msg.bot{
+  margin-right:auto!important;
+  background:#fff!important;
+  color:#0f0f0f!important;
+  border:1px solid #e2e2e2!important;
+  box-shadow:0 1px 3px rgba(0,0,0,.06)!important;
+  border-bottom-left-radius:5px!important;
+}
+
+#kpiBot .bot-msg.user{
+  margin-left:auto!important;
+  background:#ff0000!important;
+  color:#fff!important;
+  border:1px solid #ff0000!important;
+  box-shadow:none!important;
+  border-bottom-right-radius:5px!important;
+}
+
+/* Quick commands */
+#kpiBot .bot-quick{
+  flex:0 0 auto!important;
+  display:flex!important;
+  gap:6px!important;
+  flex-wrap:wrap!important;
+  max-height:92px!important;
+  overflow-y:auto!important;
+  padding:8px 10px!important;
+  background:#fff!important;
+  border-top:1px solid #e5e5e5!important;
+  border-bottom:1px solid #e5e5e5!important;
+}
+
+#kpiBot .bot-quick button{
+  border:1px solid #d2d2d2!important;
+  background:#fff!important;
+  color:#0f0f0f!important;
+  border-radius:999px!important;
+  padding:7px 10px!important;
+  cursor:pointer!important;
+  font-size:11px!important;
+  font-weight:500!important;
+  line-height:1.1!important;
+  transition:.16s ease;
+}
+
+#kpiBot .bot-quick button:hover{
+  background:#0f0f0f!important;
+  color:#fff!important;
+  border-color:#0f0f0f!important;
+}
+
+/* Ô nhập */
+#kpiBot .bot-input{
+  flex:0 0 auto!important;
+  display:flex!important;
+  gap:7px!important;
+  align-items:center!important;
+  padding:10px!important;
+  background:#fff!important;
+  border-top:1px solid #e5e5e5!important;
+}
+
+#kpiBot .bot-input input{
+  flex:1 1 auto!important;
+  min-width:0!important;
+  height:42px!important;
+  margin:0!important;
+  padding:0 13px!important;
+  border:1px solid #d0d0d0!important;
+  border-radius:22px!important;
+  background:#fff!important;
+  color:#0f0f0f!important;
+  font-size:13px!important;
+}
+
+#kpiBot .bot-input input:focus{
+  outline:none!important;
+  border-color:#ff0000!important;
+  box-shadow:0 0 0 2px rgba(255,0,0,.10)!important;
+}
+
+#kpiBot .bot-send{
+  flex:0 0 auto!important;
+  width:42px!important;
+  height:42px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:#ff0000!important;
+  color:#fff!important;
+  cursor:pointer!important;
+  font-size:17px!important;
+}
+
+#kpiBot .bot-send:hover{background:#cc0000!important}
+#kpiBot .bot-send:active{transform:scale(.96)!important}
+
+/* Nội dung báo cáo */
+#kpiBot h4{
+  margin:8px 0 6px!important;
+  color:#0f0f0f!important;
+  font-size:13px!important;
+}
+
+#kpiBot .bot-report{
+  margin:5px 0!important;
+  padding:7px 8px!important;
+  border-left:3px solid #ff0000!important;
+  background:#fafafa!important;
+  border-radius:0 7px 7px 0!important;
+}
+
+#kpiBot .bot-note{
+  color:#606060!important;
+  font-size:11px!important;
+}
+
+#kpiBot .bot-inline-btn{
+  background:#fff!important;
+  color:#0f0f0f!important;
+  border:1px solid #ccc!important;
+  border-radius:8px!important;
+}
+
+#kpiBot .bot-inline-btn:hover{
+  background:#ff0000!important;
+  color:#fff!important;
+  border-color:#ff0000!important;
+}
+
+/* Bảng trong Bot */
+#kpiBot .bot-table-wrap{
+  width:100%!important;
+  overflow:auto!important;
+  border:1px solid #e2e2e2!important;
+  border-radius:9px!important;
+  background:#fff!important;
+}
+
+#kpiBot .bot-table{
+  width:100%!important;
+  border-collapse:collapse!important;
+  color:#0f0f0f!important;
+}
+
+#kpiBot .bot-table th{
+  position:sticky;
+  top:0;
+  background:#0f0f0f!important;
+  color:#fff!important;
+  border-color:#2c2c2c!important;
+}
+
+#kpiBot .bot-table td{
+  background:#fff!important;
+  color:#0f0f0f!important;
+  border-color:#e5e5e5!important;
+}
+
+#kpiBot .bot-table tr:nth-child(even) td{
+  background:#fafafa!important;
+}
+
+/* Mobile */
+@media(max-width:600px){
+  #kpiBot{
+    right:7px!important;
+    left:7px!important;
+    bottom:7px!important;
+    width:auto!important;
+    height:min(78vh,690px)!important;
+    border-radius:16px!important;
+  }
+
+  #kpiBot .bot-head{
+    min-height:58px!important;
+    padding:9px 11px!important;
+  }
+
+  #kpiBot .bot-head b{font-size:14px!important}
+  #kpiBot .bot-head-actions button{
+    width:30px!important;
+    height:30px!important;
+  }
+
+  #kpiBot .bot-messages{
+    padding:10px 9px!important;
+  }
+
+  #kpiBot .bot-msg{
+    max-width:97%!important;
+    font-size:12px!important;
+    padding:9px 11px!important;
+  }
+
+  #kpiBot .bot-quick{
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    max-height:53px!important;
+    scrollbar-width:none!important;
+  }
+
+  #kpiBot .bot-quick::-webkit-scrollbar{display:none}
+  #kpiBot .bot-quick button{flex:0 0 auto!important}
+
+  #kpiBot .bot-input{
+    padding:8px!important;
+  }
+
+  #kpiBot .bot-input input{
+    height:40px!important;
+    font-size:12px!important;
+  }
+
+  #kpiBot .bot-send{
+    width:40px!important;
+    height:40px!important;
+  }
+}
+</style>
+
 </head>
 
 <body class="rotate-in loading">
@@ -1725,7 +2418,7 @@ body{
   <button onclick="showKpiHelp()">❔ Help</button>
 </div>
   <div class="bot-input">
-    <input id="botInput" placeholder="Ví dụ: KPI hiện tại so target..." onkeydown="if(event.key==='Enter')sendKpiBot()">
+    <input id="botInput" placeholder="QH + tên nhân viên hoặc nhập Account..." onkeydown="if(event.key==='Enter')sendKpiBot()">
     <button class="bot-send" onclick="sendKpiBot()">➤</button>
   </div>
 </div>
@@ -1751,8 +2444,8 @@ body{
       <button onclick="openOldKPI()" class="switch-btn">
 📅 KPI tháng trước
 </button>
-      <button class="kpi-lookup-btn" onclick="openKpiLookup('sc','Tra cứu KPI quá hạn SC','https://cvthuong921331040253-hub.github.io/dashboard-icms/quahansc.html')">🔎 Tra cứu KPI quá hạn SC</button>
-      <button class="kpi-lookup-btn" onclick="openKpiLookup('tkm','Tra cứu KPI quá hạn TKM','https://cvthuong921331040253-hub.github.io/dashboard-icms/quahantkm.html')">🔎 Tra cứu KPI quá hạn TKM</button>
+      <button class="kpi-lookup-btn" onclick="openKpiLookup('sc','Tra cứu KPI quá hạn SC','https://cvthuong921331040253-hub.github.io/dashboard-icms/quahansc.html')">🔎 SC quá hạn</button>
+      <button class="kpi-lookup-btn" onclick="openKpiLookup('tkm','Tra cứu KPI quá hạn TKM','https://cvthuong921331040253-hub.github.io/dashboard-icms/quahantkm.html')">🔎 TKM quá hạn</button>
     </div>
 </div>
   <div class="header-filter">
@@ -1930,11 +2623,18 @@ function calcScore(r){
 }
 
 // ===== KPI NHÂN VIÊN TỒI =====
+function formatKpiPct(v){
+  const n=Number(toNumber(v));
+  if(!Number.isFinite(n)) return "0";
+  const rounded=Math.round((n + Number.EPSILON)*10)/10;
+  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+}
+
 function getBadKPI(r){
   let badList = [];
   function add(label,v,t,type="up"){
   if(!check(v,t,type)){
-    badList.push(`<b>${label}:</b> (${toNumber(v)}%/${toNumber(t)}%)`);
+    badList.push(`<b>${label}:</b> (${formatKpiPct(v)}%/${formatKpiPct(t)}%)`);
   }
 }
 
@@ -2039,11 +2739,17 @@ function renderKPIBadByHuyen(data){
   document.getElementById("worstKPI").innerHTML = html;
 }
 // ===== KPI RENDER =====
+function formatKpiListValue(v){
+  const n = toNumber(v);
+  if(!Number.isFinite(Number(n))) return "0";
+  return Number(n).toFixed(1).replace(/\.0$/," ").trim();
+}
+
 function kpi(label,v,t,type="up"){
   let ok = check(v,t,type);
   if(showBadOnly && ok) return "";
   return `<div class="${ok?'ok':'fail'}">
-    - ${label}: ${toNumber(v)}% (target ${toNumber(t)}%) ${ok?'✅':'❌'}
+    - ${label}: ${formatKpiListValue(v)}% (target ${formatKpiListValue(t)}%) ${ok?'✅':'❌'}
   </div>`;
 }
 
@@ -2399,6 +3105,26 @@ load();
 setInterval(()=> {
   if(!document.hidden) load();
 },50000);
+
+function formatTableNumber(v, integer=false){
+  if(v===null || v===undefined || v==="") return "";
+  if(v instanceof Date) return "";
+  const raw=String(v).trim();
+  if(!raw) return "";
+
+  const n = (typeof v === "number")
+    ? v
+    : parseFloat(raw.replace(/,/g,"").replace("%",""));
+
+  if(!Number.isFinite(n)) return raw;
+
+  // Các cột tổng: làm tròn số nguyên.
+  if(integer) return String(Math.round(n));
+
+  // KPI %: 1 chữ số thập phân, nhưng 100.0 -> 100 (và mọi .0 -> số nguyên).
+  return n.toFixed(1).replace(/\.0$/,"");
+}
+
 function renderTableExcel(data){
 
   let html = `
@@ -2437,15 +3163,15 @@ function renderTableExcel(data){
 
     function cell(v,t,type="up"){
       let ok = check(v,t,type);
-      return `<td class="${ok ? '' : 'bad'}" style="text-align:center">${toNumber(v)}</td>`;
+      return `<td class="${ok ? '' : 'bad'}" style="text-align:center">${formatTableNumber(v)}</td>`;
     }
 
   data.forEach(r=>{
     html += `<tr>
       <td><a href="javascript:void(0)" class="kpi-district-link" onclick="openGiaLaiCompareByName(${JSON.stringify(r.huyen||"")})">${r.huyen||""}</a></td>
-      <td>${r.tong_tk_moi||""}</td>
-      <td>${r.tong_tk_co_san||""}</td>
-      <td>${r.tong_sc||""}</td>
+      <td>${formatTableNumber(r.tong_tk_moi,true)}</td>
+      <td>${formatTableNumber(r.tong_tk_co_san,true)}</td>
+      <td>${formatTableNumber(r.tong_sc,true)}</td>
       ${cell(r.tk_3h_moi,r.target_3h_moi)}
       ${cell(r.tk_10h_moi,r.target_10h_moi)}
       ${cell(r.tk_16h_moi,r.target_16h_moi)}
@@ -3287,33 +4013,101 @@ function renderDistrictDetailAdvanced(name,cur,old,currentRows,oldRows){
 
   return out;
 }
+/* ===== TÍNH SỐ LƯỢNG CẦN ĐẠT CHO TRA NHÂN VIÊN ===== */
+function botRawNumber(row, keys){
+  for(const k of keys){
+    if(row && row[k]!==undefined && row[k]!==null && row[k]!==""){
+      const n=botNum(row[k]); if(Number.isFinite(n)) return n;
+    }
+  }
+  return null;
+}
+const BOT_COUNT_MAP={
+  "TK mới 3h":{total:["dmm"],done:["3hm"],type:"up"},
+  "TK mới 10h":{total:["dmm"],done:["10hm"],type:"up"},
+  "TK mới 16h":{total:["dmm"],done:["16hm"],type:"up"},
+  "TK mới 24h":{total:["dmm"],done:["24hm"],type:"up"},
+  "TK có sẵn 3h":{total:["dds"],done:["3hs"],type:"up"},
+  "TK có sẵn 10h":{total:["dds"],done:["10hs"],type:"up"},
+  "TK có sẵn 16h":{total:["dds"],done:["16hs"],type:"up"},
+  "TK có sẵn 24h":{total:["dds"],done:["24hs"],type:"up"},
+  "TK tích hẹn":{total:["ddh"],done:["dh"],type:"up"},
+  "SC Lặp":{total:["tscl"],done:["scl"],type:"down"},
+  "SC HT 24h":{total:["tscht","tsc_ht_24h"],done:["24ht","sc_ht_24h"],type:"up"},
+  "SC Hẹn":{total:["tschen"],done:["schen"],type:"up"},
+  "SC SOC 24h":{total:["tscsoc"],done:["24hsc","sc_soc_24h"],type:"up"},
+  "SC SOC 72h":{total:["tscsoc"],done:["72hsoc","sc_soc_72h"],type:"up"},
+  "SC 3h":{total:["tsc3h"],done:["sc3h"],type:"up"},
+  "SC 10h":{total:["tsc10h"],done:["sc10h"],type:"up"},
+  "SC 24h":{total:["tsc24h"],done:["sc24h"],type:"up"},
+  "SC 16h":{total:["tsc16h"],done:["sc16h"],type:"up"},
+  "SC HOT":{total:["tschot"],done:["schot"],type:"up"},
+  "SC VIP":{total:["tscvip"],done:["scvip"],type:"up"}
+};
+function botCountInfo(row,name){
+  const m=BOT_COUNT_MAP[name]; if(!m) return null;
+  const total=botRawNumber(row,m.total), done=botRawNumber(row,m.done);
+  if(total===null||done===null||total<=0) return null;
+  return {total,done,type:m.type};
+}
+function botCurrentPctFromCounts(row,name,fallback){
+  const i=botCountInfo(row,name); return i ? i.done/i.total*100 : fallback;
+}
+function botNeedToTarget(row,name,target,type){
+  const i=botCountInfo(row,name); if(!i) return null;
+  const N=i.total,A=i.done,p=botNum(target)/100;
+  if(!(N>0)||!Number.isFinite(A)||!Number.isFinite(p)) return null;
+  if(type==="down"){
+    if(A/N<=p) return {kind:"already",text:"đã đạt Target"};
+    if(p<=0) return {kind:"impossible",text:"Target bằng 0%, không thể tính bổ sung."};
+    const req=Math.ceil(A/p-1e-12), extra=Math.max(0,req-N);
+    return {kind:"down",extra,requiredTotal:req,text:extra?`cần thêm ${extra} trường hợp không lặp (tổng tối thiểu ${req}) để đạt ≤ ${fmt(target)}%`:`cần giảm tỷ lệ xuống ≤ ${fmt(target)}% để đạt`};
+  }
+  if(A/N>=p) return {kind:"already",text:"đã đạt Target"};
+  if(Math.abs(p-1)<1e-12){
+    const bad=Math.max(0,N-A);
+    return {kind:"target100",bad,text:`cần nâng tỷ lệ thêm ${fmt(100-A/N*100)}% để giảm phạt; đã có ${fmt(bad)} trường hợp không đạt nên tiền phạt không thể về 0 trong tháng`};
+  }
+  const x=Math.max(0,Math.ceil((p*N-A)/(1-p)-1e-12));
+  const finalPct=(A+x)/(N+x)*100;
+  return {kind:"up",extra:x,finalPct,text:x?`cần thêm ${x} trường hợp đạt để tỷ lệ đạt khoảng ${fmt(finalPct)}%`:`đã đạt Target`};
+}
+function botEmployeeKpiLine(k,row,target,type,previous){
+  const info=botCountInfo(row,k.name);
+  const actual=botCurrentPctFromCounts(row,k.name,k.current);
+  const currentText=info?`${fmt(info.done)}/${fmt(info.total)} = ${fmt(actual)}%`:`${fmt(actual)}%`;
+  const gap=type==="down"?actual-target:target-actual;
+  const targetSentence=gap>0?`tồi hơn Target ${fmt(gap)}%`:gap<0?`tốt hơn Target ${fmt(Math.abs(gap))}%`:`đạt Target`;
+  const need=botNeedToTarget(row,k.name,target,type);
+  let action="";
+  if(need&&need.kind!=="already") action=` → <span class="${need.kind==="target100"?'bot-bad':'bot-good'}">${need.text}</span>`;
+  else if(need&&need.kind==="already") action=` → <span class="bot-good">${need.text}</span>`;
+  let prev="";
+  if(previous!==null&&previous!==undefined){
+    const d=type==="down"?previous-actual:actual-previous;
+    prev=Math.abs(d)<.0001?`; tháng trước ${fmt(previous)}% → không đổi`:`; tháng trước ${fmt(previous)}% → ${d>0?'tốt hơn':'tồi hơn'} ${fmt(Math.abs(d))}%`;
+  }
+  return `<div class="bot-kpi-line"><b>${botEscape(k.name)}:</b> ${currentText} / ${fmtKpiValue(target,k.name,true)}% → <span class="${gap>0?'bot-bad':gap<0?'bot-good':''}">${targetSentence}</span>${action}${prev}</div>`;
+}
+
+function fmtEmployeePct(v){
+  const n=Number(v);
+  if(!Number.isFinite(n)) return String(v ?? "");
+  if(Number.isInteger(n)) return String(n);
+  return n.toFixed(1);
+}
 function renderEmployeeDetail(name,cur,old){
   if(!cur) return `<b>👤 ${botEscape(name)}</b><br>Không tìm thấy nhân viên.`;
-
   const m=botRowMetrics(cur,old);
+  const badItems=m.items.filter(k=>k.currentState==="bad").sort((a,b)=>Math.abs(b.currentGap)-Math.abs(a.currentGap));
   let out=`<b>👤 KPI ${botEscape(name)}</b><br>`;
-  out+=`<span class="${m.badCount?'bot-bad':'bot-good'}"><b>${m.badCount ? `Tồi ${m.badCount}/20 KPI` : `Tốt ${m.goodCount}/20 KPI`}</b></span>`;
-
-  const items=(m.badCount ? m.bad : m.good)
-    .sort((a,b)=>Math.abs(b.currentGap)-Math.abs(a.currentGap));
-
-  out+=` bao gồm `;
-  out+=items.map(k=>{
-    const targetEval=k.currentGap>0
-      ? `tồi hơn Target ${fmt(k.currentGap)}%`
-      : k.currentGap<0
-        ? `tốt hơn Target ${fmt(Math.abs(k.currentGap))}%`
-        : `đạt Target`;
-    let prev="";
-    if(k.previous!==null && k.previous!==undefined){
-      const delta=k.delta;
-      const change=Math.abs(delta)<.0001 ? "không đổi" : (delta>0 ? `đang tốt hơn ${fmt(delta)}%` : `đang tồi hơn ${fmt(Math.abs(delta))}%`);
-      prev=`; tháng trước (${fmt(k.previous)}%/${fmt(k.target)}%) → ${change}`;
-    }
-    return `<b>${botEscape(k.name)}</b> (${fmt(k.current)}%/${fmt(k.target)}%/ ${targetEval}${prev})`;
-  }).join(", ");
-  out+=".";
-
+  out+=`<span class="${badItems.length?'bot-bad':'bot-good'}"><b>${badItems.length?`Tồi ${badItems.length}/20 KPI`:`Tốt 20/20 KPI`}</b></span>`;
+  if(!badItems.length){out+=`<div class="bot-note">Hiện tại không có KPI tồi hơn Target.</div>`;return out;}
+  out+=`<div class="bot-note">Dùng Tổng + Thực hiện để tính cách cải thiện. Target 100%: có trường hợp không đạt thì tỷ lệ chỉ tăng dần khi có thêm trường hợp đạt; tiền phạt không thể về 0 trong tháng.</div>`;
+  badItems.forEach(k=>{
+    const prev=(old&&old[k.val]!==undefined&&old[k.val]!==null)?botNum(old[k.val]):null;
+    out+=botEmployeeKpiLine(k,cur,k.target,k.type,prev);
+  });
   return out;
 }
 
@@ -3403,11 +4197,188 @@ function renderKpiDistrictList(rows,kpiName,target,type,title){
   return out;
 }
 
+function renderBotOverdueTable(rows,title){
+  if(!rows || !rows.length){
+    return `<h4>${title}: 0</h4><div class="bot-note">Không có dữ liệu.</div>`;
+  }
+
+  const esc=v=>String(v??"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+
+  const acc=r=>String(r?.account??r?.Account??r?.ACCOUNT??"").trim();
+  const nv=r=>String(
+    r?.nhanvien??
+    r?.nhan_vien??
+    r?.ten_nv??
+    r?.nv??
+    r?.tenNv??
+    r?.nv_xuly??
+    r?.nguoinhapsc??
+    r?.["Nhân viên"]??""
+  ).trim();
+  const hy=r=>String(r?.huyen??r?.Huyện??"").trim();
+
+  const date=r=>String(
+    r?.ngayphatsinh??
+    r?.ngayphat??
+    r?.ngay??
+    r?.ngaydaunoi??
+    r?.ntdn??
+    r?.ngay_goc??""
+  ).trim();
+
+  const active=v=>{
+    const x=String(v??"").trim();
+    return x!=="" &&
+      !["-","0","false","FALSE","không","KHÔNG","chưa","CHƯA"].includes(x);
+  };
+
+  const scDefs=[
+    ["scqh3h","SC quá hạn 3h"],
+    ["scqh10h","SC quá hạn 10h"],
+    ["scqh16h","SC quá hạn 16h"],
+    ["scqh24h","SC quá hạn 24h"],
+    ["scqhhot","SC quá hạn HOT"],
+    ["scqhvip","SC quá hạn VIP"],
+    ["htqh24h","SC hỗ trợ quá hạn 24h"],
+    ["socqh24h","SOC quá hạn 24h"],
+    ["socqh72h","SOC quá hạn 72h"],
+    ["scqhhen","SC quá hẹn"]
+  ];
+
+  const tkmDefs=[
+    ["tkmq3h","TKM quá 3h"],
+    ["tkmq10h","TKM quá 10h"],
+    ["tkmq16h","TKM quá 16h"],
+    ["tkmq24h","TKM quá 24h"],
+    ["tkmqhen","TKM quá hẹn"]
+  ];
+
+  const statusHtml=r=>{
+    const defs = title.includes("TKM") ? tkmDefs : scDefs;
+    const items=defs
+      .filter(([key])=>active(r?.[key]))
+      .map(([key,label])=>{
+        const value=String(r?.[key]??"").trim();
+        return `<span class="bot-status-item"><b>${esc(label)}:</b> ${esc(value)}</span>`;
+      });
+
+    return items.length
+      ? items.join("<br>")
+      : `<span class="bot-status-empty">Không có cột quá hạn nào có dữ liệu</span>`;
+  };
+
+  return `<h4>${title}: <b>${rows.length}</b></h4>
+    <div class="bot-table-wrap" style="overflow:auto;max-height:460px">
+      <table class="bot-table" style="min-width:820px">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Account</th>
+            <th>Nhân viên</th>
+            <th>Huyện</th>
+            <th>Ngày</th>
+            <th>Cột quá hạn có dữ liệu</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map((r,i)=>`
+            <tr>
+              <td>${i+1}</td>
+              <td>${esc(acc(r))}</td>
+              <td>${esc(nv(r))}</td>
+              <td>${esc(hy(r))}</td>
+              <td>${esc(date(r))}</td>
+              <td class="bot-status-cell">${statusHtml(r)}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+async function fetchAllOverdueByQuery(apiBase, query){
+  const makeUrl=(page,limit)=>apiBase+"&page="+page+"&limit="+limit+"&q="+encodeURIComponent(query)+"&_="+Date.now();
+
+  const firstRes=await fetch(makeUrl(1,100),{cache:"no-store"});
+  if(!firstRes.ok) throw new Error("HTTP "+firstRes.status);
+  const first=await firstRes.json();
+  if(first.success===false) throw new Error(first.error||"API trả về lỗi");
+
+  const totalPages=Math.max(1,Number(first.totalPages||1));
+  let rows=Array.isArray(first.data)?first.data.slice():[];
+
+  if(totalPages>1){
+    const pages=[];
+    for(let page=2;page<=totalPages;page++) pages.push(page);
+    const results=await Promise.all(
+      pages.map(page=>fetch(makeUrl(page,100),{cache:"no-store"}).then(r=>{
+        if(!r.ok) throw new Error("HTTP "+r.status);
+        return r.json();
+      }))
+    );
+    results.forEach(j=>{
+      if(Array.isArray(j.data)) rows.push(...j.data);
+    });
+  }
+
+  return rows;
+}
+
+async function answerQHOverdue(question){
+  // Dùng chính API mà 2 trang "SC quá hạn" và "TKM quá hạn" đang dùng.
+  const SC_QH_API="https://script.google.com/macros/s/AKfycbyAxhpbcmX75J7jRqEsflmb6YLVyr8aBy7Cttqaf1Ix7nvOVpm7zX-RiS0--eLav9nK/exec?type=sc";
+  const TKM_QH_API="https://script.google.com/macros/s/AKfycbyAxhpbcmX75J7jRqEsflmb6YLVyr8aBy7Cttqaf1Ix7nvOVpm7zX-RiS0--eLav9nK/exec?type=tkm";
+
+  const raw=String(question||"").trim();
+  const isQH=/^qh\s+/i.test(raw);
+  const key=isQH ? raw.replace(/^qh\s+/i,"").trim() : raw;
+  if(!key) return "";
+
+  // API phía sau 2 trang tra cứu đã hỗ trợ tham số q, nên để API tự tìm theo
+  // account / nhân viên / huyện / mã WO thay vì đoán tên field ở phía Bot.
+  const [scRows,tkmRows]=await Promise.all([
+    fetchAllOverdueByQuery(SC_QH_API,key),
+    fetchAllOverdueByQuery(TKM_QH_API,key)
+  ]);
+
+  if(!isQH){
+    // Tránh nhận nhầm câu hỏi tiếng Việt thông thường là Account.
+    const hasAccount=([...scRows,...tkmRows]).some(r=>String(r?.account??"").trim()!=="");
+    if(!hasAccount) return "";
+  }
+
+  const title=isQH ? `🔎 QH ${key}` : `🔎 Account ${key}`;
+  return `<b>${botEscape(title)}</b><br>
+    <div class="bot-note">Đã tra trực tiếp 2 nguồn dữ liệu quá hạn: <b>SC + TKM</b>. Hiển thị toàn bộ bản ghi phù hợp.</div>
+    ${renderBotOverdueTable(tkmRows,"📦 TKM quá hạn")}
+    ${renderBotOverdueTable(scRows,"🚨 SC quá hạn")}`;
+}
+
 async function askKpiBot(question){
   addBotMessage(botEscape(question),"user");
   addBotMessage("Đang phân tích 20 KPI, Target và dữ liệu tháng trước...");
 
   try{
+    // Tra QH/Account được xử lý TRƯỚC loadOldBotData(),
+    // để lỗi dữ liệu tháng trước không chặn chức năng tra quá hạn.
+    if(/^qh\s+/i.test(question.trim()) || /^[A-Z0-9._\/-]{6,}$/i.test(question.trim())){
+      try{
+        const overdueResult=await answerQHOverdue(question);
+        if(overdueResult){
+          const msgs0=document.querySelectorAll("#botMessages .bot-msg");
+          if(msgs0.length && msgs0[msgs0.length-1].textContent.includes("Đang phân tích")) msgs0[msgs0.length-1].remove();
+          addBotMessage(overdueResult);
+          return;
+        }
+      }catch(err){
+        console.warn("BOT QH:",err);
+      }
+    }
+
     const d=await loadOldBotData();
     const pairs=buildEmployeePairs(d.currentRows,d.oldRows);
 
@@ -3732,6 +4703,7 @@ function sendKpiBot(){
       <button onclick="closeKpiHelp()">×</button>
     </div>
     <div class="kpi-help-body">
+      <div><b>🔎 QH + tên nhân viên / Account</b><br>Ví dụ: <code>QH Nguyễn Văn Chiến</code> hoặc nhập trực tiếp Account → hiện rõ từng cột SC/TKM quá hạn có dữ liệu.</div>
       <div><b>🏠 Gia Lai</b><br>Nhấn trực tiếp chữ <b>Gia Lai</b> trong bảng KPI hoặc hỏi “So sánh Gia Lai”.</div>
       <div><b>🏢 5 huyện tồi</b><br>Xếp 5 huyện có tổng KPI lệch Target xấu nhất.</div>
       <div><b>⚠️ Top 10 kém</b><br>Chỉ liệt kê các KPI đang tồi hơn Target.</div>
@@ -3847,6 +4819,41 @@ function sendKpiBot(){
 
 
 
+
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  const params=new URLSearchParams(window.location.search);
+  const current=document.querySelector('button[onclick="openCurrentKPI()"]');
+  const old=document.querySelector('button[onclick="openOldKPI()"]');
+  const active=params.get("kpi")==="old" ? old : current;
+
+  [current,old].forEach(btn=>{
+    if(!btn) return;
+    btn.style.fontFamily="'Roboto',Arial,sans-serif";
+    btn.style.transition="all .18s ease";
+  });
+
+  if(active){
+    active.style.background="#ff0000";
+    active.style.color="#fff";
+    active.style.borderColor="#ff0000";
+    active.style.fontWeight="700";
+  }
+});
+</script>
+
+
+<script>
+(function(){
+  const wrap=document.getElementById("botMessages");
+  if(!wrap) return;
+  const observer=new MutationObserver(()=>{
+    requestAnimationFrame(()=>{wrap.scrollTop=wrap.scrollHeight});
+  });
+  observer.observe(wrap,{childList:true,subtree:true});
+})();
+</script>
 
 </body>
 </html>
