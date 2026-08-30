@@ -1082,6 +1082,140 @@ body.bot-open{overflow:hidden!important}
 }
 </style>
 
+
+<style id="youtube-theme-final">
+:root{--bg:#f7f7f7!important;--card:#fff!important;--ink:#0f0f0f!important;--muted:#606060!important;--line:#e5e5e5!important;--red:#ff0000!important;--red-dark:#cc0000!important;--black:#0f0f0f!important}
+html,body,.app{background:#f7f7f7!important;color:#0f0f0f!important}
+
+/* Header đen, viền đỏ */
+.top-shell,.header,.app-header{background:#0f0f0f!important;color:#fff!important;border:1px solid #ff0000!important;box-shadow:0 4px 16px rgba(0,0,0,.14)!important}
+.top-shell small,.header small,.app-header small{color:#c7c7c7!important}
+.top-shell input,.top-shell select,.header input,.header select{background:#fff!important;color:#0f0f0f!important;border-color:#444!important}
+
+/* Nút */
+.btn-search,button.btn-search,button[class*="search"],button[onclick*="search"],button[onclick*="loadData"]{background:#ff0000!important;color:#fff!important;border-color:#ff0000!important;border-radius:999px!important}
+.btn-search:hover,button.btn-search:hover,button[class*="search"]:hover{background:#cc0000!important;border-color:#cc0000!important}
+.btn-clear,button[onclick*="clearFilter"],button[onclick*="resetFilter"]{background:#272727!important;color:#fff!important;border-color:#444!important;border-radius:999px!important}
+#exportExcelBtn,.btn-export{background:#0f0f0f!important;color:#fff!important;border:1px solid #ff0000!important;border-radius:999px!important}
+#exportExcelBtn:hover,.btn-export:hover{background:#ff0000!important}
+
+/* Card và danh sách */
+.stat-card,.card,.kpi-card{background:#fff!important;border:1px solid #e5e5e5!important;box-shadow:0 2px 8px rgba(0,0,0,.06)!important}
+.table-card,.table-wrap,.table-shell{background:#fff!important;border-color:#e5e5e5!important;box-shadow:0 2px 10px rgba(0,0,0,.05)!important}
+.table-head{background:#fff!important;color:#0f0f0f!important;border-bottom:2px solid #ff0000!important}
+.table-wrap table{background:#fff!important;color:#0f0f0f!important}
+.table-wrap thead th{background:#0f0f0f!important;color:#fff!important;border-color:#3a3a3a!important}
+.table-wrap tbody tr{background:#fff!important}
+.table-wrap tbody tr:nth-child(even){background:#fafafa!important}
+.table-wrap tbody tr:hover{background:#fff5f5!important}
+.table-wrap tbody td{color:#222!important;border-color:#e8e8e8!important}
+
+/* Trạng thái/cảnh báo đỏ */
+.badge.danger,.status.danger,.tag.danger,.badge.overdue,.status-overdue,.quahan,.negative{background:#fff0f0!important;color:#d90000!important;border-color:#ff0000!important}
+.text-danger,.red,.risk-high,.danger{color:#ff0000!important}
+
+/* BOT đồng bộ đen đỏ */
+#floatingBot{background:linear-gradient(135deg,#0f0f0f,#262626)!important;color:#fff!important;border:2px solid #ff0000!important;box-shadow:0 12px 28px rgba(255,0,0,.18)!important}
+#floatingBot .bot-icon{font-size:0!important}
+#floatingBot .bot-icon:after{content:"◉"!important;font-size:20px!important;line-height:1!important;color:#ff0000!important}
+#floatingBot .bot-label{color:#fff!important}
+#botModal{background:rgba(0,0,0,.72)!important;backdrop-filter:blur(7px)!important}
+#botModal .bot-box{background:#fff!important;border:1px solid #ff0000!important;box-shadow:0 30px 90px rgba(0,0,0,.45)!important}
+#botModal .bot-head{background:#0f0f0f!important;color:#fff!important;border-bottom:2px solid #ff0000!important}
+#botModal .bot-head b{color:#fff!important}
+#botModal .bot-head small{color:#bdbdbd!important}
+#botModal .bot-head-actions button{background:#262626!important;color:#fff!important;border-color:#505050!important}
+#botModal .bot-head-actions button:hover{background:#ff0000!important;border-color:#ff0000!important}
+#botModal .bot-body{background:#fff!important;color:#0f0f0f!important}
+#botModal .bot-tabs button{background:#fff!important;color:#333!important;border-color:#ddd!important}
+#botModal .bot-tabs button.active{background:#ff0000!important;color:#fff!important;border-color:#ff0000!important}
+#botModal .bot-suggest button,#botModal .bot-kpi,#botModal .bot-section{background:#fff!important;color:#222!important;border-color:#e5e5e5!important}
+#botModal .bot-suggest button:hover{border-color:#ff0000!important}
+#botModal .bot-kpi:after{background:#ff0000!important}
+#botModal .bot-table th{background:#0f0f0f!important;color:#fff!important}
+#botModal .bot-table td{color:#222!important;border-color:#e8e8e8!important}
+
+/* Loading đen, vòng load đỏ/trắng, chữ trắng */
+#loading,.loading-overlay,#loader,.preloader,.page-loader{background:#0f0f0f!important;color:#fff!important}
+#loading *, .loading-overlay *,#loader *, .preloader *, .page-loader *{color:#fff!important}
+.spinner,.loader-spinner,.loading-spinner{border-color:rgba(255,255,255,.22)!important;border-top-color:#ff0000!important;border-right-color:#fff!important}
+.loading-text,#loadingText{color:#fff!important}
+
+@media(max-width:900px){
+  .top-shell,.header,.app-header{border-left:0!important;border-right:0!important}
+  #floatingBot{width:44px!important;height:44px!important;right:12px!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;border-radius:13px!important}
+  #floatingBot .bot-icon:after{font-size:17px!important}
+  #floatingBot .bot-label{font-size:6.5px!important}
+}
+</style>
+<script>
+(function(){
+  function fixLoader(){
+    document.querySelectorAll('#loadingText,.loading-text,.loader-text,#loading .text,.loading-overlay .text').forEach(el=>{
+      if(/đang tải|loading/i.test((el.textContent||'').trim())) el.textContent='Đang tải ICMS';
+    });
+    document.querySelectorAll('#loading,.loading-overlay,#loader,.preloader,.page-loader').forEach(el=>{
+      el.style.background='#0f0f0f';el.style.color='#fff';
+    });
+  }
+  document.addEventListener('DOMContentLoaded',fixLoader);
+  window.addEventListener('load',fixLoader);
+})();
+</script>
+
+
+<style id="loading-no-white-box-fix">
+/* Bỏ hoàn toàn bảng/khung trắng phía sau vòng chờ */
+#loading .loader-box,
+#loading .loading-box,
+#loading .loader-card,
+#loading .loading-card,
+.loading-overlay .loader-box,
+.loading-overlay .loading-box,
+.loading-overlay .loader-card,
+.loading-overlay .loading-card,
+#loader .loader-box,
+.preloader .loader-box,
+.page-loader .loader-box{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+
+/* Nếu vòng load nằm trong một div không có class riêng */
+#loading > div,
+.loading-overlay > div,
+#loader > div,
+.preloader > div,
+.page-loader > div{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+
+/* Giữ vòng xoay nổi trực tiếp trên nền đen */
+#loading .spinner,
+.loading-overlay .spinner,
+#loader .spinner,
+.preloader .spinner,
+.page-loader .spinner,
+#loading .loader-spinner,
+.loading-overlay .loader-spinner{
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+/* Nền loading toàn màn hình đen */
+#loading,
+.loading-overlay,
+#loader,
+.preloader,
+.page-loader{
+  background:#0f0f0f!important;
+}
+</style>
+
 </head>
 <body>
 <div id="loading"><div class="loadbox"><div class="spin"></div><b id="loadTitle">ĐANG TẢI DỮ LIỆU</b><div id="loadText" style="font-size:12px;color:#64748b;margin-top:7px">Đang tải ICMS...</div></div></div>
