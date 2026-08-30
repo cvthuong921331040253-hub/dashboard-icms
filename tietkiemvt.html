@@ -610,12 +610,12 @@ body{background:#fff!important;color:#111!important}
 #myTable th{background:#111!important;color:#fff!important;border-color:#2a2a2a!important}
 #myTable td{background:#fff!important;color:#111!important;border-color:#d9d9d9!important}
 #myTable tr:nth-child(even) td{background:#fafafa!important}
-#myTable tr:nth-child(even) td.ok{background:#f0fdf4!important}
-#myTable tr:nth-child(even) td.phat{background:#fff1f2!important}
-#myTable tr:nth-child(even) td.fail{background:#fff1f2!important}
+#myTable tr:nth-child(even) td.ok{background:#fafafa!important}
+#myTable tr:nth-child(even) td.phat{background:#fafafa!important}
+#myTable tr:nth-child(even) td.fail{background:#fff7f7!important}
 #myTable td:first-child{background:#fff!important;border-left:3px solid #e50914}
-#myTable tr:hover td{background:#fff7f7!important}
-#myTable tr:hover td:first-child{background:#fff1f2!important}
+#myTable tr:hover td{background:#fff!important}
+#myTable tr:hover td:first-child{background:#fff!important}
 .ok{color:#16a34a!important}.phat,.fail{color:#e50914!important}.fail{background:#fff1f2!important}
 .card,.rank-panel{background:#fff!important;border-color:#dedede!important;box-shadow:0 5px 15px rgba(0,0,0,.045)!important}
 .top{border-left-color:#16a34a!important}.worst{border-left-color:#e50914!important}
@@ -661,27 +661,36 @@ body{background:#fff!important;color:#111!important}
 }
 
 
-/* ===== KPI COLOR CODING ===== */
+/* ===== KPI COLOR CODING: CHỈ ĐỔI MÀU SỐ, KHÔNG TÔ CẢ Ô ===== */
 #myTable td.ok,
 #myTable td.ok *{
   color:#16a34a!important;
   font-weight:800!important;
+  background:transparent!important;
 }
 #myTable td.phat,
 #myTable td.phat *{
   color:#e50914!important;
   font-weight:800!important;
+  background:transparent!important;
 }
 #myTable td.fail{
   color:#e50914!important;
-  background:#fff1f2!important;
+  background:#fff7f7!important;
   font-weight:800!important;
 }
-#myTable td.ok{
-  background:#f0fdf4!important;
+
+/* Tỉ lệ 0% giữ màu trung tính */
+#myTable td.neutral,
+#myTable td.neutral *{
+  color:#777!important;
+  font-weight:500!important;
+  background:transparent!important;
 }
-#myTable td.phat{
-  background:#fff1f2!important;
+
+/* Không để các màu xanh/đỏ lan sang ô khác */
+#myTable td{
+  box-shadow:none!important;
 }
 
 /* ===== NGĂN CÁCH NHÓM BẢNG: GỌN, SẠCH, KHÔNG CẮT MẢNG ===== */
@@ -734,6 +743,19 @@ body{background:#fff!important;color:#111!important}
   #myTable th:last-child,#myTable td:last-child{
     border-left-width:1px!important;
   }
+}
+
+
+/* ===== CỘT THỰC HIỆN: KHÔNG TÔ MÀU NỀN ===== */
+#myTable td:nth-child(3),
+#myTable td:nth-child(6){
+  background:#fff!important;
+}
+#myTable tr:nth-child(even) td:nth-child(3),
+#myTable tr:nth-child(even) td:nth-child(6),
+#myTable tr:hover td:nth-child(3),
+#myTable tr:hover td:nth-child(6){
+  background:#fff!important;
 }
 
 </style>
@@ -936,8 +958,8 @@ function renderTable(data){
  <tr><th>Định mức</th><th>Thực hiện</th><th>Tỉ lệ</th><th>Định mức</th><th>Thực hiện</th><th>Tỉ lệ</th></tr>`;
  if(!data.length) html+=`<tr><td colspan="8">Không có dữ liệu phù hợp</td></tr>`;
  data.forEach(r=>html+=`<tr>
- <td>${esc(r.huyen)}</td><td>${num(r.dm_tkm)}</td><td class="${r.th_tkm<r.dm_tkm?'fail':''}">${num(r.th_tkm)}</td><td class="${getColorClass(r.tl_tkm)}">${r.tl_tkm}%</td>
- <td>${num(r.dm_sc)}</td><td class="${r.th_sc<r.dm_sc?'fail':''}">${num(r.th_sc)}</td><td class="${getColorClass(r.tl_sc)}">${r.tl_sc}%</td><td class="${getColorClass(r.t_p)}">${num(r.t_p)}</td></tr>`);
+ <td>${esc(r.huyen)}</td><td>${num(r.dm_tkm)}</td><td>${num(r.th_tkm)}</td><td class="${getColorClass(r.tl_tkm)}">${r.tl_tkm}%</td>
+ <td>${num(r.dm_sc)}</td><td>${num(r.th_sc)}</td><td class="${getColorClass(r.tl_sc)}">${r.tl_sc}%</td><td class="${getColorClass(r.t_p)}">${num(r.t_p)}</td></tr>`);
  document.getElementById("myTable").innerHTML=html;
 }
 function renderTop(data){
