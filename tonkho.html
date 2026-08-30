@@ -1040,6 +1040,218 @@ thead th:last-child{
   border-radius:0 !important;
 }
 
+
+/* ===== TABLE HEADER: BỎ VIỀN ĐỎ TRÊN, THU NHỎ VIỀN ĐỎ DƯỚI ===== */
+thead th{
+  border-top:none !important;
+  border-bottom:1px solid var(--yt-red) !important;
+  box-shadow:none !important;
+}
+
+
+/* ===== SỬA ĐƯỜNG ĐỎ TIÊU ĐỀ BẢNG ===== */
+.table-wrap{
+  border-top:1px solid #dedede !important;
+}
+
+table,
+thead,
+thead tr{
+  border-top:none !important;
+  outline:none !important;
+  box-shadow:none !important;
+}
+
+thead th{
+  border-top:0 !important;
+  border-bottom:2px solid var(--yt-red) !important;
+  box-shadow:none !important;
+}
+
+/* Xóa mọi đường đỏ giả ở mép trên do pseudo element nếu có */
+thead::before,
+thead tr::before,
+thead th::before{
+  content:none !important;
+  display:none !important;
+}
+
+
+/* ===== NÚT EXCEL GỌN ===== */
+.excel-btn{
+  min-height:28px !important;
+  min-width:52px !important;
+  padding:0 10px !important;
+  font-size:11px !important;
+  line-height:1 !important;
+}
+
+
+/* ===== NÚT EXCEL: CHỈ CHỮ EXCEL, KÍCH THƯỚC GỌN ===== */
+.excel-btn{
+  width:auto !important;
+  min-width:0 !important;
+  min-height:26px !important;
+  height:26px !important;
+  padding:0 9px !important;
+  font-size:10px !important;
+  line-height:26px !important;
+  border-radius:999px !important;
+}
+@media(max-width:768px){
+  .excel-btn{
+    min-width:0 !important;
+    min-height:26px !important;
+    height:26px !important;
+    padding:0 9px !important;
+    font-size:10px !important;
+    line-height:26px !important;
+  }
+}
+
+
+/* ===== BOT: BIỂU TƯỢNG ROBOT ===== */
+.bot-fab{
+  font-size:0 !important;
+  background:#111 !important;
+  border:2px solid var(--yt-red) !important;
+  box-shadow:0 5px 18px rgba(0,0,0,.30) !important;
+}
+.bot-fab::after{
+  content:"🤖" !important;
+  font-size:25px !important;
+  line-height:1 !important;
+  filter:grayscale(1) brightness(1.35) !important;
+}
+.bot-fab:hover{
+  background:#222 !important;
+}
+
+@media(max-width:768px){
+  .bot-fab::after{font-size:22px !important;}
+}
+
+
+/* ===== BẢNG: CHỈ NGĂN CÁCH CỘT, KHÔNG BÔI MÀU ===== */
+tbody td,
+tbody td:nth-child(even),
+tbody td:nth-child(odd),
+tbody tr:nth-child(even) td,
+tbody tr:nth-child(odd) td{
+  background:#ffffff !important;
+}
+
+/* Tạo đường ngăn cách dọc rõ hơn giữa các cột */
+th:not(:last-child),
+td:not(:last-child){
+  border-right:2px solid #d6d6d6 !important;
+}
+
+/* Cột đầu không tô xám */
+tbody tr:nth-child(even) td:first-child,
+tbody tr:nth-child(odd) td:first-child{
+  background:#ffffff !important;
+}
+
+/* Hover vẫn áp dụng đồng đều toàn hàng */
+tbody tr:hover td,
+tbody tr:hover td:nth-child(even),
+tbody tr:hover td:nth-child(odd){
+  background:#fff5f7 !important;
+}
+
+
+/* ===== BẢNG: ĐƯỜNG NGĂN CÁCH NHỎ, KHÔNG BÔI XÁM ===== */
+tbody td,
+tbody td:nth-child(even),
+tbody td:nth-child(odd),
+tbody tr:nth-child(even) td,
+tbody tr:nth-child(odd) td{
+  background:#ffffff !important;
+}
+
+/* Chỉ kẻ đường ngăn cách dọc mảnh 1px */
+th:not(:last-child),
+td:not(:last-child){
+  border-right:1px solid #dedede !important;
+}
+
+/* Không bôi xám khi rê chuột */
+tbody tr:hover td,
+tbody tr:hover td:nth-child(even),
+tbody tr:hover td:nth-child(odd){
+  background:#ffffff !important;
+}
+
+
+/* ===== BẢNG: NỀN TRẮNG HOÀN TOÀN, KHÔNG BÔI XÁM ===== */
+.table-wrap,
+table,
+tbody,
+tbody tr,
+tbody tr:nth-child(odd),
+tbody tr:nth-child(even),
+tbody td,
+tbody tr td,
+tbody tr:nth-child(odd) td,
+tbody tr:nth-child(even) td,
+tbody td:nth-child(odd),
+tbody td:nth-child(even){
+  background:#ffffff !important;
+  background-color:#ffffff !important;
+  background-image:none !important;
+}
+
+/* Chỉ giữ đường ngăn cách mảnh giữa các ô */
+tbody td{
+  border-right:1px solid #e3e3e3 !important;
+  border-bottom:1px solid #eeeeee !important;
+}
+
+/* Không đổi màu khi hover */
+tbody tr:hover,
+tbody tr:hover td,
+tbody tr:hover td:nth-child(odd),
+tbody tr:hover td:nth-child(even){
+  background:#ffffff !important;
+  background-color:#ffffff !important;
+}
+
+
+/* ===== BẢNG DỮ LIỆU: KHÔNG TÔ XÁM CỘT ===== */
+.table-wrap table tbody > tr,
+.table-wrap table tbody > tr:nth-child(odd),
+.table-wrap table tbody > tr:nth-child(even){
+  background:#fff !important;
+  background-color:#fff !important;
+}
+
+.table-wrap table tbody > tr > td,
+.table-wrap table tbody > tr:nth-child(odd) > td,
+.table-wrap table tbody > tr:nth-child(even) > td,
+.table-wrap table tbody > tr > td:nth-child(odd),
+.table-wrap table tbody > tr > td:nth-child(even){
+  background:#fff !important;
+  background-color:#fff !important;
+  background-image:none !important;
+  box-shadow:none !important;
+}
+
+/* Chỉ giữ đường phân cách mảnh */
+.table-wrap table tbody > tr > td:not(:last-child){
+  border-right:1px solid #e1e1e1 !important;
+}
+.table-wrap table tbody > tr > td{
+  border-bottom:1px solid #eeeeee !important;
+}
+
+/* Hover không bôi màu */
+.table-wrap table tbody > tr:hover,
+.table-wrap table tbody > tr:hover > td{
+  background:#fff !important;
+  background-color:#fff !important;
+}
+
 </style>
 </head>
 
@@ -1058,9 +1270,7 @@ thead th:last-child{
 
     <button
       class="excel-btn"
-      onclick="downloadExcel()">
-      Tải file Excel
-    </button>
+      onclick="downloadExcel()">Excel</button>
   </div>
 
   <div class="update-time">
@@ -1114,9 +1324,7 @@ thead th:last-child{
     id="botFab"
     class="bot-fab"
     onclick="toggleBot()"
-    aria-label="Mở trợ lý tra cứu">
-    💬
-  </button>
+    aria-label="Mở trợ lý tra cứu">🤖</button>
 
   <div id="botPanel" class="bot-panel">
 
@@ -2803,6 +3011,69 @@ document
 
 loadData();
 
+</script>
+
+
+<script>
+(function(){
+  function forceWhiteTableCells(){
+    document.querySelectorAll('.table-wrap tbody tr').forEach(function(tr){
+      tr.style.setProperty('background', '#fff', 'important');
+      tr.querySelectorAll('td').forEach(function(td){
+        td.style.setProperty('background', '#fff', 'important');
+        td.style.setProperty('background-color', '#fff', 'important');
+      });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    forceWhiteTableCells();
+    new MutationObserver(forceWhiteTableCells).observe(document.body, {
+      childList:true,
+      subtree:true
+    });
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  function bindBotEnter(){
+    const input =
+      document.querySelector('.bot-input input') ||
+      document.querySelector('#botInput') ||
+      document.querySelector('input[placeholder*="bot" i]') ||
+      document.querySelector('input[placeholder*="nhập" i]');
+
+    if (!input || input.dataset.enterBound === '1') return;
+    input.dataset.enterBound = '1';
+
+    input.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const sendBtn =
+          document.querySelector('.bot-send') ||
+          document.querySelector('#botSend');
+
+        if (sendBtn) {
+          sendBtn.click();
+          return;
+        }
+
+        if (typeof window.sendBotMessage === 'function') {
+          window.sendBotMessage();
+        } else if (typeof window.sendMessage === 'function') {
+          window.sendMessage();
+        }
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', bindBotEnter);
+  setInterval(bindBotEnter, 500);
+})();
 </script>
 
 </body>
