@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" style="background:#111111">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -227,9 +227,36 @@ th.filterable{position:relative;padding-right:30px}
 .days.days-high{background:transparent!important;color:#dc2626!important}
 
 </style>
+
+<style id="loading-force-fix">
+/* ===== ÉP GIAO DIỆN LOAD TRANG TRẮNG / ĐEN / ĐỎ ===== */
+#loadingOverlay, #loading-screen, #loadingScreen, .loading-overlay, .loading-screen, .loading-page, .loader{
+  background:#ffffff !important;
+  color:#111111 !important;
+}
+#loadingOverlay *, #loading-screen *, #loadingScreen *, .loading-overlay *, .loading-screen *, .loading-page *, .loader *{
+  color:inherit;
+}
+#loadingOverlay .spinner, #loading-screen .spinner, #loadingScreen .spinner,
+.loading-overlay .spinner, .loading-screen .spinner, .loading-page .spinner,
+#loadingOverlay .loader, #loading-screen .loader, #loadingScreen .loader,
+.loading-overlay .loader, .loading-screen .loader, .loading-page .loader{
+  border-color:#e5e5e5 !important;
+  border-top-color:#ff0000 !important;
+}
+#loadingOverlay h1, #loadingOverlay h2, #loadingOverlay .loading-title,
+#loading-screen h1, #loadingScreen h1, .loading-overlay h1, .loading-screen h1{
+  color:#111111 !important;
+}
+#loadingOverlay p, #loadingOverlay .loading-text,
+#loading-screen p, #loadingScreen p, .loading-overlay p, .loading-screen p{
+  color:#606060 !important;
+}
+</style>
+
 </head>
-<body>
-<div class="app">
+<body style="margin:0;background:#111111;color:#ffffff">
+<div class="app" id="appRoot" style="visibility:hidden">
 <div class="header"><h1>📡 Kênh truyền</h1></div>
 
 <div class="search-panel">
@@ -239,10 +266,10 @@ th.filterable{position:relative;padding-right:30px}
 
 <div class="result-panel">
  <div class="toolbar">
-  <div class="info" id="resultInfo">Đang tải dữ liệu...</div><button class="clear-filters" onclick="clearAllFilters()">Xóa lọc</button>
+  <div class="info" id="resultInfo">Đang tải trang...</div><button class="clear-filters" onclick="clearAllFilters()">Xóa lọc</button>
   
  </div>
- <div id="resultArea"><div class="empty">Đang tải dữ liệu...</div></div>
+ <div id="resultArea"><div class="empty">Đang tải trang...</div></div>
 </div>
 
 <div class="bot collapsed" id="botBox">
@@ -255,9 +282,9 @@ th.filterable{position:relative;padding-right:30px}
  <div class="chat-input"><input id="question" placeholder="Nhập nội dung hoặc chọn gợi ý..." onkeydown="if(event.key==='Enter') askBot()"><button onclick="askBot()">GỬI</button></div>
 </div>
 </div>
-<div id="pageLoader" style="position:fixed;inset:0;background:rgba(255,255,255,.96);z-index:2000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;font-family:Arial">
- <div style="width:42px;height:42px;border:4px solid #dbeafe;border-top-color:#2563eb;border-radius:50%;animation:spin 0.8s linear infinite"></div>
- <div style="font-size:14px;color:#475569">Đang tải dữ liệu...</div>
+<div id="pageLoader" style="position:fixed;inset:0;background:#111111;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;font-family:Arial;color:#ffffff">
+ <div style="width:42px;height:42px;border:4px solid #3a3a3a;border-top-color:#ff0000;border-radius:50%;animation:spin 0.8s linear infinite"></div>
+ <div style="font-size:14px;color:#ffffff;font-weight:500">Đang tải trang...</div>
 </div>
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
@@ -275,10 +302,10 @@ async function loadData(){
   if(!x.success)throw new Error(x.message||"API trả về lỗi");
   allData=x.data||[];filteredData=[...allData];columns=x.columns||[];
   buildWorkFilter();renderData();
-  pageLoader.style.display="none";
+  requestAnimationFrame(()=>{ appRoot.style.visibility="visible"; requestAnimationFrame(()=>{ pageLoader.style.display="none"; }); });
   buildSuggestions();
   addMessage(`Chọn loại công việc bên dưới để tra cứu nhanh. Với nhóm có hỗ trợ ngày tồn, chọn thêm mốc ngày.`, "botmsg");
- }catch(e){pageLoader.style.display="none";resultArea.innerHTML=`<div class="empty"><b>Không thể tải dữ liệu.</b><br><br>${escapeHtml(e.message)}</div>`;addMessage("Không thể kết nối API: "+e.message,"botmsg")}
+ }catch(e){appRoot.style.visibility="visible";pageLoader.style.display="none";resultArea.innerHTML=`<div class="empty"><b>Không thể tải dữ liệu.</b><br><br>${escapeHtml(e.message)}</div>`;addMessage("Không thể kết nối API: "+e.message,"botmsg")}
 }
 
 const QUICK_WORK_TYPES=[
@@ -735,6 +762,151 @@ td.days.days-high, .value.days.days-high{
   .header h1{
     font-size:18px!important;
   }
+}
+</style>
+
+<style id="youtube-theme">
+:root{--primary:#ff0000!important;--primary-dark:#cc0000!important;--card:#fff!important;--border:#d9d9d9!important;--text:#111!important;--muted:#606060!important}
+html,body{background:#f7f7f7!important;color:#111!important}
+.header{background:#111!important;color:#fff!important;border:1px solid #ff0000!important;box-shadow:none!important}
+.header h1,.header strong{color:#fff!important}
+.search-box,.result-panel,.toolbar,.list,.item{background:#fff!important;color:#111!important;border-color:#d9d9d9!important}
+button:not(.filter-btn):not(.bot-control):not(.filter-cancel):not(.chip){background:#ff0000!important;color:#fff!important;border-color:#ff0000!important;border-radius:999px!important;font-weight:700!important}
+button:not(.filter-btn):not(.bot-control):not(.filter-cancel):not(.chip):hover{background:#cc0000!important}
+input,select{background:#fff!important;color:#111!important;border-color:#cfcfcf!important}
+input:focus,select:focus{border-color:#ff0000!important;outline-color:#ff0000!important}
+.table-wrap{background:#fff!important}.table-wrap table{background:#fff!important;border-color:#c9c9c9!important}
+.table-wrap thead th{background:#202020!important;color:#fff!important;border-color:#3a3a3a!important}
+.table-wrap td{background:#fff!important;color:#111!important;border-color:#ddd!important}
+.table-wrap tbody tr:nth-child(even) td{background:#fafafa!important}.table-wrap tbody tr:hover td{background:#fff1f1!important}
+.filter-btn{border-color:#ff0000!important;color:#ff0000!important;background:#fff!important}
+.filter-btn.active{background:#ff0000!important;color:#fff!important}
+.empty,.info{color:#cc0000!important}.days.days-high{color:#ff0000!important}.days.days-mid{color:#d97706!important}.days.days-low{color:#16803a!important}
+.item{border:1px solid #ddd!important;border-radius:10px!important;box-shadow:none!important}
+.item-title{color:#111!important;font-weight:800!important;border-bottom:2px solid #ff0000!important}
+.bot{background:#fff!important;border:1px solid #ff0000!important;box-shadow:0 10px 28px rgba(0,0,0,.22)!important}
+.bot-title{background:#111!important;color:#fff!important;border-bottom:2px solid #ff0000!important}
+.bot-control{background:#fff!important;color:#111!important;border-color:#ff0000!important}
+.bot-control:hover{background:#ff0000!important;color:#fff!important}
+.chat{background:#f7f7f7!important}
+.msg.botmsg{background:#fff!important;color:#111!important;border:1px solid #ddd!important;border-left:4px solid #ff0000!important}
+.msg.usermsg{background:#111!important;color:#fff!important;border:1px solid #111!important}
+.suggestions{background:#fff!important;border-color:#ddd!important}
+.chip{background:#fff!important;color:#111!important;border-color:#d0d0d0!important}
+.chip:hover{color:#fff!important;background:#ff0000!important;border-color:#ff0000!important}
+.chat-input{background:#fff!important;border-color:#ddd!important}
+.chat-input button{background:#ff0000!important;color:#fff!important;border-radius:999px!important}
+.filter-menu{background:#fff!important;border-color:#ff0000!important}
+.filter-menu-head,.filter-actions,.number-filter,.filter-footer{background:#fff!important;border-color:#e0e0e0!important}
+.filter-ok{background:#ff0000!important;color:#fff!important}.clear-filters{background:#fff!important;color:#cc0000!important;border-color:#ff0000!important;border-radius:999px!important}
+.clear-filters:hover{background:#ff0000!important;color:#fff!important}
+@media(max-width:700px){html,body{background:#f4f4f4!important}.app{padding:8px!important}.header{border-radius:12px!important;padding:9px 12px!important}.header h1{font-size:18px!important}.search-box,.result-panel{border-radius:10px!important}.bot.collapsed{border:2px solid #ff0000!important}.bot.collapsed .bot-title{background:#111!important}}
+</style>
+
+<style id="loading-theme">
+/* ===== TRẠNG THÁI ĐANG TẢI ===== */
+.loading-screen,#loadingScreen,.loading{
+  background:#ffffff!important;
+  color:#111111!important;
+}
+.loading-screen,.loading{
+  border-color:#ff0000!important;
+}
+.loading-screen .spinner,.loading .spinner,#loadingScreen .spinner{
+  border-color:#e5e5e5!important;
+  border-top-color:#ff0000!important;
+}
+.loading-screen h1,.loading h1,#loadingScreen h1{
+  color:#111111!important;
+}
+.loading-screen p,.loading p,#loadingScreen p{
+  color:#606060!important;
+}
+/* Nếu trang dùng overlay loading toàn màn hình */
+#loadingScreen{
+  background:#ffffff!important;
+}
+</style>
+
+
+<style id="youtube-loading-final">
+/* ===== LOADING CUỐI CÙNG: ĐEN / ĐỎ / TRẮNG ===== */
+#loadingOverlay,
+#loadingScreen,
+#loading-screen,
+.loading-overlay,
+.loading-screen,
+.loading-page,
+.loading{
+  background:#111111 !important;
+  background-color:#111111 !important;
+  color:#ffffff !important;
+}
+
+#loadingOverlay::before,
+#loadingScreen::before,
+#loading-screen::before,
+.loading-overlay::before,
+.loading-screen::before,
+.loading-page::before,
+.loading::before{
+  background:#111111 !important;
+}
+
+/* Toàn bộ chữ trong màn hình loading */
+#loadingOverlay .loading-text,
+#loadingOverlay .loading-title,
+#loadingOverlay p,
+#loadingOverlay span,
+#loadingScreen .loading-text,
+#loadingScreen .loading-title,
+#loadingScreen p,
+#loadingScreen span,
+#loading-screen .loading-text,
+#loading-screen .loading-title,
+#loading-screen p,
+#loading-screen span,
+.loading-overlay .loading-text,
+.loading-overlay .loading-title,
+.loading-overlay p,
+.loading-overlay span,
+.loading-screen .loading-text,
+.loading-screen .loading-title,
+.loading-screen p,
+.loading-screen span,
+.loading-page .loading-text,
+.loading-page .loading-title,
+.loading-page p,
+.loading-page span,
+.loading .loading-text,
+.loading .loading-title,
+.loading p,
+.loading span{
+  color:#ffffff !important;
+  opacity:1 !important;
+}
+
+/* Vòng loading: đỏ trên nền xám đậm */
+#loadingOverlay .spinner,
+#loadingScreen .spinner,
+#loading-screen .spinner,
+.loading-overlay .spinner,
+.loading-screen .spinner,
+.loading-page .spinner,
+.loading .spinner{
+  border-color:#3f3f3f !important;
+  border-top-color:#ff0000 !important;
+  border-right-color:#ff0000 !important;
+}
+
+/* Fallback cho loader dạng vòng khác */
+#loadingOverlay [class*="spin"],
+#loadingScreen [class*="spin"],
+#loading-screen [class*="spin"],
+.loading-overlay [class*="spin"],
+.loading-screen [class*="spin"],
+.loading-page [class*="spin"]{
+  color:#ff0000 !important;
 }
 </style>
 
