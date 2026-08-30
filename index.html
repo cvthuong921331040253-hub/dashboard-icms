@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>KPI CĐBR</title>
+<title>KPI FINAL</title>
 
 <style>
 /* 👈 đổi màu điều kiện xanh đỏ */
@@ -2382,6 +2382,418 @@ body.loading{
 }
 </style>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="kpi-red-line-48">
+/* ===== THANH ĐỎ ĐÚNG VỊ TRÍ: DƯỚI HÀNG TIÊU ĐỀ BẢNG ===== */
+#tableKPI table thead th{
+  background:#0f0f0f!important;
+  color:#fff!important;
+  border-top:0!important;
+  border-bottom:2px solid #ff0000!important;
+}
+
+/* Cột Huyện sticky cũng phải có cùng đường đỏ ở mép dưới */
+#tableKPI table thead th:first-child{
+  border-bottom:2px solid #ff0000!important;
+}
+
+/* Header đã sticky thì đường đỏ nằm cùng header khi cuộn dọc */
+#tableKPI table thead th{
+  position:sticky!important;
+  top:0!important;
+}
+</style>
+
+
+<style id="fix-huyen-header-desktop">
+/* FIX: cột Huyện không bị che trên desktop */
+@media (min-width:701px){
+  #tableKPI table thead th:first-child{
+    min-width:90px!important;
+    width:90px!important;
+    max-width:none!important;
+    padding-left:12px!important;
+    padding-right:12px!important;
+    overflow:visible!important;
+    white-space:nowrap!important;
+    z-index:100!important;
+  }
+
+  #tableKPI table tbody td:first-child{
+    min-width:90px!important;
+    width:90px!important;
+    max-width:none!important;
+    overflow:visible!important;
+    white-space:nowrap!important;
+    z-index:90!important;
+  }
+}
+</style>
+
+<style>
+.marquee-banner{border-radius:14px!important;overflow:hidden!important;box-sizing:border-box!important}
+.marquee-banner>*{border-radius:14px!important}
+</style>
+<style id="mobile-search-row-bot-kpi-bad">
+/* ===== MOBILE: 2 Ô TÌM KIẾM CÙNG 1 DÒNG ===== */
+@media(max-width:700px){
+  .header-filter{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:6px!important;
+    align-items:center!important;
+    width:100%!important;
+  }
+
+  .header-filter br{
+    display:none!important;
+  }
+
+  .header-filter input#nv,
+  .header-filter input#huyen{
+    width:100%!important;
+    min-width:0!important;
+    height:35px!important;
+    margin:0!important;
+  }
+
+  /* KPI kém chuyển vào Bot để tối ưu chiều cao header mobile */
+  #badCheck,
+  label[for="badCheck"]{
+    display:none!important;
+  }
+}
+
+@media(max-width:420px){
+  .header-filter{
+    gap:5px!important;
+  }
+
+  .header-filter input#nv,
+  .header-filter input#huyen{
+    height:34px!important;
+    font-size:11px!important;
+  }
+}
+</style>
+
+
+<style id="employee-list-match-top-card">
+/* ===== DANH SÁCH NHÂN VIÊN: BO GÓC GIỐNG TOP TỐT / TOP KÉM ===== */
+.employee-card,
+.employee-item,
+.staff-card,
+.nv-card,
+#employeeList > div,
+#employeeResults > div,
+#listNV > div,
+#dsNhanVien > div{
+  border-radius:14px!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+
+/* Khung danh sách bên trong bot */
+#employeeList,
+#employeeResults,
+#listNV,
+#dsNhanVien{
+  border-radius:14px!important;
+  overflow:hidden!important;
+}
+</style>
+
+
+<style id="employee-card-style-like-sample">
+/* ===== DANH SÁCH NHÂN VIÊN: KIỂU BO GÓC GIỐNG ẢNH MẪU ===== */
+#data .card{
+  background:#fff!important;
+  border:1px solid #d9d9d9!important;
+  border-left:4px solid #ff1f1f!important;
+  border-radius:20px!important;
+  padding:14px 14px 14px 16px!important;
+  margin:8px 0!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  box-shadow:0 2px 8px rgba(0,0,0,.06)!important;
+}
+
+/* Nội dung trong card không phá phần bo tròn */
+#data .card > *{
+  box-sizing:border-box!important;
+}
+
+@media(max-width:700px){
+  #data .card{
+    border-radius:18px!important;
+    border-left-width:4px!important;
+    padding:12px 12px 12px 14px!important;
+    margin:7px 0!important;
+  }
+}
+</style>
+
+
+<style id="bot-detail-hint-style">
+/* Dòng gợi ý nhỏ, mờ dưới thông tin tổng quan nhân viên */
+.bot-detail-hint{
+  margin-top:4px!important;
+  font-size:10px!important;
+  line-height:1.35!important;
+  color:#8a8a8a!important;
+  font-style:italic!important;
+  opacity:.82!important;
+}
+@media(max-width:700px){
+  .bot-detail-hint{
+    font-size:9px!important;
+    margin-top:3px!important;
+  }
+}
+</style>
+
+
+<style id="bot-compact-analysis-layout">
+/* ===== BOT: NÉN CÁC KHỐI PHÂN TÍCH KPI ===== */
+#kpiBotModal .bot-analysis,
+#kpiBotModal .kpi-analysis,
+#kpiBotModal .analysis-card,
+#kpiBotModal .bot-result-card{
+  margin:6px 0!important;
+  padding:10px 12px!important;
+  min-height:0!important;
+}
+
+/* Các khối có nội dung KPI sinh động: giảm khoảng cách trên/dưới */
+#kpiBotModal .bot-answer > div,
+#kpiBotModal #kpiBotAnswer > div,
+#kpiBotModal .bot-response > div{
+  margin-top:6px!important;
+  margin-bottom:6px!important;
+}
+
+/* Giảm khoảng cách dòng trống sinh ra bởi <br><br> trong phần trả lời BOT */
+#kpiBotModal .bot-answer br + br,
+#kpiBotModal #kpiBotAnswer br + br,
+#kpiBotModal .bot-response br + br{
+  display:none!important;
+}
+
+/* Nút tra chi tiết nằm sát phần thống kê */
+#kpiBotModal .bot-analysis button,
+#kpiBotModal .kpi-analysis button,
+#kpiBotModal .analysis-card button,
+#kpiBotModal .bot-result-card button{
+  margin:4px 4px 0 0!important;
+}
+
+/* Nếu khối phân tích đang có chiều cao cố định, bỏ chiều cao dư */
+#kpiBotModal [style*="min-height"],
+#kpiBotModal [style*="height:"]{
+  min-height:0!important;
+}
+
+/* Mobile nén thêm một chút */
+@media(max-width:700px){
+  #kpiBotModal .bot-analysis,
+  #kpiBotModal .kpi-analysis,
+  #kpiBotModal .analysis-card,
+  #kpiBotModal .bot-result-card{
+    margin:5px 0!important;
+    padding:8px 10px!important;
+  }
+
+  #kpiBotModal .bot-answer > div,
+  #kpiBotModal #kpiBotAnswer > div,
+  #kpiBotModal .bot-response > div{
+    margin-top:5px!important;
+    margin-bottom:5px!important;
+  }
+}
+</style>
+
+
+<style id="fix-bot-real-selectors-compact">
+/* ===== BOT: NÉN ĐÚNG CÁC PHẦN TỬ THỰC TẾ ===== */
+
+/* Tin nhắn BOT đang chứa toàn bộ các khối KPI */
+#kpiBot #botMessages .bot-msg.bot{
+  white-space:normal!important;
+  padding:8px 10px!important;
+  margin:0 0 6px!important;
+  line-height:1.35!important;
+}
+
+/* Mỗi KPI: bỏ chiều cao dư và đưa nội dung lên sát nhau */
+#kpiBot #botMessages .bot-report{
+  display:block!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:4px 0!important;
+  padding:6px 8px!important;
+  line-height:1.38!important;
+  border-left:3px solid #ff0000!important;
+  border-bottom:1px solid #e6e6e6!important;
+  border-radius:0 10px 10px 0!important;
+  background:#fafafa!important;
+  box-sizing:border-box!important;
+}
+
+/* Xóa khoảng trống do phần tử con hoặc CSS cũ */
+#kpiBot #botMessages .bot-report > *{
+  min-height:0!important;
+  margin-top:0!important;
+}
+
+/* Khu vực nút tra cứu nằm sát thống kê */
+#kpiBot #botMessages .bot-report .bot-note{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  gap:4px!important;
+  margin:4px 0 0!important;
+  padding:0!important;
+  min-height:0!important;
+  line-height:1!important;
+}
+
+/* Nút tra cứu gọn hơn */
+#kpiBot #botMessages .bot-inline-btn{
+  margin:0!important;
+  padding:4px 8px!important;
+  line-height:1.1!important;
+  min-height:0!important;
+}
+
+/* Ghi chú độc lập cũng không tạo khoảng trắng lớn */
+#kpiBot #botMessages > .bot-msg .bot-note{
+  margin:3px 0!important;
+  padding:0!important;
+  min-height:0!important;
+}
+
+/* Khoảng cách giữa các KPI liên tiếp */
+#kpiBot #botMessages .bot-report + .bot-report{
+  margin-top:4px!important;
+}
+
+@media(max-width:700px){
+  #kpiBot #botMessages .bot-msg.bot{
+    padding:7px 8px!important;
+    line-height:1.32!important;
+  }
+
+  #kpiBot #botMessages .bot-report{
+    margin:3px 0!important;
+    padding:5px 7px!important;
+    line-height:1.32!important;
+  }
+
+  #kpiBot #botMessages .bot-report .bot-note{
+    margin-top:3px!important;
+    gap:3px!important;
+  }
+
+  #kpiBot #botMessages .bot-inline-btn{
+    padding:4px 7px!important;
+    font-size:9px!important;
+  }
+}
+</style>
+
+
+<style id="bot-full-20-kpi-style">
+/* BOT: hiển thị đủ 20 KPI cho lệnh "KPI Tên nhân viên" */
+#kpiBot .bot-kpi-full{
+  margin:4px 0!important;
+  padding:6px 8px!important;
+  border:1px solid #e3e3e3!important;
+  border-radius:10px!important;
+  background:#fff!important;
+  box-sizing:border-box!important;
+}
+
+#kpiBot .bot-kpi-full.good{
+  border-left:3px solid #20a464!important;
+}
+
+#kpiBot .bot-kpi-full.bad{
+  border-left:3px solid #ff1f1f!important;
+}
+
+#kpiBot .bot-kpi-full-title{
+  margin-bottom:2px!important;
+  font-size:11px!important;
+  line-height:1.3!important;
+}
+
+#kpiBot .bot-kpi-full .bot-kpi-line{
+  margin:0!important;
+  padding:0!important;
+}
+
+@media(max-width:700px){
+  #kpiBot .bot-kpi-full{
+    margin:3px 0!important;
+    padding:5px 7px!important;
+    border-radius:9px!important;
+  }
+
+  #kpiBot .bot-kpi-full-title{
+    font-size:10px!important;
+  }
+}
+</style>
+
+
+<style id="bot-ttv-command-style">
+/* ===== BOT TTV: TỔNG TÁC VỤ ===== */
+#kpiBot .bot-ttv{margin:4px 0;padding:8px;border-left:3px solid #ff1f1f;background:#fff;border-radius:0 12px 12px 0;box-sizing:border-box}
+#kpiBot .bot-ttv-title{font-size:13px;margin:0 0 7px;color:#222}
+#kpiBot .bot-ttv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+#kpiBot .bot-ttv-card{border:1px solid #e2e2e2;border-radius:9px;padding:7px 8px;background:#fafafa;min-height:48px;display:flex;flex-direction:column;justify-content:center}
+#kpiBot .bot-ttv-card span{font-size:10px;color:#555;line-height:1.25}
+#kpiBot .bot-ttv-card b{font-size:18px;line-height:1.15;margin-top:3px;color:#222}
+#kpiBot .bot-ttv-danger{border-left:3px solid #ff1f1f}
+#kpiBot .bot-ttv-total{margin-top:7px;padding:9px 10px;border-radius:10px;background:#171717;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px}
+#kpiBot .bot-ttv-total span{font-size:16px;line-height:1.2}
+#kpiBot .bot-ttv-total span b{font-size:16px!important;font-weight:700}
+#kpiBot .bot-ttv-total b:last-child{font-size:24px;color:#fff}
+@media(max-width:700px){
+ #kpiBot .bot-ttv{padding:7px}
+ #kpiBot .bot-ttv-grid{gap:5px}
+ #kpiBot .bot-ttv-card{padding:6px 7px;min-height:44px}
+ #kpiBot .bot-ttv-card span{font-size:9px}
+ #kpiBot .bot-ttv-card b{font-size:16px}
+ #kpiBot .bot-ttv-total{padding:8px 9px}
+ #kpiBot .bot-ttv-total span{font-size:15px}
+ #kpiBot .bot-ttv-total span b{font-size:15px!important}
+ #kpiBot .bot-ttv-total b:last-child{font-size:22px}
+}
+</style>
+
+<style id="fix61-help-ttv">
+#kpiBot .bot-ttv-total .bot-ttv-total-label{font-size:16px!important;line-height:1.2!important}
+#kpiBot .bot-ttv-total .bot-ttv-total-label b{font-size:16px!important}
+@media(max-width:700px){#kpiBot .bot-ttv-total .bot-ttv-total-label,#kpiBot .bot-ttv-total .bot-ttv-total-label b{font-size:15px!important}}
+</style>
 </head>
 
 <body class="rotate-in loading">
@@ -2404,7 +2816,7 @@ body.loading{
   </div>
 </div>
 <div id="botMessages" class="bot-messages">
-    <div class="bot-msg bot">Tôi có thể so sánh điểm KPI, số KPI đạt/không đạt và từng chỉ tiêu giữa tháng hiện tại và tháng trước.</div>
+    <div class="bot-msg bot">Tôi có thể tra cứu KPI, TTV, quá hạn SC/TKM và so sánh dữ liệu. Nhấn <b>Help</b> hoặc chat <b>help</b> để xem hướng dẫn.</div>
   </div>
   <div class="bot-quick">
   <button onclick="askKpiBot('Phân tích KPI hiện tại độc lập')">📊 T hiện tại</button>
@@ -2412,13 +2824,13 @@ body.loading{
   <button onclick="askKpiBot('Đánh giá từng huyện')">🏢 Từng huyện</button>
   <button onclick="askKpiBot('So sánh Gia Lai')">🏠 Tổng thể Gia Lai</button>
   <button onclick="askKpiBot('Huyện tồi')">⚠️ Huyện tồi</button>
-  <button onclick="askKpiBot('Top 10 nhân viên kém')">⚠️ Top kém</button>
+  <button onclick="askKpiBot('Top 10 nhân viên kém')">⚠️ KPI kém</button>
   <button onclick="askKpiBot('Top 10 nhân viên tốt')">🏆 Top tốt</button>
   <button onclick="askKpiBot('20 chỉ tiêu KPI')">🎯 20 KPI Gia Lai</button>
   <button onclick="showKpiHelp()">❔ Help</button>
 </div>
   <div class="bot-input">
-    <input id="botInput" placeholder="QH + tên nhân viên hoặc nhập Account..." onkeydown="if(event.key==='Enter')sendKpiBot()">
+    <input id="botInput" placeholder="Ấn Help hoặc chat help để xem hướng dẫn..." onkeydown="if(event.key==='Enter')sendKpiBot()">
     <button class="bot-send" onclick="sendKpiBot()">➤</button>
   </div>
 </div>
@@ -2808,6 +3220,7 @@ tableDataGlobal.forEach(r=>{
 
     applyFilter();
     renderTableExcel(tableDataGlobal); // ✅ bảng đúng 1–15
+    requestAnimationFrame(updateKpiHeaderRedLine);
     top10();
     topWorst();
     renderBadHuyen()
@@ -2846,6 +3259,7 @@ function render(data){
       📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
       🚨 SC: ${safe(r.tong_sc)} |
       🏆 Xếp hạng: ${allData.findIndex(x => x === r) + 1} | 🎯 ${r.score.toFixed(0)} điểm |
+      <div class="bot-detail-hint">🤖 Có thể tra chi tiết các loại SC và TKM tại biểu tượng BOT</div>
       ${badList.length ? `<div class="fail">❌ Tồi ${badList.length}/20 KPI ➜ ${badText}</div>` : ""}
       <br><br>
     `;
@@ -3125,11 +3539,22 @@ function formatTableNumber(v, integer=false){
   return n.toFixed(1).replace(/\.0$/,"");
 }
 
+function updateKpiHeaderRedLine(){
+  const wrap=document.querySelector('.kpi-wrapper');
+  const table=document.querySelector('#tableKPI table');
+  if(!wrap || !table) return;
+  const head=table.querySelector('thead');
+  if(!head) return;
+  const h=Math.ceil(head.getBoundingClientRect().height);
+  wrap.style.setProperty('--kpi-head-h', h+'px');
+}
+
 function renderTableExcel(data){
 
   let html = `
   <table border="1" style="border-collapse:collapse; font-size:12px; width:100%">
-    <tr style="background:#eee">
+    <thead>
+      <tr style="background:#0f0f0f">
       <th>Huyện</th>
       <th>TK mới</th>
       <th>TK có sẵn</th>
@@ -3158,7 +3583,9 @@ function renderTableExcel(data){
       <th>SC SOC 72h (100%)</th>
       <th>SC Hẹn (100%)</th>
       <th>SC Lặp (8%)</th>
-    </tr>
+      </tr>
+    </thead>
+    <tbody>
   `;
 
     function cell(v,t,type="up"){
@@ -3200,7 +3627,7 @@ function renderTableExcel(data){
     </tr>`;
   });
   
-  html += "</table>";
+  html += "</tbody></table>";
 
   document.getElementById("tableKPI").innerHTML = html;
 }
@@ -4014,12 +4441,35 @@ function renderDistrictDetailAdvanced(name,cur,old,currentRows,oldRows){
   return out;
 }
 /* ===== TÍNH SỐ LƯỢNG CẦN ĐẠT CHO TRA NHÂN VIÊN ===== */
-function botRawNumber(row, keys){
+function botRawNumber(row,keys){
+  if(!row) return null;
+
+  // Ưu tiên tên khóa chính xác.
   for(const k of keys){
-    if(row && row[k]!==undefined && row[k]!==null && row[k]!==""){
-      const n=botNum(row[k]); if(Number.isFinite(n)) return n;
+    if(row[k]!==undefined && row[k]!==null && row[k]!==""){
+      const n=botNum(row[k]);
+      if(Number.isFinite(n)) return n;
     }
   }
+
+  // Fallback: chuẩn hóa tên cột để nhận cả khác biệt hoa/thường,
+  // khoảng trắng, dấu gạch dưới hoặc dấu chấm.
+  const normalized={};
+  Object.keys(row).forEach(k=>{
+    const nk=botNormalize(k);
+    if(normalized[nk]===undefined && row[k]!==null && row[k]!==undefined && row[k]!==""){
+      normalized[nk]=row[k];
+    }
+  });
+
+  for(const k of keys){
+    const nk=botNormalize(k);
+    if(normalized[nk]!==undefined){
+      const n=botNum(normalized[nk]);
+      if(Number.isFinite(n)) return n;
+    }
+  }
+
   return null;
 }
 const BOT_COUNT_MAP={
@@ -4035,8 +4485,8 @@ const BOT_COUNT_MAP={
   "SC Lặp":{total:["tscl"],done:["scl"],type:"down"},
   "SC HT 24h":{total:["tscht","tsc_ht_24h"],done:["24ht","sc_ht_24h"],type:"up"},
   "SC Hẹn":{total:["tschen"],done:["schen"],type:"up"},
-  "SC SOC 24h":{total:["tscsoc"],done:["24hsc","sc_soc_24h"],type:"up"},
-  "SC SOC 72h":{total:["tscsoc"],done:["72hsoc","sc_soc_72h"],type:"up"},
+  "SC SOC 24h":{total:["tssoc","tscsoc","TSSOC","TSC SOC"],done:["24hsoc","24hSOC","SC SOC 24h"],type:"up"},
+  "SC SOC 72h":{total:["tssoc","tscsoc","TSSOC","TSC SOC"],done:["72hsoc","72hSOC","SC SOC 72h"],type:"up"},
   "SC 3h":{total:["tsc3h"],done:["sc3h"],type:"up"},
   "SC 10h":{total:["tsc10h"],done:["sc10h"],type:"up"},
   "SC 24h":{total:["tsc24h"],done:["sc24h"],type:"up"},
@@ -4054,23 +4504,58 @@ function botCurrentPctFromCounts(row,name,fallback){
   const i=botCountInfo(row,name); return i ? i.done/i.total*100 : fallback;
 }
 function botNeedToTarget(row,name,target,type){
-  const i=botCountInfo(row,name); if(!i) return null;
-  const N=i.total,A=i.done,p=botNum(target)/100;
-  if(!(N>0)||!Number.isFinite(A)||!Number.isFinite(p)) return null;
+  const i=botCountInfo(row,name);
+  const p=botNum(target)/100;
+
+  // SC Lặp / KPI càng thấp càng tốt giữ công thức riêng.
   if(type==="down"){
+    if(!i) return null;
+    const N=i.total,A=i.done;
+    if(!(N>0)||!Number.isFinite(A)||!Number.isFinite(p)) return null;
     if(A/N<=p) return {kind:"already",text:"đã đạt Target"};
-    if(p<=0) return {kind:"impossible",text:"Target bằng 0%, không thể tính bổ sung."};
-    const req=Math.ceil(A/p-1e-12), extra=Math.max(0,req-N);
-    return {kind:"down",extra,requiredTotal:req,text:extra?`cần thêm ${extra} trường hợp không lặp (tổng tối thiểu ${req}) để đạt ≤ ${fmt(target)}%`:`cần giảm tỷ lệ xuống ≤ ${fmt(target)}% để đạt`};
+    const req=Math.ceil(A/p-1e-12);
+    const extra=Math.max(0,req-N);
+    return {
+      kind:"down",
+      extra,
+      requiredTotal:req,
+      text:extra
+        ? `cần thêm ${extra} trường hợp không lặp (tổng tối thiểu ${req}) để đạt ≤ ${fmt(target)}%`
+        : `cần giảm tỷ lệ xuống ≤ ${fmt(target)}% để đạt`
+    };
   }
-  if(A/N>=p) return {kind:"already",text:"đã đạt Target"};
+
+  // KPI Target 100%: không tính "cần thêm bao nhiêu cái để đạt".
+  // Luôn dùng số trường hợp đã không đạt để cảnh báo tiền phạt không thể về 0.
   if(Math.abs(p-1)<1e-12){
+    if(!i) return null;
+    const N=i.total,A=i.done;
+    if(!(N>0)||!Number.isFinite(A)) return null;
+    if(A/N>=p) return {kind:"already",text:"đã đạt Target"};
     const bad=Math.max(0,N-A);
-    return {kind:"target100",bad,text:`cần nâng tỷ lệ thêm ${fmt(100-A/N*100)}% để giảm phạt; đã có ${fmt(bad)} trường hợp không đạt nên tiền phạt không thể về 0 trong tháng`};
+    return {
+      kind:"target100",
+      bad,
+      text:`cần nâng tỷ lệ thêm ${fmt(100-A/N*100)}% để giảm phạt; đã có ${fmt(bad)} trường hợp không đạt nên tiền phạt không thể về 0 trong tháng`
+    };
   }
+
+  // KPI Target dưới 100%: tính số trường hợp đạt cần thêm.
+  if(!i) return null;
+  const N=i.total,A=i.done;
+  if(!(N>0)||!Number.isFinite(A)||!Number.isFinite(p)) return null;
+  if(A/N>=p) return {kind:"already",text:"đã đạt Target"};
+
   const x=Math.max(0,Math.ceil((p*N-A)/(1-p)-1e-12));
   const finalPct=(A+x)/(N+x)*100;
-  return {kind:"up",extra:x,finalPct,text:x?`cần thêm ${x} trường hợp đạt để tỷ lệ đạt khoảng ${fmt(finalPct)}%`:`đã đạt Target`};
+  return {
+    kind:"up",
+    extra:x,
+    finalPct,
+    text:x
+      ? `cần thêm ${x} trường hợp đạt để tỷ lệ đạt khoảng ${fmt(finalPct)}%`
+      : `đã đạt Target`
+  };
 }
 function botEmployeeKpiLine(k,row,target,type,previous){
   const info=botCountInfo(row,k.name);
@@ -4080,8 +4565,13 @@ function botEmployeeKpiLine(k,row,target,type,previous){
   const targetSentence=gap>0?`tồi hơn Target ${fmt(gap)}%`:gap<0?`tốt hơn Target ${fmt(Math.abs(gap))}%`:`đạt Target`;
   const need=botNeedToTarget(row,k.name,target,type);
   let action="";
-  if(need&&need.kind!=="already") action=` → <span class="${need.kind==="target100"?'bot-bad':'bot-good'}">${need.text}</span>`;
-  else if(need&&need.kind==="already") action=` → <span class="bot-good">${need.text}</span>`;
+  if(need&&need.kind==="target100"){
+    action=`<br><span class="bot-bad">⚠️ ${need.text}</span>`;
+  }else if(need&&need.kind!=="already"){
+    action=` → <span class="bot-good">${need.text}</span>`;
+  }else if(need&&need.kind==="already"){
+    action=` → <span class="bot-good">${need.text}</span>`;
+  }
   let prev="";
   if(previous!==null&&previous!==undefined){
     const d=type==="down"?previous-actual:actual-previous;
@@ -4096,18 +4586,116 @@ function fmtEmployeePct(v){
   if(Number.isInteger(n)) return String(n);
   return n.toFixed(1);
 }
+function botFieldNumber(row, keys){
+  if(!row) return 0;
+  const map={};
+  Object.keys(row).forEach(k=>map[botNormalize(k).replace(/\s+/g,'')]=row[k]);
+  for(const key of keys){
+    if(row[key]!==undefined && row[key]!==null && row[key]!=="") return botNum(row[key]);
+    const nk=botNormalize(key).replace(/\s+/g,'');
+    if(map[nk]!==undefined && map[nk]!==null && map[nk]!=="") return botNum(map[nk]);
+  }
+  return 0;
+}
+
+function renderEmployeeTTV(name,row){
+  if(!row) return `<b>📋 TTV ${botEscape(name)}</b><br>Không tìm thấy nhân viên.`;
+
+  // TKM
+  const dmm=botFieldNumber(row,["dmm","DMM"]);
+  const dds=botFieldNumber(row,["dds","DDS"]);
+  const totalTKM=dmm+dds;
+
+  // SC chi tiết
+  const tsc3h=botFieldNumber(row,["tsc3h","TSC3H","TSC 3h"]);
+  const tschot=botFieldNumber(row,["tschot","TSC HOT","TSC_HOT"]);
+  const tscvip=botFieldNumber(row,["tscvip","TSC VIP","TSC_VIP"]);
+  const totalSC=tsc3h+tschot+tscvip;
+  const totalSCHT24=botFieldNumber(row,["tscht","TSCHT","Tổng SC HT 24h"]);
+  const totalSCSOC=botFieldNumber(row,["tscsoc","TSSOC","Tổng SC SOC"]);
+  const totalSCFull=totalSC+totalSCHT24+totalSCSOC;
+  const totalTask=totalTKM+totalSCFull;
+
+  let out=`<div class="bot-ttv">`;
+  out+=`<div class="bot-ttv-title">📋 <b>TTV ${botEscape(name)}</b></div>`;
+  out+=`<div class="bot-ttv-grid">`;
+  out+=`<div class="bot-ttv-card"><span>📦 Tổng TKM</span><b>${fmt(totalTKM)}</b></div>`;
+  out+=`<div class="bot-ttv-card"><span>🟩 Tổng TK mới</span><b>${fmt(dmm)}</b></div>`;
+  out+=`<div class="bot-ttv-card"><span>🟧 Tổng TK có sẵn</span><b>${fmt(dds)}</b></div>`;
+  out+=`<div class="bot-ttv-card bot-ttv-danger"><span>🚨 Tổng sự cố Full</span><b>${fmt(totalSCFull)}</b></div>`;
+  out+=`<div class="bot-ttv-card"><span>🎯 Tổng SC</span><b>${fmt(totalSC)}</b></div>`;
+  out+=`<div class="bot-ttv-card"><span>🕒 Tổng SC HT 24h</span><b>${fmt(totalSCHT24)}</b></div>`;
+  out+=`<div class="bot-ttv-card"><span>🛡️ Tổng SC SOC</span><b>${fmt(totalSCSOC)}</b></div>`;
+  out+=`</div>`;
+  out+=`<div class="bot-ttv-total"><span class="bot-ttv-total-label">📋 <b>Tổng tác vụ (TTV)</b></span><b>${fmt(totalTask)}</b></div>`;
+  out+=`</div>`;
+  return out;
+}
+
 function renderEmployeeDetail(name,cur,old){
   if(!cur) return `<b>👤 ${botEscape(name)}</b><br>Không tìm thấy nhân viên.`;
+
   const m=botRowMetrics(cur,old);
-  const badItems=m.items.filter(k=>k.currentState==="bad").sort((a,b)=>Math.abs(b.currentGap)-Math.abs(a.currentGap));
+
+  // Luôn hiển thị đủ cả 20 KPI theo đúng thứ tự định nghĩa.
+  const itemMap=new Map(m.items.map(k=>[k.name,k]));
+
   let out=`<b>👤 KPI ${botEscape(name)}</b><br>`;
-  out+=`<span class="${badItems.length?'bot-bad':'bot-good'}"><b>${badItems.length?`Tồi ${badItems.length}/20 KPI`:`Tốt 20/20 KPI`}</b></span>`;
-  if(!badItems.length){out+=`<div class="bot-note">Hiện tại không có KPI tồi hơn Target.</div>`;return out;}
-  out+=`<div class="bot-note">Dùng Tổng + Thực hiện để tính cách cải thiện. Target 100%: có trường hợp không đạt thì tỷ lệ chỉ tăng dần khi có thêm trường hợp đạt; tiền phạt không thể về 0 trong tháng.</div>`;
-  badItems.forEach(k=>{
-    const prev=(old&&old[k.val]!==undefined&&old[k.val]!==null)?botNum(old[k.val]):null;
-    out+=botEmployeeKpiLine(k,cur,k.target,k.type,prev);
+  out+=`<div class="bot-note">Đánh giá đầy đủ <b>20/20 KPI</b> gồm cả KPI <span class="bot-good"><b>đạt/tốt</b></span> và KPI <span class="bot-bad"><b>kém</b></span>.</div>`;
+  out+=`<div class="bot-note">Tổng kết: <span class="bot-good"><b>${m.goodCount} KPI tốt/đạt</b></span> | <span class="bot-bad"><b>${m.badCount} KPI kém</b></span>.</div>`;
+
+  BOT_KPI_DEFS.forEach(([kpiName,val,target,type],index)=>{
+    const k=itemMap.get(kpiName);
+
+    // Nếu KPI chưa có dữ liệu vẫn hiện trong danh sách để luôn đủ 20 KPI.
+    if(!k){
+      out+=`<div class="bot-kpi-line"><b>${index+1}. ${botEscape(kpiName)}:</b> <span class="bot-note">chưa có dữ liệu</span></div>`;
+      return;
+    }
+
+    const prev=(old&&old[k.val]!==undefined&&old[k.val]!==null)
+      ? botNum(old[k.val])
+      : null;
+
+    if(k.currentState==="bad"){
+      // KPI kém giữ nguyên phần tính số lượng cần làm để đạt Target.
+      out+=`<div class="bot-kpi-full bad">`;
+      out+=`<div class="bot-kpi-full-title bot-bad"><b>❌ ${index+1}. ${botEscape(k.name)} — KÉM</b></div>`;
+      out+=botEmployeeKpiLine(k,cur,target,type,prev);
+      out+=`</div>`;
+      return;
+    }
+
+    // KPI tốt/đạt: hiển thị đầy đủ tỷ lệ hiện tại, Target và so sánh tháng trước.
+    const info=botCountInfo(cur,k.name);
+    const actual=botCurrentPctFromCounts(cur,k.name,k.current);
+    const currentText=info
+      ? `${fmt(info.done)}/${fmt(info.total)} = ${fmt(actual)}%`
+      : `${fmt(actual)}%`;
+
+    const gap=type==="down" ? actual-target : target-actual;
+
+    let statusText="";
+    if(Math.abs(gap)<0.0001){
+      statusText="đạt đúng Target";
+    }else{
+      statusText=`tốt hơn Target ${fmt(Math.abs(gap))}%`;
+    }
+
+    let prevText="";
+    if(prev!==null){
+      const delta=type==="down" ? prev-actual : actual-prev;
+      prevText=Math.abs(delta)<0.0001
+        ? `; tháng trước ${fmt(prev)}% → không đổi`
+        : `; tháng trước ${fmt(prev)}% → ${delta>0?'tốt hơn':'tồi hơn'} ${fmt(Math.abs(delta))}%`;
+    }
+
+    out+=`<div class="bot-kpi-full good">`;
+    out+=`<div class="bot-kpi-full-title bot-good"><b>✅ ${index+1}. ${botEscape(k.name)} — TỐT/ĐẠT</b></div>`;
+    out+=`<div class="bot-kpi-line"><b>${botEscape(k.name)}:</b> ${currentText} / ${fmtKpiValue(target,k.name,true)}% → <span class="bot-good">${statusText}</span>${prevText}</div>`;
+    out+=`</div>`;
   });
+
   return out;
 }
 
@@ -4359,7 +4947,17 @@ async function answerQHOverdue(question){
 }
 
 async function askKpiBot(question){
-  addBotMessage(botEscape(question),"user");
+  const cleanQuestion=String(question||"").trim();
+  const helpCommand=/^(help|hướng dẫn|huong dan|\?)$/i.test(cleanQuestion);
+
+  addBotMessage(botEscape(cleanQuestion),"user");
+
+  // Chat "help" mở hướng dẫn ngay, không cần tải dữ liệu KPI.
+  if(helpCommand){
+    showKpiHelp();
+    return;
+  }
+
   addBotMessage("Đang phân tích 20 KPI, Target và dữ liệu tháng trước...");
 
   try{
@@ -4388,6 +4986,29 @@ async function askKpiBot(question){
     }
 
     const q=question.toLowerCase();
+
+    // TTV <Tên nhân viên> → tổng tác vụ, chỉ hiển thị số liệu, không hiện công thức.
+    const ttvMatch=question.match(/^ttv\s+(.+)$/i);
+    if(ttvMatch){
+      const name=ttvMatch[1].trim();
+      const employee=d.currentRows.find(r=>botNormalize(botLabel(r))===botNormalize(name));
+      if(employee){
+        addBotMessage(renderEmployeeTTV(botLabel(employee),employee));
+        return;
+      }
+
+      const matches=d.currentRows.filter(r=>botNormalize(botLabel(r)).includes(botNormalize(name))).slice(0,10);
+      if(matches.length){
+        let out=`<b>👤 Tìm thấy ${matches.length} nhân viên phù hợp:</b><br>`;
+        matches.forEach((r,i)=>{
+          out+=`<button class="bot-inline-btn" onclick="askKpiBot('TTV ${botEscape(botLabel(r))}')">${i+1}. ${botEscape(botLabel(r))}</button>`;
+        });
+        addBotMessage(out);
+      }else{
+        addBotMessage(`Không tìm thấy nhân viên <b>${botEscape(name)}</b>.`);
+      }
+      return;
+    }
 
     // KPI <Tên huyện> hoặc KPI <Tên nhân viên>
     const entityMatch=question.match(/^kpi\s+(.+)$/i);
@@ -4671,7 +5292,7 @@ async function askKpiBot(question){
       "• Huyện tồi nhất<br>"+
       "• Top 10 nhân viên kém<br>"+
       "• Top 10 nhân viên tốt<br>"+
-      "• So sánh tổng quan"
+      "• So sánh tổng quan<br>• KPI + tên nhân viên → xem đủ 20 KPI tốt và kém<br>• TTV + tên nhân viên → xem tổng tác vụ<br>• Gõ <b>help</b> hoặc nhấn <b>Help</b> để xem toàn bộ hướng dẫn"
     );
 
   }catch(err){
@@ -4712,7 +5333,9 @@ function sendKpiBot(){
       <div><b>📅 T-1 độc lập</b><br>Đánh giá độc lập 20 KPI của tháng trước.</div>
       <div><b>🏢 Từng huyện</b><br>Đánh giá riêng từng huyện theo 20 KPI và Target.</div>
       <div><b>🔎 KPI Pleiku</b><br>Tra cứu chi tiết KPI của một huyện.</div>
-      <div><b>👤 KPI Nguyễn Văn Chiến</b><br>Tra cứu chi tiết KPI của một nhân viên.</div>
+      <div><b>👤 KPI Nguyễn Văn Chiến</b><br>Tra cứu đầy đủ 20 KPI tốt/đạt và KPI kém của một nhân viên.</div>
+      <div><b>📋 TTV Nguyễn Văn Chiến</b><br>Tra cứu tổng tác vụ: Tổng TKM, TK mới, TK có sẵn và các nhóm tổng sự cố.</div>
+      <div><b>❔ Chat help</b><br>Gõ <code>help</code> hoặc nhấn nút <b>Help</b> để mở lại hướng dẫn này.</div>
       <div><b>🏠 Gia Lai chuyên sâu</b><br>Phân tích Gia Lai, KPI tồi và nhân viên ảnh hưởng nhiều nhất.</div>
       <div><b>🎯 20 KPI</b><br>So sánh giá trị hiện tại, Target và tháng trước cho từng chỉ tiêu.</div>
       <div class="bot-note">SC Lặp dùng Target riêng 8.0% và càng thấp càng tốt.</div>
@@ -4852,6 +5475,29 @@ document.addEventListener("DOMContentLoaded",()=>{
     requestAnimationFrame(()=>{wrap.scrollTop=wrap.scrollHeight});
   });
   observer.observe(wrap,{childList:true,subtree:true});
+})();
+</script>
+
+<script>
+window.addEventListener('resize',()=>requestAnimationFrame(updateKpiHeaderRedLine));
+window.addEventListener('orientationchange',()=>setTimeout(updateKpiHeaderRedLine,120));
+</script>
+
+
+<script id="mobile-clear-hidden-kpi-bad-filter">
+(function(){
+  function resetBadFilterOnMobile(){
+    if(window.innerWidth > 700) return;
+    const cb=document.getElementById("badCheck");
+    if(cb && cb.checked){
+      cb.checked=false;
+      if(typeof onlyBad==="function") onlyBad(false);
+    }
+  }
+
+  window.addEventListener("resize", resetBadFilterOnMobile, {passive:true});
+  window.addEventListener("load", resetBadFilterOnMobile);
+  setTimeout(resetBadFilterOnMobile, 800);
 })();
 </script>
 
