@@ -1,12 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style id="firstPaintLoading">
+html{background:#0f0f0f!important;}
+body{background:#0f0f0f!important;margin:0!important;}
+#pageLoader{
+  display:flex!important;
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147483647!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex-direction:column!important;
+  background:#0f0f0f!important;
+  background-color:#0f0f0f!important;
+  background-image:none!important;
+  color:#fff!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+#pageLoader .loader-spinner{
+  border:4px solid rgba(255,255,255,.25)!important;
+  border-top-color:#fff!important;
+  background:transparent!important;
+}
+#pageLoaderText{color:#fff!important;}
+#pageLoader.hidden{display:none!important;}
+</style>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>THU HỒI</title>
+<title>THU HỒI • YouTube Red</title>
 
 <style>
 *{box-sizing:border-box}
@@ -476,10 +503,603 @@ h3{
     border-radius:14px;
   }
 }
+
+/* ===== THEME YOUTUBE: TRẮNG / ĐEN / ĐỎ ===== */
+:root{--yt-red:#ff0033;--yt-red-dark:#d9002b;--yt-black:#0f0f0f;--yt-white:#fff;--yt-bg:#f7f7f7;--yt-line:#e5e5e5}
+body{background:var(--yt-bg)!important;color:#111!important}
+.header{background:var(--yt-black)!important;border-bottom:3px solid var(--yt-red)!important;box-shadow:0 2px 10px rgba(0,0,0,.18)!important;padding:7px 8px 8px!important}
+.header h2,.header h3{color:#fff!important}.header-top{min-height:32px}
+.header input,input{background:#fff!important;border:1px solid #333!important;color:#111!important;border-radius:9px!important;padding:7px 10px!important}
+.header input:focus,input:focus{outline:none!important;border-color:var(--yt-red)!important;box-shadow:0 0 0 2px rgba(255,0,51,.14)!important}
+#logtimeTH{color:#c7c7c7!important}
+#marqueeBox{background:#1f1f1f!important;border:1px solid rgba(255,0,51,.65)!important;border-radius:8px!important}
+#marqueeText{color:#fff!important}
+body>h3{color:#111!important;font-size:14px!important;margin:12px 2px 7px!important}
+.table-wrap{background:#fff!important;border:1px solid var(--yt-line)!important;border-radius:10px!important;box-shadow:0 2px 8px rgba(0,0,0,.07)!important}
+.table-custom{background:#fff!important}.table-custom th{background:var(--yt-black)!important;color:#fff!important;border-color:#2c2c2c!important;padding:8px 6px!important}
+.table-custom td{background:#fff!important;color:#171717!important;border-color:#ededed!important;padding:7px 6px!important}
+.table-custom tr:hover td{background:#fff6f8!important}
+.card{background:#fff!important;color:#151515!important;border:1px solid var(--yt-line)!important;border-left:4px solid #bdbdbd!important;border-radius:10px!important;box-shadow:0 2px 7px rgba(0,0,0,.06)!important;padding:9px!important}
+.card.top{background:#fff!important;border-left-color:#222!important}.card.worst{background:#fff!important;border-left-color:var(--yt-red)!important}.card.worst b{color:var(--yt-red)!important}
+.rate-good{color:#111!important}.rate-bad,.money{color:var(--yt-red)!important}.ok{color:#111!important}
+button,.reload-btn{border-radius:9px!important}
+button:not(#botClose):not(#botMax){transition:transform .15s ease,background .15s ease,box-shadow .15s ease}
+button:not(#botClose):not(#botMax):hover{transform:translateY(-1px)}
+/* BOT */
+#botPanel{background:#fff!important;border:1px solid #2b2b2b!important;border-top:3px solid var(--yt-red)!important;box-shadow:0 12px 36px rgba(0,0,0,.28)!important;border-radius:14px!important;overflow:hidden!important}
+#botHeader{background:var(--yt-black)!important;color:#fff!important;border-bottom:1px solid #2b2b2b!important}#botHeader *{color:#fff!important}
+#botMessages{background:#fff!important;color:#111!important}
+.bot-msg,.bot-message{border-radius:11px!important}
+.bot-msg.bot,.bot-message.bot{background:#f3f3f3!important;color:#111!important;border:1px solid #e4e4e4!important}
+.bot-msg.user,.bot-message.user{background:var(--yt-black)!important;color:#fff!important}
+#botInput{background:#fff!important;color:#111!important;border:1px solid #d0d0d0!important;border-radius:22px!important}
+#botInput:focus{border-color:var(--yt-red)!important}
+#botSend,#botPanel button[type="submit"],.bot-send,.bot-action{background:var(--yt-red)!important;color:#fff!important;border:none!important;border-radius:22px!important;font-weight:700!important}
+#botSend:hover,#botPanel button[type="submit"]:hover,.bot-send:hover,.bot-action:hover{background:var(--yt-red-dark)!important}
+#botMessages button,.bot-actions button,.bot-suggestions button{background:#fff!important;color:#111!important;border:1px solid #d5d5d5!important;border-radius:18px!important}
+#botMessages button:hover,.bot-actions button:hover,.bot-suggestions button:hover{border-color:var(--yt-red)!important;color:var(--yt-red)!important;background:#fff6f8!important}
+#botToggle,.bot-toggle,#openBot{background:var(--yt-red)!important;color:#fff!important;border:none!important;box-shadow:0 5px 16px rgba(255,0,51,.28)!important}
+#botMax,#botClose{background:transparent!important;color:#fff!important}#botMax:hover,#botClose:hover{background:rgba(255,255,255,.12)!important}
+.bot-status,.status-bad,.warning{color:var(--yt-red)!important}
+@media(max-width:600px){
+ body{padding:5px!important;font-size:12px!important}.header{padding:5px 6px 7px!important}.header h2{font-size:16px!important;margin:4px 0!important}
+ body>h3{font-size:13px!important;margin:10px 1px 6px!important}.table-custom{font-size:12px!important}.table-custom th,.table-custom td{padding:6px 5px!important}
+ .card{font-size:12px!important;padding:8px!important;margin-bottom:6px!important}#botPanel{border-radius:12px!important}#botMessages{font-size:12px!important}
+ #botInput{font-size:12px!important;padding:8px 10px!important}#botSend,.bot-send{font-size:12px!important;padding:7px 11px!important}
+}
+
+
+/* =========================================================
+   BOT THEME YOUTUBE — FIX GHI ĐÈ TOÀN BỘ
+========================================================= */
+#botPanel{
+  background:#ffffff !important;
+  color:#111111 !important;
+  border:1px solid #2a2a2a !important;
+  border-top:4px solid #ff0033 !important;
+  border-radius:14px !important;
+  box-shadow:0 14px 40px rgba(0,0,0,.35) !important;
+}
+#botPanel.open{background:#ffffff !important}
+
+#botPanel > div:first-child,
+#botHeader,
+.bot-header{
+  background:#0f0f0f !important;
+  color:#ffffff !important;
+  border-bottom:1px solid #333333 !important;
+}
+#botHeader *,
+.bot-header *{
+  color:#ffffff !important;
+}
+
+#botMessages{
+  background:#ffffff !important;
+  color:#111111 !important;
+}
+#botMessages .bot-msg.bot{
+  background:#f2f2f2 !important;
+  color:#111111 !important;
+  border:1px solid #e0e0e0 !important;
+}
+#botMessages .bot-msg.bot *{
+  color:#111111 !important;
+}
+#botMessages .bot-msg.user{
+  background:#ff0033 !important;
+  color:#ffffff !important;
+  border:1px solid #ff0033 !important;
+}
+#botMessages .bot-msg.user *{
+  color:#ffffff !important;
+}
+
+.bot-actions{
+  background:transparent !important;
+}
+.bot-actions button{
+  background:#ffffff !important;
+  color:#111111 !important;
+  border:1px solid #d6d6d6 !important;
+  border-radius:18px !important;
+  box-shadow:none !important;
+}
+.bot-actions button:hover{
+  background:#fff5f7 !important;
+  color:#ff0033 !important;
+  border-color:#ff0033 !important;
+}
+
+#botInput{
+  background:#ffffff !important;
+  color:#111111 !important;
+  border:1px solid #cfcfcf !important;
+  border-radius:22px !important;
+}
+#botInput::placeholder{
+  color:#777777 !important;
+}
+#botInput:focus{
+  border-color:#ff0033 !important;
+  box-shadow:0 0 0 2px rgba(255,0,51,.12) !important;
+}
+
+#botSend{
+  background:#ff0033 !important;
+  color:#ffffff !important;
+  border:0 !important;
+  border-radius:22px !important;
+  box-shadow:none !important;
+}
+#botSend:hover{
+  background:#d9002b !important;
+}
+
+#botMax,#botClose{
+  background:transparent !important;
+  color:#ffffff !important;
+  border:0 !important;
+}
+#botMax:hover,#botClose:hover{
+  background:#2b2b2b !important;
+  color:#ff0033 !important;
+}
+
+#botToggle,
+#openBot,
+.bot-toggle{
+  background:#ff0033 !important;
+  color:#ffffff !important;
+  border:0 !important;
+  border-radius:50% !important;
+}
+
+@media(max-width:600px){
+  #botPanel{
+    border-radius:12px !important;
+    border-top-width:3px !important;
+  }
+  #botMessages{
+    background:#ffffff !important;
+  }
+  #botMessages .bot-msg{
+    font-size:12px !important;
+  }
+  .bot-actions button{
+    font-size:11px !important;
+    padding:6px 9px !important;
+  }
+}
+
+
+/* ===== BOT YOUTUBE FINAL OVERRIDE ===== */
+#botPanel{background:#fff!important;color:#111!important;border:1px solid #222!important;border-top:3px solid #ff0033!important}
+#botPanel .bot-header{background:#0f0f0f!important;background-image:none!important;color:#fff!important}
+#botPanel .bot-title,#botPanel .bot-subtitle{color:#fff!important}
+#botMessages{background:#fff!important}
+#botMessages .bot-msg.bot{background:#f2f2f2!important;color:#111!important;border:1px solid #ddd!important}
+#botMessages .bot-msg.bot b,#botMessages .bot-msg.bot span{color:inherit!important}
+#botMessages .bot-msg.user{background:#ff0033!important;color:#fff!important}
+#botPanel .bot-suggestions{background:#fff!important;border-top:1px solid #eee!important}
+#botPanel .bot-suggestions button{background:#fff!important;color:#111!important;border:1px solid #d5d5d5!important}
+#botPanel .bot-input{background:#fff!important;border-top:1px solid #eee!important}
+#botPanel #botInput{background:#fff!important;color:#111!important;border:1px solid #ccc!important}
+#botPanel #botSend{background:#ff0033!important;color:#fff!important;border:none!important}
+
+
+/* =========================================================
+   FIX 3 — BIỂU TƯỢNG BOT + LOADING ĐỒNG BỘ ĐEN / TRẮNG / ĐỎ
+========================================================= */
+
+/* Nút mở BOT: bỏ hoàn toàn nền xanh cũ */
+#botToggle,
+#openBot,
+.bot-toggle,
+button.bot-toggle,
+[id*="botToggle"],
+[class*="bot-toggle"]{
+  background:#ff0033 !important;
+  background-image:none !important;
+  color:#ffffff !important;
+  border:0 !important;
+  box-shadow:0 6px 18px rgba(255,0,51,.30) !important;
+}
+
+/* Vòng/nền bên trong biểu tượng BOT nếu CSS cũ tạo pseudo-element */
+#botToggle::before,
+#botToggle::after,
+#openBot::before,
+#openBot::after,
+.bot-toggle::before,
+.bot-toggle::after{
+  background:#ff0033 !important;
+  background-image:none !important;
+}
+
+/* Nếu icon BOT nằm trong span/div/img */
+#botToggle span,
+#openBot span,
+.bot-toggle span{
+  color:#ffffff !important;
+  background:transparent !important;
+}
+
+/* Màn hình loading trang */
+#pageLoader,
+.page-loader,
+#loadingTH,
+.loadingTH,
+[class*="page-loader"],
+[class*="pageLoader"]{
+  background:#ffffff !important;
+  color:#111111 !important;
+}
+
+/* Spinner: chuyển toàn bộ điểm nhấn từ xanh sang đỏ */
+#pageLoader .spinner,
+.page-loader .spinner,
+#loadingTH .spinner,
+[class*="loader"] .spinner{
+  border-color:#e5e5e5 !important;
+  border-top-color:#ff0033 !important;
+  border-right-color:#ff0033 !important;
+}
+
+/* Các vòng loading dùng border riêng */
+.spinner,
+.loader,
+.loading-spinner,
+[class*="spinner"]{
+  --loader-color:#ff0033 !important;
+}
+
+/* Thanh/progress loading */
+.progress,
+.loading-bar,
+[class*="progress"]{
+  accent-color:#ff0033 !important;
+}
+.progress::before,
+.loading-bar::before,
+[class*="progress"]::before{
+  background:#ff0033 !important;
+}
+
+/* Bỏ nền xanh cũ nếu loader có gradient */
+#pageLoader *,
+.page-loader *{
+  background-image:none !important;
+}
+
+/* Chỉ giữ spinner có nền trong suốt */
+#pageLoader .spinner,
+.page-loader .spinner,
+#loadingTH .spinner{
+  background:transparent !important;
+}
+
+/* Mobile giữ gọn */
+@media(max-width:600px){
+  #botToggle,
+  #openBot,
+  .bot-toggle{
+    box-shadow:0 5px 14px rgba(255,0,51,.28) !important;
+  }
+}
+
+
+/* =========================================================
+   FINAL FIX — ĐÚNG SELECTOR THỰC TẾ
+========================================================= */
+
+/* BIỂU TƯỢNG MỞ BOT: file gốc dùng #botButton */
+#botButton{
+  background:#ff0033 !important;
+  background-image:none !important;
+  color:#ffffff !important;
+  border:0 !important;
+  box-shadow:0 6px 18px rgba(255,0,51,.32) !important;
+}
+
+#botButton:hover,
+#botButton:active{
+  background:#d9002b !important;
+  transform:translateY(-1px);
+}
+
+/* LOADING: file gốc dùng #pageLoader + .loader-spinner */
+#pageLoader{
+  background:#ffffff !important;
+  color:#111111 !important;
+}
+
+#pageLoaderText{
+  color:#111111 !important;
+}
+
+/* Vòng xoay: thay xanh #1976d2 bằng đỏ */
+#pageLoader .loader-spinner,
+.loader-spinner{
+  border-color:#e5e5e5 !important;
+  border-top-color:#ff0033 !important;
+}
+
+/* Khi loadingTH còn hiển thị */
+#loadingTH{
+  background:#ffffff !important;
+  color:#111111 !important;
+}
+
+
+/* ===== LOADING: NỀN ĐEN + VÒNG XOAY TRẮNG + CHỮ TRẮNG ===== */
+#pageLoader{
+  background:#0f0f0f !important;
+  color:#ffffff !important;
+}
+
+#pageLoaderText{
+  color:#ffffff !important;
+}
+
+#pageLoader .loader-spinner,
+.loader-spinner{
+  border-color:rgba(255,255,255,.22) !important;
+  border-top-color:#ffffff !important;
+}
+
+#loadingTH{
+  background:#0f0f0f !important;
+  color:#ffffff !important;
+}
+
 </style>
+
+<style id="criticalLoadingStyle">
+html,body{
+  margin:0 !important;
+  background:#0f0f0f !important;
+}
+#pageLoader{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:999999 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  background:#0f0f0f !important;
+  color:#fff !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  transition:none !important;
+}
+#pageLoaderText{
+  color:#fff !important;
+}
+#pageLoader .loader-spinner,
+.loader-spinner{
+  border-color:rgba(255,255,255,.22) !important;
+  border-top-color:#fff !important;
+}
+body.page-loading{
+  overflow:hidden !important;
+  background:#0f0f0f !important;
+}
+
+/* =========================================================
+   FIX LOADING CUỐI — KHÔNG NHÁY, KHÔNG XOAY VÔ HẠN
+========================================================= */
+
+/* Chỉ hiện loader khi body đang loading */
+body.page-loading #pageLoader:not(.hidden){
+  display:flex !important;
+}
+
+/* Khi dữ liệu tải xong, class hidden phải thắng tuyệt đối */
+#pageLoader.hidden{
+  display:none !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+}
+
+/* Trong lúc tải: nền đen toàn màn hình */
+body.page-loading,
+body.page-loading #pageLoader{
+  background:#0f0f0f !important;
+  color:#ffffff !important;
+}
+
+/* Sau khi tải xong: trả về nền giao diện chính */
+body:not(.page-loading){
+  background:#f7f7f7 !important;
+}
+
+/* Spinner trắng */
+body.page-loading #pageLoader .loader-spinner,
+body.page-loading .loader-spinner{
+  border-color:rgba(255,255,255,.22) !important;
+  border-top-color:#ffffff !important;
+}
+
+/* Chữ loading trắng */
+body.page-loading #pageLoaderText{
+  color:#ffffff !important;
+}
+
+
+/* ===== LOADING ỔN ĐỊNH: NỀN ĐEN + VÒNG XOAY TRẮNG + CHỮ TRẮNG ===== */
+html{
+  background:#0f0f0f !important;
+}
+
+body.page-loading{
+  background:#0f0f0f !important;
+  overflow:hidden !important;
+}
+
+/* Chỉ hiện khi chưa hidden */
+body.page-loading #pageLoader:not(.hidden){
+  display:flex !important;
+  position:fixed !important;
+  inset:0 !important;
+  z-index:999999 !important;
+  align-items:center !important;
+  justify-content:center !important;
+  flex-direction:column !important;
+  background:#0f0f0f !important;
+  color:#ffffff !important;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+
+/* Tải xong phải ẩn tuyệt đối */
+#pageLoader.hidden{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+}
+
+body.page-loading #pageLoader .loader-spinner{
+  width:38px !important;
+  height:38px !important;
+  border:4px solid rgba(255,255,255,.22) !important;
+  border-top-color:#ffffff !important;
+  border-radius:50% !important;
+}
+
+body.page-loading #pageLoaderText{
+  color:#ffffff !important;
+}
+
+body:not(.page-loading){
+  background:#f7f7f7 !important;
+}
+
+
+/* =========================================================
+   LOADING FIX CHẮC CHẮN — GHI ĐÈ CẢ GRADIENT/XANH/ĐỎ CŨ
+========================================================= */
+html,
+html body,
+body.page-loading{
+  background:#0f0f0f !important;
+  background-image:none !important;
+}
+
+/* Loader thật: nền đen tuyệt đối */
+#pageLoader,
+body.page-loading #pageLoader,
+body.page-loading #pageLoader:not(.hidden){
+  background:#0f0f0f !important;
+  background-image:none !important;
+  background-color:#0f0f0f !important;
+  color:#ffffff !important;
+}
+
+/* Chữ loading */
+#pageLoaderText,
+#pageLoader #pageLoaderText{
+  color:#ffffff !important;
+}
+
+/* Vòng xoay thật */
+#pageLoader .loader-spinner,
+.loader-spinner{
+  border:4px solid rgba(255,255,255,.25) !important;
+  border-top:4px solid #ffffff !important;
+  border-right-color:rgba(255,255,255,.25) !important;
+  border-bottom-color:rgba(255,255,255,.25) !important;
+  border-left-color:rgba(255,255,255,.25) !important;
+  background:transparent !important;
+}
+
+/* Nếu spinner cũ dùng màu accent/box-shadow */
+#pageLoader .loader-spinner::before,
+#pageLoader .loader-spinner::after{
+  border-color:#ffffff !important;
+  background:#ffffff !important;
+  box-shadow:none !important;
+}
+
+/* Không để transition màu gây flash đỏ/trắng */
+#pageLoader,
+#pageLoader *,
+.loader-spinner{
+  transition:none !important;
+}
+
+
+/* =========================================================
+   LOADING FINAL CLEAN — CHỈ 1 CƠ CHẾ DUY NHẤT
+========================================================= */
+html,
+body,
+body.page-loading{
+  background:#0f0f0f !important;
+}
+
+body.page-loading{
+  overflow:hidden !important;
+}
+
+/* Loader đang hiện */
+#pageLoader:not(.hidden){
+  display:flex !important;
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483647 !important;
+  align-items:center !important;
+  justify-content:center !important;
+  flex-direction:column !important;
+  background:#0f0f0f !important;
+  background-color:#0f0f0f !important;
+  background-image:none !important;
+  color:#ffffff !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  backdrop-filter:none !important;
+}
+
+/* Vòng xoay trắng */
+#pageLoader .loader-spinner{
+  width:38px !important;
+  height:38px !important;
+  border:4px solid rgba(255,255,255,.22) !important;
+  border-top-color:#ffffff !important;
+  border-radius:50% !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+/* Chữ trắng */
+#pageLoaderText{
+  color:#ffffff !important;
+}
+
+/* Tải xong: ẩn hoàn toàn */
+#pageLoader.hidden{
+  display:none !important;
+}
+
+/* Sau loading trả nền trang chính */
+body:not(.page-loading){
+  background:#f3f6fa !important;
+}
+
+</style>
+
+
+<script id="criticalLoadingScript">
+(function(){
+  document.documentElement.style.background="#0f0f0f";
+})();
+</script>
+
 </head>
 
-<body>
+<body class="page-loading" style="background:#0f0f0f!important">
+
 
 <div id="pageLoader">
   <div class="loader-spinner"></div>
@@ -555,7 +1175,13 @@ let dataHuyenGlobal = [];
 
 function hidePageLoader(){
   const loader = document.getElementById("pageLoader");
-  if(loader) loader.classList.add("hidden");
+  if(loader){
+    loader.classList.add("hidden");
+    loader.style.display = "none";
+  }
+  document.body.classList.remove("page-loading");
+  document.body.style.background = "#f3f6fa";
+  document.documentElement.style.background = "#f3f6fa";
 }
 
 function renderHuyen(data){
@@ -1095,10 +1721,10 @@ loadThuHoi();
         • <b>CNCT</b> — tổng quan CNCT<br>
         • <b>tỷ lệ TTH</b> — xếp hạng TTH<br>
         • <b>TTH Hoài Nhơn</b> — phân tích TTH<br>
-        • <b>TTH tồi nhất</b> — TTH cần tập trung<br>
+        • <b>TTH tồi nhất</b> — đánh giá theo tiền phạt cao nhất<br>
         • <b>tỷ lệ nhân viên</b> — xếp hạng nhân viên<br>
         • <b>NV tên</b> — phân tích nhân viên<br>
-        • <b>nhân viên tồi nhất</b> — NV cần chú ý<br>
+        • <b>nhân viên tồi nhất</b> — đánh giá theo tiền phạt cao nhất<br>
         • <b>phạt cao nhất</b> — tiền phạt<br>
         • <b>mesh</b> — thống kê Mesh<br><br>
         <b>📦 Tra cứu danh sách Lấy/Bỏ:</b><br>
@@ -1185,7 +1811,7 @@ loadThuHoi();
       const phat=T.reduce((s,r)=>s+Number(r.tong_phat||0),0);
       const con=Math.max(0,can-da);
       const rt=rate(can,da);
-      const bad=[...T].sort((a,b)=>a.rate-b.rate).slice(0,3);
+      const bad=[...T].sort((a,b)=>Number(b.tong_phat||0)-Number(a.tong_phat||0) || a.rate-b.rate).slice(0,3);
       const good=[...T].sort((a,b)=>b.rate-a.rate).slice(0,3);
 
       return {
@@ -1198,12 +1824,12 @@ loadThuHoi();
           • Tiền phạt: <b>${money(phat)} đ</b><br>
           • TTH: <b>${T.length}</b><br><br>
           <b>🔴 TTH cần tập trung</b><br>
-          ${bad.map((r,i)=>`${i+1}. <b>${esc(r.huyen)}</b> — <span class="rate-bad">${(r.rate*100).toFixed(0)}%</span> — tồn ${r.con_lai}`).join("<br>")}
+          ${bad.map((r,i)=>`${i+1}. <b>${esc(r.huyen)}</b> — phạt <b>${money(r.tong_phat)} đ</b> — tỷ lệ ${(r.rate*100).toFixed(0)}% — tồn ${r.con_lai}`).join("<br>")}
           <br><br>
           <b>🟢 TTH tốt nhất</b><br>
           ${good.map((r,i)=>`${i+1}. <b>${esc(r.huyen)}</b> — <span class="rate-good">${(r.rate*100).toFixed(0)}%</span>`).join("<br>")}
           <br><br>
-          <b>🎯 Đề xuất:</b> ưu tiên TTH có tỷ lệ thấp và số tồn lớn; sau đó đi sâu xuống nhân viên và account.
+          <b>🎯 Đề xuất:</b> ưu tiên xử lý các TTH có <b>tiền phạt cao</b>; sau đó xem tỷ lệ, số tồn, nhân viên và account để xác định nguyên nhân.
         `,
         actions:[
           {label:"🔴 TTH tồi nhất",command:"TTH tồi nhất"},
@@ -1244,7 +1870,7 @@ loadThuHoi();
       }
 
       const r=m[0];
-      const nv=N.filter(n=>norm(n.huyen)===norm(r.huyen)).sort((a,b)=>a.rate-b.rate);
+      const nv=N.filter(n=>norm(n.huyen)===norm(r.huyen)).sort((a,b)=>Number(b.tong_phat||0)-Number(a.tong_phat||0) || a.rate-b.rate);
 
       return {
         text:`
@@ -1255,7 +1881,7 @@ loadThuHoi();
           • Tỷ lệ: <b class="${r.rate<.75?'rate-bad':'rate-good'}">${(r.rate*100).toFixed(0)}%</b><br>
           • Tiền phạt: <b>${money(r.tong_phat)} đ</b><br><br>
           <b>🔴 Nhân viên cần chú ý</b><br>
-          ${nv.slice(0,5).map((n,i)=>`${i+1}. <b>${esc(n.nhan_vien)}</b> — ${(n.rate*100).toFixed(0)}% — tồn ${n.con_lai}`).join("<br>")}
+          ${nv.slice(0,5).map((n,i)=>`${i+1}. <b>${esc(n.nhan_vien)}</b> — phạt <b>${money(n.tong_phat)} đ</b> — ${(n.rate*100).toFixed(0)}% — tồn ${n.con_lai}`).join("<br>")}
         `,
         actions:[
           {label:"👤 NV tồi nhất",command:"nhân viên tồi nhất"},
@@ -1318,16 +1944,17 @@ loadThuHoi();
 
     /* ===== TTH TỒI ===== */
     if(q.includes("tth toi")||q.includes("tth kem")||q.includes("tth thap")){
-      const r=[...T].sort((a,b)=>a.rate-b.rate||b.con_lai-a.con_lai)[0];
+      const r=[...T].sort((a,b)=>Number(b.tong_phat||0)-Number(a.tong_phat||0) || a.rate-b.rate || b.con_lai-a.con_lai)[0];
       return {
         text:`
-          <b>🔴 TTH CẦN TẬP TRUNG NHẤT</b><br><br>
+          <b>🔴 TTH CẦN TẬP TRUNG NHẤT</b><br><span style="font-size:11px">Tiêu chí chính: tiền phạt cao nhất</span><br><br>
           <b>${esc(r.huyen)}</b><br>
           • Tỷ lệ: <b class="rate-bad">${(r.rate*100).toFixed(0)}%</b><br>
           • Tổng giao: ${r.tong_can}<br>
           • Đã thu: ${r.tong_da}<br>
           • Còn lại: <b>${r.con_lai}</b><br>
-          • Tiền phạt: ${money(r.tong_phat)} đ
+          • Tiền phạt: <b>${money(r.tong_phat)} đ</b><br><br>
+          <b>🎯 Đánh giá:</b> TTH này được xếp cần tập trung vì <b>tiền phạt đang cao nhất</b>; tỷ lệ thu hồi và số tồn được dùng để đánh giá mức độ ưu tiên tiếp theo.
         `,
         actions:[
           {label:"📍 Phân tích TTH",command:"TTH "+r.huyen},
@@ -1339,17 +1966,18 @@ loadThuHoi();
 
     /* ===== NV TỒI ===== */
     if(q.includes("nhan vien toi")||q.includes("nv toi")||q.includes("nhan vien kem")){
-      const r=[...N].sort((a,b)=>a.rate-b.rate||b.con_lai-a.con_lai)[0];
+      const r=[...N].sort((a,b)=>Number(b.tong_phat||0)-Number(a.tong_phat||0) || a.rate-b.rate || b.con_lai-a.con_lai)[0];
       return {
         text:`
-          <b>🔴 NHÂN VIÊN CẦN CHÚ Ý</b><br><br>
+          <b>🔴 NHÂN VIÊN CẦN CHÚ Ý</b><br><span style="font-size:11px">Tiêu chí chính: tiền phạt cao nhất</span><br><br>
           👤 <b>${esc(r.nhan_vien)}</b><br>
           • TTH: ${esc(r.huyen)}<br>
           • Tỷ lệ: <b class="rate-bad">${(r.rate*100).toFixed(0)}%</b><br>
           • Tổng giao: ${r.tong_can}<br>
           • Đã thu: ${r.tong_da}<br>
           • Còn lại: <b>${r.con_lai}</b><br>
-          • Tiền phạt: ${money(r.tong_phat)} đ
+          • Tiền phạt: <b>${money(r.tong_phat)} đ</b><br><br>
+          <b>🎯 Đánh giá:</b> Nhân viên này được xếp cần chú ý vì <b>tiền phạt đang cao nhất</b>; BOT dùng tỷ lệ thu hồi và số tồn làm tiêu chí phụ để xem mức độ xử lý.
         `,
         actions:[
           {label:"👤 Phân tích NV",command:"NV "+r.nhan_vien},
@@ -1364,7 +1992,7 @@ loadThuHoi();
       const total=N.reduce((x,r)=>x+Number(r.tong_phat||0),0);
 
       return {
-        text:`<b>💰 PHÂN TÍCH TIỀN PHẠT</b><br><br>• Tổng: <b>${money(total)} đ</b><br><br>`+
+        text:`<b>💰 PHÂN TÍCH TIỀN PHẠT</b><br><span style="font-size:11px">Tiêu chí dùng để đánh giá mục “TTH/Nhân viên tồi nhất”.</span><br><br>• Tổng: <b>${money(total)} đ</b><br><br>`+
           s.map((r,i)=>`${i+1}. <b>${esc(r.nhan_vien)}</b> — ${esc(r.huyen)} — <b>${money(r.tong_phat)} đ</b>`).join("<br>"),
         actions:[
           {label:"👤 NV tồi nhất",command:"nhân viên tồi nhất"},
@@ -1429,6 +2057,59 @@ loadThuHoi();
 
 })();
 </script>
+
+
+<script>
+(function(){
+  function forceBotYoutube(){
+    const panel=document.getElementById("botPanel");
+    if(!panel) return;
+    const set=(el,prop,val)=>el&&el.style.setProperty(prop,val,"important");
+    set(panel,"background","#ffffff");
+    set(panel,"border-top","3px solid #ff0033");
+    set(panel,"border-color","#222");
+
+    const header=panel.querySelector(".bot-header");
+    set(header,"background","#0f0f0f");
+    set(header,"background-image","none");
+    set(header,"color","#fff");
+
+    panel.querySelectorAll(".bot-title,.bot-subtitle").forEach(el=>set(el,"color","#fff"));
+    const messages=document.getElementById("botMessages");
+    set(messages,"background","#fff");
+
+    panel.querySelectorAll(".bot-msg.bot").forEach(el=>{
+      set(el,"background","#f2f2f2"); set(el,"color","#111"); set(el,"border","1px solid #ddd");
+    });
+    panel.querySelectorAll(".bot-msg.user").forEach(el=>{
+      set(el,"background","#ff0033"); set(el,"color","#fff");
+    });
+
+    const suggestions=panel.querySelector(".bot-suggestions");
+    set(suggestions,"background","#fff");
+    panel.querySelectorAll(".bot-suggestions button").forEach(el=>{
+      set(el,"background","#fff"); set(el,"color","#111"); set(el,"border","1px solid #d5d5d5");
+    });
+
+    const inputWrap=panel.querySelector(".bot-input");
+    set(inputWrap,"background","#fff");
+    const input=document.getElementById("botInput");
+    set(input,"background","#fff"); set(input,"color","#111"); set(input,"border","1px solid #ccc");
+    const send=document.getElementById("botSend");
+    set(send,"background","#ff0033"); set(send,"color","#fff");
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",forceBotYoutube);
+  else forceBotYoutube();
+  setTimeout(forceBotYoutube,200);
+  setTimeout(forceBotYoutube,800);
+})();
+</script>
+
+
+
+
+
+
 
 </body>
 </html>
