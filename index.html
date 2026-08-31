@@ -2794,6 +2794,424 @@ body.loading{
 #kpiBot .bot-ttv-total .bot-ttv-total-label b{font-size:16px!important}
 @media(max-width:700px){#kpiBot .bot-ttv-total .bot-ttv-total-label,#kpiBot .bot-ttv-total .bot-ttv-total-label b{font-size:15px!important}}
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="header-sync-final-79">
+/* ===== 79: HEADER + MARQUEE CÙNG MỘT VÙNG ===== */
+
+/* Khu tiêu đề chính: nền trắng để chữ KPI CĐBR màu đen rõ như bảng */
+#kpiUI > .header-fixed{
+  position:relative!important;
+  top:auto!important;
+  z-index:20!important;
+  width:calc(100% - 8px)!important;
+  margin:6px auto 8px!important;
+  padding:8px!important;
+  box-sizing:border-box!important;
+  background:#fff!important;
+  color:#111!important;
+  border:1px solid #d9d9d9!important;
+  border-radius:16px!important;
+  overflow:hidden!important;
+  box-shadow:0 4px 14px rgba(0,0,0,.10)!important;
+}
+
+/* Tiêu đề đen */
+#kpiUI > .header-fixed #pageTitle,
+#kpiUI > .header-fixed h2{
+  color:#111!important;
+}
+
+/* Thời gian */
+#kpiUI > .header-fixed .logtime{
+  color:#666!important;
+}
+
+/* Thanh chạy nằm TRỰC TIẾP trong header */
+#kpiUI > .header-fixed > .marquee-banner{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:34px!important;
+  min-height:34px!important;
+  margin:0 0 7px!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+
+  background:#151619!important;
+  color:#fff!important;
+  border:1px solid #ff2020!important;
+  border-radius:9px!important;
+
+  transform:none!important;
+  animation:none!important;
+}
+
+/* Chỉ chữ chạy; left được JS cập nhật với !important */
+#kpiUI > .header-fixed > .marquee-banner > .marquee-text{
+  position:absolute!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+
+  top:50%!important;
+  left:100%!important;
+
+  width:max-content!important;
+  min-width:max-content!important;
+  max-width:none!important;
+
+  margin:0!important;
+  padding:0!important;
+
+  background:transparent!important;
+  border:0!important;
+  color:#fff!important;
+
+  white-space:nowrap!important;
+  font-size:12px!important;
+  font-weight:700!important;
+  line-height:1!important;
+
+  transform:translateY(-50%)!important;
+  animation:none!important;
+  transition:none!important;
+  will-change:left!important;
+  z-index:9999!important;
+  pointer-events:none!important;
+}
+
+/* Mobile: banner vẫn ở trong header */
+@media(max-width:700px){
+  #kpiUI > .header-fixed{
+    width:calc(100% - 4px)!important;
+    margin:3px auto 6px!important;
+    padding:5px!important;
+    border-radius:12px!important;
+  }
+
+  #kpiUI > .header-fixed > .marquee-banner{
+    height:28px!important;
+    min-height:28px!important;
+    margin-bottom:5px!important;
+    border-radius:7px!important;
+  }
+
+  #kpiUI > .header-fixed > .marquee-banner > .marquee-text{
+    font-size:9px!important;
+  }
+}
+</style>
+
+
+<style id="header-black-title-final-80">
+/* ===== BẢN 80: nền đen khu tiêu đề + chữ KPI CĐBR trắng ===== */
+#kpiUI > .header-fixed{
+  background:#101113!important;
+  color:#fff!important;
+}
+
+/* Tiêu đề chính */
+#kpiUI > .header-fixed #pageTitle,
+#kpiUI > .header-fixed .header-title h2,
+#kpiUI > .header-fixed h2{
+  color:#fff!important;
+}
+
+/* Thời gian báo cáo */
+#kpiUI > .header-fixed #logtime,
+#kpiUI > .header-fixed .logtime{
+  color:#d0d0d0!important;
+}
+
+/* Giữ các ô chức năng màu trắng, chữ đen */
+#kpiUI > .header-fixed .switch-btn,
+#kpiUI > .header-fixed .kpi-lookup-btn{
+  background:#fff!important;
+  color:#111!important;
+}
+
+/* Thanh chạy giữ nguyên nền đen + viền đỏ */
+#kpiUI > .header-fixed > .marquee-banner{
+  background:#151619!important;
+  color:#fff!important;
+  border:1px solid #ff2020!important;
+}
+
+#kpiUI > .header-fixed > .marquee-banner .marquee-text{
+  color:#fff!important;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="mobile-marquee-css-definitive-84">
+/* =========================================================
+   BẢN 84 — MOBILE MARQUEE DÙNG CSS KEYFRAMES RIÊNG
+   Không phụ thuộc JS, không phụ thuộc animation "marquee" cũ.
+   ========================================================= */
+
+@keyframes kpiMarqueeMobile84{
+  0%{
+    left:100%!important;
+  }
+  100%{
+    left:-110%!important;
+  }
+}
+
+@media(max-width:700px){
+
+  /* Header compact, giữ đúng bố cục hiện tại */
+  #kpiUI > .header-fixed{
+    position:relative!important;
+    width:calc(100% - 4px)!important;
+    margin:3px auto 3px!important;
+    padding:5px!important;
+    background:#101113!important;
+    color:#fff!important;
+    border:0!important;
+    border-bottom:2px solid #ff2020!important;
+    border-radius:12px!important;
+    overflow:hidden!important;
+    box-shadow:0 4px 12px rgba(0,0,0,.16)!important;
+  }
+
+  /* Thanh chạy cố định trong header */
+  #kpiUI > .header-fixed > .marquee-banner{
+    position:relative!important;
+    display:block!important;
+    width:100%!important;
+    height:28px!important;
+    min-height:28px!important;
+    margin:0 0 5px!important;
+    padding:0!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+
+    background:#151619!important;
+    border:1px solid #ff2020!important;
+    border-radius:7px!important;
+
+    transform:none!important;
+    animation:none!important;
+  }
+
+  /*
+    QUAN TRỌNG:
+    Chỉ animation LEFT.
+    Không dùng transform để chạy chữ nên không bị xung đột
+    với translateY(-50%) dùng để căn giữa.
+  */
+  #kpiUI > .header-fixed > .marquee-banner > .marquee-text{
+    position:absolute!important;
+    top:50%!important;
+    left:100%!important;
+
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+
+    width:max-content!important;
+    min-width:max-content!important;
+    max-width:none!important;
+    height:auto!important;
+
+    margin:0!important;
+    padding:0!important;
+
+    color:#fff!important;
+    background:transparent!important;
+    border:0!important;
+
+    white-space:nowrap!important;
+    font-size:9px!important;
+    font-weight:700!important;
+    line-height:1!important;
+
+    transform:translateY(-50%)!important;
+
+    /* animation mới, tên riêng, không dùng animation cũ */
+    animation-name:kpiMarqueeMobile84!important;
+    animation-duration:18s!important;
+    animation-timing-function:linear!important;
+    animation-iteration-count:infinite!important;
+    animation-direction:normal!important;
+    animation-fill-mode:none!important;
+    animation-play-state:running!important;
+
+    transition:none!important;
+    z-index:99999!important;
+    pointer-events:none!important;
+  }
+
+  /* Bảng KPI kéo sát header */
+  #kpiUI > #sectionTable{
+    margin-top:0!important;
+    padding-top:0!important;
+  }
+
+  #kpiUI > #sectionTable > h3{
+    margin-top:2px!important;
+    margin-bottom:3px!important;
+    padding-top:0!important;
+  }
+
+  #kpiUI .table-title,
+  #kpiUI .section-title,
+  #kpiUI .table-heading{
+    margin-top:2px!important;
+    margin-bottom:3px!important;
+  }
+
+  #kpiUI .table-wrap,
+  #kpiUI .table-container,
+  #kpiUI .table-section{
+    margin-top:0!important;
+    padding-top:0!important;
+  }
+
+  /* Không để script cũ tạo spacer */
+  #kpiUI .header-spacer,
+  #kpiUI .mobile-spacer{
+    display:none!important;
+    height:0!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+}
+</style>
+
+
+<style id="mobile-header-fixed-86">
+/* =========================================================
+   BẢN 86 — TRẢ VỀ CƠ CHẾ CHỮ CỦA 84
+   + CỐ ĐỊNH TOÀN BỘ TIÊU ĐỀ KHI CUỘN TRÊN MOBILE
+   ========================================================= */
+
+@media(max-width:700px){
+
+  /* Toàn bộ khu tiêu đề cố định ở đầu màn hình */
+  #kpiUI > .header-fixed{
+    position:fixed!important;
+    top:3px!important;
+    left:2px!important;
+    right:2px!important;
+    width:calc(100% - 4px)!important;
+    max-width:none!important;
+
+    margin:0!important;
+    z-index:9000!important;
+
+    box-sizing:border-box!important;
+    background:#101113!important;
+    color:#fff!important;
+    border:0!important;
+    border-bottom:2px solid #ff2020!important;
+    border-radius:12px!important;
+
+    overflow:hidden!important;
+    box-shadow:0 4px 12px rgba(0,0,0,.18)!important;
+  }
+
+  /* Thanh chạy vẫn nằm trong header cố định */
+  #kpiUI > .header-fixed > .marquee-banner{
+    position:relative!important;
+    width:100%!important;
+    height:28px!important;
+    min-height:28px!important;
+    margin:0 0 5px!important;
+    padding:0!important;
+
+    background:#151619!important;
+    border:1px solid #ff2020!important;
+    border-radius:7px!important;
+    overflow:hidden!important;
+  }
+
+  /*
+    GIỮ NGUYÊN CƠ CHẾ CHỮ CHẠY CỦA 84:
+    keyframes kpiMarqueeMobile84
+  */
+  #kpiUI > .header-fixed > .marquee-banner > .marquee-text{
+    position:absolute!important;
+    top:50%!important;
+    left:100%!important;
+
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+
+    width:max-content!important;
+    min-width:max-content!important;
+    max-width:none!important;
+
+    white-space:nowrap!important;
+    color:#fff!important;
+
+    transform:translateY(-50%)!important;
+    animation-name:kpiMarqueeMobile84!important;
+    animation-duration:18s!important;
+    animation-timing-function:linear!important;
+    animation-iteration-count:infinite!important;
+    animation-delay:0s!important;
+    animation-play-state:running!important;
+
+    transition:none!important;
+    z-index:99999!important;
+    pointer-events:none!important;
+  }
+
+  /*
+    Vì header chuyển sang fixed, tạo đúng khoảng đệm bằng
+    chiều cao header để nội dung không bị che.
+    Không tạo khoảng trắng lớn.
+  */
+  #kpiUI{
+    --mobile-header-fixed-h:0px;
+  }
+
+  #kpiUI > #sectionTable{
+    margin-top:var(--mobile-header-fixed-h)!important;
+    padding-top:0!important;
+  }
+}
+</style>
+
 </head>
 
 <body class="rotate-in loading">
@@ -5369,8 +5787,7 @@ function sendKpiBot(){
   function updateMobileFixedHeader(){
     if(window.innerWidth > 700) return;
 
-    const banner=document.querySelector("body > .marquee-banner");
-    const header=document.querySelector("#kpiUI > .header-fixed");
+    const header=document.querySelector("#kpiUI > .header-fixed"); const banner=header && header.querySelector(".marquee-banner");
     const section=document.querySelector("#kpiUI > #sectionTable");
     if(!banner || !header || !section) return;
 
@@ -5426,8 +5843,7 @@ function sendKpiBot(){
 
   if(window.ResizeObserver){
     window.addEventListener("load",()=>{
-      const banner=document.querySelector("body > .marquee-banner");
-      const header=document.querySelector("#kpiUI > .header-fixed");
+      const header=document.querySelector("#kpiUI > .header-fixed"); const banner=header && header.querySelector(".marquee-banner");
       if(!banner && !header) return;
 
       const ro=new ResizeObserver(()=>{
@@ -5484,6 +5900,14 @@ window.addEventListener('orientationchange',()=>setTimeout(updateKpiHeaderRedLin
 </script>
 
 
+
+
+
+
+
+
+
+
 <script id="mobile-clear-hidden-kpi-bad-filter">
 (function(){
   function resetBadFilterOnMobile(){
@@ -5498,6 +5922,171 @@ window.addEventListener('orientationchange',()=>setTimeout(updateKpiHeaderRedLin
   window.addEventListener("resize", resetBadFilterOnMobile, {passive:true});
   window.addEventListener("load", resetBadFilterOnMobile);
   setTimeout(resetBadFilterOnMobile, 800);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="header-sync-final-script-79">
+(function(){
+  "use strict";
+
+  var desktopSpeed=95;
+  var mobileSpeed=70;
+  var raf=0;
+  var last=0;
+  var x=0;
+  var textW=0;
+  var boxW=0;
+
+  function setup(){
+    var root=document.getElementById("kpiUI");
+    var header=root && root.querySelector(".header-fixed");
+    var banner=document.querySelector(".marquee-banner");
+    if(!root || !header || !banner) return false;
+
+    /* Đưa thanh chạy vào đúng vùng header. */
+    if(banner.parentElement!==header){
+      header.insertBefore(banner,header.firstChild);
+    }
+
+    var text=banner.querySelector(".marquee-text");
+    if(!text) return false;
+
+    /* Hủy toàn bộ animation/transform cũ của chữ, nhưng giữ translateY để căn giữa. */
+    text.style.setProperty("animation","none","important");
+    text.style.setProperty("transition","none","important");
+    text.style.setProperty("display","block","important");
+    text.style.setProperty("visibility","visible","important");
+    text.style.setProperty("opacity","1","important");
+    text.style.setProperty("width","max-content","important");
+    text.style.setProperty("max-width","none","important");
+    text.style.setProperty("min-width","max-content","important");
+    text.style.setProperty("padding","0","important");
+    text.style.setProperty("transform","translateY(-50%)","important");
+
+    function measure(){
+      boxW=banner.clientWidth;
+      textW=text.scrollWidth;
+
+      /* Quan trọng: CSS cũ dùng left:100%!important,
+         nên JS cũng phải ghi LEFT với !important. */
+      x=boxW;
+      text.style.setProperty("left",x+"px","important");
+    }
+
+    function tick(now){
+      if(!document.body.contains(text)) return;
+
+      if(!last) last=now;
+      var dt=Math.min((now-last)/1000,0.05);
+      last=now;
+
+      var speed=window.innerWidth<=700 ? mobileSpeed : desktopSpeed;
+      x-=speed*dt;
+
+      if(x < -textW){
+        x=boxW;
+      }
+
+      text.style.setProperty("left",x+"px","important");
+      raf=requestAnimationFrame(tick);
+    }
+
+    function start(){
+      if(raf) cancelAnimationFrame(raf);
+      last=0;
+      measure();
+      raf=requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(function(){
+      requestAnimationFrame(start);
+    });
+
+    return true;
+  }
+
+  function boot(){
+    if(setup()) return;
+    var n=0;
+    var t=setInterval(function(){
+      n++;
+      if(setup() || n>=50) clearInterval(t);
+    },100);
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",boot,{once:true});
+  }else{
+    boot();
+  }
+
+  window.addEventListener("load",boot,{once:true});
+})();
+</script>
+
+
+
+
+
+
+
+
+<script id="mobile-header-fixed-script-86">
+(function(){
+  "use strict";
+
+  function syncMobileHeader86(){
+    if(window.innerWidth>700) return;
+
+    var root=document.getElementById("kpiUI");
+    var header=root && root.querySelector(".header-fixed");
+    if(!root || !header) return;
+
+    /*
+      Header fixed nên nội dung bên dưới cần đúng bằng chiều cao
+      thực tế của header, thay vì một khoảng cố định lớn.
+    */
+    var h=header.getBoundingClientRect().height;
+
+    root.style.setProperty("--mobile-header-fixed-h",(h+3)+"px");
+  }
+
+  function boot(){
+    syncMobileHeader86();
+
+    var root=document.getElementById("kpiUI");
+    var header=root && root.querySelector(".header-fixed");
+    if(!header) return;
+
+    if(window.ResizeObserver){
+      if(!header.__mobileHeaderRO86){
+        header.__mobileHeaderRO86=new ResizeObserver(syncMobileHeader86);
+        header.__mobileHeaderRO86.observe(header);
+      }
+    }
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",boot,{once:true});
+  }else{
+    boot();
+  }
+
+  window.addEventListener("load",boot,{once:true});
+  window.addEventListener("resize",syncMobileHeader86,{passive:true});
 })();
 </script>
 
