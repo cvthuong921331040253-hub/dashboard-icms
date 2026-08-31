@@ -13119,6 +13119,104 @@ body.dashboard-is-loading{
 #periodCompareSection.current-only-mode .current-zero{
   color:inherit!important;
 }
+
+<style id="PERIOD_CURRENT_ONLY_MOBILE_FIX_V116">
+/* ===== BÁO CÁO SỐ LIỆU TỒN MỨC TỈNH: MOBILE =====
+   Khi Dashboard hiện tại, chỉ hiển thị STT + Chỉ tiêu + Mốc hiện tại.
+   Không ép bảng thành 720/920px khiến cột số liệu nằm ngoài màn hình.
+*/
+@media (max-width:768px){
+  #periodCompareSection.current-only-mode
+  .period-table-wrap:has(#periodCompareMetricBody){
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+  }
+
+  #periodCompareSection.current-only-mode
+  .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    table-layout:fixed !important;
+  }
+
+  #periodCompareSection.current-only-mode
+  .period-table thead th,
+  #periodCompareSection.current-only-mode
+  .period-table tbody td{
+    box-sizing:border-box !important;
+  }
+
+  /* STT */
+  #periodCompareSection.current-only-mode
+  .period-table thead th:nth-child(1),
+  #periodCompareSection.current-only-mode
+  .period-table tbody td:nth-child(1){
+    position:static !important;
+    width:38px !important;
+    min-width:38px !important;
+    max-width:38px !important;
+    padding:5px 3px !important;
+    text-align:center !important;
+    white-space:nowrap !important;
+  }
+
+  /* Chỉ tiêu */
+  #periodCompareSection.current-only-mode
+  .period-table thead th:nth-child(2),
+  #periodCompareSection.current-only-mode
+  .period-table tbody td:nth-child(2){
+    position:static !important;
+    left:auto !important;
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+    padding:5px 6px !important;
+    text-align:left !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  /* Số liệu hiện tại */
+  #periodCompareSection.current-only-mode
+  .period-table thead th:nth-child(3),
+  #periodCompareSection.current-only-mode
+  .period-table tbody td:nth-child(3){
+    display:table-cell !important;
+    width:72px !important;
+    min-width:72px !important;
+    max-width:72px !important;
+    padding:5px 4px !important;
+    text-align:center !important;
+    white-space:nowrap !important;
+    font-weight:800 !important;
+  }
+
+  /* Các cột so sánh vẫn ẩn ở chế độ Dashboard hiện tại */
+  #periodCompareSection.current-only-mode
+  .period-table thead th:nth-child(n+4),
+  #periodCompareSection.current-only-mode
+  .period-table tbody td:nth-child(n+4){
+    display:none !important;
+  }
+
+  #periodCompareSection.current-only-mode
+  .period-table tbody td:nth-child(3) .current-positive,
+  #periodCompareSection.current-only-mode
+  .period-table tbody td:nth-child(3){
+    color:#dc2626 !important;
+  }
+
+  #periodCompareSection.current-only-mode
+  .period-table tbody tr.period-summary-row td{
+    font-weight:900 !important;
+  }
+}
+</style>
+
 </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13464,7 +13562,10 @@ body.dashboard-is-loading{
     </div>
     <div class="notebook-subtitle">Tự động xếp hạng các huyện và nhân viên có tồn lớn. Bấm vào từng dòng để xem chi tiết.</div>
     <div id="evaluationNotebookContent"></div>
-    <div class="notebook-foot">Tiêu chí được tính trực tiếp từ dữ liệu SC/TKM đang có trên dashboard.</div>
+    <div class="notebook-foot">
+      Tiêu chí được tính trực tiếp từ dữ liệu SC/TKM đang có trên dashboard.
+    </div>
+
   </aside>
 
 
@@ -13815,42 +13916,6 @@ body.dashboard-is-loading{
           <div id="opsNSc"></div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="ops-staff-detail">
-    <div class="ops-head">
-      <div>
-        <div class="ops-title">👨‍💼 CHI TIẾT NHÂN VIÊN N-1 & N</div>
-        <div class="ops-sub">FULL danh sách nhân viên tồn • Lọc tháng và loại SC/TKM • Click số để xem chi tiết</div>
-      </div>
-    </div>
-    <div class="ops-staff-filters">
-      <select id="opsStaffMonth">
-        <option value="ALL">Tất cả tháng</option>
-        <option value="N1">Tháng N-1</option>
-        <option value="N">Tháng N</option>
-      </select>
-      <select id="opsStaffType">
-        <option value="ALL">Tất cả SC + TKM</option>
-        <option value="TKM">TKM</option>
-        <option value="SC">SC</option>
-        <option value="SOC">SOC</option>
-        <option value="SOC HOME">SOC HOME</option>
-      </select>
-      <input id="opsStaffSearch" type="text" placeholder="Tìm nhân viên...">
-    </div>
-    <div class="ops-staff-table-wrap">
-      <table class="ops-staff-table">
-        <thead>
-          <tr>
-            <th>STT</th><th>Nhân viên</th><th>TKM</th><th>Cập nhật hồ sơ</th>
-            <th>SC</th><th>SOC</th><th>SOC HOME</th><th>TKM &gt;24H</th>
-            <th>TKM quá hẹn</th><th>TỔNG TỒN</th>
-          </tr>
-        </thead>
-        <tbody id="opsStaffBody"></tbody>
-      </table>
     </div>
   </div>
 </section>
@@ -15321,14 +15386,48 @@ let tonsc=[];
 
   function compareScStats(rows){
 
-    const data=
+    const data =
       Array.isArray(rows)
-        ? rows
+        ? rows.filter(
+            r=>{
+              const sc =
+                compareNorm(
+                  r?.sc
+                );
+
+              /*
+                CHỈ tính 8 nhóm sự cố dùng cho
+                SO SÁNH DỮ LIỆU TỒN TĂNG/GIẢM:
+
+                SC
+                SC HOT
+                SC VIP
+                HT HOT
+                HT VIP
+                HT
+                SOC
+                SOC HOME
+
+                Loại "SỰ CỐ KHIẾU NẠI TRIỂN KHAI"
+                và mọi loại khác KHÔNG được tính.
+              */
+              return [
+                "SC",
+                "SC HOT",
+                "SC VIP",
+                "HT HOT",
+                "HT VIP",
+                "HT",
+                "SOC",
+                "SOC HOME"
+              ].includes(sc);
+            }
+          )
         : [];
 
-    const isSoc=
+    const isSoc =
       r=>{
-        const sc=
+        const sc =
           compareNorm(
             r?.sc
           );
@@ -15340,12 +15439,18 @@ let tonsc=[];
       };
 
     /*
-      SC QUÁ 16H / 24H:
-      CHỈ tính sự cố SC thông thường.
-      SOC và SOC HOME được tách riêng,
-      không cộng vào SC >16H / >24H.
+      SC QUÁ 3H / 10H / 16H / 24H:
+      Chỉ tính 6 nhóm SC/HT:
+        SC
+        SC HOT
+        SC VIP
+        HT
+        HT HOT
+        HT VIP
+
+      SOC và SOC HOME được tách riêng.
     */
-    const scNormal=
+    const scNormal =
       data.filter(
         r=>!isSoc(r)
       );
@@ -15353,34 +15458,54 @@ let tonsc=[];
     const q3 =
       scNormal.filter(
         r=>{
-          const h=compareHours(r);
-          return h>3 && h<=10;
+          const h=
+            compareHours(r);
+
+          return (
+            h>3 &&
+            h<=10
+          );
         }
       ).length;
 
     const q10 =
       scNormal.filter(
         r=>{
-          const h=compareHours(r);
-          return h>10 && h<=16;
+          const h=
+            compareHours(r);
+
+          return (
+            h>10 &&
+            h<=16
+          );
         }
       ).length;
 
     const q16 =
       scNormal.filter(
         r=>{
-          const h=compareHours(r);
-          return h>16 && h<=24;
+          const h=
+            compareHours(r);
+
+          return (
+            h>16 &&
+            h<=24
+          );
         }
       ).length;
 
     const q24 =
       scNormal.filter(
-        r=>compareHours(r)>24
+        r=>
+          compareHours(r)>24
       ).length;
 
     return {
 
+      /*
+        Tổng SC giờ đây CHỈ là tổng của
+        8 nhóm hợp lệ ở trên.
+      */
       total:
         data.length,
 
@@ -15396,26 +15521,33 @@ let tonsc=[];
       q24:
         q24,
 
-
       soc:
         data.filter(
           r=>
-            compareNorm(r?.sc)==="SOC"
+            compareNorm(
+              r?.sc
+            )==="SOC"
         ).length,
 
       socHome:
         data.filter(
           r=>
-            compareNorm(r?.sc)==="SOC HOME"
+            compareNorm(
+              r?.sc
+            )==="SOC HOME"
         ).length,
 
       soc24:
         data.filter(
           r=>{
-            const h=compareHours(r);
-            return isSoc(r) &&
-                   h>24 &&
-                   h<=72;
+            const h=
+              compareHours(r);
+
+            return (
+              isSoc(r) &&
+              h>24 &&
+              h<=72
+            );
           }
         ).length,
 
@@ -21463,7 +21595,7 @@ onClick:function(event){
           const socHuyenChart=new Chart(
               socHuyenCanvas,
               {
-                  type:"line",
+                  type:"bar",
 
                   data:{
                       labels:huyenSC,
@@ -23062,7 +23194,7 @@ onClick:function(event){
           new Chart(
               canvas,
               {
-                  type:"line",
+                  type:"bar",
 
                   data:{
                       labels,
@@ -24298,6 +24430,14 @@ onClick:function(event){
   const scRows=Array.isArray(tonsc)?tonsc:[];
   const tkmRows=Array.isArray(tkmThuc)?tkmThuc:(Array.isArray(tontkm)?tontkm:[]);
 
+  /* Phạm vi SC của riêng bảng ĐÁNH GIÁ TỒN CÔNG VIỆC CĐBR.
+     Chỉ tính: SC, SC HOT, SC VIP, HT HOT, HT VIP, HT,
+     SOC, SOC HOME. Loại "Sự cố khiếu nại triển khai" không tính. */
+  const validScTypes=new Set([
+    "SC","SC HOT","SC VIP","HT HOT","HT VIP","HT","SOC","SOC HOME"
+  ]);
+  const validScRows=scRows.filter(r=>validScTypes.has(norm(r?.sc)));
+
   const scHour=row=>{
     const v=row?.tg;
     if(v===null || v===undefined || String(v).trim()==="")return 0;
@@ -24320,19 +24460,19 @@ onClick:function(event){
       key:"soc",
       label:"SOC",
       color:"#ea580c",
-      data:scRows.filter(r=>norm(r.sc)==="SOC")
+      data:validScRows.filter(r=>norm(r.sc)==="SOC")
     },
     {
       key:"sochome",
       label:"SOC HOME",
       color:"#2563eb",
-      data:scRows.filter(r=>norm(r.sc)==="SOC HOME")
+      data:validScRows.filter(r=>norm(r.sc)==="SOC HOME")
     },
     {
       key:"sc16",
       label:"SC quá 16H",
       color:"#d97706",
-      data:scRows.filter(r=>{
+      data:validScRows.filter(r=>{
         const loai=norm(r.sc);
         return scHour(r)>16 && loai!=="SOC" && loai!=="SOC HOME";
       })
@@ -24341,7 +24481,7 @@ onClick:function(event){
       key:"sc24",
       label:"SC quá 24H",
       color:"#dc2626",
-      data:scRows.filter(r=>{
+      data:validScRows.filter(r=>{
         const loai=norm(r.sc);
         return scHour(r)>24 && loai!=="SOC" && loai!=="SOC HOME";
       })
@@ -24556,7 +24696,7 @@ onClick:function(event){
     {
       label:"NV tồn tất cả sự cố",
       color:"#dc2626",
-      data:scRows.filter(r=>{
+      data:validScRows.filter(r=>{
         const loai=norm(r.sc);
 
         /*
@@ -24812,8 +24952,11 @@ onClick:function(event){
           </div>
         </div>
       </div>
-      <div class="notebook-july-update">
-        ⏰ Cập nhật dữ liệu: <b>${esc(String(tontkm[0]?.tgupdate || "Chưa xác định"))}</b>
+      <div class="notebook-july-branch">
+        <div>VHKT CHI NHÁNH CÔNG TRÌNH VIETTEL GIA LAI</div>
+        <div class="notebook-july-time">
+          ${esc(String(tontkm[0]?.tgupdate || ""))}
+        </div>
       </div>
     </div>
   </div>`;
@@ -30882,6 +31025,34 @@ async function answer(q){try{const u=upper(q);if(u==='/HELP'||u==='HELP'||u.incl
 })();
 </script>
 
+
+<style id="ops-dashboard-font-112">
+/* Đồng bộ font DASHBOARD ĐIỀU HÀNH N-1 / N với Dashboard chính */
+#opsDashboardSection .ops-head,
+#opsDashboardSection .ops-head .ops-title,
+#opsDashboardSection .ops-head .ops-sub{
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+#opsDashboardSection .ops-head .ops-title{
+  font-size: 18px !important;
+  line-height: 1.25 !important;
+  font-weight: 800 !important;
+  letter-spacing: .1px !important;
+}
+#opsDashboardSection .ops-head .ops-sub{
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+  font-weight: 600 !important;
+}
+@media(max-width:768px){
+  #opsDashboardSection .ops-head .ops-title{
+    font-size: 15px !important;
+  }
+  #opsDashboardSection .ops-head .ops-sub{
+    font-size: 9px !important;
+  }
+}
+</style>
 </body>
   
 </html>
@@ -31248,4 +31419,355 @@ async function answer(q){try{const u=upper(q);if(u==='/HELP'||u==='HELP'||u.incl
   window.__zoomMonthDataDirectV88=true;
 })();
 </script>
+
+
+<style id="period-metric-mobile-list-v117">
+/* =========================================================
+   BÁO CÁO SỐ LIỆU TỒN MỨC TỈNH — MOBILE LIST
+   Chỉ áp dụng khi Dashboard đang ở "Dashboard hiện tại".
+   Không ảnh hưởng chế độ so sánh và các bảng khác.
+   ========================================================= */
+@media (max-width:768px){
+  #periodCompareSection.current-only-mode
+  .period-table-wrap:has(#periodCompareMetricBody){
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    overflow:visible !important;
+    padding:4px !important;
+    box-sizing:border-box !important;
+  }
+
+  #periodCompareSection.current-only-mode
+  .period-table-wrap:has(#periodCompareMetricBody)
+  .period-table{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    border:0 !important;
+    table-layout:auto !important;
+  }
+
+  #periodCompareSection.current-only-mode
+  .period-table thead{
+    display:none !important;
+  }
+
+  #periodCompareSection.current-only-mode
+  .period-table tbody{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:4px !important;
+    width:100% !important;
+  }
+
+  #periodCompareSection.current-only-mode
+  #periodCompareMetricBody tr{
+    display:grid !important;
+    grid-template-columns:28px minmax(0,1fr) 58px !important;
+    align-items:center !important;
+    width:100% !important;
+    min-height:30px !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:1px solid #dbe3ec !important;
+    border-radius:6px !important;
+    background:#fff !important;
+    box-sizing:border-box !important;
+    overflow:hidden !important;
+  }
+
+  #periodCompareSection.current-only-mode
+  #periodCompareMetricBody td{
+    display:block !important;
+    position:static !important;
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+    padding:5px 4px !important;
+    border:0 !important;
+    background:#fff !important;
+    box-sizing:border-box !important;
+    font-size:10px !important;
+    line-height:1.15 !important;
+  }
+
+  /* STT */
+  #periodCompareSection.current-only-mode
+  #periodCompareMetricBody td:nth-child(1){
+    text-align:center !important;
+    color:#64748b !important;
+    font-weight:800 !important;
+    border-right:1px solid #e5e7eb !important;
+  }
+
+  /* Chỉ tiêu */
+  #periodCompareSection.current-only-mode
+  #periodCompareMetricBody td:nth-child(2){
+    text-align:left !important;
+    color:#1f2937 !important;
+    font-weight:700 !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  /* Số liệu hiện tại — luôn ép hiện */
+  #periodCompareSection.current-only-mode
+  #periodCompareMetricBody td:nth-child(3){
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    text-align:center !important;
+    color:#dc2626 !important;
+    font-size:12px !important;
+    font-weight:900 !important;
+    white-space:nowrap !important;
+    border-left:1px solid #e5e7eb !important;
+  }
+
+  /* Không cho các cột so sánh làm rộng/ẩn sai layout */
+  #periodCompareSection.current-only-mode
+  #periodCompareMetricBody td:nth-child(n+4){
+    display:none !important;
+  }
+
+  /* Dòng tổng */
+  #periodCompareSection.current-only-mode
+  #periodCompareMetricBody tr.period-summary-row{
+    border-color:#b9d5f5 !important;
+    background:#eef6ff !important;
+  }
+
+  #periodCompareSection.current-only-mode
+  #periodCompareMetricBody tr.period-summary-row td{
+    background:#eef6ff !important;
+    font-weight:900 !important;
+  }
+
+  /* Tiêu đề bảng gọn */
+  #periodCompareSection.current-only-mode
+  .period-compare-panel-title{
+    font-size:11px !important;
+    line-height:1.2 !important;
+  }
+}
+</style>
+<style id="staff-compare-40-rows-v118">
+/* BÁO CÁO TỒN TĂNG/GIẢM MỨC NHÂN VIÊN: hiển thị khoảng 40 dòng trên web, phần còn lại cuộn dọc */
+@media (min-width:769px){
+  #staffCompareReport .period-staff-table-wrap{
+    max-height:1150px !important;
+    height:1150px !important;
+    overflow-y:auto !important;
+    overflow-x:auto !important;
+  }
+  #staffCompareReport .period-staff-table-wrap table.period-table{
+    height:auto !important;
+  }
+}
+</style>
+
+
+<style id="employee-compare-15rows-v119">
+/* BÁO CÁO TỒN TĂNG/GIẢM MỨC NHÂN VIÊN — chỉ hiển thị khoảng 15 dòng */
+#periodCompareSection .employee-compare-table-wrap,
+#periodCompareSection .staff-compare-table-wrap,
+#periodCompareSection .period-staff-table-wrap,
+#periodCompareSection .period-employee-table-wrap{
+  max-height: 390px !important; /* ~15 dòng */
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  scrollbar-width: thin !important;
+}
+
+#periodCompareSection .employee-compare-table-wrap thead th,
+#periodCompareSection .staff-compare-table-wrap thead th,
+#periodCompareSection .period-staff-table-wrap thead th,
+#periodCompareSection .period-employee-table-wrap thead th{
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 3 !important;
+}
+</style>
+
+
+<style id="cdbr-report-tight-v120">
+/* Thu gọn khoảng trắng thừa phía dưới ĐÁNH GIÁ TỒN CÔNG VIỆC CĐBR */
+#evaluationSection,
+#evaluationDashboard,
+#cdbrEvaluationSection,
+section[id*="evaluation" i],
+section[id*="cdbr" i]{
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+/* Các panel con không được giữ chiều cao tối thiểu khi nội dung đã hết */
+#evaluationSection .dashboard,
+#evaluationDashboard .dashboard,
+#cdbrEvaluationSection .dashboard,
+#evaluationSection .card,
+#evaluationDashboard .card,
+#cdbrEvaluationSection .card{
+  min-height: 0 !important;
+}
+
+/* Không tạo vùng trắng do các grid item kéo cao theo hàng */
+#evaluationSection,
+#evaluationSection > *,
+#evaluationDashboard,
+#evaluationDashboard > *,
+#cdbrEvaluationSection,
+#cdbrEvaluationSection > *{
+  align-self: start !important;
+}
+</style>
+
+
+<style id="cdbr-report-unit-style-122">
+#evaluationNotebook .cdbr-report-unit-122{
+  margin:8px -2px -2px;
+  padding:7px 10px;
+  border-top:1px solid #dbe3ec;
+  background:#f8fafc;
+  border-radius:0 0 7px 7px;
+  text-align:center;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:10px;
+  line-height:1.2;
+  font-weight:800;
+  letter-spacing:.25px;
+  color:#475569;
+  box-sizing:border-box;
+}
+@media(max-width:768px){
+  #evaluationNotebook .cdbr-report-unit-122{
+    margin-top:6px;
+    padding:6px 7px;
+    font-size:9px;
+  }
+}
+</style>
+
+
+<style id="cdbr-july-branch-v123">
+.evaluation-notebook .notebook-july-branch{
+  margin-top:12px !important;
+  padding:9px 8px 7px !important;
+  border-top:1px solid #dbe3ec !important;
+  text-align:center !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+  font-size: 13px !important;
+  line-height:1.25 !important;
+  font-weight:800 !important;
+  letter-spacing:.2px !important;
+  color:#475569 !important;
+  box-sizing:border-box !important;
+}
+@media(max-width:768px){
+  .evaluation-notebook .notebook-july-branch{
+    margin-top:7px !important;
+    padding:7px 5px 6px !important;
+    font-size:9px !important;
+  }
+}
+</style>
+<style id="cdbr-july-branch-style-v125">
+.evaluation-notebook .notebook-july-branch{
+  font-size:13px !important;
+  font-weight:900 !important;
+  color:#dc2626 !important;
+}
+@media(max-width:768px){
+  .evaluation-notebook .notebook-july-branch{
+    font-size:11px !important;
+  }
+}
+</style>
+
+
+<style id="cdbr-branch-panel-expand-v126">
+/* Nới khung chứa dòng đơn vị để phần cuối bảng cân đối, không tạo footer ngoài trang. */
+.evaluation-notebook .notebook-july-branch{
+  margin-bottom:18px !important;
+  padding-top:13px !important;
+  padding-bottom:13px !important;
+  min-height:42px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-sizing:border-box !important;
+}
+@media(max-width:768px){
+  .evaluation-notebook .notebook-july-branch{
+    margin-bottom:10px !important;
+    padding-top:9px !important;
+    padding-bottom:9px !important;
+    min-height:34px !important;
+  }
+}
+</style>
+
+
+<style id="cdbr-july-time-v127">
+.evaluation-notebook .notebook-july-branch{
+  flex-direction:column !important;
+  gap:3px !important;
+}
+.evaluation-notebook .notebook-july-branch .notebook-july-time{
+  font-size:9px !important;
+  line-height:1.2 !important;
+  font-weight:700 !important;
+  color:#64748b !important;
+}
+@media(max-width:768px){
+  .evaluation-notebook .notebook-july-branch .notebook-july-time{
+    font-size:8px !important;
+  }
+}
+</style>
+
+
+<style id="cdbr-july-branch-compact-v128">
+/* Thu nhỏ nhẹ khung chứa tên đơn vị + thời gian */
+.evaluation-notebook .notebook-july-branch{
+  margin-top:8px !important;
+  margin-bottom:10px !important;
+  padding-top:7px !important;
+  padding-bottom:7px !important;
+  min-height:34px !important;
+  gap:2px !important;
+}
+@media(max-width:768px){
+  .evaluation-notebook .notebook-july-branch{
+    margin-top:6px !important;
+    margin-bottom:7px !important;
+    padding-top:6px !important;
+    padding-bottom:6px !important;
+    min-height:30px !important;
+  }
+}
+</style>
+
+
+<style id="cdbr-july-branch-medium-v129">
+/* Tăng khung lên một chút so với 128, không quá lớn */
+.evaluation-notebook .notebook-july-branch{
+  margin-top:10px !important;
+  margin-bottom:12px !important;
+  padding-top:9px !important;
+  padding-bottom:9px !important;
+  min-height:38px !important;
+}
+@media(max-width:768px){
+  .evaluation-notebook .notebook-july-branch{
+    margin-top:7px !important;
+    margin-bottom:8px !important;
+    padding-top:7px !important;
+    padding-bottom:7px !important;
+    min-height:33px !important;
+  }
+}
+</style>
 
