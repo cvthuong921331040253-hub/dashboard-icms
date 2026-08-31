@@ -3212,6 +3212,82 @@ body.loading{
 }
 </style>
 
+
+<style id="header-bottom-red-web-87">
+/* ===== BẢN 87: KHÔI PHỤC VIỀN ĐỎ DƯỚI HEADER TRÊN WEB ===== */
+
+/* Desktop/tablet: viền đỏ chỉ ở cạnh dưới toàn bộ khu tiêu đề */
+#kpiUI > .header-fixed{
+  border-bottom:2px solid #ff2020!important;
+}
+
+/* Giữ nguyên thanh chạy bên trong header */
+#kpiUI > .header-fixed > .marquee-banner{
+  border:1px solid #ff2020!important;
+}
+
+/* Mobile cũng giữ đúng viền đỏ dưới */
+@media(max-width:700px){
+  #kpiUI > .header-fixed{
+    border-bottom:2px solid #ff2020!important;
+  }
+}
+</style>
+
+
+<style id="mobile-header-top-88">
+/* ===== BẢN 88: ĐẨY HEADER MOBILE LÊN SÁT ĐỈNH ===== */
+@media(max-width:700px){
+
+  /* Không để khoảng trắng do banner/header cũ tạo ra */
+  html, body{
+    margin-top:0!important;
+    padding-top:0!important;
+  }
+
+  /* Header cố định sát mép trên viewport */
+  #kpiUI > .header-fixed{
+    top:0!important;
+    margin-top:0!important;
+  }
+
+  /* Không chừa vùng cho banner cũ bên ngoài header */
+  body > .marquee-banner{
+    top:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  /* Giữ khoảng cách nội dung theo đúng chiều cao header,
+     không cộng thêm khoảng trắng ở phía trên */
+  #kpiUI > #sectionTable{
+    margin-top:0!important;
+  }
+}
+</style>
+
+
+<style id="mobile-fixed-header-content-offset-89">
+/* ===== BẢN 89: HEADER FIXED KHÔNG CHE BẢNG MOBILE ===== */
+@media(max-width:700px){
+
+  /*
+    Header đã fixed nên #sectionTable phải bắt đầu SAU header.
+    Dùng biến do JS đo đúng chiều cao thực tế của header.
+  */
+  #kpiUI > #sectionTable{
+    padding-top:var(--mobile-real-header-offset,0px)!important;
+    margin-top:0!important;
+  }
+
+  /* Tiêu đề bảng không bị cộng thêm khoảng cách */
+  #kpiUI > #sectionTable > h3{
+    margin-top:2px!important;
+    padding-top:0!important;
+  }
+}
+</style>
+
 </head>
 
 <body class="rotate-in loading">
@@ -6087,6 +6163,64 @@ window.addEventListener('orientationchange',()=>setTimeout(updateKpiHeaderRedLin
 
   window.addEventListener("load",boot,{once:true});
   window.addEventListener("resize",syncMobileHeader86,{passive:true});
+})();
+</script>
+
+
+<script id="mobile-fixed-header-content-offset-script-89">
+(function(){
+  "use strict";
+
+  function fixTableOffset89(){
+    if(window.innerWidth>700) return;
+
+    var root=document.getElementById("kpiUI");
+    if(!root) return;
+
+    var header=root.querySelector(".header-fixed");
+    var table=document.getElementById("sectionTable");
+    if(!header || !table) return;
+
+    /*
+      Chỉ lấy chiều cao của HEADER.
+      Không cộng banner lần nữa vì banner đã nằm bên trong header.
+    */
+    var rect=header.getBoundingClientRect();
+    var h=Math.ceil(rect.height);
+
+    /*
+      Header ở top:0. Chừa đúng chiều cao + 4px,
+      để tiêu đề "Bảng KPI tổng hợp" nằm ngay dưới header.
+    */
+    root.style.setProperty("--mobile-real-header-offset",(h+4)+"px");
+
+    table.style.setProperty("padding-top",(h+4)+"px","important");
+    table.style.setProperty("margin-top","0px","important");
+  }
+
+  function boot89(){
+    fixTableOffset89();
+
+    var root=document.getElementById("kpiUI");
+    var header=root && root.querySelector(".header-fixed");
+    if(!header) return;
+
+    if(window.ResizeObserver && !header.__offsetRO89){
+      header.__offsetRO89=new ResizeObserver(function(){
+        fixTableOffset89();
+      });
+      header.__offsetRO89.observe(header);
+    }
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",boot89,{once:true});
+  }else{
+    boot89();
+  }
+
+  window.addEventListener("load",boot89,{once:true});
+  window.addEventListener("resize",fixTableOffset89,{passive:true});
 })();
 </script>
 
