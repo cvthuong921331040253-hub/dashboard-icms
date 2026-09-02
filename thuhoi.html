@@ -1609,6 +1609,17 @@ body:not(.page-loading){
   }
 }
 
+
+/* ===== FIX NỀN ĐEN XUẤT HIỆN BÊN DƯỚI KHI TÌM KIẾM ===== */
+html{
+  background:#f3f6fa !important;
+}
+
+body:not(.page-loading){
+  background:#f3f6fa !important;
+  min-height:100vh;
+}
+
 </style>
 
 
@@ -1704,8 +1715,8 @@ function hidePageLoader(){
     loader.style.display = "none";
   }
   document.body.classList.remove("page-loading");
-  document.body.style.background = "#f3f6fa";
-  document.documentElement.style.background = "#f3f6fa";
+  document.body.style.setProperty("background", "#f3f6fa", "important");
+  document.documentElement.style.setProperty("background", "#f3f6fa", "important");
 }
 
 function renderHuyen(data){
@@ -1830,50 +1841,166 @@ function renderTH(data){
   document.getElementById("dataTH").innerHTML = html;
 }
 
-function loadThuHoi(){
+async function loadThuHoi(){
 
-  document.getElementById("loadingTH").style.display = "block";
+  const loadingEl = document.getElementById("loadingTH");
+  const loaderText = document.getElementById("pageLoaderText");
 
-  fetch(API_TH + "&_=" + Date.now(), {
-    cache: "no-store"
-  })
-  .then(r => r.json())
-  .then(res => {
+  loadingEl.style.display = "block";
+
+  // API đôi lúc phản hồi chậm/lỗi tạm thời. Tự thử lại để tránh trạng thái
+  // "xoay mãi nhưng không có dữ liệu".
+  const MAX_RETRY = 3;
+  const TIMEOUT_MS = 12000;
+
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+  async function getData(attempt){
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+    try{
+      const url = API_TH +
+        (API_TH.includes("?") ? "&" : "?") +
+        "_=" + Date.now() + "_" + attempt;
+
+      const response = await fetch(url, {
+        method:"GET",
+        cache:"no-store",
+        credentials:"omit",
+        signal:controller.signal,
+        headers:{ "Accept":"application/json" }
+      });
+
+      if(!response.ok){
+        throw new Error("HTTP " + response.status);
+      }
+
+      const text = await response.text();
+
+      if(!text.trim()){
+        throw new Error("API trả về rỗng");
+      }
+
+      let res;
+      try{
+        res = JSON.parse(text);
+      }catch(e){
+        throw new Error("API không trả về JSON hợp lệ");
+      }
+
+      if(!res || !Array.isArray(res.data)){
+        throw new Error("API thiếu trường data");
+      }
+
+      return res;
+
+    }finally{
+      clearTimeout(timer);
+    }
+  }
+
+  let res = null;
+  let lastError = null;
+
+  for(let attempt=1; attempt<=MAX_RETRY; attempt++){
+
+    if(loaderText){
+      loaderText.innerText =
+        attempt === 1
+          ? "Đang tải dữ liệu..."
+          : `Đang kết nối lại... (${attempt}/${MAX_RETRY})`;
+    }
+
+    try{
+      res = await getData(attempt);
+      break;
+    }catch(err){
+      lastError = err;
+      console.warn("API Thu hồi lỗi lần " + attempt + ":", err);
+
+      if(attempt < MAX_RETRY){
+        await sleep(1200 * attempt);
+      }
+    }
+  }
+
+  if(!res){
+    console.error("Không tải được API Thu hồi:", lastError);
+
+    loadingEl.innerText = "❌ Không tải được dữ liệu";
+
+    if(loaderText){
+      loaderText.innerHTML = `
+        ❌ Không kết nối được dữ liệu
+        <br>
+        <button onclick="loadThuHoi()" style="
+          margin-top:12px;
+          padding:8px 16px;
+          border:1px solid #ff0033;
+          border-radius:18px;
+          background:#111;
+          color:#fff;
+          cursor:pointer;
+        ">↻ Thử lại</button>
+      `;
+    }
+
+    // Nếu API thực sự không hoạt động, thoát loader sau 3 giây.
+    setTimeout(()=>{
+      const loader=document.getElementById("pageLoader");
+      if(loader && !loader.classList.contains("hidden")){
+        loader.classList.add("hidden");
+        loader.style.setProperty("display","none","important");
+        document.body.classList.remove("page-loading");
+        document.body.style.setProperty("background","#f3f6fa","important");
+        document.documentElement.style.setProperty("background","#f3f6fa","important");
+      }
+    },3000);
+
+    return;
+  }
+
+  try{
 
     let raw = res.data || [];
 
+    // ===== LOGTIME =====
     if(raw.length > 0){
       let tg = raw[0].tg_update || raw[0]["Tg update"];
 
       if(tg){
         let d = new Date(tg);
-        let day = String(d.getDate()).padStart(2,"0");
-        let month = String(d.getMonth()+1).padStart(2,"0");
-        let year = d.getFullYear();
-        let hour = String(d.getHours()).padStart(2,"0");
-        let minute = String(d.getMinutes()).padStart(2,"0");
 
-        document.getElementById("logtimeTH").innerText =
-          `🕒 Thời gian lấy báo cáo: ${day}/${month}/${year} ${hour}:${minute}`;
+        if(!isNaN(d.getTime())){
+          let day=String(d.getDate()).padStart(2,"0");
+          let month=String(d.getMonth()+1).padStart(2,"0");
+          let year=d.getFullYear();
+          let hour=String(d.getHours()).padStart(2,"0");
+          let minute=String(d.getMinutes()).padStart(2,"0");
+
+          document.getElementById("logtimeTH").innerText =
+            `🕒 Thời gian lấy báo cáo: ${day}/${month}/${year} ${hour}:${minute}`;
+        }
       }
     }
 
-    let nhanvienMap = {};
-    let huyenMap = {};
+    let nhanvienMap={};
+    let huyenMap={};
 
     raw.forEach(r=>{
 
-      let nv = r.nhan_vien || "Không tên";
-      let h = r.huyen || "Không rõ";
+      let nv=r.nhan_vien || "Không tên";
+      let h=r.huyen || "Không rõ";
 
-      let can = Number(r.can_thu || 0);
-      let da = Number(r.da_thu_hoi || 0);
-      let phat = Number(r.tien_phat || 0);
-      let uu = Number(r.uu_tien || 0);
-      let mesh = r.mesh || "";
+      let can=Number(r.can_thu || 0);
+      let da=Number(r.da_thu_hoi || 0);
+      let phat=Number(r.tien_phat || 0);
+      let uu=Number(r.uu_tien || 0);
+      let mesh=r.mesh || "";
 
       if(!nhanvienMap[nv]){
-        nhanvienMap[nv] = {
+        nhanvienMap[nv]={
           nhan_vien:nv,
           huyen:h,
           tong_can:0,
@@ -1884,7 +2011,7 @@ function loadThuHoi(){
       }
 
       if(!huyenMap[h]){
-        huyenMap[h] = {
+        huyenMap[h]={
           huyen:h,
           tong_can:0,
           tong_da:0,
@@ -1893,17 +2020,17 @@ function loadThuHoi(){
         };
       }
 
-      if(phat > 0 && nhanvienMap[nv].tong_phat === 0){
-        nhanvienMap[nv].tong_phat = phat;
+      if(phat>0 && nhanvienMap[nv].tong_phat===0){
+        nhanvienMap[nv].tong_phat=phat;
       }
 
-      if(phat > 0 && !huyenMap[h].nv_set.has(nv)){
-        huyenMap[h].tong_phat += phat;
+      if(phat>0 && !huyenMap[h].nv_set.has(nv)){
+        huyenMap[h].tong_phat+=phat;
         huyenMap[h].nv_set.add(nv);
       }
 
-      nhanvienMap[nv].tong_can += can;
-      nhanvienMap[nv].tong_da += da;
+      nhanvienMap[nv].tong_can+=can;
+      nhanvienMap[nv].tong_da+=da;
 
       nhanvienMap[nv].list.push({
         account:r.account,
@@ -1911,19 +2038,19 @@ function loadThuHoi(){
         uu_tien:uu,
         can,
         da,
-        ty_le:can === 0 ? 1 : da / can
+        ty_le:can===0 ? 1 : da/can
       });
 
-      if(uu === 1 || uu === 2){
-        huyenMap[h].tong_can += can;
-        huyenMap[h].tong_da += da;
+      if(uu===1 || uu===2){
+        huyenMap[h].tong_can+=can;
+        huyenMap[h].tong_da+=da;
       }
     });
 
-    dataTH = Object.values(nhanvienMap);
-    let dataHuyen = Object.values(huyenMap);
+    dataTH=Object.values(nhanvienMap);
+    let dataHuyen=Object.values(huyenMap);
 
-    dataHuyenGlobal = dataHuyen;
+    dataHuyenGlobal=dataHuyen;
 
     renderHuyen(dataHuyen);
 
@@ -1938,15 +2065,14 @@ function loadThuHoi(){
     document.getElementById("marqueeText").innerHTML =
       `📢 Tập trung thu hồi ƯT1, ƯT2 trước, ƯT3 thu hồi giảm phạt rời mạng | <b>📢 Nhập tổ đội lưu ý:</b> (báo cáo thu hồi tháng 4 sang đầu tháng 5 mới nhập tổ đội, tương tự với các tháng tiếp theo)`;
 
-    document.getElementById("loadingTH").style.display = "none";
+    loadingEl.style.display="none";
     hidePageLoader();
 
-  })
-  .catch(err=>{
-    console.log("API lỗi",err);
-    document.getElementById("loadingTH").innerText = "❌ Không tải được dữ liệu";
+  }catch(err){
+    console.error("Lỗi xử lý dữ liệu Thu hồi:",err);
+    loadingEl.innerText="❌ Lỗi xử lý dữ liệu";
     hidePageLoader();
-  });
+  }
 }
 
 function filterTH(){
@@ -1983,14 +2109,6 @@ function filterTH(){
 
 loadThuHoi();
 
-/* Bảo hiểm: loader toàn màn hình không được phép xoay vô hạn */
-setTimeout(()=>{
-  const loader = document.getElementById("pageLoader");
-  if(loader && !loader.classList.contains("hidden")){
-    loader.classList.add("hidden");
-    document.body.classList.remove("page-loading");
-  }
-}, 15000);
 </script>
 
 <!-- =========================================================
