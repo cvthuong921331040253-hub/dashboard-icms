@@ -3794,6 +3794,70 @@ html,body,.app{background:#f7f7f7!important;color:#0f0f0f!important}
 }
 </style>
 
+
+<style id="v24-nhanvien">
+/* V24: Nhân viên desktop + Người tạo/Nhân viên mobile */
+.chat-table th.nhanvien-col,
+.chat-table td.nhanvien-col{
+  min-width:110px!important;
+  max-width:150px!important;
+  text-align:center!important;
+  vertical-align:middle!important;
+  white-space:normal!important;
+  word-break:break-word!important;
+}
+
+.mobile-field-nhanvien,
+.mobile-field-nvtao{
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important;
+  width:100%!important;
+  margin-top:5px!important;
+  padding-top:5px!important;
+  border-top:1px dashed #e7e9ec!important;
+}
+
+.mobile-field-nhanvien .field-icon,
+.mobile-field-nvtao .field-icon{
+  width:20px!important;height:20px!important;flex:0 0 20px!important;
+  display:grid!important;place-items:center!important;
+  border-radius:6px!important;background:#f3f4f6!important;
+  color:#e31b23!important;font-size:10px!important;
+}
+.mobile-field-nhanvien .field-label,
+.mobile-field-nvtao .field-label{
+  flex:0 0 70px!important;color:#68717b!important;
+  font-size:10px!important;font-weight:850!important;
+}
+.mobile-field-nhanvien .field-value,
+.mobile-field-nvtao .field-value{
+  min-width:0!important;color:#252b33!important;
+  font-size:11px!important;font-weight:750!important;
+  line-height:1.35!important;word-break:break-word!important;
+}
+@media(min-width:701px){
+  .mobile-field-nhanvien,.mobile-field-nvtao{display:none!important}
+}
+
+</style>
+
+<style id="v25-main-nhanvien-fix">
+/* V25: cột Nhân viên của bảng chính phải có ô dữ liệu riêng, không làm lệch cột */
+.table-wrap table{min-width:1540px!important}
+.table-wrap th.nhanvien-col,.table-wrap td.nhanvien-col{
+  min-width:105px!important;
+  width:105px!important;
+  max-width:150px!important;
+  text-align:center!important;
+  vertical-align:middle!important;
+  white-space:normal!important;
+  word-break:break-word!important;
+}
+@media(max-width:900px){
+  .table-wrap table{min-width:1540px!important}
+}
+</style>
 </head>
 <body>
 <div id="loading"><div class="loadbox"><div class="spin"></div><b id="loadTitle">ĐANG TẢI ICMS</b><span id="loadText" aria-hidden="true"></span></div></div>
@@ -3829,7 +3893,7 @@ html,body,.app{background:#f7f7f7!important;color:#0f0f0f!important}
     <div class="table-wrap">
       <table>
         <thead><tr>
-          <th>STT</th><th>Trạm/Tuyến/Tủ</th><th>Mã WO</th><th>Huyện</th><th>Danh mục</th><th>Đầu việc</th>
+          <th>STT</th><th>Trạm/Tuyến/Tủ</th><th>Mã WO</th><th class="nhanvien-col">Nhân viên</th><th>Huyện</th><th>Danh mục</th><th>Đầu việc</th>
           <th>Thời gian tồn</th><th>Đánh giá</th><th>In/Out</th><th>VCC</th><th>VTNet</th><th>Người tạo</th>
           <th>Đầu việc báo hỏng</th><th>Mô tả</th>
         </tr></thead>
@@ -3910,7 +3974,7 @@ html,body,.app{background:#f7f7f7!important;color:#0f0f0f!important}
   </div>
 </div>
 <script>
-const API='https://script.google.com/macros/s/AKfycbxizqOL56blb4IpQwA-g9TjISAIt3Fvn8KHf362J9yMaAEdKqc1q2_YfVudUEhFbDxg/exec';
+const API='https://script.google.com/macros/s/AKfycbw5JiImUrtiHTqWEtucGKUDo_zd-ZEP8C7zFX7LKDSY3x2rmkR3m6wwHY1xoKyzHTVS/exec';
 let DATA=[], FILTERED=[];
 
 const $=id=>document.getElementById(id);
@@ -3945,7 +4009,8 @@ function normalize(x){
     dvbh:norm(pickKey(x,'dvbh','Đầu việc báo hỏng','dauviec_bao_hong','dhcb')),
     tg, dg:norm(x.danhgia??x.dg)||(tg<0?'Quá hạn':'Trong hạn'),
     type:norm(x.type??x.in_out), ttvcc:norm(x.wo_vvc??x.ttvcc), ttnet:norm(x.wo_vtnet??x.ttnet),
-    nvtao:norm(x.nhanvien_tao??x.nvtao), nv:norm(x.nhanvien??x.nv),
+    nvtao:norm(pickKey(x,'nhanvien_tao','nvtao','người tạo','nguoi tao','nguoi_tao')),
+    nv:norm(pickKey(x,'nhanvien','nv','nhân viên','nhan vien','nhan_vien','employee','nguoithuchien','nguoi_thuc_hien','nhanvien_thuchien')),
     tg_update:norm(x.tg_update), mt:norm(x.mota??x.mt)
   };
 }
@@ -3965,7 +4030,7 @@ function buildFilters(){
 function applyFilters(){
   const q=norm($('q').value).toLowerCase(), h=$('fHuyen').value, dm=$('fDm').value, dv=$('fDv').value, type=$('fType').value, dg=$('fDg').value;
   FILTERED=DATA.filter(x=>{
-    const blob=[x.tram,x.wo,x.huyen,x.dm,x.dv,x.mt,x.ttvcc,x.ttnet,x.nvtao].join(' ').toLowerCase();
+    const blob=[x.tram,x.wo,x.huyen,x.dm,x.dv,x.mt,x.ttvcc,x.ttnet,x.nvtao,x.nv].join(' ').toLowerCase();
     return (!q||blob.includes(q))&&(!h||x.huyen===h)&&(!dm||x.dm===dm)&&(!dv||x.dv===dv)&&(!type||x.type===type)&&(!dg||x.dg===dg);
   });
   render();
@@ -3977,18 +4042,19 @@ function render(){
   $('sTotal').textContent=FILTERED.length;$('sOver').textContent=over;$('sOk').textContent=FILTERED.length-over;$('sIn').textContent=ins;$('sOut').textContent=outs;
   $('countDesk').textContent=FILTERED.length+' dòng';$('countMobile').textContent=FILTERED.length+' dòng';
   $('tbody').innerHTML=FILTERED.map((x,i)=>`<tr>
-    <td>${i+1}</td><td><b>${esc(x.tram)}</b></td><td>${esc(x.wo)}</td><td>${esc(x.huyen)}</td><td>${esc(x.dm)}</td><td>${esc(x.dv)}</td>
+    <td>${i+1}</td><td><b>${esc(x.tram)}</b></td><td>${esc(x.wo)}</td><td class="nhanvien-col">${esc(x.nv||'-')}</td><td>${esc(x.huyen)}</td><td>${esc(x.dm)}</td><td>${esc(x.dv)}</td>
     <td>${esc(x.tg)}</td><td>${tag(x.dg,x.dg==='Quá hạn'?'over':'ok')}</td><td>${tag(x.type,x.type.toLowerCase()==='inos'?'inos':'outos')}</td>
     <td>${esc(x.ttvcc)}</td><td>${esc(x.ttnet)}</td><td>${esc(x.nvtao)}</td>
     <td><button class="open-detail" onclick="openDetail('Đầu việc báo hỏng', ${i}, 'dvbh')">XEM</button></td>
     <td><button class="open-detail" onclick="openDetail('Mô tả', ${i}, 'mt')">XEM</button></td>
-  </tr>`).join('')||'<tr><td colspan="14" class="empty">Không có dữ liệu phù hợp.</td></tr>';
+  </tr>`).join('')||'<tr><td colspan="15" class="empty">Không có dữ liệu phù hợp.</td></tr>';
   $('list').innerHTML=FILTERED.map(x=>`<div class="item">
     <div class="item-top"><div><div class="item-title">${esc(x.tram||'-')}</div><div class="item-wo">WO: ${esc(x.wo||'-')}</div></div><div>${tag(x.dg,x.dg==='Quá hạn'?'over':'ok')} ${tag(x.type,x.type.toLowerCase()==='inos'?'inos':'outos')}</div></div>
     <div class="item-grid">
       <div class="kv"><span>HUYỆN</span>${esc(x.huyen||'-')}</div><div class="kv"><span>DANH MỤC</span>${esc(x.dm||'-')}</div>
       <div class="kv"><span>ĐẦU VIỆC</span>${esc(x.dv||'-')}</div><div class="kv"><span>THỜI GIAN TỒN</span>${esc(x.tg)}</div>
       <div class="kv"><span>VCC</span>${esc(x.ttvcc||'-')}</div><div class="kv"><span>VTNET</span>${esc(x.ttnet||'-')}</div>
+      <div class="kv"><span>NGƯỜI TẠO</span>${esc(x.nvtao||'-')}</div><div class="kv"><span>NHÂN VIÊN</span>${esc(x.nv||'-')}</div>
     </div>
     <div class="item-desc">
       <button class="open-detail" onclick="openDetail('Đầu việc báo hỏng', ${FILTERED.indexOf(x)}, 'dvbh')">ĐẦU VIỆC BÁO HỎNG${x.dvbh?' • XEM':' • TRỐNG'}</button>
@@ -3996,7 +4062,11 @@ function render(){
     </div>
   </div>`).join('')||'<div class="empty">Không có dữ liệu phù hợp.</div>';
 }
-function setData(rows,source){DATA=rows.map(normalize).filter(x=>x.tram||x.wo||x.mt);buildFilters();applyFilters();$('sourceStatus').textContent=source;}
+function setData(rows,source){
+  DATA=rows.map(normalize).filter(x=>x.tram||x.wo||x.mt);
+  console.log('ICMS Nhân viên:', DATA.filter(x=>x.nv).length+'/'+DATA.length, DATA.slice(0,3).map(x=>({wo:x.wo,nhanvien:x.nv})));
+  buildFilters();applyFilters();$('sourceStatus').textContent=source;
+}
 
 function openDetail(title,index,field){
   const x=FILTERED[index];
@@ -4009,62 +4079,135 @@ function closeDetail(){$('detailModal').classList.remove('show');}
 function exportFilteredExcel(){
   if(!FILTERED.length){alert('Không có dữ liệu để tải.');return;}
   if(!window.XLSX){alert('Không tải được thư viện xuất Excel.');return;}
+
   showLoading('ĐANG TẠO FILE EXCEL','Đang định dạng và xuất '+FILTERED.length+' dòng đã lọc...');
+
   setTimeout(()=>{
     try{
-      const rows=FILTERED.map((x,i)=>({
-        'STT':i+1,
-        'Trạm/Tuyến/Tủ':x.tram,
-        'Mã WO':x.wo,
-        'Huyện':x.huyen,
-        'Danh mục':x.dm,
-        'Đầu việc':x.dv,
-        'Thời gian tồn':x.tg,
-        'Đánh giá':x.dg,
-        'In/Out':x.type,
-        'Trạng thái VCC':x.ttvcc,
-        'Trạng thái VTNet':x.ttnet,
-        'Người tạo':x.nvtao,
-        'Đầu việc báo hỏng':x.dvbh,
-        'Mô tả':x.mt
-      }));
-      const ws=XLSX.utils.json_to_sheet(rows);
+      const rows=FILTERED.map((x,i)=>(
+        {
+          'STT':i+1,
+          'Trạm/Tuyến/Tủ':x.tram||'',
+          'Mã WO':x.wo||'',
+          'Nhân viên':x.nv||'',
+          'Huyện':x.huyen||'',
+          'Danh mục':x.dm||'',
+          'Đầu việc':x.dv||'',
+          'Thời gian tồn':x.tg??'',
+          'Đánh giá':x.dg||'',
+          'In/Out':x.type||'',
+          'Trạng thái VCC':x.ttvcc||'',
+          'Trạng thái VTNet':x.ttnet||'',
+          'Người tạo':x.nvtao||'',
+          'Đầu việc báo hỏng':x.dvbh||'',
+          'Mô tả':x.mt||''
+        }
+      ));
+
       const headers=Object.keys(rows[0]);
+      const ws=XLSX.utils.json_to_sheet(rows,{header:headers});
       const range=XLSX.utils.decode_range(ws['!ref']);
+
+      // Độ rộng từng cột: đủ đọc nhưng không làm file quá rộng.
+      const widths=[
+        7, 30, 26, 22, 22,
+        28, 28, 16, 15, 14,
+        22, 22, 28, 42, 58
+      ];
+      ws['!cols']=widths.map(w=>({wch:w}));
+
+      // Kẻ ô toàn bộ bảng + căn giữa theo chiều dọc.
+      const border={
+        top:{style:'thin',color:{rgb:'B7B7B7'}},
+        bottom:{style:'thin',color:{rgb:'B7B7B7'}},
+        left:{style:'thin',color:{rgb:'B7B7B7'}},
+        right:{style:'thin',color:{rgb:'B7B7B7'}}
+      };
+
       const headerStyle={
         font:{bold:true,color:{rgb:'FFFFFF'},sz:11},
-        fill:{fgColor:{rgb:'1F4E78'}},
+        fill:{fgColor:{rgb:'0F0F0F'}},
         alignment:{horizontal:'center',vertical:'center',wrapText:true},
-        border:{top:{style:'thin',color:{rgb:'AAB7C4'}},bottom:{style:'thin',color:{rgb:'AAB7C4'}},left:{style:'thin',color:{rgb:'AAB7C4'}},right:{style:'thin',color:{rgb:'AAB7C4'}}}
+        border:border
       };
-      const bodyStyle={
-        alignment:{vertical:'center',wrapText:true},
-        border:{top:{style:'thin',color:{rgb:'D9E2F3'}},bottom:{style:'thin',color:{rgb:'D9E2F3'}},left:{style:'thin',color:{rgb:'D9E2F3'}},right:{style:'thin',color:{rgb:'D9E2F3'}}}
-      };
+
+      // Cột cần căn trái; các cột còn lại căn giữa.
+      const leftCols=new Set([1,2]);
+
       for(let c=range.s.c;c<=range.e.c;c++){
         const cell=ws[XLSX.utils.encode_cell({r:0,c})];
         if(cell) cell.s=headerStyle;
       }
+
       for(let r=1;r<=range.e.r;r++){
         for(let c=range.s.c;c<=range.e.c;c++){
           const cell=ws[XLSX.utils.encode_cell({r,c})];
-          if(cell) cell.s={...bodyStyle,alignment:{...bodyStyle.alignment,horizontal:(c===0?'center':(c===1||c===2?'left':'center'))}};
+          if(!cell) continue;
+          cell.s={
+            font:{color:{rgb:'222222'},sz:10},
+            alignment:{
+              horizontal:c===0?'center':(leftCols.has(c)?'left':'center'),
+              vertical:'center',
+              wrapText:true
+            },
+            border:border
+          };
         }
       }
-      ws['!cols']=[{wch:7},{wch:30},{wch:26},{wch:18},{wch:24},{wch:28},{wch:15},{wch:14},{wch:12},{wch:20},{wch:22},{wch:20},{wch:38},{wch:65}];
-      ws['!rows']=Array.from({length:rows.length+1},(_,i)=>({hpt:i===0?28:Math.min(70,Math.max(22,Math.ceil(Math.max(...Object.values(rows[Math.max(0,i-1)]||{}).map(v=>String(v??'').length))/35)*16))}));
+
+      // Chiều cao dòng tự tính theo lượng chữ và độ rộng cột.
+      // Tiêu đề luôn đủ cao để xuống hàng khi cần.
+      ws['!rows']=[];
+      ws['!rows'][0]={hpt:34};
+
+      for(let r=1;r<=range.e.r;r++){
+        let maxLines=1;
+        for(let c=range.s.c;c<=range.e.c;c++){
+          const cell=ws[XLSX.utils.encode_cell({r,c})];
+          if(!cell) continue;
+          const text=String(cell.v??'');
+          const width=widths[c]||15;
+          const explicitLines=text.split(/\r?\n/);
+          let lines=0;
+          explicitLines.forEach(part=>{
+            const len=part.length;
+            lines+=Math.max(1,Math.ceil(len/Math.max(8,width*1.35)));
+          });
+          maxLines=Math.max(maxLines,lines);
+        }
+        ws['!rows'][r]={hpt:Math.min(90,Math.max(22,maxLines*15+5))};
+      }
+
+      // Bộ lọc + cố định hàng tiêu đề.
       ws['!autofilter']={ref:`A1:${XLSX.utils.encode_col(headers.length-1)}${rows.length+1}`};
-      ws['!freeze']={xSplit:0,ySplit:1,topLeftCell:'A2',activePane:'bottomLeft',state:'frozen'};
+      ws['!freeze']={
+        xSplit:0,
+        ySplit:1,
+        topLeftCell:'A2',
+        activePane:'bottomLeft',
+        state:'frozen'
+      };
+
       const wb=XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb,ws,'ICMS_Da_Loc');
+
       const d=new Date();
-      const stamp=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'_'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0');
+      const stamp=
+        d.getFullYear()+
+        String(d.getMonth()+1).padStart(2,'0')+
+        String(d.getDate()).padStart(2,'0')+'_'+
+        String(d.getHours()).padStart(2,'0')+
+        String(d.getMinutes()).padStart(2,'0');
+
       XLSX.writeFile(wb,'ICMS_Da_Loc_'+stamp+'.xlsx',{cellStyles:true});
-    }catch(e){console.error(e);alert('Lỗi khi xuất Excel: '+e.message);}
-    finally{hideLoading();}
+    }catch(e){
+      console.error(e);
+      alert('Lỗi khi xuất Excel: '+e.message);
+    }finally{
+      hideLoading();
+    }
   },80);
 }
-
 function openHelp(){$('helpModal').classList.add('show');$('helpCommand').value='';}
 function closeHelp(){$('helpModal').classList.remove('show');}
 function runTypedCommand(){
@@ -4375,7 +4518,7 @@ document.addEventListener('click',function(e){
     if(p.keywords.length){
       const hay=[
         r.tram,r.wo,r.huyen,r.dm,r.dv,r.dvbh,r.mt,r.type,
-        r.wo_vvc,r.wo_vtnet
+        r.wo_vvc,r.wo_vtnet,r.nv,r.nhanvien
       ].map(fold).join(' ');
 
       // Ưu tiên tìm cả cụm từ, sau đó mới tách từng từ
@@ -4392,7 +4535,7 @@ document.addEventListener('click',function(e){
     const body=rows.slice(0,200).map((r,i)=>`<tr>
       <td>${i+1}</td>
       <td>${esc(r.tram)}</td>
-      <td>${esc(r.wo)}</td>
+      <td>${esc(r.wo)}</td><td class="nhanvien-col">${esc(r.nv || r.nhanvien || "-")}</td>
       <td>${esc(r.dm)}</td>
       <td>${esc(r.dv)}</td>
       <td>${esc(r.dvbh)}</td>
