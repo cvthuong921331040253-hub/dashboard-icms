@@ -54,6 +54,9 @@ tr:hover td{background:#f8fbff}
   .item-wo{font-size:11px;color:var(--muted);margin-top:3px}.item-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
   .kv{font-size:11px}.kv span{display:block;color:var(--muted);font-size:10px;margin-bottom:2px}.item-desc{margin-top:8px;padding-top:8px;border-top:1px solid #edf1f5;font-size:11px;color:#475569}
 }
+
+/* V30: hiển thị thời gian cập nhật rõ ràng trên tiêu đề */
+.update-status{display:inline-flex;align-items:center;margin-left:10px;padding:4px 9px;border:1px solid #444;border-radius:999px;background:#1b1b1b;color:#fff;font-size:10px;font-weight:700;line-height:1;white-space:nowrap}
 </style>
 
 <style id="user-request-patch">
@@ -3858,6 +3861,26 @@ html,body,.app{background:#f7f7f7!important;color:#0f0f0f!important}
   .table-wrap table{min-width:1540px!important}
 }
 </style>
+<style id="update-status-v29">
+.title{display:flex!important;align-items:center!important;gap:10px!important;min-width:0!important}
+.update-status{display:inline-flex!important;align-items:center!important;white-space:nowrap!important;font-size:10px!important;font-weight:700!important;color:#fff!important;background:#272727!important;border:1px solid #444!important;border-radius:999px!important;padding:4px 8px!important;line-height:1.2!important}
+@media(max-width:900px){.title{gap:6px!important}.update-status{font-size:8px!important;padding:3px 6px!important;max-width:180px!important;overflow:hidden!important;text-overflow:ellipsis!important}}
+</style>
+<style id="v31-update-status-visible">
+/* Hiển thị thời gian cập nhật trên thanh tiêu đề */
+.title{display:flex!important;align-items:center!important;gap:10px!important;flex-wrap:wrap!important}
+.title b{display:inline-block!important}
+#updateStatus{display:inline-block!important;color:#d7d7d7!important;font-size:10px!important;font-weight:500!important;opacity:1!important;margin:0!important;padding:3px 8px!important;border-left:1px solid #555!important;white-space:nowrap!important}
+@media(max-width:900px){#updateStatus{font-size:9px!important;padding:2px 6px!important;max-width:100%;white-space:normal!important}}
+</style>
+
+<style id="penalty-v1">
+.penalty-cell{font-weight:700;white-space:nowrap}
+.penalty-ft{color:#d97706}
+.penalty-cd{color:#dc2626}
+.penalty-high{color:#991b1b}
+@media(max-width:900px){.penalty-cell{font-size:12px}}
+</style>
 </head>
 <body>
 <div id="loading"><div class="loadbox"><div class="spin"></div><b id="loadTitle">ĐANG TẢI ICMS</b><span id="loadText" aria-hidden="true"></span></div></div>
@@ -3865,7 +3888,7 @@ html,body,.app{background:#f7f7f7!important;color:#0f0f0f!important}
 <div class="app">
   <div class="top-shell">
     <div class="header">
-      <div class="title"><b>ICMS · BẢNG CHI TIẾT</b></div>
+      <div class="title"><b>ICMS · BẢNG CHI TIẾT</b><span id="updateStatus" class="update-status">Cập nhật: —</span></div>
       <div class="source" id="sourceStatus">ICMS</div>
     </div>
 
@@ -3894,7 +3917,7 @@ html,body,.app{background:#f7f7f7!important;color:#0f0f0f!important}
       <table>
         <thead><tr>
           <th>STT</th><th>Trạm/Tuyến/Tủ</th><th>Mã WO</th><th class="nhanvien-col">Nhân viên</th><th>Huyện</th><th>Danh mục</th><th>Đầu việc</th>
-          <th>Thời gian tồn</th><th>Đánh giá</th><th>In/Out</th><th>VCC</th><th>VTNet</th><th>Người tạo</th>
+          <th>Thời gian tồn</th><th>Tiền phạt</th><th>Đánh giá</th><th>In/Out</th><th>VCC</th><th>VTNet</th><th>Người tạo</th>
           <th>Đầu việc báo hỏng</th><th>Mô tả</th>
         </tr></thead>
         <tbody id="tbody"></tbody>
@@ -4001,6 +4024,22 @@ function pickKey(obj,...keys){
   return '';
 }
 function num(v){let n=Number(String(v??'').replace(',','.'));return Number.isFinite(n)?n:0}
+function penaltyInfo(tg){
+  const days=Math.max(0,Math.floor(-num(tg)));
+  if(days<=0) return {amount:0,label:'',className:''};
+  const ft=Math.min(days,5)*50000;
+  const cd=Math.max(0,Math.min(days,9)-5)*250000;
+  const high=Math.max(0,days-9)*500000;
+  const amount=ft+cd+high;
+  const label=days>=10?'Cao hơn nữa':(days>=6?'CD':'FT');
+  const className=days>=10?'penalty-high':(days>=6?'penalty-cd':'penalty-ft');
+  return {amount,label,className};
+}
+function penaltyHtml(tg){
+  const p=penaltyInfo(tg);
+  if(!p.amount) return '<span class="penalty-cell">-</span>';
+  return '<span class="penalty-cell '+p.className+'">'+p.amount.toLocaleString('vi-VN')+'</span>';
+}
 function normalize(x){
   const tg=num(x.thoigian??x.tg);
   return {
@@ -4011,7 +4050,7 @@ function normalize(x){
     type:norm(x.type??x.in_out), ttvcc:norm(x.wo_vvc??x.ttvcc), ttnet:norm(x.wo_vtnet??x.ttnet),
     nvtao:norm(pickKey(x,'nhanvien_tao','nvtao','người tạo','nguoi tao','nguoi_tao')),
     nv:norm(pickKey(x,'nhanvien','nv','nhân viên','nhan vien','nhan_vien','employee','nguoithuchien','nguoi_thuc_hien','nhanvien_thuchien')),
-    tg_update:norm(x.tg_update), mt:norm(x.mota??x.mt)
+    tg_update:norm(pickKey(x,'tg_update','tg update','thời gian cập nhật','thoi gian cap nhat','time update','update time')), mt:norm(x.mota??x.mt)
   };
 }
 function unique(arr){return [...new Set(arr.filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'vi'))}
@@ -4043,16 +4082,16 @@ function render(){
   $('countDesk').textContent=FILTERED.length+' dòng';$('countMobile').textContent=FILTERED.length+' dòng';
   $('tbody').innerHTML=FILTERED.map((x,i)=>`<tr>
     <td>${i+1}</td><td><b>${esc(x.tram)}</b></td><td>${esc(x.wo)}</td><td class="nhanvien-col">${esc(x.nv||'-')}</td><td>${esc(x.huyen)}</td><td>${esc(x.dm)}</td><td>${esc(x.dv)}</td>
-    <td>${esc(x.tg)}</td><td>${tag(x.dg,x.dg==='Quá hạn'?'over':'ok')}</td><td>${tag(x.type,x.type.toLowerCase()==='inos'?'inos':'outos')}</td>
+    <td>${esc(x.tg)}</td><td>${penaltyHtml(x.tg)}</td><td>${tag(x.dg,x.dg==='Quá hạn'?'over':'ok')}</td><td>${tag(x.type,x.type.toLowerCase()==='inos'?'inos':'outos')}</td>
     <td>${esc(x.ttvcc)}</td><td>${esc(x.ttnet)}</td><td>${esc(x.nvtao)}</td>
     <td><button class="open-detail" onclick="openDetail('Đầu việc báo hỏng', ${i}, 'dvbh')">XEM</button></td>
     <td><button class="open-detail" onclick="openDetail('Mô tả', ${i}, 'mt')">XEM</button></td>
-  </tr>`).join('')||'<tr><td colspan="15" class="empty">Không có dữ liệu phù hợp.</td></tr>';
+  </tr>`).join('')||'<tr><td colspan="16" class="empty">Không có dữ liệu phù hợp.</td></tr>';
   $('list').innerHTML=FILTERED.map(x=>`<div class="item">
     <div class="item-top"><div><div class="item-title">${esc(x.tram||'-')}</div><div class="item-wo">WO: ${esc(x.wo||'-')}</div></div><div>${tag(x.dg,x.dg==='Quá hạn'?'over':'ok')} ${tag(x.type,x.type.toLowerCase()==='inos'?'inos':'outos')}</div></div>
     <div class="item-grid">
       <div class="kv"><span>HUYỆN</span>${esc(x.huyen||'-')}</div><div class="kv"><span>DANH MỤC</span>${esc(x.dm||'-')}</div>
-      <div class="kv"><span>ĐẦU VIỆC</span>${esc(x.dv||'-')}</div><div class="kv"><span>THỜI GIAN TỒN</span>${esc(x.tg)}</div>
+      <div class="kv"><span>ĐẦU VIỆC</span>${esc(x.dv||'-')}</div><div class="kv"><span>THỜI GIAN TỒN</span>${esc(x.tg)}</div><div class="kv"><span>TIỀN PHẠT</span>${penaltyHtml(x.tg)}</div>
       <div class="kv"><span>VCC</span>${esc(x.ttvcc||'-')}</div><div class="kv"><span>VTNET</span>${esc(x.ttnet||'-')}</div>
       <div class="kv"><span>NGƯỜI TẠO</span>${esc(x.nvtao||'-')}</div><div class="kv"><span>NHÂN VIÊN</span>${esc(x.nv||'-')}</div>
     </div>
@@ -4062,8 +4101,27 @@ function render(){
     </div>
   </div>`).join('')||'<div class="empty">Không có dữ liệu phù hợp.</div>';
 }
+function formatUpdateTime(v){
+  const s=norm(v);
+  if(!s) return '';
+  const d=new Date(s);
+  if(!Number.isNaN(d.getTime()) && /[-T/:]/.test(s)){
+    const dd=String(d.getDate()).padStart(2,'0');
+    const mm=String(d.getMonth()+1).padStart(2,'0');
+    const yyyy=d.getFullYear();
+    const hh=String(d.getHours()).padStart(2,'0');
+    const mi=String(d.getMinutes()).padStart(2,'0');
+    return `${dd}/${mm}/${yyyy} ${hh}:${mi}`;
+  }
+  return s;
+}
 function setData(rows,source){
-  DATA=rows.map(normalize).filter(x=>x.tram||x.wo||x.mt);
+  // Lấy TG_UPDATE từ bất kỳ dòng nào có giá trị, rồi dùng làm thời gian cập nhật chung.
+  const allRows=rows.map(normalize);
+  const updateTime=allRows.map(x=>x.tg_update).find(Boolean)||'';
+  DATA=allRows.filter(x=>x.tram||x.wo||x.mt);
+  const updateEl=$('updateStatus');
+  if(updateEl) updateEl.textContent=updateTime ? 'Cập nhật: '+formatUpdateTime(updateTime) : 'Cập nhật: —';
   console.log('ICMS Nhân viên:', DATA.filter(x=>x.nv).length+'/'+DATA.length, DATA.slice(0,3).map(x=>({wo:x.wo,nhanvien:x.nv})));
   buildFilters();applyFilters();$('sourceStatus').textContent=source;
 }
@@ -4094,13 +4152,15 @@ function exportFilteredExcel(){
           'Danh mục':x.dm||'',
           'Đầu việc':x.dv||'',
           'Thời gian tồn':x.tg??'',
+          'Tiền phạt':penaltyInfo(x.tg).amount,
           'Đánh giá':x.dg||'',
           'In/Out':x.type||'',
           'Trạng thái VCC':x.ttvcc||'',
           'Trạng thái VTNet':x.ttnet||'',
           'Người tạo':x.nvtao||'',
           'Đầu việc báo hỏng':x.dvbh||'',
-          'Mô tả':x.mt||''
+          'Mô tả':x.mt||'',
+          'TG cập nhật':x.tg_update||''
         }
       ));
 
@@ -4108,12 +4168,28 @@ function exportFilteredExcel(){
       const ws=XLSX.utils.json_to_sheet(rows,{header:headers});
       const range=XLSX.utils.decode_range(ws['!ref']);
 
-      // Độ rộng từng cột: đủ đọc nhưng không làm file quá rộng.
-      const widths=[
-        7, 30, 26, 22, 22,
-        28, 28, 16, 15, 14,
-        22, 22, 28, 42, 58
-      ];
+      // Độ rộng cột tự động theo ĐÚNG TÊN TIÊU ĐỀ + nội dung.
+      // Không dùng vị trí cố định để tránh lệch cột khi thêm/bớt trường.
+      const widthByHeader={
+        'STT':7,'Trạm/Tuyến/Tủ':30,'Mã WO':28,'Nhân viên':22,
+        'Huyện':20,'Danh mục':28,'Đầu việc':28,'Thời gian tồn':16,
+        'Tiền phạt':18,'Đánh giá':15,'In/Out':14,'Trạng thái VCC':22,
+        'Trạng thái VTNet':22,'Người tạo':28,'Đầu việc báo hỏng':42,
+        'Mô tả':58,'TG cập nhật':22
+      };
+      const widths=headers.map((h,c)=>{
+        const base=widthByHeader[h]||15;
+        let maxLen=String(h).length;
+        for(let r=1;r<=range.e.r;r++){
+          const cell=ws[XLSX.utils.encode_cell({r,c})];
+          if(cell && cell.v!=null){
+            const parts=String(cell.v).split(/\r?\n/);
+            maxLen=Math.max(maxLen,...parts.map(v=>v.length));
+          }
+        }
+        const auto=Math.ceil(maxLen/1.45)+2;
+        return Math.min(Math.max(base,auto),70);
+      });
       ws['!cols']=widths.map(w=>({wch:w}));
 
       // Kẻ ô toàn bộ bảng + căn giữa theo chiều dọc.
@@ -4152,6 +4228,11 @@ function exportFilteredExcel(){
             },
             border:border
           };
+          // Tiền phạt: định dạng có phân cách hàng nghìn.
+          if(headers[c]==='Tiền phạt'){
+            cell.z='#,##0';
+            cell.s.alignment.horizontal='right';
+          }
         }
       }
 
@@ -4544,6 +4625,7 @@ document.addEventListener('click',function(e){
       <td>${esc(r.type)}</td>
       <td>${overdue(r)?'Quá hạn':'Trong hạn'}</td>
       <td>${esc(r.tg)}</td>
+      <td>${penaltyHtml(r.tg)}</td>
       <td>${esc(r.tg_update||'-')}</td>
     </tr>`).join('');
 
