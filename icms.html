@@ -4168,27 +4168,20 @@ function exportFilteredExcel(){
       const ws=XLSX.utils.json_to_sheet(rows,{header:headers});
       const range=XLSX.utils.decode_range(ws['!ref']);
 
-      // Độ rộng cột tự động theo ĐÚNG TÊN TIÊU ĐỀ + nội dung.
-      // Không dùng vị trí cố định để tránh lệch cột khi thêm/bớt trường.
-      const widthByHeader={
-        'STT':7,'Trạm/Tuyến/Tủ':30,'Mã WO':28,'Nhân viên':22,
-        'Huyện':20,'Danh mục':28,'Đầu việc':28,'Thời gian tồn':16,
-        'Tiền phạt':18,'Đánh giá':15,'In/Out':14,'Trạng thái VCC':22,
-        'Trạng thái VTNet':22,'Người tạo':28,'Đầu việc báo hỏng':42,
-        'Mô tả':58,'TG cập nhật':22
-      };
+      // AUTO-FIT theo từng cột: lấy độ dài tiêu đề + dữ liệu thực tế.
+      // Không khóa độ rộng theo vị trí cột, nên cột luôn khớp đúng tiêu đề.
       const widths=headers.map((h,c)=>{
-        const base=widthByHeader[h]||15;
-        let maxLen=String(h).length;
+        let maxLen=String(h||'').length;
         for(let r=1;r<=range.e.r;r++){
           const cell=ws[XLSX.utils.encode_cell({r,c})];
-          if(cell && cell.v!=null){
-            const parts=String(cell.v).split(/\r?\n/);
-            maxLen=Math.max(maxLen,...parts.map(v=>v.length));
+          if(!cell || cell.v==null) continue;
+          for(const part of String(cell.v).split(/\r?\n/)){
+            const displayLen=Array.from(part).reduce((n,ch)=>n+(ch.charCodeAt(0)>255?1.15:1),0);
+            maxLen=Math.max(maxLen,displayLen);
           }
         }
-        const auto=Math.ceil(maxLen/1.45)+2;
-        return Math.min(Math.max(base,auto),70);
+        // Tự co giãn theo nội dung, tối đa 55 để ô dài tự xuống dòng.
+        return Math.min(Math.max(Math.ceil(maxLen*1.05)+2,8),55);
       });
       ws['!cols']=widths.map(w=>({wch:w}));
 
@@ -4204,7 +4197,12 @@ function exportFilteredExcel(){
         font:{bold:true,color:{rgb:'FFFFFF'},sz:11},
         fill:{fgColor:{rgb:'0F0F0F'}},
         alignment:{horizontal:'center',vertical:'center',wrapText:true},
-        border:border
+        border:{
+          top:border.top,
+          bottom:{style:'medium',color:{rgb:'FF0000'}},
+          left:border.left,
+          right:border.right
+        }
       };
 
       // Cột cần căn trái; các cột còn lại căn giữa.
@@ -4228,10 +4226,45 @@ function exportFilteredExcel(){
             },
             border:border
           };
-          // Tiền phạt: định dạng có phân cách hàng nghìn.
+          // Tiền phạt: phân cách hàng nghìn + màu theo giao diện web.
           if(headers[c]==='Tiền phạt'){
             cell.z='#,##0';
             cell.s.alignment.horizontal='right';
+            if(Number(cell.v||0)>0){
+              const tgVal=Number(FILTERED[r-1]?.tg||0);
+              const pInfo=penaltyInfo(tgVal);
+              if(pInfo.className==='penalty-ft'){
+                cell.s.font={bold:true,color:{rgb:'D97706'},sz:10};
+              }else if(pInfo.className==='penalty-cd'){
+                cell.s.font={bold:true,color:{rgb:'DC2626'},sz:10};
+              }else{
+                cell.s.font={bold:true,color:{rgb:'991B1B'},sz:10};
+              }
+            }
+          }
+
+          // Màu trạng thái giống giao diện web: Quá hạn / Trong hạn.
+          if(headers[c]==='Đánh giá'){
+            const v=String(cell.v||'').toLowerCase();
+            if(v.includes('quá hạn')){
+              cell.s.font={bold:true,color:{rgb:'C62828'},sz:10};
+              cell.s.fill={fgColor:{rgb:'FDE8E8'}};
+            }else if(v.includes('trong hạn')){
+              cell.s.font={bold:true,color:{rgb:'16804B'},sz:10};
+              cell.s.fill={fgColor:{rgb:'E8F5EE'}};
+            }
+          }
+
+          // Màu INOS / OUTOS giống badge trên giao diện web.
+          if(headers[c]==='In/Out'){
+            const v=String(cell.v||'').toLowerCase();
+            if(v==='inos'){
+              cell.s.font={bold:true,color:{rgb:'075FC8'},sz:10};
+              cell.s.fill={fgColor:{rgb:'E8F1FF'}};
+            }else if(v==='outos'){
+              cell.s.font={bold:true,color:{rgb:'7C3AED'},sz:10};
+              cell.s.fill={fgColor:{rgb:'F1EAFE'}};
+            }
           }
         }
       }
