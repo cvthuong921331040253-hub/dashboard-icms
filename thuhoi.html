@@ -33,7 +33,7 @@ body{background:#0f0f0f!important;margin:0!important;}
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>THU HỒI</title>
+<title>THU HỒI • YouTube Red</title>
 
 <style>
 *{box-sizing:border-box}
@@ -1620,6 +1620,13 @@ body:not(.page-loading){
   min-height:100vh;
 }
 
+
+/* ===== BẢN 27: ACCOUNT GIỮ ĐỦ TỪNG DÒNG API ===== */
+.account-missing{
+  color:#ff0033 !important;
+  font-style:italic;
+}
+
 </style>
 
 
@@ -1792,7 +1799,7 @@ function renderHuyen(data){
         <td>${da}</td>
         <td>${ton}</td>
         <td class="${ty_le<1?'rate-bad':'rate-good'}">${percent}%</td>
-        <td class="money">${phat.toLocaleString('vi-VN')}</td>
+        <td class="money">${Math.round(phat).toLocaleString('vi-VN')}</td>
       </tr>
     `;
   });
@@ -1805,6 +1812,15 @@ function renderHuyen(data){
   document.getElementById("tableHuyen").innerHTML = html;
 }
 
+
+function escTH(s){
+  return String(s ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+
 function renderTH(data){
   let html = "";
 
@@ -1815,13 +1831,20 @@ function renderTH(data){
       let isDone = Number(acc.can) > 0 && Number(acc.da) >= Number(acc.can);
       let styleDone = isDone ? "color:#0a8f08;font-weight:bold;" : "";
 
-      let meshHTML = acc.mesh
-        ? ` <span class="mesh-note">(Có Mesh)</span>`
-        : "";
+      let meshValue = String(acc.mesh || "").trim();
+      let meshHTML = "";
+      if(meshValue){
+        const meshText = meshValue.toLowerCase() === "mesh" ? "Có Mesh" : meshValue;
+        meshHTML = ` <span class="mesh-note">(${escTH(meshText)})</span>`;
+      }
 
       return `
       <div style="font-size:12px;margin-left:10px;${styleDone}">
-        • [ƯT ${acc.uu_tien}] ${acc.account}${meshHTML}
+        • [ƯT ${acc.uu_tien}] ${
+          acc.account
+            ? escTH(acc.account)
+            : '<span class="account-missing">[Không có account trong API]</span>'
+        }${meshHTML}
         | ${acc.da}/${acc.can}
         <span>(${(acc.ty_le*100).toFixed(0)}%)</span>
       </div>
@@ -1832,7 +1855,7 @@ function renderTH(data){
       <div class="card ${ty_le<1?'worst':'top'}">
         👤 <b>${r.nhan_vien}</b> - ${r.huyen}<br>
         💸 Tổng tiền phạt:
-        <b style="color:#d32f2f">${r.tong_phat.toLocaleString('vi-VN')}</b><br>
+        <b style="color:#d32f2f">${Math.round(Number(r.tong_phat||0)).toLocaleString('vi-VN')}</b><br>
         ${listHTML}
       </div>
     `;
@@ -1999,8 +2022,17 @@ async function loadThuHoi(){
       let uu=Number(r.uu_tien || 0);
       let mesh=r.mesh || "";
 
-      if(!nhanvienMap[nv]){
-        nhanvienMap[nv]={
+      /*
+       * QUAN TRỌNG:
+       * Không được dùng chỉ tên nhân viên làm key.
+       * Có thể có 2 nhân viên trùng tên nhưng thuộc 2 TTH khác nhau.
+       * Ví dụ: Nguyễn Văn Phương - Trung tâm An Khê
+       * và Nguyễn Văn Phương - Trung tâm Tuy Phước Tây.
+       */
+      const nvKey = `${nv}|||${h}`;
+
+      if(!nhanvienMap[nvKey]){
+        nhanvienMap[nvKey]={
           nhan_vien:nv,
           huyen:h,
           tong_can:0,
@@ -2020,8 +2052,8 @@ async function loadThuHoi(){
         };
       }
 
-      if(phat>0 && nhanvienMap[nv].tong_phat===0){
-        nhanvienMap[nv].tong_phat=phat;
+      if(phat>0 && nhanvienMap[nvKey].tong_phat===0){
+        nhanvienMap[nvKey].tong_phat=phat;
       }
 
       if(phat>0 && !huyenMap[h].nv_set.has(nv)){
@@ -2029,11 +2061,15 @@ async function loadThuHoi(){
         huyenMap[h].nv_set.add(nv);
       }
 
-      nhanvienMap[nv].tong_can+=can;
-      nhanvienMap[nv].tong_da+=da;
+      nhanvienMap[nvKey].tong_can+=can;
+      nhanvienMap[nvKey].tong_da+=da;
 
-      nhanvienMap[nv].list.push({
-        account:r.account,
+      /*
+       * Giữ nguyên từng dòng account từ API.
+       * Không gộp account theo tên nhân viên.
+       */
+      nhanvienMap[nvKey].list.push({
+        account: String(r.account ?? "").trim(),
         mesh:mesh,
         uu_tien:uu,
         can,
@@ -2460,7 +2496,7 @@ loadThuHoi();
       let text=`<b>🔎 TÌM ACCOUNT: ${esc(q0)}</b><br>Tìm thấy <b>${m.length}</b> account.<br><br>`;
 
       m.slice(0,20).forEach((a,i)=>{
-        const mesh=String(a.mesh||"").trim()?` <span class="mesh-note">(Có Mesh)</span>`:"";
+        const mesh=String(a.mesh||"").trim()?` <span class="mesh-note">(${esc(a.mesh)})</span>`:"";
         text+=`
           ${i+1}. <b>${esc(a.account)}</b>${mesh}<br>
           <span style="font-size:11px">
