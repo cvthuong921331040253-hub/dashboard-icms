@@ -13218,6 +13218,73 @@ body.dashboard-is-loading{
 </style>
 
 </style>
+
+<style id="DSE_STAFF_EVAL_MODAL_V3">
+/* ===== GIAO DIỆN POPUP ĐÁNH GIÁ MẶT HÀNG NHÂN VIÊN ===== */
+#dseStaffEvalModal .dse-staff-profile{
+  background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:11px 13px;margin-bottom:10px;
+}
+#dseStaffEvalModal .dse-staff-profile-main{display:flex;align-items:center;gap:9px;}
+#dseStaffEvalModal .dse-staff-avatar{width:34px;height:34px;border-radius:9px;background:#fef2f2;display:flex;align-items:center;justify-content:center;font-size:18px;flex:0 0 34px;}
+#dseStaffEvalModal .dse-staff-name-big{font-size:14px;font-weight:900;color:#111827;line-height:1.25;}
+#dseStaffEvalModal .dse-staff-location{font-size:11px;color:#6b7280;margin-top:2px;}
+#dseStaffEvalModal .dse-staff-profile-note{font-size:10.5px;color:#6b7280;margin-top:8px;padding-top:7px;border-top:1px dashed #e5e7eb;}
+#dseStaffEvalModal .dse-staff-kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-bottom:12px;}
+#dseStaffEvalModal .dse-staff-kpi{min-width:0;border:1px solid #e5e7eb;background:#fff;border-radius:9px;padding:8px 9px;}
+#dseStaffEvalModal .dse-staff-kpi span{display:block;color:#6b7280;font-size:9.5px;}
+#dseStaffEvalModal .dse-staff-kpi strong{display:block;color:#111827;font-size:16px;font-weight:900;margin-top:2px;}
+#dseStaffEvalModal .dse-staff-kpi small{display:block;color:#6b7280;font-size:8.5px;margin-top:1px;}
+#dseStaffEvalModal .dse-staff-kpi.kpi-bad{background:#fff7f7;border-color:#fecaca;}
+#dseStaffEvalModal .dse-staff-kpi.kpi-bad strong{color:#dc2626;}
+#dseStaffEvalModal .dse-staff-kpi.kpi-good{background:#f5fff8;border-color:#bbf7d0;}
+#dseStaffEvalModal .dse-staff-kpi.kpi-good strong{color:#15803d;}
+#dseStaffEvalModal .dse-staff-kpi.kpi-neutral{background:#f8fafc;}
+#dseStaffEvalModal .dse-staff-eval-caption{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:4px 0 6px;padding:0 2px;}
+#dseStaffEvalModal .dse-staff-eval-caption b{font-size:11px;color:#111827;}
+#dseStaffEvalModal .dse-staff-eval-caption span{font-size:9.5px;color:#6b7280;text-align:right;}
+#dseStaffEvalModal .dse-staff-detail-table{border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;background:#fff;}
+#dseStaffEvalModal .dse-staff-detail-head{display:grid;grid-template-columns:minmax(220px,1fr) 80px 80px 95px 90px;gap:0;background:#f3f4f6;border-bottom:1px solid #e5e7eb;font-size:9.5px;font-weight:900;color:#374151;}
+#dseStaffEvalModal .dse-staff-detail-head>div{padding:8px;border-right:1px solid #e5e7eb;}
+#dseStaffEvalModal .dse-staff-detail-head>div:last-child{border-right:0;}
+#dseStaffEvalModal .dse-staff-detail-row{display:grid;grid-template-columns:minmax(220px,1fr) 80px 80px 95px 90px;gap:0;align-items:center;border-bottom:1px solid #eef0f2;font-size:10px;}
+#dseStaffEvalModal .dse-staff-detail-row:last-child{border-bottom:0;}
+#dseStaffEvalModal .dse-staff-detail-row>div{padding:8px;border-right:1px solid #f0f1f3;min-width:0;}
+#dseStaffEvalModal .dse-staff-detail-row>div:last-child{border-right:0;}
+#dseStaffEvalModal .dse-staff-code{font-weight:800;color:#111827;overflow-wrap:anywhere;line-height:1.3;}
+#dseStaffEvalModal .dse-staff-val{text-align:center;}
+#dseStaffEvalModal .dse-staff-val span{display:none;}
+#dseStaffEvalModal .dse-staff-val strong{font-size:11px;color:#111827;}
+#dseStaffEvalModal .dse-staff-delta{text-align:center;font-size:11px;font-weight:900;}
+#dseStaffEvalModal .dse-staff-delta.bad{color:#dc2626;}
+#dseStaffEvalModal .dse-staff-delta.good{color:#15803d;}
+#dseStaffEvalModal .dse-staff-delta.equal{color:#6b7280;}
+#dseStaffEvalModal .dse-staff-status{display:inline-flex;justify-content:center;min-width:58px;padding:3px 7px;border-radius:999px;font-size:8.5px;font-weight:800;}
+#dseStaffEvalModal .dse-staff-status.bad{background:#fee2e2;color:#b91c1c;}
+#dseStaffEvalModal .dse-staff-status.good{background:#dcfce7;color:#166534;}
+#dseStaffEvalModal .dse-staff-status.equal{background:#f3f4f6;color:#4b5563;}
+@media(max-width:700px){
+  #dseStaffEvalModal .dse-staff-profile{padding:9px 10px;margin-bottom:8px;}
+  #dseStaffEvalModal .dse-staff-name-big{font-size:13px;}
+  #dseStaffEvalModal .dse-staff-location{font-size:10px;}
+  #dseStaffEvalModal .dse-staff-profile-note{font-size:9.5px;}
+  #dseStaffEvalModal .dse-staff-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-bottom:9px;}
+  #dseStaffEvalModal .dse-staff-kpi{padding:7px;}
+  #dseStaffEvalModal .dse-staff-kpi strong{font-size:14px;}
+  #dseStaffEvalModal .dse-staff-kpi span{font-size:9px;}
+  #dseStaffEvalModal .dse-staff-eval-caption{display:block;margin-bottom:5px;}
+  #dseStaffEvalModal .dse-staff-eval-caption span{display:block;text-align:left;margin-top:2px;}
+  #dseStaffEvalModal .dse-staff-detail-head{display:none;}
+  #dseStaffEvalModal .dse-staff-detail-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0;padding:0;}
+  #dseStaffEvalModal .dse-staff-detail-row>div{border:0;padding:7px 8px;}
+  #dseStaffEvalModal .dse-staff-detail-row .dse-staff-code{grid-column:1/-1;background:#fafafa;border-bottom:1px solid #f0f1f3;font-size:10px;}
+  #dseStaffEvalModal .dse-staff-detail-row .dse-staff-val{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;border-bottom:1px solid #f3f4f6;}
+  #dseStaffEvalModal .dse-staff-detail-row .dse-staff-val span{display:inline;color:#6b7280;font-size:9px;}
+  #dseStaffEvalModal .dse-staff-detail-row .dse-staff-delta{display:flex;align-items:center;justify-content:flex-end;border-bottom:1px solid #f3f4f6;}
+  #dseStaffEvalModal .dse-staff-detail-row>div:last-child{grid-column:1/-1;text-align:left;}
+  #dseStaffEvalModal .dse-staff-status{font-size:8.5px;}
+}
+</style>
+
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -25844,6 +25911,10 @@ function showTable(title,data){
   ${row.tt || ""}
   ${row.nd || ""}
   ${row.dichvu || row.gline || ""}
+  ${row.dbtb1 || ""}
+  ${row.dbtb2 || ""}
+  ${row.dbtb3 || ""}
+  ${row.dbtb4 || ""}
   `
   .toLowerCase();
   
@@ -25927,7 +25998,11 @@ function showTable(title,data){
   tthen:"Trạng thái tích hẹn",
   kpi:"Tính KPI",
   nnt:"Nguyên nhân tồn",
-  nnth:"Nguyên nhân tích hủy"
+  nnth:"Nguyên nhân tích hủy",
+  dbtb1:"Thiết bị 1",
+  dbtb2:"Thiết bị 2",
+  dbtb3:"Thiết bị 3",
+  dbtb4:"Thiết bị 4"
   
   };
   
@@ -25987,7 +26062,11 @@ function showTable(title,data){
   "ntdn",
   "ntnt",
   "nnt",
-  "nnth"
+  "nnth",
+  "dbtb1",
+  "dbtb2",
+  "dbtb3",
+  "dbtb4"
   ];
   
   }else{
@@ -26005,7 +26084,11 @@ function showTable(title,data){
   "mdb",
   "gnoc",
   "nd",
-  "nnc"
+  "nnc",
+  "dbtb1",
+  "dbtb2",
+  "dbtb3",
+  "dbtb4"
   ];
   
   }
@@ -26464,6 +26547,22 @@ function showTable(title,data){
   <div class="mobile-row">
   <span class="mobile-label">Dịch vụ:</span>
   ${row.dichvu || row.gline || ""}
+  </div>
+  `
+  : ""
+  }
+
+  ${
+  (row.dbtb1 || row.dbtb2 || row.dbtb3 || row.dbtb4)
+  ? `
+  <div class="mobile-row">
+    <span class="mobile-label">Thiết bị:</span>
+    <span>
+      ${row.dbtb1 ? `Thiết bị 1: ${row.dbtb1}<br>` : ""}
+      ${row.dbtb2 ? `Thiết bị 2: ${row.dbtb2}<br>` : ""}
+      ${row.dbtb3 ? `Thiết bị 3: ${row.dbtb3}<br>` : ""}
+      ${row.dbtb4 ? `Thiết bị 4: ${row.dbtb4}` : ""}
+    </span>
   </div>
   `
   : ""
@@ -28554,6 +28653,10 @@ ${rels.join("")}
     ["kpi","Tính KPI"],
     ["nnt","Nguyên nhân tồn"],
     ["nnth","Nguyên nhân tích hủy"],
+    ["dbtb1","Thiết bị 1"],
+    ["dbtb2","Thiết bị 2"],
+    ["dbtb3","Thiết bị 3"],
+    ["dbtb4","Thiết bị 4"],
     ["bypass","Bypass"]
   ];
 
@@ -28576,7 +28679,7 @@ ${rels.join("")}
   ];
 
   const EXCEL_TKM_WIDTHS = [
-    9,18,11,13,20,14,22,28,11,17,28,22,10
+    9,18,11,13,20,14,22,28,11,17,28,22,16,16,16,16,10
   ];
 
   const EXCEL_SC_WIDTHS = [
@@ -31053,6 +31156,703 @@ async function answer(q){try{const u=upper(q);if(u==='/HELP'||u==='HELP'||u.incl
   }
 }
 </style>
+
+
+<!-- =========================================================
+     ĐÁNH GIÁ TỒN THIẾT BỊ TKM ↔ TỒN KHO TỔNG
+     - Chỉ lấy loaimh = Hàng triển khai từ API Data kho.
+     - KHO GLI TÂY + KHO GLI ĐÔNG = KHO TỈNH.
+     - dbtb1..dbtb4 được gom và đếm theo mã thiết bị.
+     - So sánh theo tháng, tổng tỉnh và từng huyện.
+     ========================================================= -->
+<style id="DEVICE_STOCK_EVAL_V1">
+  #deviceStockEvaluation{
+    margin:22px 0 28px;
+    background:#fff;
+    border:1px solid #d1d5db;
+    border-radius:14px;
+    box-shadow:0 4px 16px rgba(0,0,0,.06);
+    overflow:hidden;
+  }
+  #deviceStockEvaluation .dse-head{
+    background:#111827;
+    color:#fff;
+    padding:14px 16px;
+    border-bottom:3px solid #dc2626;
+  }
+  #deviceStockEvaluation .dse-title{font-size:17px;font-weight:800;}
+  #deviceStockEvaluation .dse-note{font-size:11px;opacity:.82;margin-top:4px;line-height:1.45;}
+  #deviceStockEvaluation .dse-controls{
+    display:flex;flex-wrap:wrap;gap:8px;padding:12px 14px;background:#f9fafb;border-bottom:1px solid #e5e7eb;
+  }
+  #deviceStockEvaluation .dse-control{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#374151;}
+  #deviceStockEvaluation select{
+    border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:7px 10px;font-size:12px;min-width:150px;outline:none;
+  }
+  #deviceStockEvaluation .dse-body{padding:12px 14px;}
+  #deviceStockEvaluation .dse-summary{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:12px;}
+  #deviceStockEvaluation .dse-card{border:1px solid #e5e7eb;border-radius:10px;padding:9px 10px;background:#fff;min-width:0;}
+  #deviceStockEvaluation .dse-card .l{font-size:10px;color:#6b7280;font-weight:700;}
+  #deviceStockEvaluation .dse-card .v{font-size:19px;font-weight:900;color:#111827;margin-top:3px;}
+  #deviceStockEvaluation .dse-card .s{font-size:9px;color:#6b7280;margin-top:2px;}
+  #deviceStockEvaluation .dse-eval{padding:10px 12px;border-radius:10px;margin-bottom:12px;font-size:12px;font-weight:700;line-height:1.5;background:#f3f4f6;color:#374151;border-left:4px solid #6b7280;}
+  #deviceStockEvaluation .dse-eval.good{background:#ecfdf5;color:#166534;border-left-color:#16a34a;}
+  #deviceStockEvaluation .dse-eval.warn{background:#fff7ed;color:#9a3412;border-left-color:#f97316;}
+  #deviceStockEvaluation .dse-eval.bad{background:#fef2f2;color:#991b1b;border-left-color:#dc2626;}
+  #deviceStockEvaluation .dse-table-wrap{overflow:auto;border:1px solid #e5e7eb;border-radius:10px;}
+  #deviceStockEvaluation table{width:100%;min-width:1080px;border-collapse:collapse;font-size:11px;}
+  #deviceStockEvaluation th{position:sticky;top:0;z-index:1;background:#f3f4f6;color:#374151;font-weight:800;white-space:nowrap;}
+  #deviceStockEvaluation .dse-th-main{display:block;font-size:11px;font-weight:800;line-height:1.15;}
+  #deviceStockEvaluation .dse-th-sub{display:block;font-size:9px;font-weight:600;color:#6b7280;line-height:1.15;margin-top:2px;}
+  #deviceStockEvaluation th,#deviceStockEvaluation td{padding:7px 8px;border-bottom:1px solid #e5e7eb;text-align:center;}
+  #deviceStockEvaluation td:first-child,#deviceStockEvaluation th:first-child{text-align:left;}
+  #deviceStockEvaluation tbody tr:hover{background:#f9fafb;}
+  #deviceStockEvaluation .num{font-variant-numeric:tabular-nums;font-weight:800;}
+  #deviceStockEvaluation .neg{color:#dc2626;font-weight:900;}
+  #deviceStockEvaluation .pos{color:#15803d;font-weight:900;}
+  #deviceStockEvaluation .zero{color:#6b7280;font-weight:800;}
+  #deviceStockEvaluation .dse-subtitle{font-size:13px;font-weight:900;color:#111827;margin:14px 0 7px;}
+  #deviceStockEvaluation .dse-loading{padding:25px;text-align:center;color:#6b7280;font-size:12px;}
+  #deviceStockEvaluation .dse-suggest-btn{border:1px solid #dc2626;background:#fff;color:#b91c1c;border-radius:7px;padding:5px 8px;font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap;}
+  #deviceStockEvaluation .dse-suggest-btn:hover{background:#fef2f2;}
+  #deviceStockEvaluation .dse-suggest-box{margin:10px 0 12px;padding:10px 12px;border:1px solid #fecaca;border-left:4px solid #dc2626;border-radius:10px;background:#fff7f7;font-size:11px;line-height:1.5;}
+  #deviceStockEvaluation .dse-suggest-box .st{font-weight:900;color:#991b1b;margin-bottom:5px;}
+  #deviceStockEvaluation .dse-suggest-grid{display:grid;grid-template-columns:minmax(0,0.95fr) minmax(0,1.65fr);gap:10px;align-items:start;}
+  #deviceStockEvaluation .dse-suggest-panel{min-width:0;}
+  #deviceStockEvaluation .dse-staff-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}
+  #deviceStockEvaluation .dse-suggest-item{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:6px 8px;min-width:0;}
+  #deviceStockEvaluation .dse-suggest-item b{display:block;margin-bottom:2px;color:#374151;line-height:1.3;}
+  #deviceStockEvaluation .dse-staff-item{font-size:10.5px;line-height:1.4;}
+  #deviceStockEvaluation .dse-staff-item .staff-name{font-size:11px;font-weight:900;color:#374151;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #deviceStockEvaluation .dse-staff-item .staff-place{font-size:9.5px;color:#6b7280;margin-top:2px;}
+  #deviceStockEvaluation .dse-staff-item .staff-stock{margin-top:3px;color:#111827;}
+  @media(max-width:1000px){#deviceStockEvaluation .dse-suggest-grid{grid-template-columns:1fr 1.35fr;}}
+  #deviceStockEvaluation .dse-mobile-list{display:none;}
+  #deviceStockEvaluation .dse-mobile-row{background:#fff;border:1px solid #e5e7eb;border-radius:10px;margin-bottom:7px;padding:8px 9px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+  #deviceStockEvaluation .dse-mobile-code{display:flex;align-items:center;justify-content:space-between;gap:7px;font-size:11px;font-weight:900;color:#111827;line-height:1.35;}
+  #deviceStockEvaluation .dse-mobile-code>span{min-width:0;overflow-wrap:anywhere;}
+  #deviceStockEvaluation .dse-mobile-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:7px;}
+  #deviceStockEvaluation .dse-mobile-metrics>div{background:#f9fafb;border-radius:7px;padding:5px 6px;min-width:0;}
+  #deviceStockEvaluation .dse-mobile-metrics span{display:block;font-size:8.5px;color:#6b7280;line-height:1.2;}
+  #deviceStockEvaluation .dse-mobile-metrics strong{display:block;margin-top:2px;font-size:11px;color:#111827;line-height:1.2;}
+  #deviceStockEvaluation .dse-mobile-empty{padding:15px;text-align:center;color:#6b7280;font-size:11px;background:#fff;border:1px solid #e5e7eb;border-radius:9px;}
+  @media(max-width:768px){#deviceStockEvaluation .dse-suggest-grid{grid-template-columns:1fr;}#deviceStockEvaluation .dse-staff-grid{grid-template-columns:repeat(2,minmax(0,1fr));}#deviceStockEvaluation .dse-suggest-btn{font-size:9px;padding:5px 6px;}#deviceStockEvaluation .dse-table-wrap{display:none;}#deviceStockEvaluation .dse-mobile-list{display:block;}}
+  @media(max-width:768px){
+    #deviceStockEvaluation{margin:16px 0 20px;border-radius:10px;}
+    #deviceStockEvaluation .dse-title{font-size:15px;}
+    #deviceStockEvaluation .dse-summary{grid-template-columns:repeat(2,minmax(0,1fr));}
+    #deviceStockEvaluation .dse-card:last-child{grid-column:1/-1;}
+    #deviceStockEvaluation .dse-controls{display:grid;grid-template-columns:1fr 1fr;}
+    #deviceStockEvaluation .dse-control{display:block;}
+    #deviceStockEvaluation select{width:100%;min-width:0;margin-top:4px;box-sizing:border-box;}
+    #deviceStockEvaluation .dse-body{padding:9px;}
+    #deviceStockEvaluation .dse-subtitle{font-size:12px;margin:11px 0 6px;}
+    #deviceStockEvaluation .dse-eval{font-size:10.5px;padding:8px 9px;}
+  }
+
+  #deviceStockEvaluation .dse-district-staff-panel{margin-top:12px;border:1px solid #e5e7eb;border-radius:10px;background:#fff;overflow:hidden;}
+  #deviceStockEvaluation .dse-district-staff-title{padding:9px 11px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-size:12px;font-weight:900;color:#111827;}
+  #deviceStockEvaluation .dse-district-staff-list{display:flex;flex-wrap:wrap;gap:6px;padding:8px;}
+  #deviceStockEvaluation .dse-district-staff-chip{border:1px solid #dbe1e8;background:#fff;border-radius:8px;padding:7px 9px;text-align:left;cursor:pointer;min-width:180px;max-width:100%;}
+  #deviceStockEvaluation .dse-district-staff-chip:hover,#deviceStockEvaluation .dse-district-staff-chip.active{border-color:#dc2626;background:#fff7f7;}
+  #deviceStockEvaluation .dse-district-staff-chip span{display:block;font-size:10.5px;font-weight:900;color:#1f2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #deviceStockEvaluation .dse-district-staff-chip small{display:block;margin-top:2px;font-size:9px;color:#6b7280;}
+  #deviceStockEvaluation .dse-staff-selected-head{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 10px;border-top:1px solid #e5e7eb;background:#fff;}
+  #deviceStockEvaluation .dse-staff-selected-head b{display:block;font-size:11px;color:#111827;}
+  #deviceStockEvaluation .dse-staff-selected-head span{display:block;font-size:9px;color:#6b7280;margin-top:2px;}
+  #deviceStockEvaluation .dse-staff-mini-stats{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;}
+  #deviceStockEvaluation .dse-staff-mini-stats span{background:#f3f4f6!important;border-radius:6px;padding:4px 6px!important;font-size:9px!important;color:#6b7280!important;}
+  #deviceStockEvaluation .dse-staff-mini-stats strong{font-size:10px;color:#111827;}
+  #deviceStockEvaluation .dse-staff-eval-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:8px;background:#f9fafb;border-top:1px solid #e5e7eb;}
+  #deviceStockEvaluation .dse-staff-eval-card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:7px;min-width:0;}
+  #deviceStockEvaluation .dse-staff-eval-card .code{font-size:10px;font-weight:800;color:#111827;line-height:1.3;overflow-wrap:anywhere;}
+  #deviceStockEvaluation .dse-staff-eval-card .vals{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px;font-size:9px;color:#6b7280;}
+  #deviceStockEvaluation .dse-staff-eval-card .vals b{color:#111827;}
+  #deviceStockEvaluation .dse-staff-empty{padding:10px;color:#6b7280;font-size:10px;text-align:center;}
+  @media(max-width:768px){
+    #deviceStockEvaluation .dse-district-staff-list{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:7px;}
+    #deviceStockEvaluation .dse-district-staff-chip{min-width:0;width:100%;padding:7px;box-sizing:border-box;}
+    #deviceStockEvaluation .dse-district-staff-chip span{font-size:10px;}
+    #deviceStockEvaluation .dse-staff-selected-head{display:block;}
+    #deviceStockEvaluation .dse-staff-mini-stats{justify-content:flex-start;margin-top:6px;}
+    #deviceStockEvaluation .dse-staff-eval-grid{grid-template-columns:1fr 1fr;padding:6px;}
+    #deviceStockEvaluation .dse-staff-eval-card{padding:6px;}
+  }
+</style>
+
+<section id="deviceStockEvaluation">
+  <div class="dse-head">
+    <div class="dse-title">📦 ĐÁNH GIÁ TỒN THIẾT BỊ TKM ↔ TỒN KHO TỔNG</div>
+    <div class="dse-note">Chỉ lấy Hàng triển khai. KHO GLI TÂY + KHO GLI ĐÔNG được tính là KHO TỈNH, không phải huyện.</div>
+  </div>
+  <div class="dse-controls">
+    <label class="dse-control">Tháng<select id="dseMonthSelect"></select></label>
+    <label class="dse-control">Phạm vi<select id="dseScopeSelect"><option value="ALL">TỔNG TỈNH</option><option value="PROVINCE">KHO TỈNH</option><option value="DISTRICT">THEO HUYỆN</option></select></label>
+    <label class="dse-control" id="dseDistrictControl">Huyện<select id="dseDistrictSelect"><option value="">Tất cả huyện</option></select></label>
+  </div>
+  <div class="dse-body" id="dseContent"><div class="dse-loading">Đang tải dữ liệu tồn kho và phân tích thiết bị...</div></div>
+</section>
+
+<script id="DEVICE_STOCK_EVAL_V1_JS">
+(function(){
+  const DSE_API='https://script.google.com/macros/s/AKfycbyqb1Qf8YHiaPvlFKAX872-o6sf6a_GcQCy_2l9poMeYXyePFEjKnxTtpJHImaAQ0JTVg/exec?sheet=Data%20kho';
+  const clean=v=>String(v??'').replace(/\u00A0/g,' ').replace(/\s+/g,' ').trim();
+  const upper=v=>clean(v).toUpperCase();
+  const num=v=>{const n=Number(String(v??'').replace(/,/g,''));return Number.isFinite(n)?n:0;};
+  const esc=v=>{const s=String(v??'');return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');};
+  let khoRows=[];
+  let currentMonthKey='';
+  let monthCache=new Map();
+
+  function monthKeyFromRow(r){
+    const raw=r?.ntdn??r?.date??r?.ngaytn??r?.created_at??'';
+    let t=0;
+    if(typeof parseHistoryDate==='function')t=parseHistoryDate(raw)||0;
+    if(!t){
+      const s=clean(raw); let m=s.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
+      if(m)t=new Date(+m[3],+m[2]-1,+m[1]).getTime();
+      else {const d=new Date(s);t=Number.isFinite(d.getTime())?d.getTime():0;}
+    }
+    if(!t)return '';
+    const d=new Date(t);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+  }
+  function monthLabel(k){if(!k)return 'Không xác định';const [y,m]=k.split('-');return `THÁNG ${m}/${y}`;}
+  function addMonth(k){const [y,m]=k.split('-').map(Number);return `${m===12?y+1:y}-${String(m===12?1:m+1).padStart(2,'0')}`;}
+
+  function isProvince(h){const u=upper(h);return u==='KHO GLI TÂY'||u==='KHO GLI ĐÔNG';}
+  function stockScope(h){return isProvince(h)?'KHO TỈNH':clean(h)||'KHÁC';}
+
+  function aggregateStock(){
+    const map=new Map();
+    khoRows.forEach(r=>{
+      const mh=clean(r?.mh); if(!mh)return;
+      const key=upper(mh);
+      const h=stockScope(r?.huyen);
+      const sl=num(r?.sl);
+      if(!map.has(key))map.set(key,{mh,province:0,provinceWarehouse:new Map(),total:0,district:new Map()});
+      const x=map.get(key); x.total+=sl;
+      if(h==='KHO TỈNH'){
+        x.province+=sl;
+        const rawH=clean(r?.huyen)||'KHO TỈNH';
+        const pk=upper(rawH);
+        const old=x.provinceWarehouse.get(pk);
+        if(old)old.sl+=sl;
+        else x.provinceWarehouse.set(pk,{name:rawH,sl});
+      }else x.district.set(upper(h),{name:h,sl:(x.district.get(upper(h))?.sl||0)+sl});
+    });
+    return map;
+  }
+
+  function aggregateTkm(rows){
+    const map=new Map();
+    (Array.isArray(rows)?rows:[]).forEach(r=>{
+      const h=clean(r?.huyen)||'KHÁC';
+      ['dbtb1','dbtb2','dbtb3','dbtb4'].forEach(col=>{
+        const mh=clean(r?.[col]); if(!mh)return;
+        const key=upper(mh);
+        if(!map.has(key))map.set(key,{mh,all:0,district:new Map(),province:0});
+        const x=map.get(key); x.all++;
+        const hk=upper(h); const d=x.district.get(hk);
+        if(d)d.count++; else x.district.set(hk,{name:h,count:1});
+      });
+    });
+    return map;
+  }
+
+  async function getMonthData(key){
+    if(monthCache.has(key))return monthCache.get(key);
+    if(key==='ALL'){
+      const keys=makeMonthOptions().filter(k=>k!=='ALL');
+      const all=[];
+      for(const k of keys){const d=await getMonthData(k);all.push(...d.rows);}
+      const result={rows:all,tkm:aggregateTkm(all)};
+      monthCache.set(key,result);return result;
+    }
+    const [y,m]=key.split('-').map(Number);
+    let data=null;
+    if(typeof window.__kpiGetMonthlyRows==='function'){data=await window.__kpiGetMonthlyRows(y,m-1);}
+    else if(typeof getMonthlyRows==='function'){data=await getMonthlyRows(y,m-1);}
+    const rows=Array.isArray(data?.tkm)?data.tkm:[];
+    const real=rows.filter(r=>upper(r?.tt)!=='CẬP NHẬT HỒ SƠ');
+    const result={rows:real,tkm:aggregateTkm(real)};
+    monthCache.set(key,result);return result;
+  }
+
+  function makeMonthOptions(){
+    const keys=new Set();
+    const source=Array.isArray(tontkmHistory)&&tontkmHistory.length?tontkmHistory:(Array.isArray(tontkm)?tontkm:[]);
+    source.forEach(r=>{const k=monthKeyFromRow(r);if(k)keys.add(k);});
+    const now=new Date(); keys.add(`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`);
+    const arr=[...keys].sort().reverse();
+    return ['ALL',...arr];
+  }
+
+  function monthText(k){return k==='ALL'?'Tháng ALL':monthLabel(k);}
+
+  function getDistricts(){
+    const set=new Map();
+    khoRows.forEach(r=>{const h=clean(r?.huyen);if(h&&!isProvince(h))set.set(upper(h),h);});
+    return [...set.values()].sort((a,b)=>a.localeCompare(b,'vi'));
+  }
+
+  function stockFor(x,scope,district){
+    if(!x)return 0;
+    if(scope==='PROVINCE')return x.province||0;
+    if(scope==='DISTRICT')return x.district.get(upper(district))?.sl||0;
+    return x.total||0;
+  }
+  function tkmFor(x,scope,district){
+    if(!x)return 0;
+    if(scope==='DISTRICT')return x.district.get(upper(district))?.count||0;
+    return x.all||0;
+  }
+  function clsDelta(v){return v<0?'neg':v>0?'pos':'zero';}
+
+  function staffDemand(rows, code, district, allowedDistricts){
+    const out=new Map(); const target=upper(code); const dh=upper(district||'');
+    const allowed=new Set((allowedDistricts||[]).map(x=>upper(x)));
+    rows.forEach(r=>{
+      const rh=clean(r?.huyen)||'KHÁC';
+      const rhU=upper(rh);
+      /* Khi đang xem một huyện, tuyệt đối không gợi ý nhân viên của chính huyện đó.
+         Nếu có danh sách huyện nguồn thì chỉ lấy nhân viên thuộc các huyện nguồn. */
+      if(dh && rhU===dh)return;
+      if(allowed.size && !allowed.has(rhU))return;
+      const hit=['dbtb1','dbtb2','dbtb3','dbtb4'].reduce((n,c)=>n+(upper(clean(r?.[c]))===target?1:0),0);
+      if(!hit)return;
+      const name=clean(r?.nv||r?.ten_nv||r?.nhanvien||'Không rõ nhân viên')||'Không rõ nhân viên';
+      const old=out.get(name);
+      if(old)old.count+=hit;
+      else out.set(name,{name,count:hit,district:rh});
+    });
+    return [...out.values()].sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'vi'));
+  }
+
+  function buildSuggestions(code, shortage, selectedDistrict, tkmMap, stockMap){
+    const x=stockMap.get(upper(code)); if(!x)return {sources:[],staffDistricts:[]};
+    let remain=Math.max(0,shortage); const sources=[];
+    const hasSelectedDistrict=!!clean(selectedDistrict);
+
+    /*
+      KHO TỈNH được tách riêng theo đúng vị trí địa lý:
+      KHO GLI TÂY và KHO GLI ĐÔNG là 2 nguồn độc lập.
+      Cả hai vẫn thuộc phạm vi KHO TỈNH khi tính tổng tồn.
+    */
+    const provinceSources=[...(x.provinceWarehouse||new Map()).values()]
+      .filter(z=>Number(z.sl)>0)
+      .sort((a,b)=>b.sl-a.sl||a.name.localeCompare(b.name,'vi'));
+    provinceSources.forEach(z=>{
+      const q=remain>0?Math.min(remain,z.sl):0;
+      sources.push({name:z.name,qty:q,available:z.sl,type:'province',tkm:0,eligible:true});
+      remain-=q;
+    });
+
+    const allDistricts=[];
+    const candidates=[];
+    for(const [dk,d] of x.district.entries()){
+      if(hasSelectedDistrict && dk===upper(selectedDistrict))continue;
+      const tkmDistrict=tkmMap.get(upper(code))?.district?.get(dk)?.count||0;
+      const stockDistrict=Number(d.sl)||0;
+      if(stockDistrict<=0)continue;
+
+      const item={name:d.name,sl:stockDistrict,surplus:stockDistrict,tkm:tkmDistrict,eligible:tkmDistrict===0};
+      allDistricts.push(item);
+      if(item.eligible)candidates.push(item);
+    }
+
+    // Nguồn đủ điều kiện được ưu tiên theo tồn lớn -> nhỏ để phân bổ.
+    candidates.sort((a,b)=>b.sl-a.sl||a.name.localeCompare(b.name,'vi'));
+    candidates.forEach(d=>{
+      const q=remain>0?Math.min(remain,d.sl):0;
+      d.qty=q;
+      remain-=q;
+    });
+
+    // Hiển thị FULL tất cả huyện có tồn, nhưng vẫn giữ cờ eligible để UI
+    // phân biệt nơi được phép đề xuất với nơi chỉ tham khảo.
+    allDistricts.sort((a,b)=>b.sl-a.sl||a.name.localeCompare(b.name,'vi'));
+    allDistricts.forEach(d=>sources.push({name:d.name,qty:d.qty||0,available:d.sl,surplus:d.sl,type:'district',tkm:d.tkm,eligible:d.eligible}));
+
+    return {
+      sources,
+      staffDistricts:candidates.map(z=>z.name),
+      remaining:remain
+    };
+  }
+
+  /*
+     NHÂN VIÊN NGUỒN:
+     - Chỉ lấy nhân viên thuộc các huyện nguồn có TỒN thiết bị nhưng TKM của
+       chính mã thiết bị đang thiếu = 0.
+     - Không lấy nhân viên của huyện đang thiếu.
+     - Không yêu cầu nhân viên phải có chính mã thiết bị trong TKM, vì đây
+       chính là điều kiện người dùng muốn: nhân viên ở nguồn có TKM nhưng
+       KHÔNG có mã thiết bị đang thiếu.
+  */
+  function sourceStaffWithoutTarget(tkmRows, stockRows, code, sourceDistricts, selectedDistrict, includeProvince=false){
+    const target=upper(code);
+    const selected=upper(selectedDistrict||'');
+
+    /*
+      NHÂN VIÊN PHẢI ĐƯỢC XÉT THEO TỪNG NHÂN VIÊN, KHÔNG THEO TRẠNG THÁI
+      TKM CỦA CẢ HUYỆN.
+
+      Vì một huyện có thể đang có TKM mã này nhưng vẫn có những nhân viên
+      khác đang tồn chính mã đó và chưa có mã trong TKM. Do đó không dùng
+      sourceDistricts (chỉ gồm huyện TKM=0) để lọc nhân viên nữa.
+    */
+    const tkmHasTarget=new Set();
+    (Array.isArray(tkmRows)?tkmRows:[]).forEach(r=>{
+      const h=upper(clean(r?.huyen)||'KHÁC');
+      if(selected && h===selected)return;
+      if(includeProvince ? false : isProvince(h))return;
+      const name=clean(r?.nv||r?.ten_nv||r?.nhanvien||'');
+      if(!name)return;
+      const hit=['dbtb1','dbtb2','dbtb3','dbtb4'].some(c=>upper(clean(r?.[c]))===target);
+      if(hit)tkmHasTarget.add(h+'|'+upper(name));
+    });
+
+    // Lấy TOÀN BỘ nhân viên thực sự đang tồn chính mã thiết bị trong API kho.
+    // Không loại huyện chỉ vì huyện đó đang có TKM; chỉ loại đúng nhân viên
+    // đã có chính mã này trong TKM.
+    const out=new Map();
+    (Array.isArray(stockRows)?stockRows:[]).forEach(r=>{
+      const h=clean(r?.huyen)||'KHÁC';
+      const hu=upper(h);
+      const provinceRow=isProvince(h);
+      if(provinceRow){
+        if(!includeProvince)return;
+      }else if(selected && hu===selected)return;
+      if(upper(clean(r?.mh))!==target)return;
+      const sl=num(r?.sl); if(sl<=0)return;
+      const name=clean(r?.nv||r?.ten_nv||r?.nhanvien||''); if(!name)return;
+      const key=hu+'|'+upper(name);
+      if(tkmHasTarget.has(key))return;
+      const old=out.get(key);
+      if(old)old.qty+=sl;
+      else out.set(key,{name,district:h,qty:sl,province:provinceRow});
+    });
+    return [...out.values()].sort((a,b)=>b.qty-a.qty||a.district.localeCompare(b.district,'vi')||a.name.localeCompare(b.name,'vi'));
+  }
+
+  function getDistrictEmployees(tkmRows, stockRows, district){
+    const target=upper(clean(district||''));
+    const map=new Map();
+
+    /*
+      ĐÚNG LOGIC ĐÁNH GIÁ NHÂN VIÊN:
+      - Lấy nhân viên và danh sách MÃ THIẾT BỊ từ TKM của chính nhân viên.
+      - Sau đó lấy tồn kho thực tế của chính nhân viên từ Data kho (Hàng triển khai).
+      - So sánh từng mã TKM của nhân viên với tồn kho của chính nhân viên.
+      - Không dùng danh sách tồn kho làm nguồn mã chính, vì như vậy sẽ đưa cả
+        những mặt hàng nhân viên chưa có trong TKM vào bảng đánh giá.
+    */
+    (Array.isArray(tkmRows)?tkmRows:[]).forEach(r=>{
+      const h=clean(r?.huyen)||'';
+      if(!h||upper(h)!==target)return;
+      const name=clean(r?.nv||r?.ten_nv||r?.nhanvien||''); if(!name)return;
+      const key=upper(name);
+      if(!map.has(key))map.set(key,{name,district:h,stock:new Map(),totalStock:0,tkm:new Map(),totalTkm:0});
+      const e=map.get(key);
+      ['dbtb1','dbtb2','dbtb3','dbtb4'].forEach(c=>{
+        const code=clean(r?.[c]); if(!code)return;
+        const ck=upper(code); const old=e.tkm.get(ck);
+        if(old)old.count++;
+        else e.tkm.set(ck,{mh:code,count:1});
+        e.totalTkm++;
+      });
+    });
+
+    /* Tồn kho tổng của từng nhân viên, chỉ từ Hàng triển khai. */
+    (Array.isArray(stockRows)?stockRows:[]).forEach(r=>{
+      const h=clean(r?.huyen)||'';
+      if(!h||upper(h)!==target)return;
+      const name=clean(r?.nv||r?.ten_nv||r?.nhanvien||''); if(!name)return;
+      const key=upper(name); const e=map.get(key);
+      if(!e)return; // chỉ đánh giá nhân viên có TKM trong huyện
+      const code=clean(r?.mh); if(!code)return;
+      const sl=num(r?.sl); if(sl<=0)return;
+      const ck=upper(code); const old=e.stock.get(ck);
+      if(old)old.qty+=sl; else e.stock.set(ck,{mh:code,qty:sl});
+      e.totalStock+=sl;
+    });
+
+    return [...map.values()]
+      .map(e=>{
+        e.shortageCodes=[...e.tkm.entries()].filter(([k,v])=>(e.stock.get(k)?.qty||0)<v.count).length;
+        e.excessCodes=[...e.tkm.entries()].filter(([k,v])=>(e.stock.get(k)?.qty||0)>v.count).length;
+        e.balanceCodes=[...e.tkm.entries()].filter(([k,v])=>(e.stock.get(k)?.qty||0)===v.count).length;
+        return e;
+      })
+      .sort((a,b)=>b.totalTkm-a.totalTkm||a.name.localeCompare(b.name,'vi'));
+  }
+
+  window.showStaffEvaluation=function(district, staffName){
+    const last=window.__dseLast;
+    if(!last)return;
+    const old=document.getElementById('dseStaffEvalModal'); if(old)old.remove();
+    const modal=document.createElement('div');
+    modal.id='dseStaffEvalModal';
+    modal.className='dse-modal-overlay';
+    modal.innerHTML=`<div class="dse-modal dse-staff-eval-modal" role="dialog" aria-modal="true" aria-label="Đánh giá nhân viên">
+      <div class="dse-modal-head">
+        <div class="dse-modal-title">👤 ĐÁNH GIÁ MẶT HÀNG NHÂN VIÊN</div>
+        <button type="button" class="dse-modal-close" aria-label="Đóng">×</button>
+      </div>
+      <div class="dse-modal-code">${esc(staffName)} <span>• ${esc(district)}</span></div>
+      <div id="dseStaffEvalModalBody"></div>
+    </div>`;
+    document.body.appendChild(modal);
+    const body=modal.querySelector('#dseStaffEvalModalBody');
+    // Tái sử dụng hàm đánh giá hiện có, nhưng render vào vùng popup.
+    const tmp=document.createElement('div');
+    tmp.id='dseStaffEvalTemp';
+    body.appendChild(tmp);
+    const original=document.getElementById('dseDistrictStaffDetail');
+    const holderId=original?.id;
+    if(original) original.id='dseDistrictStaffDetailBackup';
+    tmp.id='dseDistrictStaffDetail';
+    renderDistrictStaffEvaluation(last.data.rows,khoRows,district,staffName);
+    const rendered=document.getElementById('dseDistrictStaffDetail');
+    if(rendered){ body.innerHTML=rendered.innerHTML; rendered.remove(); }
+    if(original) original.id=holderId;
+    const close=()=>modal.remove();
+    modal.querySelector('.dse-modal-close')?.addEventListener('click',close);
+    modal.addEventListener('click',e=>{if(e.target===modal)close();});
+    const escClose=e=>{if(e.key==='Escape'){close();document.removeEventListener('keydown',escClose);}};
+    document.addEventListener('keydown',escClose);
+  };
+
+  function renderDistrictStaffEvaluation(tkmRows, stockRows, district, selectedName){
+    const box=document.getElementById('dseDistrictStaffDetail'); if(!box)return;
+    const employees=getDistrictEmployees(tkmRows,stockRows,district);
+    const selected=employees.find(e=>upper(e.name)===upper(selectedName||''))||employees[0];
+    if(!selected){
+      box.innerHTML='<div class="dse-staff-empty">Không tìm thấy nhân viên có TKM trong huyện này.</div>';
+      return;
+    }
+
+    /* Mã gốc = mã đã xuất hiện trong TKM của chính nhân viên. */
+    const rows=[...selected.tkm.entries()].map(([k,v])=>({
+      mh:v.mh,
+      tkm:v.count,
+      stock:selected.stock.get(k)?.qty||0
+    })).sort((a,b)=>{
+      const da=a.stock-a.tkm, db=b.stock-b.tkm;
+      return (da-db)||b.tkm-a.tkm||a.mh.localeCompare(b.mh,'vi');
+    });
+
+    const totalTkm=selected.totalTkm||0;
+    const matchedStock=rows.reduce((n,x)=>n+x.stock,0);
+    const shortage=rows.filter(x=>x.stock<x.tkm).length;
+    const shortageQty=rows.reduce((n,x)=>n+Math.max(0,x.tkm-x.stock),0);
+
+    box.innerHTML=`
+      <div class="dse-staff-profile">
+        <div class="dse-staff-profile-main">
+          <div class="dse-staff-avatar">👤</div>
+          <div class="dse-staff-profile-info">
+            <div class="dse-staff-name-big">${esc(selected.name)}</div>
+            <div class="dse-staff-location">📍 ${esc(selected.district)}</div>
+          </div>
+        </div>
+        <div class="dse-staff-profile-note">Đối chiếu <b>TKM của nhân viên</b> với <b>tổng tồn kho thực tế của chính nhân viên</b>.</div>
+      </div>
+
+      <div class="dse-staff-kpi-grid">
+        <div class="dse-staff-kpi kpi-main"><span>📊 TKM nhân viên</span><strong>${totalTkm.toLocaleString('vi-VN')}</strong><small>Số thiết bị trong TKM</small></div>
+        <div class="dse-staff-kpi kpi-bad"><span>⚠️ Mã đang thiếu</span><strong>${shortage}</strong><small>Thiếu ${shortageQty.toLocaleString('vi-VN')} thiết bị</small></div>
+      </div>
+
+      <div class="dse-staff-eval-caption">
+        <b>📋 Chi tiết từng mã trong TKM</b>
+        <span>${rows.length} mã • Tồn của các mã TKM: <strong>${matchedStock.toLocaleString('vi-VN')}</strong></span>
+      </div>
+
+      <div class="dse-staff-detail-table">
+        <div class="dse-staff-detail-head">
+          <div>Mã thiết bị</div><div>Tồn NV</div><div>TKM NV</div><div>Chênh lệch</div><div>Đánh giá</div>
+        </div>
+        ${rows.map((x,i)=>{
+          const d=x.stock-x.tkm;
+          const status=d<0?'Thiếu':d>0?'Dư':'Cân bằng';
+          const statusClass=d<0?'bad':d>0?'good':'equal';
+          const statusIcon=d<0?'⚠️':d>0?'➕':'✓';
+          return `<div class="dse-staff-detail-row">
+            <div class="dse-staff-code"><span class="dse-code-index">${i+1}</span>${esc(x.mh)}</div>
+            <div class="dse-staff-val"><span>Tồn kho NV</span><strong>${x.stock.toLocaleString('vi-VN')}</strong></div>
+            <div class="dse-staff-val"><span>TKM NV</span><strong>${x.tkm.toLocaleString('vi-VN')}</strong></div>
+            <div class="dse-staff-delta ${statusClass}"><span>Chênh lệch</span><strong>${d>0?'+':''}${d.toLocaleString('vi-VN')}</strong></div>
+            <div class="dse-staff-status-wrap"><span class="dse-staff-status ${statusClass}">${statusIcon} ${status}</span>${d<0?`<small>Thiếu ${Math.abs(d).toLocaleString('vi-VN')} thiết bị</small>`:d>0?`<small>Dư ${d.toLocaleString('vi-VN')} thiết bị</small>`:'<small>Tồn đúng nhu cầu</small>'}</div>
+          </div>`;
+        }).join('')||'<div class="dse-staff-empty">Nhân viên chưa có mã thiết bị trong TKM.</div>'}
+      </div>
+    `;
+  }
+
+  function render(data){
+    const content=document.getElementById('dseContent'); if(!content)return;
+    const scope=document.getElementById('dseScopeSelect')?.value||'ALL';
+    const district=document.getElementById('dseDistrictSelect')?.value||'';
+    const stock=aggregateStock(); const tkm=data.tkm;
+    /* TKM là tập mã thiết bị gốc. Chỉ những mã xuất hiện trong dbtb1..dbtb4 của TKM mới được đưa vào bảng đánh giá. */
+    const keys=new Set([...tkm.keys()]);
+    const rows=[...keys].map(k=>{
+      const sx=stock.get(k),tx=tkm.get(k);const kho=stockFor(sx,scope,district);const nhu=tkmFor(tx,scope,district);
+      return {key:k,mh:sx?.mh||tx?.mh||k,kho,nhu,delta:kho-nhu,rate:kho?nhu/kho*100:(nhu?Infinity:0),province:sx?.province||0,total:sx?.total||0};
+    }).filter(x=>x.nhu>0).sort((a,b)=>b.nhu-a.nhu||a.mh.localeCompare(b.mh,'vi'));
+    const totalKho=rows.reduce((s,x)=>s+x.kho,0), totalTkm=rows.reduce((s,x)=>s+x.nhu,0), delta=totalKho-totalTkm;
+    const rate=totalKho?totalTkm/totalKho*100:0;
+    const shortage=rows.filter(x=>x.delta<0).length;
+    const excess=rows.filter(x=>x.delta>0).length;
+    let evalClass='';let evalText='Chưa có đủ dữ liệu để đánh giá.';
+    if(totalKho||totalTkm){
+      if(delta<0){evalClass='bad';evalText=`⚠️ Thiếu ${Math.abs(delta).toLocaleString('vi-VN')} thiết bị so với nhu cầu TKM trong ${monthText(currentMonthKey)}. Có ${shortage} mã thiết bị đang thiếu.`;}
+      else if(shortage){evalClass='warn';evalText=`⚠️ Tổng kho còn dư ${delta.toLocaleString('vi-VN')} thiết bị, nhưng vẫn có ${shortage} mã thiết bị thiếu cục bộ. Cần xem gợi ý để xem điều chuyển.`;}
+      else{evalClass='good';evalText=`✅ Tồn kho đang cao hơn nhu cầu TKM ${delta.toLocaleString('vi-VN')} thiết bị. Có ${excess} mã thiết bị còn dư.`;}
+    }
+    const scopeText=scope==='PROVINCE'?'KHO TỈNH':scope==='DISTRICT'?(district||'Tất cả huyện'):'TỔNG TỈNH';
+    window.__dseRows=rows; window.__dseLast={data,scope,district,stock,tkm};
+    const table=rows.map((x,i)=>`<tr><td>${i+1}. ${esc(x.mh)}</td><td class="num">${x.kho.toLocaleString('vi-VN')}</td><td class="num">${x.nhu.toLocaleString('vi-VN')}</td><td class="num ${clsDelta(x.delta)}">${x.delta>0?'+':''}${x.delta.toLocaleString('vi-VN')}</td><td class="num">${Number.isFinite(x.rate)?x.rate.toFixed(1)+'%':'—'}</td><td class="num">${x.province.toLocaleString('vi-VN')}</td><td class="num">${x.total.toLocaleString('vi-VN')}</td><td>${x.delta<0?`<button class="dse-suggest-btn" onclick="window.showDeviceStockSuggestion(${i})">Gợi ý bổ sung</button>`:'—'}</td></tr>`).join('')||`<tr><td colspan="8">Không có dữ liệu thiết bị.</td></tr>`;
+    const mobileTable=rows.map((x,i)=>`<div class="dse-mobile-row">
+      <div class="dse-mobile-code"><span>${i+1}. ${esc(x.mh)}</span>${x.delta<0?`<button class="dse-suggest-btn" onclick="window.showDeviceStockSuggestion(${i})">Gợi ý</button>`:''}</div>
+      <div class="dse-mobile-metrics">
+        <div><span>Tồn kho TTH</span><strong>${x.kho.toLocaleString('vi-VN')}</strong></div>
+        <div><span>TKM tồn</span><strong>${x.nhu.toLocaleString('vi-VN')}</strong></div>
+        <div><span>Chênh lệch</span><strong class="${clsDelta(x.delta)}">${x.delta>0?'+':''}${x.delta.toLocaleString('vi-VN')}</strong></div>
+        <div><span>TKM/Kho</span><strong>${Number.isFinite(x.rate)?x.rate.toFixed(1)+'%':'—'}</strong></div>
+        <div><span>Kho tỉnh</span><strong>${x.province.toLocaleString('vi-VN')}</strong></div>
+        <div><span>Tồn toàn tỉnh</span><strong>${x.total.toLocaleString('vi-VN')}</strong></div>
+      </div>
+    </div>`).join('')||`<div class="dse-mobile-empty">Không có dữ liệu thiết bị.</div>`;
+    content.innerHTML=`
+      <div class="dse-summary">
+        <div class="dse-card"><div class="l">TỒN KHO</div><div class="v">${totalKho.toLocaleString('vi-VN')}</div><div class="s">${esc(scopeText)}</div></div>
+        <div class="dse-card"><div class="l">TKM THÁNG</div><div class="v">${totalTkm.toLocaleString('vi-VN')}</div><div class="s">Đếm Thiết bị 1 → Thiết bị 4</div></div>
+        <div class="dse-card"><div class="l">CHÊNH LỆCH</div><div class="v ${clsDelta(delta)}">${delta>0?'+':''}${delta.toLocaleString('vi-VN')}</div><div class="s">Kho − TKM</div></div>
+        <div class="dse-card"><div class="l">TỶ LỆ TKM/KHO</div><div class="v">${Number.isFinite(rate)?rate.toFixed(1)+'%':'—'}</div><div class="s">Theo phạm vi chọn</div></div>
+        <div class="dse-card"><div class="l">MÃ ĐANG THIẾU</div><div class="v ${shortage?'neg':''}">${shortage}</div><div class="s">Mã có Kho < TKM</div></div>
+      </div>
+      <div class="dse-eval ${evalClass}">${esc(evalText)}</div>
+      <div class="dse-subtitle">Chi tiết theo mã thiết bị • ${esc(scopeText)} • ${esc(monthText(currentMonthKey))}</div>
+      <div class="dse-table-wrap"><table><thead><tr><th><span class="dse-th-main">Mã thiết bị</span><span class="dse-th-sub">(TKM tồn hiện có)</span></th><th>Tồn kho TTH</th><th>TKM tồn</th><th>Chênh lệch</th><th>TKM/Kho</th><th>Kho tỉnh</th><th>Tồn toàn tỉnh</th><th>Gợi ý</th></tr></thead><tbody>${table}</tbody></table></div>
+      <div class="dse-mobile-list">${mobileTable}</div>
+      <div id="dseSuggestionBox"></div>
+      ${scope==='DISTRICT' && district ? `<div class="dse-district-staff-panel"><div class="dse-district-staff-title">👥 ĐÁNH GIÁ TKM ↔ TỒN KHO NHÂN VIÊN • ${esc(district)}</div><div class="dse-district-staff-list">${getDistrictEmployees(data.rows,khoRows,district).map((e,i)=>`<button type="button" class="dse-district-staff-chip${i===0?' active':''}" data-staff-name="${esc(e.name)}"><span>👤 ${esc(e.name)}</span><small>TKM: ${e.totalTkm.toLocaleString('vi-VN')} • Tổng tồn NV: ${e.totalStock.toLocaleString('vi-VN')}</small><b>›</b></button>`).join('')||'<div class="dse-staff-empty">Không có nhân viên trong huyện này.</div>'}</div><div id="dseDistrictStaffDetail"></div></div>` : ''}
+      <div style="margin-top:8px;font-size:10px;color:#6b7280;line-height:1.45;">KHO GLI TÂY + KHO GLI ĐÔNG = KHO TỈNH. Tồn toàn tỉnh = KHO TỈNH + tồn các huyện. TKM được tính bằng số lần xuất hiện của từng mã trong 4 cột Thiết bị 1, Thiết bị 2, Thiết bị 3, Thiết bị 4.</div>
+    `;
+    if(scope==='DISTRICT' && district){
+      const staffRows=getDistrictEmployees(data.rows,khoRows,district);
+      const key=upper(district);
+      window.__dseSelectedStaff=window.__dseSelectedStaff||{};
+      const chosen=window.__dseSelectedStaff[key]||staffRows[0]?.name||'';
+      window.__dseSelectedStaff[key]=chosen;
+      document.querySelectorAll('.dse-district-staff-chip').forEach(btn=>{
+        btn.classList.toggle('active',upper(btn.dataset.staffName||'')===upper(chosen));
+        btn.addEventListener('click',()=>{
+          window.__dseSelectedStaff[key]=btn.dataset.staffName||'';
+          document.querySelectorAll('.dse-district-staff-chip').forEach(b=>b.classList.toggle('active',b===btn));
+          window.showStaffEvaluation(district,btn.dataset.staffName||'');
+        });
+      });
+    }
+  }
+
+  window.showDeviceStockSuggestion=async function(index){
+    const last=window.__dseLast; const x=(window.__dseRows||[])[index]; if(!last||!x)return;
+    const code=x.mh; const shortage=Math.abs(x.delta);
+    const sug=buildSuggestions(code,shortage,last.scope==='DISTRICT'?last.district:'',last.tkm,last.stock);
+    const tkmRows=last.data?.rows||[];
+    const stockRows=khoRows||[];
+    const sourceDistricts=sug.sources
+      .filter(z=>z.type==='district' && Number(z.available)>0)
+      .map(z=>z.name);
+    const staff=sourceStaffWithoutTarget(tkmRows,stockRows,code,sourceDistricts,last.scope==='DISTRICT'?last.district:'',true);
+
+    const sourceRows=sug.sources.length?sug.sources.map((z,idx)=>`<tr>
+      <td><b>${z.type==='province'?'🏛️':(z.eligible&&z.qty>0?'🥇':'📍')} ${esc(z.name)}</b></td>
+      <td class="dse-modal-num">${z.available.toLocaleString('vi-VN')}</td>
+      <td class="dse-modal-num ${z.qty>0?'dse-modal-priority':''}">${z.qty>0?z.qty.toLocaleString('vi-VN'):'—'}</td>
+      <td>${z.type==='province'?'<span class="dse-tag-province">KHO TỈNH</span>':(z.eligible?'<span class="dse-tag-ok">TKM = 0 · Ưu tiên</span>':`<span class="dse-tag-ref">Có TKM: ${Number(z.tkm)||0} · Tham khảo</span>`)}</td>
+    </tr>`).join(''):`<tr><td colspan="4" class="dse-modal-empty">Không có nguồn còn tồn mã thiết bị này.</td></tr>`;
+
+    const staffRows=staff.length?staff.map(z=>`<tr>
+      <td><b>👤 ${esc(z.name)}</b></td>
+      <td>${esc(z.district)}${z.province?' • KHO TỈNH':''}</td>
+      <td class="dse-modal-num dse-modal-stock">${z.qty.toLocaleString('vi-VN')}</td>
+      <td><span class="dse-tag-ok">✓ Chưa có mã trong TKM</span></td>
+    </tr>`).join(''):`<tr><td colspan="4" class="dse-modal-empty">Không tìm thấy nhân viên đang tồn mã thiết bị này, hoặc nhân viên đó đã có mã này trong TKM.</td></tr>`;
+
+    const old=document.getElementById('dseSuggestionModal'); if(old)old.remove();
+    const modal=document.createElement('div');
+    modal.id='dseSuggestionModal';
+    modal.className='dse-modal-overlay';
+    modal.innerHTML=`<div class="dse-modal" role="dialog" aria-modal="true" aria-label="Gợi ý bổ sung">
+      <div class="dse-modal-head">
+        <div class="dse-modal-title">🔎 GỢI Ý BỔ SUNG</div>
+        <button type="button" class="dse-modal-close" aria-label="Đóng">×</button>
+      </div>
+      <div class="dse-modal-code">${esc(code)} <span>• thiếu <strong>${shortage.toLocaleString('vi-VN')}</strong> thiết bị</span></div>
+      <div class="dse-modal-note">Nguồn điều chuyển được xét theo KHO GLI TÂY, KHO GLI ĐÔNG và các huyện có tồn mã này &gt; 0; huyện có TKM mã này = 0 được ưu tiên đề xuất. Các huyện đang có TKM mã này vẫn hiển thị để tham khảo. Danh sách nhân viên lấy toàn bộ nơi còn tồn mã này, kể cả huyện đang có TKM; chỉ loại nhân viên đã có chính mã này trong TKM</div>
+      <div class="dse-modal-grid">
+        <section class="dse-modal-panel">
+          <div class="dse-modal-section-title">📦 Lấy hàng ở đâu? <span>${sug.sources.length}</span></div>
+          <div class="dse-modal-table-wrap"><table class="dse-modal-table"><thead><tr><th>Nguồn</th><th>Tồn</th><th>Đề xuất</th><th>Trạng thái</th></tr></thead><tbody>${sourceRows}</tbody></table></div>
+        </section>
+        <section class="dse-modal-panel">
+          <div class="dse-modal-section-title">👤 Nhân viên tồn mặt hàng <span>${staff.length}</span></div>
+          <div class="dse-modal-table-wrap"><table class="dse-modal-table"><thead><tr><th>Nhân viên</th><th>Vị trí</th><th>Tồn</th><th>TKM</th></tr></thead><tbody>${staffRows}</tbody></table></div>
+        </section>
+      </div>
+      <div class="dse-modal-foot">Danh sách nhân viên hiển thị toàn bộ người còn tồn mã này và chưa có chính mã này trong TKM.</div>
+    </div>`;
+    document.body.appendChild(modal);
+    const close=()=>modal.remove();
+    modal.querySelector('.dse-modal-close')?.addEventListener('click',close);
+    modal.addEventListener('click',e=>{if(e.target===modal)close();});
+    document.addEventListener('keydown',function escClose(e){if(e.key==='Escape'){close();document.removeEventListener('keydown',escClose);}});
+  };
+
+  async function refresh(){
+    const sel=document.getElementById('dseMonthSelect');if(!sel)return;
+    currentMonthKey=sel.value||currentMonthKey;
+    const data=await getMonthData(currentMonthKey);
+    render(data);
+  }
+
+  async function init(){
+    try{
+      /* Chờ dashboard tải xong TKM lịch sử trước khi tính thiết bị. */
+      const waitUntil=Date.now()+30000;
+      while(!(Array.isArray(tontkmHistory)&&tontkmHistory.length) && !(Array.isArray(tontkm)&&tontkm.length) && Date.now()<waitUntil){
+        await new Promise(r=>setTimeout(r,500));
+      }
+      const res=await fetch(DSE_API,{cache:'no-store'}); if(!res.ok)throw new Error('HTTP '+res.status);
+      const json=await res.json();
+      const raw=Array.isArray(json)?json:(json.data||json.rows||json.result||json.items||[]);
+      khoRows=raw.filter(r=>upper(r?.loaimh)==='HÀNG TRIỂN KHAI');
+      const months=makeMonthOptions();
+      const sel=document.getElementById('dseMonthSelect');
+      if(sel){sel.innerHTML=months.map(k=>`<option value="${esc(k)}">${esc(k==='ALL'?'Tháng ALL':monthLabel(k))}</option>`).join('');currentMonthKey=months[0]||'';sel.value=currentMonthKey;}
+      const ds=document.getElementById('dseDistrictSelect');
+      if(ds)ds.innerHTML='<option value="">Tất cả huyện</option>'+getDistricts().map(h=>`<option value="${esc(h)}">${esc(h)}</option>`).join('');
+      document.getElementById('dseScopeSelect')?.addEventListener('change',()=>{
+        const c=document.getElementById('dseDistrictControl');if(c)c.style.display=document.getElementById('dseScopeSelect').value==='DISTRICT'?'block':'none';refresh();
+      });
+      document.getElementById('dseDistrictSelect')?.addEventListener('change',refresh);
+      sel?.addEventListener('change',refresh);
+      const c=document.getElementById('dseDistrictControl');if(c)c.style.display='none';
+      await refresh();
+    }catch(e){
+      console.error('DEVICE_STOCK_EVAL:',e);
+      const c=document.getElementById('dseContent');if(c)c.innerHTML='<div class="dse-loading">⚠️ Không lấy được dữ liệu Data kho để đánh giá tồn thiết bị.</div>';
+    }
+  }
+  window.renderDeviceStockEvaluation=init;
+  /* Section nằm cuối dashboard: tự khởi chạy sau khi trang đã dựng DOM. */
+  setTimeout(()=>init(),300);
+})();
+</script>
 </body>
   
 </html>
@@ -31768,6 +32568,282 @@ section[id*="cdbr" i]{
     padding-bottom:7px !important;
     min-height:33px !important;
   }
+}
+</style>
+
+
+
+<style id="DSE_SUGGESTION_MODAL_V1">
+#dseSuggestionModal.dse-modal-overlay{
+  position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.58);
+  display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;
+}
+#dseSuggestionModal .dse-modal{
+  width:min(1180px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:14px;
+  border:1px solid #d1d5db;box-shadow:0 20px 60px rgba(0,0,0,.25);font-size:11px;color:#111827;
+}
+#dseSuggestionModal .dse-modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 15px 5px;position:sticky;top:0;background:#fff;z-index:2;border-bottom:1px solid #f3f4f6;}
+#dseSuggestionModal .dse-modal-title{font-size:15px;font-weight:900;color:#991b1b;}
+#dseSuggestionModal .dse-modal-close{width:30px;height:30px;border:1px solid #d1d5db;background:#fff;border-radius:8px;font-size:22px;line-height:1;color:#374151;cursor:pointer;}
+#dseSuggestionModal .dse-modal-close:hover{background:#fef2f2;color:#b91c1c;}
+#dseSuggestionModal .dse-modal-code{padding:4px 15px 2px;font-size:13px;font-weight:900;color:#111827;}
+#dseSuggestionModal .dse-modal-code span{font-weight:500;color:#6b7280;}
+#dseSuggestionModal .dse-modal-note{margin:5px 15px 10px;padding:7px 9px;border-radius:8px;background:#fff7f7;color:#6b7280;line-height:1.45;font-size:10px;}
+#dseSuggestionModal .dse-modal-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:10px;padding:0 15px 10px;}
+#dseSuggestionModal .dse-modal-panel{min-width:0;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;background:#fff;}
+#dseSuggestionModal .dse-modal-section-title{padding:8px 10px;font-weight:900;font-size:11px;background:#f9fafb;border-bottom:1px solid #e5e7eb;}
+#dseSuggestionModal .dse-modal-section-title span{float:right;color:#6b7280;font-weight:700;}
+#dseSuggestionModal .dse-modal-table-wrap{overflow:auto;max-height:48vh;}
+#dseSuggestionModal .dse-modal-table{width:100%;border-collapse:collapse;table-layout:auto;}
+#dseSuggestionModal .dse-modal-table th{position:sticky;top:0;background:#f3f4f6;color:#374151;font-weight:900;text-align:left;padding:7px 8px;border-bottom:1px solid #d1d5db;white-space:nowrap;}
+#dseSuggestionModal .dse-modal-table td{padding:7px 8px;border-bottom:1px solid #eef0f2;vertical-align:middle;line-height:1.35;}
+#dseSuggestionModal .dse-modal-table tr:last-child td{border-bottom:0;}
+#dseSuggestionModal .dse-modal-table tr:hover td{background:#fafafa;}
+#dseSuggestionModal .dse-modal-num{text-align:center;font-weight:800;white-space:nowrap;}
+#dseSuggestionModal .dse-modal-priority{color:#b91c1c;font-weight:900;}
+#dseSuggestionModal .dse-modal-stock{color:#111827;font-size:12px;}
+#dseSuggestionModal .dse-tag-province,#dseSuggestionModal .dse-tag-ok,#dseSuggestionModal .dse-tag-ref{display:inline-block;border-radius:999px;padding:2px 6px;font-size:9px;white-space:nowrap;}
+#dseSuggestionModal .dse-tag-province{background:#eff6ff;color:#1d4ed8;}
+#dseSuggestionModal .dse-tag-ok{background:#f0fdf4;color:#15803d;}
+#dseSuggestionModal .dse-tag-ref{background:#f3f4f6;color:#6b7280;}
+#dseSuggestionModal .dse-modal-empty{text-align:center;color:#6b7280;padding:14px!important;}
+#dseSuggestionModal .dse-modal-foot{padding:7px 15px 12px;color:#6b7280;font-size:9.5px;}
+@media(max-width:768px){
+  #dseSuggestionModal.dse-modal-overlay{padding:8px;align-items:flex-end;}
+  #dseSuggestionModal .dse-modal{width:100%;max-height:94vh;border-radius:14px 14px 8px 8px;}
+  #dseSuggestionModal .dse-modal-head{padding:10px 11px 5px;}
+  #dseSuggestionModal .dse-modal-title{font-size:13px;}
+  #dseSuggestionModal .dse-modal-code{padding:4px 11px 2px;font-size:11px;overflow-wrap:anywhere;}
+  #dseSuggestionModal .dse-modal-note{margin:5px 11px 8px;font-size:9px;}
+  #dseSuggestionModal .dse-modal-grid{grid-template-columns:1fr;gap:8px;padding:0 8px 8px;}
+  #dseSuggestionModal .dse-modal-section-title{padding:7px 8px;font-size:10px;}
+  #dseSuggestionModal .dse-modal-table-wrap{max-height:none;overflow-x:auto;}
+  #dseSuggestionModal .dse-modal-table{font-size:9px;min-width:560px;}
+  #dseSuggestionModal .dse-modal-table th,#dseSuggestionModal .dse-modal-table td{padding:6px 7px;}
+  #dseSuggestionModal .dse-modal-foot{padding:5px 10px 10px;font-size:8.5px;}
+
+  /* Mobile: hiển thị chắc chắn toàn bộ danh sách dạng card, không kéo ngang */
+  #dseSuggestionModal .dse-modal-table-wrap{display:block !important;overflow:visible !important;width:100% !important;max-width:100% !important;}
+  #dseSuggestionModal .dse-modal-table{display:block !important;min-width:0 !important;width:100% !important;max-width:100% !important;font-size:9.5px !important;border-collapse:separate !important;}
+  #dseSuggestionModal .dse-modal-table thead{display:none !important;}
+  #dseSuggestionModal .dse-modal-table tbody{display:flex !important;flex-direction:column !important;width:100% !important;visibility:visible !important;opacity:1 !important;}
+  #dseSuggestionModal .dse-modal-table tr{display:grid !important;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) !important;gap:0 8px;padding:9px 9px;border-bottom:1px solid #eef0f2;width:100% !important;box-sizing:border-box !important;visibility:visible !important;opacity:1 !important;background:#fff !important;}
+  #dseSuggestionModal .dse-modal-table tr:last-child{border-bottom:0;}
+  #dseSuggestionModal .dse-modal-table td{display:block !important;padding:1px 0;border:0;line-height:1.35;min-width:0;visibility:visible !important;opacity:1 !important;}
+  #dseSuggestionModal .dse-modal-table td:nth-child(1){grid-column:1/-1;font-weight:800;overflow-wrap:anywhere;margin-bottom:3px;}
+  /* Bảng nguồn: bố cục mobile rõ ràng: Tên nguồn → Tồn / Đề xuất → Trạng thái */
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table tr{grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;gap:0 12px;}
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table td:nth-child(1){grid-column:1/-1;grid-row:1;font-size:10.5px;margin-bottom:6px;}
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table td:nth-child(2){grid-column:1;grid-row:2;text-align:left;font-weight:800;}
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table td:nth-child(3){grid-column:2;grid-row:2;text-align:right;font-weight:800;}
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table td:nth-child(4){grid-column:1/-1;grid-row:3;text-align:left;margin-top:5px;}
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table td:nth-child(2)::before{content:'Tồn: ';color:#6b7280;font-weight:500;}
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table td:nth-child(3)::before{content:'Đề xuất: ';color:#6b7280;font-weight:500;}
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table td:nth-child(4)::before{content:'Trạng thái: ';color:#6b7280;font-weight:500;}
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table td:nth-child(2),
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table td:nth-child(3){font-size:10px;}
+  #dseSuggestionModal .dse-modal-table td:nth-child(2)::before{content:'Tồn: ';color:#6b7280;font-weight:500;}
+  #dseSuggestionModal .dse-modal-table td:nth-child(3)::before{content:'Đề xuất: ';color:#6b7280;font-weight:500;}
+  #dseSuggestionModal .dse-modal-table td:nth-child(4)::before{content:'TKM: ';color:#6b7280;font-weight:500;}
+  #dseSuggestionModal .dse-modal-table td:nth-child(4){text-align:right;}
+  /* Bảng nhân viên: bố cục tên / vị trí / tồn / TKM */
+  #dseSuggestionModal .dse-modal-panel:nth-child(2) .dse-modal-table tr{grid-template-columns:minmax(0,1fr) auto !important;gap:0 8px;}
+  #dseSuggestionModal .dse-modal-panel:nth-child(2) .dse-modal-table td:nth-child(2){grid-column:1;grid-row:2;color:#6b7280;}
+  #dseSuggestionModal .dse-modal-panel:nth-child(2) .dse-modal-table td:nth-child(3){grid-column:2;grid-row:2;text-align:right;font-weight:800;}
+  #dseSuggestionModal .dse-modal-panel:nth-child(2) .dse-modal-table td:nth-child(3)::before{content:'Tồn: ';color:#6b7280;font-weight:500;}
+  #dseSuggestionModal .dse-modal-panel:nth-child(2) .dse-modal-table td:nth-child(4){grid-column:1/-1;grid-row:3;text-align:left;margin-top:2px;}
+  #dseSuggestionModal .dse-modal-panel:nth-child(2) .dse-modal-table td:nth-child(4)::before{content:'';}
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table td{overflow-wrap:anywhere;}
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table .dse-tag-province,
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table .dse-tag-ok,
+  #dseSuggestionModal .dse-modal-panel:first-child .dse-modal-table .dse-tag-ref{max-width:100%;}
+}
+
+  .dse-staff-eval-modal{max-width:980px;width:min(980px,calc(100vw - 24px));}
+  .dse-staff-eval-modal #dseDistrictStaffDetail{display:block!important;}
+  .dse-staff-eval-modal .dse-staff-selected-head{margin-top:0;}
+  .dse-district-staff-chip{position:relative;cursor:pointer;padding-right:30px!important;}
+  .dse-district-staff-chip>b{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:20px;opacity:.65;}
+  @media(max-width:700px){
+    .dse-staff-eval-modal{width:calc(100vw - 12px);max-height:calc(100vh - 12px);}
+    .dse-staff-eval-modal .dse-modal-code{font-size:13px;}
+    .dse-staff-eval-modal .dse-staff-eval-grid{grid-template-columns:1fr!important;}
+    .dse-staff-eval-modal .dse-staff-mini-stats{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px!important;}
+    .dse-staff-eval-modal .dse-staff-eval-summary{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px!important;}
+  }
+</style>
+
+
+<style id="DSE_STAFF_EVAL_MODAL_V2">
+/* ===== POPUP ĐÁNH GIÁ NHÂN VIÊN ===== */
+#dseStaffEvalModal.dse-modal-overlay{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:100000 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:16px !important;
+  box-sizing:border-box !important;
+  background:rgba(15,23,42,.62) !important;
+  overflow:auto !important;
+}
+#dseStaffEvalModal .dse-staff-eval-modal{
+  display:block !important;
+  width:min(980px,96vw) !important;
+  max-width:980px !important;
+  max-height:92vh !important;
+  overflow:auto !important;
+  margin:auto !important;
+  background:#fff !important;
+  border:1px solid #d1d5db !important;
+  border-radius:14px !important;
+  box-shadow:0 20px 60px rgba(0,0,0,.28) !important;
+  color:#111827 !important;
+  font-size:11px !important;
+}
+#dseStaffEvalModal .dse-modal-head{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:10px !important;
+  padding:12px 15px 7px !important;
+  position:sticky !important;
+  top:0 !important;
+  z-index:5 !important;
+  background:#fff !important;
+  border-bottom:1px solid #eef0f2 !important;
+}
+#dseStaffEvalModal .dse-modal-title{
+  font-size:15px !important;
+  font-weight:900 !important;
+  color:#991b1b !important;
+}
+#dseStaffEvalModal .dse-modal-close{
+  width:32px !important;
+  height:32px !important;
+  flex:0 0 32px !important;
+  border:1px solid #d1d5db !important;
+  background:#fff !important;
+  border-radius:9px !important;
+  font-size:22px !important;
+  line-height:1 !important;
+  color:#374151 !important;
+  cursor:pointer !important;
+}
+#dseStaffEvalModal .dse-modal-code{
+  padding:7px 15px 4px !important;
+  font-size:14px !important;
+  font-weight:900 !important;
+  color:#111827 !important;
+}
+#dseStaffEvalModal .dse-modal-code span{
+  font-weight:500 !important;
+  color:#6b7280 !important;
+}
+#dseStaffEvalModal #dseStaffEvalModalBody{
+  display:block !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  padding:0 15px 14px !important;
+}
+#dseStaffEvalModal #dseDistrictStaffDetail{
+  display:block !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+#dseStaffEvalModal .dse-staff-selected-head{
+  margin:0 0 8px !important;
+}
+#dseStaffEvalModal .dse-staff-eval-note{
+  margin:7px 0 !important;
+}
+#dseStaffEvalModal .dse-staff-eval-summary{
+  margin:7px 0 !important;
+}
+#dseStaffEvalModal .dse-staff-eval-grid{
+  margin-top:8px !important;
+}
+@media(max-width:700px){
+  #dseStaffEvalModal.dse-modal-overlay{
+    align-items:flex-end !important;
+    padding:7px !important;
+  }
+  #dseStaffEvalModal .dse-staff-eval-modal{
+    width:100% !important;
+    max-width:none !important;
+    max-height:94vh !important;
+    border-radius:14px 14px 8px 8px !important;
+  }
+  #dseStaffEvalModal .dse-modal-head{
+    padding:9px 10px 6px !important;
+  }
+  #dseStaffEvalModal .dse-modal-title{
+    font-size:13px !important;
+  }
+  #dseStaffEvalModal .dse-modal-code{
+    padding:6px 10px 4px !important;
+    font-size:12px !important;
+    overflow-wrap:anywhere !important;
+  }
+  #dseStaffEvalModal #dseStaffEvalModalBody{
+    padding:0 10px 10px !important;
+  }
+  #dseStaffEvalModal .dse-staff-mini-stats{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:5px !important;
+  }
+  #dseStaffEvalModal .dse-staff-eval-summary{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:5px !important;
+  }
+  #dseStaffEvalModal .dse-staff-eval-grid{
+    grid-template-columns:1fr !important;
+  }
+}
+</style>
+
+<style id="DSE_STAFF_EVAL_MODAL_V4">
+/* ===== TỐI ƯU POPUP ĐÁNH GIÁ NHÂN VIÊN ===== */
+#dseStaffEvalModal .dse-staff-profile-info{min-width:0;}
+#dseStaffEvalModal .dse-staff-kpi.kpi-main{background:#f8fafc;border-color:#cbd5e1;}
+#dseStaffEvalModal .dse-staff-detail-row .dse-staff-delta span{display:none;}
+#dseStaffEvalModal .dse-staff-status-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+#dseStaffEvalModal .dse-staff-status-wrap small{font-size:8.5px;color:#6b7280;line-height:1.2;text-align:center;}
+#dseStaffEvalModal .dse-code-index{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-right:6px;border-radius:5px;background:#f3f4f6;color:#6b7280;font-size:8px;font-weight:900;vertical-align:middle;}
+#dseStaffEvalModal .dse-staff-detail-row .dse-staff-delta strong{font-size:12px;}
+@media(max-width:700px){
+  #dseStaffEvalModal .dse-staff-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;}
+  #dseStaffEvalModal .dse-staff-kpi:last-child{grid-column:1/-1;}
+  #dseStaffEvalModal .dse-staff-kpi{padding:8px 9px!important;border-radius:10px!important;}
+  #dseStaffEvalModal .dse-staff-kpi span{font-size:9px!important;font-weight:700;}
+  #dseStaffEvalModal .dse-staff-kpi strong{font-size:17px!important;margin-top:3px!important;}
+  #dseStaffEvalModal .dse-staff-kpi small{font-size:8px!important;}
+  #dseStaffEvalModal .dse-staff-eval-caption{margin:10px 1px 7px!important;}
+  #dseStaffEvalModal .dse-staff-eval-caption b{font-size:11px!important;}
+  #dseStaffEvalModal .dse-staff-eval-caption span{font-size:8.5px!important;margin-top:3px!important;}
+  #dseStaffEvalModal .dse-staff-detail-table{border-radius:10px!important;}
+  #dseStaffEvalModal .dse-staff-detail-row{display:grid!important;grid-template-columns:1fr 1fr!important;gap:0!important;padding:0!important;}
+  #dseStaffEvalModal .dse-staff-detail-row>div{padding:8px 9px!important;}
+  #dseStaffEvalModal .dse-staff-detail-row .dse-staff-code{grid-column:1/-1!important;background:#f8fafc!important;border-bottom:1px solid #e5e7eb!important;font-size:10.5px!important;font-weight:900!important;line-height:1.35!important;}
+  #dseStaffEvalModal .dse-staff-detail-row .dse-staff-val{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:7px!important;text-align:left!important;border-bottom:1px solid #f1f5f9!important;}
+  #dseStaffEvalModal .dse-staff-detail-row .dse-staff-val span{display:block!important;font-size:8.5px!important;color:#64748b!important;}
+  #dseStaffEvalModal .dse-staff-detail-row .dse-staff-val strong{font-size:12px!important;}
+  #dseStaffEvalModal .dse-staff-detail-row .dse-staff-delta{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:7px!important;text-align:left!important;border-bottom:1px solid #f1f5f9!important;}
+  #dseStaffEvalModal .dse-staff-detail-row .dse-staff-delta span{display:block!important;color:#64748b!important;font-size:8.5px!important;}
+  #dseStaffEvalModal .dse-staff-detail-row .dse-staff-delta strong{font-size:12px!important;}
+  #dseStaffEvalModal .dse-staff-detail-row .dse-staff-status-wrap{grid-column:1/-1!important;align-items:flex-start!important;justify-content:flex-start!important;flex-direction:row!important;gap:7px!important;padding-top:7px!important;padding-bottom:8px!important;background:#fff!important;}
+  #dseStaffEvalModal .dse-staff-status-wrap small{font-size:8.5px!important;text-align:left!important;align-self:center!important;}
+  #dseStaffEvalModal .dse-staff-status{font-size:9px!important;padding:4px 9px!important;min-width:66px!important;}
+  #dseStaffEvalModal .dse-code-index{width:17px!important;height:17px!important;margin-right:5px!important;font-size:7.5px!important;}
+  #dseStaffEvalModal .dse-staff-profile{padding:9px!important;}
+  #dseStaffEvalModal .dse-staff-profile-note{font-size:9px!important;line-height:1.4!important;}
 }
 </style>
 
