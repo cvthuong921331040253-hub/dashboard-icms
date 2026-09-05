@@ -1778,7 +1778,7 @@ function renderHuyen(data){
         <td>${tongDa}</td>
         <td>${tongTon}</td>
         <td class="${tongTyLe<1?'rate-bad':'rate-good'}">${tongPercent}%</td>
-        <td class="money">${tongPhat.toLocaleString('vi-VN')}</td>
+        <td class="money">${Math.round(tongPhat).toLocaleString('vi-VN')}</td>
       </tr>
   `;
 
