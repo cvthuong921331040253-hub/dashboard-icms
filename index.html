@@ -3288,6 +3288,24 @@ body.loading{
 }
 </style>
 
+
+<style id="export-ranking-excel-90">
+.ranking-title-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 6px}
+.ranking-title-row h3{margin:0!important}
+.export-ranking-btn{border:1px solid #d5d5d5;background:#fff;color:#111;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.export-ranking-btn:hover{background:#f5f5f5}
+@media(max-width:700px){.ranking-title-row{gap:6px}.export-ranking-btn{padding:5px 8px;font-size:10px;white-space:nowrap}}
+</style>
+
+
+<style id="ranking-rule-91">
+/* Quy tắc xếp hạng:
+   1. Điểm KPI 20 KPI cao hơn.
+   2. Nếu bằng điểm: Tổng SC thấp hơn.
+   3. Không dùng TKM/TTV để phá hòa.
+*/
+</style>
+
 </head>
 
 <body class="rotate-in loading">
@@ -3379,9 +3397,12 @@ body.loading{
   </div>
   
   <div id="sectionTop">
-  <h3>🏆 Top 10 NV tốt</h3>
-  <div id="top"></div>
+  <div class="ranking-title-row">
+    <h3>🏆 Top 10 NV tốt</h3>
+    <button type="button" class="export-ranking-btn" onclick="exportKpiRankingExcel()">📥 Tải Excel xếp hạng</button>
   </div>
+  <div id="top"></div>
+</div>
 
   <div id="sectionWorst">
     <h3>⚠️ Top 10 NV kém</h3>
@@ -3458,74 +3479,71 @@ function calcScore(r){
   let total = 0;
   let max = 0;
 
- function add(v,t,weight,type="up"){
-  let value = toNumber(v);
-  let target = toNumber(t);
+  function add(v,t,weight,type="up"){
+    let value = toNumber(v);
+    let target = toNumber(t);
 
-  if(target === 0) return;
+    if(target === 0) return;
 
-  max += weight;
+    max += weight;
 
-  let ratio = 0;
+    let ratio = 0;
 
-  if(type === "down"){
-
-  // 0% = full điểm
-  // tăng dần tới target thì giảm điểm dần
-  // >= target thì 0 điểm
-
-  if(value >= target){
-    ratio = 0;
-  }else{
-    ratio = 1 - (value / target);
-  }
-}else{
-    // KPI bình thường
-    if(value < target){
-      ratio = 0; // dưới target → mất sạch
+    if(type === "down"){
+      // KPI càng thấp càng tốt: đạt target trở xuống = có điểm.
+      if(value >= target){
+        ratio = 0;
+      }else{
+        ratio = 1 - (value / target);
+      }
     }else{
-      ratio = value / 100; // lấy % thực tế
+      // KPI càng cao càng tốt.
+      // Giữ nguyên cách chấm hiện tại:
+      // dưới target = 0 điểm; đạt/vượt target tính theo tỷ lệ thực tế,
+      // nhưng tối đa không quá trọng số.
+      if(value < target){
+        ratio = 0;
+      }else{
+        ratio = value / 100;
+      }
     }
+
+    ratio = Math.min(Math.max(ratio,0),1);
+    total += ratio * weight;
   }
 
-  // cap max = weight
-  ratio = Math.min(ratio, 1);
+  // =========================================================
+  // 20 KPI VẪN TÍNH ĐIỂM BÌNH THƯỜNG
+  // TKM KHÔNG bị loại khỏi calcScore.
+  // =========================================================
 
-  total += ratio * weight;
-}
   // ===== THẤP =====
-  add(r.tk_3h_moi,r.target_3h_moi,1);
-  add(r.tk_10h_moi,r.target_10h_moi,1);
-
-  add(r.tk_3h_co_san,r.target_3h_co_san,1);
-  add(r.tk_10h_co_san,r.target_10h_co_san,1);
-
-  add(r.sc_3h,r.target_sc_3h,3);
-  add(r.sc_10h,r.target_sc_10h,3);
-
-  add(r.sc_soc_24h,r.target_sc_soc_24h,6);
-  add(r.tich_hen,r.target_tich_hen,5);
+  add(r.tk_3h_moi,       r.target_3h_moi,       1);
+  add(r.tk_10h_moi,      r.target_10h_moi,      1);
+  add(r.tk_3h_co_san,    r.target_3h_co_san,    1);
+  add(r.tk_10h_co_san,   r.target_10h_co_san,   1);
+  add(r.sc_3h,           r.target_sc_3h,        3);
+  add(r.sc_10h,          r.target_sc_10h,       3);
+  add(r.sc_soc_24h,      r.target_sc_soc_24h,   6);
+  add(r.tich_hen,        r.target_tich_hen,     5);
 
   // ===== TRUNG =====
-  add(r.tk_16h_moi,r.target_16h_moi,4);
-  add(r.tk_16h_co_san,r.target_16h_co_san,4);
-
-  add(r.sc_16h,r.target_sc_16h,4);
-  add(r.sc_ht_24h,r.target_sc_ht_24h,8);
-  add(r.sc_soc_72h,r.target_sc_soc_72h,6);
-  add(r.sc_hen,r.target_sc_hen,6);
+  add(r.tk_16h_moi,      r.target_16h_moi,      4);
+  add(r.tk_16h_co_san,   r.target_16h_co_san,   4);
+  add(r.sc_16h,          r.target_sc_16h,       4);
+  add(r.sc_ht_24h,       r.target_sc_ht_24h,    8);
+  add(r.sc_soc_72h,      r.target_sc_soc_72h,   6);
+  add(r.sc_hen,          r.target_sc_hen,       6);
 
   // ===== CAO =====
-  add(r.tk_24h_moi,r.target_24h_moi,8);
-  add(r.tk_24h_co_san,r.target_24h_co_san,8);
+  add(r.tk_24h_moi,      r.target_24h_moi,      8);
+  add(r.tk_24h_co_san,   r.target_24h_co_san,   8);
+  add(r.sc_24h,          r.target_sc_24h,      10);
+  add(r.sc_hot,          r.target_sc_hot,       8);
+  add(r.sc_vip,          r.target_sc_vip,       8);
+  add(r.sc_lap,          r.target_sc_lap,       5, "down");
 
-  add(r.sc_24h,r.target_sc_24h,10);
-  add(r.sc_hot,r.target_sc_hot,8);
-  add(r.sc_vip,r.target_sc_vip,8);
-
-  add(r.sc_lap,r.target_sc_lap,5,"down");
-
-  return max ? (total/max)*100 : 0;
+  return max ? (total / max) * 100 : 0;
 }
 
 // ===== KPI NHÂN VIÊN TỒI =====
@@ -3710,7 +3728,23 @@ tableDataGlobal.forEach(r=>{
     window.tableDataGlobal = tableDataGlobal;
 
     allData.forEach(r=> r.score = calcScore(r));
-    allData.sort((a,b)=> b.score - a.score);
+    allData.sort((a,b)=>{
+  const scoreA = Number(a.score) || 0;
+  const scoreB = Number(b.score) || 0;
+
+  // Tiêu chí 1: điểm KPI cao hơn xếp trên.
+  const scoreDiff = scoreB - scoreA;
+  if(Math.abs(scoreDiff) > 0.000001){
+    return scoreDiff;
+  }
+
+  // Tiêu chí 2: nếu điểm KPI bằng nhau,
+  // KHÔNG dùng TKM/TTV; Tổng SC ít hơn xếp trên.
+  const scA = Number(a.tong_sc) || 0;
+  const scB = Number(b.tong_sc) || 0;
+
+  return scA - scB;
+});
 
     applyFilter();
     renderTableExcel(tableDataGlobal); // ✅ bảng đúng 1–15
@@ -6222,6 +6256,82 @@ window.addEventListener('orientationchange',()=>setTimeout(updateKpiHeaderRedLin
   window.addEventListener("load",boot89,{once:true});
   window.addEventListener("resize",fixTableOffset89,{passive:true});
 })();
+</script>
+
+
+<script id="export-ranking-excel-script-90">
+function exportKpiRankingExcel(){
+  const rows=Array.isArray(window.allData)?window.allData.slice():[];
+  if(!rows.length){alert("Chưa có dữ liệu xếp hạng nhân viên để xuất Excel.");return;}
+  rows.sort((a,b)=>{
+    const scoreDiff=(Number(b.score)||0)-(Number(a.score)||0);
+    if(Math.abs(scoreDiff)>0.000001) return scoreDiff;
+    return (Number(a.tong_sc)||0)-(Number(b.tong_sc)||0);
+  });
+
+  const kpis=[
+    ["TK mới 3h","tk_3h_moi"],["TK mới 10h","tk_10h_moi"],["TK mới 16h","tk_16h_moi"],["TK mới 24h","tk_24h_moi"],
+    ["TK có sẵn 3h","tk_3h_co_san"],["TK có sẵn 10h","tk_10h_co_san"],["TK có sẵn 16h","tk_16h_co_san"],["TK có sẵn 24h","tk_24h_co_san"],
+    ["TK tích hẹn","tich_hen"],["SC 3h","sc_3h"],["SC 10h","sc_10h"],["SC 16h","sc_16h"],["SC 24h","sc_24h"],
+    ["SC HOT","sc_hot"],["SC VIP","sc_vip"],["SC HT 24h","sc_ht_24h"],["SC SOC 24h","sc_soc_24h"],["SC SOC 72h","sc_soc_72h"],["SC Hẹn","sc_hen"],["SC Lặp","sc_lap"]
+  ];
+  const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&apos;");
+  const num=v=>Number.isFinite(Number(v))?Number(v):0;
+
+  let xml=`<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+<Styles>
+<Style ss:ID="Default" ss:Name="Normal"><Font ss:FontName="Arial" ss:Size="10"/></Style>
+<Style ss:ID="Header"><Font ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#111111" ss:Pattern="Solid"/><Alignment ss:Horizontal="Center"/></Style>
+<Style ss:ID="Good"><Interior ss:Color="#E8F5E9" ss:Pattern="Solid"/></Style>
+<Style ss:ID="Bad"><Interior ss:Color="#FFEBEE" ss:Pattern="Solid"/></Style>
+</Styles>
+<Worksheet ss:Name="Xep hang KPI"><Table>`;
+
+  xml+=`<Row>
+<Cell ss:StyleID="Header"><Data ss:Type="String">Hạng</Data></Cell>
+<Cell ss:StyleID="Header"><Data ss:Type="String">Nhân viên</Data></Cell>
+<Cell ss:StyleID="Header"><Data ss:Type="String">Huyện</Data></Cell>
+<Cell ss:StyleID="Header"><Data ss:Type="String">Điểm KPI</Data></Cell>
+<Cell ss:StyleID="Header"><Data ss:Type="String">Trạng thái</Data></Cell>`;
+  kpis.forEach(k=>xml+=`<Cell ss:StyleID="Header"><Data ss:Type="String">${esc(k[0])}</Data></Cell>`);
+  xml+=`</Row>`;
+
+  rows.forEach((r,i)=>{
+    const bad=typeof getBadKPI==="function"?getBadKPI(r):[];
+    const badClass=bad.length?"Bad":"Good";
+    const status=bad.length?"Kém":"Tốt/Đạt";
+    xml+=`<Row>
+<Cell><Data ss:Type="Number">${i+1}</Data></Cell>
+<Cell><Data ss:Type="String">${esc(r.nhan_vien)}</Data></Cell>
+<Cell><Data ss:Type="String">${esc(r.huyen)}</Data></Cell>
+<Cell ss:StyleID="${badClass}"><Data ss:Type="Number">${num(r.score).toFixed(2)}</Data></Cell>
+<Cell ss:StyleID="${badClass}"><Data ss:Type="String">${status}</Data></Cell>`;
+    kpis.forEach(k=>{
+      const v=r[k[1]];
+      if(Number.isFinite(Number(v))) xml+=`<Cell><Data ss:Type="Number">${Number(v)}</Data></Cell>`;
+      else xml+=`<Cell><Data ss:Type="String">${esc(v)}</Data></Cell>`;
+    });
+    xml+=`</Row>`;
+  });
+
+  xml+=`</Table></Worksheet></Workbook>`;
+  const blob=new Blob(["\ufeff"+xml],{type:"application/vnd.ms-excel;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  const d=new Date();
+  const stamp=d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0");
+  a.href=url;
+  a.download=`Xep_hang_KPI_nhan_vien_${stamp}.xls`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
 </script>
 
 </body>
