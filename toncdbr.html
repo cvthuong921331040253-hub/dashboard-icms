@@ -9133,6 +9133,175 @@
 .dse-capturing .dse-line-modal-close{
   visibility:hidden !important;
 }
+
+/* ===== PHÂN TÍCH MẶT HÀNG THIẾU THEO HUYỆN: DẠNG MỤC GỌN ===== */
+#dseDistrictAnalysisModal .dse-da-list-modal{
+  width:min(1050px,96vw);
+  max-height:92vh;
+  overflow:hidden;
+}
+#dseDistrictAnalysisModal .dse-da-list-body{
+  padding:10px 14px 14px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  max-height:calc(92vh - 170px);
+}
+#dseDistrictAnalysisModal .dse-da-district-card{
+  margin:0 0 9px;
+  border:1px solid #d5dce5;
+  border-radius:9px;
+  background:#fff;
+  overflow:hidden;
+}
+#dseDistrictAnalysisModal .dse-da-district-card:last-child{margin-bottom:0}
+#dseDistrictAnalysisModal .dse-da-district-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:7px 10px;
+  background:#f3f4f6;
+  border-bottom:1px solid #dfe4ea;
+}
+#dseDistrictAnalysisModal .dse-da-district-name{
+  font-size:13px;
+  font-weight:900;
+  color:#111827;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+#dseDistrictAnalysisModal .dse-da-stt{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#111827;
+  color:#fff;
+  font-size:10px;
+  flex:0 0 22px;
+}
+#dseDistrictAnalysisModal .dse-da-district-total{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:10px;
+  color:#6b7280;
+  white-space:nowrap;
+}
+#dseDistrictAnalysisModal .dse-da-district-total b{color:#dc2626}
+#dseDistrictAnalysisModal .dse-da-items{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:5px 7px;
+  padding:7px 9px;
+}
+#dseDistrictAnalysisModal .dse-da-item{
+  width:100%;
+  min-width:0;
+  border:1px solid #cbd5e1;
+  border-radius:7px;
+  background:#f8fafc;
+  color:#111827;
+  padding:6px 8px;
+  text-align:left;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+#dseDistrictAnalysisModal .dse-da-item:hover{
+  border-color:#dc2626;
+  background:#fff5f5;
+}
+#dseDistrictAnalysisModal .dse-da-item-name{
+  min-width:0;
+  font-size:11px;
+  font-weight:800;
+  line-height:1.25;
+}
+#dseDistrictAnalysisModal .dse-da-item-info{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  font-size:9px;
+  color:#64748b;
+  white-space:nowrap;
+}
+#dseDistrictAnalysisModal .dse-da-item-info b{color:#475569}
+#dseDistrictAnalysisModal .dse-da-arrow{color:#94a3b8;font-weight:900}
+#dseDistrictAnalysisModal .dse-da-shortage{color:#dc2626;font-weight:900}
+#dseDistrictAnalysisModal .dse-da-empty{
+  padding:25px;
+  text-align:center;
+  color:#6b7280;
+  font-weight:700;
+}
+@media (max-width:700px){
+  #dseDistrictAnalysisModal .dse-da-list-modal{
+    width:96vw;
+    max-height:94vh;
+  }
+  #dseDistrictAnalysisModal .dse-da-list-body{
+    max-height:calc(94vh - 175px);
+    padding:8px;
+  }
+  #dseDistrictAnalysisModal .dse-da-district-head{
+    align-items:flex-start;
+  }
+  #dseDistrictAnalysisModal .dse-da-district-total{
+    flex-direction:column;
+    align-items:flex-end;
+    gap:2px;
+  }
+  #dseDistrictAnalysisModal .dse-da-items{
+    grid-template-columns:1fr;
+    gap:5px;
+  }
+  #dseDistrictAnalysisModal .dse-da-item{
+    align-items:flex-start;
+  }
+  #dseDistrictAnalysisModal .dse-da-item-info{
+    font-size:9px;
+  }
+}
+
+#dseDistrictAnalysisModal .dse-da-head-actions{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex:0 0 auto;
+}
+#dseDistrictAnalysisModal .dse-da-copy-btn{
+  border:1px solid #475569;
+  border-radius:6px;
+  background:#1f2937;
+  color:#fff;
+  padding:6px 10px;
+  font-size:10px;
+  font-weight:800;
+  cursor:pointer;
+  white-space:nowrap;
+}
+#dseDistrictAnalysisModal .dse-da-copy-btn:hover{
+  background:#dc2626;
+  border-color:#dc2626;
+}
+#dseDistrictAnalysisModal .dse-da-copy-btn:disabled{
+  opacity:.65;
+  cursor:wait;
+}
+#dseDistrictAnalysisModal.dse-capturing .dse-da-copy-btn,
+#dseDistrictAnalysisModal.dse-capturing .dse-da-close,
+#dseDistrictAnalysisModal .dse-capturing .dse-da-copy-btn,
+#dseDistrictAnalysisModal .dse-capturing .dse-da-close{
+  visibility:hidden !important;
+}
 </style>
   
   <style>\n\n/* =========================================================\n   FIX DUY NHẤT LEGEND CỦA BIỂU ĐỒ NHỎ\n   KHÔNG áp dụng cho biểu đồ phóng to.\n   ========================================================= */\n#huyenSocBypassLineBox .huyen-soc-bypass-line-legend{\n  height:18px !important;\n  min-height:18px !important;\n  max-height:18px !important;\n  display:flex !important;\n  align-items:center !important;\n  justify-content:center !important;\n  gap:3px !important;\n  flex-wrap:nowrap !important;\n  overflow:hidden !important;\n  white-space:nowrap !important;\n  margin:0 !important;\n  padding:0 !important;\n  line-height:1 !important;\n}\n#huyenSocBypassLineBox .huyen-soc-line-legend-item{\n  height:14px !important;\n  min-height:14px !important;\n  max-height:14px !important;\n  display:inline-flex !important;\n  align-items:center !important;\n  gap:2px !important;\n  flex:0 0 auto !important;\n  padding:0 1px !important;\n  margin:0 !important;\n  border:0 !important;\n  background:transparent !important;\n  color:#64748b !important;\n  font-family:Arial,sans-serif !important;\n  font-size:7px !important;\n  font-weight:400 !important;\n  line-height:14px !important;\n  white-space:nowrap !important;\n}\n#huyenSocBypassLineBox .huyen-soc-line-legend-label{\n  font-size:7px !important;\n  font-weight:400 !important;\n  line-height:14px !important;\n  white-space:nowrap !important;\n}\n#huyenSocBypassLineBox .huyen-soc-line-legend-dot{\n  width:6px !important;\n  height:6px !important;\n  min-width:6px !important;\n  max-width:6px !important;\n  min-height:6px !important;\n  max-height:6px !important;\n  border-width:1px !important;\n  border-radius:0 !important;\n  flex:0 0 6px !important;\n}\n</style>
@@ -32972,50 +33141,86 @@ async function answer(q){try{const u=upper(q);if(u==='/HELP'||u==='HELP'||u.incl
        KHÔNG có mã thiết bị đang thiếu.
   */
   function sourceStaffWithoutTarget(tkmRows, stockRows, code, sourceDistricts, selectedDistrict, includeProvince=false){
-    const target=upper(code);
-    const selected=upper(selectedDistrict||'');
+    const target=upper(clean(code));
+    const selected=upper(clean(selectedDistrict||''));
 
-    /*
-      NHÂN VIÊN PHẢI ĐƯỢC XÉT THEO TỪNG NHÂN VIÊN, KHÔNG THEO TRẠNG THÁI
-      TKM CỦA CẢ HUYỆN.
+    // Chuẩn hóa tên để "Hoàng Đức Thiện" và
+    // "Hoàng Đức Thiện (0345513179)" được nhận diện là cùng một nhân viên.
+    const personKey=(v)=>{
+      let z=clean(v||'');
+      z=z.replace(/\s*\(\s*0?\d{8,12}\s*\)\s*$/,'');
+      z=z.replace(/\s*[-–—]?\s*0?\d{9,12}\s*$/,'');
+      z=z.replace(/\s+/g,' ').trim();
+      return upper(z);
+    };
 
-      Vì một huyện có thể đang có TKM mã này nhưng vẫn có những nhân viên
-      khác đang tồn chính mã đó và chưa có mã trong TKM. Do đó không dùng
-      sourceDistricts (chỉ gồm huyện TKM=0) để lọc nhân viên nữa.
-    */
-    const tkmHasTarget=new Set();
+    // Đếm chính xác số lần mã thiết bị xuất hiện trong TKM của từng nhân viên.
+    // Không loại nhân viên đã có mã; phải hiển thị để người dùng biết:
+    // người đó đang có bao nhiêu tồn và TKM của chính mã đó là bao nhiêu.
+    const tkmByPerson=new Map();
     (Array.isArray(tkmRows)?tkmRows:[]).forEach(r=>{
-      const h=upper(clean(r?.huyen)||'KHÁC');
-      if(selected && h===selected)return;
-      if(includeProvince ? false : isProvince(h))return;
-      const name=clean(r?.nv||r?.ten_nv||r?.nhanvien||'');
+      const h=clean(r?.huyen)||'KHÁC';
+      const hu=upper(h);
+      if(selected && hu===selected)return;
+      if(!includeProvince && isProvince(h))return;
+
+      const name=clean(r?.nv||r?.NhanVien||r?.nhanvien||r?.staff||r?.ten_nv||'');
       if(!name)return;
-      const hit=['dbtb1','dbtb2','dbtb3','dbtb4'].some(c=>upper(clean(r?.[c]))===target);
-      if(hit)tkmHasTarget.add(h+'|'+upper(name));
+
+      const hit=['dbtb1','dbtb2','dbtb3','dbtb4']
+        .reduce((n,c)=>n+(upper(clean(r?.[c]))===target?1:0),0);
+      if(!hit)return;
+
+      const key=hu+'|'+personKey(name);
+      tkmByPerson.set(key,(tkmByPerson.get(key)||0)+hit);
     });
 
-    // Lấy TOÀN BỘ nhân viên thực sự đang tồn chính mã thiết bị trong API kho.
-    // Không loại huyện chỉ vì huyện đó đang có TKM; chỉ loại đúng nhân viên
-    // đã có chính mã này trong TKM.
+    // Lấy TOÀN BỘ nhân viên đang có tồn thực tế của chính mã.
+    // Không loại người đã có mã trong TKM.
     const out=new Map();
     (Array.isArray(stockRows)?stockRows:[]).forEach(r=>{
       const h=clean(r?.huyen)||'KHÁC';
       const hu=upper(h);
       const provinceRow=isProvince(h);
+
       if(provinceRow){
         if(!includeProvince)return;
       }else if(selected && hu===selected)return;
+
       if(upper(clean(r?.mh))!==target)return;
-      const sl=num(r?.sl); if(sl<=0)return;
-      const name=clean(r?.nv||r?.ten_nv||r?.nhanvien||''); if(!name)return;
-      const key=hu+'|'+upper(name);
-      if(tkmHasTarget.has(key))return;
+
+      const sl=num(r?.sl);
+      if(sl<=0)return;
+
+      const name=clean(r?.nv||r?.NhanVien||r?.nhanvien||r?.staff||r?.ten_nv||'');
+      if(!name)return;
+
+      const key=hu+'|'+personKey(name);
       const old=out.get(key);
-      if(old)old.qty+=sl;
-      else out.set(key,{name,district:h,qty:sl,province:provinceRow});
+      if(old){
+        old.qty+=sl;
+      }else{
+        out.set(key,{
+          name,
+          district:h,
+          qty:sl,
+          province:provinceRow,
+          tkm:tkmByPerson.get(key)||0
+        });
+      }
     });
-    return [...out.values()].sort((a,b)=>b.qty-a.qty||a.district.localeCompare(b.district,'vi')||a.name.localeCompare(b.name,'vi'));
+
+    // Trường hợp một người có nhiều dòng tồn, cập nhật lại TKM sau khi gom.
+    out.forEach(x=>{
+      const key=upper(x.district)+'|'+personKey(x.name);
+      x.tkm=tkmByPerson.get(key)||0;
+    });
+
+    return [...out.values()].sort(
+      (a,b)=>b.qty-a.qty||a.district.localeCompare(b.district,'vi')||a.name.localeCompare(b.name,'vi')
+    );
   }
+
 
   function getDistrictEmployees(tkmRows, stockRows, district){
     const target=upper(clean(district||''));
@@ -33667,7 +33872,9 @@ async function answer(q){try{const u=upper(q);if(u==='/HELP'||u==='HELP'||u.incl
       <td><b>👤 ${esc(z.name)}</b></td>
       <td>${esc(z.district)}${z.province?' • KHO TỈNH':''}</td>
       <td class="dse-modal-num dse-modal-stock">${z.qty.toLocaleString('vi-VN')}</td>
-      <td><span class="dse-tag-ok">✓ Chưa có mã trong TKM</span></td>
+      <td>${z.tkm>0
+        ? `<span class="dse-tag-ref">✓ Có mã trong TKM: ${z.tkm.toLocaleString('vi-VN')}</span>`
+        : `<span class="dse-tag-ok">✓ Chưa có mã trong TKM</span>`}</td>
     </tr>`).join(''):`<tr><td colspan="4" class="dse-modal-empty">Không tìm thấy nhân viên đang tồn mã thiết bị này, hoặc nhân viên đó đã có mã này trong TKM.</td></tr>`;
 
     const old=document.getElementById('dseSuggestionModal'); if(old)old.remove();
@@ -33680,7 +33887,7 @@ async function answer(q){try{const u=upper(q);if(u==='/HELP'||u==='HELP'||u.incl
         <button type="button" class="dse-modal-close" aria-label="Đóng">×</button>
       </div>
       <div class="dse-modal-code">${esc(code)} <span>• thiếu <strong>${shortage.toLocaleString('vi-VN')}</strong> thiết bị</span></div>
-      <div class="dse-modal-note">Nguồn điều chuyển được xét theo KHO GLI TÂY, KHO GLI ĐÔNG và các huyện có tồn mã này &gt; 0; huyện có TKM mã này = 0 được ưu tiên đề xuất. Các huyện đang có TKM mã này vẫn hiển thị để tham khảo. Danh sách nhân viên lấy toàn bộ nơi còn tồn mã này, kể cả huyện đang có TKM; chỉ loại nhân viên đã có chính mã này trong TKM</div>
+      <div class="dse-modal-note">Nguồn điều chuyển được xét theo KHO GLI TÂY, KHO GLI ĐÔNG và các huyện có tồn mã này &gt; 0; huyện có TKM mã này = 0 được ưu tiên đề xuất. Các huyện đang có TKM mã này vẫn hiển thị để tham khảo. Danh sách nhân viên lấy toàn bộ nơi còn tồn mã này, kể cả huyện đang có TKM; cột TKM đối chiếu chính mã này của từng nhân viên</div>
       <div class="dse-modal-grid">
         <section class="dse-modal-panel">
           <div class="dse-modal-section-title">📦 Lấy hàng ở đâu? <span>${sug.sources.length}</span></div>
@@ -33691,7 +33898,7 @@ async function answer(q){try{const u=upper(q);if(u==='/HELP'||u==='HELP'||u.incl
           <div class="dse-modal-table-wrap"><table class="dse-modal-table"><thead><tr><th>Nhân viên</th><th>Vị trí</th><th>Tồn</th><th>TKM</th></tr></thead><tbody>${staffRows}</tbody></table></div>
         </section>
       </div>
-      <div class="dse-modal-foot">Danh sách nhân viên hiển thị toàn bộ người còn tồn mã này và chưa có chính mã này trong TKM.</div>
+      <div class="dse-modal-foot">Danh sách nhân viên hiển thị toàn bộ người đang còn tồn mã này; cột TKM cho biết chính mã này đang xuất hiện bao nhiêu lần trong TKM của từng nhân viên.</div>
     </div>`;
     document.body.appendChild(modal);
     const close=()=>modal.remove();
@@ -34111,7 +34318,83 @@ async function answer(q){try{const u=upper(q);if(u==='/HELP'||u==='HELP'||u.incl
     document.addEventListener('keydown',escClose);
   }
 
-  window.showDistrictShortageAnalysis=function(){
+  
+  window.copyDistrictAnalysisReport=async function(btn){
+    const modal=document.querySelector('#dseDistrictAnalysisModal .dse-da-modal');
+    if(!modal)return;
+    const old=btn?btn.innerHTML:'';
+    let clone=null;
+    try{
+      if(btn){btn.disabled=true;btn.innerHTML='⏳ Đang chụp...';}
+      const rect=modal.getBoundingClientRect();
+      clone=modal.cloneNode(true);
+
+      // Giữ scope CSS của popup để ảnh không bị mất giao diện.
+      clone.id='dseDistrictAnalysisModal';
+      clone.style.position='absolute';
+      clone.style.left='-100000px';
+      clone.style.top='0';
+      clone.style.width=Math.round(rect.width)+'px';
+      clone.style.maxWidth='none';
+      clone.style.height='auto';
+      clone.style.maxHeight='none';
+      clone.style.overflow='visible';
+      clone.style.margin='0';
+      clone.style.transform='none';
+      clone.style.zIndex='-1';
+      clone.classList.add('dse-capturing');
+      document.body.appendChild(clone);
+
+      const cloneBody=clone.querySelector('.dse-da-list-body');
+      if(cloneBody){
+        cloneBody.style.height='auto';
+        cloneBody.style.maxHeight='none';
+        cloneBody.style.overflow='visible';
+        cloneBody.style.scrollTop=0;
+      }
+      clone.querySelectorAll('.dse-da-list-modal,.dse-da-list-body').forEach(x=>{
+        x.style.maxHeight='none';
+        x.style.overflow='visible';
+        if(x.classList.contains('dse-da-list-body'))x.style.height='auto';
+      });
+
+      await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+
+      const w=Math.round(rect.width);
+      const h=Math.max(clone.scrollHeight,clone.offsetHeight,cloneBody?cloneBody.scrollHeight:0);
+      const canvas=await html2canvas(clone,{
+        backgroundColor:'#fff',
+        scale:2,
+        useCORS:true,
+        logging:false,
+        width:w,
+        height:h,
+        windowWidth:Math.max(document.documentElement.clientWidth,w),
+        windowHeight:Math.max(document.documentElement.clientHeight,h),
+        scrollX:0,
+        scrollY:0
+      });
+
+      const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+      if(!blob)throw new Error('Không tạo được ảnh PNG');
+      if(!navigator.clipboard||!window.ClipboardItem)
+        throw new Error('Trình duyệt không hỗ trợ copy ảnh vào Clipboard');
+      await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+
+      if(btn){
+        btn.innerHTML='✓ Đã copy ảnh';
+        setTimeout(()=>{btn.innerHTML=old;btn.disabled=false;},1400);
+      }
+    }catch(err){
+      console.error(err);
+      alert('Không thể chụp toàn bộ báo cáo. Hãy thử lại hoặc cho phép quyền Clipboard.');
+      if(btn){btn.innerHTML=old;btn.disabled=false;}
+    }finally{
+      if(clone&&clone.parentNode)clone.parentNode.removeChild(clone);
+    }
+  };
+
+window.showDistrictShortageAnalysis=function(){
     const last=window.__dseLast;
     if(!last)return;
     const data=last.data;
@@ -34120,37 +34403,56 @@ async function answer(q){try{const u=upper(q);if(u==='/HELP'||u==='HELP'||u.incl
     const totalCodes=districts.reduce((s,d)=>s+d.codes,0);
     const totalQty=districts.reduce((s,d)=>s+d.qty,0);
     const totalDistricts=districts.length;
-    const rows=districts.map((d,i)=>`
-      <tr>
-        <td><strong>${esc(d.district)}</strong></td>
-        <td class="da-center">${d.codes.toLocaleString('vi-VN')}</td>
-        <td class="da-neg da-center">${d.qty.toLocaleString('vi-VN')}</td>
-        <td class="da-code-list">${d.items.map((x,j)=>`<button type="button" class="da-code-btn" data-da-district="${esc(d.district)}" data-da-code="${esc(x.mh)}"><span>${esc(x.mh)}</span><small><span class="da-stock-label">Tồn kho Huyện ${Number(x.stock||0).toLocaleString('vi-VN')}</span> → <b>Thiếu ${Number(x.shortage||0).toLocaleString('vi-VN')}</b></small></button>`).join('')}</td>
-      </tr>`).join('')||`<tr><td colspan="4" style="padding:18px;text-align:center;color:#6b7280;">Không có huyện nào đang thiếu mặt hàng.</td></tr>`;
+
+    // Dạng "mục" thay cho bảng: mỗi Huyện là một khối gọn,
+    // bên trong liệt kê các mã thiếu dạng thẻ để dễ đọc/chụp báo cáo.
+    const sections=districts.map((d,i)=>`
+      <div class="dse-da-district-card">
+        <div class="dse-da-district-head">
+          <div class="dse-da-district-name"><span class="dse-da-stt">${i+1}</span>${esc(d.district)}</div>
+          <div class="dse-da-district-total">
+            <span>${d.codes.toLocaleString('vi-VN')} mã thiếu</span>
+            <b>${d.qty.toLocaleString('vi-VN')} thiết bị</b>
+          </div>
+        </div>
+        <div class="dse-da-items">
+          ${d.items.map(x=>`
+            <button type="button" class="dse-da-item" data-da-district="${esc(d.district)}" data-da-code="${esc(x.mh)}">
+              <span class="dse-da-item-name">${esc(x.mh)}</span>
+              <span class="dse-da-item-info">
+                <span>Tồn kho Huyện <b>${Number(x.stock||0).toLocaleString('vi-VN')}</b></span>
+                <span class="dse-da-arrow">→</span>
+                <span class="dse-da-shortage">Thiếu ${Number(x.shortage||0).toLocaleString('vi-VN')}</span>
+              </span>
+            </button>`).join('')}
+        </div>
+      </div>`).join('') ||
+      `<div class="dse-da-empty">Không có Huyện nào đang thiếu mặt hàng.</div>`;
 
     const modal=document.createElement('div');
     modal.id='dseDistrictAnalysisModal';
     modal.className='dse-district-analysis-overlay';
-    modal.innerHTML=`<div class="dse-da-modal" role="dialog" aria-modal="true" aria-label="Phân tích mặt hàng thiếu theo huyện">
+    modal.innerHTML=`<div class="dse-da-modal dse-da-list-modal" role="dialog" aria-modal="true" aria-label="Phân tích mặt hàng thiếu theo Huyện">
       <div class="dse-da-head">
         <div class="dse-da-title">🏘 PHÂN TÍCH MẶT HÀNG THIẾU THEO HUYỆN</div>
-        <button type="button" class="dse-da-close" aria-label="Đóng">×</button>
+        <div class="dse-da-head-actions">
+          <button type="button" class="dse-da-copy-btn" onclick="copyDistrictAnalysisReport(this)">📷 Chụp báo cáo</button>
+          <button type="button" class="dse-da-close" aria-label="Đóng">×</button>
+        </div>
       </div>
-      <div class="dse-da-meta">${esc(monthText(last.scope==='DISTRICT'?currentMonthKey:currentMonthKey))} • Chỉ hiển thị các mã có <b>TKM &gt; tồn kho</b> tại từng huyện.</div>
+      <div class="dse-da-meta">${esc(monthText(last.scope==='DISTRICT'?currentMonthKey:currentMonthKey))} • Chỉ hiển thị các mã có <b>TKM &gt; tồn kho</b> tại từng Huyện.</div>
       <div class="dse-da-summary">
         <div class="dse-da-kpi"><span>Huyện đang thiếu</span><strong>${totalDistricts.toLocaleString('vi-VN')}</strong></div>
         <div class="dse-da-kpi"><span>Lượt mã thiếu</span><strong>${totalCodes.toLocaleString('vi-VN')}</strong></div>
         <div class="dse-da-kpi"><span>Tổng thiết bị thiếu</span><strong class="da-neg">${totalQty.toLocaleString('vi-VN')}</strong></div>
       </div>
-      <div class="dse-da-body">
-        <div class="dse-da-table-wrap"><table><colgroup><col><col><col><col style="width:100px"></colgroup><thead><tr><th>Huyện</th><th>Số mã thiếu</th><th>Thiếu thiết bị</th><th>Chi tiết</th></tr></thead><tbody>${rows}</tbody></table></div>
-      </div>
+      <div class="dse-da-list-body">${sections}</div>
     </div>`;
     document.body.appendChild(modal);
     const close=()=>modal.remove();
     modal.querySelector('.dse-da-close')?.addEventListener('click',close);
     modal.addEventListener('click',e=>{if(e.target===modal)close();});
-    modal.querySelectorAll('.da-code-btn').forEach(btn=>btn.addEventListener('click',()=>{
+    modal.querySelectorAll('.dse-da-item').forEach(btn=>btn.addEventListener('click',()=>{
       showDistrictEmployeeDetail(btn.dataset.daDistrict||'',btn.dataset.daCode||'');
     }));
     const escClose=e=>{if(e.key==='Escape'){close();document.removeEventListener('keydown',escClose);}};
@@ -36934,3 +37236,12 @@ section[id*="cdbr" i]{
   }
 }
 </style>
+
+
+<style id="DSE_DISTRICT_ANALYSIS_LIST_OVERRIDE">
+#dseDistrictAnalysisModal .dse-da-list-body{display:block !important;}
+#dseDistrictAnalysisModal .dse-da-district-card{display:block !important;}
+#dseDistrictAnalysisModal .dse-da-items{display:grid !important;}
+#dseDistrictAnalysisModal .dse-da-item{display:flex !important;}
+</style>
+
