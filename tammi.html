@@ -4,36 +4,208 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f5f6f8">
-<title>Danh sách cài đặt</title>
+<title>Danh sách cài đặt Tammi</title>
 <style>
+.full-loading{position:fixed;inset:0;width:100vw;height:100vh;background:rgba(255,255,255,.97);z-index:99999;display:flex;align-items:center;justify-content:center}.full-loading.hide{display:none}.loading-spinner{width:42px;height:42px;border:4px solid #e8e8e8;border-top-color:var(--red);border-radius:50%;animation:loadingSpin .75s linear infinite}@keyframes loadingSpin{to{transform:rotate(360deg)}}
 :root{--bg:#f5f6f8;--card:#fff;--text:#202124;--muted:#777b83;--line:#e4e6ea;--red:#d71920;--redsoft:#fff0f1;--green:#178a45;--greensoft:#eaf8f0;--orange:#c77a08;--orangesoft:#fff5e4}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}button,input{font:inherit}button{cursor:pointer}.app{max-width:900px;margin:auto;min-height:100vh;padding-bottom:24px}
-.full-loading{position:fixed;inset:0;width:100vw;height:100vh;background:rgba(255,255,255,.97);z-index:99999;display:flex;align-items:center;justify-content:center}.full-loading.hide{display:none}.loading-spinner{width:42px;height:42px;border:4px solid #e8e8e8;border-top-color:var(--red);border-radius:50%;animation:loadingSpin .75s linear infinite}@keyframes loadingSpin{to{transform:rotate(360deg)}}
 .header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:11px 14px 10px}.headrow{display:flex;align-items:center;justify-content:space-between;gap:8px}.title{font-size:20px;font-weight:800;letter-spacing:-.2px}.area{font-size:18px;font-weight:800;color:var(--red)}
-.search{display:flex;align-items:center;gap:7px;margin-top:9px;padding:0 10px;background:#fff;border:1px solid #dddfe3;border-radius:12px;height:42px}.search span{font-size:20px;color:#666}.search input{width:100%;border:0;outline:0;background:transparent;padding:0;font-size:14px;color:var(--text)}.search input::placeholder{color:#999}.summary{display:flex;align-items:center;margin-top:7px}.total{margin-left:auto;color:var(--red);font-size:13px;font-weight:800}.content{padding:11px 14px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}.stat{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px;min-width:0}.stat.clickable,.stat.dashboard{cursor:pointer;transition:transform .12s,box-shadow .12s}.stat.clickable:active,.stat.dashboard:active{transform:scale(.985);box-shadow:0 2px 8px rgba(0,0,0,.08)}.label{font-size:10px;color:var(--muted);font-weight:700}.value{font-size:18px;font-weight:800;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stat-percent{display:block;margin-top:3px;font-size:10px;font-weight:700;color:var(--muted);white-space:nowrap}.red{color:var(--red)}.green{color:var(--green)}.orange{color:var(--orange)}.dashboard-value{color:var(--red);font-size:15px}.status{display:none;padding:9px;border-radius:9px;margin-bottom:9px;font-size:12px}.status.show{display:block}.error{background:#fff0f0;color:#b00020}
+.search{display:flex;align-items:center;gap:7px;margin-top:9px;padding:0 10px;background:#fff;border:1px solid #dddfe3;border-radius:12px;height:42px}.search span{font-size:20px;color:#666}.search input{width:100%;border:0;outline:0;background:transparent;padding:0;font-size:14px;color:var(--text)}.search input::placeholder{color:#999}.export-row{display:flex;justify-content:flex-end;margin-top:-2px;margin-bottom:9px}.content-export{padding-left:0;padding-right:0}.content-export .export-btn{min-height:34px}.excel-stat{display:flex;flex-direction:column;justify-content:space-between;gap:7px}.excel-stat .export-btn{width:100%;min-height:32px;padding:7px 6px;font-size:11px}.export-btn{border:1px solid var(--red);background:var(--red);color:#fff;border-radius:9px;padding:8px 11px;font-size:11px;font-weight:800}.export-btn:disabled{opacity:.6;cursor:wait}.summary{display:flex;align-items:center;margin-top:7px}.total{margin-left:auto;color:var(--red);font-size:13px;font-weight:800}.content{padding:11px 14px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}.stat{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px;min-width:0}.stat.clickable,.stat.dashboard{cursor:pointer;transition:transform .12s,box-shadow .12s}.stat.clickable:active,.stat.dashboard:active{transform:scale(.985);box-shadow:0 2px 8px rgba(0,0,0,.08)}.label{font-size:10px;color:var(--muted);font-weight:700}.value{font-size:18px;font-weight:800;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stat-percent{display:block;margin-top:3px;font-size:10px;font-weight:700;color:var(--muted);white-space:nowrap}.not-installed-hint{color:var(--orange);font-size:8px;font-weight:700;line-height:1.15;white-space:normal;display:block;max-width:100%;overflow-wrap:anywhere}.red{color:var(--red)}.green{color:var(--green)}.orange{color:var(--orange)}.dashboard-value{color:var(--red);font-size:15px}.quick-loading{display:none;padding:9px 10px;margin-bottom:9px;border-radius:9px;background:#fff5e4;color:#8a5600;font-size:12px;font-weight:700;text-align:center}.quick-loading.show{display:block}.status{display:none;padding:9px;border-radius:9px;margin-bottom:9px;font-size:12px}.status.show{display:block}.error{background:#fff0f0;color:#b00020}
 .list{display:flex;flex-direction:column;gap:7px}.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px}.top{display:flex;gap:9px;align-items:center}.avatar{width:38px;height:38px;flex:0 0 38px;border-radius:10px;background:var(--redsoft);color:var(--red);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}.main{min-width:0;flex:1}.name{font-size:15px;font-weight:800;line-height:1.2;word-break:break-word}.sub{font-size:11px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.arrow{font-size:21px;color:#999;padding-left:4px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:9px}.info{background:#f8f9fa;border-radius:8px;padding:6px 8px;min-width:0}.ivalue{font-size:11px;font-weight:600;word-break:break-word;margin-top:2px;line-height:1.25}.bottom{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:8px}.badge{padding:5px 7px;border-radius:7px;font-size:10px;font-weight:700}.badge.green{background:var(--greensoft)}.badge.orange{background:var(--orangesoft)}.badge.gray{background:#f0f1f3;color:#666}.detail{margin-left:auto;border:0;background:transparent;color:var(--red);font-size:11px;font-weight:800;padding:4px}.empty{background:#fff;border:1px dashed #d5d7db;border-radius:11px;padding:25px;text-align:center;color:#777;font-size:13px}
 .pages{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:12px}.pagebtn{min-width:36px;height:34px;border:1px solid var(--line);background:#fff;border-radius:8px;font-weight:800;font-size:16px}.pagebtn:disabled{opacity:.4}.pageinfo{min-width:75px;text-align:center;font-size:12px;font-weight:800}.updated{text-align:center;color:#92959b;font-size:10px;margin-top:8px}
 .modalbg{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:50;display:none;align-items:flex-end;justify-content:center}.modalbg.show{display:flex}.modal{width:min(650px,100%);background:#fff;border-radius:17px 17px 0 0;padding:15px;max-height:88vh;overflow:auto}.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.modaltitle{font-size:17px;font-weight:800}.close{width:34px;height:34px;border:0;border-radius:50%;background:#f0f1f3;font-size:19px}.detailrow{display:grid;grid-template-columns:125px 1fr;gap:10px;border-bottom:1px solid #eee;padding:9px 0}.detailrow:last-child{border:0}.dlabel{font-size:10px;color:var(--muted);font-weight:700}.dvalue{font-size:12px;word-break:break-word}
-@media(max-width:600px){.app{max-width:none}.header{padding:9px 10px 8px}.title{font-size:18px}.area{font-size:17px}.search{height:40px;margin-top:7px;border-radius:10px;padding:0 9px}.search span{font-size:18px}.search input{font-size:14px}.summary{margin-top:5px}.total{font-size:12px}.content{padding:9px 10px}.stats{grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}.stat{padding:9px;border-radius:10px}.label{font-size:10px}.value{font-size:17px;margin-top:3px}.stat-percent{font-size:10px;margin-top:2px}.dashboard-value{font-size:14px}.card{padding:10px;border-radius:11px}.list{gap:7px}.avatar{width:36px;height:36px;flex-basis:36px;border-radius:9px;font-size:16px}.top{gap:9px}.name{font-size:14px}.sub{font-size:11px;margin-top:2px}.arrow{font-size:20px}.grid{gap:5px;margin-top:8px}.info{padding:6px 7px;border-radius:8px}.ivalue{font-size:11px}.badge{padding:5px 7px;font-size:10px}.detail{font-size:11px}.pages{margin-top:9px}.pagebtn{min-width:34px;height:32px;font-size:15px}.pageinfo{font-size:11px}.updated{font-size:9px}.modal{padding:13px;border-radius:15px 15px 0 0}.modaltitle{font-size:15px}.detailrow{grid-template-columns:105px 1fr;padding:8px 0}.dlabel{font-size:9px}.dvalue{font-size:11px}}
+@media(max-width:600px){.app{max-width:none}.header{padding:9px 10px 8px}.title{font-size:18px}.area{font-size:17px}.search{height:40px;margin-top:7px;border-radius:10px;padding:0 9px}.search span{font-size:18px}.search input{font-size:14px}.summary{margin-top:5px}.total{font-size:12px}.content{padding:9px 10px}.stats{grid-template-columns:1fr 1fr;gap:6px;margin-bottom:7px}.content-export{margin-top:0;margin-bottom:8px}.content-export .export-btn{width:auto;max-width:100%;font-size:11px;padding:8px 10px}.excel-stat{min-height:78px}.excel-stat .export-btn{font-size:11px;padding:7px 5px}.stat{padding:9px;border-radius:10px}.label{font-size:10px}.value{font-size:17px;margin-top:3px}.stat-percent{font-size:10px;margin-top:2px}.dashboard-value{font-size:14px}.card{padding:10px;border-radius:11px}.list{gap:7px}.avatar{width:36px;height:36px;flex-basis:36px;border-radius:9px;font-size:16px}.top{gap:9px}.name{font-size:14px}.sub{font-size:11px;margin-top:2px}.arrow{font-size:20px}.grid{gap:5px;margin-top:8px}.info{padding:6px 7px;border-radius:8px}.ivalue{font-size:11px}.badge{padding:5px 7px;font-size:10px}.detail{font-size:11px}.pages{margin-top:9px}.pagebtn{min-width:34px;height:32px;font-size:15px}.pageinfo{font-size:11px}.updated{font-size:9px}.modal{padding:13px;border-radius:15px 15px 0 0}.modaltitle{font-size:15px}.detailrow{grid-template-columns:105px 1fr;padding:8px 0}.dlabel{font-size:9px}.dvalue{font-size:11px}}
 @media(max-width:360px){.title{font-size:16px}.value{font-size:15px}.name{font-size:12px}.dashboard-value{font-size:12px}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 </head>
 <body>
 <div class="full-loading" id="pageLoading"><div class="loading-spinner"></div></div>
 <div class="app">
-<header class="header"><div class="headrow"><div class="title">DANH SÁCH CÀI ĐẶT</div><div class="area">GLI</div></div><div class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Tìm account, mã NV, họ tên, huyện..." autocomplete="off"></div><div class="summary"><div class="total" id="totalText">0 bản ghi</div></div></header>
-<main class="content"><section class="stats"><div class="stat"><div class="label">Tổng</div><div class="value red" id="statTotal">0</div></div><div class="stat"><div class="label">Đã cài</div><div class="value green" id="statInstalled">0 / 0</div><span class="stat-percent" id="statInstalledPercent">0,00%</span></div><div class="stat clickable" id="notInstalledStat" role="button" tabindex="0"><div class="label">Chưa cài</div><div class="value orange" id="statNotInstalled">0</div><span class="stat-percent" id="statNotInstalledPercent">0,00%</span></div><div class="stat dashboard" id="dashboardStat" role="button" tabindex="0"><div class="label">Dashboard</div><div class="value dashboard-value">Xem Dashboard</div><span class="stat-percent">Chi tiết</span></div></section><div id="status" class="status"></div><section id="list" class="list"></section><div class="pages"><button class="pagebtn" id="prevBtn">‹</button><div class="pageinfo" id="pageInfo">Trang 1/1</div><button class="pagebtn" id="nextBtn">›</button></div><div class="updated" id="updated"></div></main></div>
+<header class="header"><div class="headrow"><div class="title">DANH SÁCH CÀI ĐẶT</div><div class="area">GLI</div></div><div class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Tìm account, mã NV, họ tên, huyện..." autocomplete="off"></div>
+<div class="summary"><div class="total" id="totalText">0 bản ghi</div></div></header>
+<main class="content"><section class="stats"><div class="stat clickable" id="totalStat" role="button" tabindex="0"><div class="label">Tổng</div><div class="value red" id="statTotal">0</div></div><div class="stat"><div class="label">Đã cài</div><div class="value green" id="statInstalled">0 / 0</div><span class="stat-percent" id="statInstalledPercent">0,00%</span></div><div class="stat clickable" id="notInstalledStat" role="button" tabindex="0"><div class="label">Chưa cài</div><div class="value orange" id="statNotInstalled">0</div><span class="stat-percent not-installed-hint" id="statNotInstalledPercent">ấn vào để xem chưa cài</span></div><div class="stat excel-stat"><div class="label">Xuất dữ liệu</div><button id="exportExcelBtn" class="export-btn" type="button">⇩ Tải Excel</button></div></section><div id="quickLoading" class="quick-loading">Đang tải dữ liệu...</div><div id="status" class="status"></div><section id="list" class="list"></section><div class="pages"><button class="pagebtn" id="prevBtn">‹</button><div class="pageinfo" id="pageInfo">Trang 1/1</div><button class="pagebtn" id="nextBtn">›</button></div><div class="updated" id="updated"></div></main></div>
 <div class="modalbg" id="detailModal"><div class="modal"><div class="modalhead"><div class="modaltitle">Chi tiết cài đặt</div><button class="close" id="closeDetail">×</button></div><div id="detailContent"></div></div></div>
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycbxyL8pyy5_Hz_ehabGQM4c0fwrytudPE-JkHm1zpn-CT9-br-JOS7krTfCGtZJf7n8u/exec";const PAGE_SIZE=20;const DASHBOARD_URL="tammi-dashboard.html";let page=1,totalPages=1,search="",data=[];let searchTimer=null,requestController=null,requestId=0;const $=id=>document.getElementById(id);
-function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function installed(v){return ["1","true","đã cài","da cai","yes","y"].includes(String(v??"").trim().toLowerCase())}function url(){const u=new URL(API_URL);u.searchParams.set("page",page);u.searchParams.set("pageSize",PAGE_SIZE);if(search)u.searchParams.set("search",search);return u}function showError(t){$("status").textContent=t;$("status").className="status show error"}function clearStatus(){$("status").className="status"}
-async function load(){const currentId=++requestId;if(requestController)requestController.abort();const controller=new AbortController();requestController=controller;try{const r=await fetch(url(),{cache:"no-store",signal:controller.signal});if(!r.ok)throw Error("HTTP "+r.status);const j=await r.json();if(currentId!==requestId)return;if(!j.success)throw Error(j.error||"API lỗi");data=Array.isArray(j.data)?j.data:[];totalPages=Math.max(Number(j.totalPages||1),1);renderStats(Number(j.total||0),Number(j.installedTotal||0),Number(j.notInstalledTotal||0));render();pagination(j);clearStatus();$("updated").textContent="Cập nhật: "+new Date().toLocaleString("vi-VN");$("pageLoading").classList.add("hide")}catch(e){if(e.name==='AbortError')return;console.error(e);showError("Không tải được dữ liệu: "+e.message);$("list").innerHTML='<div class="empty">Kiểm tra kết nối dữ liệu.</div>' ;$("pageLoading").classList.add("hide")}finally{if(currentId===requestId)requestController=null}}
-function renderStats(total,installedTotal,notInstalledTotal){const a=Number(installedTotal||0),b=Number(notInstalledTotal||Math.max(total-a,0)),pa=total>0?a/total*100:0,pb=total>0?b/total*100:0;$("statTotal").textContent=total.toLocaleString("vi-VN");$("statInstalled").textContent=a.toLocaleString("vi-VN")+" / "+total.toLocaleString("vi-VN");$("statInstalledPercent").textContent=pa.toLocaleString("vi-VN",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";$("statNotInstalled").textContent=b.toLocaleString("vi-VN");$("statNotInstalledPercent").textContent=pb.toLocaleString("vi-VN",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";$("totalText").textContent=total.toLocaleString("vi-VN")+" bản ghi"}
-function render(){if(!data.length){$("list").innerHTML='<div class="empty">Không có dữ liệu phù hợp.</div>';return}$("list").innerHTML=data.map((x,i)=>{const ok=installed(x["Đã cài"]),name=x["Họ tên"]||x["Mã nhân viên"]||"Chưa xác định";return `<article class="card"><div class="top"><div class="avatar">${esc(name.trim()[0]||"N")}</div><div class="main"><div class="name">${esc(name)}</div><div class="sub">${esc(x["Mã nhân viên"]||"-")} • ${esc(x["Huyện"]||"-")}</div></div><div class="arrow">›</div></div><div class="grid"><div class="info"><div class="label">ACCOUNT</div><div class="ivalue">${esc(x["Account"]||"-")}</div></div><div class="info"><div class="label">TÁC VỤ</div><div class="ivalue">${esc(x["Tác vụ"]||"-")}</div></div><div class="info"><div class="label">NGƯỜI CÀI</div><div class="ivalue">${esc(x["Người cài"]||"-")}</div></div><div class="info"><div class="label">THỜI GIAN CÀI</div><div class="ivalue">${esc(x["Thời gian cài"]||"-")}</div></div></div><div class="bottom"><span class="badge ${ok?"green":"orange"}">${ok?"✓ Đã cài":"○ Chưa cài"}</span><span class="badge gray">Đóng WO: ${esc(x["Thời gian đóng TV"]||"-")}</span><button class="detail" onclick="detail(${i})">Chi tiết</button></div></article>`}).join("")}
+const API_URL="https://script.google.com/macros/s/AKfycbxyL8pyy5_Hz_ehabGQM4c0fwrytudPE-JkHm1zpn-CT9-br-JOS7krTfCGtZJf7n8u/exec";const PAGE_SIZE=20;let page=1,totalPages=1,search="",data=[];let searchTimer=null,requestController=null,requestId=0;let notInstalledOnly=false;const $=id=>document.getElementById(id);
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function installed(v){return ["1","true","đã cài","da cai","yes","y"].includes(String(v??"").trim().toLowerCase())}function field(x,...keys){for(const k of keys){if(x&&x[k]!==undefined&&x[k]!==null&&String(x[k]).trim()!=="")return x[k]}return ""}
+function isHeaderRow(x){if(!x||typeof x!=="object")return false;const vals=Object.values(x).map(v=>String(v??"").trim().toLowerCase());const words=["ho_ten_nv","ma_nhan_vien","ten_trung_tam_moi","account","task_type_name","ft_cai_dat_tammi","thoi_gian_cai_dat_tammi","ngay_ht"];return words.filter(w=>vals.includes(w)).length>=3}function url(){const u=new URL(API_URL);u.searchParams.set("page",page);u.searchParams.set("pageSize",PAGE_SIZE);if(search)u.searchParams.set("search",search);return u}function showError(t){$("status").textContent=t;$("status").className="status show error"}function clearStatus(){$("status").className="status"}
+function showQuickLoading(text="Đang tải dữ liệu..."){
+$("quickLoading").textContent=text;
+$("quickLoading").classList.add("show");
+$("totalStat").style.pointerEvents="none";
+$("notInstalledStat").style.pointerEvents="none";
+
+}
+
+function hideQuickLoading(){
+$("quickLoading").classList.remove("show");
+$("totalStat").style.pointerEvents="";
+$("notInstalledStat").style.pointerEvents="";
+
+}
+
+async function load(){const currentId=++requestId;if(requestController)requestController.abort();const controller=new AbortController();requestController=controller;showQuickLoading();try{const r=await fetch(url(),{cache:"no-store",signal:controller.signal});if(!r.ok)throw Error("HTTP "+r.status);const j=await r.json();if(currentId!==requestId)return;if(!j.success)throw Error(j.error||"API lỗi");data=(Array.isArray(j.data)?j.data:[]).filter(x=>!isHeaderRow(x));if(notInstalledOnly)data=data.filter(x=>!installed(field(x,"Đã cài","da_cai","da_cai_tammi","installed")));totalPages=Math.max(Number(j.totalPages||1),1);renderStats(Number(j.total||0),Number(j.installedTotal||0),Number(j.notInstalledTotal||0));render();pagination(j);$("pageLoading").classList.add("hide");clearStatus();$("updated").textContent="Cập nhật: "+new Date().toLocaleString("vi-VN");}catch(e){if(e.name==='AbortError')return;console.error(e);$("pageLoading").classList.add("hide");showError("Không tải được dữ liệu: "+e.message);$("list").innerHTML='<div class="empty">Kiểm tra kết nối dữ liệu.</div>' ;}finally{if(currentId===requestId){requestController=null;hideQuickLoading()}}}
+function renderStats(total,installedTotal,notInstalledTotal){const a=Number(installedTotal||0),b=Number(notInstalledTotal||Math.max(total-a,0)),pa=total>0?a/total*100:0,pb=total>0?b/total*100:0;$("statTotal").textContent=total.toLocaleString("vi-VN");$("statInstalled").textContent=a.toLocaleString("vi-VN")+" / "+total.toLocaleString("vi-VN");$("statInstalledPercent").textContent=pa.toLocaleString("vi-VN",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";$("statNotInstalled").textContent=b.toLocaleString("vi-VN");$("statNotInstalledPercent").textContent="ấn vào để xem chưa cài";$("totalText").textContent=total.toLocaleString("vi-VN")+" bản ghi"}
+function render(){
+if(!data.length){$("list").innerHTML=notInstalledOnly?'<div class="empty">Không còn bản ghi chưa cài.</div>':'<div class="empty">Không có dữ liệu phù hợp.</div>';return}
+$("list").innerHTML=data.map((x,i)=>{
+const ok=installed(field(x,"Đã cài","da_cai","da_cai_tammi","installed"));
+const name=field(x,"Họ tên","ho_ten_nv","ho_ten")||field(x,"Mã nhân viên","ma_nhan_vien")||"Chưa xác định";
+const employee=field(x,"Mã nhân viên","ma_nhan_vien")||"-";
+const district=field(x,"Huyện","huyen","ten_trung_tam_moi","Trung tâm")||"-";
+const account=field(x,"Account","account")||"-";
+const task=field(x,"Tác vụ","task_type_name")||"-";
+const installer=field(x,"Người cài","nguoi_cai","ft_cai_dat_tammi")||"-";
+const installTime=field(x,"Thời gian cài","thoi_gian_cai","thoi_gian_cai_dat_tammi")||"-";
+const closeTime=field(x,"Thời gian đóng TV","thoi_gian_dong_tv","ngay_ht")||"-";
+return `<article class="card"><div class="top"><div class="avatar">${esc(String(name).trim()[0]||"N")}</div><div class="main"><div class="name">${esc(name)}</div><div class="sub">${esc(employee)} • ${esc(district)}</div></div><div class="arrow">›</div></div><div class="grid"><div class="info"><div class="label">ACCOUNT</div><div class="ivalue">${esc(account)}</div></div><div class="info"><div class="label">TÁC VỤ</div><div class="ivalue">${esc(task)}</div></div><div class="info"><div class="label">NGƯỜI CÀI</div><div class="ivalue">${esc(installer)}</div></div><div class="info"><div class="label">THỜI GIAN CÀI</div><div class="ivalue">${esc(installTime)}</div></div></div><div class="bottom"><span class="badge ${ok?"green":"orange"}">${ok?"✓ Đã cài":"○ Chưa cài"}</span><span class="badge gray">Đóng WO: ${esc(closeTime)}</span><button class="detail" onclick="detail(${i})">Chi tiết</button></div></article>`;
+}).join("");
+}
+
 function pagination(j){page=Number(j.page||page);totalPages=Math.max(Number(j.totalPages||1),1);$("pageInfo").textContent=`Trang ${page}/${totalPages}`;$("prevBtn").disabled=!j.hasPreviousPage;$("nextBtn").disabled=!j.hasNextPage}
-function detail(i){const x=data[i];if(!x)return;const f=[["Huyện",x["Huyện"]],["Account",x["Account"]],["Đã cài",x["Đã cài"]],["Người cài",x["Người cài"]],["Thời gian cài",x["Thời gian cài"]],["Mã nhân viên",x["Mã nhân viên"]],["Họ tên",x["Họ tên"]],["Tác vụ",x["Tác vụ"]],["Thời gian đóng WO",x["Thời gian đóng TV"]]];$("detailContent").innerHTML=f.map(([a,b])=>`<div class="detailrow"><div class="dlabel">${esc(a)}</div><div class="dvalue">${esc(b||"-")}</div></div>`).join("");$("detailModal").classList.add("show")}
-function closeDetail(){$("detailModal").classList.remove("show")}function openDashboard(){window.location.href=DASHBOARD_URL}
-$("notInstalledStat").onclick=openDashboard;$("notInstalledStat").onkeydown=e=>{if(e.key==='Enter'||e.key===' ')openDashboard()};$("dashboardStat").onclick=openDashboard;$("dashboardStat").onkeydown=e=>{if(e.key==='Enter'||e.key===' ')openDashboard()};$("searchInput").addEventListener('input',e=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>{search=e.target.value.trim();page=1;load()},300)});$("prevBtn").onclick=()=>{if(page>1){page--;load();scrollTo({top:0,behavior:'smooth'})}};$("nextBtn").onclick=()=>{if(page<totalPages){page++;load();scrollTo({top:0,behavior:'smooth'})}};$("closeDetail").onclick=closeDetail;$("detailModal").onclick=e=>{if(e.target===$("detailModal"))closeDetail()};window.onkeydown=e=>{if(e.key==='Escape')closeDetail()};load();
+function detail(i){
+const x=data[i];if(!x)return;
+const f=[["Huyện",field(x,"Huyện","huyen","ten_trung_tam_moi")],["Account",field(x,"Account","account")],["Đã cài",field(x,"Đã cài","da_cai","da_cai_tammi","installed")],["Người cài",field(x,"Người cài","nguoi_cai","ft_cai_dat_tammi")],["Thời gian cài",field(x,"Thời gian cài","thoi_gian_cai","thoi_gian_cai_dat_tammi")],["Mã nhân viên",field(x,"Mã nhân viên","ma_nhan_vien")],["Họ tên",field(x,"Họ tên","ho_ten_nv","ho_ten")],["Tác vụ",field(x,"Tác vụ","task_type_name")],["Thời gian đóng WO",field(x,"Thời gian đóng TV","thoi_gian_dong_tv","ngay_ht")]];
+$("detailContent").innerHTML=f.map(([a,b])=>`<div class="detailrow"><div class="dlabel">${esc(a)}</div><div class="dvalue">${esc(b||"-")}</div></div>`).join("");
+$("detailModal").classList.add("show");
+}
+
+function closeDetail(){$("detailModal").classList.remove("show")}
+function resetToTotal(){showQuickLoading("Đang tải toàn bộ danh sách...");search="";notInstalledOnly=false;page=1;$("searchInput").value="";$("notInstalledStat").classList.remove("active");load()}function toggleNotInstalled(){showQuickLoading(notInstalledOnly?"Đang tải toàn bộ danh sách...":"Đang tải danh sách chưa cài...");notInstalledOnly=!notInstalledOnly;page=1;$("notInstalledStat").classList.toggle("active",notInstalledOnly);load()}$("totalStat").onclick=resetToTotal;$("totalStat").onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();resetToTotal()}};$("notInstalledStat").onclick=toggleNotInstalled;$("notInstalledStat").onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleNotInstalled()}};$("searchInput").addEventListener('input',e=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>{search=e.target.value.trim();page=1;load()},300)});
+async function exportExcel(){
+  const btn=$("exportExcelBtn");
+  if(!btn)return;
+
+  if(typeof XLSX==="undefined"){
+    showError("Không tải được thư viện Excel. Kiểm tra kết nối Internet.");
+    return;
+  }
+
+  btn.disabled=true;
+  const oldText=btn.textContent;
+  btn.textContent="Đang chuẩn bị Excel...";
+
+  try{
+    /*
+      Gọi API theo đúng từ khóa đang tìm kiếm và lấy toàn bộ dữ liệu.
+      Không dùng PAGE_SIZE=20 để file Excel không chỉ chứa trang hiện tại.
+    */
+    const u=new URL(API_URL);
+    u.searchParams.set("page",1);
+    u.searchParams.set("pageSize",100000);
+    if(search)u.searchParams.set("search",search);
+
+    const r=await fetch(u.toString(),{cache:"no-store"});
+    if(!r.ok)throw Error("HTTP "+r.status);
+
+    const j=await r.json();
+    if(!j.success)throw Error(j.error||"API lỗi");
+
+    let rows=Array.isArray(j.data)?j.data:[];
+
+    /* Loại dòng tiêu đề nếu API trả nhầm vào data. */
+    rows=rows.filter(x=>!isHeaderRow(x));
+
+    /* Nếu đang chọn Chưa cài thì file cũng chỉ chứa Chưa cài. */
+    if(notInstalledOnly){
+      rows=rows.filter(x=>!installed(field(x,"Đã cài","da_cai","da_cai_tammi","installed")));
+    }
+
+    if(!rows.length){
+      alert("Không có dữ liệu phù hợp để tải Excel.");
+      return;
+    }
+
+    /*
+      Xuất nguyên các cột API trả về, không làm mất dữ liệu.
+      SheetJS sẽ tạo file .xlsx mở trực tiếp bằng Excel.
+    */
+    /*
+      Tạo Excel chuẩn:
+      - Tiêu đề bôi màu, chữ trắng, in đậm.
+      - Kẻ toàn bộ ô.
+      - Tự động căn độ rộng cột theo nội dung.
+      - Freeze hàng tiêu đề.
+      - Bật bộ lọc AutoFilter.
+      - Căn giữa các cột ngắn; dữ liệu dài tự xuống dòng.
+      - Hàng tiêu đề cao hơn và toàn bộ bảng có viền.
+    */
+    const ws=XLSX.utils.json_to_sheet(rows);
+
+    const range=XLSX.utils.decode_range(ws["!ref"]);
+    const headerStyle={
+      fill:{patternType:"solid",fgColor:{rgb:"D71920"}},
+      font:{bold:true,color:{rgb:"FFFFFF"},sz:11},
+      alignment:{horizontal:"center",vertical:"center",wrapText:true},
+      border:{
+        top:{style:"thin",color:{rgb:"B7B7B7"}},
+        bottom:{style:"thin",color:{rgb:"B7B7B7"}},
+        left:{style:"thin",color:{rgb:"B7B7B7"}},
+        right:{style:"thin",color:{rgb:"B7B7B7"}}
+      }
+    };
+    const bodyStyle={
+      alignment:{vertical:"center",wrapText:true},
+      border:{
+        top:{style:"thin",color:{rgb:"D9D9D9"}},
+        bottom:{style:"thin",color:{rgb:"D9D9D9"}},
+        left:{style:"thin",color:{rgb:"D9D9D9"}},
+        right:{style:"thin",color:{rgb:"D9D9D9"}}
+      }
+    };
+
+    for(let r=range.s.r;r<=range.e.r;r++){
+      for(let c=range.s.c;c<=range.e.c;c++){
+        const addr=XLSX.utils.encode_cell({r,c});
+        if(!ws[addr])ws[addr]={t:"s",v:""};
+        ws[addr].s=(r===range.s.r)?headerStyle:bodyStyle;
+      }
+    }
+
+    /* Độ rộng cột tự động, có giới hạn để bảng không bị quá rộng. */
+    const widths=[];
+    for(let c=range.s.c;c<=range.e.c;c++){
+      let max=10;
+      for(let r=range.s.r;r<=range.e.r;r++){
+        const addr=XLSX.utils.encode_cell({r,c});
+        const v=ws[addr]?.v;
+        const len=String(v??"").replace(/\\n/g," ").length;
+        max=Math.max(max,Math.min(len,45));
+      }
+      widths.push({wch:Math.min(Math.max(max+2,12),45)});
+    }
+    ws["!cols"]=widths;
+
+    /* Chiều cao hàng tiêu đề và dữ liệu. */
+    ws["!rows"]=[{hpt:28}];
+    for(let r=1;r<=range.e.r;r++)ws["!rows"][r]={hpt:22};
+
+    /* Cố định hàng tiêu đề và bật lọc. */
+    ws["!freeze"]={xSplit:0,ySplit:1};
+    ws["!autofilter"]={ref:XLSX.utils.encode_range(range)};
+
+    const wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,ws,"Danh sách");
+
+    const suffix=notInstalledOnly?"_chua_cai":(search?"_loc":"_tong");
+    const safeSearch=(search||"").replace(/[\\/:*?"<>|]+/g,"_").slice(0,40);
+    const filename=`Danh_sach_cai_dat${suffix}${safeSearch?"_"+safeSearch:""}.xlsx`;
+
+    XLSX.writeFile(wb,filename,{cellStyles:true});
+
+  }catch(e){
+    console.error(e);
+    showError("Không tải được Excel: "+e.message);
+  }finally{
+    btn.disabled=false;
+    btn.textContent=oldText;
+  }
+}
+
+$("exportExcelBtn").onclick=exportExcel;
+$("prevBtn").onclick=()=>{if(page>1){page--;load();scrollTo({top:0,behavior:'smooth'})}};
+$("nextBtn").onclick=()=>{if(page<totalPages){page++;load();scrollTo({top:0,behavior:'smooth'})}};$("closeDetail").onclick=closeDetail;$("detailModal").onclick=e=>{if(e.target===$("detailModal"))closeDetail()};window.onkeydown=e=>{if(e.key==='Escape')closeDetail()};load();
 </script>
 </body>
 </html>
