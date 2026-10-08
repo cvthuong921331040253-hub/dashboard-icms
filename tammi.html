@@ -84,30 +84,47 @@ async function exportExcel(){
 
   btn.disabled=true;
   const oldText=btn.textContent;
-  btn.textContent="Đang chuẩn bị Excel...";
 
   try{
     /*
-      Gọi API theo đúng từ khóa đang tìm kiếm và lấy toàn bộ dữ liệu.
-      Không dùng PAGE_SIZE=20 để file Excel không chỉ chứa trang hiện tại.
+      API đang giới hạn số bản ghi mỗi lần trả về (thực tế có thể là 100).
+      Vì vậy không thể chỉ gọi pageSize=100000.
+      Ta lấy lần lượt TẤT CẢ các trang rồi ghép lại trước khi xuất Excel.
     */
-    const u=new URL(API_URL);
-    u.searchParams.set("page",1);
-    u.searchParams.set("pageSize",100000);
-    if(search)u.searchParams.set("search",search);
+    const allRows=[];
+    let currentPage=1;
+    let totalPagesFromApi=1;
+    const pageSizeForExport=100;
 
-    const r=await fetch(u.toString(),{cache:"no-store"});
-    if(!r.ok)throw Error("HTTP "+r.status);
+    while(currentPage<=totalPagesFromApi){
+      btn.textContent=`Đang tải Excel ${currentPage}/${totalPagesFromApi}...`;
 
-    const j=await r.json();
-    if(!j.success)throw Error(j.error||"API lỗi");
+      const u=new URL(API_URL);
+      u.searchParams.set("page",currentPage);
+      u.searchParams.set("pageSize",pageSizeForExport);
+      if(search)u.searchParams.set("search",search);
 
-    let rows=Array.isArray(j.data)?j.data:[];
+      const r=await fetch(u.toString(),{cache:"no-store"});
+      if(!r.ok)throw Error("HTTP "+r.status);
 
-    /* Loại dòng tiêu đề nếu API trả nhầm vào data. */
-    rows=rows.filter(x=>!isHeaderRow(x));
+      const j=await r.json();
+      if(!j.success)throw Error(j.error||"API lỗi");
 
-    /* Nếu đang chọn Chưa cài thì file cũng chỉ chứa Chưa cài. */
+      const pageRows=(Array.isArray(j.data)?j.data:[]).filter(x=>!isHeaderRow(x));
+      allRows.push(...pageRows);
+
+      totalPagesFromApi=Math.max(Number(j.totalPages||1),1);
+
+      /* An toàn nếu API không trả totalPages đúng. */
+      if(j.hasNextPage===false)break;
+      if(!pageRows.length)break;
+
+      currentPage++;
+    }
+
+    let rows=allRows;
+
+    /* Nếu đang chọn Chưa cài thì lọc trên TOÀN BỘ dữ liệu, không chỉ 100 dòng đầu. */
     if(notInstalledOnly){
       rows=rows.filter(x=>!installed(field(x,"Đã cài","da_cai","da_cai_tammi","installed")));
     }
@@ -117,20 +134,9 @@ async function exportExcel(){
       return;
     }
 
-    /*
-      Xuất nguyên các cột API trả về, không làm mất dữ liệu.
-      SheetJS sẽ tạo file .xlsx mở trực tiếp bằng Excel.
-    */
-    /*
-      Tạo Excel chuẩn:
-      - Tiêu đề bôi màu, chữ trắng, in đậm.
-      - Kẻ toàn bộ ô.
-      - Tự động căn độ rộng cột theo nội dung.
-      - Freeze hàng tiêu đề.
-      - Bật bộ lọc AutoFilter.
-      - Căn giữa các cột ngắn; dữ liệu dài tự xuống dòng.
-      - Hàng tiêu đề cao hơn và toàn bộ bảng có viền.
-    */
+    btn.textContent=`Đang tạo Excel (${rows.length.toLocaleString("vi-VN")} dòng)...`;
+
+    /* Tạo Excel chuẩn: tiêu đề màu, kẻ ô, tự động độ rộng, freeze + filter. */
     const ws=XLSX.utils.json_to_sheet(rows);
 
     const range=XLSX.utils.decode_range(ws["!ref"]);
@@ -163,7 +169,6 @@ async function exportExcel(){
       }
     }
 
-    /* Độ rộng cột tự động, có giới hạn để bảng không bị quá rộng. */
     const widths=[];
     for(let c=range.s.c;c<=range.e.c;c++){
       let max=10;
@@ -177,11 +182,9 @@ async function exportExcel(){
     }
     ws["!cols"]=widths;
 
-    /* Chiều cao hàng tiêu đề và dữ liệu. */
     ws["!rows"]=[{hpt:28}];
     for(let r=1;r<=range.e.r;r++)ws["!rows"][r]={hpt:22};
 
-    /* Cố định hàng tiêu đề và bật lọc. */
     ws["!freeze"]={xSplit:0,ySplit:1};
     ws["!autofilter"]={ref:XLSX.utils.encode_range(range)};
 
