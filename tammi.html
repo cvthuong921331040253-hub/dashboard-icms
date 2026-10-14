@@ -27,9 +27,25 @@
 <main class="content"><section class="stats"><div class="stat clickable" id="totalStat" role="button" tabindex="0"><div class="label">Tổng</div><div class="value red" id="statTotal">0</div></div><div class="stat"><div class="label">Đã cài</div><div class="value green" id="statInstalled">0 / 0</div><span class="stat-percent" id="statInstalledPercent">0,00%</span></div><div class="stat clickable" id="notInstalledStat" role="button" tabindex="0"><div class="label">Chưa cài</div><div class="value orange" id="statNotInstalled">0</div><span class="stat-percent not-installed-hint" id="statNotInstalledPercent">ấn vào để xem chưa cài</span></div><div class="stat excel-stat"><div class="label">Xuất dữ liệu</div><button id="exportExcelBtn" class="export-btn" type="button">⇩ Tải Excel</button></div></section><div id="quickLoading" class="quick-loading">Đang tải dữ liệu...</div><div id="status" class="status"></div><section id="list" class="list"></section><div class="pages"><button class="pagebtn" id="prevBtn">‹</button><div class="pageinfo" id="pageInfo">Trang 1/1</div><button class="pagebtn" id="nextBtn">›</button></div><div class="updated" id="updated"></div></main></div>
 <div class="modalbg" id="detailModal"><div class="modal"><div class="modalhead"><div class="modaltitle">Chi tiết cài đặt</div><button class="close" id="closeDetail">×</button></div><div id="detailContent"></div></div></div>
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycbxyL8pyy5_Hz_ehabGQM4c0fwrytudPE-JkHm1zpn-CT9-br-JOS7krTfCGtZJf7n8u/exec";const PAGE_SIZE=20;let page=1,totalPages=1,search="",data=[];let searchTimer=null,requestController=null,requestId=0;let notInstalledOnly=false;const $=id=>document.getElementById(id);
-function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function installed(v){return ["1","true","đã cài","da cai","yes","y"].includes(String(v??"").trim().toLowerCase())}function field(x,...keys){for(const k of keys){if(x&&x[k]!==undefined&&x[k]!==null&&String(x[k]).trim()!=="")return x[k]}return ""}
-function isHeaderRow(x){if(!x||typeof x!=="object")return false;const vals=Object.values(x).map(v=>String(v??"").trim().toLowerCase());const words=["ho_ten_nv","ma_nhan_vien","ten_trung_tam_moi","account","task_type_name","ft_cai_dat_tammi","thoi_gian_cai_dat_tammi","ngay_ht"];return words.filter(w=>vals.includes(w)).length>=3}function url(){const u=new URL(API_URL);u.searchParams.set("page",page);u.searchParams.set("pageSize",PAGE_SIZE);if(search)u.searchParams.set("search",search);return u}function showError(t){$("status").textContent=t;$("status").className="status show error"}function clearStatus(){$("status").className="status"}
+const API_URL="https://script.google.com/macros/s/AKfycby5vwaqgAdPDte353-QSaQpRcmWovYQpvGo9lh3qKuNClZ8ywOAA2T15jPqDEu1GkD1/exec";const PAGE_SIZE=20;let page=1,totalPages=1,search="",data=[];let searchTimer=null,requestController=null,requestId=0;let notInstalledOnly=false;const $=id=>document.getElementById(id);
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function installed(v){return String(v??"").trim()==="1"}function field(x,...keys){for(const k of keys){if(x&&x[k]!==undefined&&x[k]!==null&&String(x[k]).trim()!=="")return x[k]}return ""}function tinhCaiValue(x){/* API có thể trả trường gốc tinh_cai_ft hoặc tên chuẩn hóa Đã cài (được ánh xạ từ tinh_cai_ft); tuyệt đối không đọc trang_thai_cai_dat_tammi */return field(x,"tinh_cai_ft","tinhCaiFt","Đã cài")}function isInstalledRow(x){return installed(tinhCaiValue(x))}
+function isHeaderRow(x){if(!x||typeof x!=="object")return false;const vals=Object.values(x).map(v=>String(v??"").trim().toLowerCase());const words=["ho_ten_nv","ma_nhan_vien","ten_trung_tam_moi","account","task_type_name","ft_cai_dat_tammi","thoi_gian_cai_dat_tammi","ngay_ht","tinh_cai_ft"];return words.filter(w=>vals.includes(w)).length>=3}function url(){const u=new URL(API_URL);u.searchParams.set("page",page);u.searchParams.set("pageSize",PAGE_SIZE);if(search)u.searchParams.set("search",search);return u}function getServerStats(j, pageRows){
+  // Đọc thống kê tổng hợp do API trả về, tránh gọi tuần tự từng trang mỗi lần tải.
+  const totalRaw = j.total ?? j.totalRecords ?? j.totalCount;
+  const installedRaw = j.installedTotal ?? j.installedCount ?? j.totalInstalled;
+  const notInstalledRaw = j.notInstalledTotal ?? j.notInstalledCount ?? j.totalNotInstalled;
+  const totalApi = Number(totalRaw);
+  const installedApi = Number(installedRaw);
+  const notInstalledApi = Number(notInstalledRaw);
+  const total = Number.isFinite(totalApi) && totalApi > 0 ? totalApi : Math.max(pageRows.length, Number(j.totalPages || 1) * PAGE_SIZE);
+  if (Number.isFinite(installedApi) && installedApi >= 0 && Number.isFinite(notInstalledApi) && notInstalledApi >= 0) {
+    return { total, done: installedApi, notDone: notInstalledApi };
+  }
+  // Fallback nhanh nếu API không có thống kê tổng hợp.
+  const done = pageRows.filter(isInstalledRow).length;
+  return { total, done, notDone: Math.max(total - done, 0) };
+}
+function showError(t){$("status").textContent=t;$("status").className="status show error"}function clearStatus(){$("status").className="status"}
 function showQuickLoading(text="Đang tải dữ liệu..."){
 $("quickLoading").textContent=text;
 $("quickLoading").classList.add("show");
@@ -45,12 +61,49 @@ $("notInstalledStat").style.pointerEvents="";
 
 }
 
-async function load(){const currentId=++requestId;if(requestController)requestController.abort();const controller=new AbortController();requestController=controller;showQuickLoading();try{const r=await fetch(url(),{cache:"no-store",signal:controller.signal});if(!r.ok)throw Error("HTTP "+r.status);const j=await r.json();if(currentId!==requestId)return;if(!j.success)throw Error(j.error||"API lỗi");data=(Array.isArray(j.data)?j.data:[]).filter(x=>!isHeaderRow(x));if(notInstalledOnly)data=data.filter(x=>!installed(field(x,"Đã cài","da_cai","da_cai_tammi","installed")));totalPages=Math.max(Number(j.totalPages||1),1);renderStats(Number(j.total||0),Number(j.installedTotal||0),Number(j.notInstalledTotal||0));render();pagination(j);$("pageLoading").classList.add("hide");clearStatus();$("updated").textContent="Cập nhật: "+new Date().toLocaleString("vi-VN");}catch(e){if(e.name==='AbortError')return;console.error(e);$("pageLoading").classList.add("hide");showError("Không tải được dữ liệu: "+e.message);$("list").innerHTML='<div class="empty">Kiểm tra kết nối dữ liệu.</div>' ;}finally{if(currentId===requestId){requestController=null;hideQuickLoading()}}}
+async function load(){
+  const currentId=++requestId;
+  if(requestController)requestController.abort();
+  const controller=new AbortController();requestController=controller;showQuickLoading();
+  try{
+    const r=await fetch(url(),{cache:"no-store",signal:controller.signal});
+    if(!r.ok)throw Error("HTTP "+r.status);
+    const j=await r.json();
+    if(currentId!==requestId)return;
+    if(!j.success)throw Error(j.error||"API lỗi");
+    const allPageRows=(Array.isArray(j.data)?j.data:[]).filter(x=>!isHeaderRow(x));
+    data=notInstalledOnly?allPageRows.filter(x=>!isInstalledRow(x)):allPageRows;
+    totalPages=Math.max(Number(j.totalPages||1),1);
+    render();pagination(j);clearStatus();
+    $("updated").textContent="Đang hoàn tất tải dữ liệu...";
+
+    // Tính thống kê từ phản hồi hiện có, không tải lại toàn bộ trang gây chậm.
+    const counts = getServerStats(j, allPageRows);
+    if(currentId!==requestId)return;
+    renderStats(counts.total, counts.done, counts.notDone);
+    if (!Number.isFinite(Number(j.installedTotal ?? j.installedCount ?? j.totalInstalled))) {
+      console.warn("API chưa trả thống kê Đã cài toàn bộ; số Đã cài đang dựa trên trang hiện tại.");
+    }
+    if(currentId!==requestId)return;
+    $("updated").textContent="Cập nhật: "+new Date().toLocaleString("vi-VN");
+    $("pageLoading").classList.add("hide");
+  }catch(e){
+    if(e.name==='AbortError')return;
+    console.error(e);
+    if(currentId===requestId){
+      $("pageLoading").classList.add("hide");
+      showError("Không tải được dữ liệu: "+e.message);
+      $("list").innerHTML='<div class="empty">Kiểm tra kết nối dữ liệu.</div>';
+    }
+  }finally{
+    if(currentId===requestId){requestController=null;hideQuickLoading();}
+  }
+}
 function renderStats(total,installedTotal,notInstalledTotal){const a=Number(installedTotal||0),b=Number(notInstalledTotal||Math.max(total-a,0)),pa=total>0?a/total*100:0,pb=total>0?b/total*100:0;$("statTotal").textContent=total.toLocaleString("vi-VN");$("statInstalled").textContent=a.toLocaleString("vi-VN")+" / "+total.toLocaleString("vi-VN");$("statInstalledPercent").textContent=pa.toLocaleString("vi-VN",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";$("statNotInstalled").textContent=b.toLocaleString("vi-VN");$("statNotInstalledPercent").textContent="ấn vào để xem chưa cài";$("totalText").textContent=total.toLocaleString("vi-VN")+" bản ghi"}
 function render(){
 if(!data.length){$("list").innerHTML=notInstalledOnly?'<div class="empty">Không còn bản ghi chưa cài.</div>':'<div class="empty">Không có dữ liệu phù hợp.</div>';return}
 $("list").innerHTML=data.map((x,i)=>{
-const ok=installed(field(x,"Đã cài","da_cai","da_cai_tammi","installed"));
+const ok=isInstalledRow(x);
 const name=field(x,"Họ tên","ho_ten_nv","ho_ten")||field(x,"Mã nhân viên","ma_nhan_vien")||"Chưa xác định";
 const employee=field(x,"Mã nhân viên","ma_nhan_vien")||"-";
 const district=field(x,"Huyện","huyen","ten_trung_tam_moi","Trung tâm")||"-";
@@ -66,7 +119,7 @@ return `<article class="card"><div class="top"><div class="avatar">${esc(String(
 function pagination(j){page=Number(j.page||page);totalPages=Math.max(Number(j.totalPages||1),1);$("pageInfo").textContent=`Trang ${page}/${totalPages}`;$("prevBtn").disabled=!j.hasPreviousPage;$("nextBtn").disabled=!j.hasNextPage}
 function detail(i){
 const x=data[i];if(!x)return;
-const f=[["Huyện",field(x,"Huyện","huyen","ten_trung_tam_moi")],["Account",field(x,"Account","account")],["Đã cài",field(x,"Đã cài","da_cai","da_cai_tammi","installed")],["Người cài",field(x,"Người cài","nguoi_cai","ft_cai_dat_tammi")],["Thời gian cài",field(x,"Thời gian cài","thoi_gian_cai","thoi_gian_cai_dat_tammi")],["Mã nhân viên",field(x,"Mã nhân viên","ma_nhan_vien")],["Họ tên",field(x,"Họ tên","ho_ten_nv","ho_ten")],["Tác vụ",field(x,"Tác vụ","task_type_name")],["Thời gian đóng WO",field(x,"Thời gian đóng TV","thoi_gian_dong_tv","ngay_ht")]];
+const f=[["Huyện",field(x,"Huyện","huyen","ten_trung_tam_moi")],["Account",field(x,"Account","account")],["Đã cài",isInstalledRow(x)?"Đã cài":"Chưa cài"],["tinh_cai_ft",tinhCaiValue(x)],["trang_thai_cai_dat_tammi",field(x,"trang_thai_cai_dat_tammi")],["Người cài",field(x,"Người cài","nguoi_cai","ft_cai_dat_tammi")],["Thời gian cài",field(x,"Thời gian cài","thoi_gian_cai","thoi_gian_cai_dat_tammi")],["Mã nhân viên",field(x,"Mã nhân viên","ma_nhan_vien")],["Họ tên",field(x,"Họ tên","ho_ten_nv","ho_ten")],["Tác vụ",field(x,"Tác vụ","task_type_name")],["Thời gian đóng WO",field(x,"Thời gian đóng TV","thoi_gian_dong_tv","ngay_ht")]];
 $("detailContent").innerHTML=f.map(([a,b])=>`<div class="detailrow"><div class="dlabel">${esc(a)}</div><div class="dvalue">${esc(b||"-")}</div></div>`).join("");
 $("detailModal").classList.add("show");
 }
@@ -111,7 +164,13 @@ async function exportExcel(){
       if(!j.success)throw Error(j.error||"API lỗi");
 
       const pageRows=(Array.isArray(j.data)?j.data:[]).filter(x=>!isHeaderRow(x));
-      allRows.push(...pageRows);
+      allRows.push(...pageRows.map(x=>{
+        const copy={...x};
+        // Quy tắc trạng thái chỉ dựa trên tinh_cai_ft; giữ nguyên
+        // trang_thai_cai_dat_tammi để người dùng xem trong file Excel.
+        copy.tinh_cai_ft = tinhCaiValue(x);
+        return copy;
+      }));
 
       totalPagesFromApi=Math.max(Number(j.totalPages||1),1);
 
@@ -126,7 +185,7 @@ async function exportExcel(){
 
     /* Nếu đang chọn Chưa cài thì lọc trên TOÀN BỘ dữ liệu, không chỉ 100 dòng đầu. */
     if(notInstalledOnly){
-      rows=rows.filter(x=>!installed(field(x,"Đã cài","da_cai","da_cai_tammi","installed")));
+      rows=rows.filter(x=>!isInstalledRow(x));
     }
 
     if(!rows.length){
