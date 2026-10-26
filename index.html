@@ -3320,7 +3320,7 @@ body.loading{
   <div class="bot-head">
   <div>
     <b>🤖 KPI Bot</b>
-    <div style="font-size:11px;opacity:.85;margin-top:2px">20 KPI • Target • Tháng trước • Huyện • Nhân viên</div>
+    <div style="font-size:11px;opacity:.85;margin-top:2px">20 KPI • Target • Tháng trước • Tổ • Nhân viên</div>
   </div>
   <div class="bot-head-actions">
     <button onclick="toggleBotSize()" title="Phóng to/thu nhỏ">⛶</button>
@@ -3333,12 +3333,13 @@ body.loading{
   <div class="bot-quick">
   <button onclick="askKpiBot('Phân tích KPI hiện tại độc lập')">📊 T hiện tại</button>
   <button onclick="askKpiBot('Phân tích KPI tháng trước độc lập')">📅 T trước</button>
-  <button onclick="askKpiBot('Đánh giá từng huyện')">🏢 Từng huyện</button>
+  <button onclick="askKpiBot('Đánh giá từng huyện')">🏢 Từng tổ</button>
   <button onclick="askKpiBot('So sánh Gia Lai')">🏠 Tổng thể Gia Lai</button>
-  <button onclick="askKpiBot('Huyện tồi')">⚠️ Huyện tồi</button>
+  <button onclick="askKpiBot('Tổ tồi')">⚠️ Huyện tồi</button>
   <button onclick="askKpiBot('Top 10 nhân viên kém')">⚠️ KPI kém</button>
   <button onclick="askKpiBot('Top 10 nhân viên tốt')">🏆 Top tốt</button>
   <button onclick="askKpiBot('20 chỉ tiêu KPI')">🎯 20 KPI Gia Lai</button>
+  <button onclick="exportKpiWordReport()" style="background:#b5121b;color:#fff;border-color:#b5121b">📝 Xuất báo cáo Word</button>
   <button onclick="showKpiHelp()">❔ Help</button>
 </div>
   <div class="bot-input">
@@ -3374,14 +3375,17 @@ body.loading{
 </div>
   <div class="header-filter">
   <input id="nv" placeholder="Tìm nhân viên..." onkeyup="filter()"><br>
-  <input id="huyen" placeholder="Tìm huyện..." onkeyup="filter()">
+  <input id="huyen" placeholder="Tìm tổ..." onkeyup="filter()">
     <input type="checkbox" id="badCheck" onchange="onlyBad(this.checked)">
     <label for="badCheck" class="checkbox-btn">⚠️ KPI kém</label>
   </div>
 
 </div>
   <div id="sectionTable">
-    <h3>📊 Bảng KPI tổng hợp</h3>
+    <div class="kpi-table-title-row">
+      <h3>📊 Bảng KPI tổng hợp</h3>
+      <button type="button" class="export-ranking-btn" onclick="exportKpiSummaryExcel()">📥 Tải Excel bảng KPI</button>
+    </div>
     <div class="kpi-wrapper">
       <div id="tableKPI"></div>
     </div>
@@ -3546,6 +3550,19 @@ function calcScore(r){
   return max ? (total / max) * 100 : 0;
 }
 
+// ===== TARGET CHUẨN DÙNG CHUNG CHO MÀU ĐỎ VÀ SỐ KPI TỒI =====
+// Không dùng target_* trả về từ API để tô màu nếu khác Target đang công bố trên bảng.
+function getKpiTarget(r,key){
+  const fixed={
+    target_3h_moi:40, target_10h_moi:70, target_16h_moi:100, target_24h_moi:100,
+    target_3h_co_san:40, target_10h_co_san:70, target_16h_co_san:100, target_24h_co_san:100,
+    target_tich_hen:100, target_sc_3h:62, target_sc_10h:81, target_sc_16h:100,
+    target_sc_24h:100, target_sc_hot:85, target_sc_vip:100, target_sc_ht_24h:100,
+    target_sc_soc_24h:85, target_sc_soc_72h:100, target_sc_hen:100, target_sc_lap:7
+  };
+  return Object.prototype.hasOwnProperty.call(fixed,key) ? fixed[key] : toNumber(r && r[key]);
+}
+
 // ===== KPI NHÂN VIÊN TỒI =====
 function formatKpiPct(v){
   const n=Number(toNumber(v));
@@ -3562,29 +3579,29 @@ function getBadKPI(r){
   }
 }
 
-  add("TK mới 3h",r.tk_3h_moi,r.target_3h_moi);
-  add("TK mới 10h",r.tk_10h_moi,r.target_10h_moi);
-  add("TK mới 16h",r.tk_16h_moi,r.target_16h_moi);
-  add("TK mới 24h",r.tk_24h_moi,r.target_24h_moi);
+  add("TK mới 3h",r.tk_3h_moi,getKpiTarget(r,"target_3h_moi"));
+  add("TK mới 10h",r.tk_10h_moi,getKpiTarget(r,"target_10h_moi"));
+  add("TK mới 16h",r.tk_16h_moi,getKpiTarget(r,"target_16h_moi"));
+  add("TK mới 24h",r.tk_24h_moi,getKpiTarget(r,"target_24h_moi"));
 
-  add("TK có sẵn 3h",r.tk_3h_co_san,r.target_3h_co_san);
-  add("TK có sẵn 10h",r.tk_10h_co_san,r.target_10h_co_san);
-  add("TK có sẵn 16h",r.tk_16h_co_san,r.target_16h_co_san);
-  add("TK có sẵn 24h",r.tk_24h_co_san,r.target_24h_co_san);
+  add("TK có sẵn 3h",r.tk_3h_co_san,getKpiTarget(r,"target_3h_co_san"));
+  add("TK có sẵn 10h",r.tk_10h_co_san,getKpiTarget(r,"target_10h_co_san"));
+  add("TK có sẵn 16h",r.tk_16h_co_san,getKpiTarget(r,"target_16h_co_san"));
+  add("TK có sẵn 24h",r.tk_24h_co_san,getKpiTarget(r,"target_24h_co_san"));
 
-  add("TK tích hẹn",r.tich_hen,r.target_tich_hen);
+  add("TK tích hẹn",r.tich_hen,getKpiTarget(r,"target_tich_hen"));
 
-  add("SC 3h",r.sc_3h,r.target_sc_3h);
-  add("SC 10h",r.sc_10h,r.target_sc_10h);
-  add("SC 16h",r.sc_16h,r.target_sc_16h);
-  add("SC 24h",r.sc_24h,r.target_sc_24h);
-  add("SC HOT",r.sc_hot,r.target_sc_hot);
-  add("SC VIP",r.sc_vip,r.target_sc_vip);
-  add("SC HT 24h",r.sc_ht_24h,r.target_sc_ht_24h);
-  add("SC SOC 24h",r.sc_soc_24h,r.target_sc_soc_24h);
-  add("SC SOC 72h",r.sc_soc_72h,r.target_sc_soc_72h);
-  add("SC Hẹn",r.sc_hen,r.target_sc_hen);
-  add("SC Lặp",r.sc_lap,r.target_sc_lap,"down");
+  add("SC 3h",r.sc_3h,getKpiTarget(r,"target_sc_3h"));
+  add("SC 10h",r.sc_10h,getKpiTarget(r,"target_sc_10h"));
+  add("SC 16h",r.sc_16h,getKpiTarget(r,"target_sc_16h"));
+  add("SC 24h",r.sc_24h,getKpiTarget(r,"target_sc_24h"));
+  add("SC HOT",r.sc_hot,getKpiTarget(r,"target_sc_hot"));
+  add("SC VIP",r.sc_vip,getKpiTarget(r,"target_sc_vip"));
+  add("SC HT 24h",r.sc_ht_24h,getKpiTarget(r,"target_sc_ht_24h"));
+  add("SC SOC 24h",r.sc_soc_24h,getKpiTarget(r,"target_sc_soc_24h"));
+  add("SC SOC 72h",r.sc_soc_72h,getKpiTarget(r,"target_sc_soc_72h"));
+  add("SC Hẹn",r.sc_hen,getKpiTarget(r,"target_sc_hen"));
+  add("SC Lặp",r.sc_lap,getKpiTarget(r,"target_sc_lap"),"down");
 
   return badList;
 }
@@ -3692,32 +3709,30 @@ function load(){
 // 👉 lấy TG update dòng 2 (index 1)
   let log = rawData[1]?.["Tg update"] || "";
 // 👉 dòng 1–15 (bảng Excel)
-tableDataGlobal = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,14);
+tableDataGlobal = rawData.filter(r => r.huyen && r.huyen !== "").slice(0,40);
 // 👉 hiển thị
   document.getElementById("logtime").innerText =
   log ? "🕒Thời gian lấy báo cáo: " + log : "";
 
-// 👉 TÍNH RANK HUYỆN (ít KPI tồi = rank cao)
-let huyenRank = [...tableDataGlobal]
-  .map(r => ({
-    ...r,
-    bad: getBadKPI(r).length
-  }))
-  .sort((a,b)=> a.bad - b.bad);
+// 👉 XẾP HẠNG BẢNG TỔ: Gia Lai luôn ghim đầu, các tổ còn lại KPI tồi nhiều nhất lên trước.
+const huyenRank = [...tableDataGlobal]
+  .map(r => ({ ...r, bad: getBadKPI(r).length }))
+  .sort((a,b) => {
+    const aGiaLai = String(a.huyen || "").trim().toLocaleLowerCase("vi") === "gia lai";
+    const bGiaLai = String(b.huyen || "").trim().toLocaleLowerCase("vi") === "gia lai";
+    if (aGiaLai !== bGiaLai) return aGiaLai ? -1 : 1;
+    return b.bad - a.bad || String(a.huyen || "").localeCompare(String(b.huyen || ""), "vi");
+  });
 
-// gán rank
-huyenRank.forEach((r,i)=>{
-  r.rank = i + 1;
-});
-
-// map lại vào tableData
-tableDataGlobal.forEach(r=>{
-  let f = huyenRank.find(x => x.huyen === r.huyen);
-  r.rank = f ? f.rank : "";
-});
+// Gán thứ hạng theo đúng thứ tự hiển thị: Gia Lai ghim đầu, KPI tồi nhiều nhất xếp kế tiếp.
+huyenRank.forEach((r,i)=> { r.rank = i + 1; });
+const rankByName = new Map(huyenRank.map(r => [String(r.huyen || ""), r.rank]));
+tableDataGlobal.forEach(r => { r.rank = rankByName.get(String(r.huyen || "")) || ""; });
+// Bảng KPI tổng hợp cũng hiển thị theo thứ tự xếp hạng mới.
+tableDataGlobal = huyenRank;
 
 // 👉 dòng 16+ (tính KPI)
-    allData = rawData.slice(14).filter(r =>
+    allData = rawData.slice(40).filter(r =>
     Number(r.tong_tk_moi || 0) > 0 ||
     Number(r.tong_tk_co_san || 0) > 0 ||
     Number(r.tong_sc || 0) > 0
@@ -4083,24 +4098,25 @@ function renderTableExcel(data){
   <table border="1" style="border-collapse:collapse; font-size:12px; width:100%">
     <thead>
       <tr style="background:#0f0f0f">
-      <th>Huyện</th>
+      <th>Tổ</th>
       <th>TK mới</th>
       <th>TK có sẵn</th>
       <th>Sự cố</th>
+      <th>Số KPI tồi</th>
       <th>TK mới 3h (40%)</th>
-      <th>TK mới 10h (50%)</th>
+      <th>TK mới 10h (70%)</th>
       <th>TK mới 16h (100%)</th>
       <th>TK mới 24h (100%)</th>
 
       <th>TK có sẵn 3h (40%)</th>
-      <th>TK có sẵn 10h (50%)</th>
+      <th>TK có sẵn 10h (70%)</th>
       <th>TK có sẵn 16h (100%)</th>
       <th>TK có sẵn 24h (100%)</th>
 
       <th>Tích hẹn (100%)</th>
 
       <th>SC 3h (62%)</th>
-      <th>SC 10h (80%)</th>
+      <th>SC 10h (81%)</th>
       <th>SC 16h (100%)</th>
       <th>SC 24h (100%)</th>
 
@@ -4110,7 +4126,7 @@ function renderTableExcel(data){
       <th>SC SOC 24h (85%)</th>
       <th>SC SOC 72h (100%)</th>
       <th>SC Hẹn (100%)</th>
-      <th>SC Lặp (8%)</th>
+      <th>SC Lặp (7%)</th>
       </tr>
     </thead>
     <tbody>
@@ -4123,35 +4139,36 @@ function renderTableExcel(data){
 
   data.forEach(r=>{
     html += `<tr>
-      <td><a href="javascript:void(0)" class="kpi-district-link" onclick="openGiaLaiCompareByName(${JSON.stringify(r.huyen||"")})">${r.huyen||""}</a></td>
+      <td><a href="javascript:void(0)" class="kpi-district-link" onclick="openTeamMembersKPI(decodeURIComponent('${encodeURIComponent(String(r.huyen||""))}'))">${r.huyen||""}</a></td>
       <td>${formatTableNumber(r.tong_tk_moi,true)}</td>
       <td>${formatTableNumber(r.tong_tk_co_san,true)}</td>
       <td>${formatTableNumber(r.tong_sc,true)}</td>
-      ${cell(r.tk_3h_moi,r.target_3h_moi)}
-      ${cell(r.tk_10h_moi,r.target_10h_moi)}
-      ${cell(r.tk_16h_moi,r.target_16h_moi)}
-      ${cell(r.tk_24h_moi,r.target_24h_moi)}
+      <td style="text-align:center; white-space:nowrap; font-weight:700; color:${getBadKPI(r).length ? '#e50914' : '#222'}">${getBadKPI(r).length}/20</td>
+      ${cell(r.tk_3h_moi,getKpiTarget(r,"target_3h_moi"))}
+      ${cell(r.tk_10h_moi,getKpiTarget(r,"target_10h_moi"))}
+      ${cell(r.tk_16h_moi,getKpiTarget(r,"target_16h_moi"))}
+      ${cell(r.tk_24h_moi,getKpiTarget(r,"target_24h_moi"))}
 
-      ${cell(r.tk_3h_co_san,r.target_3h_co_san)}
-      ${cell(r.tk_10h_co_san,r.target_10h_co_san)}
-      ${cell(r.tk_16h_co_san,r.target_16h_co_san)}
-      ${cell(r.tk_24h_co_san,r.target_24h_co_san)}
+      ${cell(r.tk_3h_co_san,getKpiTarget(r,"target_3h_co_san"))}
+      ${cell(r.tk_10h_co_san,getKpiTarget(r,"target_10h_co_san"))}
+      ${cell(r.tk_16h_co_san,getKpiTarget(r,"target_16h_co_san"))}
+      ${cell(r.tk_24h_co_san,getKpiTarget(r,"target_24h_co_san"))}
 
-      ${cell(r.tich_hen,r.target_tich_hen)}
+      ${cell(r.tich_hen,getKpiTarget(r,"target_tich_hen"))}
 
-      ${cell(r.sc_3h,r.target_sc_3h)}
-      ${cell(r.sc_10h,r.target_sc_10h)}
-      ${cell(r.sc_16h,r.target_sc_16h)}
-      ${cell(r.sc_24h,r.target_sc_24h)}
+      ${cell(r.sc_3h,getKpiTarget(r,"target_sc_3h"))}
+      ${cell(r.sc_10h,getKpiTarget(r,"target_sc_10h"))}
+      ${cell(r.sc_16h,getKpiTarget(r,"target_sc_16h"))}
+      ${cell(r.sc_24h,getKpiTarget(r,"target_sc_24h"))}
 
-      ${cell(r.sc_hot,r.target_sc_hot)}
-      ${cell(r.sc_vip,r.target_sc_vip)}
-      ${cell(r.sc_ht_24h,r.target_sc_ht_24h)}
-      ${cell(r.sc_soc_24h,r.target_sc_soc_24h)}
-      ${cell(r.sc_soc_72h,r.target_sc_soc_72h)}
-      ${cell(r.sc_hen,r.target_sc_hen)}
+      ${cell(r.sc_hot,getKpiTarget(r,"target_sc_hot"))}
+      ${cell(r.sc_vip,getKpiTarget(r,"target_sc_vip"))}
+      ${cell(r.sc_ht_24h,getKpiTarget(r,"target_sc_ht_24h"))}
+      ${cell(r.sc_soc_24h,getKpiTarget(r,"target_sc_soc_24h"))}
+      ${cell(r.sc_soc_72h,getKpiTarget(r,"target_sc_soc_72h"))}
+      ${cell(r.sc_hen,getKpiTarget(r,"target_sc_hen"))}
 
-      ${cell(r.sc_lap,r.target_sc_lap,"down")}
+      ${cell(r.sc_lap,getKpiTarget(r,"target_sc_lap"),"down")}
     </tr>`;
   });
   
@@ -4282,19 +4299,19 @@ function botLabel(r){
 
 const BOT_KPI_DEFS = [
   ["TK mới 3h",      "tk_3h_moi",      40,  "up"],
-  ["TK mới 10h",     "tk_10h_moi",     50,  "up"],
+  ["TK mới 10h",     "tk_10h_moi",     70,  "up"],
   ["TK mới 16h",     "tk_16h_moi",    100,  "up"],
   ["TK mới 24h",     "tk_24h_moi",    100,  "up"],
 
   ["TK có sẵn 3h",   "tk_3h_co_san",   40,  "up"],
-  ["TK có sẵn 10h",  "tk_10h_co_san",  50,  "up"],
+  ["TK có sẵn 10h",  "tk_10h_co_san",  70,  "up"],
   ["TK có sẵn 16h",  "tk_16h_co_san", 100,  "up"],
   ["TK có sẵn 24h",  "tk_24h_co_san", 100,  "up"],
 
   ["TK tích hẹn",    "tich_hen",      100,  "up"],
 
   ["SC 3h",          "sc_3h",          62,  "up"],
-  ["SC 10h",         "sc_10h",         80,  "up"],
+  ["SC 10h",         "sc_10h",         81,  "up"],
   ["SC 16h",         "sc_16h",        100,  "up"],
   ["SC 24h",         "sc_24h",        100,  "up"],
   ["SC HOT",         "sc_hot",         85,  "up"],
@@ -4304,8 +4321,8 @@ const BOT_KPI_DEFS = [
   ["SC SOC 72h",     "sc_soc_72h",    100,  "up"],
   ["SC Hẹn",         "sc_hen",        100,  "up"],
 
-  // SC Lặp: Target RIÊNG 8%, càng thấp càng tốt.
-  ["SC Lặp",         "sc_lap",          8, "down"]
+  // SC Lặp: Target RIÊNG 7%, càng thấp càng tốt.
+  ["SC Lặp",         "sc_lap",          7, "down"]
 ];
 
 function botTargetState(value,target,type){
@@ -4430,8 +4447,8 @@ async function loadOldBotData(){
     if(res.ok){
       const json=await res.json();
       const raw=json.data||[];
-      oldDistricts=raw.filter(r=>r.huyen&&r.huyen!=="").slice(0,14);
-      oldRows=raw.slice(14).filter(r=>
+      oldDistricts=raw.filter(r=>r.huyen&&r.huyen!=="").slice(0,40);
+      oldRows=raw.slice(40).filter(r=>
         botNum(r.tong_tk_moi)>0 ||
         botNum(r.tong_tk_co_san)>0 ||
         botNum(r.tong_sc)>0
@@ -4487,7 +4504,7 @@ function fmt(v, forceOneDecimal=false){
 }
 
 function fmtKpiValue(v,label,isTarget=false){
-  // SC Lặp target riêng 8.0%; các KPI khác bỏ .0 nếu là số nguyên.
+  // SC Lặp target riêng 7.0%; các KPI khác bỏ .0 nếu là số nguyên.
   if(label==="SC Lặp" && isTarget) return Number(v||0).toFixed(1);
   return fmt(v);
 }
@@ -4629,7 +4646,7 @@ function buildDistrictRanking(currentDistricts,oldDistricts){
 }
 
 function renderDistrictRanking(rows){
-  let out=`<b>🏢 5 huyện tồi nhất</b>`;
+  let out=`<b>🏢 5 tổ tồi nhất</b>`;
 
   rows.slice(0,5).forEach((x,i)=>{
     const m=x.metrics;
@@ -4662,7 +4679,7 @@ function getDistrictPair(currentDistricts,oldDistricts,name){
 
 function renderDistrictDetail(name,cur,old){
   if(!cur){
-    return `<b>🏢 ${botEscape(name)}</b><br>Không tìm thấy dữ liệu huyện trong tháng hiện tại.`;
+    return `<b>🏢 ${botEscape(name)}</b><br>Không tìm thấy dữ liệu tổ trong tháng hiện tại.`;
   }
 
   const m=botRowMetrics(cur,old);
@@ -4796,8 +4813,8 @@ function renderIndependentMonthReport(rows, title){
 
 function renderDistrictIndependentReports(currentDistricts, oldDistricts){
   const rows = currentDistricts || [];
-  let out = `<b>🏢 Đánh giá độc lập từng huyện - tháng hiện tại</b>`;
-  out += `<div class="bot-note">Mỗi huyện được đánh giá trực tiếp trên 20 KPI và Target cố định.</div>`;
+  let out = `<b>🏢 Đánh giá độc lập từng tổ - tháng hiện tại</b>`;
+  out += `<div class="bot-note">Mỗi tổ được đánh giá trực tiếp trên 20 KPI và Target cố định.</div>`;
 
   const ranked = rows.map(r=>{
     const m=botRowMetrics(r,null);
@@ -4867,7 +4884,7 @@ function renderIndependentMonthReportDetailed(rows,title,districtRows){
   const stats=botKpiStatsForMonth(rows,districtRows,true);
 
   let out=`<b>${title}</b>`;
-  out+=`<div class="bot-note">Tính độc lập theo toàn bộ nhân viên của tháng; huyện tồi tính trên 13 huyện, loại dòng tổng hợp Gia Lai.</div>`;
+  out+=`<div class="bot-note">Tính độc lập theo toàn bộ nhân viên của tháng; tổ tồi tính trên các tổ, loại dòng tổng hợp Gia Lai, loại dòng tổng hợp Gia Lai.</div>`;
 
   stats.forEach((x,i)=>{
     let targetText="";
@@ -4887,10 +4904,10 @@ function renderIndependentMonthReportDetailed(rows,title,districtRows){
         <b>- ${botEscape(x.name)}:</b>
         ${fmt(x.avg)}% / ${fmt(x.target)}% → ${targetText}
         có <b>${x.employeeBad}/${x.employeeTotal}</b> nhân viên tồi
-        và <b>${x.districtBad}/${x.districtTotal}</b> huyện tồi.
+        và <b>${x.districtBad}/${x.districtTotal}</b> tổ tồi.
         <div class="bot-note">
           💡 <button class="bot-inline-btn" onclick="askKpiBot('Danh sách nhân viên tồi ${botEscape(x.name)} hiện tại')">Tra đủ ${x.employeeBad} nhân viên tồi</button>
-          <button class="bot-inline-btn" onclick="askKpiBot('Danh sách huyện tồi ${botEscape(x.name)} hiện tại')">Tra đủ ${x.districtBad} huyện tồi</button>
+          <button class="bot-inline-btn" onclick="askKpiBot('Danh sách tổ tồi ${botEscape(x.name)} hiện tại')">Tra đủ ${x.districtBad} huyện tồi</button>
         </div>
       </div>`;
   });
@@ -4914,7 +4931,7 @@ function getScopeEmployees(rows,scopeName){
 
 function renderDistrictDetailAdvanced(name,cur,old,currentRows,oldRows){
   if(!cur){
-    return `<b>🏢 ${botEscape(name)}</b><br>Không tìm thấy dữ liệu huyện hiện tại.`;
+    return `<b>🏢 ${botEscape(name)}</b><br>Không tìm thấy dữ liệu tổ hiện tại.`;
   }
 
   const m=botRowMetrics(cur,old);
@@ -4933,7 +4950,7 @@ function renderDistrictDetailAdvanced(name,cur,old,currentRows,oldRows){
     out+=".";
   }
 
-  const scopeLabel=botNormalize(name)==="gialai" ? "toàn bộ Gia Lai" : `huyện ${name}`;
+  const scopeLabel=botNormalize(name)==="gialai" ? "toàn bộ Gia Lai" : `tổ ${name}`;
   out+=`<div class="bot-note">Nhân viên trong phạm vi ${botEscape(scopeLabel)}: <b>${employees.length}</b>`;
   if(oldEmployees.length) out+=` | Tháng trước: <b>${oldEmployees.length}</b>`;
   out+=`</div>`;
@@ -5255,7 +5272,7 @@ function renderGiaLaiDeep(currentRows,oldRows,currentDistricts,oldDistricts){
       out+=`<div class="bot-report">${i+1}. <b>${botEscape(x.r.huyen)}</b> – Tồi ${x.m.badCount}/20 KPI.</div>`;
     });
   }else{
-    out+=`<div class="bot-note">Không có huyện tồi.</div>`;
+    out+=`<div class="bot-note">Không có tổ tồi.</div>`;
   }
 
   const badEmployees=allEmployees
@@ -5305,7 +5322,7 @@ function renderKpiDistrictList(rows,kpiName,target,type,title){
   });
 
   let out=`<b>${title}</b><br>`;
-  if(!bad.length) return out+"Không có huyện tồi.";
+  if(!bad.length) return out+"Không có tổ tồi.";
   bad.forEach((r,i)=>{
     const e=botTargetState(r[kpiName],target,type);
     out+=`<div class="bot-report">${i+1}. <b>${botEscape(r.huyen)}</b> – ${fmt(r[kpiName])}%/${fmt(target)}% → tồi Target ${fmt(e.targetGapPct)}%.</div>`;
@@ -5395,7 +5412,7 @@ function renderBotOverdueTable(rows,title){
             <th>#</th>
             <th>Account</th>
             <th>Nhân viên</th>
-            <th>Huyện</th>
+            <th>Tổ</th>
             <th>Ngày</th>
             <th>Cột quá hạn có dữ liệu</th>
           </tr>
@@ -5538,7 +5555,7 @@ async function askKpiBot(question){
       return;
     }
 
-    // KPI <Tên huyện> hoặc KPI <Tên nhân viên>
+    // KPI <Tên tổ> hoặc KPI <Tên nhân viên>
     const entityMatch=question.match(/^kpi\s+(.+)$/i);
     if(entityMatch){
       const name=entityMatch[1].trim();
@@ -5565,13 +5582,13 @@ async function askKpiBot(question){
         });
         addBotMessage(out);
       }else{
-        addBotMessage(`Không tìm thấy huyện hoặc nhân viên <b>${botEscape(name)}</b>.`);
+        addBotMessage(`Không tìm thấy tổ hoặc nhân viên <b>${botEscape(name)}</b>.`);
       }
       return;
     }
 
 
-    // Danh sách TOÀN BỘ nhân viên tồi trong một huyện / Gia Lai.
+    // Danh sách TOÀN BỘ nhân viên tồi trong một tổ / Gia Lai.
     const badScopeEmployeeMatch=question.match(/^danh sách toàn bộ nhân viên tồi của (.+)$/i);
     if(badScopeEmployeeMatch){
       const scope=badScopeEmployeeMatch[1].trim();
@@ -5598,7 +5615,7 @@ async function askKpiBot(question){
       return;
     }
 
-    // Danh sách nhân viên/huyện tồi của một KPI.
+    // Danh sách nhân viên/tổ tồi của một KPI.
     const badEmployeeMatch=question.match(/^danh sách nhân viên tồi\s+(.+)\s+(hiện tại|tháng trước)$/i);
     if(badEmployeeMatch){
       const kpiName=badEmployeeMatch[1].trim();
@@ -5611,7 +5628,7 @@ async function askKpiBot(question){
       return;
     }
 
-    const badDistrictMatch=question.match(/^danh sách huyện tồi\s+(.+)\s+(hiện tại|tháng trước)$/i);
+    const badDistrictMatch=question.match(/^danh sách (?:huyện|tổ) tồi\s+(.+)\s+(hiện tại|tháng trước)$/i);
     if(badDistrictMatch){
       const kpiName=badDistrictMatch[1].trim();
       const month=badDistrictMatch[2].toLowerCase();
@@ -5620,7 +5637,7 @@ async function askKpiBot(question){
       const [label,val,target,type]=def;
       const rows=(month.includes("tháng") ? d.oldDistricts : d.currentDistricts)
         .filter(r=>botNormalize(r.huyen)!=="gialai");
-      addBotMessage(renderKpiDistrictList(rows,val,target,type,`🏢 Huyện tồi KPI ${label} - ${month}`));
+      addBotMessage(renderKpiDistrictList(rows,val,target,type,`🏢 Tổ tồi KPI ${label} - ${month}`));
       return;
     }
 
@@ -5630,7 +5647,7 @@ async function askKpiBot(question){
       return;
     }
 
-    // So sánh trực tiếp một huyện khi bấm vào tên huyện trong bảng.
+    // So sánh trực tiếp một tổ khi bấm vào tên huyện trong bảng.
     const districtMatch = question.match(/^so sánh\s+(.+)$/i);
     if(districtMatch){
       const districtName=districtMatch[1].trim();
@@ -5638,7 +5655,7 @@ async function askKpiBot(question){
       if(pair.cur){
         addBotMessage(renderDistrictDetail(districtName,pair.cur,pair.old));
       }else{
-        addBotMessage(`Không tìm thấy dữ liệu huyện <b>${botEscape(districtName)}</b> trong tháng hiện tại.`);
+        addBotMessage(`Không tìm thấy dữ liệu tổ <b>${botEscape(districtName)}</b> trong tháng hiện tại.`);
       }
       return;
     }
@@ -5648,9 +5665,9 @@ async function askKpiBot(question){
       addBotMessage(
         `<b>🔎 Dữ liệu Bot đang đọc</b><br>`+
         `Nhân viên hiện tại: <b>${d.currentRows.length}</b><br>`+
-        `Huyện hiện tại: <b>${d.currentDistricts.length}</b><br>`+
+        `Tổ hiện tại: <b>${d.currentDistricts.length}</b><br>`+
         `Nhân viên tháng trước: <b>${d.oldRows.length}</b><br>`+
-        `Huyện tháng trước: <b>${d.oldDistricts.length}</b>`
+        `Tổ tháng trước: <b>${d.oldDistricts.length}</b>`
       );
       return;
     }
@@ -5682,7 +5699,7 @@ async function askKpiBot(question){
     }
 
     // Đánh giá toàn bộ từng huyện.
-    if(q.includes("đánh giá từng huyện")){
+    if(q.includes("đánh giá từng tổ") || q.includes("đánh giá từng huyện")){
       addBotMessage(
         renderDistrictIndependentReports(
           d.currentDistricts,
@@ -5722,7 +5739,7 @@ async function askKpiBot(question){
     }
 
     // 2. Huyện: xếp trực tiếp theo dữ liệu tháng hiện tại.
-    if(q.includes("huyện")){
+    if(q.includes("tổ")){
       const ranking=buildDistrictRanking(d.currentDistricts,d.oldDistricts)
         .sort((a,b)=>{
           const gap=b.metrics.totalGap-a.metrics.totalGap;
@@ -5731,7 +5748,7 @@ async function askKpiBot(question){
         .slice(0,5);
 
       if(!ranking.length){
-        addBotMessage("Không có dữ liệu huyện của tháng hiện tại.");
+        addBotMessage("Không có dữ liệu tổ của tháng hiện tại.");
         return;
       }
 
@@ -5817,7 +5834,7 @@ async function askKpiBot(question){
     addBotMessage(
       "Bot hiện hỗ trợ:<br>"+
       "• 20 chỉ tiêu KPI<br>"+
-      "• Huyện tồi nhất<br>"+
+      "• Tổ tồi nhất<br>"+
       "• Top 10 nhân viên kém<br>"+
       "• Top 10 nhân viên tốt<br>"+
       "• So sánh tổng quan<br>• KPI + tên nhân viên → xem đủ 20 KPI tốt và kém<br>• TTV + tên nhân viên → xem tổng tác vụ<br>• Gõ <b>help</b> hoặc nhấn <b>Help</b> để xem toàn bộ hướng dẫn"
@@ -5854,23 +5871,63 @@ function sendKpiBot(){
     <div class="kpi-help-body">
       <div><b>🔎 QH + tên nhân viên / Account</b><br>Ví dụ: <code>QH Nguyễn Văn Chiến</code> hoặc nhập trực tiếp Account → hiện rõ từng cột SC/TKM quá hạn có dữ liệu.</div>
       <div><b>🏠 Gia Lai</b><br>Nhấn trực tiếp chữ <b>Gia Lai</b> trong bảng KPI hoặc hỏi “So sánh Gia Lai”.</div>
-      <div><b>🏢 5 huyện tồi</b><br>Xếp 5 huyện có tổng KPI lệch Target xấu nhất.</div>
+      <div><b>🏢 5 tổ tồi</b><br>Xếp 5 tổ có tổng KPI lệch Target xấu nhất.</div>
       <div><b>⚠️ Top 10 kém</b><br>Chỉ liệt kê các KPI đang tồi hơn Target.</div>
       <div><b>🏆 Top 10 tốt</b><br>Liệt kê các KPI đạt/tốt hơn Target.</div>
       <div><b>📊 T hiện tại</b><br>Đánh giá độc lập 20 KPI của tháng hiện tại, không phụ thuộc tháng trước.</div>
       <div><b>📅 T-1 độc lập</b><br>Đánh giá độc lập 20 KPI của tháng trước.</div>
-      <div><b>🏢 Từng huyện</b><br>Đánh giá riêng từng huyện theo 20 KPI và Target.</div>
-      <div><b>🔎 KPI Pleiku</b><br>Tra cứu chi tiết KPI của một huyện.</div>
+      <div><b>🏢 Từng tổ</b><br>Đánh giá riêng từng tổ theo 20 KPI và Target.</div>
+      <div><b>🔎 KPI tổ</b><br>Tra cứu chi tiết KPI của một tổ.</div>
       <div><b>👤 KPI Nguyễn Văn Chiến</b><br>Tra cứu đầy đủ 20 KPI tốt/đạt và KPI kém của một nhân viên.</div>
       <div><b>📋 TTV Nguyễn Văn Chiến</b><br>Tra cứu tổng tác vụ: Tổng TKM, TK mới, TK có sẵn và các nhóm tổng sự cố.</div>
       <div><b>❔ Chat help</b><br>Gõ <code>help</code> hoặc nhấn nút <b>Help</b> để mở lại hướng dẫn này.</div>
       <div><b>🏠 Gia Lai chuyên sâu</b><br>Phân tích Gia Lai, KPI tồi và nhân viên ảnh hưởng nhiều nhất.</div>
       <div><b>🎯 20 KPI</b><br>So sánh giá trị hiện tại, Target và tháng trước cho từng chỉ tiêu.</div>
-      <div class="bot-note">SC Lặp dùng Target riêng 8.0% và càng thấp càng tốt.</div>
+      <div class="bot-note">SC Lặp dùng Target riêng 7.0% và càng thấp càng tốt.</div>
     </div>
   </div>
 </div>
 
+
+<div id="teamMembersKpiModal" class="kpi-lookup-modal" onclick="if(event.target===this)closeTeamMembersKPI()">
+  <div class="kpi-lookup-window team-members-kpi-window">
+    <div class="kpi-lookup-head">
+      <b id="teamMembersKpiTitle">KPI thành viên trong tổ</b>
+      <div class="kpi-lookup-actions"><button onclick="closeTeamMembersKPI()" title="Đóng">×</button></div>
+    </div>
+    <div id="teamMembersKpiBody" class="team-members-kpi-body"></div>
+  </div>
+</div>
+<style>
+.team-members-kpi-window{width:min(96vw,1500px)!important;max-width:96vw!important;height:88vh!important;display:flex;flex-direction:column}
+.team-members-kpi-body{overflow:auto;flex:1;background:#fff;-webkit-overflow-scrolling:touch}
+.team-members-kpi-body table{border-collapse:collapse;min-width:1250px;width:100%;font-size:12px;color:#111}
+.team-members-kpi-body th{position:sticky;top:0;z-index:2;background:#111;color:#fff;border:1px solid #e50914;padding:7px 5px;white-space:nowrap}
+.team-members-kpi-body td{border:1px solid #aaa;padding:6px 5px;text-align:center;white-space:nowrap}
+.team-members-kpi-body td:first-child{position:sticky;left:0;z-index:1;background:#fff;color:#e50914;font-weight:700;text-align:left}
+.team-members-kpi-body th:first-child{position:sticky;left:0;z-index:3;background:#111}
+.team-members-kpi-body .bad{color:#e50914;font-weight:700;background:#fff0f0}
+@media(max-width:700px){.team-members-kpi-window{width:98vw!important;max-width:98vw!important;height:88vh!important}.team-members-kpi-body table{font-size:11px}}
+</style>
+<script>
+function closeTeamMembersKPI(){const m=document.getElementById('teamMembersKpiModal');if(m)m.classList.remove('open');}
+function openTeamMembersKPI(teamName){
+  const norm=v=>String(v??'').trim().toLocaleLowerCase('vi');
+  const rows=(window.allData||[]).filter(r=>norm(r.huyen)===norm(teamName));
+  const modal=document.getElementById('teamMembersKpiModal');
+  document.getElementById('teamMembersKpiTitle').textContent='📊 KPI thành viên tổ: '+teamName+' ('+rows.length+' nhân viên)';
+  const cols=[
+    ['TK mới 3h','tk_3h_moi','target_3h_moi','up'],['TK mới 10h','tk_10h_moi','target_10h_moi','up'],['TK mới 16h','tk_16h_moi','target_16h_moi','up'],['TK mới 24h','tk_24h_moi','target_24h_moi','up'],
+    ['TK có sẵn 3h','tk_3h_co_san','target_3h_co_san','up'],['TK có sẵn 10h','tk_10h_co_san','target_10h_co_san','up'],['TK có sẵn 16h','tk_16h_co_san','target_16h_co_san','up'],['TK có sẵn 24h','tk_24h_co_san','target_24h_co_san','up'],['Tích hẹn','tich_hen','target_tich_hen','up'],
+    ['SC 3h','sc_3h','target_sc_3h','up'],['SC 10h','sc_10h','target_sc_10h','up'],['SC 16h','sc_16h','target_sc_16h','up'],['SC 24h','sc_24h','target_sc_24h','up'],['SC HOT','sc_hot','target_sc_hot','up'],['SC VIP','sc_vip','target_sc_vip','up'],['SC HT 24h','sc_ht_24h','target_sc_ht_24h','up'],['SC SOC 24h','sc_soc_24h','target_sc_soc_24h','up'],['SC SOC 72h','sc_soc_72h','target_sc_soc_72h','up'],['SC Hẹn','sc_hen','target_sc_hen','up'],['SC Lặp','sc_lap','target_sc_lap','down']
+  ];
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  let html='<table><thead><tr><th>Nhân viên</th><th>TK mới</th><th>TK có sẵn</th><th>Sự cố</th><th>Số KPI tồi</th>'+cols.map(c=>'<th>'+c[0]+'</th>').join('')+'</tr></thead><tbody>';
+  if(!rows.length) html+='<tr><td colspan="'+(cols.length+2)+'">Không tìm thấy dữ liệu thành viên của tổ này.</td></tr>';
+  rows.forEach(r=>{const bad=typeof getBadKPI==='function'?getBadKPI(r).length:0;html+='<tr><td>'+esc(r.nhan_vien||r.ho_ten||r.ten_nv||'-')+'</td><td>'+esc(typeof formatTableNumber==='function'?formatTableNumber(r.tong_tk_moi,true):r.tong_tk_moi??'')+'</td><td>'+esc(typeof formatTableNumber==='function'?formatTableNumber(r.tong_tk_co_san,true):r.tong_tk_co_san??'')+'</td><td>'+esc(typeof formatTableNumber==='function'?formatTableNumber(r.tong_sc,true):r.tong_sc??'')+'</td><td class="'+(bad?'bad':'')+'">'+bad+'/20</td>';cols.forEach(c=>{const v=r[c[1]],t=r[c[2]];let ok=true;try{ok=typeof check==='function'?check(v,t,c[3]):true}catch(e){}html+='<td class="'+(ok?'':'bad')+'">'+esc(typeof formatTableNumber==='function'?formatTableNumber(v):v??'')+'</td>';});html+='</tr>';});
+  html+='</tbody></table>';document.getElementById('teamMembersKpiBody').innerHTML=html;modal.classList.add('open');
+}
+</script>
 
 <div id="kpiLookupModal" class="kpi-lookup-modal" onclick="if(event.target===this)closeKpiLookup()">
   <div class="kpi-lookup-window">
@@ -6259,6 +6316,75 @@ window.addEventListener('orientationchange',()=>setTimeout(updateKpiHeaderRedLin
 </script>
 
 
+<style id="kpi-summary-export-style">
+.kpi-table-title-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.kpi-table-title-row h3{margin:0}
+@media(max-width:700px){.kpi-table-title-row{align-items:flex-start}.kpi-table-title-row .export-ranking-btn{font-size:10px;padding:5px 8px}}
+</style>
+<script id="kpi-summary-export-script-100">
+function exportKpiSummaryExcel(){
+  const source=document.querySelector('#tableKPI table');
+  if(!source || !source.querySelector('tbody tr')){
+    alert('Bảng KPI chưa có dữ liệu để xuất.');
+    return;
+  }
+  // Xuất toàn bộ các dòng/cột đang có trong bảng, không giới hạn bởi khung cuộn.
+  const table=source.cloneNode(true);
+  table.querySelectorAll('a').forEach(a=>{
+    const text=document.createTextNode(a.textContent||'');
+    a.replaceWith(text);
+  });
+  table.querySelectorAll('button, input, select').forEach(el=>el.remove());
+  table.removeAttribute('id');
+  table.style.cssText='border-collapse:collapse;font-family:Arial,sans-serif;font-size:10pt;width:auto;mso-displayed-decimal-separator:".";';
+  table.querySelectorAll('th').forEach(th=>{
+    th.style.backgroundColor='#111111';
+    th.style.color='#ffffff';
+    th.style.fontWeight='bold';
+    th.style.textAlign='center';
+    th.style.verticalAlign='middle';
+    th.style.border='1px solid #777777';
+    th.style.padding='5px';
+    th.style.whiteSpace='normal';
+  });
+  table.querySelectorAll('td').forEach(td=>{
+    td.style.border='1px solid #999999';
+    td.style.padding='4px';
+    td.style.textAlign=td.style.textAlign||'center';
+    td.style.verticalAlign='middle';
+    td.style.whiteSpace='normal';
+    if(td.classList.contains('bad')){
+      td.style.backgroundColor='#ffebee';
+      td.style.color='#e50914';
+      td.style.fontWeight='bold';
+    }
+  });
+  // Excel HTML import: force KPI fraction values to be strings, never dates.
+  const headers=[...table.querySelectorAll('thead th')];
+  const badKpiIndex=headers.findIndex(th=>(th.textContent||'').trim().replace(/\s+/g,' ').toLowerCase()==='số kpi tồi');
+  if(badKpiIndex>=0){
+    table.querySelectorAll('tbody tr').forEach(tr=>{
+      const cell=tr.children[badKpiIndex];
+      if(!cell)return;
+      const value=(cell.textContent||'').trim();
+      cell.setAttribute('style',(cell.getAttribute('style')||'')+';mso-number-format:"\\@";');
+      cell.setAttribute('x:str',value);
+    });
+  }
+  const html='<!DOCTYPE html><html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>'+
+    '<h2 style="font-family:Arial;color:#111">Bảng KPI tổng hợp</h2>'+table.outerHTML+'</body></html>';
+  const blob=new Blob(['\ufeff',html],{type:'application/vnd.ms-excel;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const d=new Date();
+  const stamp=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+  a.href=url;
+  a.download='Bang_KPI_tong_hop_'+stamp+'.xls';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+</script>
+
 <script id="export-ranking-excel-script-90">
 function exportKpiRankingExcel(){
   const rows=Array.isArray(window.allData)?window.allData.slice():[];
@@ -6295,7 +6421,7 @@ function exportKpiRankingExcel(){
   xml+=`<Row>
 <Cell ss:StyleID="Header"><Data ss:Type="String">Hạng</Data></Cell>
 <Cell ss:StyleID="Header"><Data ss:Type="String">Nhân viên</Data></Cell>
-<Cell ss:StyleID="Header"><Data ss:Type="String">Huyện</Data></Cell>
+<Cell ss:StyleID="Header"><Data ss:Type="String">Tổ</Data></Cell>
 <Cell ss:StyleID="Header"><Data ss:Type="String">Điểm KPI</Data></Cell>
 <Cell ss:StyleID="Header"><Data ss:Type="String">Trạng thái</Data></Cell>`;
   kpis.forEach(k=>xml+=`<Cell ss:StyleID="Header"><Data ss:Type="String">${esc(k[0])}</Data></Cell>`);
@@ -6334,5 +6460,285 @@ function exportKpiRankingExcel(){
 }
 </script>
 
+
+<style id="mobile-kpi-table-scroll-94">
+/* Mobile: bảng KPI tổng hợp hiển thị khoảng 10 dòng, cuộn dọc bên trong bảng */
+#sectionTable .kpi-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+#sectionTable #tableKPI {
+  max-width: 100%;
+}
+@media (max-width: 700px) {
+  #sectionTable .kpi-wrapper {
+    max-height: 390px !important; /* tiêu đề + khoảng 10 dòng */
+    overflow-y: auto !important;
+    overflow-x: auto !important;
+    border-radius: 0 0 10px 10px;
+    scrollbar-width: thin;
+  }
+  #sectionTable #tableKPI table thead th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 5 !important;
+  }
+  #sectionTable #tableKPI table {
+    margin-bottom: 0 !important;
+  }
+}
+</style>
+
+
+<script id="kpi-word-report-generator-120">
+const KPI_WORD_TEMPLATE_CSS = "/* Font Definitions */\n @font-face\n\t{font-family:Wingdings;\n\tpanose-1:5 0 0 0 0 0 0 0 0 0;\n\tmso-font-charset:2;\n\tmso-generic-font-family:auto;\n\tmso-font-pitch:variable;\n\tmso-font-signature:0 268435456 0 0 -2147483648 0;}\n@font-face\n\t{font-family:\"Cambria Math\";\n\tpanose-1:2 4 5 3 5 4 6 3 2 4;\n\tmso-font-charset:0;\n\tmso-generic-font-family:roman;\n\tmso-font-pitch:variable;\n\tmso-font-signature:-536869121 1107305727 33554432 0 415 0;}\n@font-face\n\t{font-family:\"Segoe UI Symbol\";\n\tpanose-1:2 11 5 2 4 2 4 2 2 3;\n\tmso-font-charset:0;\n\tmso-generic-font-family:swiss;\n\tmso-font-pitch:variable;\n\tmso-font-signature:-2147483165 302055407 262144 0 1 0;}\n /* Style Definitions */\n p.MsoNormal, li.MsoNormal, div.MsoNormal\n\t{mso-style-unhide:no;\n\tmso-style-qformat:yes;\n\tmso-style-parent:\"\";\n\tmargin:0in;\n\tmso-pagination:widow-orphan;\n\tfont-size:12.0pt;\n\tfont-family:\"Times New Roman\",serif;\n\tmso-fareast-font-family:\"Times New Roman\";\n\tmso-fareast-theme-font:minor-fareast;}\nh1\n\t{mso-style-priority:9;\n\tmso-style-unhide:no;\n\tmso-style-qformat:yes;\n\tmso-style-link:\"Heading 1 Char\";\n\tmso-margin-top-alt:auto;\n\tmargin-right:0in;\n\tmargin-bottom:3.0pt;\n\tmargin-left:0in;\n\ttext-align:center;\n\tmso-pagination:widow-orphan;\n\tmso-outline-level:1;\n\tfont-size:20.0pt;\n\tfont-family:\"Times New Roman\",serif;\n\tmso-fareast-font-family:\"Times New Roman\";\n\tmso-fareast-theme-font:minor-fareast;\n\tcolor:#B5121B;\n\tfont-weight:bold;}\nh2\n\t{mso-style-priority:9;\n\tmso-style-unhide:no;\n\tmso-style-qformat:yes;\n\tmso-style-link:\"Heading 2 Char\";\n\tmargin-top:13.5pt;\n\tmargin-right:0in;\n\tmso-margin-bottom-alt:auto;\n\tmargin-left:0in;\n\tmso-pagination:widow-orphan;\n\tmso-outline-level:2;\n\tfont-size:13.0pt;\n\tfont-family:\"Times New Roman\",serif;\n\tmso-fareast-font-family:\"Times New Roman\";\n\tmso-fareast-theme-font:minor-fareast;\n\tfont-weight:bold;}\np\n\t{mso-style-noshow:yes;\n\tmso-style-priority:99;\n\tmso-margin-top-alt:auto;\n\tmargin-right:0in;\n\tmso-margin-bottom-alt:auto;\n\tmargin-left:0in;\n\tmso-pagination:widow-orphan;\n\tfont-size:12.0pt;\n\tfont-family:\"Times New Roman\",serif;\n\tmso-fareast-font-family:\"Times New Roman\";\n\tmso-fareast-theme-font:minor-fareast;}\nspan.Heading1Char\n\t{mso-style-name:\"Heading 1 Char\";\n\tmso-style-priority:9;\n\tmso-style-unhide:no;\n\tmso-style-locked:yes;\n\tmso-style-link:\"Heading 1\";\n\tmso-ansi-font-size:20.0pt;\n\tmso-bidi-font-size:20.0pt;\n\tfont-family:\"Aptos Display\",sans-serif;\n\tmso-ascii-font-family:\"Aptos Display\";\n\tmso-ascii-theme-font:major-latin;\n\tmso-fareast-font-family:\"Times New Roman\";\n\tmso-fareast-theme-font:major-fareast;\n\tmso-hansi-font-family:\"Aptos Display\";\n\tmso-hansi-theme-font:major-latin;\n\tmso-bidi-font-family:\"Times New Roman\";\n\tmso-bidi-theme-font:major-bidi;\n\tcolor:#0F4761;\n\tmso-themecolor:accent1;\n\tmso-themeshade:191;}\nspan.Heading2Char\n\t{mso-style-name:\"Heading 2 Char\";\n\tmso-style-noshow:yes;\n\tmso-style-priority:9;\n\tmso-style-unhide:no;\n\tmso-style-locked:yes;\n\tmso-style-link:\"Heading 2\";\n\tmso-ansi-font-size:16.0pt;\n\tmso-bidi-font-size:16.0pt;\n\tfont-family:\"Aptos Display\",sans-serif;\n\tmso-ascii-font-family:\"Aptos Display\";\n\tmso-ascii-theme-font:major-latin;\n\tmso-fareast-font-family:\"Times New Roman\";\n\tmso-fareast-theme-font:major-fareast;\n\tmso-hansi-font-family:\"Aptos Display\";\n\tmso-hansi-theme-font:major-latin;\n\tmso-bidi-font-family:\"Times New Roman\";\n\tmso-bidi-theme-font:major-bidi;\n\tcolor:#0F4761;\n\tmso-themecolor:accent1;\n\tmso-themeshade:191;}\np.msonormal0, li.msonormal0, div.msonormal0\n\t{mso-style-name:msonormal;\n\tmso-style-unhide:no;\n\tmso-margin-top-alt:auto;\n\tmargin-right:0in;\n\tmso-margin-bottom-alt:auto;\n\tmargin-left:0in;\n\tmso-pagination:widow-orphan;\n\tfont-size:12.0pt;\n\tfont-family:\"Times New Roman\",serif;\n\tmso-fareast-font-family:\"Times New Roman\";\n\tmso-fareast-theme-font:minor-fareast;}\np.sub, li.sub, div.sub\n\t{mso-style-name:sub;\n\tmso-style-unhide:no;\n\tmso-margin-top-alt:auto;\n\tmargin-right:0in;\n\tmso-margin-bottom-alt:auto;\n\tmargin-left:0in;\n\ttext-align:center;\n\tmso-pagination:widow-orphan;\n\tfont-size:12.0pt;\n\tfont-family:\"Times New Roman\",serif;\n\tmso-fareast-font-family:\"Times New Roman\";\n\tmso-fareast-theme-font:minor-fareast;\n\tfont-weight:bold;}\np.muted, li.muted, div.muted\n\t{mso-style-name:muted;\n\tmso-style-unhide:no;\n\tmargin-top:3.0pt;\n\tmargin-right:0in;\n\tmargin-bottom:3.0pt;\n\tmargin-left:0in;\n\tmso-pagination:widow-orphan;\n\tfont-size:9.0pt;\n\tfont-family:\"Times New Roman\",serif;\n\tmso-fareast-font-family:\"Times New Roman\";\n\tmso-fareast-theme-font:minor-fareast;\n\tcolor:#666666;}\nspan.SpellE\n\t{mso-style-name:\"\";\n\tmso-spl-e:yes;}\n.MsoChpDefault\n\t{mso-style-type:export-only;\n\tmso-default-props:yes;\n\tfont-size:10.0pt;\n\tmso-ansi-font-size:10.0pt;\n\tmso-bidi-font-size:10.0pt;\n\tmso-font-kerning:0pt;\n\tmso-ligatures:none;}\n@page WordSection1\n\t{size:8.5in 11.0in;\n\tmargin:1.0in 1.0in 1.0in 1.0in;\n\tmso-header-margin:.5in;\n\tmso-footer-margin:.5in;\n\tmso-paper-source:0;}\ndiv.WordSection1\n\t{page:WordSection1;}\n /* List Definitions */\n @list l0\n\t{mso-list-id:301354027;\n\tmso-list-template-ids:-1873758032;}\n@list l1\n\t{mso-list-id:717821008;\n\tmso-list-template-ids:-164848964;}\n@list l2\n\t{mso-list-id:1313607842;\n\tmso-list-template-ids:-1564067856;}\n@list l3\n\t{mso-list-id:1367634691;\n\tmso-list-template-ids:618587728;}\n@list l4\n\t{mso-list-id:1581796488;\n\tmso-list-template-ids:734823596;}\n@list l4:level1\n\t{mso-level-number-format:bullet;\n\tmso-level-text:;\n\tmso-level-tab-stop:.5in;\n\tmso-level-number-position:left;\n\ttext-indent:-.25in;\n\tmso-ansi-font-size:10.0pt;\n\tfont-family:Symbol;}\n@list l4:level2\n\t{mso-level-number-format:bullet;\n\tmso-level-text:o;\n\tmso-level-tab-stop:1.0in;\n\tmso-level-number-position:left;\n\ttext-indent:-.25in;\n\tmso-ansi-font-size:10.0pt;\n\tfont-family:\"Courier New\";\n\tmso-bidi-font-family:\"Times New Roman\";}\n@list l4:level3\n\t{mso-level-number-format:bullet;\n\tmso-level-text:;\n\tmso-level-tab-stop:1.5in;\n\tmso-level-number-position:left;\n\ttext-indent:-.25in;\n\tmso-ansi-font-size:10.0pt;\n\tfont-family:Wingdings;}\n@list l4:level4\n\t{mso-level-number-format:bullet;\n\tmso-level-text:;\n\tmso-level-tab-stop:2.0in;\n\tmso-level-number-position:left;\n\ttext-indent:-.25in;\n\tmso-ansi-font-size:10.0pt;\n\tfont-family:Wingdings;}\n@list l4:level5\n\t{mso-level-number-format:bullet;\n\tmso-level-text:;\n\tmso-level-tab-stop:2.5in;\n\tmso-level-number-position:left;\n\ttext-indent:-.25in;\n\tmso-ansi-font-size:10.0pt;\n\tfont-family:Wingdings;}\n@list l4:level6\n\t{mso-level-number-format:bullet;\n\tmso-level-text:;\n\tmso-level-tab-stop:3.0in;\n\tmso-level-number-position:left;\n\ttext-indent:-.25in;\n\tmso-ansi-font-size:10.0pt;\n\tfont-family:Wingdings;}\n@list l4:level7\n\t{mso-level-number-format:bullet;\n\tmso-level-text:;\n\tmso-level-tab-stop:3.5in;\n\tmso-level-number-position:left;\n\ttext-indent:-.25in;\n\tmso-ansi-font-size:10.0pt;\n\tfont-family:Wingdings;}\n@list l4:level8\n\t{mso-level-number-format:bullet;\n\tmso-level-text:;\n\tmso-level-tab-stop:4.0in;\n\tmso-level-number-position:left;\n\ttext-indent:-.25in;\n\tmso-ansi-font-size:10.0pt;\n\tfont-family:Wingdings;}\n@list l4:level9\n\t{mso-level-number-format:bullet;\n\tmso-level-text:;\n\tmso-level-tab-stop:4.5in;\n\tmso-level-number-position:left;\n\ttext-indent:-.25in;\n\tmso-ansi-font-size:10.0pt;\n\tfont-family:Wingdings;}\nol\n\t{margin-bottom:0in;}\nul\n\t{margin-bottom:0in;}\n\n/* Table layout retained from the supplied Word report template */\ntable.MsoNormalTable{width:100%;border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;mso-yfti-tbllook:1184;mso-border-insideh:.5pt solid windowtext;mso-border-insidev:.5pt solid windowtext;font-family:'Times New Roman',serif;font-size:12pt;}\ntable.MsoNormalTable th{background:#333333;color:#ffffff;border:1pt solid windowtext;padding:4.5pt;text-align:center;vertical-align:middle;font-weight:bold;font-family:'Times New Roman',serif;font-size:12pt;}\ntable.MsoNormalTable td{border:1pt solid windowtext;padding:4.5pt;vertical-align:middle;text-align:center;font-family:'Times New Roman',serif;font-size:12pt;}\ntable.MsoNormalTable p{margin-top:3pt;margin-bottom:4pt;text-align:center;font-family:'Times New Roman',serif;font-size:12pt;}\n";
+function kpiReportEsc(v){return String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function kpiReportNum(v){const n=Number(toNumber(v));return Number.isFinite(n)?n:0;}
+function kpiReportPct(v){return kpiReportNum(v).toLocaleString('vi-VN',{maximumFractionDigits:1})+'%';}
+function kpiReportIsCnct(r){if(!r||typeof r!=='object')return false;const fields=['huyen','don_vi','donvi','ten_don_vi','ten_donvi','to','ten_to','team','unit','don_vi_quan_ly','bo_phan'];return fields.some(k=>{const v=botNormalize(r[k]);return v==='cnct'||v.startsWith('cnct-')||v.startsWith('cnct ')||v==='gialai'||v==='chi nhanh gia lai';});}
+function kpiReportScore(r){if(r&&Number.isFinite(Number(r.score)))return Number(r.score);return typeof calcScore==='function'?calcScore(r):0;}
+function kpiReportOrgName(r){
+ const keys=['huyen','ten_huyen','ten_to','to','don_vi','donvi','ten_don_vi','ten_donvi','team','unit','bo_phan'];
+ for(const key of keys){const value=String(r?.[key]??'').trim();const norm=botNormalize(value);if(value && !['huyen','tenhuyen','to','donvi','donviquanly','team','unit','donvi'].includes(norm))return value;}
+ return '';
+}
+function kpiReportCleanTeam(value){return String(value??'').trim().replace(/^(?:Tổ\s*:\s*)+/i,'').trim();}
+function kpiReportIsHeaderRow(r){const n=botNormalize(kpiReportOrgName(r));return !n||['huyen','tenhuyen','to','donvi','team','unit'].includes(n);}
+function kpiReportMetric(r,name){const def=BOT_KPI_DEFS.find(x=>x[0]===name);if(!def||!r)return null;const [,key,target,type]=def;const value=kpiReportNum(r[key]);const st=botTargetState(value,target,type);return{name,value,target,type,status:st.status,gap:st.targetGapPct};}
+function kpiReportTable(headers,rows){return '<div align="center"><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="100%"><thead><tr>'+headers.map(h=>'<th><p><b>'+kpiReportEsc(h)+'</b></p></th>').join('')+'</tr></thead><tbody>'+rows.map(row=>'<tr>'+row.map(c=>'<td><p>'+c+'</p></td>').join('')+'</tr>').join('')+'</tbody></table></div>';}
+function kpiReportCalcMetrics(cur,prev){
+ const items=[];
+ BOT_KPI_DEFS.forEach(([name,key,target,type])=>{
+   // Bỏ qua KPI không có dữ liệu; không được tự biến ô trống thành 0% và tính là KPI tồi.
+   const raw=cur?.[key];
+   if(raw===undefined||raw===null||String(raw).trim()==='') return;
+   const current=kpiReportNum(raw);
+   const oldRaw=prev?.[key];
+   const previous=(oldRaw===undefined||oldRaw===null||String(oldRaw).trim()==='')?null:kpiReportNum(oldRaw);
+   const gap=type==='down'?current-target:target-current;
+   const status=type==='down'?(current<=target?'good':'bad'):(current>=target?'good':'bad');
+   const delta=previous===null?null:(type==='down'?previous-current:current-previous);
+   items.push({name,val:key,target,type,current,previous,currentGap:gap,currentState:status,delta,
+     currentValue:current, status, gap});
+ });
+ const bad=items.filter(x=>x.currentState==='bad');
+ const good=items.filter(x=>x.currentState==='good');
+ return {items,valid:items,bad,good,badCount:bad.length,goodCount:good.length,
+   totalGap:bad.reduce((a,x)=>a+Math.max(0,x.currentGap),0),
+   avgGap:bad.length?bad.reduce((a,x)=>a+Math.max(0,x.currentGap),0)/bad.length:0};
+}
+function kpiReportItems(rows,oldRows,keyFn,excludeHeaders=false){const valid=rows||[];const oldMap=new Map((oldRows||[]).filter(r=>!kpiReportIsCnct(r)&&(!excludeHeaders||!kpiReportIsHeaderRow(r))).map(r=>[keyFn(r),r]));return valid.filter(r=>!kpiReportIsCnct(r)&&(!excludeHeaders||!kpiReportIsHeaderRow(r))).map(r=>{const old=oldMap.get(keyFn(r))||null;const m=kpiReportCalcMetrics(r,old);return{r,old,bad:m.badCount,good:m.goodCount,score:kpiReportScore(r),metrics:m};});}
+function kpiReportWeakList(x){return (x.metrics.bad||[]).slice().sort((a,b)=>b.currentGap-a.currentGap).map(k=>`${k.name}: (${kpiReportPct(k.current)}/${k.target}%/ tồi hơn Target ${Math.abs(k.currentGap).toFixed(1)}%)`);}
+function kpiReportStrongList(x){return (x.metrics.good||[]).slice().sort((a,b)=>b.currentGap-a.currentGap).map(k=>`${k.name}: (${kpiReportPct(k.current)}/${k.target}%/ tốt hơn Target ${Math.abs(k.currentGap).toFixed(1)}%)`);}
+function kpiReportList(items,kind){if(!items.length)return '<p>Không có đủ dữ liệu tổ để lập danh sách.</p>';return '<ol>'+items.map(x=>{const name=kpiReportEsc(kpiReportCleanTeam(kpiReportOrgName(x.r)));const list=(kind==='bad'?kpiReportWeakList(x):kpiReportStrongList(x)).map(kpiReportEsc);return `<li><b>Tổ: ${name}</b>: ➜ ${kind==='bad'?'Tồi '+x.bad+'/20 KPI':'Tốt '+x.good+'/20 KPI'}${list.length?' bao gồm '+list.join(', '):' — không có KPI tồi theo ngưỡng'}.</li>`;}).join('')+'</ol>';}
+async function exportKpiWordReport(){
+ const button=[...document.querySelectorAll('#kpiBot button')].find(b=>b.textContent.includes('Xuất báo cáo Word'));
+ if(button){button.disabled=true;button.textContent='⏳ Đang tạo báo cáo...';}
+ try{
+  if(!window.allData||!window.tableDataGlobal){if(typeof load==='function')load();throw new Error('Dashboard chưa tải xong dữ liệu. Đợi dữ liệu hiện lên rồi bấm xuất lại.');}
+  const d=await loadOldBotData();const currentRows=d.currentRows||window.allData||[];const oldRows=d.oldRows||[];const currentOrgs=d.currentDistricts||window.tableDataGlobal||[];const oldOrgs=d.oldDistricts||[];
+  if(!currentRows.length||!currentOrgs.length)throw new Error('Không tìm thấy đủ dữ liệu nhân viên/tổ trong dashboard.');
+  const now=new Date(),monthLabel=now.toLocaleDateString('vi-VN',{month:'long',year:'numeric'}),previousDate=new Date(now.getFullYear(),now.getMonth()-1,1),prevLabel=previousDate.toLocaleDateString('vi-VN',{month:'long',year:'numeric'}),reportDate=now.toLocaleDateString('vi-VN');
+  const employeeItems=kpiReportItems(currentRows,oldRows,botKey),orgItems=kpiReportItems(currentOrgs,oldOrgs,r=>botNormalize(kpiReportOrgName(r)),true);
+  const worstEmployees=[...employeeItems].sort((a,b)=>b.bad-a.bad||(b.metrics.totalGap-a.metrics.totalGap)||a.score-b.score).slice(0,10);
+  const bestEmployees=[...employeeItems].sort((a,b)=>b.score-a.score||a.bad-b.bad||(a.metrics.totalGap-b.metrics.totalGap)).slice(0,10);
+  const worstOrgs=[...orgItems].sort((a,b)=>b.bad-a.bad||(b.metrics.totalGap-a.metrics.totalGap)||a.score-b.score).slice(0,5);
+  const bestOrgs=[...orgItems].sort((a,b)=>b.score-a.score||a.bad-b.bad||(a.metrics.totalGap-b.metrics.totalGap)).slice(0,5);
+  // Dùng đúng dòng tổng hợp Gia Lai từ bảng tổ/huyện để tính KPI cấp CNCT.
+  // Không lấy trung bình đơn giản của nhân viên, vì cách đó có thể làm sai số KPI không đạt.
+  const cnctCurrent=(currentOrgs||[]).find(r=>['gialai','cnct','chi nhanh gia lai'].includes(botNormalize(kpiReportOrgName(r))))
+    || (currentOrgs||[]).find(r=>botNormalize(kpiReportOrgName(r)).includes('gialai'));
+  const cnctOld=(oldOrgs||[]).find(r=>['gialai','cnct','chi nhanh gia lai'].includes(botNormalize(kpiReportOrgName(r))))
+    || (oldOrgs||[]).find(r=>botNormalize(kpiReportOrgName(r)).includes('gialai'));
+  if(!cnctCurrent) throw new Error('Không tìm thấy dòng tổng hợp Gia Lai trong dữ liệu tổ/huyện; không thể xác nhận số KPI cấp CNCT.');
+  const kpiRows=BOT_KPI_DEFS.map(([name,key,target,type])=>{
+    const c=cnctCurrent[key]===undefined||cnctCurrent[key]===null||cnctCurrent[key]===''?null:kpiReportNum(cnctCurrent[key]);
+    const o=!cnctOld||cnctOld[key]===undefined||cnctOld[key]===null||cnctOld[key]===''?null:kpiReportNum(cnctOld[key]);
+    const delta=c===null||o===null?null:(type==='down'?o-c:c-o);
+    const gap=c===null?null:(type==='down'?target-c:c-target);
+    const status=c===null?'Chưa có dữ liệu':(type==='down'?(c<=target?'Đạt':'Tồi'):(c>=target?'Đạt':'Tồi'));
+    const trend=delta===null?'chưa có dữ liệu tháng trước':Math.abs(delta)<0.05?'không đổi':delta>0?'đang tốt hơn '+Math.abs(delta).toFixed(1)+'%':'đang tồi hơn '+Math.abs(delta).toFixed(1)+'%';
+    return{name,target,type,c,o,delta,gap,status,trend};
+  });
+  // Đồng bộ số KPI tồi với chính hàm botRowMetrics mà dashboard đang dùng.
+  // Tránh chênh lệch giữa bảng KPI và báo cáo do dùng hai hàm đánh giá khác nhau.
+  const cnctMetrics=botRowMetrics(cnctCurrent,cnctOld||null);
+  const notMet=cnctMetrics.badCount;
+  // Chỉ so sánh khi cả tháng hiện tại và tháng trước đều có giá trị số hợp lệ.
+  // KPI tăng: hiện tại - tháng trước; SC Lặp (type=down): tháng trước - hiện tại.
+  // Tách riêng không đổi và thiếu dữ liệu, không gộp vào cải thiện/suy giảm.
+  const comparableKpiRows=kpiRows.filter(x=>x.c!==null&&x.o!==null&&Number.isFinite(x.c)&&Number.isFinite(x.o)&&Number.isFinite(x.delta));
+  const improvedRows=comparableKpiRows.filter(x=>x.delta>0.05);
+  const declinedRows=comparableKpiRows.filter(x=>x.delta< -0.05);
+  const unchangedRows=comparableKpiRows.filter(x=>Math.abs(x.delta)<=0.05);
+  const improved=improvedRows.length, declined=declinedRows.length;
+  const missingCompare=20-comparableKpiRows.length;
+  const worstTeamNames=worstOrgs.slice(0,5).map(x=>'Tổ: '+kpiReportEsc(kpiReportCleanTeam(kpiReportOrgName(x.r)))).join(', ');const worstEmpNames=worstEmployees.slice(0,5).map(x=>`${kpiReportEsc(botLabel(x.r))} (tồi ${x.bad}/20 KPI)`).join(', ');
+  const summary='<ul><li><b>'+notMet+'/20 KPI</b> không đạt so với Target.</li><li><b>'+improved+'/20 KPI</b> cải thiện so với tháng trước'+(improvedRows.length?' ('+improvedRows.map(x=>kpiReportEsc(x.name)).join(', ')+')':'')+'.</li><li><b>'+declined+'/20 KPI</b> suy giảm so với tháng trước'+(declinedRows.length?' ('+declinedRows.map(x=>kpiReportEsc(x.name)).join(', ')+')':'')+'.</li><li><b>'+unchangedRows.length+'/20 KPI</b> không đổi'+(missingCompare?'; dữ liệu so sánh còn thiếu ở '+missingCompare+' KPI':'')+'.</li><li><b>5 Tổ</b> có nhiều KPI tồi nhất: '+(worstTeamNames||'Chưa đủ dữ liệu')+'.</li><li><b>5 Nhân viên</b> có nhiều KPI tồi nhất: '+(worstEmpNames||'Chưa đủ dữ liệu')+'.</li></ul>';
+  const kpiNarrative='<ul style="margin-top:0in" type="disc">'+kpiRows.map(x=>{if(x.c===null)return '<li><b>'+kpiReportEsc(x.name)+':</b> Chưa có dữ liệu.</li>';const rel=x.type==='down'?x.target-x.c:x.c-x.target;const targetText=rel>=0?'tốt hơn so với Target '+rel.toFixed(1)+'%':'tồi hơn Target '+Math.abs(rel).toFixed(1)+'%';const oldText=x.o===null?'chưa có dữ liệu tháng trước':`so sánh với tháng trước (${kpiReportPct(x.o)} / ${x.target}%) → ${kpiReportEsc(x.trend)}`;return `<li><b>${kpiReportEsc(x.name)}:</b> (${kpiReportPct(x.c)} / ${x.target}%) → ${targetText}, ${oldText}.</li>`;}).join('')+'</ul>';
+  const orgWorstHtml=kpiReportList(worstOrgs,'bad'),orgBestHtml=kpiReportList(bestOrgs,'good');
+  const empWorstHtml='<ol>'+worstEmployees.map(x=>`<li>${kpiReportEsc(botLabel(x.r))} - Tổ ${kpiReportEsc(kpiReportCleanTeam(x.r.huyen||x.r.ten_to||x.r.to||'—').replace(/^Tổ\s*:\s*/i,''))}: <b>tồi ${x.bad}/20 KPI</b>.</li>`).join('')+'</ol>';
+  const empBestHtml='<ol>'+bestEmployees.map(x=>`<li>${kpiReportEsc(botLabel(x.r))} - Tổ ${kpiReportEsc(kpiReportCleanTeam(x.r.huyen||x.r.ten_to||x.r.to||'—').replace(/^Tổ\s*:\s*/i,''))}: <b>tốt ${x.good}/20 KPI</b>.</li>`).join('')+'</ol>';
+  const kpiTable=kpiReportTable(['KPI','Target','Tháng hiện tại','Tháng trước','Đánh giá'],kpiRows.map(x=>{let evaluation='Chưa có dữ liệu';if(x.c!==null){const gap=x.type==='down'?x.target-x.c:x.c-x.target;const targetText=Math.abs(gap)<0.05?'đạt đúng Target':gap>0?'đạt Target, tốt hơn Target '+gap.toFixed(1)+' điểm %':'không đạt Target, tồi hơn Target '+Math.abs(gap).toFixed(1)+' điểm %';const monthText=x.o===null?'chưa có dữ liệu tháng trước':Math.abs(x.delta)<0.05?'không đổi so với tháng trước':x.delta>0?'tốt hơn tháng trước '+x.delta.toFixed(1)+' điểm %':'tồi hơn tháng trước '+Math.abs(x.delta).toFixed(1)+' điểm %';evaluation=targetText+'; '+monthText;}return [kpiReportEsc(x.name),x.target+'%',x.c===null?'—':kpiReportPct(x.c),x.o===null?'—':kpiReportPct(x.o),kpiReportEsc(evaluation)];}));
+  const html=`<!DOCTYPE html><html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="ProgId" content="Word.Document"><title>Báo cáo tổng quan KPI CNCT</title><style>${KPI_WORD_TEMPLATE_CSS}</style></head><body lang="EN-US" style="tab-interval:.5in;word-wrap:break-word"><div class="WordSection1"><h1>BÁO CÁO TỔNG QUAN KPI</h1><p class="sub">CNCT GIA LAI | Tháng ${kpiReportEsc(monthLabel)} so với ${kpiReportEsc(prevLabel)}</p><p class="sub">Ngày lập báo cáo: ${kpiReportEsc(reportDate)} · Tự động tổng hợp từ dữ liệu dashboard KPI</p><h2>1. Tóm tắt KPI</h2>${summary}<h2>2. Đánh giá tổng quan 20 KPI của CNCT so với Target và so với tháng trước</h2>${kpiNarrative}${kpiTable}<h2>3. Danh sách Top 5 tổ KPI tồi</h2>${orgWorstHtml}<h2>4. Danh sách Top 5 tổ KPI tốt</h2>${orgBestHtml}<h2>5. Đánh giá Top 10 nhân viên KPI tồi</h2>${empWorstHtml}<h2>6. Đánh giá Top 10 nhân viên KPI tốt</h2>${empBestHtml}<p class="muted">Ghi chú: CNCT chỉ được dùng ở phần tổng hợp 20 KPI cấp CNCT, không đưa vào xếp hạng tổ hoặc nhân viên. SC Lặp được đánh giá theo chiều càng thấp càng tốt. Nếu thiếu dữ liệu tháng trước, báo cáo ghi rõ trạng thái thiếu dữ liệu.</p></div></body></html>`;
+  const blob=new Blob(['\ufeff',html],{type:'application/msword;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='Bao_cao_tong_quan_KPI_CNCT_'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'.doc';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);if(typeof addBotMessage==='function')addBotMessage('Đã tạo báo cáo Word theo mẫu: 6 mục, tổng hợp 20 KPI CNCT, Top 5 tổ tốt/tồi và Top 10 nhân viên tốt/tồi. CNCT không tham gia xếp hạng tổ/nhân viên.');
+ }catch(err){console.error('Xuất báo cáo KPI:',err);if(typeof addBotMessage==='function')addBotMessage('Không tạo được báo cáo: '+kpiReportEsc(err.message||err));else alert(err.message||err);}finally{if(button){button.disabled=false;button.textContent='📝 Xuất báo cáo Word';}}
+}
+</script>
+
 </body>
 </html>
+
+<style id="fix-to-column-overflow-93">
+/* Fix cột Tổ trong Bảng KPI tổng hợp: không để tên tổ tràn sang cột bên cạnh */
+#tableKPI table { table-layout: fixed !important; }
+#tableKPI table th:first-child,
+#tableKPI table td:first-child {
+  width: 112px !important;
+  min-width: 112px !important;
+  max-width: 112px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+#tableKPI table tbody td:first-child a,
+#tableKPI table tbody td:first-child .kpi-district-link {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  line-height: 1.25 !important;
+}
+@media (max-width:700px) {
+  #tableKPI table th:first-child,
+  #tableKPI table td:first-child {
+    width: 90px !important;
+    min-width: 90px !important;
+    max-width: 90px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+}
+</style>
+
+<style id="mobile-sticky-first-column-95">
+/* Mobile: giữ cố định cột Tổ khi cuộn ngang và giữ tiêu đề khi cuộn dọc */
+@media (max-width:700px) {
+  #sectionTable .kpi-wrapper {
+    position: relative !important;
+    max-height: 390px !important;
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    isolation: isolate;
+  }
+  #sectionTable #tableKPI { overflow: visible !important; }
+  #sectionTable #tableKPI table {
+    min-width: 1180px !important;
+    width: max-content !important;
+    table-layout: fixed !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+  }
+  #sectionTable #tableKPI th,
+  #sectionTable #tableKPI td {
+    position: relative;
+    background-clip: padding-box !important;
+  }
+  /* Hàng tiêu đề luôn ở trên khi cuộn dọc */
+  #sectionTable #tableKPI thead th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 20 !important;
+    background: #e3f2fd !important;
+  }
+  /* Cột Tổ đứng yên khi cuộn ngang và vẫn giữ màu nền che nội dung phía sau */
+  #sectionTable #tableKPI th:first-child {
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 40 !important;
+    background: #90caf9 !important;
+    box-shadow: 3px 0 6px rgba(0,0,0,.14) !important;
+  }
+  #sectionTable #tableKPI td:first-child {
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 10 !important;
+    background: #d0e7ff !important;
+    box-shadow: 3px 0 6px rgba(0,0,0,.12) !important;
+  }
+  #sectionTable #tableKPI tbody tr:nth-child(even) td:first-child {
+    background: #c4def8 !important;
+  }
+  #sectionTable #tableKPI td.bad:first-child { background: #ffcccc !important; }
+}
+</style>
+
+<style id="restore-black-red-mobile-96">
+/* Khôi phục giao diện đen-đỏ cũ cho bảng KPI trên mobile, vẫn giữ sticky */
+@media (max-width:700px) {
+  #sectionTable #tableKPI thead th {
+    background:#111 !important;
+    color:#fff !important;
+    border-bottom:2px solid #e50914 !important;
+  }
+  #sectionTable #tableKPI th:first-child {
+    background:#111 !important;
+    color:#fff !important;
+    border-bottom:2px solid #e50914 !important;
+    z-index:45 !important;
+  }
+  #sectionTable #tableKPI td:first-child {
+    background:#fff !important;
+    color:#e50914 !important;
+    z-index:15 !important;
+  }
+  #sectionTable #tableKPI tbody tr:nth-child(even) td:first-child {
+    background:#f2f2f2 !important;
+  }
+  #sectionTable #tableKPI td.bad:first-child { background:#ffcccc !important; }
+}
+</style>
+
+<style id="desktop-kpi-table-10-rows-97">
+/* Desktop/web: giới hạn bảng KPI tổng hợp khoảng 10 dòng, cuộn dọc bên trong bảng */
+@media (min-width: 701px) {
+  #kpiUI .kpi-wrapper {
+    max-height: 370px !important;
+    overflow-y: auto !important;
+    overflow-x: auto !important;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+  #kpiUI #tableKPI {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+  #kpiUI #tableKPI table {
+    margin: 0 !important;
+  }
+  #kpiUI #tableKPI thead th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 8 !important;
+  }
+  #kpiUI #tableKPI thead th:first-child {
+    left: 0 !important;
+    z-index: 10 !important;
+  }
+  #kpiUI #tableKPI tbody td:first-child {
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 4 !important;
+  }
+}
+</style>
