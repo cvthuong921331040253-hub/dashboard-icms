@@ -3797,7 +3797,7 @@ function render(data){
 
     let htmlCard = `
     <div class="card">
-      <b>👤 ${safe(r.nhan_vien)} - ${safe(r.huyen)}</b><br>
+      <b>👤 ${salaryNameLink(r)} - ${safe(r.huyen)}</b><br>
       📦 TK mới: ${safe(r.tong_tk_moi)} |
       📦 TK có sẵn: ${safe(r.tong_tk_co_san)} |
       🚨 SC: ${safe(r.tong_sc)} |
@@ -4035,7 +4035,7 @@ function top10(){
   let s = [...allData].slice(0,10);
   let html="";
   s.forEach((r,i)=>{
-    html += `<div class="card top">🏆 TOP ${i+1} - ${r.nhan_vien} - ${r.huyen}</div>`;
+    html += `<div class="card top">🏆 TOP ${i+1} - ${salaryNameLink(r)} - ${r.huyen}</div>`;
   });
   document.getElementById("top").innerHTML = html;
 }
@@ -4044,7 +4044,7 @@ function topWorst(){
   let s = [...allData].slice(-10).reverse();
   let html="";
   s.forEach((r,i)=>{
-    html += `<div class="card worst">❌ TOP KÉM ${i+1} - ${r.nhan_vien} - ${r.huyen}</div>`;
+    html += `<div class="card worst">❌ TOP KÉM ${i+1} - ${salaryNameLink(r)} - ${r.huyen}</div>`;
   });
   document.getElementById("worst").innerHTML = html;
 }
@@ -5924,7 +5924,7 @@ function openTeamMembersKPI(teamName){
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let html='<table><thead><tr><th>Nhân viên</th><th>TK mới</th><th>TK có sẵn</th><th>Sự cố</th><th>Số KPI tồi</th>'+cols.map(c=>'<th>'+c[0]+'</th>').join('')+'</tr></thead><tbody>';
   if(!rows.length) html+='<tr><td colspan="'+(cols.length+2)+'">Không tìm thấy dữ liệu thành viên của tổ này.</td></tr>';
-  rows.forEach(r=>{const bad=typeof getBadKPI==='function'?getBadKPI(r).length:0;html+='<tr><td>'+esc(r.nhan_vien||r.ho_ten||r.ten_nv||'-')+'</td><td>'+esc(typeof formatTableNumber==='function'?formatTableNumber(r.tong_tk_moi,true):r.tong_tk_moi??'')+'</td><td>'+esc(typeof formatTableNumber==='function'?formatTableNumber(r.tong_tk_co_san,true):r.tong_tk_co_san??'')+'</td><td>'+esc(typeof formatTableNumber==='function'?formatTableNumber(r.tong_sc,true):r.tong_sc??'')+'</td><td class="'+(bad?'bad':'')+'">'+bad+'/20</td>';cols.forEach(c=>{const v=r[c[1]],t=r[c[2]];let ok=true;try{ok=typeof check==='function'?check(v,t,c[3]):true}catch(e){}html+='<td class="'+(ok?'':'bad')+'">'+esc(typeof formatTableNumber==='function'?formatTableNumber(v):v??'')+'</td>';});html+='</tr>';});
+  rows.forEach(r=>{const bad=typeof getBadKPI==='function'?getBadKPI(r).length:0;html+='<tr><td>'+salaryNameLink(r)+'</td><td>'+esc(typeof formatTableNumber==='function'?formatTableNumber(r.tong_tk_moi,true):r.tong_tk_moi??'')+'</td><td>'+esc(typeof formatTableNumber==='function'?formatTableNumber(r.tong_tk_co_san,true):r.tong_tk_co_san??'')+'</td><td>'+esc(typeof formatTableNumber==='function'?formatTableNumber(r.tong_sc,true):r.tong_sc??'')+'</td><td class="'+(bad?'bad':'')+'">'+bad+'/20</td>';cols.forEach(c=>{const v=r[c[1]],t=r[c[2]];let ok=true;try{ok=typeof check==='function'?check(v,t,c[3]):true}catch(e){}html+='<td class="'+(ok?'':'bad')+'">'+esc(typeof formatTableNumber==='function'?formatTableNumber(v):v??'')+'</td>';});html+='</tr>';});
   html+='</tbody></table>';document.getElementById('teamMembersKpiBody').innerHTML=html;modal.classList.add('open');
 }
 </script>
@@ -6372,7 +6372,9 @@ function exportKpiSummaryExcel(){
     });
   }
   const html='<!DOCTYPE html><html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>'+
-    '<h2 style="font-family:Arial;color:#111">Bảng KPI tổng hợp</h2>'+table.outerHTML+'</body></html>';
+    '<h2 style="font-family:Arial;color:#111">Bảng KPI tổng hợp</h2>'+table.outerHTML+'
+
+</body></html>';
   const blob=new Blob(['\ufeff',html],{type:'application/vnd.ms-excel;charset=utf-8'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
@@ -6583,9 +6585,219 @@ async function exportKpiWordReport(){
   const empWorstHtml='<ol>'+worstEmployees.map(x=>`<li>${kpiReportEsc(botLabel(x.r))} - Tổ ${kpiReportEsc(kpiReportCleanTeam(x.r.huyen||x.r.ten_to||x.r.to||'—').replace(/^Tổ\s*:\s*/i,''))}: <b>tồi ${x.bad}/20 KPI</b>.</li>`).join('')+'</ol>';
   const empBestHtml='<ol>'+bestEmployees.map(x=>`<li>${kpiReportEsc(botLabel(x.r))} - Tổ ${kpiReportEsc(kpiReportCleanTeam(x.r.huyen||x.r.ten_to||x.r.to||'—').replace(/^Tổ\s*:\s*/i,''))}: <b>tốt ${x.good}/20 KPI</b>.</li>`).join('')+'</ol>';
   const kpiTable=kpiReportTable(['KPI','Target','Tháng hiện tại','Tháng trước','Đánh giá'],kpiRows.map(x=>{let evaluation='Chưa có dữ liệu';if(x.c!==null){const gap=x.type==='down'?x.target-x.c:x.c-x.target;const targetText=Math.abs(gap)<0.05?'đạt đúng Target':gap>0?'đạt Target, tốt hơn Target '+gap.toFixed(1)+' điểm %':'không đạt Target, tồi hơn Target '+Math.abs(gap).toFixed(1)+' điểm %';const monthText=x.o===null?'chưa có dữ liệu tháng trước':Math.abs(x.delta)<0.05?'không đổi so với tháng trước':x.delta>0?'tốt hơn tháng trước '+x.delta.toFixed(1)+' điểm %':'tồi hơn tháng trước '+Math.abs(x.delta).toFixed(1)+' điểm %';evaluation=targetText+'; '+monthText;}return [kpiReportEsc(x.name),x.target+'%',x.c===null?'—':kpiReportPct(x.c),x.o===null?'—':kpiReportPct(x.o),kpiReportEsc(evaluation)];}));
-  const html=`<!DOCTYPE html><html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="ProgId" content="Word.Document"><title>Báo cáo tổng quan KPI CNCT</title><style>${KPI_WORD_TEMPLATE_CSS}</style></head><body lang="EN-US" style="tab-interval:.5in;word-wrap:break-word"><div class="WordSection1"><h1>BÁO CÁO TỔNG QUAN KPI</h1><p class="sub">CNCT GIA LAI | Tháng ${kpiReportEsc(monthLabel)} so với ${kpiReportEsc(prevLabel)}</p><p class="sub">Ngày lập báo cáo: ${kpiReportEsc(reportDate)} · Tự động tổng hợp từ dữ liệu dashboard KPI</p><h2>1. Tóm tắt KPI</h2>${summary}<h2>2. Đánh giá tổng quan 20 KPI của CNCT so với Target và so với tháng trước</h2>${kpiNarrative}${kpiTable}<h2>3. Danh sách Top 5 tổ KPI tồi</h2>${orgWorstHtml}<h2>4. Danh sách Top 5 tổ KPI tốt</h2>${orgBestHtml}<h2>5. Đánh giá Top 10 nhân viên KPI tồi</h2>${empWorstHtml}<h2>6. Đánh giá Top 10 nhân viên KPI tốt</h2>${empBestHtml}<p class="muted">Ghi chú: CNCT chỉ được dùng ở phần tổng hợp 20 KPI cấp CNCT, không đưa vào xếp hạng tổ hoặc nhân viên. SC Lặp được đánh giá theo chiều càng thấp càng tốt. Nếu thiếu dữ liệu tháng trước, báo cáo ghi rõ trạng thái thiếu dữ liệu.</p></div></body></html>`;
+  const html=`<!DOCTYPE html><html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="ProgId" content="Word.Document"><title>Báo cáo tổng quan KPI CNCT</title><style>${KPI_WORD_TEMPLATE_CSS}</style>
+<style id="salary-employee-popup-121">
+#salaryEmployeeModal{position:fixed;inset:0;z-index:100500;background:rgba(8,15,30,.62);display:none;align-items:center;justify-content:center;padding:18px;box-sizing:border-box}
+#salaryEmployeeModal.open{display:flex}
+#salaryEmployeeModal .salary-dialog{width:min(1120px,98vw);max-height:92vh;overflow:auto;background:#fff;color:#172033;border-radius:16px;box-shadow:0 24px 80px rgba(0,0,0,.35);font-family:Roboto,Arial,sans-serif}
+.salary-dialog-head{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid #e5e7eb;padding:18px 22px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.salary-dialog-title{font-size:21px;font-weight:800;margin:0}.salary-dialog-sub{font-size:13px;color:#64748b;margin-top:5px}
+.salary-close{border:0;border-radius:9px;background:#f1f5f9;font-size:24px;width:38px;height:38px;cursor:pointer;flex:none}
+.salary-total-card{margin:16px 20px 12px;padding:18px 20px;border-radius:13px;background:linear-gradient(120deg,#102a43,#176b87);color:white}
+.salary-total-label{font-size:12px;opacity:.86}.salary-total-value{font-size:30px;font-weight:800;margin-top:5px;font-variant-numeric:tabular-nums}
+.salary-groups{padding:0 20px 22px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.salary-group{border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;min-width:0}
+.salary-group h4{margin:0;padding:11px 13px;background:#f1f5f9;color:#1e293b;font-size:14px}
+.salary-group table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+.salary-group td{padding:8px 10px;border-top:1px solid #edf0f4;overflow-wrap:anywhere}
+.salary-group td:first-child{width:62%;color:#475569}.salary-group td:last-child{text-align:right;font-weight:650;color:#0f172a;font-variant-numeric:tabular-nums}
+.salary-group tr.salary-money td:last-child{color:#087443}.salary-empty{padding:18px 20px;color:#64748b}
+.salary-click-name{cursor:pointer;color:#075eaa;text-decoration:underline;text-decoration-color:#9cc8f0;text-underline-offset:3px;font-weight:700}
+.salary-click-name:hover{color:#0b7ac3}
+@media(max-width:700px){#salaryEmployeeModal{padding:5px}.salary-dialog{width:100%!important;max-height:96vh!important;border-radius:12px!important}.salary-dialog-head{padding:14px}.salary-groups{grid-template-columns:1fr;padding:0 12px 14px;gap:10px}.salary-total-card{margin:12px;padding:15px}.salary-total-value{font-size:25px}.salary-dialog-title{font-size:18px}}
+</style>
+
+</head><body lang="EN-US" style="tab-interval:.5in;word-wrap:break-word"><div class="WordSection1"><h1>BÁO CÁO TỔNG QUAN KPI</h1><p class="sub">CNCT GIA LAI | Tháng ${kpiReportEsc(monthLabel)} so với ${kpiReportEsc(prevLabel)}</p><p class="sub">Ngày lập báo cáo: ${kpiReportEsc(reportDate)} · Tự động tổng hợp từ dữ liệu dashboard KPI</p><h2>1. Tóm tắt KPI</h2>${summary}<h2>2. Đánh giá tổng quan 20 KPI của CNCT so với Target và so với tháng trước</h2>${kpiNarrative}${kpiTable}<h2>3. Danh sách Top 5 tổ KPI tồi</h2>${orgWorstHtml}<h2>4. Danh sách Top 5 tổ KPI tốt</h2>${orgBestHtml}<h2>5. Đánh giá Top 10 nhân viên KPI tồi</h2>${empWorstHtml}<h2>6. Đánh giá Top 10 nhân viên KPI tốt</h2>${empBestHtml}<p class="muted">Ghi chú: CNCT chỉ được dùng ở phần tổng hợp 20 KPI cấp CNCT, không đưa vào xếp hạng tổ hoặc nhân viên. SC Lặp được đánh giá theo chiều càng thấp càng tốt. Nếu thiếu dữ liệu tháng trước, báo cáo ghi rõ trạng thái thiếu dữ liệu.</p></div></body></html>`;
   const blob=new Blob(['\ufeff',html],{type:'application/msword;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='Bao_cao_tong_quan_KPI_CNCT_'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'.doc';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);if(typeof addBotMessage==='function')addBotMessage('Đã tạo báo cáo Word theo mẫu: 6 mục, tổng hợp 20 KPI CNCT, Top 5 tổ tốt/tồi và Top 10 nhân viên tốt/tồi. CNCT không tham gia xếp hạng tổ/nhân viên.');
  }catch(err){console.error('Xuất báo cáo KPI:',err);if(typeof addBotMessage==='function')addBotMessage('Không tạo được báo cáo: '+kpiReportEsc(err.message||err));else alert(err.message||err);}finally{if(button){button.disabled=false;button.textContent='📝 Xuất báo cáo Word';}}
+}
+</script>
+
+
+<style id="salary-employee-popup-live-125">
+/* Đồng bộ bảng lương với giao diện KPI gốc: nền sáng, thẻ trắng, viền mảnh, xanh KPI */
+#salaryEmployeeModal{position:fixed!important;inset:0!important;z-index:2147483000!important;background:rgba(15,23,42,.42);display:none;align-items:center;justify-content:center;padding:12px;box-sizing:border-box;font-family:Arial,sans-serif}
+#salaryEmployeeModal.open{display:flex!important}
+#salaryEmployeeModal .salary-dialog{width:min(1180px,98vw);max-height:92vh;overflow:auto;background:#f5f7fb;color:#1f2937;border:1px solid #dfe5ee;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.2);font-family:Arial,sans-serif}
+#salaryEmployeeModal .salary-dialog-head{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid #dfe5ee;padding:14px 18px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+#salaryEmployeeModal .salary-dialog-title{font-size:19px;font-weight:700;color:#1976d2;margin:0}
+#salaryEmployeeModal .salary-dialog-sub{font-size:12px;color:#64748b;margin-top:5px}
+#salaryEmployeeModal .salary-close{border:1px solid #d8e0ea;border-radius:8px;background:#f5f7fb;color:#334155;font-size:23px;width:34px;height:34px;cursor:pointer;flex:none}
+#salaryEmployeeModal .salary-total-card{margin:12px 14px;padding:14px 16px;border:1px solid #cfe4f8;border-left:4px solid #1976d2;border-radius:8px;background:#fff;color:#172033}
+#salaryEmployeeModal .salary-total-label{font-size:12px;color:#64748b;font-weight:700}
+#salaryEmployeeModal .salary-total-value{font-size:26px;font-weight:800;color:#1976d2;margin-top:5px;font-variant-numeric:tabular-nums}
+#salaryEmployeeModal .salary-groups{padding:0 14px 16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#salaryEmployeeModal .salary-group{background:#fff;border:1px solid #dfe5ee;border-radius:8px;overflow:hidden;min-width:0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+#salaryEmployeeModal .salary-group h4{margin:0;padding:10px 12px;background:#eaf3fc;color:#185b95;border-bottom:1px solid #d5e7f8;font-size:13px;font-weight:700}
+#salaryEmployeeModal .salary-group table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+#salaryEmployeeModal .salary-group td{padding:8px 10px;border-top:1px solid #edf0f4;overflow-wrap:anywhere}
+#salaryEmployeeModal .salary-group tr:nth-child(even){background:#f8fafc}
+#salaryEmployeeModal .salary-group td:first-child{width:62%;color:#475569}
+#salaryEmployeeModal .salary-group td:last-child{text-align:right;font-weight:700;color:#1f2937;font-variant-numeric:tabular-nums}
+#salaryEmployeeModal .salary-group tr.salary-money td:last-child{color:#087443}
+#salaryEmployeeModal .salary-empty{margin:0 14px 16px;padding:16px;background:#fff;border:1px solid #dfe5ee;border-radius:8px;color:#64748b;font-size:13px}
+#salaryEmployeeModal .salary-click-name{cursor:pointer;color:#1976d2;text-decoration:underline;text-decoration-color:#90caf9;text-underline-offset:3px;font-weight:700;display:inline-block;position:relative;z-index:5;pointer-events:auto}
+#salaryEmployeeModal .salary-click-name:hover{color:#0d47a1}
+@media(max-width:700px){#salaryEmployeeModal{padding:4px}#salaryEmployeeModal .salary-dialog{width:100%!important;max-height:96vh!important;border-radius:8px!important}#salaryEmployeeModal .salary-dialog-head{padding:12px}#salaryEmployeeModal .salary-groups{grid-template-columns:1fr;padding:0 8px 10px;gap:8px}#salaryEmployeeModal .salary-total-card{margin:8px;padding:12px}#salaryEmployeeModal .salary-total-value{font-size:23px}}
+</style>
+<style id="salary-popup-kpi-consistent-129">
+/* Popup lương: đồng bộ màu và bố cục với giao diện KPI */
+#salaryEmployeeModal{
+  position:fixed!important;inset:0!important;z-index:100000!important;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;background:rgba(5,10,20,.72)!important;
+  color:#172033!important;backdrop-filter:blur(3px)
+}
+#salaryEmployeeModal[aria-hidden="false"]{display:flex!important}
+#salaryEmployeeModal .salary-dialog{
+  width:min(1180px,98vw)!important;max-height:94vh!important;overflow:auto!important;
+  background:#f4f6fa!important;color:#172033!important;border:1px solid #cbd5e1!important;
+  border-radius:8px!important;box-shadow:0 16px 50px rgba(0,0,0,.42)!important;
+  font-family:Arial,Roboto,sans-serif!important
+}
+#salaryEmployeeModal .salary-dialog-head{
+  position:sticky;top:0;z-index:5;padding:10px 16px!important;
+  display:flex;align-items:center!important;justify-content:space-between;
+  background:linear-gradient(105deg,#2864e8 0%,#5799f6 100%)!important;
+  color:#fff!important;border-bottom:1px solid #b8d3ff!important
+}
+#salaryEmployeeModal .salary-dialog-title{margin:0!important;font-size:14px!important;line-height:1.3;font-weight:700!important;color:#fff!important}
+#salaryEmployeeModal .salary-dialog-sub{margin-top:2px!important;font-size:12px!important;color:#fff!important;opacity:1!important}
+#salaryEmployeeModal .salary-close{
+  width:32px!important;height:32px!important;border:1px solid rgba(255,255,255,.65)!important;
+  border-radius:7px!important;background:rgba(255,255,255,.14)!important;color:#fff!important;
+  font-size:22px!important;line-height:1!important
+}
+#salaryEmployeeModal .salary-total-card{
+  margin:10px 14px!important;padding:13px 16px!important;border:1px solid #c8dcff!important;
+  border-left:4px solid #2864e8!important;border-radius:8px!important;
+  background:#f8fbff!important;color:#155da8!important
+}
+#salaryEmployeeModal .salary-total-label{color:#334155!important;opacity:1!important;font-size:12px!important}
+#salaryEmployeeModal .salary-total-value{color:#155da8!important;font-size:28px!important;font-weight:800!important}
+#salaryEmployeeModal .salary-groups{padding:0 14px 16px!important;gap:10px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+#salaryEmployeeModal .salary-group{border:1px solid #cbd5e1!important;border-radius:7px!important;background:#fff!important;overflow:hidden}
+#salaryEmployeeModal .salary-group h4{padding:9px 11px!important;background:#111!important;color:#fff!important;border-bottom:2px solid #e50914!important;font-size:13px!important}
+#salaryEmployeeModal .salary-group table{background:#fff!important;border-collapse:collapse!important}
+#salaryEmployeeModal .salary-group td{padding:7px 9px!important;border:1px solid #d6dbe3!important;font-size:12px!important}
+#salaryEmployeeModal .salary-group td:first-child{color:#334155!important}
+#salaryEmployeeModal .salary-group td:last-child{color:#111827!important}
+#salaryEmployeeModal .salary-group tr.salary-money td:last-child{color:#087443!important}
+@media(max-width:700px){#salaryEmployeeModal{padding:5px!important}#salaryEmployeeModal .salary-dialog{width:100%!important;max-height:97vh!important}#salaryEmployeeModal .salary-groups{grid-template-columns:1fr!important;padding:0 8px 10px!important}#salaryEmployeeModal .salary-total-card{margin:8px!important}}
+</style>
+<div id="salaryEmployeeModal" aria-hidden="true" onclick="if(event.target===this)closeSalaryEmployeeModal()">
+ <div class="salary-dialog" role="dialog" aria-modal="true" aria-labelledby="salaryEmployeeTitle">
+  <div class="salary-dialog-head">
+   <div><h2 id="salaryEmployeeTitle" class="salary-dialog-title">Bảng lương nhân viên</h2><div id="salaryEmployeeSub" class="salary-dialog-sub"></div></div>
+   <div class="salary-head-actions"><button type="button" class="salary-export-btn" onclick="exportSalaryTableExcel()">📥 Tải Excel bảng lương</button><button type="button" class="salary-close" aria-label="Đóng" onclick="closeSalaryEmployeeModal()">×</button></div>
+  </div>
+  <div id="salaryEmployeeContent"></div>
+ </div>
+</div>
+
+
+<script id="salary-employee-popup-logic-124">
+const SALARY_FIELD_SCHEMA = [{"key":"tongsc3hto","label":"Tổng sự cố 3h"},{"key":"thsc3hto","label":"Thực hiện sự cố 3h"},{"key":"tlsc3hto","label":"Tỷ lệ hoàn thành sự cố 3h"},{"key":"khsc3hto","label":"K sự cố 3h"},{"key":"tongsc24hto","label":"Tổng sự cố 24h"},{"key":"thsc24hto","label":"Thực hiện sự cố 24h"},{"key":"tlsc24hto","label":"Tỷ lệ hoàn thành sự cố 24h"},{"key":"ksc24hto","label":"K sự cố 24h"},{"key":"tongscsocto","label":"Tổng SC SOC 72h"},{"key":"thscsoc72hhto","label":"Thực hiện SC SOC 72h"},{"key":"tlscsoc72hto","label":"Tỷ lệ hoàn thành SC SOC 72h"},{"key":"kscsoc72hto","label":"K SC SOC 72h"},{"key":"tongsclapto","label":"Tổng sự cố tính lặp"},{"key":"thsclapto","label":"Thực hiện sự cố lặp"},{"key":"tlsclapto","label":"Tỷ lệ hoàn thành sự cố lặp"},{"key":"ksclapto","label":"K sự cố lặp"},{"key":"tongschento","label":"Tổng sự cố hẹn"},{"key":"thschento","label":"Thực hiện sự cố hẹn"},{"key":"tlschento","label":"Tỷ lệ hoàn thành sự cố lặp"},{"key":"kschento","label":"K sự cố hẹn"},{"key":"ktongkpito","label":"K KPI tổng"},{"key":"kkhodiaban","label":"K địa bàn"},{"key":"luongduytrito","label":"Lương duy trì TB"},{"key":"luongcamerato","label":"Lương duy trì camera"},{"key":"luongwifito","label":"Lương duy trì home"},{"key":"luongkenhtruyento","label":"Lương duy trì kênh truyền"},{"key":"songayquanly","label":"Số ngày quản lý trong tháng"},{"key":"tongluongduytri","label":"Tổng lương duy trì"},{"key":"ftth","label":"TKM FTTH"},{"key":"ftth3h","label":"TKM FTTH 3h"},{"key":"ftth3htien","label":"Lương TKM 3h FTTH"},{"key":"ftth24h","label":"TKM FTTH 24h"},{"key":"ftth24htien","label":"Lương TKM 24h FTTH"},{"key":"ftth>24h","label":"TKM FTTH >24h"},{"key":"ftth>24htien","label":"Lương TKM >24h FTTH"},{"key":"camtn","label":"TKM CAM trong nhà"},{"key":"camtn24h","label":"TKM CAM trong nhà 24h"},{"key":"camtn24htien","label":"Lương TKM 24h CAM trong nhà"},{"key":"camtn>24h","label":"TKM CAM trong nhà >24h"},{"key":"camtn>24htien","label":"Lương TKM >24h CAM trong nhà"},{"key":"camnt","label":"TKM CAM ngoài trời"},{"key":"camnt24h","label":"TKM CAM ngoài trời 24h"},{"key":"camnt24htien","label":"Lương TKM 24h CAM ngoài trời"},{"key":"camnt>24h","label":"TKM CAM ngoài trời >24h"},{"key":"camnt>24htien","label":"Lương TKM >24h CAM ngoài trời"},{"key":"ddcs","label":"TKM DD có sẵn"},{"key":"ddcs24h","label":"TKM DD có sẵn 24h"},{"key":"ddcs24htien","label":"Lương DD có sẵn 24h"},{"key":"ddcs>24h","label":"TKM DD có sẵn >24h"},{"key":"ddcs>24htien","label":"Lương DD có sẵn >24h"},{"key":"home","label":"TKM HWF"},{"key":"home24h","label":"TKM HWF 24h"},{"key":"home24htien","label":"Lương HWF 24h"},{"key":"home>24h","label":"TKM HWF >24h"},{"key":"home>24htien","label":"Lương HWF >24h"},{"key":"swap","label":"TKM swap TB"},{"key":"swap24h","label":"TKM swap TB 24h"},{"key":"swap24htien","label":"Lương swap TB 24h"},{"key":"swap>24h","label":"TKM swap TB >24h"},{"key":"swap>24htien","label":"Lương swap TB >24h"},{"key":"kt","label":"TKM kênh truyền"},{"key":"kt4n","label":"TKM kênh truyền 4n"},{"key":"kt4ntien","label":"Lương kênh truyền 4n"},{"key":"kt>4n","label":"TKM kênh truyền >4n"},{"key":"kt>4ntien","label":"Lương kênh truyền >4n"},{"key":"tongluongtkmto","label":"Tổng lương TKM"},{"key":"thuonggiugintbto","label":"Thưởng gìn giữ TB"},{"key":"anca","label":"Ăn ca"},{"key":"dienthoai","label":"Điện thoại"},{"key":"xangxe","label":"Xăng xe"},{"key":"latotruong","label":"Chức danh tổ trưởng (1)"},{"key":"laftoft","label":"FT, OFT"},{"key":"ktotruong","label":"K tổ trưởng"},{"key":"nhanvientotruong","label":"Số nhân viên tổ trưởng quản lý"},{"key":"luongquanlytotruong","label":"Lương quản lý tổ trưởng"},{"key":"thuonggiugintbtotruong","label":"Thưởng giữ gìn tổ trưởng"},{"key":"thuebaoduytrito","label":"Thuê bao duy trì"},{"key":"wifiduytrito","label":"HWF duy trì"},{"key":"cameraduytrito","label":"Camera duy trì"},{"key":"kenhtruyenduytrito","label":"Kênh truyền duy trì"},{"key":"tongwogiaoto","label":"Tổng wo giao tháng"},{"key":"thwogiaoto","label":"Thực hiện wo giao tháng"},{"key":"tlwogiaoto","label":"Tỷ lệ thực hiện wo giao tháng"},{"key":"kwogiaoto","label":"K hoàn thành wo"},{"key":"tongtbquanlyto","label":"Tổng thuê bao quản lý tháng"},{"key":"sotbrmto","label":"Số thuê bao rời mạng tháng"},{"key":"tlgingiutbto","label":"Tỷ lệ giữ gìn thuê bao"},{"key":"kgingiutbto","label":"K giữ gìn thuê bao"},{"key":"tongluongfullto","label":"Tổng lương"}];
+function salaryEsc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function salaryNum(v){
+ if(v===null||v===undefined||v==='') return null;
+ if(typeof v==='number') return Number.isFinite(v)?v:null;
+ let s=String(v).trim().replace(/\s/g,'');
+ if(!s) return null;
+ if(s.includes(',')&&s.includes('.')) s=s.replace(/\./g,'').replace(',','.');
+ else if(s.includes(',')&&!s.includes('.')) s=s.replace(',','.');
+ const n=Number(s);return Number.isFinite(n)?n:null;
+}
+function salaryFmt(v,key){
+ const n=salaryNum(v);
+ if(n===null) return (v===null||v===undefined||v==='')?'—':salaryEsc(v);
+ const k=String(key||'').toLowerCase();
+ if(k.startsWith('tl') || /ty le|tỷ lệ|hoan thanh|hoàn thành/i.test(k)) {
+   // API có thể trả tỷ lệ dạng 0,85 hoặc 85; chuẩn hóa cả hai về phần trăm.
+   const pct=Math.abs(n)<=1 ? n*100 : n;
+   return new Intl.NumberFormat('vi-VN',{minimumFractionDigits:0,maximumFractionDigits:2}).format(pct)+'%';
+ }
+ if(k.includes('luong')||k.includes('tien')||k==='anca'||k==='dienthoai'||k==='xangxe'||k.includes('thuong')) return new Intl.NumberFormat('vi-VN',{maximumFractionDigits:0}).format(n)+' đ';
+ return new Intl.NumberFormat('vi-VN',{maximumFractionDigits:2}).format(n);
+}
+function salaryGetName(r){return String(r?.nhanvien??r?.nhan_vien??r?.ho_ten??r?.ten_nv??r?.ma_nv??'').trim();}
+function salaryGetTeam(r){return String(r?.huyen??r?.to??r?.ten_to??r?.donvi??'').trim().replace(/^Tổ\s*:?\s*/i,'');}
+function salaryIsEmployee(r){
+ const name=salaryGetName(r); if(!name) return false;
+ const scope=String(r?.cap??r?.loai??r?.type??'').toLowerCase();
+ if(/^(huyen|huyện|tinh|tỉnh|cnct|province|district)$/.test(scope.trim())) return false;
+ const n=name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ if(/^(gia lai|cnct gia lai|tinh gia lai|huyen|tinh)$/.test(n)) return false;
+ return true;
+}
+function salaryGroupForIndex(i){
+ const key=SALARY_FIELD_SCHEMA[i]?.key;
+ // Các chỉ tiêu WO giao tháng và giữ gìn thuê bao thuộc nhóm KPI/địa bàn.
+ const kpiKeys=new Set(['tongwogiaoto','thwogiaoto','tlwogiaoto','kwogiaoto','tongtbquanlyto','sotbrmto','tlgingiutbto','kgingiutbto']);
+ if(i<22 || kpiKeys.has(key)) return 'Hệ số KPI và hệ số địa bàn';
+ if(i<28) return 'Lương duy trì';
+ if(i<66) return 'Lương triển khai mới (TKM)';
+ if(i<70) return 'Thưởng và phụ cấp';
+ return 'Khoản chức danh tổ trưởng và TB duy trì';
+}
+function openSalaryEmployeeModal(index){
+ const rows=Array.isArray(window.allData)?window.allData:[];
+ const r=rows[index]; if(!r) return;
+ if(!salaryIsEmployee(r)){alert('Chỉ xem bảng lương của dòng nhân viên.');return;}
+ const name=salaryGetName(r),team=salaryGetTeam(r);
+ document.getElementById('salaryEmployeeTitle').textContent=name||'Bảng lương nhân viên';
+ document.getElementById('salaryEmployeeSub').textContent='Chi tiết dữ liệu lương mang tính tham khảo';
+ const groups={};
+ SALARY_FIELD_SCHEMA.forEach((f,i)=>{
+   const raw=r[f.key];
+   if(raw===undefined||raw===null||String(raw).trim()==='') return;
+   const g=salaryGroupForIndex(i);(groups[g]||(groups[g]=[])).push({f,v:raw});
+ });
+ const totalKeys=['tongluongfullto','tongluong','tong_luong','tongluongfull'];
+ let totalKey=totalKeys.find(k=>r[k]!==undefined&&r[k]!==null&&r[k]!=='');
+ let totalVal=totalKey?salaryFmt(r[totalKey],totalKey):'';
+ let html=totalVal?`<div class="salary-total-card"><div class="salary-total-label">TỔNG LƯƠNG</div><div class="salary-total-value">${totalVal}</div></div>`:'';
+ const order=['Hệ số KPI và hệ số địa bàn','Lương duy trì','Lương triển khai mới (TKM)','Thưởng và phụ cấp','Khoản chức danh tổ trưởng và TB duy trì'];
+ html+='<div class="salary-groups">';
+ order.forEach(g=>{
+  const items=groups[g]||[];if(!items.length)return;
+  html+=`<section class="salary-group"><h4>${salaryEsc(g)}</h4><table><tbody>`;
+  items.forEach(({f,v})=>{
+    const isMoney=/luong|tien|thuong|anca|dienthoai|xangxe/i.test(f.key)||/lương|thưởng|tiền|ăn ca|điện thoại|xăng xe/i.test(f.label);
+    html+=`<tr class="${isMoney?'salary-money':''}"><td>${salaryEsc(f.label)}</td><td>${salaryFmt(v,f.key)}</td></tr>`;
+  });
+  html+='</tbody></table></section>';
+ });
+ html+='</div>';
+ if(!Object.keys(groups).length) html+='<div class="salary-empty">API chưa trả về các trường lương cho nhân viên này. Kiểm tra xem các cột mới đã được đưa vào dữ liệu API hay chưa.</div>';
+ document.getElementById('salaryEmployeeContent').innerHTML=html;
+ const m=document.getElementById('salaryEmployeeModal');m.classList.add('open');m.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+}
+function exportSalaryTableExcel(){
+ const rows=(Array.isArray(window.allData)?window.allData:[]).filter(salaryIsEmployee);
+ if(!rows.length){alert('Chưa có dữ liệu nhân viên để xuất bảng lương.');return;}
+ const escCell=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+ const headers=['STT','Nhân viên','Tổ',...SALARY_FIELD_SCHEMA.map(f=>f.label)];
+ const body=rows.map((r,i)=>{
+  const vals=[i+1,salaryGetName(r),salaryGetTeam(r),...SALARY_FIELD_SCHEMA.map(f=>{
+   const v=r[f.key];if(v===null||v===undefined||String(v).trim()==='')return '';
+   const n=salaryNum(v);const k=String(f.key).toLowerCase();
+   if(n!==null&&(k.startsWith('tl')||/ty le|tỷ lệ|hoan thanh|hoàn thành/i.test(f.label))){const pct=Math.abs(n)<=1?n*100:n;return new Intl.NumberFormat('vi-VN',{maximumFractionDigits:2}).format(pct)+'%';}
+   return v;
+  })];
+  return '<tr>'+vals.map((v,j)=>'<td'+(j===0?' style="mso-number-format:0;"':'')+'>'+escCell(v)+'</td>').join('')+'</tr>';
+ }).join('');
+ const table='<table><thead><tr>'+headers.map(h=>'<th>'+escCell(h)+'</th>').join('')+'</tr></thead><tbody>'+body+'</tbody></table>';
+ const html='<!DOCTYPE html><html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Bang luong</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><style>table{border-collapse:collapse;font-family:Arial;font-size:10pt}th{background:#111;color:#fff;font-weight:bold;border:1px solid #999;padding:6px}td{border:1px solid #ccc;padding:5px;mso-number-format:"\\@"}tbody tr:nth-child(even){background:#f2f2f2}</style></head><body>'+table+'</body></html>';
+ const blob=new Blob(['\ufeff',html],{type:'application/vnd.ms-excel;charset=utf-8'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='Bang_luong_nhan_vien.xls';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function closeSalaryEmployeeModal(){const m=document.getElementById('salaryEmployeeModal');if(!m)return;m.classList.remove('open');m.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSalaryEmployeeModal();});
+function salaryNameLink(r){
+ const idx=(window.allData||[]).indexOf(r);const name=salaryGetName(r)||'Không rõ tên';
+ if(idx<0)return salaryEsc(name);
+ return `<span class="salary-click-name" role="button" tabindex="0" onclick="event.stopPropagation();openSalaryEmployeeModal(${idx})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();openSalaryEmployeeModal(${idx})}" title="Bấm để xem bảng lương">${salaryEsc(name)}</span>`;
 }
 </script>
 
@@ -6741,4 +6953,65 @@ async function exportKpiWordReport(){
     z-index: 4 !important;
   }
 }
+</style>
+
+
+<style id="salary-popup-match-kpi-127">
+/* Đồng bộ popup lương với cửa sổ tra cứu KPI: header xanh, bảng đen-đỏ, nền sáng */
+#salaryEmployeeModal{position:fixed!important;inset:0!important;z-index:2147483000!important;display:none;align-items:center;justify-content:center;padding:12px!important;box-sizing:border-box;background:rgba(15,23,42,.45)!important;backdrop-filter:blur(4px)!important;font-family:Arial,sans-serif!important}
+#salaryEmployeeModal.open{display:flex!important}
+#salaryEmployeeModal .salary-dialog{width:min(1180px,96vw)!important;max-height:90vh!important;overflow:auto!important;background:#fff!important;color:#111!important;border:1px solid #dbe3ee!important;border-radius:12px!important;box-shadow:0 24px 80px rgba(15,23,42,.28)!important;font-family:Arial,sans-serif!important}
+#salaryEmployeeModal .salary-dialog-head{position:sticky!important;top:0!important;z-index:5!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;padding:0 14px 0 16px!important;min-height:48px!important;background:linear-gradient(135deg,#2563eb,#60a5fa)!important;color:#fff!important;border:0!important;border-bottom:1px solid #1d4ed8!important}
+#salaryEmployeeModal .salary-dialog-title{margin:0!important;color:#fff!important;font-size:14px!important;font-weight:700!important}
+#salaryEmployeeModal .salary-dialog-sub{color:#eaf2ff!important;font-size:12px!important;margin-top:3px!important}
+#salaryEmployeeModal .salary-close{width:32px!important;height:32px!important;flex:none!important;border:1px solid rgba(255,255,255,.45)!important;border-radius:7px!important;background:rgba(255,255,255,.14)!important;color:#fff!important;font-size:23px!important;cursor:pointer!important}
+#salaryEmployeeModal .salary-close:hover{background:#e50914!important;border-color:#e50914!important}
+#salaryEmployeeModal .salary-total-card{margin:12px 14px!important;padding:13px 16px!important;border:1px solid #cfe4f8!important;border-left:4px solid #2563eb!important;border-radius:8px!important;background:#f8fbff!important;color:#172033!important}
+#salaryEmployeeModal .salary-total-label{font-size:12px!important;color:#475569!important;font-weight:700!important;opacity:1!important}
+#salaryEmployeeModal .salary-total-value{margin-top:4px!important;color:#185b95!important;font-size:26px!important;font-weight:800!important}
+#salaryEmployeeModal .salary-groups{padding:0 14px 16px!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+#salaryEmployeeModal .salary-group{min-width:0!important;overflow:hidden!important;background:#fff!important;border:1px solid #cbd5e1!important;border-radius:8px!important;box-shadow:0 1px 3px rgba(0,0,0,.05)!important}
+#salaryEmployeeModal .salary-group h4{margin:0!important;padding:10px 12px!important;background:#111!important;color:#fff!important;border:0!important;border-bottom:2px solid #e50914!important;font-size:13px!important;font-weight:700!important}
+#salaryEmployeeModal .salary-group table{width:100%!important;border-collapse:collapse!important;table-layout:fixed!important;background:#fff!important;color:#111!important;font-size:12px!important}
+#salaryEmployeeModal .salary-group td{padding:7px 9px!important;border:1px solid #d1d5db!important;color:#111!important;overflow-wrap:anywhere!important}
+#salaryEmployeeModal .salary-group tr:nth-child(even){background:#f3f4f6!important}
+#salaryEmployeeModal .salary-group td:first-child{width:62%!important;color:#374151!important;text-align:left!important}
+#salaryEmployeeModal .salary-group td:last-child{text-align:right!important;font-weight:700!important;color:#111!important;font-variant-numeric:tabular-nums!important}
+#salaryEmployeeModal .salary-group tr.salary-money td:last-child{color:#087443!important}
+#salaryEmployeeModal .salary-empty{margin:0 14px 16px!important;padding:16px!important;background:#fff!important;border:1px solid #dbe3ee!important;border-radius:8px!important;color:#64748b!important;font-size:13px!important}
+#salaryEmployeeModal .salary-click-name{cursor:pointer!important;color:#e50914!important;text-decoration:underline!important;text-decoration-color:#e50914!important;text-underline-offset:3px!important;font-weight:700!important;pointer-events:auto!important}
+#salaryEmployeeModal .salary-click-name:hover{color:#b91c1c!important}
+@media(max-width:700px){#salaryEmployeeModal{padding:4px!important}#salaryEmployeeModal .salary-dialog{width:98vw!important;max-height:94vh!important;border-radius:9px!important}#salaryEmployeeModal .salary-dialog-head{padding:0 10px!important}#salaryEmployeeModal .salary-groups{grid-template-columns:1fr!important;padding:0 8px 10px!important;gap:8px!important}#salaryEmployeeModal .salary-total-card{margin:8px!important;padding:11px!important}#salaryEmployeeModal .salary-total-value{font-size:23px!important}}
+</style>
+
+<style id="salary-popup-kpi-header-final-128">
+#salaryEmployeeModal .salary-dialog-head{background:linear-gradient(135deg,#2563eb,#60a5fa)!important;color:#fff!important;border:0!important;border-bottom:1px solid #1d4ed8!important;min-height:48px!important;padding:7px 14px 7px 16px!important;align-items:center!important}
+#salaryEmployeeModal .salary-dialog-title{color:#fff!important;font-size:15px!important;font-weight:700!important;line-height:1.25!important;margin:0!important}
+#salaryEmployeeModal .salary-dialog-sub{color:#eaf2ff!important;font-size:12px!important;margin-top:2px!important}
+#salaryEmployeeModal .salary-close{background:rgba(255,255,255,.14)!important;color:#fff!important;border:1px solid rgba(255,255,255,.45)!important;border-radius:7px!important;width:32px!important;height:32px!important}
+#salaryEmployeeModal .salary-close:hover{background:#1d4ed8!important}
+</style>
+
+
+<style id="salary-popup-black-white-unified-130">
+/* Đồng bộ toàn bộ tiêu đề popup lương theo tông đen-trắng KPI */
+#salaryEmployeeModal .salary-dialog-head{background:#111!important;background-image:none!important;color:#fff!important;border:0!important;border-bottom:2px solid #e50914!important;min-height:48px!important;padding:7px 14px 7px 16px!important}
+#salaryEmployeeModal .salary-dialog-title{color:#fff!important;font-weight:700!important}
+#salaryEmployeeModal .salary-dialog-sub{color:#fff!important;opacity:1!important}
+#salaryEmployeeModal .salary-close{background:#222!important;color:#fff!important;border:1px solid #777!important}
+#salaryEmployeeModal .salary-close:hover{background:#e50914!important;border-color:#e50914!important}
+#salaryEmployeeModal .salary-group h4{background:#111!important;background-image:none!important;color:#fff!important;border:0!important;border-bottom:2px solid #e50914!important}
+#salaryEmployeeModal .salary-head-actions{display:flex!important;align-items:center!important;gap:8px!important;flex-shrink:0!important}
+#salaryEmployeeModal .salary-export-btn{background:#111!important;color:#fff!important;border:1px solid #e50914!important;border-radius:6px!important;padding:8px 12px!important;font-size:12px!important;font-weight:700!important;cursor:pointer!important;white-space:nowrap!important}
+#salaryEmployeeModal .salary-export-btn:hover{background:#e50914!important}
+@media(max-width:560px){#salaryEmployeeModal .salary-dialog-head{align-items:flex-start!important}#salaryEmployeeModal .salary-head-actions{gap:5px!important;flex-direction:column-reverse!important;align-items:flex-end!important}#salaryEmployeeModal .salary-export-btn{font-size:10px!important;padding:6px 7px!important}}
+
+</style>
+
+
+<style id="salary-total-card-black-white-131">
+/* Đồng bộ riêng thẻ TỔNG LƯƠNG với tiêu đề đen-trắng của KPI */
+#salaryEmployeeModal .salary-total-card{background:#111!important;background-image:none!important;color:#fff!important;border:1px solid #111!important;border-left:4px solid #e50914!important;border-radius:7px!important;box-shadow:none!important}
+#salaryEmployeeModal .salary-total-label{color:#fff!important;opacity:1!important;font-weight:700!important}
+#salaryEmployeeModal .salary-total-value{color:#fff!important;font-size:28px!important;font-weight:800!important}
 </style>
