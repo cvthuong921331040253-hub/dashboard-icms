@@ -14860,14 +14860,15 @@ async function captureReportSection(
         const sourceTable=original.querySelector("table.period-district-detail-table");
         if(!sourceTable) throw new Error("Không tìm thấy bảng SỐ LIỆU TỒN THEO MỨC TỔ.");
 
-        const sourceTitle=(original.querySelector("#periodDistrictTitle")?.textContent||"").replace(/\s+/g," ").trim();
+        // Chỉ lấy nội dung span tiêu đề; không lấy text của nút chụp đang đổi thành "Đang chụp...".
+        const sourceTitle=(original.querySelector("#periodDistrictTitle > span")?.textContent||"SỐ LIỆU TỒN THEO MỨC TỔ").replace(/\s+/g," ").trim();
         const titleText=sourceTitle || "SỐ LIỆU TỒN THEO MỨC TỔ";
 
         stockShotRoot=document.createElement("div");
         stockShotRoot.style.cssText="position:fixed;left:-20000px;top:0;background:#fff;color:#0f172a;padding:12px;box-sizing:border-box;width:max-content;max-width:none;font-family:Arial,sans-serif;overflow:visible;";
         const heading=document.createElement("div");
         heading.textContent=titleText;
-        heading.style.cssText="font-size:13px;font-weight:800;margin:0 0 10px;white-space:nowrap;color:#0f172a;";
+        heading.style.cssText="font-size:15px;font-weight:800;margin:0 0 10px;white-space:normal;overflow-wrap:anywhere;word-break:normal;line-height:1.28;max-width:760px;color:#0f172a;";
         stockShotRoot.appendChild(heading);
 
         // Giữ lớp CSS gốc của bảng để các màu/kiểu chữ tiếp tục được áp dụng.
@@ -14903,8 +14904,39 @@ async function captureReportSection(
           dst.style.paddingRight=cs.paddingRight;
           dst.style.paddingBottom=cs.paddingBottom;
           dst.style.paddingLeft=cs.paddingLeft;
-          dst.style.textDecoration=cs.textDecoration;
+          // Bản chụp không dùng gạch chân của các ô số có thể bấm xem chi tiết.
+          dst.style.setProperty("text-decoration","none","important");
+          dst.style.setProperty("text-decoration-line","none","important");
           dst.style.whiteSpace="nowrap";
+        });
+
+        // Ghi đè cả style của link/span con để số liệu không còn gạch chân trong ảnh.
+        tableClone.querySelectorAll("*").forEach(el=>{
+          el.style.setProperty("text-decoration","none","important");
+          el.style.setProperty("text-decoration-line","none","important");
+        });
+
+        // Riêng 2 tiêu đề SOC + SOC HOME dài: xuống dòng trong ảnh chụp,
+        // giới hạn chiều rộng để không kéo giãn toàn bộ bảng mất cân đối.
+        [15,16].forEach(colIndex=>{
+          const th=tableClone.querySelector(`thead tr:first-child th:nth-child(${colIndex})`);
+          if(th){
+            th.style.setProperty("white-space","normal","important");
+            th.style.setProperty("overflow-wrap","normal","important");
+            th.style.setProperty("word-break","normal","important");
+            th.style.setProperty("width","88px","important");
+            th.style.setProperty("min-width","88px","important");
+            th.style.setProperty("max-width","88px","important");
+            th.style.setProperty("line-height","1.15","important");
+            th.style.setProperty("padding","5px 4px","important");
+            th.style.setProperty("text-align","center","important");
+          }
+          tableClone.querySelectorAll(`tbody tr td:nth-child(${colIndex})`).forEach(td=>{
+            td.style.setProperty("width","88px","important");
+            td.style.setProperty("min-width","88px","important");
+            td.style.setProperty("max-width","88px","important");
+            td.style.setProperty("text-align","center","important");
+          });
         });
 
         // Không để nút hoặc tương tác trong bản chụp; cột Tổng SC + TKM vẫn giữ kiểu khóa.
@@ -14931,7 +14963,7 @@ async function captureReportSection(
         const blob=await new Promise((resolve,reject)=>finalCanvas.toBlob(b=>b?resolve(b):reject(new Error("Không tạo được ảnh báo cáo.")),"image/png"));
         if(!navigator.clipboard||!window.ClipboardItem) throw new Error("Trình duyệt không hỗ trợ sao chép ảnh. Hãy mở bằng Chrome qua HTTPS hoặc localhost.");
         await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);
-        alert("Đã chụp báo cáo theo kiểu BÁO CÁO TẢI TÁC VỤ TRUNG BÌNH THEO TỔ. Bạn có thể dán ảnh vào nhóm báo cáo.");
+        // Đã copy ảnh thành công: không hiển thị hộp thoại làm gián đoạn thao tác.
       }finally{
         if(stockShotRoot?.parentNode) stockShotRoot.parentNode.removeChild(stockShotRoot);
       }
@@ -17799,6 +17831,12 @@ let tonsc=[];
           const hotTotalTkm=isTeam?r.tkm>10:r.tkm>4, hotLineChu=isTeam?r.lineChu>4:r.lineChu>2, hotTotalSc=isTeam?r.sc>10:r.sc>4, hotSuCo=isTeam?r.suCo>4:r.suCo>2, hotSocHome=isTeam?r.socHome>10:r.socHome>5;
           return `<tr class="${isTeam&&high?"high-load":""}"><td>${i+1}</td>${isTeam?`<td>${r.huyen}</td><td><b>${r.team}</b></td><td class="num">${r.staffCount}</td><td class="num">${r.total}</td><td class="num"><span class="${hotTotalTkm?'load-hot':''}">${r.tkm}</span></td><td class="num"><span class="${hotLineChu?'load-hot':''}">${r.lineChu}</span></td><td class="num">${r.tkmCoSan}</td><td class="num"><span class="${hotTotalSc?'load-hot':''}">${r.sc}</span></td><td class="num"><span class="${hotSuCo?'load-hot':''}">${r.suCo}</span></td><td class="num"><span class="${hotSocHome?'load-hot':''}">${r.socHome}</span></td><td class="num">${fmt(r.avgTkm)}</td><td class="num">${fmt(r.avgSc)}</td><td class="num"><b>${fmt(r.avg)}</b></td><td>${high?'<span class="team-load-eval">TẢI CAO</span>':'<span class="team-load-normal">Bình thường</span>'}</td>`:`<td>${r.huyen}</td><td><b>${r.name}</b></td><td>${r.team}</td><td class="num"><span class="${hotTotalTkm?'load-hot':''}">${r.tkm}</span></td><td class="num"><span class="${hotLineChu?'load-hot':''}">${r.lineChu}</span></td><td class="num">${r.tkmCoSan}</td><td class="num"><span class="${hotTotalSc?'load-hot':''}">${r.sc}</span></td><td class="num"><span class="${hotSuCo?'load-hot':''}">${r.suCo}</span></td><td class="num"><span class="${hotSocHome?'load-hot':''}">${r.socHome}</span></td><td class="num"><b>${r.total}</b></td><td>${isTeam?(high?'<span class="load-badge">TẢI CAO</span>':'Bình thường'):(high?'<span class="staff-load-eval">TẢI CAO</span>':'<span class="staff-load-normal">Bình thường</span>')}</td>`}</tr>`;
         }).join("")||`<tr><td colspan="${isTeam?15:12}" style="text-align:center">Không có dữ liệu phù hợp</td></tr>`;
+        // Nhấn đậm mọi ô số có giá trị > 0; chỉ thay đổi độ đậm, giữ nguyên màu và định dạng hiện có.
+        body.querySelectorAll("td.num").forEach(td=>{
+          const raw=String(td.textContent||"").trim().replace(/\./g,"").replace(",",".");
+          const value=Number(raw);
+          td.style.fontWeight=Number.isFinite(value)&&value>0?"800":"400";
+        });
       };
       select.addEventListener("change",draw);draw();
     };
@@ -17825,7 +17863,7 @@ let tonsc=[];
       shotRoot.style.cssText="position:fixed;left:-20000px;top:0;background:#fff;color:#0f172a;padding:12px;box-sizing:border-box;width:max-content;max-width:none;font-family:Arial,sans-serif;";
       const heading=document.createElement("div");
       heading.textContent=title;
-      heading.style.cssText="font-size:13px;font-weight:800;margin:0 0 10px;white-space:nowrap;";
+      heading.style.cssText="font-size:15px;font-weight:800;margin:0 0 10px;white-space:normal;overflow-wrap:anywhere;word-break:normal;line-height:1.28;max-width:760px;";
       shotRoot.appendChild(heading);
       const tableClone=table.cloneNode(true);
       // Với báo cáo nhân viên, ảnh chỉ lấy phần bảng đang hiển thị trong khung cuộn.
@@ -17902,7 +17940,7 @@ let tonsc=[];
       const blob=await new Promise((resolve,reject)=>finalCanvas.toBlob(b=>b?resolve(b):reject(new Error("Không tạo được ảnh.")),"image/png"));
       if(!navigator.clipboard||!window.ClipboardItem)throw new Error("Trình duyệt không hỗ trợ sao chép ảnh. Hãy dùng Chrome và mở trang qua HTTPS hoặc localhost.");
       await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);
-      alert("Đã chụp sát tiêu đề và bảng, không lấy khoảng trắng màn hình. Bạn có thể dán ảnh vào nhóm báo cáo.");
+      // Đã copy ảnh thành công: không hiển thị hộp thoại làm gián đoạn thao tác.
     }catch(err){console.error("captureTaskLoadReport",err);alert(err?.message||"Chụp bảng thất bại. Hãy thử lại.");}
     finally{if(shotRoot?.parentNode)shotRoot.parentNode.removeChild(shotRoot);if(btn){btn.disabled=false;btn.innerHTML=oldText;}}
   }
@@ -29742,7 +29780,7 @@ ${rels.join("")}
       const blob=await new Promise((resolve,reject)=>finalCanvas.toBlob(b=>b?resolve(b):reject(new Error('Không tạo được ảnh báo cáo.')),'image/png'));
       if(!navigator.clipboard||!window.ClipboardItem)throw new Error('Trình duyệt không hỗ trợ sao chép ảnh. Hãy mở bằng Chrome qua HTTPS hoặc localhost.');
       await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
-      alert('Đã chụp riêng báo cáo ĐÁNH GIÁ TỒN CÔNG VIỆC CĐBR. Bạn có thể dán ảnh vào nhóm báo cáo.');
+      // Đã copy ảnh thành công: không hiển thị hộp thoại làm gián đoạn thao tác.
     }catch(err){console.error('captureCDBRReport:',err);alert('Chụp báo cáo thất bại: '+(err?.message||err));}
     finally{if(shotRoot?.parentNode)shotRoot.parentNode.removeChild(shotRoot);if(btn)setTimeout(()=>{btn.disabled=false;btn.innerHTML=oldText;},500);}
   }
