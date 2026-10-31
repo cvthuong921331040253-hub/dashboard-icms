@@ -6819,18 +6819,62 @@ function exportSalaryTableExcel(){
  const rows=(Array.isArray(window.allData)?window.allData:[]).filter(salaryIsEmployee);
  if(!rows.length){alert('Chưa có dữ liệu nhân viên để xuất bảng lương.');return;}
  const escCell=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+ const pctKeys=new Set(['tlsc3hto','tlsc24hto','tlscsoc72hto','tlsclapto','tlschento','tagetroimangto']);
+ const moneyKey=k=>/(luong|thuong|tien|phat|phu cap|phucap|tongluong)/i.test(k);
+ const isK=k=>/^k/i.test(k);
+ const isTotal=k=>/^tong/i.test(k);
  const headers=['STT','Nhân viên','Tổ',...SALARY_FIELD_SCHEMA.map(f=>f.label)];
+ const headerCells=headers.map((h,i)=>`<th class="${i<3?'fixed-col':''}">${escCell(h)}</th>`).join('');
  const body=rows.map((r,i)=>{
-  const vals=[i+1,salaryGetName(r),salaryGetTeam(r),...SALARY_FIELD_SCHEMA.map(f=>{
-   const v=r[f.key];if(v===null||v===undefined||String(v).trim()==='')return '';
-   const n=salaryNum(v);const k=String(f.key).toLowerCase();
-   if(n!==null&&(k.startsWith('tl')||k==='tagetroimangto'||/ty le|tỷ lệ|hoan thanh|hoàn thành/i.test(f.label))){const pct=Math.abs(n)<=1?n*100:n;return new Intl.NumberFormat('vi-VN',{maximumFractionDigits:2}).format(pct)+'%';}
-   return v;
-  })];
-  return '<tr>'+vals.map((v,j)=>'<td'+(j===0?' style="mso-number-format:0;"':'')+'>'+escCell(v)+'</td>').join('')+'</tr>';
+  const cells=[i+1,salaryGetName(r),salaryGetTeam(r)].map((v,j)=>`<td class="${j===0?'center':j===1?'name-cell':'team-cell'}">${escCell(v)}</td>`);
+  SALARY_FIELD_SCHEMA.forEach(f=>{
+   let v=r[f.key];
+   const k=String(f.key).toLowerCase();
+   let cls='num-cell', style='';
+   if(v===null||v===undefined||String(v).trim()==='') v='';
+   const n=salaryNum(v);
+   if(pctKeys.has(k)||k.startsWith('tl')||/tỷ lệ|phan tram|phần trăm/i.test(f.label)){
+     if(v!==''&&n!==null){const pct=Math.abs(n)<=1?n*100:n;v=new Intl.NumberFormat('vi-VN',{maximumFractionDigits:2}).format(pct)+'%';}
+     cls+=' percent-cell';
+   }else if(moneyKey(k)){
+     if(v!==''&&n!==null)v=new Intl.NumberFormat('vi-VN',{maximumFractionDigits:0}).format(n)+' đ';
+     cls+=' money-cell';
+   }else if(isK(k)||/^k\s/i.test(f.label)){
+     cls+=' k-cell';
+   }else if(isTotal(k)||/^tổng/i.test(f.label)){
+     cls+=' total-cell';
+   }
+   cells.push(`<td class="${cls}">${escCell(v)}</td>`);
+  });
+  return `<tr class="${i%2?'even':'odd'}">${cells.join('')}</tr>`;
  }).join('');
- const table='<table><thead><tr>'+headers.map(h=>'<th>'+escCell(h)+'</th>').join('')+'</tr></thead><tbody>'+body+'</tbody></table>';
- const html='<!DOCTYPE html><html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Bang luong</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><style>table{border-collapse:collapse;font-family:Arial;font-size:10pt}th{background:#111;color:#fff;font-weight:bold;border:1px solid #999;padding:6px}td{border:1px solid #ccc;padding:5px;mso-number-format:"\\@"}tbody tr:nth-child(even){background:#f2f2f2}</style></head><body>'+table+'</body></html>';
+ const table=`<table><colgroup><col style="width:42px"><col style="width:170px"><col style="width:130px">${SALARY_FIELD_SCHEMA.map(()=>'<col style="width:125px">').join('')}</colgroup><thead><tr>${headerCells}</tr></thead><tbody>${body}</tbody></table>`;
+ const now=new Date();
+ const dateLabel=now.toLocaleDateString('vi-VN');
+ const html=`<!DOCTYPE html><html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Bang luong</x:Name><x:WorksheetOptions><x:DisplayGridlines/><x:DoNotDisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><style>
+ @page{size:landscape;margin:0.35in}
+ body{font-family:Calibri,Arial,sans-serif;color:#202938}
+ .report-title{font-size:18pt;font-weight:700;color:#fff;background:#172554;padding:13px 12px;text-align:left}
+ .report-sub{font-size:10pt;color:#334155;background:#eaf0f8;padding:8px 12px;border-bottom:2px solid #dc2626}
+ .report-note{font-size:9pt;color:#64748b;padding:6px 12px}
+ table{border-collapse:collapse;font-family:Calibri,Arial,sans-serif;font-size:10pt;table-layout:auto}
+ th{background:#172554;color:#fff;font-weight:700;border:1px solid #cbd5e1;padding:8px 7px;text-align:center;vertical-align:middle;white-space:normal}
+ td{border:1px solid #d5dbe5;padding:6px 7px;vertical-align:middle;mso-number-format:"\\@"}
+ tbody tr.even td{background:#f1f5f9}
+ tbody tr.odd td{background:#fff}
+ td.center{text-align:center}
+ td.name-cell{font-weight:700;color:#1d4ed8;white-space:nowrap}
+ td.team-cell{color:#475569;white-space:nowrap}
+ td.num-cell{text-align:right}
+ td.percent-cell{text-align:right;color:#0f766e;font-weight:700}
+ td.money-cell{text-align:right;color:#047857;font-weight:700;background:#ecfdf5}
+ td.k-cell{font-weight:700;color:#b91c1c;background:#fff7ed}
+ td.total-cell{font-weight:700;color:#1e3a8a;background:#eff6ff}
+ </style></head><body>
+ <div class="report-title">BẢNG TỔNG HỢP LƯƠNG NHÂN VIÊN</div>
+ <div class="report-sub">Dữ liệu theo API KPI hiện tại &nbsp; | &nbsp; Số nhân viên: ${rows.length} &nbsp; | &nbsp; Ngày xuất: ${dateLabel}</div>
+ <div class="report-note">Các dòng nhân viên được lọc bỏ dữ liệu tổng hợp cấp tổ/huyện/tỉnh. Các khoản tiền được tô xanh; tỷ lệ phần trăm và hệ số K được định dạng riêng.</div>
+ ${table}</body></html>`;
  const blob=new Blob(['\ufeff',html],{type:'application/vnd.ms-excel;charset=utf-8'});
  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='Bang_luong_nhan_vien.xls';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
