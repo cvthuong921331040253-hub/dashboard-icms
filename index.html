@@ -3306,6 +3306,12 @@ body.loading{
 */
 </style>
 
+
+<style id="salary-update-142-style">
+.salary-total-start td:first-child{font-weight:800!important;color:#e53935!important;}
+.salary-total-start td:first-child::first-letter{color:#e53935;}
+</style>
+
 </head>
 
 <body class="rotate-in loading">
@@ -3415,6 +3421,18 @@ body.loading{
 
   <h3>📋 Danh sách</h3>
   <div id="data"></div>
+
+
+<script id="salary-name-link-bootstrap">
+window.salaryNameLink = window.salaryNameLink || function(r){
+  const rows = Array.isArray(window.allData) ? window.allData : [];
+  const idx = rows.indexOf(r);
+  const name = (typeof salaryGetName === 'function' ? salaryGetName(r) : (r && (r.nhan_vien || r.ho_ten || r.ten_nv || r.nhanvien))) || 'Không rõ tên';
+  const safeName = typeof salaryEsc === 'function' ? salaryEsc(name) : String(name).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  if (idx < 0) return safeName;
+  return `<span class="salary-click-name" role="button" tabindex="0" onclick="event.stopPropagation();openSalaryEmployeeModal(${idx})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();openSalaryEmployeeModal(${idx})}" title="Bấm để xem bảng lương">${safeName}</span>`;
+};
+</script>
 
 <script>
 const params = new URLSearchParams(window.location.search);
@@ -6372,9 +6390,7 @@ function exportKpiSummaryExcel(){
     });
   }
   const html='<!DOCTYPE html><html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>'+
-    '<h2 style="font-family:Arial;color:#111">Bảng KPI tổng hợp</h2>'+table.outerHTML+'
-
-</body></html>';
+    '<h2 style="font-family:Arial;color:#111">Bảng KPI tổng hợp</h2>'+table.outerHTML+'</body></html>';
   const blob=new Blob(['\ufeff',html],{type:'application/vnd.ms-excel;charset=utf-8'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
@@ -6682,7 +6698,8 @@ async function exportKpiWordReport(){
 #salaryEmployeeModal .salary-group td{padding:7px 9px!important;border:1px solid #d6dbe3!important;font-size:12px!important}
 #salaryEmployeeModal .salary-group td:first-child{color:#334155!important}
 #salaryEmployeeModal .salary-group td:last-child{color:#111827!important}
-#salaryEmployeeModal .salary-group tr.salary-money td:last-child{color:#087443!important}
+#salaryEmployeeModal .salary-group tr.salary-money td:first-child{font-weight:800!important;color:#111827!important}
+#salaryEmployeeModal .salary-group tr.salary-money td:last-child{color:#087443!important;font-weight:800!important}
 @media(max-width:700px){#salaryEmployeeModal{padding:5px!important}#salaryEmployeeModal .salary-dialog{width:100%!important;max-height:97vh!important}#salaryEmployeeModal .salary-groups{grid-template-columns:1fr!important;padding:0 8px 10px!important}#salaryEmployeeModal .salary-total-card{margin:8px!important}}
 </style>
 <div id="salaryEmployeeModal" aria-hidden="true" onclick="if(event.target===this)closeSalaryEmployeeModal()">
@@ -6697,7 +6714,7 @@ async function exportKpiWordReport(){
 
 
 <script id="salary-employee-popup-logic-124">
-const SALARY_FIELD_SCHEMA = [{"key":"tongsc3hto","label":"Tổng sự cố 3h"},{"key":"thsc3hto","label":"Thực hiện sự cố 3h"},{"key":"tlsc3hto","label":"Tỷ lệ hoàn thành sự cố 3h"},{"key":"khsc3hto","label":"K sự cố 3h"},{"key":"tongsc24hto","label":"Tổng sự cố 24h"},{"key":"thsc24hto","label":"Thực hiện sự cố 24h"},{"key":"tlsc24hto","label":"Tỷ lệ hoàn thành sự cố 24h"},{"key":"ksc24hto","label":"K sự cố 24h"},{"key":"tongscsocto","label":"Tổng SC SOC 72h"},{"key":"thscsoc72hhto","label":"Thực hiện SC SOC 72h"},{"key":"tlscsoc72hto","label":"Tỷ lệ hoàn thành SC SOC 72h"},{"key":"kscsoc72hto","label":"K SC SOC 72h"},{"key":"tongsclapto","label":"Tổng sự cố tính lặp"},{"key":"thsclapto","label":"Thực hiện sự cố lặp"},{"key":"tlsclapto","label":"Tỷ lệ hoàn thành sự cố lặp"},{"key":"ksclapto","label":"K sự cố lặp"},{"key":"tongschento","label":"Tổng sự cố hẹn"},{"key":"thschento","label":"Thực hiện sự cố hẹn"},{"key":"tlschento","label":"Tỷ lệ hoàn thành sự cố hẹn"},{"key":"kschento","label":"K sự cố hẹn"},{"key":"ktongkpito","label":"K KPI tổng"},{"key":"kkhodiaban","label":"K địa bàn"},{"key":"luongduytrito","label":"Lương duy trì TB"},{"key":"luongcamerato","label":"Lương duy trì camera"},{"key":"luongwifito","label":"Lương duy trì home"},{"key":"luongkenhtruyento","label":"Lương duy trì kênh truyền"},{"key":"songayquanly","label":"Số ngày quản lý trong tháng"},{"key":"tongluongduytri","label":"Tổng lương duy trì"},{"key":"ftth","label":"TKM FTTH"},{"key":"ftth3h","label":"TKM FTTH 3h"},{"key":"ftth3htien","label":"Lương TKM 3h FTTH"},{"key":"ftth24h","label":"TKM FTTH 24h"},{"key":"ftth24htien","label":"Lương TKM 24h FTTH"},{"key":"ftth>24h","label":"TKM FTTH >24h"},{"key":"ftth>24htien","label":"Lương TKM >24h FTTH"},{"key":"camtn","label":"TKM CAM trong nhà"},{"key":"camtn24h","label":"TKM CAM trong nhà 24h"},{"key":"camtn24htien","label":"Lương TKM 24h CAM trong nhà"},{"key":"camtn>24h","label":"TKM CAM trong nhà >24h"},{"key":"camtn>24htien","label":"Lương TKM >24h CAM trong nhà"},{"key":"camnt","label":"TKM CAM ngoài trời"},{"key":"camnt24h","label":"TKM CAM ngoài trời 24h"},{"key":"camnt24htien","label":"Lương TKM 24h CAM ngoài trời"},{"key":"camnt>24h","label":"TKM CAM ngoài trời >24h"},{"key":"camnt>24htien","label":"Lương TKM >24h CAM ngoài trời"},{"key":"ddcs","label":"TKM DD có sẵn"},{"key":"ddcs24h","label":"TKM DD có sẵn 24h"},{"key":"ddcs24htien","label":"Lương DD có sẵn 24h"},{"key":"ddcs>24h","label":"TKM DD có sẵn >24h"},{"key":"ddcs>24htien","label":"Lương DD có sẵn >24h"},{"key":"home","label":"TKM HWF"},{"key":"home24h","label":"TKM HWF 24h"},{"key":"home24htien","label":"Lương HWF 24h"},{"key":"home>24h","label":"TKM HWF >24h"},{"key":"home>24htien","label":"Lương HWF >24h"},{"key":"swap","label":"TKM swap TB"},{"key":"swap24h","label":"TKM swap TB 24h"},{"key":"swap24htien","label":"Lương swap TB 24h"},{"key":"swap>24h","label":"TKM swap TB >24h"},{"key":"swap>24htien","label":"Lương swap TB >24h"},{"key":"kt","label":"TKM kênh truyền"},{"key":"kt4n","label":"TKM kênh truyền 4n"},{"key":"kt4ntien","label":"Lương kênh truyền 4n"},{"key":"kt>4n","label":"TKM kênh truyền >4n"},{"key":"kt>4ntien","label":"Lương kênh truyền >4n"},{"key":"tongluongtkmto","label":"Tổng lương TKM"},{"key":"thuonggiugintbto","label":"Thưởng gìn giữ TB"},{"key":"anca","label":"Ăn ca"},{"key":"dienthoai","label":"Điện thoại"},{"key":"xangxe","label":"Xăng xe"},{"key":"latotruong","label":"Chức danh tổ trưởng (1)"},{"key":"laftoft","label":"FT, OFT"},{"key":"ktotruong","label":"K tổ trưởng"},{"key":"nhanvientotruong","label":"Số nhân viên tổ trưởng quản lý"},{"key":"luongquanlytotruong","label":"Lương quản lý tổ trưởng"},{"key":"thuonggiugintbtotruong","label":"Thưởng giữ gìn tổ trưởng"},{"key":"thuebaoduytrito","label":"Thuê bao duy trì"},{"key":"wifiduytrito","label":"HWF duy trì"},{"key":"cameraduytrito","label":"Camera duy trì"},{"key":"kenhtruyenduytrito","label":"Kênh truyền duy trì"},{"key":"tongwogiaoto","label":"Tổng wo giao tháng"},{"key":"thwogiaoto","label":"Thực hiện wo giao tháng"},{"key":"tlwogiaoto","label":"Tỷ lệ thực hiện wo giao tháng"},{"key":"kwogiaoto","label":"K hoàn thành wo"},{"key":"tongtbquanlyto","label":"Tổng thuê bao quản lý tháng"},{"key":"sotbrmto","label":"Số thuê bao rời mạng tháng"},{"key":"tlgingiutbto","label":"Tỷ lệ giữ gìn thuê bao"},{"key":"kgingiutbto","label":"K giữ gìn thuê bao"},{"key":"tongluongfullto","label":"Tổng lương"}];
+const SALARY_FIELD_SCHEMA = [{"key":"tongsc3hto","label":"Tổng sự cố 3h"},{"key":"thsc3hto","label":"Thực hiện sự cố 3h"},{"key":"tlsc3hto","label":"Tỷ lệ hoàn thành sự cố 3h"},{"key":"khsc3hto","label":"K sự cố 3h"},{"key":"tongsc24hto","label":"Tổng sự cố 24h"},{"key":"thsc24hto","label":"Thực hiện sự cố 24h"},{"key":"tlsc24hto","label":"Tỷ lệ hoàn thành sự cố 24h"},{"key":"ksc24hto","label":"K sự cố 24h"},{"key":"tongscsocto","label":"Tổng SC SOC 72h"},{"key":"thscsoc72hhto","label":"Thực hiện SC SOC 72h"},{"key":"tlscsoc72hto","label":"Tỷ lệ hoàn thành SC SOC 72h"},{"key":"kscsoc72hto","label":"K SC SOC 72h"},{"key":"tongsclapto","label":"Tổng sự cố tính lặp"},{"key":"thsclapto","label":"Thực hiện sự cố lặp"},{"key":"tlsclapto","label":"Tỷ lệ hoàn thành sự cố lặp"},{"key":"ksclapto","label":"K sự cố lặp"},{"key":"tongschento","label":"Tổng sự cố hẹn"},{"key":"thschento","label":"Thực hiện sự cố hẹn"},{"key":"tlschento","label":"Tỷ lệ hoàn thành sự cố hẹn"},{"key":"kschento","label":"K sự cố hẹn"},{"key":"ktongkpito","label":"K KPI tổng"},{"key":"luongduytrito","label":"Lương duy trì TB"},{"key":"luongcamerato","label":"Lương duy trì camera"},{"key":"luongwifito","label":"Lương duy trì home"},{"key":"luongkenhtruyento","label":"Lương duy trì kênh truyền"},{"key":"songayquanly","label":"Số ngày quản lý trong tháng"},{"key":"tongluongduytri","label":"Tổng lương duy trì"},{"key":"ftth","label":"TKM FTTH"},{"key":"ftth3h","label":"TKM FTTH 3h"},{"key":"ftth3htien","label":"Lương TKM 3h FTTH"},{"key":"ftth24h","label":"TKM FTTH 24h"},{"key":"ftth24htien","label":"Lương TKM 24h FTTH"},{"key":"ftth>24h","label":"TKM FTTH >24h"},{"key":"ftth>24htien","label":"Lương TKM >24h FTTH"},{"key":"camtn","label":"TKM CAM trong nhà"},{"key":"camtn24h","label":"TKM CAM trong nhà 24h"},{"key":"camtn24htien","label":"Lương TKM 24h CAM trong nhà"},{"key":"camtn>24h","label":"TKM CAM trong nhà >24h"},{"key":"camtn>24htien","label":"Lương TKM >24h CAM trong nhà"},{"key":"camnt","label":"TKM CAM ngoài trời"},{"key":"camnt24h","label":"TKM CAM ngoài trời 24h"},{"key":"camnt24htien","label":"Lương TKM 24h CAM ngoài trời"},{"key":"camnt>24h","label":"TKM CAM ngoài trời >24h"},{"key":"camnt>24htien","label":"Lương TKM >24h CAM ngoài trời"},{"key":"ddcs","label":"TKM DD có sẵn"},{"key":"ddcs24h","label":"TKM DD có sẵn 24h"},{"key":"ddcs24htien","label":"Lương DD có sẵn 24h"},{"key":"ddcs>24h","label":"TKM DD có sẵn >24h"},{"key":"ddcs>24htien","label":"Lương DD có sẵn >24h"},{"key":"home","label":"TKM HWF"},{"key":"home24h","label":"TKM HWF 24h"},{"key":"home24htien","label":"Lương HWF 24h"},{"key":"home>24h","label":"TKM HWF >24h"},{"key":"home>24htien","label":"Lương HWF >24h"},{"key":"swap","label":"TKM swap TB"},{"key":"swap24h","label":"TKM swap TB 24h"},{"key":"swap24htien","label":"Lương swap TB 24h"},{"key":"swap>24h","label":"TKM swap TB >24h"},{"key":"swap>24htien","label":"Lương swap TB >24h"},{"key":"kt","label":"TKM kênh truyền"},{"key":"kt4n","label":"TKM kênh truyền 4n"},{"key":"kt4ntien","label":"Lương kênh truyền 4n"},{"key":"kt>4n","label":"TKM kênh truyền >4n"},{"key":"kt>4ntien","label":"Lương kênh truyền >4n"},{"key":"tongluongtkmto","label":"Tổng lương TKM"},{"key":"ktinh","label":"K tỉnh"},{"key":"kkhodiaban","label":"K nhân viên"},{"key":"anca","label":"Ăn ca"},{"key":"dienthoai","label":"Điện thoại"},{"key":"xangxe","label":"Xăng xe"},{"key":"latotruong","label":"Chức danh tổ trưởng (1)"},{"key":"laftoft","label":"FT, OFT"},{"key":"ktotruong","label":"K tổ trưởng"},{"key":"nhanvientotruong","label":"Số nhân viên tổ trưởng quản lý"},{"key":"luongquanlytotruong","label":"Lương quản lý tổ trưởng"},{"key":"thuebaoduytrito","label":"Thuê bao duy trì"},{"key":"wifiduytrito","label":"HWF duy trì"},{"key":"cameraduytrito","label":"Camera duy trì"},{"key":"kenhtruyenduytrito","label":"Duy trì kênh truyền"},{"key":"tongwogiaoto","label":"Tổng wo giao tháng"},{"key":"thwogiaoto","label":"Thực hiện wo giao tháng"},{"key":"tlwogiaoto","label":"Tỷ lệ thực hiện wo giao tháng"},{"key":"kwogiaoto","label":"K hoàn thành wo"},{"key":"tongtbquanlyto","label":"Tổng thuê bao gìn giữ quản lý tháng"},{"key":"sotbrmto","label":"Số thuê bao rời mạng tháng NV"},{"key":"tlgingiutbto","label":"Tỷ lệ giữ gìn thuê bao"},{"key":"kgingiutbto","label":"K giữ gìn thuê bao"},{"key":"tagetroimangto","label":"Phần trăm taget giao rời mạng tháng"},{"key":"tagetxroimangto","label":"Số thuê bao tính taget rời mạng NV"},{"key":"thuonggiugintbto","label":"Thưởng gìn giữ nhân viên (không phải tổ trưởng)"},{"key":"sothuebaothoevungto","label":"Định mức Tb địa bàn rời mạng"},{"key":"sothuebaoroimangchophepto","label":"Thuê bao rời mạng cho phép/1 nv"},{"key":"dieukienthuonggiugintbto","label":"Điều kiện được thưởng giữ gìn NV (1)"},{"key":"tagetxroimangtotruong","label":"Thuê bao rời mạng cho phép/tổ"},{"key":"thuchienroimangtotruong","label":"Số thuê bao rời mạng tháng tổ"},{"key":"dieukienthuonggiugintbtotruong","label":"Điều kiện được thưởng giữ gìn tổ (1)"},{"key":"thuonggiugintbtotruong","label":"Thưởng giữ gìn tổ trưởng"},{"key":"tongluongfullto","label":"Tổng lương"},{"key":"luongkyhopdongcskh","label":"Lương ký HĐ, CSKH"},{"key":"luongkhac","label":"Lương khác"}];
 function salaryEsc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function salaryNum(v){
  if(v===null||v===undefined||v==='') return null;
@@ -6712,12 +6729,12 @@ function salaryFmt(v,key){
  const n=salaryNum(v);
  if(n===null) return (v===null||v===undefined||v==='')?'—':salaryEsc(v);
  const k=String(key||'').toLowerCase();
- if(k.startsWith('tl') || /ty le|tỷ lệ|hoan thanh|hoàn thành/i.test(k)) {
+ if(k.startsWith('tl') || k==='tagetroimangto' || /ty le|tỷ lệ|hoan thanh|hoàn thành/i.test(k)) {
    // API có thể trả tỷ lệ dạng 0,85 hoặc 85; chuẩn hóa cả hai về phần trăm.
    const pct=Math.abs(n)<=1 ? n*100 : n;
    return new Intl.NumberFormat('vi-VN',{minimumFractionDigits:0,maximumFractionDigits:2}).format(pct)+'%';
  }
- if(k.includes('luong')||k.includes('tien')||k==='anca'||k==='dienthoai'||k==='xangxe'||k.includes('thuong')) return new Intl.NumberFormat('vi-VN',{maximumFractionDigits:0}).format(n)+' đ';
+ if(k.includes('luong')||k.includes('tien')||k==='anca'||k==='dienthoai'||k==='xangxe'||(k.includes('thuong')&&!k.startsWith('dieukien'))) return new Intl.NumberFormat('vi-VN',{maximumFractionDigits:0}).format(n)+' đ';
  return new Intl.NumberFormat('vi-VN',{maximumFractionDigits:2}).format(n);
 }
 function salaryGetName(r){return String(r?.nhanvien??r?.nhan_vien??r?.ho_ten??r?.ten_nv??r?.ma_nv??'').trim();}
@@ -6732,13 +6749,15 @@ function salaryIsEmployee(r){
 }
 function salaryGroupForIndex(i){
  const key=SALARY_FIELD_SCHEMA[i]?.key;
- // Các chỉ tiêu WO giao tháng và giữ gìn thuê bao thuộc nhóm KPI/địa bàn.
- const kpiKeys=new Set(['tongwogiaoto','thwogiaoto','tlwogiaoto','kwogiaoto','tongtbquanlyto','sotbrmto','tlgingiutbto','kgingiutbto']);
- if(i<22 || kpiKeys.has(key)) return 'Hệ số KPI và hệ số địa bàn';
- if(i<28) return 'Lương duy trì';
- if(i<66) return 'Lương triển khai mới (TKM)';
- if(i<70) return 'Thưởng và phụ cấp';
- return 'Khoản chức danh tổ trưởng và TB duy trì';
+ const kpiKeys=new Set(['tongsc3hto','thsc3hto','tlsc3hto','khsc3hto','tongsc24hto','thsc24hto','tlsc24hto','ksc24hto','tongscsocto','thscsoc72hhto','tlscsoc72hto','kscsoc72hto','tongsclapto','thsclapto','tlsclapto','ksclapto','tongschento','thschento','tlschento','kschento','ktongkpito','ktinh','kkhodiaban','tongwogiaoto','thwogiaoto','tlwogiaoto','kwogiaoto','tongtbquanlyto','sotbrmto','tlgingiutbto','kgingiutbto','tagetroimangto','tagetxroimangto','sothuebaothoevungto','sothuebaoroimangchophepto']);
+ const maintenanceKeys=new Set(['luongduytrito','luongcamerato','luongwifito','luongkenhtruyento','songayquanly','tongluongduytri','thuebaoduytrito','wifiduytrito','cameraduytrito','kenhtruyenduytrito']);
+ const tkmKeys=new Set(['ftth','ftth3h','ftth3htien','ftth24h','ftth24htien','ftth>24h','ftth>24htien','camtn','camtn24h','camtn24htien','camtn>24h','camtn>24htien','camnt','camnt24h','camnt24htien','camnt>24h','camnt>24htien','ddcs','ddcs24h','ddcs24htien','ddcs>24h','ddcs>24htien','home','home24h','home24htien','home>24h','home>24htien','swap','swap24h','swap24htien','swap>24h','swap>24htien','kt','kt4n','kt4ntien','kt>4n','kt>4ntien','tongluongtkmto']);
+ const roleKeys=new Set(['ktotruong','nhanvientotruong','luongquanlytotruong','latotruong','laftoft','tagetxroimangtotruong','thuchienroimangtotruong']);
+ if(kpiKeys.has(key)) return 'Hệ số KPI và hệ số địa bàn';
+ if(maintenanceKeys.has(key)) return 'Lương duy trì';
+ if(tkmKeys.has(key)) return 'Lương triển khai mới (TKM)';
+ if(roleKeys.has(key)) return 'Khoản chức danh tổ trưởng và FT/OFT';
+ return 'Thưởng và phụ cấp';
 }
 function openSalaryEmployeeModal(index){
  const rows=Array.isArray(window.allData)?window.allData:[];
@@ -6749,7 +6768,8 @@ function openSalaryEmployeeModal(index){
  document.getElementById('salaryEmployeeSub').textContent='Chi tiết dữ liệu lương mang tính tham khảo';
  const groups={};
  SALARY_FIELD_SCHEMA.forEach((f,i)=>{
-   const raw=r[f.key];
+   let raw=r[f.key];
+   if(f.key==='kenhtruyenduytrito' && (raw===undefined||raw===null||String(raw).trim()===''||salaryNum(raw)===null)) raw=0;
    if(raw===undefined||raw===null||String(raw).trim()==='') return;
    const g=salaryGroupForIndex(i);(groups[g]||(groups[g]=[])).push({f,v:raw});
  });
@@ -6757,24 +6777,36 @@ function openSalaryEmployeeModal(index){
  let totalKey=totalKeys.find(k=>r[k]!==undefined&&r[k]!==null&&r[k]!=='');
  let totalVal=totalKey?salaryFmt(r[totalKey],totalKey):'';
  let html=totalVal?`<div class="salary-total-card"><div class="salary-total-label">TỔNG LƯƠNG</div><div class="salary-total-value">${totalVal}</div></div>`:'';
- const order=['Hệ số KPI và hệ số địa bàn','Lương duy trì','Lương triển khai mới (TKM)','Thưởng và phụ cấp','Khoản chức danh tổ trưởng và TB duy trì'];
+ const order=['Hệ số KPI và hệ số địa bàn','Lương duy trì','Lương triển khai mới (TKM)','Thưởng và phụ cấp','Khoản chức danh tổ trưởng và FT/OFT'];
  html+='<div class="salary-groups">';
  order.forEach(g=>{
   const items=groups[g]||[];if(!items.length)return;
+  if(g==='Thưởng và phụ cấp'){
+    const moveAfter=(key,afterKey)=>{const a=items.findIndex(x=>x.f.key===key);if(a<0)return;const item=items.splice(a,1)[0];const b=items.findIndex(x=>x.f.key===afterKey);items.splice(b<0?items.length:b+1,0,item);};
+    moveAfter('thuonggiugintbtotruong','thuonggiugintbto');
+    moveAfter('tongluongfullto','luongkhac');
+  }
   if(g==='Hệ số KPI và hệ số địa bàn'){
-    // Đặt hai hệ số ở cuối bảng theo thứ tự cố định: K địa bàn, rồi K KPI tổng.
-    const diaBanIndex=items.findIndex(item=>item.f.key==='kkhodiaban');
-    const diaBan=diaBanIndex>=0?items.splice(diaBanIndex,1)[0]:null;
-    const kpiIndex=items.findIndex(item=>item.f.key==='ktongkpito');
-    const kpiTong=kpiIndex>=0?items.splice(kpiIndex,1)[0]:null;
-    if(diaBan) items.push(diaBan);
-    if(kpiTong) items.push(kpiTong);
+    // Đặt số thuê bao tính target rời mạng NV ngay sau phần trăm target giao.
+    const targetNvIndex=items.findIndex(item=>item.f.key==='tagetxroimangto');
+    if(targetNvIndex>=0){
+      const targetNvItem=items.splice(targetNvIndex,1)[0];
+      const targetPctIndex=items.findIndex(item=>item.f.key==='tagetroimangto');
+      items.splice(targetPctIndex>=0?targetPctIndex+1:items.length,0,targetNvItem);
+    }
+    // Thứ tự cuối nhóm: K KPI tổng, K nhân viên, K tỉnh.
+    const orderedKeys=['ktongkpito','kkhodiaban','ktinh'];
+    const ordered=[];
+    orderedKeys.forEach(key=>{const ix=items.findIndex(item=>item.f.key===key);if(ix>=0)ordered.push(items.splice(ix,1)[0]);});
+    items.push(...ordered);
   }
   html+=`<section class="salary-group"><h4>${salaryEsc(g)}</h4><table><tbody>`;
   items.forEach(({f,v})=>{
-    const isMoney=/luong|tien|thuong|anca|dienthoai|xangxe/i.test(f.key)||/lương|thưởng|tiền|ăn ca|điện thoại|xăng xe/i.test(f.label);
+    const isConditionCount=/^dieukienthuonggiugintb/i.test(f.key);
+    const isMoney=!isConditionCount && (/luong|tien|thuong|anca|dienthoai|xangxe/i.test(f.key)||/lương|thưởng|tiền|ăn ca|điện thoại|xăng xe/i.test(f.label));
     const isKRow=/^K(?:\s|$)/i.test(String(f.label||'').trim());
-    html+=`<tr class="${isMoney?'salary-money ':''}${isKRow?'salary-k-row':''}"><td>${salaryEsc(f.label)}</td><td>${salaryFmt(v,f.key)}</td></tr>`;
+    const isTotalStart=g==='Hệ số KPI và hệ số địa bàn' && /^Tổng\b/i.test(String(f.label||'').trim());
+    html+=`<tr class="${isMoney?'salary-money ':''}${isKRow?'salary-k-row':''}${isTotalStart?' salary-total-start':''}"><td>${isTotalStart?'▼ ':''}${salaryEsc(f.label)}</td><td>${salaryFmt(v,f.key)}</td></tr>`;
   });
   html+='</tbody></table></section>';
  });
@@ -6792,7 +6824,7 @@ function exportSalaryTableExcel(){
   const vals=[i+1,salaryGetName(r),salaryGetTeam(r),...SALARY_FIELD_SCHEMA.map(f=>{
    const v=r[f.key];if(v===null||v===undefined||String(v).trim()==='')return '';
    const n=salaryNum(v);const k=String(f.key).toLowerCase();
-   if(n!==null&&(k.startsWith('tl')||/ty le|tỷ lệ|hoan thanh|hoàn thành/i.test(f.label))){const pct=Math.abs(n)<=1?n*100:n;return new Intl.NumberFormat('vi-VN',{maximumFractionDigits:2}).format(pct)+'%';}
+   if(n!==null&&(k.startsWith('tl')||k==='tagetroimangto'||/ty le|tỷ lệ|hoan thanh|hoàn thành/i.test(f.label))){const pct=Math.abs(n)<=1?n*100:n;return new Intl.NumberFormat('vi-VN',{maximumFractionDigits:2}).format(pct)+'%';}
    return v;
   })];
   return '<tr>'+vals.map((v,j)=>'<td'+(j===0?' style="mso-number-format:0;"':'')+'>'+escCell(v)+'</td>').join('')+'</tr>';
@@ -6987,7 +7019,8 @@ function salaryNameLink(r){
 #salaryEmployeeModal .salary-group tr:nth-child(even){background:#f3f4f6!important}
 #salaryEmployeeModal .salary-group td:first-child{width:62%!important;color:#374151!important;text-align:left!important}
 #salaryEmployeeModal .salary-group td:last-child{text-align:right!important;font-weight:700!important;color:#111!important;font-variant-numeric:tabular-nums!important}
-#salaryEmployeeModal .salary-group tr.salary-money td:last-child{color:#087443!important}
+#salaryEmployeeModal .salary-group tr.salary-money td:first-child{font-weight:800!important;color:#111827!important}
+#salaryEmployeeModal .salary-group tr.salary-money td:last-child{color:#087443!important;font-weight:800!important}
 #salaryEmployeeModal .salary-empty{margin:0 14px 16px!important;padding:16px!important;background:#fff!important;border:1px solid #dbe3ee!important;border-radius:8px!important;color:#64748b!important;font-size:13px!important}
 #salaryEmployeeModal .salary-click-name{cursor:pointer!important;color:#e50914!important;text-decoration:underline!important;text-decoration-color:#e50914!important;text-underline-offset:3px!important;font-weight:700!important;pointer-events:auto!important}
 #salaryEmployeeModal .salary-click-name:hover{color:#b91c1c!important}
