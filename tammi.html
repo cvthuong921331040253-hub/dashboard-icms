@@ -9,12 +9,12 @@
 .full-loading{position:fixed;inset:0;width:100vw;height:100vh;background:rgba(255,255,255,.97);z-index:99999;display:flex;align-items:center;justify-content:center}.full-loading.hide{display:none}.loading-spinner{width:42px;height:42px;border:4px solid #e8e8e8;border-top-color:var(--red);border-radius:50%;animation:loadingSpin .75s linear infinite}@keyframes loadingSpin{to{transform:rotate(360deg)}}
 :root{--bg:#f5f6f8;--card:#fff;--text:#202124;--muted:#777b83;--line:#e4e6ea;--red:#d71920;--redsoft:#fff0f1;--green:#178a45;--greensoft:#eaf8f0;--orange:#c77a08;--orangesoft:#fff5e4}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}button,input{font:inherit}button{cursor:pointer}.app{max-width:900px;margin:auto;min-height:100vh;padding-bottom:24px}
-.header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:11px 14px 10px}.headrow{display:flex;align-items:center;justify-content:space-between;gap:8px}.title{font-size:20px;font-weight:800;letter-spacing:-.2px}.area{font-size:18px;font-weight:800;color:var(--red)}
+.source-switch{display:flex;gap:6px;margin-top:10px;padding:3px;background:#f1f2f4;border-radius:10px}.source-btn{flex:1;min-width:0;border:0;border-radius:8px;background:transparent;color:#62666d;padding:8px 6px;font-size:11px;font-weight:800}.source-btn.active{background:#fff;color:var(--red);box-shadow:0 1px 4px rgba(0,0,0,.10)}.header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:11px 14px 10px}.headrow{display:flex;align-items:center;justify-content:space-between;gap:8px}.title{font-size:20px;font-weight:800;letter-spacing:-.2px}.area{font-size:18px;font-weight:800;color:var(--red)}
 .search{display:flex;align-items:center;gap:7px;margin-top:9px;padding:0 10px;background:#fff;border:1px solid #dddfe3;border-radius:12px;height:42px}.search span{font-size:20px;color:#666}.search input{width:100%;border:0;outline:0;background:transparent;padding:0;font-size:14px;color:var(--text)}.search input::placeholder{color:#999}.export-row{display:flex;justify-content:flex-end;margin-top:-2px;margin-bottom:9px}.content-export{padding-left:0;padding-right:0}.content-export .export-btn{min-height:34px}.excel-stat{display:flex;flex-direction:column;justify-content:space-between;gap:7px}.excel-stat .export-btn{width:100%;min-height:32px;padding:7px 6px;font-size:11px}.export-btn{border:1px solid var(--red);background:var(--red);color:#fff;border-radius:9px;padding:8px 11px;font-size:11px;font-weight:800}.export-btn:disabled{opacity:.6;cursor:wait}.summary{display:flex;align-items:center;margin-top:7px}.total{margin-left:auto;color:var(--red);font-size:13px;font-weight:800}.content{padding:11px 14px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}.stat{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px;min-width:0}.stat.clickable,.stat.dashboard{cursor:pointer;transition:transform .12s,box-shadow .12s}.stat.clickable:active,.stat.dashboard:active{transform:scale(.985);box-shadow:0 2px 8px rgba(0,0,0,.08)}.label{font-size:10px;color:var(--muted);font-weight:700}.value{font-size:18px;font-weight:800;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stat-percent{display:block;margin-top:3px;font-size:10px;font-weight:700;color:var(--muted);white-space:nowrap}.not-installed-hint{color:var(--orange);font-size:8px;font-weight:700;line-height:1.15;white-space:normal;display:block;max-width:100%;overflow-wrap:anywhere}.red{color:var(--red)}.green{color:var(--green)}.orange{color:var(--orange)}.dashboard-value{color:var(--red);font-size:15px}.quick-loading{display:none;padding:9px 10px;margin-bottom:9px;border-radius:9px;background:#fff5e4;color:#8a5600;font-size:12px;font-weight:700;text-align:center}.quick-loading.show{display:block}.status{display:none;padding:9px;border-radius:9px;margin-bottom:9px;font-size:12px}.status.show{display:block}.error{background:#fff0f0;color:#b00020}
 .list{display:flex;flex-direction:column;gap:7px}.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px}.top{display:flex;gap:9px;align-items:center}.avatar{width:38px;height:38px;flex:0 0 38px;border-radius:10px;background:var(--redsoft);color:var(--red);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}.main{min-width:0;flex:1}.name{font-size:15px;font-weight:800;line-height:1.2;word-break:break-word}.sub{font-size:11px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.arrow{font-size:21px;color:#999;padding-left:4px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:9px}.info{background:#f8f9fa;border-radius:8px;padding:6px 8px;min-width:0}.ivalue{font-size:11px;font-weight:600;word-break:break-word;margin-top:2px;line-height:1.25}.bottom{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:8px}.badge{padding:5px 7px;border-radius:7px;font-size:10px;font-weight:700}.badge.green{background:var(--greensoft)}.badge.orange{background:var(--orangesoft)}.badge.gray{background:#f0f1f3;color:#666}.detail{margin-left:auto;border:0;background:transparent;color:var(--red);font-size:11px;font-weight:800;padding:4px}.empty{background:#fff;border:1px dashed #d5d7db;border-radius:11px;padding:25px;text-align:center;color:#777;font-size:13px}
 .pages{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:12px}.pagebtn{min-width:36px;height:34px;border:1px solid var(--line);background:#fff;border-radius:8px;font-weight:800;font-size:16px}.pagebtn:disabled{opacity:.4}.pageinfo{min-width:75px;text-align:center;font-size:12px;font-weight:800}.updated{text-align:center;color:#92959b;font-size:10px;margin-top:8px}
 .modalbg{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:50;display:none;align-items:flex-end;justify-content:center}.modalbg.show{display:flex}.modal{width:min(650px,100%);background:#fff;border-radius:17px 17px 0 0;padding:15px;max-height:88vh;overflow:auto}.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.modaltitle{font-size:17px;font-weight:800}.close{width:34px;height:34px;border:0;border-radius:50%;background:#f0f1f3;font-size:19px}.detailrow{display:grid;grid-template-columns:125px 1fr;gap:10px;border-bottom:1px solid #eee;padding:9px 0}.detailrow:last-child{border:0}.dlabel{font-size:10px;color:var(--muted);font-weight:700}.dvalue{font-size:12px;word-break:break-word}
-@media(max-width:600px){.app{max-width:none}.header{padding:9px 10px 8px}.title{font-size:18px}.area{font-size:17px}.search{height:40px;margin-top:7px;border-radius:10px;padding:0 9px}.search span{font-size:18px}.search input{font-size:14px}.summary{margin-top:5px}.total{font-size:12px}.content{padding:9px 10px}.stats{grid-template-columns:1fr 1fr;gap:6px;margin-bottom:7px}.content-export{margin-top:0;margin-bottom:8px}.content-export .export-btn{width:auto;max-width:100%;font-size:11px;padding:8px 10px}.excel-stat{min-height:78px}.excel-stat .export-btn{font-size:11px;padding:7px 5px}.stat{padding:9px;border-radius:10px}.label{font-size:10px}.value{font-size:17px;margin-top:3px}.stat-percent{font-size:10px;margin-top:2px}.dashboard-value{font-size:14px}.card{padding:10px;border-radius:11px}.list{gap:7px}.avatar{width:36px;height:36px;flex-basis:36px;border-radius:9px;font-size:16px}.top{gap:9px}.name{font-size:14px}.sub{font-size:11px;margin-top:2px}.arrow{font-size:20px}.grid{gap:5px;margin-top:8px}.info{padding:6px 7px;border-radius:8px}.ivalue{font-size:11px}.badge{padding:5px 7px;font-size:10px}.detail{font-size:11px}.pages{margin-top:9px}.pagebtn{min-width:34px;height:32px;font-size:15px}.pageinfo{font-size:11px}.updated{font-size:9px}.modal{padding:13px;border-radius:15px 15px 0 0}.modaltitle{font-size:15px}.detailrow{grid-template-columns:105px 1fr;padding:8px 0}.dlabel{font-size:9px}.dvalue{font-size:11px}}
+@media(max-width:600px){.app{max-width:none}.header{padding:9px 10px 8px}.title{font-size:18px}.area{font-size:17px}.search{height:40px;margin-top:7px;border-radius:10px;padding:0 9px}.search span{font-size:18px}.search input{font-size:14px}.summary{margin-top:5px}.source-switch{margin-top:8px}.source-btn{font-size:10px;padding:8px 4px}.total{font-size:12px}.content{padding:9px 10px}.stats{grid-template-columns:1fr 1fr;gap:6px;margin-bottom:7px}.content-export{margin-top:0;margin-bottom:8px}.content-export .export-btn{width:auto;max-width:100%;font-size:11px;padding:8px 10px}.excel-stat{min-height:78px}.excel-stat .export-btn{font-size:11px;padding:7px 5px}.stat{padding:9px;border-radius:10px}.label{font-size:10px}.value{font-size:17px;margin-top:3px}.stat-percent{font-size:10px;margin-top:2px}.dashboard-value{font-size:14px}.card{padding:10px;border-radius:11px}.list{gap:7px}.avatar{width:36px;height:36px;flex-basis:36px;border-radius:9px;font-size:16px}.top{gap:9px}.name{font-size:14px}.sub{font-size:11px;margin-top:2px}.arrow{font-size:20px}.grid{gap:5px;margin-top:8px}.info{padding:6px 7px;border-radius:8px}.ivalue{font-size:11px}.badge{padding:5px 7px;font-size:10px}.detail{font-size:11px}.pages{margin-top:9px}.pagebtn{min-width:34px;height:32px;font-size:15px}.pageinfo{font-size:11px}.updated{font-size:9px}.modal{padding:13px;border-radius:15px 15px 0 0}.modaltitle{font-size:15px}.detailrow{grid-template-columns:105px 1fr;padding:8px 0}.dlabel{font-size:9px}.dvalue{font-size:11px}}
 @media(max-width:360px){.title{font-size:16px}.value{font-size:15px}.name{font-size:12px}.dashboard-value{font-size:12px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
@@ -22,14 +22,14 @@
 <body>
 <div class="full-loading" id="pageLoading"><div class="loading-spinner"></div></div>
 <div class="app">
-<header class="header"><div class="headrow"><div class="title">DANH SÁCH CÀI ĐẶT</div><div class="area">GLI</div></div><div class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Tìm account, mã NV, họ tên, huyện..." autocomplete="off"></div>
+<header class="header"><div class="headrow"><div class="title">DANH SÁCH CÀI ĐẶT</div><div class="area">GLI</div></div><div class="source-switch" role="tablist" aria-label="Nguồn dữ liệu"><button type="button" class="source-btn active" id="currentSourceBtn" role="tab" aria-selected="true">Cài đặt hiện tại</button><button type="button" class="source-btn" id="historySourceBtn" role="tab" aria-selected="false">Tra cứu nhiều tháng</button></div><div class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Tìm account, mã NV, họ tên, huyện..." autocomplete="off"></div>
 <div class="summary"><div class="total" id="totalText">0 bản ghi</div></div></header>
 <main class="content"><section class="stats"><div class="stat clickable" id="totalStat" role="button" tabindex="0"><div class="label">Tổng</div><div class="value red" id="statTotal">0</div></div><div class="stat"><div class="label">Đã cài</div><div class="value green" id="statInstalled">0 / 0</div><span class="stat-percent" id="statInstalledPercent">0,00%</span></div><div class="stat clickable" id="notInstalledStat" role="button" tabindex="0"><div class="label">Chưa cài</div><div class="value orange" id="statNotInstalled">0</div><span class="stat-percent not-installed-hint" id="statNotInstalledPercent">ấn vào để xem chưa cài</span></div><div class="stat excel-stat"><div class="label">Xuất dữ liệu</div><button id="exportExcelBtn" class="export-btn" type="button">⇩ Tải Excel</button></div></section><div id="quickLoading" class="quick-loading">Đang tải dữ liệu...</div><div id="status" class="status"></div><section id="list" class="list"></section><div class="pages"><button class="pagebtn" id="prevBtn">‹</button><div class="pageinfo" id="pageInfo">Trang 1/1</div><button class="pagebtn" id="nextBtn">›</button></div><div class="updated" id="updated"></div></main></div>
 <div class="modalbg" id="detailModal"><div class="modal"><div class="modalhead"><div class="modaltitle">Chi tiết cài đặt</div><button class="close" id="closeDetail">×</button></div><div id="detailContent"></div></div></div>
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycby5vwaqgAdPDte353-QSaQpRcmWovYQpvGo9lh3qKuNClZ8ywOAA2T15jPqDEu1GkD1/exec";const PAGE_SIZE=20;let page=1,totalPages=1,search="",data=[];let searchTimer=null,requestController=null,requestId=0;let notInstalledOnly=false;const $=id=>document.getElementById(id);
+const API_URL_CURRENT="https://script.google.com/macros/s/AKfycby5vwaqgAdPDte353-QSaQpRcmWovYQpvGo9lh3qKuNClZ8ywOAA2T15jPqDEu1GkD1/exec";const API_URL_HISTORY="https://script.google.com/macros/s/AKfycbzI7GEjgUYPCP76w5QUelkzgvxX6JcM04FpM9AEH_1hYfFmVZzl6wKDfhBpVoUPLqo9/exec";let dataSource="current";function activeApiUrl(){return dataSource==="history"?API_URL_HISTORY:API_URL_CURRENT}const PAGE_SIZE=20;let page=1,totalPages=1,search="",data=[];let searchTimer=null,requestController=null,requestId=0;let notInstalledOnly=false;let notInstalledCache=[],notInstalledScanPage=1,notInstalledScanTotalPages=1,notInstalledScanDone=false,notInstalledServerTotal=null,notInstalledServerDone=null,notInstalledScanTotalRecords=0;const $=id=>document.getElementById(id);
 function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function installed(v){return String(v??"").trim()==="1"}function field(x,...keys){for(const k of keys){if(x&&x[k]!==undefined&&x[k]!==null&&String(x[k]).trim()!=="")return x[k]}return ""}function tinhCaiValue(x){/* API có thể trả trường gốc tinh_cai_ft hoặc tên chuẩn hóa Đã cài (được ánh xạ từ tinh_cai_ft); tuyệt đối không đọc trang_thai_cai_dat_tammi */return field(x,"tinh_cai_ft","tinhCaiFt","Đã cài")}function isInstalledRow(x){return installed(tinhCaiValue(x))}
-function isHeaderRow(x){if(!x||typeof x!=="object")return false;const vals=Object.values(x).map(v=>String(v??"").trim().toLowerCase());const words=["ho_ten_nv","ma_nhan_vien","ten_trung_tam_moi","account","task_type_name","ft_cai_dat_tammi","thoi_gian_cai_dat_tammi","ngay_ht","tinh_cai_ft"];return words.filter(w=>vals.includes(w)).length>=3}function url(){const u=new URL(API_URL);u.searchParams.set("page",page);u.searchParams.set("pageSize",PAGE_SIZE);if(search)u.searchParams.set("search",search);return u}function getServerStats(j, pageRows){
+function isHeaderRow(x){if(!x||typeof x!=="object")return false;const vals=Object.values(x).map(v=>String(v??"").trim().toLowerCase());const words=["ho_ten_nv","ma_nhan_vien","ten_trung_tam_moi","account","task_type_name","ft_cai_dat_tammi","thoi_gian_cai_dat_tammi","ngay_ht","tinh_cai_ft"];return words.filter(w=>vals.includes(w)).length>=3}function url(){const u=new URL(activeApiUrl());u.searchParams.set("page",page);u.searchParams.set("pageSize",PAGE_SIZE);if(search)u.searchParams.set("search",search);return u}function getServerStats(j, pageRows){
   // Đọc thống kê tổng hợp do API trả về, tránh gọi tuần tự từng trang mỗi lần tải.
   const totalRaw = j.total ?? j.totalRecords ?? j.totalCount;
   const installedRaw = j.installedTotal ?? j.installedCount ?? j.totalInstalled;
@@ -66,23 +66,55 @@ async function load(){
   if(requestController)requestController.abort();
   const controller=new AbortController();requestController=controller;showQuickLoading();
   try{
-    const r=await fetch(url(),{cache:"no-store",signal:controller.signal});
-    if(!r.ok)throw Error("HTTP "+r.status);
-    const j=await r.json();
-    if(currentId!==requestId)return;
-    if(!j.success)throw Error(j.error||"API lỗi");
-    const allPageRows=(Array.isArray(j.data)?j.data:[]).filter(x=>!isHeaderRow(x));
-    data=notInstalledOnly?allPageRows.filter(x=>!isInstalledRow(x)):allPageRows;
-    totalPages=Math.max(Number(j.totalPages||1),1);
-    render();pagination(j);clearStatus();
-    $("updated").textContent="Đang hoàn tất tải dữ liệu...";
-
-    // Tính thống kê từ phản hồi hiện có, không tải lại toàn bộ trang gây chậm.
-    const counts = getServerStats(j, allPageRows);
-    if(currentId!==requestId)return;
-    renderStats(counts.total, counts.done, counts.notDone);
-    if (!Number.isFinite(Number(j.installedTotal ?? j.installedCount ?? j.totalInstalled))) {
-      console.warn("API chưa trả thống kê Đã cài toàn bộ; số Đã cài đang dựa trên trang hiện tại.");
+    if(notInstalledOnly){
+      // API hiện tại phân trang danh sách gốc, chưa có bộ lọc Chưa cài phía máy chủ.
+      // Quét từng trang API (100 dòng/lần) cho đến khi đủ 20 bản ghi chưa cài để hiển thị.
+      const targetCount=page*PAGE_SIZE;
+      while((notInstalledCache.length<targetCount || (notInstalledServerTotal===null && !notInstalledScanDone))&&!notInstalledScanDone){
+        const u=new URL(activeApiUrl());
+        u.searchParams.set("page",notInstalledScanPage);
+        u.searchParams.set("pageSize",100);
+        if(search)u.searchParams.set("search",search);
+        const r=await fetch(u.toString(),{cache:"no-store",signal:controller.signal});
+        if(!r.ok)throw Error("HTTP "+r.status);
+        const j=await r.json();
+        if(currentId!==requestId)return;
+        if(!j.success)throw Error(j.error||"API lỗi");
+        if(notInstalledScanPage===1){
+          notInstalledScanTotalPages=Math.max(Number(j.totalPages||1),1);
+          notInstalledServerTotal=j.notInstalledTotal!==undefined&&j.notInstalledTotal!==null&&j.notInstalledTotal!==""&&Number.isFinite(Number(j.notInstalledTotal))?Number(j.notInstalledTotal):null;
+          notInstalledServerDone=j.installedTotal!==undefined&&j.installedTotal!==null&&j.installedTotal!==""&&Number.isFinite(Number(j.installedTotal))?Number(j.installedTotal):null;
+        }
+        const rows=(Array.isArray(j.data)?j.data:[]).filter(x=>!isHeaderRow(x));
+        if(notInstalledScanPage===1)notInstalledScanTotalRecords=Number(j.total)||0;
+        notInstalledCache.push(...rows.filter(x=>!isInstalledRow(x)));
+        if(j.hasNextPage===false||!rows.length||notInstalledScanPage>=notInstalledScanTotalPages)notInstalledScanDone=true;
+        else notInstalledScanPage++;
+      }
+      data=notInstalledCache.slice((page-1)*PAGE_SIZE,page*PAGE_SIZE);
+      const totalNotDone=notInstalledServerTotal!==null?notInstalledServerTotal:notInstalledCache.length;
+      const totalDone=notInstalledServerDone!==null?notInstalledServerDone:(notInstalledScanDone?Math.max(0,notInstalledScanTotalRecords-totalNotDone):0);
+      const totalAll=notInstalledScanTotalRecords||((notInstalledServerTotal!==null&&notInstalledServerDone!==null)?notInstalledServerTotal+notInstalledServerDone:totalNotDone);
+      totalPages=Math.max(1,Math.ceil(totalNotDone/PAGE_SIZE));
+      render();
+      $("pageInfo").textContent=`Trang ${page}/${totalPages}`;
+      $("prevBtn").disabled=page<=1;
+      $("nextBtn").disabled=page>=totalPages||(!notInstalledServerTotal&&data.length<PAGE_SIZE);
+      renderStats(totalAll,totalDone,totalNotDone);
+      clearStatus();
+    }else{
+      const r=await fetch(url(),{cache:"no-store",signal:controller.signal});
+      if(!r.ok)throw Error("HTTP "+r.status);
+      const j=await r.json();
+      if(currentId!==requestId)return;
+      if(!j.success)throw Error(j.error||"API lỗi");
+      const allPageRows=(Array.isArray(j.data)?j.data:[]).filter(x=>!isHeaderRow(x));
+      data=allPageRows;
+      totalPages=Math.max(Number(j.totalPages||1),1);
+      render();pagination(j);clearStatus();
+      const counts=getServerStats(j,allPageRows);
+      if(currentId!==requestId)return;
+      renderStats(counts.total,counts.done,counts.notDone);
     }
     if(currentId!==requestId)return;
     $("updated").textContent="Cập nhật: "+new Date().toLocaleString("vi-VN");
@@ -99,6 +131,8 @@ async function load(){
     if(currentId===requestId){requestController=null;hideQuickLoading();}
   }
 }
+function resetNotInstalledScan(){notInstalledCache=[];notInstalledScanPage=1;notInstalledScanTotalPages=1;notInstalledScanDone=false;notInstalledServerTotal=null;notInstalledServerDone=null;notInstalledScanTotalRecords=0;}
+
 function renderStats(total,installedTotal,notInstalledTotal){const a=Number(installedTotal||0),b=Number(notInstalledTotal||Math.max(total-a,0)),pa=total>0?a/total*100:0,pb=total>0?b/total*100:0;$("statTotal").textContent=total.toLocaleString("vi-VN");$("statInstalled").textContent=a.toLocaleString("vi-VN")+" / "+total.toLocaleString("vi-VN");$("statInstalledPercent").textContent=pa.toLocaleString("vi-VN",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";$("statNotInstalled").textContent=b.toLocaleString("vi-VN");$("statNotInstalledPercent").textContent="ấn vào để xem chưa cài";$("totalText").textContent=total.toLocaleString("vi-VN")+" bản ghi"}
 function render(){
 if(!data.length){$("list").innerHTML=notInstalledOnly?'<div class="empty">Không còn bản ghi chưa cài.</div>':'<div class="empty">Không có dữ liệu phù hợp.</div>';return}
@@ -125,7 +159,39 @@ $("detailModal").classList.add("show");
 }
 
 function closeDetail(){$("detailModal").classList.remove("show")}
-function resetToTotal(){showQuickLoading("Đang tải toàn bộ danh sách...");search="";notInstalledOnly=false;page=1;$("searchInput").value="";$("notInstalledStat").classList.remove("active");load()}function toggleNotInstalled(){showQuickLoading(notInstalledOnly?"Đang tải toàn bộ danh sách...":"Đang tải danh sách chưa cài...");notInstalledOnly=!notInstalledOnly;page=1;$("notInstalledStat").classList.toggle("active",notInstalledOnly);load()}$("totalStat").onclick=resetToTotal;$("totalStat").onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();resetToTotal()}};$("notInstalledStat").onclick=toggleNotInstalled;$("notInstalledStat").onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleNotInstalled()}};$("searchInput").addEventListener('input',e=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>{search=e.target.value.trim();page=1;load()},300)});
+function resetToTotal(){
+  // Trở về toàn bộ kết quả của TỪ KHÓA ĐANG TÌM, không xóa từ khóa.
+  resetNotInstalledScan();
+  notInstalledOnly=false;
+  page=1;
+  $("notInstalledStat").classList.remove("active");
+  showQuickLoading(search?"Đang tải toàn bộ kết quả tìm kiếm...":"Đang tải toàn bộ danh sách...");
+  load();
+}
+function toggleNotInstalled(){
+  // Lọc Chưa cài bên trong tập kết quả tìm kiếm hiện tại.
+  resetNotInstalledScan();
+  notInstalledOnly=!notInstalledOnly;
+  page=1;
+  $("notInstalledStat").classList.toggle("active",notInstalledOnly);
+  showQuickLoading(notInstalledOnly?"Đang lọc bản ghi chưa cài trong kết quả tìm kiếm...":"Đang tải toàn bộ kết quả tìm kiếm...");
+  load();
+}
+$("totalStat").onclick=resetToTotal;
+$("totalStat").onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();resetToTotal()}};
+$("notInstalledStat").onclick=toggleNotInstalled;
+$("notInstalledStat").onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleNotInstalled()}};
+$("searchInput").addEventListener('input',e=>{
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(()=>{
+    search=e.target.value.trim();
+    page=1;
+    notInstalledOnly=false; // Mỗi lần tìm kiếm mới, hiển thị tổng kết quả trước.
+    $("notInstalledStat").classList.remove("active");
+    resetNotInstalledScan();
+    load();
+  },300);
+});
 async function exportExcel(){
   const btn=$("exportExcelBtn");
   if(!btn)return;
@@ -152,7 +218,7 @@ async function exportExcel(){
     while(currentPage<=totalPagesFromApi){
       btn.textContent=`Đang tải Excel ${currentPage}/${totalPagesFromApi}...`;
 
-      const u=new URL(API_URL);
+      const u=new URL(activeApiUrl());
       u.searchParams.set("page",currentPage);
       u.searchParams.set("pageSize",pageSizeForExport);
       if(search)u.searchParams.set("search",search);
@@ -265,6 +331,23 @@ async function exportExcel(){
   }
 }
 
+function switchDataSource(source){
+  if(source===dataSource)return;
+  dataSource=source;
+  resetNotInstalledScan();
+  page=1;search="";notInstalledOnly=false;
+  $("searchInput").value="";
+  $("notInstalledStat").classList.remove("active");
+  $("currentSourceBtn").classList.toggle("active",source==="current");
+  $("historySourceBtn").classList.toggle("active",source==="history");
+  $("currentSourceBtn").setAttribute("aria-selected",source==="current"?"true":"false");
+  $("historySourceBtn").setAttribute("aria-selected",source==="history"?"true":"false");
+  $("pageLoading").classList.remove("hide");
+  $("updated").textContent="";
+  load();
+}
+$("currentSourceBtn").onclick=()=>switchDataSource("current");
+$("historySourceBtn").onclick=()=>switchDataSource("history");
 $("exportExcelBtn").onclick=exportExcel;
 $("prevBtn").onclick=()=>{if(page>1){page--;load();scrollTo({top:0,behavior:'smooth'})}};
 $("nextBtn").onclick=()=>{if(page<totalPages){page++;load();scrollTo({top:0,behavior:'smooth'})}};$("closeDetail").onclick=closeDetail;$("detailModal").onclick=e=>{if(e.target===$("detailModal"))closeDetail()};window.onkeydown=e=>{if(e.key==='Escape')closeDetail()};load();
