@@ -3,6 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Xử lý Homewifi thiếu</title>
 
 <style>
@@ -104,12 +105,65 @@ body{
 .app-body{
   scroll-behavior:smooth;
 }
+
+/* ===== LOADING SCREEN + MONTH FILTER ===== */
+body.is-loading{overflow:hidden}
+#pageLoader{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(245,245,245,.94);transition:opacity .2s ease,visibility .2s ease}
+#pageLoader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.loader-box{display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 28px;background:#fff;border-radius:16px;box-shadow:0 8px 28px rgba(0,0,0,.12);font-size:14px;font-weight:bold;color:#444}
+.loader-spinner{width:42px;height:42px;border:4px solid #e5e7eb;border-top-color:#e11d48;border-radius:50%;animation:pageSpin .75s linear infinite}
+@keyframes pageSpin{to{transform:rotate(360deg)}}
+.filter-row{display:flex;gap:7px;margin-top:7px;align-items:center}
+.month-filter{flex:0 0 145px;min-width:0;padding:8px 9px;border:1px solid #ddd;border-radius:8px;background:#fff;font-size:13px;box-sizing:border-box}
+.search{flex:1;min-width:0;margin-top:0}
+@media(max-width:420px){.filter-row{gap:5px}.month-filter{flex-basis:112px;padding:8px 5px;font-size:11px}.search{font-size:12px}}
+
+
+/* ===== RESPONSIVE MOBILE LAYOUT ===== */
+*{box-sizing:border-box}
+html,body{width:100%;min-height:100%;margin:0;padding:0}
+.app{width:100%;height:100vh;height:100dvh;min-height:0;overflow:hidden}
+.app-header{flex:0 0 auto;padding:10px 12px}
+.app-body{min-height:0;width:100%;overflow-y:auto;overflow-x:hidden;padding:8px 10px calc(14px + env(safe-area-inset-bottom))}
+#tongTH,#dataTH{width:100%;min-width:0}
+.card{width:100%;overflow-wrap:anywhere;word-break:break-word}
+.row-btn button{min-width:0}
+@media(max-width:600px){
+  body{font-size:14px;-webkit-text-size-adjust:100%}
+  .app{height:100vh;height:100dvh}
+  .app-header{
+    padding:8px 9px;
+    padding-top:calc(8px + env(safe-area-inset-top));
+    box-shadow:0 2px 7px rgba(0,0,0,.12)
+  }
+  .title{font-size:16px;line-height:1.25}
+  .logtime{font-size:10px;margin-top:3px}
+  .filter-row{display:grid;grid-template-columns:112px minmax(0,1fr);gap:6px;margin-top:7px}
+  .month-filter{width:100%;min-width:0;height:37px;padding:0 6px;font-size:11px;border-radius:8px}
+  .search{width:100%;min-width:0;height:37px;margin:0;padding:0 9px;font-size:12px;border-radius:8px}
+  .app-body{padding:7px 7px calc(12px + env(safe-area-inset-bottom))}
+  .card{padding:9px;margin-bottom:7px;border-radius:9px;font-size:12px;line-height:1.45}
+  .row-btn{gap:6px;margin-top:7px}
+  .row-btn button{padding:8px 5px;font-size:11px;border-radius:7px}
+  .history{font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+}
+@media(max-width:360px){
+  .filter-row{grid-template-columns:98px minmax(0,1fr);gap:5px}
+  .title{font-size:15px}
+  .month-filter{font-size:10px}
+  .search{font-size:11px}
+}
+
 </style>
 
 </head>
 
-<body>
+<body class="is-loading">
  
+<div id="pageLoader" aria-live="polite">
+  <div class="loader-box"><div class="loader-spinner"></div><div id="loaderText">Đang tải dữ liệu...</div></div>
+</div>
+
 <div class="app">
 
   <!-- HEADER -->
@@ -117,8 +171,10 @@ body{
     <div class="title">📋 Xử lý Homewifi thiếu</div>
     <div id="logtime" class="logtime"></div>
 
-    <input id="search_all" class="search"
-      placeholder="🔍 Tìm account / nhân viên / huyện">
+    <div class="filter-row">
+      <select id="monthFilter" class="month-filter"><option value="">Tất cả tháng</option></select>
+      <input id="search_all" class="search" placeholder="🔍 Tìm account / nhân viên / huyện">
+    </div>
   </div>
 
   <!-- CONTENT -->
@@ -136,121 +192,126 @@ const API_NOTE = "https://script.google.com/macros/s/AKfycbxRzw22SuGZXByVNrQoylf
 
 let dataTH = [];
 let noteData = [];
+let selectedMonth = "";
+
+function monthInfo(value){
+  let raw = String(value ?? "").trim();
+  if(!raw) return {key:"",label:"Chưa xác định"};
+  let s = raw.replace(/^tháng\s*/i,"").trim();
+  let m = s.match(/^(\d{4})[-/.](\d{1,2})$/);
+  if(m){let y=Number(m[1]),mo=Number(m[2]);return {key:`${y}-${String(mo).padStart(2,"0")}`,label:`Tháng ${mo}/${y}`};}
+  m = s.match(/^(\d{1,2})[-/.](\d{4})$/);
+  if(m){let mo=Number(m[1]),y=Number(m[2]);return {key:`${y}-${String(mo).padStart(2,"0")}`,label:`Tháng ${mo}/${y}`};}
+  m = s.match(/^(\d{1,2})$/);
+  if(m){let mo=Number(m[1]);return {key:`M-${String(mo).padStart(2,"0")}`,label:`Tháng ${mo}`};}
+  return {key:`RAW-${s.toLowerCase()}`,label:s};
+}
+
+function setupMonthFilter(data){
+  const select=document.getElementById("monthFilter");
+  const previous=selectedMonth || select.value || "";
+  const months=new Map();
+  data.forEach(r=>{const info=monthInfo(r.thang);if(info.key)months.set(info.key,info.label);});
+  const sorted=[...months.entries()].sort((a,b)=>b[0].localeCompare(a[0],"vi",{numeric:true}));
+  select.innerHTML='<option value="">Tất cả tháng</option>'+
+    sorted.map(([key,label])=>`<option value="${key}">${label}</option>`).join("");
+  selectedMonth=sorted.some(([key])=>key===previous)?previous:"";
+  select.value=selectedMonth;
+}
+
+function applyFilters(){
+  const key=document.getElementById("search_all").value.toLowerCase().trim();
+  const updatedAccounts=noteData.map(n=>String(n.account ?? ""));
+  const filtered=dataTH.filter(r=>{
+    if(selectedMonth && monthInfo(r.thang).key!==selectedMonth)return false;
+    if(!key)return true;
+    const text=((r.account||"")+(r.nhan_vien||"")+(r.huyen||"")).toLowerCase();
+    if(key.includes("đã"))return updatedAccounts.includes(String(r.account ?? ""));
+    if(key.includes("chưa"))return !updatedAccounts.includes(String(r.account ?? ""));
+    return text.includes(key);
+  });
+  renderTong(filtered);
+  renderTH(filtered);
+}
+
+function hidePageLoader(){
+  const loader=document.getElementById("pageLoader");
+  if(loader)loader.classList.add("hide");
+  document.body.classList.remove("is-loading");
+}
 
 // ===== LOAD =====
 async function loadAll(){
-
-  let cache = localStorage.getItem("cache_homewifi");
-
-  // 🔥 1. LOAD CACHE (nếu có)
+  let hasCache=false;
+  const cache=localStorage.getItem("cache_homewifi");
   if(cache){
-    let data = JSON.parse(cache);
-
-    dataTH = data.dataTH;
-    noteData = data.noteData;
-
-    let latest = getLatestLogtime(dataTH);
-    document.getElementById("logtime").innerHTML =
-      "⏰ Thời gian lấy báo cáo: " + formatTime(latest);
-
-    renderTong(dataTH);
-    renderTH(dataTH);
-
-    console.log("🚀 LOAD TỪ CACHE");
+    try{
+      const saved=JSON.parse(cache);
+      dataTH=Array.isArray(saved.dataTH)?saved.dataTH:[];
+      noteData=Array.isArray(saved.noteData)?saved.noteData:[];
+      hasCache=true;
+      setupMonthFilter(dataTH);
+      const latest=getLatestLogtime(dataTH);
+      document.getElementById("logtime").innerHTML="⏰ Thời gian lấy báo cáo: "+formatTime(latest);
+      applyFilters();
+    }catch(e){console.warn("Cache Homewifi không hợp lệ:",e);}
   }
 
-  // 🔥 2. LUÔN LOAD API (QUAN TRỌNG)
-  document.getElementById("dataTH").innerHTML = "⏳ Đang tải dữ liệu...";
+  document.getElementById("loaderText").textContent=hasCache?"Đang cập nhật dữ liệu...":"Đang tải dữ liệu...";
+  if(!hasCache)document.getElementById("dataTH").innerHTML="⏳ Đang tải dữ liệu...";
 
   try{
-  
-    let th = await fetch(API_TH);
-    let thJson = await th.json();
-    dataTH = thJson.data;
-  
-    let note = await fetch(API_NOTE);
-    let noteJson = await note.json();
-    noteData = noteJson.data;
-  
-    localStorage.setItem("cache_homewifi", JSON.stringify({
-      dataTH,
-      noteData
-    }));
-  
-    let latest = getLatestLogtime(dataTH);
-    document.getElementById("logtime").innerHTML =
-      "⏰ Thời gian lấy báo cáo: " + formatTime(latest);
-  
-    renderTong(dataTH);
-    renderTH(dataTH);
-  
+    const th=await fetch(API_TH);
+    if(!th.ok)throw new Error("Homewifi API: HTTP "+th.status);
+    const thJson=await th.json();
+    if(!Array.isArray(thJson.data))throw new Error("Dữ liệu Homewifi không đúng định dạng");
+
+    const note=await fetch(API_NOTE);
+    if(!note.ok)throw new Error("API lịch sử: HTTP "+note.status);
+    const noteJson=await note.json();
+
+    dataTH=thJson.data;
+    noteData=Array.isArray(noteJson.data)?noteJson.data:[];
+    localStorage.setItem("cache_homewifi",JSON.stringify({dataTH,noteData}));
+
+    setupMonthFilter(dataTH);
+    const latest=getLatestLogtime(dataTH);
+    document.getElementById("logtime").innerHTML="⏰ Thời gian lấy báo cáo: "+formatTime(latest);
+    applyFilters();
   }catch(err){
-  
-    console.error("Lỗi API:", err);
-  
-    document.getElementById("dataTH").innerHTML =
-      "❌ Lỗi tải dữ liệu (kiểm tra mạng/API)";
+    console.error("Lỗi API:",err);
+    if(hasCache){
+      document.getElementById("dataTH").insertAdjacentHTML("afterbegin",
+        '<div class="card" style="color:#b45309">⚠️ Không cập nhật được dữ liệu mới. Đang hiển thị dữ liệu đã lưu trên thiết bị.</div>');
+    }else{
+      document.getElementById("dataTH").innerHTML="❌ Lỗi tải dữ liệu (kiểm tra mạng/API): "+String(err.message||err);
+    }
+  }finally{
+    hidePageLoader();
   }
 }
 function renderTong(data){
-
-  let t = calcTong(data);
-
-  let html = `
-    <div class="card">
-      <b>📊 Tổng thuê bao lắp thiếu:</b> ${t.totalAccount} thuê bao
-    </div>
-  `;
-
-  let months = Object.keys(t.byMonth)
-    .map(m => m.toString().trim().replace(/\D/g,''))
-    .filter(m => m)
-    .sort((a,b)=> parseInt(a) - parseInt(b));
-
-  months.forEach(m=>{
-    let obj = t.byMonth[m];
-    if(!obj) return;
-
-    html += `
-      <div class="card">
-        <b>📅 Tháng ${parseInt(m)}</b>: ${obj.accounts.size} thuê bao,
-        <b>💰 Phạt:</b>
-        <span class="high">${obj.tien.toLocaleString()}</span>
-      </div>
-    `;
+  let t=calcTong(data);
+  let html=`<div class="card"><b>📊 Tổng thuê bao lắp thiếu:</b> ${t.totalAccount} thuê bao</div>`;
+  Object.keys(t.byMonth).sort((a,b)=>b.localeCompare(a,"vi",{numeric:true})).forEach(key=>{
+    const obj=t.byMonth[key];
+    html+=`<div class="card"><b>📅 ${obj.label}</b>: ${obj.accounts.size} thuê bao,
+      <b>💰 Phạt:</b> <span class="high">${obj.tien.toLocaleString("vi-VN")}</span></div>`;
   });
-
-  document.getElementById("tongTH").innerHTML = html;
+  document.getElementById("tongTH").innerHTML=html;
 }
 function calcTong(data){
-
-  let byMonth = {};
-  let accounts = new Set();
-
+  let byMonth={},accounts=new Set();
   data.forEach(r=>{
-    if(!r.account) return;
-
+    if(!r.account)return;
     accounts.add(r.account);
-
-    let m = (r.thang || "").toString().replace(/\D/g,'');
-
-    if(!byMonth[m]){
-      byMonth[m] = {
-        accounts: new Set(),
-        tien: 0
-      };
-    }
-
-    byMonth[m].accounts.add(r.account);
-    byMonth[m].tien += Number(r.t_p || 0);
+    const info=monthInfo(r.thang),key=info.key||"UNKNOWN";
+    if(!byMonth[key])byMonth[key]={accounts:new Set(),tien:0,label:info.label};
+    byMonth[key].accounts.add(r.account);
+    byMonth[key].tien+=Number(r.t_p||0);
   });
-
-  return {
-    totalAccount: accounts.size,
-    byMonth
-  };
+  return {totalAccount:accounts.size,byMonth};
 }
-
 
 // ===== CHUYỂN TRANG =====
 function goDetail(account){
@@ -521,44 +582,10 @@ function viewImageList(urls, index = 0){
 }
 
 // ===== FILTER =====
-document.getElementById("search_all").addEventListener("input", ()=>{
-
-  let key = document.getElementById("search_all").value.toLowerCase().trim();
-
-  if(!key){
-    renderTong(dataTH);
-    renderTH(dataTH);
-    return;
-  }
-
-  // 🔥 lấy danh sách account đã xử lý
-  let updatedAccounts = noteData.map(n => n.account);
-
-  let f = dataTH.filter(r=>{
-
-    let text =
-      (r.account||"") +
-      (r.nhan_vien||"") +
-      (r.huyen||"");
-
-    text = text.toLowerCase();
-
-    // 🔥 tìm "đã xử lý"
-    if(key.includes("đã")){
-      return updatedAccounts.includes(r.account);
-    }
-
-    // 🔥 tìm "chưa có"
-    if(key.includes("chưa")){
-      return !updatedAccounts.includes(r.account);
-    }
-
-    // 🔍 tìm bình thường
-    return text.includes(key);
-  });
-
-  renderTong(f);
-  renderTH(f);
+document.getElementById("search_all").addEventListener("input",applyFilters);
+document.getElementById("monthFilter").addEventListener("change",e=>{
+  selectedMonth=e.target.value;
+  applyFilters();
 });
 let currentAccount = "";
 
