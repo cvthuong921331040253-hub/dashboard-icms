@@ -3,24 +3,31 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nhập dữ liệu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Xử lý Homewifi thiếu</title>
 
 <style>
 body{
   margin:0;
-  font-family:Arial;
-  background:#f2f4f7;
+  font-family: Arial;
+  background:#f5f5f5;
+}
+
+/* APP */
+.app{
+  display:flex;
+  flex-direction:column;
+  height:100vh;
 }
 
 /* HEADER */
-.header{
+.app-header{
   position:sticky;
   top:0;
   background:#fff;
-  padding:12px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  padding:10px;
   z-index:10;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
 
 .title{
@@ -28,293 +35,565 @@ body{
   font-weight:bold;
 }
 
-/* CONTENT */
-.container{
-  padding:12px;
+.logtime{
+  font-size:12px;
+  color:#666;
+  margin-top:4px;
+}
+
+/* SEARCH */
+.search{
+  width:100%;
+  margin-top:6px;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid #ddd;
+  box-sizing:border-box;
+  font-size:14px;
+}
+
+/* BODY */
+.app-body{
+  flex:1;
+  overflow:auto;
+  padding:8px;
 }
 
 /* CARD */
 .card{
   background:#fff;
-  border-radius:12px;
-  padding:14px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.08);
-}
-
-/* LABEL */
-.label{
-  font-size:13px;
-  color:#666;
-  margin-bottom:4px;
-}
-
-/* INPUT */
-textarea, select, input{
-  width:100%;
+  border-radius:10px;
   padding:10px;
-  border-radius:10px;
-  border:1px solid #ddd;
-  margin-top:6px;
-  font-size:15px;
-  box-sizing:border-box;
+  margin-bottom:8px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  font-size:14px;
 }
 
-/* FILE */
-.file-box{
-  margin-top:10px;
-  padding:10px;
-  border:1px dashed #ccc;
-  border-radius:10px;
-  text-align:center;
-  background:#fafafa;
-}
-
-/* PREVIEW */
-.preview{
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
-  margin-top:8px;
-}
-
-.preview img{
-  width:70px;
-  height:70px;
-  object-fit:cover;
-  border-radius:8px;
-}
-
-/* BUTTON */
-.btn{
-  margin-top:12px;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  background:#4CAF50;
-  color:#fff;
-  font-size:16px;
+.high{
+  color:red;
   font-weight:bold;
 }
 
-.btn:active{
-  background:#43a047;
+/* BUTTON */
+.row-btn{
+  display:flex;
+  gap:6px;
+  margin-top:6px;
 }
 
-/* LOADING */
-.loading{
-  text-align:center;
+.row-btn button{
+  flex:1;
+  padding:8px;
+  border:none;
+  border-radius:8px;
+  background:#f0f0f0;
   font-size:13px;
-  color:#666;
-  margin-top:10px;
+  cursor:pointer;
 }
+
+.row-btn button:active{
+  background:#ddd;
+}
+
+/* HISTORY */
+.history{
+  background:#fafafa;
+  padding:6px;
+  border-radius:6px;
+  margin-top:6px;
+}
+.app-body{
+  scroll-behavior:smooth;
+}
+
+/* ===== LOADING SCREEN + MONTH FILTER ===== */
+body.is-loading{overflow:hidden}
+#pageLoader{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(245,245,245,.94);transition:opacity .2s ease,visibility .2s ease}
+#pageLoader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.loader-box{display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 28px;background:#fff;border-radius:16px;box-shadow:0 8px 28px rgba(0,0,0,.12);font-size:14px;font-weight:bold;color:#444}
+.loader-spinner{width:42px;height:42px;border:4px solid #e5e7eb;border-top-color:#e11d48;border-radius:50%;animation:pageSpin .75s linear infinite}
+@keyframes pageSpin{to{transform:rotate(360deg)}}
+.filter-row{display:flex;gap:7px;margin-top:7px;align-items:center}
+.month-filter{flex:0 0 145px;min-width:0;padding:8px 9px;border:1px solid #ddd;border-radius:8px;background:#fff;font-size:13px;box-sizing:border-box}
+.search{flex:1;min-width:0;margin-top:0}
+@media(max-width:420px){.filter-row{gap:5px}.month-filter{flex-basis:112px;padding:8px 5px;font-size:11px}.search{font-size:12px}}
+
+
+/* ===== RESPONSIVE MOBILE LAYOUT ===== */
+*{box-sizing:border-box}
+html,body{width:100%;min-height:100%;margin:0;padding:0}
+.app{width:100%;height:100vh;height:100dvh;min-height:0;overflow:hidden}
+.app-header{flex:0 0 auto;padding:10px 12px}
+.app-body{min-height:0;width:100%;overflow-y:auto;overflow-x:hidden;padding:8px 10px calc(14px + env(safe-area-inset-bottom))}
+#tongTH,#dataTH{width:100%;min-width:0}
+.card{width:100%;overflow-wrap:anywhere;word-break:break-word}
+.row-btn button{min-width:0}
+@media(max-width:600px){
+  body{font-size:14px;-webkit-text-size-adjust:100%}
+  .app{height:100vh;height:100dvh}
+  .app-header{
+    padding:8px 9px;
+    padding-top:calc(8px + env(safe-area-inset-top));
+    box-shadow:0 2px 7px rgba(0,0,0,.12)
+  }
+  .title{font-size:16px;line-height:1.25}
+  .logtime{font-size:10px;margin-top:3px}
+  .filter-row{display:grid;grid-template-columns:112px minmax(0,1fr);gap:6px;margin-top:7px}
+  .month-filter{width:100%;min-width:0;height:37px;padding:0 6px;font-size:11px;border-radius:8px}
+  .search{width:100%;min-width:0;height:37px;margin:0;padding:0 9px;font-size:12px;border-radius:8px}
+  .app-body{padding:7px 7px calc(12px + env(safe-area-inset-bottom))}
+  .card{padding:9px;margin-bottom:7px;border-radius:9px;font-size:12px;line-height:1.45}
+  .row-btn{gap:6px;margin-top:7px}
+  .row-btn button{padding:8px 5px;font-size:11px;border-radius:7px}
+  .history{font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+}
+@media(max-width:360px){
+  .filter-row{grid-template-columns:98px minmax(0,1fr);gap:5px}
+  .title{font-size:15px}
+  .month-filter{font-size:10px}
+  .search{font-size:11px}
+}
+
 </style>
 
 </head>
 
-<body>
-
-<div class="header">
-  <div class="title">📋 Nhập xử lý</div>
+<body class="is-loading">
+ 
+<div id="pageLoader" aria-live="polite">
+  <div class="loader-box"><div class="loader-spinner"></div><div id="loaderText">Đang tải dữ liệu...</div></div>
 </div>
 
-<div class="container">
+<div class="app">
 
-  <div class="card">
+  <!-- HEADER -->
+  <div class="app-header">
+    <div class="title">📋 Xử lý Homewifi thiếu</div>
+    <div id="logtime" class="logtime"></div>
 
-    <div id="info" style="margin-bottom:10px;font-weight:bold;"></div>
-
-    <div class="label">Ghi chú</div>
-    <textarea id="note" rows="2"></textarea>
-
-    <div class="label">Trạng thái</div>
-    <select id="status">
-      <option value="done">✅ Đã xử lý</option>
-      <option value="fail">❌ Bất khả kháng</option>
-    </select>
-
-    <div class="file-box">
-      📷 Chọn ảnh
-      <input type="file" id="img" multiple accept="image/*">
+    <div class="filter-row">
+      <select id="monthFilter" class="month-filter"><option value="">Tất cả tháng</option></select>
+      <input id="search_all" class="search" placeholder="🔍 Tìm account / nhân viên / huyện">
     </div>
+  </div>
 
-    <div class="preview" id="preview"></div>
-
-    <button id="btnSave" class="btn" onclick="save()">💾 Lưu</button>
-
-    <div id="loading" class="loading" style="display:none">
-      ⏳ Đang tải dữ liệu...
-    </div>
-
+  <!-- CONTENT -->
+  <div class="app-body">
+    <div id="tongTH"></div>
+    <div id="dataTH"></div>
   </div>
 
 </div>
 
 <script>
 
-const API_NOTE = "https://script.google.com/macros/s/AKfycbx2ABWgQ4289KksFkt6c8iL0aixPf3aaj8ODtTRCuC0JnAnx4ozxGveQHF3epUkSluc/exec";
+const API_TH   = "https://script.google.com/macros/s/AKfycbyezxVz4giR-_yzv9ogTlbuvb4jkwyfZCrrDv53ScmkPrcDY1f1Mv-jMVziS3OGWLkl/exec?sheet=Homewifi";
+const API_NOTE = "https://script.google.com/macros/s/AKfycbxRzw22SuGZXByVNrQoylfmuY_5Jtat7KwNs24gbGbuRrt-txGs1Uxo5Vg0JC-h1hLNXg/exec";
 
-let account = "";
-let nhan_vien = "";
+let dataTH = [];
 let noteData = [];
+let selectedMonth = "";
 
-// ===== LOAD NOTE =====
-async function loadNote(){
-  let res = await fetch(API_NOTE).then(r=>r.json());
-  noteData = res.data;
+function monthInfo(value){
+  let raw = String(value ?? "").trim();
+  if(!raw) return {key:"",label:"Chưa xác định"};
+  let s = raw.replace(/^tháng\s*/i,"").trim();
+  let m = s.match(/^(\d{4})[-/.](\d{1,2})$/);
+  if(m){let y=Number(m[1]),mo=Number(m[2]);return {key:`${y}-${String(mo).padStart(2,"0")}`,label:`Tháng ${mo}/${y}`};}
+  m = s.match(/^(\d{1,2})[-/.](\d{4})$/);
+  if(m){let mo=Number(m[1]),y=Number(m[2]);return {key:`${y}-${String(mo).padStart(2,"0")}`,label:`Tháng ${mo}/${y}`};}
+  m = s.match(/^(\d{1,2})$/);
+  if(m){let mo=Number(m[1]);return {key:`M-${String(mo).padStart(2,"0")}`,label:`Tháng ${mo}`};}
+  return {key:`RAW-${s.toLowerCase()}`,label:s};
 }
 
-// ===== LẤY PARAM =====
-function getParam(){
-  let url = new URLSearchParams(window.location.search);
-  account = url.get("account");
-
-document.getElementById("info").innerHTML =
-  "Account: <span style='color:#2196F3'>" + account + "</span>";
+function setupMonthFilter(data){
+  const select=document.getElementById("monthFilter");
+  const previous=selectedMonth || select.value || "";
+  const months=new Map();
+  data.forEach(r=>{const info=monthInfo(r.thang);if(info.key)months.set(info.key,info.label);});
+  const sorted=[...months.entries()].sort((a,b)=>b[0].localeCompare(a[0],"vi",{numeric:true}));
+  select.innerHTML='<option value="">Tất cả tháng</option>'+
+    sorted.map(([key,label])=>`<option value="${key}">${label}</option>`).join("");
+  selectedMonth=sorted.some(([key])=>key===previous)?previous:"";
+  select.value=selectedMonth;
 }
 
-// ===== CHECK EXIST =====
-function isExist(account){
-  return noteData.some(n => n.account == account);
+function applyFilters(){
+  const key=document.getElementById("search_all").value.toLowerCase().trim();
+  const updatedAccounts=noteData.map(n=>String(n.account ?? ""));
+  const filtered=dataTH.filter(r=>{
+    if(selectedMonth && monthInfo(r.thang).key!==selectedMonth)return false;
+    if(!key)return true;
+    const text=((r.account||"")+(r.nhan_vien||"")+(r.huyen||"")).toLowerCase();
+    if(key.includes("đã"))return updatedAccounts.includes(String(r.account ?? ""));
+    if(key.includes("chưa"))return !updatedAccounts.includes(String(r.account ?? ""));
+    return text.includes(key);
+  });
+  renderTong(filtered);
+  renderTH(filtered);
 }
 
-// ===== SAVE =====
-
-async function save(){
-  document.getElementById("loading").style.display = "block";
-  document.getElementById("btnSave").disabled = true;
-  let note = document.getElementById("note").value.trim();
-  let status = document.getElementById("status").value;
-  let files = document.getElementById("img").files;
-
-  let existed = isExist(account);
-
-  // 🔒 CHỐNG TRÙNG
-  if(existed){
-    if(!confirm("Account đã cập nhật trước đó. Bạn muốn cập nhật lại?")){
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("btnSave").disabled = false;
-      return;
-    }
-  }
-
-  // 🎯 LOGIC
-  if(status === "done"){
-    if(files.length === 0){
-      alert("⚠️ Đã xử lý phải có hình ảnh có tọa độ");
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("btnSave").disabled = false;
-      return;
-    }
-  }
-
-  if(status === "fail"){
-    if(files.length === 0 || !note){
-      alert("⚠️ Bất khả kháng cần ghi chú + hình ảnh có tọa độ");
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("btnSave").disabled = false;
-      return;
-    }
-  }
-
-  // 🚀 upload nhiều ảnh
-  let images = [];
-
-  if(files.length > 0){
-    for(let f of files){
-      let base64 = await compressImagePromise(f);
-      images.push(base64);
-    }
-  }
-
-  send(note, status, images, existed);
+function hidePageLoader(){
+  const loader=document.getElementById("pageLoader");
+  if(loader)loader.classList.add("hide");
+  document.body.classList.remove("is-loading");
 }
 
-// ===== SEND =====
-function send(note, status, images, existed){
+// ===== LOAD =====
+async function loadAll(){
+  let hasCache=false;
+  const cache=localStorage.getItem("cache_homewifi");
+  if(cache){
+    try{
+      const saved=JSON.parse(cache);
+      dataTH=Array.isArray(saved.dataTH)?saved.dataTH:[];
+      noteData=Array.isArray(saved.noteData)?saved.noteData:[];
+      hasCache=true;
+      setupMonthFilter(dataTH);
+      const latest=getLatestLogtime(dataTH);
+      document.getElementById("logtime").innerHTML="⏰ Thời gian lấy báo cáo: "+formatTime(latest);
+      applyFilters();
+    }catch(e){console.warn("Cache Homewifi không hợp lệ:",e);}
+  }
 
-  fetch(API_NOTE,{
-    method:"POST",
-    body: JSON.stringify({
-      account,
-      note,
-      status,
-      images, // 👈 gửi mảng ảnh
-      nhan_vien,
-      mode: existed ? "update" : "insert"
-    })
-  })
-  .then(res=>res.text())
-  .then(()=>{
-    alert("✅ Đã lưu");
-    localStorage.removeItem("cache_homewifi");
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("btnSave").disabled = false;
-  
-    localStorage.setItem("updated_account", account);
-  
-    if(document.referrer.includes("homewifi")){
-      window.history.back();
+  document.getElementById("loaderText").textContent=hasCache?"Đang cập nhật dữ liệu...":"Đang tải dữ liệu...";
+  if(!hasCache)document.getElementById("dataTH").innerHTML="⏳ Đang tải dữ liệu...";
+
+  try{
+    const th=await fetch(API_TH);
+    if(!th.ok)throw new Error("Homewifi API: HTTP "+th.status);
+    const thJson=await th.json();
+    if(!Array.isArray(thJson.data))throw new Error("Dữ liệu Homewifi không đúng định dạng");
+
+    const note=await fetch(API_NOTE);
+    if(!note.ok)throw new Error("API lịch sử: HTTP "+note.status);
+    const noteJson=await note.json();
+
+    dataTH=thJson.data;
+    noteData=Array.isArray(noteJson.data)?noteJson.data:[];
+    localStorage.setItem("cache_homewifi",JSON.stringify({dataTH,noteData}));
+
+    setupMonthFilter(dataTH);
+    const latest=getLatestLogtime(dataTH);
+    document.getElementById("logtime").innerHTML="⏰ Thời gian lấy báo cáo: "+formatTime(latest);
+    applyFilters();
+  }catch(err){
+    console.error("Lỗi API:",err);
+    if(hasCache){
+      document.getElementById("dataTH").insertAdjacentHTML("afterbegin",
+        '<div class="card" style="color:#b45309">⚠️ Không cập nhật được dữ liệu mới. Đang hiển thị dữ liệu đã lưu trên thiết bị.</div>');
     }else{
-      window.location.href = "https://cvthuong921331040253-hub.github.io/dashboard-icms/homewifi.html";
+      document.getElementById("dataTH").innerHTML="❌ Lỗi tải dữ liệu (kiểm tra mạng/API): "+String(err.message||err);
     }
-  })
-  .catch(()=>{
-    alert("❌ Lỗi upload");
-  
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("btnSave").disabled = false;
-  });
-}
-
-// ===== NÉN ẢNH PROMISE =====
-function compressImagePromise(file){
-  return new Promise(resolve=>{
-    let img = new Image();
-    let reader = new FileReader();
-
-    reader.onload = e => img.src = e.target.result;
-
-    img.onload = function(){
-      let canvas = document.createElement("canvas");
-      let scale = Math.min(1, 1000 / img.width);
-
-      canvas.width = img.width * scale;
-      canvas.height = img.height * scale;
-
-      let ctx = canvas.getContext("2d");
-      ctx.drawImage(img,0,0,canvas.width,canvas.height);
-
-      resolve(canvas.toDataURL("image/jpeg",0.7));
-    };
-
-    reader.readAsDataURL(file);
-  });
-}
-
-// ===== PREVIEW ẢNH =====
-document.getElementById("img").addEventListener("change", function(){
-
-  let preview = document.getElementById("preview");
-  preview.innerHTML = "";
-
-  for(let file of this.files){
-    let img = document.createElement("img");
-    img.src = URL.createObjectURL(file);
-    preview.appendChild(img);
+  }finally{
+    hidePageLoader();
   }
-});
-// 🔥 DEBUG FILE INPUT
-document.getElementById("img").addEventListener("click", ()=>{
-  console.log("CLICK FILE INPUT");
-});
+}
+function renderTong(data){
+  let t=calcTong(data);
+  let html=`<div class="card"><b>📊 Tổng thuê bao lắp thiếu:</b> ${t.totalAccount} thuê bao</div>`;
+  Object.keys(t.byMonth).sort((a,b)=>b.localeCompare(a,"vi",{numeric:true})).forEach(key=>{
+    const obj=t.byMonth[key];
+    html+=`<div class="card"><b>📅 ${obj.label}</b>: ${obj.accounts.size} thuê bao,
+      <b>💰 Phạt:</b> <span class="high">${obj.tien.toLocaleString("vi-VN")}</span></div>`;
+  });
+  document.getElementById("tongTH").innerHTML=html;
+}
+function calcTong(data){
+  let byMonth={},accounts=new Set();
+  data.forEach(r=>{
+    if(!r.account)return;
+    accounts.add(r.account);
+    const info=monthInfo(r.thang),key=info.key||"UNKNOWN";
+    if(!byMonth[key])byMonth[key]={accounts:new Set(),tien:0,label:info.label};
+    byMonth[key].accounts.add(r.account);
+    byMonth[key].tien+=Number(r.t_p||0);
+  });
+  return {totalAccount:accounts.size,byMonth};
+}
 
-document.getElementById("img").addEventListener("change", ()=>{
-  console.log("ĐÃ CHỌN FILE");
+// ===== CHUYỂN TRANG =====
+function goDetail(account){
+  window.location.href = "homewifinhaplieu.html?account=" + account;
+}
+
+// ===== GROUP =====
+function groupByAccount(data){
+  let map = {};
+
+  data.forEach(r=>{
+    let key = r.account;
+
+    if(!map[key]){
+      map[key] = {
+        nhan_vien: r.nhan_vien,
+        huyen: r.huyen,
+        account: r.account,
+        seri: [],
+        t_p: 0,
+        thang: r.thang
+      };
+    }
+
+    if(r.seri) map[key].seri.push(r.seri);
+    map[key].t_p += Number(r.t_p || 0);
+  });
+
+  return Object.values(map);
+}
+
+// ===== NOTE =====
+function getNote(account){
+  return noteData.filter(n => n.account == account);
+}
+
+// ===== RENDER =====
+function renderTH(data){
+
+  let html = "";
+
+  let grouped = groupByAccount(data)
+    .filter(r => r.t_p > 0)
+    .sort((a,b)=> b.t_p - a.t_p)
+    .slice(0, 200); // 🔥 giới hạn 200 dòng
+
+  grouped.forEach(r=>{
+
+    let notes = getNote(r.account);
+    let latest = notes.length ? notes[notes.length-1] : null;
+
+    let statusIcon = "";
+    let statusClass = "";
+
+    if(latest){
+      if(latest.status=="done"){statusIcon="✅";statusClass="done";}
+      if(latest.status=="fail"){statusIcon="⚠️";statusClass="fail";}
+    }
+
+    html += `
+    <div class="card" data-acc="${r.account}">
+
+      <b class="${statusClass}">${statusIcon} ${r.account}</b><br>
+      👤 ${r.nhan_vien} - ${r.huyen}<br>
+      🔧 Thiếu: ${r.seri.join(", ")}<br>
+      📅 TKM tháng: ${r.thang}<br>
+      💰 <span class="${r.t_p>200000?'high':''}">
+      ${Number(r.t_p||0).toLocaleString()}
+      </span>
+
+      <div class="row-btn">
+        <button onclick="toggleHistory('${r.account}')">
+          📜 Lịch sử
+        </button>
+      
+        <button onclick="goDetail('${r.account}')">
+          ✏️ Nhập dữ liệu
+        </button>
+      </div>
+
+      <div id="his_${r.account}" class="history" style="display:none">
+        ${renderHistory(notes)}
+      </div>
+
+    </div>
+    `;
+  });
+
+document.getElementById("dataTH").innerHTML = html || "Không có dữ liệu";
+
+// 🔥 FIX highlight đúng thời điểm
+let acc = localStorage.getItem("updated_account");
+
+if(acc){
+  setTimeout(()=>{
+    highlightAccount(acc);
+    localStorage.removeItem("updated_account");
+  },150); // delay nhỏ cho chắc chắn DOM xong
+}
+}
+  
+function renderHistory(list){
+  if(!list.length) return "Chưa có";
+
+  return list.map(n=>`
+    ⏰ ${formatTime(n.time)}<br>
+    ${n.status=="done"?"✅ Đã xử lý":"❌ Bất khả kháng: " + n.note}<br>
+    ${
+      n.image 
+      ? (() => {
+          let arr = n.image.split(",").map(u=>u.trim());
+
+          return arr.map((u,i)=>`
+            <span onclick='viewImageList(${JSON.stringify(arr)}, ${i})'
+              style="color:blue;cursor:pointer">📷 Ảnh ${i+1}</span>
+          `).join(" ");
+        })()
+      : ""
+    }
+    <hr>
+  `).join("");
+}
+
+function toggleHistory(acc){
+  let el = document.getElementById("his_"+acc);
+  el.style.display = el.style.display=="none" ? "block":"none";
+}
+
+function formatTime(t){
+  return new Date(t).toLocaleString("vi-VN");
+}
+function getLatestLogtime(data){
+  let max = 0;
+
+  data.forEach(r=>{
+    let t = new Date(r.update).getTime(); // 👈 field đúng là update
+    if(t > max) max = t;
+  });
+
+  return max;
+}
+function highlightAccount(account){
+
+  let el = document.querySelector(`[data-acc='${account}']`);
+
+  if(el){
+    el.style.background = "#fff3cd";
+
+    setTimeout(()=>{
+      el.style.background = "#fff";
+    },2000);
+
+    el.scrollIntoView({behavior:"smooth",block:"center"});
+  }
+
+}
+function clearCache(){
+  localStorage.removeItem("cache_homewifi");
+  alert("Đã xóa cache");
+}
+  
+function viewImageList(urls, index = 0){
+
+  let div = document.createElement("div");
+
+  div.style = `
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:#000;
+    z-index:9999;
+  `;
+
+  let idList = urls.map(u => {
+    let m = u.match(/[-\w]{25,}/);
+    return m ? m[0] : "";
+  });
+
+  function render(i){
+    div.innerHTML = `
+    <div onclick="window.closeImg()" 
+      style="position:absolute;top:10px;right:15px;color:#fff;font-size:24px;cursor:pointer;z-index:10">
+      ✖
+    </div>
+
+      ${
+        i > 0 
+        ? `<div onclick="window.prev()" 
+            style="position:absolute;left:10px;top:50%;color:#fff;font-size:30px;cursor:pointer;z-index:10">⬅</div>`
+        : ""
+      }
+      
+      ${
+        i < idList.length - 1
+        ? `<div onclick="window.next()" 
+            style="position:absolute;right:10px;top:50%;color:#fff;font-size:30px;cursor:pointer;z-index:10">➡</div>`
+        : ""
+      }
+
+      <div id="touchLayer" style="
+        position:absolute;
+        top:0;left:0;
+        width:100%;height:100%;
+        z-index:5;
+        pointer-events:auto;
+      "></div>
+
+      <iframe src="https://drive.google.com/file/d/${idList[i]}/preview"
+      style="width:100%;height:100%;border:none;z-index:1;pointer-events:none"></iframe>
+    `;
+  }
+
+  function next(){
+    if(index < idList.length - 1){
+      index++;
+      render(index);
+      bindSwipe(); // 🔥 QUAN TRỌNG
+    }
+  }
+
+  function prev(){
+    if(index > 0){
+      index--;
+      render(index);
+      bindSwipe(); // 🔥 QUAN TRỌNG
+    }
+  }
+
+  function bindSwipe(){
+    let layer = div.querySelector("#touchLayer");
+    if(!layer) return;
+
+    let startX = 0;
+
+    layer.addEventListener("touchstart", e=>{
+      startX = e.touches[0].clientX;
+    });
+
+    layer.addEventListener("touchend", e=>{
+      let endX = e.changedTouches[0].clientX;
+      let diff = endX - startX;
+
+      if(Math.abs(diff) > 50){
+        if(diff < 0){
+          next();
+        }else{
+          prev();
+        }
+      }
+    });
+  }
+
+  window.next = next;
+  window.prev = prev;
+  window.closeImg = ()=>{
+  div.remove();
+};
+  render(index);
+  bindSwipe(); // 🔥 QUAN TRỌNG
+
+  div.onclick = (e)=>{
+  if(e.target === div){
+    div.remove();
+  }
+};
+
+  document.body.appendChild(div);
+}
+
+// ===== FILTER =====
+document.getElementById("search_all").addEventListener("input",applyFilters);
+document.getElementById("monthFilter").addEventListener("change",e=>{
+  selectedMonth=e.target.value;
+  applyFilters();
 });
+let currentAccount = "";
+
+function openForm(acc){
+  currentAccount = acc;
+}
 // INIT
-getParam();
-loadNote();
-
+loadAll();
 </script>
 
 </body>
