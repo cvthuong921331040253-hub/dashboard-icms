@@ -378,6 +378,7 @@ const LABELS={
   "socqh24h": "SOC quá hạn 24h",
   "socqh72h": "SOC quá hạn 72h",
   "scqhhen": "Sự cố quá hẹn", 
+  "sclap": "SC lặp",
   "tgxlgnoc": "Thời gian xử lý GNOC",
   "tongtg3h10h": "Tổng TG 3h 10h",
   "tgftcheckin": "TG Checkin",
@@ -393,7 +394,8 @@ const STATUS_DEFS=[
   {"key":"htqh24h","label":"Hỗ trợ quá hạn 24h","class":"blue"},
   {"key":"socqh24h","label":"SOC quá hạn 24h","class":"warn"},
   {"key":"socqh72h","label":"SOC quá hạn 72h","class":"hot"},
-  {"key":"scqhhen","label":"Sự cố quá hẹn","class":"hot"}
+  {"key":"scqhhen","label":"Sự cố quá hẹn","class":"hot"},
+  {"key":"sclap","label":"SC lặp","class":"hot"}
 ];
 const PRIMARY=["account"], SECONDARY=["nhanvien","huyen"], INFO_KEYS=["mawo","loaikn","theloai","huyen","nhanvien","ngayphatsinh","giophatsinh","ngayhenxl","ngayftdong","gioftdong","tgxlgnoc","tongtg3h10h","tgftcheckin","tongtgsoc"];
 const state={page:1,limit:50,q:"",columns:[],data:[],total:0,totalPages:1,searchTimer:null};
