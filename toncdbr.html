@@ -13950,6 +13950,106 @@ body.dashboard-is-loading{
   vertical-align: middle !important;
 }
 </style>
+
+<style id="PREV_MONTH_TEAM_STOCK_TABLE_V1">
+#evaluationNotebook #evaluationNotebookContent{width:100%!important;max-width:100%!important;}
+#evaluationNotebook .prev-month-team-stock-wrap{
+  width:100%!important;max-width:100%!important;overflow:auto!important;
+  max-height:72vh!important;border:1px solid #e2e8f0;border-radius:8px;
+  -webkit-overflow-scrolling:touch;
+}
+#evaluationNotebook .prev-month-team-stock-table{
+  display:table!important;width:100%!important;min-width:1500px!important;
+  border-collapse:separate!important;border-spacing:0!important;table-layout:fixed!important;
+}
+#evaluationNotebook .prev-month-team-stock-table th,
+#evaluationNotebook .prev-month-team-stock-table td{
+  padding:8px 6px!important;font-size:11px!important;line-height:1.35!important;
+  white-space:normal!important;overflow-wrap:anywhere!important;
+  text-align:center!important;vertical-align:middle!important;
+  border-right:1px solid #e8edf3!important;border-bottom:1px solid #e8edf3!important;
+}
+#evaluationNotebook .prev-month-team-stock-table thead th{
+  position:sticky!important;top:0!important;z-index:4!important;background:#eaf0f7!important;
+  min-height:42px!important;font-weight:800!important;color:#263548!important;
+}
+#evaluationNotebook .prev-month-team-stock-table th:first-child,
+#evaluationNotebook .prev-month-team-stock-table td:first-child{width:48px!important;}
+#evaluationNotebook .prev-month-team-stock-table th:nth-child(2),
+#evaluationNotebook .prev-month-team-stock-table td:nth-child(2){width:135px!important;}
+#evaluationNotebook .prev-month-team-stock-table tbody tr:nth-child(even) td{background:#f8fafc!important;}
+#evaluationNotebook .prev-month-team-stock-table tbody tr:hover td{background:#edf5ff!important;}
+#evaluationNotebook .prev-month-team-stock-table .district-metric-main{font-weight:750!important;font-variant-numeric:tabular-nums!important;}
+#evaluationNotebook .prev-month-team-stock-table .metric-positive .district-metric-main{color:#dc2626!important;font-weight:900!important;}
+
+#evaluationNotebook .prev-month-team-stock-table th:first-child,
+#evaluationNotebook .prev-month-team-stock-table td:first-child{
+  position:sticky!important;left:0!important;z-index:5!important;
+  min-width:42px!important;background:#f1f5f9!important;
+}
+#evaluationNotebook .prev-month-team-stock-table th:nth-child(2),
+#evaluationNotebook .prev-month-team-stock-table td:nth-child(2){
+  position:sticky!important;left:42px!important;z-index:4!important;
+  min-width:115px!important;text-align:center!important;vertical-align:middle!important;
+  background:#fff!important;box-shadow:2px 0 3px rgba(15,23,42,.08)!important;
+}
+#evaluationNotebook .prev-month-team-stock-table thead th:first-child,
+#evaluationNotebook .prev-month-team-stock-table thead th:nth-child(2){z-index:7!important;background:#eaf0f7!important;}
+#evaluationNotebook .prev-month-team-stock-table .district-metric-cell{cursor:pointer;}
+#evaluationNotebook .prev-month-team-stock-table .district-metric-cell:hover{background:#dbeafe!important;}
+#evaluationNotebook .prev-month-team-stock-table .metric-locked{background:#f1f5f9!important;font-weight:800;}
+#evaluationNotebook .prev-month-team-stock-table td:first-child{font-weight:800;color:#64748b;text-align:center!important;}
+#evaluationNotebook .prev-month-team-stock-table td:nth-child(2){font-weight:700!important;}
+@media(max-width:768px){
+  #evaluationNotebook{width:100%!important;max-width:100%!important;padding:9px!important;}
+  #evaluationNotebook .prev-month-team-stock-wrap{max-height:70vh!important;}
+  #evaluationNotebook .prev-month-team-stock-table{min-width:1500px!important;}
+  #evaluationNotebook .prev-month-team-stock-table th,
+  #evaluationNotebook .prev-month-team-stock-table td{font-size:10px!important;padding:7px 5px!important;}
+}
+</style>
+
+
+<style id="OVERDUE_ALERT_REPORT_STYLE">
+.overdue-alert-report{display:block!important;visibility:visible!important;opacity:1!important;background:#fff;border:1px solid #d9e0e8;border-radius:10px;padding:12px;margin:18px 0 22px;box-shadow:0 1px 4px rgba(15,23,42,.05);width:100%;max-width:100%;box-sizing:border-box}
+.overdue-alert-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}
+.overdue-alert-title{font-size:19px;font-weight:800;color:#991b1b;letter-spacing:.15px;text-align:center;flex:1}
+.overdue-alert-capture{border:0;border-radius:7px;background:#b91c1c;color:#fff;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.overdue-alert-meta{font-size:12px;color:#64748b;margin:0 0 9px;font-weight:700;text-align:center}
+#overdueAlertTableWrap{display:block!important;visibility:visible!important;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.overdue-alert-table{width:max-content;min-width:100%;border-collapse:collapse;table-layout:auto;font-size:12px;background:#fff}
+.overdue-alert-table th{background:#eaf0f7;color:#1e293b;font-weight:800;text-align:center!important;padding:7px 4px;border:1px solid #cbd5e1;white-space:normal;line-height:1.2;vertical-align:middle}
+.overdue-alert-table td{padding:6px 5px;border:1px solid #dbe2ea;line-height:1.2;vertical-align:middle;text-align:center!important;white-space:nowrap}
+.overdue-alert-table tbody tr:nth-child(even){background:#f8fafc}
+.overdue-alert-table .oa-time{font-weight:800;color:#b91c1c;text-align:center!important;white-space:nowrap}
+.overdue-alert-table .oa-date{text-align:center!important;white-space:nowrap;font-variant-numeric:tabular-nums}
+.overdue-alert-table .oa-team{white-space:nowrap;text-align:center!important;font-weight:700}
+.overdue-alert-table .oa-kind{text-align:center!important;font-weight:800;white-space:nowrap}
+.overdue-alert-table .oa-kind-sc{color:#b91c1c}
+.overdue-alert-table .oa-kind-tkm{color:#c2410c}
+.overdue-alert-empty{text-align:center;padding:18px;color:#64748b;font-weight:600}
+@media(max-width:700px){.overdue-alert-report{padding:8px;margin:12px 0}.overdue-alert-head{align-items:center;flex-wrap:wrap}.overdue-alert-title{font-size:15px;flex-basis:100%;order:0}.overdue-alert-capture{order:1;margin:0 auto}.overdue-alert-meta{font-size:10px}.overdue-alert-table{min-width:920px;font-size:10px}.overdue-alert-table th,.overdue-alert-table td{padding:5px 3px;font-size:10px}}
+</style>
+
+
+<style id="OVERDUE_ALERT_MOBILE_REFINEMENT">
+.overdue-alert-status{min-height:0;margin:0 0 7px;text-align:center;font-size:12px;font-weight:700;color:#166534}
+.overdue-alert-status:empty{display:none}
+.overdue-alert-status.is-error{color:#b91c1c}
+@media(max-width:700px){
+  body{padding:8px!important}
+  #overdueAlertReport{padding:8px!important;margin:10px 0 14px!important;border-radius:8px!important}
+  #overdueAlertReport .overdue-alert-head{display:grid!important;grid-template-columns:1fr!important;gap:7px!important}
+  #overdueAlertReport .overdue-alert-title{font-size:14px!important;line-height:1.25!important}
+  #overdueAlertReport .overdue-alert-capture{width:100%!important;min-height:38px!important;font-size:12px!important}
+  #overdueAlertReport .overdue-alert-meta{font-size:10px!important;line-height:1.35!important;margin-bottom:7px!important}
+  #overdueAlertTableWrap{width:100%!important;max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;overscroll-behavior-x:contain;scrollbar-width:thin}
+  #overdueAlertTableWrap .overdue-alert-table{width:max-content!important;min-width:100%!important;table-layout:auto!important;font-size:10px!important}
+  #overdueAlertTableWrap .overdue-alert-table th,
+  #overdueAlertTableWrap .overdue-alert-table td{font-size:10px!important;padding:5px 4px!important;line-height:1.2!important;white-space:nowrap!important;overflow-wrap:normal!important}
+}
+</style>
+
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -14148,6 +14248,16 @@ body.dashboard-is-loading{
   
   <div class="dashboard" id="tontkmDashboard"></div>
   
+  <section id="overdueAlertReport" class="overdue-alert-report">
+    <div class="overdue-alert-head">
+      <div class="overdue-alert-title">🚨 CẢNH BÁO TÁC VỤ QUÁ HẠN</div>
+      <button type="button" id="btnCaptureOverdueAlert" class="overdue-alert-capture" data-html2canvas-ignore="true" onclick="captureOverdueAlertPages()">📸 Chụp ảnh báo cáo</button>
+    </div>
+    <div class="overdue-alert-meta" id="overdueAlertMeta">Đang tổng hợp dữ liệu...</div>
+    <div id="overdueAlertStatus" class="overdue-alert-status" aria-live="polite"></div>
+    <div id="overdueAlertTableWrap"></div>
+  </section>
+
   <div class="section-title">📊 BIỂU ĐỒ THỐNG KÊ</div>
   
   <div class="chart-grid">
@@ -14259,15 +14369,11 @@ body.dashboard-is-loading{
 
   <aside id="evaluationNotebook" class="evaluation-notebook">
     <div class="notebook-title notebook-title-with-action">
-      <span>📋 ĐÁNH GIÁ TỒN CÔNG VIỆC CĐBR</span>
+      <span>📊 TỔNG QUAN TỒN THÁNG N-1</span>
       <button id="btnCaptureCDBR" class="btn-capture-cdbr" type="button" data-html2canvas-ignore="true" onclick="captureCDBRReport()">📸 Chụp báo cáo</button>
     </div>
-    <div class="notebook-subtitle">Tự động xếp hạng các huyện và nhân viên có tồn lớn. Bấm vào từng dòng để xem chi tiết.</div>
+    <div class="notebook-subtitle" id="prevMonthTeamStockSubtitle">Tổng hợp tồn TKM và SC theo từng tổ trong tháng trước. Bấm vào số liệu để xem chi tiết.</div>
     <div id="evaluationNotebookContent"></div>
-    <div class="notebook-foot">
-      Tiêu chí được tính trực tiếp từ dữ liệu SC/TKM đang có trên dashboard.
-    </div>
-
   </aside>
 
 
@@ -16483,7 +16589,21 @@ let tonsc=[];
         }
       );
 
-    rows.sort(
+    // Chỉ loại dòng tổ = 0 khi toàn bộ chỉ tiêu của dòng đều bằng 0
+    // ở cả hai mốc so sánh. Không ảnh hưởng các tổ hợp lệ hoặc dòng có số liệu.
+    const isZeroTeamName=value=>{
+      const key=compareNormalize(value);
+      return key==="0" || key==="" || key==="NULL" || key==="UNDEFINED" || key==="-";
+    };
+    const hasAnyMetricValue=stats=>
+      defs.some(([,key])=>Number(stats?.[key]||0)!==0);
+    const visibleRows=rows.filter(row=>
+      !(isZeroTeamName(row.to) &&
+        !hasAnyMetricValue(row.stats1) &&
+        !hasAnyMetricValue(row.stats2))
+    );
+
+    visibleRows.sort(
       (a,b)=>
         (
           b.stats2.TKM+
@@ -16496,7 +16616,7 @@ let tonsc=[];
     );
 
     body.innerHTML=
-      rows.map(
+      visibleRows.map(
         (row,index)=>{
 
           const cells=
@@ -16554,7 +16674,7 @@ let tonsc=[];
       ).join("");
 
     window.periodDistrictRows=
-      rows;
+      visibleRows;
 
   }
 
@@ -19350,6 +19470,7 @@ const nhaplieu =
   
   renderTonSC();
   renderTonTKM();
+  renderOverdueAlertReport();
   await renderCharts();
   document.getElementById("updateTime").innerHTML="⏰ Thời gian lấy báo cáo: "+(tontkm[0]?.tgupdate||"");
   }catch(err){
@@ -19737,6 +19858,134 @@ try{
   Chart.defaults.elements.bar.borderSkipped=false;
   Chart.defaults.elements.point.hoverRadius=5;
 }catch(e){}
+
+/* ===== BẢNG CẢNH BÁO SC / TKM QUÁ HẠN ===== */
+function renderOverdueAlertReport(){
+  const wrap=document.getElementById("overdueAlertTableWrap");
+  const meta=document.getElementById("overdueAlertMeta");
+  if(!wrap||!meta)return;
+  const norm=v=>String(v??"").replace(/\u00A0/g," ").replace(/\s+/g," ").trim();
+  const upper=v=>norm(v).toUpperCase();
+  const scSource=Array.isArray(tonsc)?tonsc:[];
+  const tkmSource=Array.isArray(window.tkmThuc)?window.tkmThuc:(Array.isArray(tontkm)?tontkm:[]);
+  const validSc=new Set(["SC","SC HOT","SC VIP","HT","HT HOT","HT VIP"]);
+  const rows=[];
+  scSource.forEach(r=>{
+    const type=upper(r?.sc);
+    const hours=typeof compareHours==="function"?compareHours(r):0;
+    if(!validSc.has(type)||hours<=24)return;
+    rows.push({huyen:r?.huyen,to:r?.nhomto,nv:r?.nv,account:r?.account,tg:r?.tg,date:r?.ngay,kind:"SC",hours});
+  });
+  tkmSource.forEach(r=>{
+    if(upper(r?.tt)==="CẬP NHẬT HỒ SƠ")return;
+    const kpi=upper(r?.kpi);
+    if(kpi!=="QUÁ 24H"&&kpi!=="QUÁ HẸN")return;
+    const hours=typeof compareHours==="function"?compareHours(r):0;
+    rows.push({huyen:r?.huyen,to:r?.nhomto,nv:r?.nv,account:r?.account,tg:r?.tg,date:r?.ntdn,kind:"TKM",hours,overdueType:kpi});
+  });
+  const teamSort=v=>norm(v).toLocaleLowerCase("vi").replace(/ tổ/g,"").replace(/[^\p{L}\p{N}]/gu,"");
+  // Ưu tiên SC lên đầu; trong từng nhóm sắp theo Tổ, sau đó theo thời gian tồn giảm dần.
+  rows.sort((a,b)=>{
+    const kind=(a.kind==="SC"?0:1)-(b.kind==="SC"?0:1);
+    if(kind)return kind;
+    const team=teamSort(a.to).localeCompare(teamSort(b.to),"vi",{numeric:true});
+    if(team)return team;
+    return (Number(b.hours)||0)-(Number(a.hours)||0);
+  });
+  window.overdueAlertRows=rows;
+  meta.textContent=`TỔNG ${rows.length} TÁC VỤ  •  SC QUÁ 24H: ${rows.filter(x=>x.kind==="SC").length}  •  TKM QUÁ 24H / QUÁ HẸN: ${rows.filter(x=>x.kind==="TKM").length}`;
+  if(!rows.length){wrap.innerHTML='<div class="overdue-alert-empty">Không có tác vụ SC quá 24h hoặc TKM quá 24h / quá hẹn.</div>';return;}
+  const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  let html='<table class="overdue-alert-table"><thead><tr><th style="width:38px">STT</th><th>Huyện</th><th>Tổ</th><th>Nhân viên</th><th>Account</th><th>Thời gian</th><th>Ngày phát sinh / đấu nối</th><th>Phân loại</th></tr></thead><tbody>';
+  rows.forEach((r,i)=>{
+    const time=norm(r.tg)||"";
+    html+=`<tr><td style="text-align:center">${i+1}</td><td>${esc(r.huyen)}</td><td class="oa-team">${esc(r.to)}</td><td>${esc(r.nv)}</td><td>${esc(r.account)}</td><td class="oa-time">${esc(time)}</td><td class="oa-date">${esc(r.date)}</td><td class="oa-kind ${r.kind==="SC"?"oa-kind-sc":"oa-kind-tkm"}">${r.kind}</td></tr>`;
+  });
+  html+='</tbody></table>';wrap.innerHTML=html;
+}
+
+async function captureOverdueAlertPages(){
+  const btn=document.getElementById("btnCaptureOverdueAlert");
+  const rows=Array.isArray(window.overdueAlertRows)?window.overdueAlertRows:[];
+  const status=document.getElementById("overdueAlertStatus");
+  const showStatus=(message,isError=false)=>{
+    if(status){status.textContent=message;status.classList.toggle("is-error",!!isError);}
+  };
+  if(!rows.length){showStatus("Không có dữ liệu để chụp báo cáo.",true);return;}
+  if(typeof html2canvas!=="function"){showStatus("Chưa tải được thư viện chụp ảnh.",true);return;}
+  const old=btn?.textContent;
+  if(btn){btn.disabled=true;btn.textContent="Đang tạo ảnh...";}
+  const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  const host=document.createElement("div");
+  host.style.cssText="position:fixed;left:0;top:0;width:1px;height:1px;overflow:visible;background:#fff;z-index:-1;pointer-events:none;font-family:Arial,sans-serif;";
+  document.body.appendChild(host);
+  try{
+    const headers=["STT","Huyện","Tổ","Nhân viên","Account","Thời gian","Ngày PS/ĐN","Phân loại"];
+    const matrix=[headers,...rows.map((r,i)=>[String(i+1),r.huyen,r.to,r.nv,r.account,r.tg,r.date,r.kind])];
+    // Đo theo dữ liệu thực tế; cột cuối có khoảng đệm riêng để không bị cắt ở mép canvas.
+    const measure=document.createElement("canvas").getContext("2d");
+    const maxImageWidth=1400;
+    const minFontSize=7;
+    let fontSize=11;
+    let widths=[];
+    const measureColumns=(size)=>{
+      return headers.map((h,j)=>{
+        measure.font=`600 ${size}px Arial`;
+        let max=measure.measureText(String(h)).width;
+        for(let i=1;i<matrix.length;i++){
+          measure.font=(j===5||j===7?`700 ${size}px Arial`:`400 ${size}px Arial`);
+          max=Math.max(max,measure.measureText(String(matrix[i][j]??"—")).width);
+        }
+        const padding=(j===7?Math.max(22,size*2.2):Math.max(10,size*0.9));
+        return Math.ceil(max+padding);
+      });
+    };
+    widths=measureColumns(fontSize);
+    let totalWidth=widths.reduce((a,b)=>a+b,0)+12;
+    while(totalWidth>maxImageWidth && fontSize>minFontSize){
+      fontSize=Math.max(minFontSize,fontSize-0.5);
+      widths=measureColumns(fontSize);
+      totalWidth=widths.reduce((a,b)=>a+b,0)+12;
+    }
+    // Dự phòng vùng an toàn bên phải để border/cột Phân loại không chạm mép ảnh.
+    totalWidth=Math.max(320,totalWidth);
+    const fitted=widths;
+    const cols=fitted.map(w=>`<col style="width:${w}px">`).join("");
+    const scCount=rows.filter(x=>x.kind==="SC").length;
+    const tkmCount=rows.length-scCount;
+    let html=`<div style="width:${totalWidth}px;padding:9px 15px 9px 9px;background:#fff;color:#111827;box-sizing:border-box">
+      <div style="font-size:17px;font-weight:800;text-align:center;color:#991b1b;margin:0 0 4px;white-space:nowrap">🚨 CẢNH BÁO TÁC VỤ QUÁ HẠN</div>
+      <div style="font-size:10px;font-weight:700;text-align:center;margin:0 0 7px;white-space:nowrap">TỔNG ${rows.length} TÁC VỤ • SC QUÁ 24H: ${scCount} • TKM QUÁ 24H / QUÁ HẸN: ${tkmCount}</div>
+      <table style="width:100%;box-sizing:border-box;border-collapse:collapse;table-layout:fixed;font-size:${fontSize}px"><colgroup>${cols}</colgroup><thead><tr>`;
+    headers.forEach(v=>{html+=`<th style="background:#eaf0f7;border:1px solid #94a3b8;padding:5px 3px;text-align:center;vertical-align:middle;line-height:1.1;white-space:nowrap;font-size:${fontSize}px">${v}</th>`;});
+    html+='</tr></thead><tbody>';
+    rows.forEach((r,i)=>{
+      const bg=i%2?'#f8fafc':'#fff';
+      const cells=[String(i+1),esc(r.huyen),esc(r.to),esc(r.nv),esc(r.account),esc(r.tg),esc(r.date),r.kind];
+      html+=`<tr style="background:${bg}">`;
+      cells.forEach((v,j)=>{
+        const color=j===5?'color:#b91c1c;font-weight:800;':(j===7?`color:${r.kind==='SC'?'#b91c1c':'#c2410c'};font-weight:800;`:'');
+        html+=`<td style="border:1px solid #cbd5e1;padding:4px 3px;text-align:center;vertical-align:middle;line-height:1.12;white-space:nowrap;overflow:visible;text-overflow:clip;font-size:${fontSize}px;${color}">${v||'—'}</td>`;
+      });
+      html+='</tr>';
+    });
+    html+=`</tbody></table><div style="font-size:9px;color:#64748b;text-align:center;margin-top:5px">BÁO CÁO CẢNH BÁO • ${new Date().toLocaleString('vi-VN')}</div></div>`;
+    host.innerHTML=html;
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    const target=host.firstElementChild;
+    target.style.width=totalWidth+'px';
+    target.style.display='block';
+    const canvas=await html2canvas(target,{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false,width:totalWidth,height:target.scrollHeight,windowWidth:Math.max(window.innerWidth,totalWidth),windowHeight:Math.max(window.innerHeight,target.scrollHeight),scrollX:0,scrollY:0});
+    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+    if(!blob)throw new Error('Không tạo được ảnh PNG.');
+    if(!navigator.clipboard||!window.ClipboardItem)throw new Error('Chrome chưa hỗ trợ Clipboard ảnh. Hãy mở trang bằng HTTPS hoặc localhost.');
+    await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+    showStatus(`✓ Đã sao chép ảnh ${rows.length} dòng vào Clipboard.`);
+  }catch(err){
+    console.error('Lỗi chụp/copy báo cáo cảnh báo:',err);
+    showStatus("Không sao chép được ảnh: "+(err?.message||err),true);
+  }finally{host.remove();if(btn){btn.disabled=false;btn.textContent=old||'📸 Chụp ảnh báo cáo';}}
+}
 
 async function renderCharts(){
 
@@ -25197,548 +25446,143 @@ onClick:function(event){
      - Bấm từng dòng -> mở bảng chi tiết hiện có
      ========================================================= */
   function renderEvaluationNotebook(){
+    /*
+      THAY THẾ ĐÁNH GIÁ TỒN CÔNG VIỆC CĐBR:
+      Hiển thị bảng tổng quan tồn tháng N-1 theo đúng cấu trúc
+      và bộ chỉ tiêu của bảng SỐ LIỆU TỒN THEO MỨC TỔ.
+      Dữ liệu được lọc theo ngày phát sinh TKM (ntdn) và SC (ngay).
+    */
+    const wrap=document.getElementById("evaluationNotebookContent");
+    if(!wrap)return;
 
-  const wrap=document.getElementById("evaluationNotebookContent");
-  if(!wrap)return;
+    const now=new Date();
+    const prev=new Date(now.getFullYear(),now.getMonth()-1,1);
+    const year=prev.getFullYear();
+    const month=prev.getMonth();
+    const monthLabel=String(month+1).padStart(2,"0")+"/"+year;
 
-  const norm=v=>String(v??"").replace(/\s+/g," ").trim().toUpperCase();
+    const parseDate=value=>{
+      if(value instanceof Date && !Number.isNaN(value.getTime())) return value;
+      if(typeof value==="number" && Number.isFinite(value) && value>20000 && value<80000){
+        return new Date(Date.UTC(1899,11,30)+value*86400000);
+      }
+      const text=String(value??"").trim();
+      if(!text)return null;
+      let m=text.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
+      if(m)return new Date(+m[3],+m[2]-1,+m[1],+(m[4]||0),+(m[5]||0),+(m[6]||0));
+      m=text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
+      if(m)return new Date(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0),+(m[6]||0));
+      const d=new Date(text);
+      return Number.isNaN(d.getTime())?null:d;
+    };
+    const inPrevMonth=(row,field)=>{
+      const d=parseDate(row?.[field]);
+      return !!d && d.getFullYear()===year && d.getMonth()===month;
+    };
 
-  const scRows=Array.isArray(tonsc)?tonsc:[];
-  const tkmRows=Array.isArray(tkmThuc)?tkmThuc:(Array.isArray(tontkm)?tontkm:[]);
+    const allTkm=Array.isArray(tkmThuc)?tkmThuc:(Array.isArray(tontkm)?tontkm:[]);
+    const allSc=Array.isArray(tonsc)?tonsc:[];
+    const monthTkm=allTkm.filter(r=>inPrevMonth(r,"ntdn"));
+    const monthSc=allSc.filter(r=>inPrevMonth(r,"ngay"));
 
-  /* Phạm vi SC của riêng bảng ĐÁNH GIÁ TỒN CÔNG VIỆC CĐBR.
-     Chỉ tính: SC, SC HOT, SC VIP, HT HOT, HT VIP, HT,
-     SOC, SOC HOME. Loại "Sự cố khiếu nại triển khai" không tính. */
-  const validScTypes=new Set([
-    "SC","SC HOT","SC VIP","HT HOT","HT VIP","HT","SOC","SOC HOME"
-  ]);
-  const validScRows=scRows.filter(r=>validScTypes.has(norm(r?.sc)));
+    const defs=compareMetricDefs();
+    const norm=v=>compareNorm(v);
+    // Loại các bản ghi không có tên tổ hợp lệ; dữ liệu trống/0/null
+    // không được tạo thành một dòng tổ riêng trong bảng tổng hợp.
+    const cleanTeam=value=>{
+      const raw=String(value??"").replace(/\s+/g," ").trim();
+      const key=norm(raw);
+      if(!raw || ["0","NULL","UNDEFINED","N/A","NA","-"].includes(key)) return "";
+      return raw;
+    };
+    const teamKey=row=>norm(cleanTeam(row?.nhomto));
+    const validTeamRows=[...monthTkm,...monthSc].filter(r=>teamKey(r));
+    const teamSet=new Set(validTeamRows.map(teamKey));
+    const validScTypes=new Set(["SC","SC HOT","SC VIP","HT HOT","HT VIP","HT","SOC","SOC HOME"]);
 
-  const scHour=row=>{
-    const v=row?.tg;
-    if(v===null || v===undefined || String(v).trim()==="")return 0;
-    const raw=String(v).trim().replace(",",".");
-    if(/^[+-]?\d+(?:\.\d+)?$/.test(raw)){
-      const n=Number(raw);
-      return Number.isFinite(n)?n:0;
+    const teams=[...teamSet].map(team=>{
+      const tkmRows=monthTkm.filter(r=>teamKey(r)===team);
+      const scRows=monthSc.filter(r=>teamKey(r)===team);
+      return {team,tkmRows,scRows,stats:compareAllStats(tkmRows,scRows)};
+    }).sort((a,b)=>
+      (b.stats.TOTAL_OPS-a.stats.TOTAL_OPS) ||
+      a.team.localeCompare(b.team,"vi")
+    );
+
+    window.__prevMonthTeamStockRows={};
+
+    const esc=value=>String(value??"")
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+      .replace(/'/g,"&#39;");
+
+    window.showPrevMonthTeamStockDetail=function(teamEncoded,metricKey,metricLabel){
+      const team=decodeURIComponent(teamEncoded||"");
+      const tkmRows=monthTkm.filter(r=>teamKey(r)===norm(team));
+      const scRows=monthSc.filter(r=>teamKey(r)===norm(team));
+      const isCnhs=r=>norm(r?.tt)==="CẬP NHẬT HỒ SƠ";
+      const isSoc=r=>["SOC","SOC HOME"].includes(norm(r?.sc));
+      let rows=[];
+
+      if(["TKM","CNHS","TKM16","TKM24","TKMHEN"].includes(metricKey)){
+        rows=tkmRows.filter(r=>{
+          const cnhs=isCnhs(r),kpi=norm(r?.kpi);
+          if(metricKey==="TKM")return !cnhs;
+          if(metricKey==="CNHS")return cnhs;
+          if(metricKey==="TKM16")return !cnhs&&kpi==="QUÁ 16H";
+          if(metricKey==="TKM24")return !cnhs&&kpi==="QUÁ 24H";
+          if(metricKey==="TKMHEN")return !cnhs&&kpi==="QUÁ HẸN";
+          return false;
+        });
+      }else{
+        rows=scRows.filter(r=>{
+          const type=norm(r?.sc),hours=compareHours(r);
+          if(!validScTypes.has(type))return false;
+          if(metricKey==="SC")return true;
+          if(metricKey==="SC3")return !isSoc(r)&&hours>3&&hours<=10;
+          if(metricKey==="SC10")return !isSoc(r)&&hours>10&&hours<=16;
+          if(metricKey==="SC16")return !isSoc(r)&&hours>16&&hours<=24;
+          if(metricKey==="SC24")return !isSoc(r)&&hours>24;
+          if(metricKey==="SOC")return type==="SOC";
+          if(metricKey==="SOCHOME")return type==="SOC HOME";
+          if(metricKey==="SOC24")return isSoc(r)&&hours>24&&hours<=72;
+          if(metricKey==="SOC72")return isSoc(r)&&hours>72;
+          return false;
+        });
+      }
+      if(typeof showTable==="function"){
+        showTable(`${metricLabel} • TỔ ${team} • THÁNG ${monthLabel} (${rows.length})`,rows);
+      }
+    };
+
+    const head=`<tr><th>STT</th><th>Tổ</th>${defs.map(d=>`<th>${esc(d[0])}</th>`).join("")}</tr>`;
+    const body=teams.map((item,index)=>{
+      const cells=defs.map(([label,key])=>{
+        const value=Number(item.stats[key]||0);
+        const locked=key==="TOTAL_OPS";
+        const click=locked?"":` role="button" tabindex="0" onclick="window.showPrevMonthTeamStockDetail('${encodeURIComponent(item.team)}','${key}','${esc(label)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.showPrevMonthTeamStockDetail('${encodeURIComponent(item.team)}','${key}','${esc(label)}')}"`;
+        return `<td class="district-metric-cell ${locked?'metric-locked':'metric-clickable'} ${value>0?'metric-positive':''}"${click} title="${locked?'Chỉ tiêu tổng hợp':'Bấm để xem chi tiết '+esc(label)}"><div class="district-metric-main">${value.toLocaleString('vi-VN')}</div></td>`;
+      }).join("");
+      return `<tr><td class="num">${index+1}</td><td><b>${esc(item.team)}</b></td>${cells}</tr>`;
+    }).join("");
+
+    const totalTkm=monthTkm.length;
+    const totalSc=monthSc.filter(r=>validScTypes.has(norm(r?.sc))).length;
+    const subtitle=document.getElementById("prevMonthTeamStockSubtitle");
+    if(subtitle){
+      subtitle.textContent=`Tháng ${monthLabel} • ${teams.length} tổ • TKM ${totalTkm.toLocaleString("vi-VN")} • SC ${totalSc.toLocaleString("vi-VN")} • Bấm vào số liệu để xem chi tiết.`;
     }
-    const m=raw.match(/(?:\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4})?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?/);
-    if(m)return Number(m[1]||0)+Number(m[2]||0)/60+Number(m[3]||0)/3600;
-    return 0;
-  };
 
-  const tkmKpi=row=>norm(row?.kpi);
-  const huyenName=row=>String(row?.nhomto||"Khác").trim()||"Khác";
-  const staffName=row=>String(row?.nv||"Không rõ").trim()||"Không rõ";
-
-  const metrics=[
-    {
-      key:"soc",
-      label:"SOC",
-      color:"#ea580c",
-      data:validScRows.filter(r=>norm(r.sc)==="SOC")
-    },
-    {
-      key:"sochome",
-      label:"SOC HOME",
-      color:"#2563eb",
-      data:validScRows.filter(r=>norm(r.sc)==="SOC HOME")
-    },
-    {
-      key:"sc16",
-      label:"SC quá 16H",
-      color:"#d97706",
-      data:validScRows.filter(r=>{
-        const loai=norm(r.sc);
-        return scHour(r)>16 && loai!=="SOC" && loai!=="SOC HOME";
-      })
-    },
-    {
-      key:"sc24",
-      label:"SC quá 24H",
-      color:"#dc2626",
-      data:validScRows.filter(r=>{
-        const loai=norm(r.sc);
-        return scHour(r)>24 && loai!=="SOC" && loai!=="SOC HOME";
-      })
-    },
-    {
-      key:"tkm24",
-      label:"TKM quá 24H",
-      color:"#b91c1c",
-      data:tkmRows.filter(r=>tkmKpi(r)==="QUÁ 24H")
-    },
-    {
-      key:"tkmhen",
-      label:"TKM quá hẹn",
-      color:"#be123c",
-      data:tkmRows.filter(r=>tkmKpi(r)==="QUÁ HẸN")
-    },
-    {
-      key:"tkmton",
-      label:"Tồn TKM nhiều nhất",
-      color:"#2563eb",
-      data:tkmRows
-    },
-    {
-      key:"capnhatHs",
-      label:"Cập nhật hồ sơ nhiều nhất",
-      color:"#0891b2",
-      data:Array.isArray(capnhaths)?capnhaths:[]
-    }
-  ];
-
-  function rankBy(data,getName,limit=3){
-    const map={};
-    data.forEach(r=>{
-      const name=getName(r);
-      if(!name)return;
-      map[name]=(map[name]||0)+1;
-    });
-    return Object.entries(map)
-      .map(([name,count])=>({name,count}))
-      .sort((a,b)=>b.count-a.count || a.name.localeCompare(b.name,"vi"))
-      .slice(0,limit);
-  }
-
-  function rankByHuyen(data){return rankBy(data,huyenName,5);}
-  function rankByStaff(data){return rankBy(data,staffName,5);}
-
-  function esc(v){
-    return String(v??"")
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
-  }
-
-  function openRows(title){
-    return `showTable(${JSON.stringify(title)},window.__notebookRows[${JSON.stringify(title)}])`;
-  }
-
-  window.__notebookRows={};
-  let html="";
-
-  /* =========================================================
-     KHỐI 1: TOP 3 HUYỆN + ĐÁNH GIÁ
-     ========================================================= */
-  html+=`<div class="notebook-report-row notebook-huyen-row">`;
-
-  html+=`
-    <div class="notebook-report-main">
-      <div class="notebook-report-title">
-        <span>🏚️ TOP 5 TỔ TỒN NHIỀU / TỒI</span>
-        <span>TOP 5</span>
+    wrap.innerHTML=`
+      <div class="period-table-wrap prev-month-team-stock-wrap">
+        <table class="period-district-detail-table prev-month-team-stock-table">
+          <thead>${head}</thead>
+          <tbody>${body || `<tr><td colspan="${defs.length+2}" style="text-align:center;padding:16px">Không có dữ liệu tồn tháng ${monthLabel}</td></tr>`}</tbody>
+        </table>
       </div>
-      <div class="notebook-card-grid notebook-huyen-grid">
-  `;
-
-  metrics.forEach(m=>{
-    const top=rankByHuyen(m.data,5);
-    const title="TỔ • "+m.label;
-    window.__notebookRows[title]=m.data;
-
-    html+=`
-      <div class="notebook-flat-card">
-        <div class="notebook-card-head"
-             onclick='${openRows(title)}'>
-          <div class="notebook-card-label" style="color:${m.color}">
-            ${esc(m.label)}
-          </div>
-          <div class="notebook-card-total">${m.data.length}</div>
-        </div>
-        <div class="notebook-toplist">
     `;
-
-    if(!top.length){
-      html+=`<div class="notebook-empty">Không có dữ liệu</div>`;
-    }else{
-      top.forEach((x,i)=>{
-        const key=title+" • "+x.name;
-        window.__notebookRows[key]=m.data.filter(r=>huyenName(r)===x.name);
-        html+=`
-          <div class="notebook-rank-row"
-               onclick='event.stopPropagation();showTable(${JSON.stringify(key)},window.__notebookRows[${JSON.stringify(key)}])'>
-            <div class="notebook-rank">${i+1}</div>
-            <div class="notebook-rank-name">${esc(x.name)}</div>
-            <div class="notebook-rank-count">${x.count}</div>
-          </div>
-        `;
-      });
-    }
-    html+=`</div></div>`;
-  });
-
-  html+=`</div></div>`;
-
-  /* ĐÁNH GIÁ TOP 5 HUYỆN */
-  const badByHuyen={};
-  metrics.forEach(m=>{
-    m.data.forEach(r=>{
-      const h=huyenName(r);
-      badByHuyen[h]=(badByHuyen[h]||0)+1;
-    });
-  });
-
-  const badTop=Object.entries(badByHuyen)
-    .map(([name,count])=>({name,count}))
-    .sort((a,b)=>b.count-a.count || a.name.localeCompare(b.name,"vi"))
-    .slice(0,5);
-
-  const totalBad=Object.values(badByHuyen).reduce((s,v)=>s+v,0);
-
-  html+=`
-    <div class="notebook-assessment-panel">
-      <div class="notebook-assessment-title">
-        📝 ĐÁNH GIÁ TOP 5 TỔ TỒI
-      </div>
-      <div class="notebook-assessment-sub">
-        Tổng hợp theo số lượng tồn và các chỉ tiêu xấu của từng tổ.
-      </div>
-  `;
-
-  if(!badTop.length){
-    html+=`<div class="notebook-assessment-empty">Chưa có dữ liệu đánh giá.</div>`;
-  }else{
-    badTop.forEach((x,i)=>{
-      const pct=totalBad ? x.count/totalBad*100 : 0;
-      const details=metrics
-        .map(m=>({
-          label:m.label,
-          count:m.data.filter(r=>huyenName(r)===x.name).length
-        }))
-        .filter(v=>v.count>0)
-        .sort((a,b)=>b.count-a.count)
-        .slice(0,6)
-        .map(v=>`${v.label}: ${v.count}`)
-        .join(" • ");
-
-      html+=`
-        <div class="notebook-assessment-item">
-          <div class="notebook-assessment-rank">${i+1}</div>
-          <div class="notebook-assessment-content">
-            <div class="notebook-assessment-name">${esc(x.name)}</div>
-            <div class="notebook-assessment-score">
-              ${x.count} · ${pct.toFixed(1)}%
-            </div>
-            <div class="notebook-assessment-details">
-              <b>Các nội dung tồi:</b> ${esc(details)}
-            </div>
-          </div>
-        </div>
-      `;
-    });
   }
 
-  html+=`
-      <div class="notebook-assessment-note">
-        Gồm: SOC, SOC HOME, SC quá 16H, SC quá 24H,
-        TKM quá 24H, TKM quá hẹn, Tồn TKM và Cập nhật hồ sơ.
-      </div>
-    </div>
-  </div>`;
-
-  /* =========================================================
-     KHỐI 2: TOP 5 NHÂN VIÊN + THÁNG N-1
-     ========================================================= */
-  html+=`<div class="notebook-report-row notebook-staff-row">`;
-
-  html+=`
-    <div class="notebook-report-main">
-      <div class="notebook-report-title">
-        <span>👨‍💼 TOP 5 NHÂN VIÊN TỒN NHIỀU / TỒI / ƯU TIÊN</span>
-        <span>TOP 5</span>
-      </div>
-      <div class="notebook-card-grid notebook-staff-grid">
-  `;
-
-  const staffMetrics=[
-    {
-      label:"NV tồn TKM nhiều nhất",
-      color:"#2563eb",
-      data:tkmRows
-    },
-    {
-      label:"Tồn cập nhật hồ sơ",
-      color:"#0891b2",
-      data:Array.isArray(capnhaths)?capnhaths:[]
-    },
-    {
-      label:"NV sự cố quá 24H",
-      color:"#dc2626",
-      data:metrics.find(x=>x.key==="sc24").data
-    },
-    {
-      label:"NV tồn tất cả sự cố",
-      color:"#dc2626",
-      data:validScRows.filter(r=>{
-        const loai=norm(r.sc);
-
-        /*
-          TẤT CẢ SỰ CỐ:
-          - Bao gồm SC thực
-          - Bao gồm SOC
-          - Bao gồm SOC HOME
-          - Không lấy dòng loại sự cố trống / KN TKM
-        */
-        return !!loai;
-      })
-    },
-    {
-      label:"NV TKM quá 24H",
-      color:"#b91c1c",
-      data:metrics.find(x=>x.key==="tkm24").data
-    },
-    {
-      label:"NV TKM quá hẹn",
-      color:"#be123c",
-      data:metrics.find(x=>x.key==="tkmhen").data
-    }
-  ];
-
-  staffMetrics.forEach(m=>{
-    const top=rankByStaff(m.data,5);
-    const title="NHÂN VIÊN • "+m.label;
-    window.__notebookRows[title]=m.data;
-
-    html+=`
-      <div class="notebook-flat-card">
-        <div class="notebook-card-head"
-             onclick='showTable(${JSON.stringify(title)},window.__notebookRows[${JSON.stringify(title)}])'>
-          <div class="notebook-card-label" style="color:${m.color}">
-            ${esc(m.label)}
-          </div>
-          <div class="notebook-card-total">${m.data.length}</div>
-        </div>
-        <div class="notebook-toplist">
-    `;
-
-    if(!top.length){
-      html+=`<div class="notebook-empty">Không có dữ liệu</div>`;
-    }else{
-      top.forEach((x,i)=>{
-        const key=title+" • "+x.name;
-        window.__notebookRows[key]=m.data.filter(r=>staffName(r)===x.name);
-        html+=`
-          <div class="notebook-rank-row"
-               onclick='event.stopPropagation();showTable(${JSON.stringify(key)},window.__notebookRows[${JSON.stringify(key)}])'>
-            <div class="notebook-rank">${i+1}</div>
-            <div class="notebook-rank-name">${esc(x.name)}</div>
-            <div class="notebook-rank-count">${x.count}</div>
-          </div>
-        `;
-      });
-    }
-    html+=`</div></div>`;
-  });
-
-  html+=`</div>`;
-
-  /* ĐÁNH GIÁ TOP 5 NHÂN VIÊN TỒI */
-  const badByStaff={};
-  staffMetrics.forEach(m=>{
-    m.data.forEach(r=>{
-      const n=staffName(r);
-      badByStaff[n]=(badByStaff[n]||0)+1;
-    });
-  });
-
-  const badStaffTop=Object.entries(badByStaff)
-    .map(([name,count])=>({name,count}))
-    .sort((a,b)=>b.count-a.count || a.name.localeCompare(b.name,"vi"))
-    .slice(0,5);
-
-  const totalBadStaff=Object.values(badByStaff).reduce((s,v)=>s+v,0);
-
-  html+=`
-    <div class="notebook-staff-assessment">
-      <div class="notebook-staff-assessment-head">
-        <div>
-          <div class="notebook-staff-assessment-title">📋 ĐÁNH GIÁ TOP 5 NHÂN VIÊN TỒI</div>
-          <div class="notebook-staff-assessment-sub">
-            Tổng hợp theo số lượng tồn và các chỉ tiêu xấu của từng nhân viên.
-          </div>
-        </div>
-      </div>
-      <div class="notebook-staff-assessment-grid">
-  `;
-
-  if(!badStaffTop.length){
-    html+=`<div class="notebook-assessment-empty">Chưa có dữ liệu đánh giá.</div>`;
-  }else{
-    badStaffTop.forEach((x,i)=>{
-      const pct=totalBadStaff ? x.count/totalBadStaff*100 : 0;
-      const details=staffMetrics
-        .map(m=>({
-          label:m.label.replace(/^NV\s*/,""),
-          count:m.data.filter(r=>staffName(r)===x.name).length
-        }))
-        .filter(v=>v.count>0)
-        .sort((a,b)=>b.count-a.count)
-        .slice(0,4)
-        .map(v=>`${v.label}: ${v.count}`)
-        .join(" • ");
-
-      const title="ĐÁNH GIÁ NHÂN VIÊN • "+x.name;
-      window.__notebookRows[title]=staffMetrics.flatMap(m=>m.data.filter(r=>staffName(r)===x.name));
-
-      html+=`
-        <div class="notebook-staff-assessment-item"
-             onclick='showTable(${JSON.stringify(title)},window.__notebookRows[${JSON.stringify(title)}])'>
-          <div class="notebook-staff-rank">${i+1}</div>
-          <div class="notebook-staff-assessment-content">
-            <div class="notebook-staff-name">${esc(x.name)}</div>
-            <div class="notebook-staff-score">${x.count} · ${pct.toFixed(1)}%</div>
-            <div class="notebook-staff-details">
-              <b>Các nội dung tồi:</b> ${esc(details || "Không xác định")}
-            </div>
-          </div>
-        </div>
-      `;
-    });
-  }
-
-  html+=`
-      </div>
-      <div class="notebook-staff-assessment-note">
-        Đánh giá dựa trên: tồn TKM, tồn cập nhật hồ sơ, tồn SC, sự cố quá 24H, TKM quá 24H và TKM quá hẹn.
-      </div>
-    </div>
-    </div>
-  `;
-
-  /* THÁNG N-1: TỰ ĐỘNG LẤY THÁNG TRƯỚC */
-  const nowReport=new Date();
-  const prevMonthDate=new Date(
-    nowReport.getFullYear(),
-    nowReport.getMonth()-1,
-    1
-  );
-
-  const prevMonthYear=prevMonthDate.getFullYear();
-  const prevMonthIndex=prevMonthDate.getMonth();
-  const prevMonthNumber=String(prevMonthIndex+1).padStart(2,"0");
-  const prevMonthLabel=prevMonthNumber+"/"+prevMonthYear;
-
-  const isPrevMonth=(row,field)=>{
-    const d=parseTrendDate(row?.[field]);
-    return d
-      && d.getFullYear()===prevMonthYear
-      && d.getMonth()===prevMonthIndex;
-  };
-
-  const prevMonthTkmRows=tkmRows.filter(r=>isPrevMonth(r,"ntdn"));
-  const prevMonthScRows=scRows.filter(r=>isPrevMonth(r,"ngay"));
-
-  /* CẬP NHẬT HỒ SƠ THÁNG N-1: lấy đúng từ capnhaths,
-     không lấy nhầm từ TKM thực. */
-  const prevMonthCapNhatRows=capnhaths.filter(r=>isPrevMonth(r,"ntdn"));
-
-  const rankGeneric=(data,getName,limit=5)=>{
-    const map={};
-    data.forEach(r=>{
-      const name=getName(r);
-      if(!name)return;
-      map[name]=(map[name]||0)+1;
-    });
-    return Object.entries(map)
-      .map(([name,count])=>({name,count}))
-      .sort((a,b)=>b.count-a.count || a.name.localeCompare(b.name,"vi"))
-      .slice(0,limit);
-  };
-
-  const renderPrevMonthRank=(label,color,data,getName)=>{
-    const top=rankGeneric(data,getName,5);
-    const title="THÁNG 07/"+prevMonthYear+" • "+label;
-    window.__notebookRows[title]=data;
-
-    let s=`
-      <div class="july-note-metric">
-        <div class="july-note-metric-head"
-             onclick='showTable(${JSON.stringify(title)},window.__notebookRows[${JSON.stringify(title)}])'>
-          <div class="july-note-label" style="color:${color}">${esc(label)}</div>
-          <div class="july-note-total">${data.length}</div>
-        </div>
-        <div class="notebook-toplist">
-    `;
-
-    if(!top.length){
-      s+=`<div class="notebook-empty">Không có dữ liệu</div>`;
-    }else{
-      top.forEach((x,i)=>{
-        const key=title+" • "+x.name;
-        window.__notebookRows[key]=data.filter(r=>getName(r)===x.name);
-        s+=`
-          <div class="notebook-rank-row"
-               onclick='event.stopPropagation();showTable(${JSON.stringify(key)},window.__notebookRows[${JSON.stringify(key)}])'>
-            <div class="notebook-rank">${i+1}</div>
-            <div class="notebook-rank-name">${esc(x.name)}</div>
-            <div class="notebook-rank-count">${x.count}</div>
-          </div>
-        `;
-      });
-    }
-    return s+`</div></div>`;
-  };
-
-  html+=`
-    <div class="notebook-july-panel notebook-july-right">
-      <div class="notebook-report-title notebook-july-title">
-        <span>📅 TỒN THÁNG ${prevMonthNumber}/${prevMonthYear}</span>
-        <span>TOP 5 TỒN</span>
-      </div>
-
-      <div class="notebook-july-columns">
-        <div class="notebook-july-card notebook-july-tkm">
-          <div class="notebook-july-card-title">
-            <span>📊 TKM</span>
-            <b>${prevMonthTkmRows.length}</b>
-          </div>
-          ${renderPrevMonthRank("Huyện tồn TKM","#2563eb",prevMonthTkmRows,huyenName)}
-          ${renderPrevMonthRank("Nhân viên tồn TKM","#7c3aed",prevMonthTkmRows,staffName)}
-        </div>
-
-        <div class="notebook-july-card notebook-july-sc">
-          <div class="notebook-july-card-title">
-            <span>🚨 SC</span>
-            <b>${prevMonthScRows.length}</b>
-          </div>
-          ${renderPrevMonthRank("Huyện tồn SC","#dc2626",prevMonthScRows,huyenName)}
-          ${renderPrevMonthRank("Nhân viên tồn SC","#ea580c",prevMonthScRows,staffName)}
-        </div>
-      </div>
-
-      <div class="notebook-july-detail">
-        <div class="notebook-july-detail-title">📌 CÁC NỘI DUNG CÒN TỒN THÁNG ${prevMonthLabel}</div>
-        <div class="notebook-july-detail-grid">
-          <div>
-            <b>TKM:</b>
-            Quá 24H: ${tkmRows.filter(r=>tkmKpi(r)==="QUÁ 24H").filter(r=>isPrevMonth(r,"ntdn")).length}
-            · Quá hẹn: ${tkmRows.filter(r=>tkmKpi(r)==="QUÁ HẸN").filter(r=>isPrevMonth(r,"ntdn")).length}
-            · Quá 16H: ${tkmRows.filter(r=>tkmKpi(r)==="QUÁ 16H").filter(r=>isPrevMonth(r,"ntdn")).length}
-            · Cập nhật hồ sơ: ${prevMonthCapNhatRows.length}
-          </div>
-          <div>
-            <b>SC:</b>
-            Quá 24H: ${prevMonthScRows.filter(r=>scHour(r)>24).length}
-            · Quá 16H: ${prevMonthScRows.filter(r=>scHour(r)>16).length}
-            · SOC: ${prevMonthScRows.filter(r=>norm(r.sc)==="SOC").length}
-            · SOC HOME: ${prevMonthScRows.filter(r=>norm(r.sc)==="SOC HOME").length}
-          </div>
-        </div>
-      </div>
-      <div class="notebook-july-branch">
-        <div>VHKT CHI NHÁNH CÔNG TRÌNH VIETTEL GIA LAI</div>
-        <div class="notebook-july-time">
-          ${esc(String(tontkm[0]?.tgupdate || ""))}
-        </div>
-      </div>
-    </div>
-  </div>`;
-
-  wrap.innerHTML=html;
-}
 function renderStaffRanking(){
   const wrap=document.getElementById("staffRankingGrid");
   if(!wrap)return;
@@ -29707,80 +29551,97 @@ ${rels.join("")}
     let shotRoot=null;
     try{
       if(btn){btn.disabled=true;btn.innerHTML='⏳ Đang chụp...';}
-      if(document.fonts?.ready)await document.fonts.ready;
+      if(document.fonts?.ready) await document.fonts.ready;
       await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
 
-      // Chụp giống báo cáo TẢI TÁC VỤ: vùng riêng, chỉ gồm tiêu đề và nội dung báo cáo.
-      // Dùng chiều rộng thực của báo cáo, không kéo clone theo chiều rộng màn hình.
-      const sourceWidth=Math.min(1400,Math.max(1280,Math.ceil(target.getBoundingClientRect().width||1400)));
+      const sourceTable=content.querySelector('table.prev-month-team-stock-table');
+      if(!sourceTable) throw new Error('Không tìm thấy bảng TỔNG QUAN TỒN THÁNG N-1.');
+      const mobile=window.matchMedia('(max-width:600px)').matches;
+      const titleText=(target.querySelector('.notebook-title span')?.textContent||'TỔNG QUAN TỒN THÁNG N-1').replace(/\s+/g,' ').trim();
+      const subtitleText=(target.querySelector('.notebook-subtitle')?.textContent||'').replace(/\s+/g,' ').trim();
+
+      // Dựng ảnh độc lập giống hệt quy trình chụp bảng SỐ LIỆU TỒN THEO MỨC TỔ:
+      // chụp đủ chiều rộng bảng, không ép co theo màn hình điện thoại và không thu nhỏ ảnh đầu ra.
       shotRoot=document.createElement('div');
-      shotRoot.style.cssText=`position:fixed;left:-20000px;top:0;background:#fff;color:#0f172a;padding:7px;box-sizing:border-box;width:${sourceWidth}px;max-width:${sourceWidth}px;font-family:Arial,sans-serif;overflow:visible;`;
+      shotRoot.style.cssText='position:fixed;left:-20000px;top:0;background:#fff;color:#0f172a;padding:12px;box-sizing:border-box;width:max-content;max-width:none;font-family:Arial,sans-serif;overflow:visible;';
       const heading=document.createElement('div');
-      heading.textContent=(target.querySelector('.notebook-title span')?.textContent||'ĐÁNH GIÁ TỒN CÔNG VIỆC CĐBR').trim();
-      heading.style.cssText='font-size:10px;font-weight:800;margin:0 0 2px;white-space:nowrap;color:#0f172a;';
+      heading.textContent=titleText;
+      heading.style.cssText='font-size:18px;font-weight:800;margin:0 0 5px;white-space:normal;line-height:1.25;color:#0f172a;';
       shotRoot.appendChild(heading);
-      const subtitle=document.createElement('div');
-      subtitle.textContent=(target.querySelector('.notebook-subtitle')?.textContent||'').trim();
-      subtitle.style.cssText='font-size:7px;color:#64748b;margin:0 0 3px;';
-      shotRoot.appendChild(subtitle);
-      const clone=content.cloneNode(true);
-      clone.removeAttribute('id');
-      clone.style.cssText='display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;height:auto!important;max-height:none!important;overflow:visible!important;box-sizing:border-box;';
-      // Copy computed style element-by-element so colors and borders remain intact.
-      const srcEls=[content,...content.querySelectorAll('*')],dstEls=[clone,...clone.querySelectorAll('*')];
-      srcEls.forEach((src,i)=>{
-        const dst=dstEls[i];if(!dst)return;const cs=getComputedStyle(src);
-        for(const prop of ['color','backgroundColor','borderTop','borderRight','borderBottom','borderLeft','fontFamily','fontSize','fontWeight','fontStyle','textAlign','verticalAlign','paddingTop','paddingRight','paddingBottom','paddingLeft','marginTop','marginRight','marginBottom','marginLeft','borderRadius','boxShadow','lineHeight','whiteSpace'])dst.style[prop]=cs[prop];
+      if(subtitleText){
+        const sub=document.createElement('div');
+        sub.textContent=subtitleText;
+        sub.style.cssText='font-size:12px;font-weight:600;color:#475569;margin:0 0 9px;line-height:1.35;white-space:normal;';
+        shotRoot.appendChild(sub);
+      }
+
+      const tableClone=sourceTable.cloneNode(true);
+      tableClone.style.setProperty('display','table','important');
+      tableClone.style.setProperty('width','max-content','important');
+      tableClone.style.setProperty('min-width','0','important');
+      tableClone.style.setProperty('max-width','none','important');
+      tableClone.style.setProperty('table-layout','fixed','important');
+      tableClone.style.setProperty('border-collapse','collapse','important');
+      tableClone.style.setProperty('border-spacing','0','important');
+      tableClone.style.setProperty('background','#fff','important');
+
+      const sourceEls=[sourceTable,...sourceTable.querySelectorAll('*')];
+      const cloneEls=[tableClone,...tableClone.querySelectorAll('*')];
+      sourceEls.forEach((src,i)=>{
+        const dst=cloneEls[i]; if(!dst)return;
+        const cs=getComputedStyle(src);
+        for(const prop of ['color','backgroundColor','borderTop','borderRight','borderBottom','borderLeft','fontFamily','fontSize','fontWeight','fontStyle','textAlign','verticalAlign','paddingTop','paddingRight','paddingBottom','paddingLeft','lineHeight','whiteSpace','width','minWidth','maxWidth']){
+          dst.style[prop]=cs[prop];
+        }
+        dst.style.setProperty('position','static','important');
+        dst.style.setProperty('top','auto','important');
+        dst.style.setProperty('left','auto','important');
+        dst.style.setProperty('z-index','auto','important');
+        dst.style.setProperty('box-shadow','none','important');
+        dst.style.setProperty('text-decoration','none','important');
+        dst.style.setProperty('text-decoration-line','none','important');
       });
-      // Bóp gọn bố cục khi chụp: giảm padding, khoảng cách và cỡ chữ,
-      // không đổi nội dung báo cáo và không ảnh hưởng giao diện thật.
-      clone.style.setProperty('font-size','7px','important');
-      clone.querySelectorAll('*').forEach(el=>{
-        const cs=getComputedStyle(el);
-        if(cs.display==='grid'){
-          // Nới chiều ngang và giữ nhiều cột để các thẻ không bị dồn thành hàng dọc.
-          let n=3;
-          if(el.classList.contains('notebook-section')) n=4;
-          if(el.classList.contains('notebook-card-grid')) n=4;
-          if(el.classList.contains('notebook-staff-grid')) n=3;
-          el.style.setProperty('grid-template-columns',`repeat(${n},minmax(0,1fr))`,'important');
-          el.style.setProperty('gap','4px 5px','important');
-          el.style.setProperty('align-items','start','important');
-        }
-        if(cs.display==='flex'){
-          // Không ép các hàng ngang thành nhiều dòng khi chụp.
-          el.style.setProperty('flex-wrap','nowrap','important');
-          el.style.setProperty('gap','4px','important');
-        }
-        // Thu gọn khoảng đệm/biên của các khối và từng dòng.
-        el.style.setProperty('margin-top','1px','important');
-        el.style.setProperty('margin-bottom','2px','important');
-        el.style.setProperty('padding-top','2px','important');
-        el.style.setProperty('padding-bottom','2px','important');
-        el.style.setProperty('padding-left','4px','important');
-        el.style.setProperty('padding-right','4px','important');
-        if(el.matches('.notebook-section-title')){
-          el.style.setProperty('font-size','7px','important');
-          el.style.setProperty('padding','2px 4px','important');
-          el.style.setProperty('margin-bottom','2px','important');
-        }
-        if(el.matches('.notebook-metric-group,.notebook-section')){
-          el.style.setProperty('margin-bottom','2px','important');
-          el.style.setProperty('padding-bottom','3px','important');
-        }
-        if(el.matches('button,[data-html2canvas-ignore="true"]'))el.remove();
-      });
-      clone.querySelectorAll('button,[data-html2canvas-ignore="true"]').forEach(el=>el.remove());
-      shotRoot.appendChild(clone);document.body.appendChild(shotRoot);
+
+      // Bỏ giới hạn chiều cao/cuộn của bảng trong giao diện; ảnh phải chứa toàn bộ các tổ.
+      const wrap=document.createElement('div');
+      wrap.style.cssText='display:block!important;width:max-content!important;max-width:none!important;max-height:none!important;height:auto!important;overflow:visible!important;border:0!important;border-radius:0!important;';
+      wrap.appendChild(tableClone);
+      shotRoot.appendChild(wrap);
+      const foot=content.querySelector('.notebook-foot');
+      if(foot){
+        const footClone=foot.cloneNode(true);
+        footClone.style.cssText='font:11px Arial,sans-serif;color:#64748b;margin-top:8px;line-height:1.35;white-space:normal;';
+        shotRoot.appendChild(footClone);
+      }
+      document.body.appendChild(shotRoot);
       await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+
       const w=Math.ceil(shotRoot.scrollWidth),h=Math.ceil(shotRoot.scrollHeight);
-      const canvas=await html2canvas(shotRoot,{scale:2,useCORS:true,allowTaint:false,backgroundColor:'#fff',logging:false,width:w,height:h,windowWidth:w,windowHeight:h,scrollX:0,scrollY:0,imageTimeout:15000});
-      const maxOutWidth=1600,outScale=Math.min(1,maxOutWidth/canvas.width);let finalCanvas=canvas;
-      if(outScale<1){finalCanvas=document.createElement('canvas');finalCanvas.width=Math.round(canvas.width*outScale);finalCanvas.height=Math.round(canvas.height*outScale);const ctx=finalCanvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,finalCanvas.width,finalCanvas.height);ctx.drawImage(canvas,0,0,finalCanvas.width,finalCanvas.height);}
+      const canvas=await html2canvas(shotRoot,{
+        scale:mobile?3:2.5,useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false,
+        width:w,height:h,windowWidth:w,windowHeight:h,scrollX:0,scrollY:0,imageTimeout:15000
+      });
+
+      // Đồng bộ cách xuất ảnh với SỐ LIỆU TỒN THEO MỨC TỔ:
+      // giới hạn chiều rộng ảnh cuối để bảng không bị kéo quá dài,
+      // vẫn giữ nguyên tỷ lệ và toàn bộ chiều cao/nội dung.
+      const maxOutWidth=1600;
+      const outScale=Math.min(1,maxOutWidth/canvas.width);
+      let finalCanvas=canvas;
+      if(outScale<1){
+        finalCanvas=document.createElement('canvas');
+        finalCanvas.width=Math.round(canvas.width*outScale);
+        finalCanvas.height=Math.round(canvas.height*outScale);
+        const ctx=finalCanvas.getContext('2d');
+        ctx.imageSmoothingEnabled=true;
+        ctx.imageSmoothingQuality='high';
+        ctx.fillStyle='#ffffff';
+        ctx.fillRect(0,0,finalCanvas.width,finalCanvas.height);
+        ctx.drawImage(canvas,0,0,finalCanvas.width,finalCanvas.height);
+      }
       const blob=await new Promise((resolve,reject)=>finalCanvas.toBlob(b=>b?resolve(b):reject(new Error('Không tạo được ảnh báo cáo.')),'image/png'));
-      if(!navigator.clipboard||!window.ClipboardItem)throw new Error('Trình duyệt không hỗ trợ sao chép ảnh. Hãy mở bằng Chrome qua HTTPS hoặc localhost.');
+      if(!navigator.clipboard||!window.ClipboardItem) throw new Error('Trình duyệt không hỗ trợ sao chép ảnh. Hãy mở bằng Chrome qua HTTPS hoặc localhost.');
       await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
-      // Đã copy ảnh thành công: không hiển thị hộp thoại làm gián đoạn thao tác.
     }catch(err){console.error('captureCDBRReport:',err);alert('Chụp báo cáo thất bại: '+(err?.message||err));}
     finally{if(shotRoot?.parentNode)shotRoot.parentNode.removeChild(shotRoot);if(btn)setTimeout(()=>{btn.disabled=false;btn.innerHTML=oldText;},500);}
   }
@@ -34317,6 +34178,436 @@ function copyDseModal(btn){
 }
 </style>
 
+
+
+<style id="PREV_MONTH_STOCK_MATCH_TEAM_STOCK_TABLE_V2">
+/* Đồng bộ giao diện TỔNG QUAN TỒN THÁNG N-1 với SỐ LIỆU TỒN THEO MỨC TỔ */
+#evaluationNotebook{
+  box-sizing:border-box!important;width:100%!important;max-width:100%!important;
+  padding:12px!important;border:1px solid #dbe3ef!important;border-radius:12px!important;
+  background:#fff!important;overflow:hidden!important;
+}
+#evaluationNotebook .notebook-title{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  flex-wrap:wrap!important;gap:8px!important;padding:10px 12px!important;
+  margin:-12px -12px 8px!important;background:#eaf1fb!important;
+  border-bottom:1px solid #dbe3ef!important;border-radius:11px 11px 0 0!important;
+  color:#1e293b!important;font-size:14px!important;font-weight:800!important;
+}
+#evaluationNotebook .notebook-subtitle{
+  margin:5px 2px 9px!important;color:#64748b!important;
+  font-size:11px!important;line-height:1.45!important;
+}
+#evaluationNotebook #evaluationNotebookContent{width:100%!important;max-width:100%!important;min-width:0!important;}
+#evaluationNotebook .prev-month-team-stock-wrap{
+  display:block!important;width:100%!important;max-width:100%!important;
+  max-height:72vh!important;overflow:auto!important;
+  border:1px solid #dbe3ef!important;border-radius:8px!important;
+  -webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table{
+  display:table!important;width:max-content!important;min-width:100%!important;max-width:none!important;
+  table-layout:auto!important;border-collapse:separate!important;border-spacing:0!important;
+  font-size:11px!important;background:#fff!important;
+}
+#evaluationNotebook .prev-month-team-stock-table th,
+#evaluationNotebook .prev-month-team-stock-table td{
+  box-sizing:border-box!important;padding:8px 9px!important;font-size:11px!important;
+  line-height:1.3!important;white-space:nowrap!important;vertical-align:middle!important;
+  text-align:center!important;border-right:1px solid #e8edf3!important;
+  border-bottom:1px solid #e8edf3!important;
+}
+#evaluationNotebook .prev-month-team-stock-table thead th{
+  position:sticky!important;top:0!important;z-index:3!important;
+  background:#eaf1fb!important;color:#263548!important;font-weight:800!important;
+}
+#evaluationNotebook .prev-month-team-stock-table th:first-child,
+#evaluationNotebook .prev-month-team-stock-table td:first-child{
+  position:sticky!important;left:0!important;z-index:4!important;
+  min-width:42px!important;width:42px!important;text-align:center!important;
+  background:#f1f5f9!important;
+}
+#evaluationNotebook .prev-month-team-stock-table th:nth-child(2),
+#evaluationNotebook .prev-month-team-stock-table td:nth-child(2){
+  position:sticky!important;left:42px!important;z-index:3!important;
+  min-width:115px!important;text-align:center!important;background:#fff!important;
+  box-shadow:2px 0 3px rgba(15,23,42,.08)!important;
+}
+#evaluationNotebook .prev-month-team-stock-table thead th:first-child,
+#evaluationNotebook .prev-month-team-stock-table thead th:nth-child(2){
+  z-index:5!important;background:#eaf1fb!important;
+}
+#evaluationNotebook .prev-month-team-stock-table tbody tr:nth-child(even) td{background:#f8fafc!important;}
+#evaluationNotebook .prev-month-team-stock-table tbody tr:hover td{background:#edf5ff!important;}
+#evaluationNotebook .prev-month-team-stock-table .district-metric-main{
+  font-weight:750!important;font-variant-numeric:tabular-nums!important;
+}
+#evaluationNotebook .prev-month-team-stock-table .metric-positive .district-metric-main{
+  color:#dc2626!important;font-weight:900!important;
+}
+#evaluationNotebook .prev-month-team-stock-table .district-metric-cell{cursor:pointer;}
+#evaluationNotebook .prev-month-team-stock-table .district-metric-cell:hover{background:#dbeafe!important;}
+#evaluationNotebook .prev-month-team-stock-table .metric-locked{background:#f1f5f9!important;font-weight:800!important;}
+#evaluationNotebook .prev-month-team-stock-table td:first-child{font-weight:800!important;color:#64748b!important;}
+#evaluationNotebook .prev-month-team-stock-table td:nth-child(2){font-weight:700!important;}
+#evaluationNotebook .notebook-foot{
+  margin-top:8px!important;padding:7px 9px!important;border-top:1px dashed #dbe3ef!important;
+  color:#64748b!important;font-size:10px!important;line-height:1.4!important;
+}
+@media(max-width:768px){
+  #evaluationNotebook{padding:8px!important;margin-top:9px!important;border-radius:10px!important;}
+  #evaluationNotebook .notebook-title{margin:-8px -8px 8px!important;padding:8px!important;font-size:12px!important;gap:6px!important;}
+  #evaluationNotebook .notebook-title .btn-capture-cdbr{font-size:10px!important;padding:6px 8px!important;white-space:nowrap!important;}
+  #evaluationNotebook .notebook-subtitle{font-size:10px!important;margin:4px 2px 8px!important;}
+  #evaluationNotebook .prev-month-team-stock-wrap{max-height:70vh!important;}
+  #evaluationNotebook table.prev-month-team-stock-table{width:max-content!important;min-width:100%!important;table-layout:auto!important;font-size:10px!important;}
+  #evaluationNotebook .prev-month-team-stock-table th,
+  #evaluationNotebook .prev-month-team-stock-table td{padding:6px 7px!important;font-size:10px!important;line-height:1.25!important;}
+  #evaluationNotebook .prev-month-team-stock-table th:first-child,
+  #evaluationNotebook .prev-month-team-stock-table td:first-child{min-width:34px!important;width:34px!important;}
+  #evaluationNotebook .prev-month-team-stock-table th:nth-child(2),
+  #evaluationNotebook .prev-month-team-stock-table td:nth-child(2){left:34px!important;min-width:86px!important;}
+  #evaluationNotebook .prev-month-team-stock-table thead th:first-child,
+  #evaluationNotebook .prev-month-team-stock-table thead th:nth-child(2){z-index:5!important;}
+}
+@media(max-width:380px){
+  #evaluationNotebook .prev-month-team-stock-table th,
+  #evaluationNotebook .prev-month-team-stock-table td{padding:5px 6px!important;font-size:9px!important;}
+}
+</style>
+
+
+<style id="PREV_MONTH_TABLE_EXACT_MATCH_TEAM_TABLE_V3">
+/* Đồng bộ trực tiếp cách chia cột, chiều cao dòng và hiển thị với SỐ LIỆU TỒN THEO MỨC TỔ */
+#evaluationNotebook .prev-month-team-stock-wrap{
+  display:block!important;position:relative!important;width:100%!important;max-width:100%!important;
+  max-height:70vh!important;overflow:auto!important;overflow-x:auto!important;overflow-y:auto!important;
+  border:1px solid #dbe3ef!important;border-radius:8px!important;background:#fff!important;
+  -webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important;isolation:isolate!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table{
+  display:table!important;width:100%!important;min-width:1155px!important;max-width:none!important;
+  table-layout:fixed!important;border-collapse:separate!important;border-spacing:0!important;
+  font-size:11px!important;background:#fff!important;
+}
+#evaluationNotebook .prev-month-team-stock-table thead tr{height:auto!important;}
+#evaluationNotebook .prev-month-team-stock-table th,
+#evaluationNotebook .prev-month-team-stock-table td{
+  box-sizing:border-box!important;min-height:36px!important;height:auto!important;
+  padding:7px 5px!important;font-size:10px!important;line-height:1.25!important;
+  text-align:center!important;vertical-align:middle!important;white-space:normal!important;
+  overflow-wrap:anywhere!important;word-break:normal!important;text-overflow:clip!important;
+  border-right:1px solid #e2e8f0!important;border-bottom:1px solid #e2e8f0!important;
+}
+#evaluationNotebook .prev-month-team-stock-table thead th{
+  position:sticky!important;top:0!important;z-index:20!important;
+  min-height:48px!important;background:#e8eef7!important;color:#172554!important;
+  font-weight:800!important;line-height:1.25!important;text-align:center!important;
+}
+#evaluationNotebook .prev-month-team-stock-table th:first-child,
+#evaluationNotebook .prev-month-team-stock-table td:first-child{
+  position:sticky!important;left:0!important;z-index:25!important;
+  width:42px!important;min-width:42px!important;max-width:42px!important;
+  text-align:center!important;background:#f1f5f9!important;
+}
+#evaluationNotebook .prev-month-team-stock-table th:nth-child(2),
+#evaluationNotebook .prev-month-team-stock-table td:nth-child(2){
+  position:sticky!important;left:42px!important;z-index:24!important;
+  width:125px!important;min-width:125px!important;max-width:125px!important;
+  text-align:center!important;vertical-align:middle!important;background:#fff!important;
+  box-shadow:2px 0 3px rgba(15,23,42,.12)!important;
+}
+#evaluationNotebook .prev-month-team-stock-table thead th:first-child,
+#evaluationNotebook .prev-month-team-stock-table thead th:nth-child(2){
+  z-index:35!important;background:#e8eef7!important;
+}
+#evaluationNotebook .prev-month-team-stock-table th:nth-child(n+3),
+#evaluationNotebook .prev-month-team-stock-table td:nth-child(n+3){
+  width:76px!important;min-width:76px!important;max-width:76px!important;
+}
+#evaluationNotebook .prev-month-team-stock-table tbody tr:nth-child(even) td{background:#f8fafc!important;}
+#evaluationNotebook .prev-month-team-stock-table tbody tr:hover td{background:#edf5ff!important;}
+#evaluationNotebook .prev-month-team-stock-table tbody td:first-child{font-weight:800!important;color:#64748b!important;}
+#evaluationNotebook .prev-month-team-stock-table tbody td:nth-child(2){font-weight:700!important;}
+#evaluationNotebook .prev-month-team-stock-table .district-metric-main{
+  display:block!important;width:100%!important;font-size:10px!important;line-height:1.25!important;
+  font-weight:800!important;font-variant-numeric:tabular-nums!important;text-align:center!important;
+}
+#evaluationNotebook .prev-month-team-stock-table .metric-positive .district-metric-main{color:#dc2626!important;font-weight:900!important;}
+#evaluationNotebook .prev-month-team-stock-table .district-metric-cell{cursor:pointer!important;}
+#evaluationNotebook .prev-month-team-stock-table .metric-locked{background:#f1f5f9!important;font-weight:800!important;}
+#evaluationNotebook .prev-month-team-stock-table .not-used{display:none!important;}
+@media(max-width:768px){
+  #evaluationNotebook{padding:8px!important;}
+  #evaluationNotebook .prev-month-team-stock-wrap{max-height:70vh!important;}
+  #evaluationNotebook table.prev-month-team-stock-table{
+    width:1155px!important;min-width:1155px!important;max-width:1155px!important;table-layout:fixed!important;
+  }
+  #evaluationNotebook .prev-month-team-stock-table th,
+  #evaluationNotebook .prev-month-team-stock-table td{
+    padding:7px 5px!important;font-size:10px!important;line-height:1.25!important;
+  }
+  #evaluationNotebook .prev-month-team-stock-table th:first-child,
+  #evaluationNotebook .prev-month-team-stock-table td:first-child{width:42px!important;min-width:42px!important;max-width:42px!important;}
+  #evaluationNotebook .prev-month-team-stock-table th:nth-child(2),
+  #evaluationNotebook .prev-month-team-stock-table td:nth-child(2){left:42px!important;width:125px!important;min-width:125px!important;max-width:125px!important;}
+  #evaluationNotebook .prev-month-team-stock-table th:nth-child(n+3),
+  #evaluationNotebook .prev-month-team-stock-table td:nth-child(n+3){width:76px!important;min-width:76px!important;max-width:76px!important;}
+}
+</style>
+
+
+
+<style id="PREV_MONTH_TEAM_COLUMN_NORMAL_FONT_V1">
+/* Cột Tổ của TỔNG QUAN TỒN THÁNG N-1: dùng chữ thường, dễ đọc như bảng SỐ LIỆU TỒN THEO MỨC TỔ. */
+#evaluationNotebook table.prev-month-team-stock-table tbody td:nth-child(2),
+#evaluationNotebook table.prev-month-team-stock-table tbody td:nth-child(2) *{
+  font-weight:400!important;
+  font-family:Arial,sans-serif!important;
+  font-size:inherit!important;
+  letter-spacing:normal!important;
+  text-shadow:none!important;
+}
+</style>
+
+
+<!-- PHÂN BIỆT CỘT TỔNG TKM VÀ TỔNG SỰ CỐ TRÊN CÁC BẢNG -->
+<style id="VERTICAL-HIGHLIGHT-TOTAL-COLUMNS-V1">
+  /* TỔNG TKM: xanh nhạt; TỔNG SC/SỰ CỐ: cam nhạt. Tô cả tiêu đề và toàn bộ thân cột. */
+  table .col-total-tkm,
+  table th.col-total-tkm,
+  table td.col-total-tkm{
+    background-color:#e8f2ff !important;
+    box-shadow:inset 1px 0 0 #c6dcf5,inset -1px 0 0 #c6dcf5 !important;
+  }
+  table thead .col-total-tkm{
+    background-color:#cfe3fb !important;
+    color:#173f69 !important;
+  }
+  table .col-total-sc,
+  table th.col-total-sc,
+  table td.col-total-sc{
+    background-color:#fff1e5 !important;
+    box-shadow:inset 1px 0 0 #f3d2b5,inset -1px 0 0 #f3d2b5 !important;
+  }
+  table thead .col-total-sc{
+    background-color:#ffdfc2 !important;
+    color:#78421d !important;
+  }
+  /* TỔNG SC + TKM: tím nhạt để tách biệt với hai cột thành phần. */
+  table .col-total-ops,
+  table th.col-total-ops,
+  table td.col-total-ops{
+    background-color:#f1eaff !important;
+    box-shadow:inset 1px 0 0 #d8c8f4,inset -1px 0 0 #d8c8f4 !important;
+  }
+  table thead .col-total-ops{
+    background-color:#e2d5fb !important;
+    color:#4c3278 !important;
+  }
+  table tbody tr:hover .col-total-tkm{background-color:#dcecff !important;}
+  table tbody tr:hover .col-total-sc{background-color:#ffe7d3 !important;}
+  table tbody tr:hover .col-total-ops{background-color:#e8ddff !important;}
+</style>
+<script id="VERTICAL-HIGHLIGHT-TOTAL-COLUMNS-V1-SCRIPT">
+(function(){
+  const norm = value => String(value || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/Đ/g,'D').replace(/đ/g,'d')
+    .replace(/\s+/g,' ').trim().toUpperCase();
+
+  function headerRows(table){
+    const rows = Array.from(table.querySelectorAll('thead tr'));
+    if(rows.length) return rows;
+    const first = table.querySelector('tr');
+    return first ? [first] : [];
+  }
+
+  function applyToTable(table){
+    if(!table || table.dataset.totalColumnHighlightBusy === '1') return;
+    const rows = headerRows(table);
+    if(!rows.length) return;
+    // Ưu tiên hàng tiêu đề có nhãn cột rõ ràng, không dò nhầm các hàng dữ liệu.
+    let header = null, tkmIndex = -1, scIndex = -1, opsIndex = -1;
+    for(const row of rows){
+      const cells = Array.from(row.children).filter(el => /^(TH|TD)$/.test(el.tagName));
+      const labels = cells.map(cell => norm(cell.textContent));
+      const ti = labels.findIndex(v => /^(TONG TKM|TONG THUE BAO MOI)$/.test(v));
+      const si = labels.findIndex(v => /^(TONG SC|TONG SU CO|TONG SU CO TOAN BO)$/.test(v));
+      const oi = labels.findIndex(v => /^(TONG SC \+ TKM|TONG SU CO \+ TKM)$/.test(v));
+      if(ti >= 0 || si >= 0 || oi >= 0){ header = row; tkmIndex = ti; scIndex = si; opsIndex = oi; break; }
+    }
+    if(!header) return;
+    const headerCells = Array.from(header.children).filter(el => /^(TH|TD)$/.test(el.tagName));
+    const markColumn = (index, className) => {
+      if(index < 0) return;
+      // Cột có thể có rowspan/colspan; áp dụng theo vị trí ô ở từng hàng để giữ đúng cột.
+      table.querySelectorAll('tr').forEach(row => {
+        const cells = Array.from(row.children).filter(el => /^(TH|TD)$/.test(el.tagName));
+        if(cells[index]) cells[index].classList.add(className);
+      });
+      if(headerCells[index]) headerCells[index].classList.add(className);
+    };
+    markColumn(tkmIndex,'col-total-tkm');
+    markColumn(scIndex,'col-total-sc');
+    markColumn(opsIndex,'col-total-ops');
+  }
+
+  function scan(root){
+    if(!root) return;
+    if(root.matches && root.matches('table')) applyToTable(root);
+    if(root.querySelectorAll) root.querySelectorAll('table').forEach(applyToTable);
+  }
+
+  function start(){
+    scan(document);
+    let queued = false;
+    const observer = new MutationObserver(records => {
+      if(queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        records.forEach(record => record.addedNodes.forEach(node => {
+          if(node.nodeType === 1) scan(node);
+        }));
+        // Bảng có thể dựng lại phần thân sau khi đổi bộ lọc/tháng.
+        document.querySelectorAll('table').forEach(applyToTable);
+      });
+    });
+    observer.observe(document.documentElement,{childList:true,subtree:true});
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',start,{once:true});
+  else start();
+})();
+</script>
+
+
+
+<style id="PREV_MONTH_TOTAL_COLUMN_COLOR_UNIFORM_V1">
+/* Ép màu nền phủ đều toàn bộ từng cột; ưu tiên cao hơn màu xen kẽ dòng và hover. */
+#evaluationNotebook table.prev-month-team-stock-table thead th.col-total-tkm,
+#evaluationNotebook table.prev-month-team-stock-table tbody td.col-total-tkm{
+  background:#e8f2ff!important;
+  box-shadow:inset 1px 0 0 #c6dcf5,inset -1px 0 0 #c6dcf5!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead th.col-total-tkm{
+  background:#cfe3fb!important;color:#173f69!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead th.col-total-sc,
+#evaluationNotebook table.prev-month-team-stock-table tbody td.col-total-sc{
+  background:#fff1e5!important;
+  box-shadow:inset 1px 0 0 #f3d2b5,inset -1px 0 0 #f3d2b5!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead th.col-total-sc{
+  background:#ffdfc2!important;color:#78421d!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead th.col-total-ops,
+#evaluationNotebook table.prev-month-team-stock-table tbody td.col-total-ops{
+  background:#f1eaff!important;
+  box-shadow:inset 1px 0 0 #d8c8f4,inset -1px 0 0 #d8c8f4!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead th.col-total-ops{
+  background:#e2d5fb!important;color:#4c3278!important;
+}
+/* Không để màu hover hoặc zebra làm loang/mất màu riêng của ba cột tổng. */
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:hover td.col-total-tkm{background:#e8f2ff!important;}
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:hover td.col-total-sc{background:#fff1e5!important;}
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:hover td.col-total-ops{background:#f1eaff!important;}
+</style>
+
+
+<style id="PREV_MONTH_WEB_SCROLL_FIX_V1">
+/* CHI SUA WEB/DESKTOP: bo thanh cuon ben trong bang TONG QUAN TON THANG N-1.
+   Mobile giu nguyen CSS va cach cuon hien tai. */
+@media (min-width: 769px){
+  #evaluationNotebook .prev-month-team-stock-wrap{
+    display:block!important;
+    width:100%!important;max-width:100%!important;
+    height:auto!important;max-height:none!important;
+    overflow:visible!important;overflow-x:visible!important;overflow-y:visible!important;
+    overscroll-behavior:auto!important;
+  }
+  #evaluationNotebook table.prev-month-team-stock-table{
+    display:table!important;
+    width:100%!important;min-width:1155px!important;max-width:none!important;
+    table-layout:fixed!important;
+  }
+  #evaluationNotebook .prev-month-team-stock-table thead th{
+    position:static!important;
+  }
+}
+</style>
+
+<style id="OVERDUE_CAPTURE_NO_WRAP_FINAL">
+/* Ảnh báo cáo: cân tỷ lệ cột, không xuống dòng, không kéo giãn dư */
+#overdueAlertTableWrap .overdue-alert-table th,
+#overdueAlertTableWrap .overdue-alert-table td{
+  white-space:nowrap!important;
+  overflow-wrap:normal!important;
+  word-break:keep-all!important;
+  text-align:center!important;
+}
+</style>
+
+
+
+
+<style id="OVERDUE_ALERT_MOBILE_MATCH_PREV_MONTH_TABLE_V1">
+/* Mobile: dùng cùng kiểu cuộn bảng như TỔNG QUAN TỒN THÁNG N-1.
+   Giữ nguyên cấu trúc table/tr/td; không chuyển tbody hoặc tr thành grid/flex. */
+@media(max-width:700px){
+  #overdueAlertReport{
+    width:100%!important;max-width:100%!important;min-width:0!important;
+    padding:8px!important;box-sizing:border-box!important;overflow:hidden!important;
+  }
+  #overdueAlertReport .overdue-alert-head{
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:7px!important;
+  }
+  #overdueAlertReport .overdue-alert-title{font-size:14px!important;line-height:1.25!important;text-align:center!important;}
+  #overdueAlertReport .overdue-alert-capture{width:100%!important;min-height:38px!important;margin:0!important;}
+  #overdueAlertReport .overdue-alert-meta{font-size:10px!important;line-height:1.35!important;white-space:normal!important;}
+  #overdueAlertReport #overdueAlertTableWrap{
+    display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;
+    height:auto!important;max-height:72vh!important;overflow:auto!important;
+    border:1px solid #e2e8f0!important;border-radius:8px!important;
+    position:relative!important;-webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;touch-action:pan-x pan-y!important;
+  }
+  #overdueAlertReport #overdueAlertTableWrap table.overdue-alert-table{
+    display:table!important;width:1100px!important;min-width:1100px!important;max-width:none!important;
+    table-layout:fixed!important;border-collapse:separate!important;border-spacing:0!important;
+    margin:0!important;background:#fff!important;font-size:10px!important;
+  }
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table thead{display:table-header-group!important;}
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table tbody{display:table-row-group!important;}
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table tr{display:table-row!important;position:static!important;}
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table th,
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table td{
+    display:table-cell!important;float:none!important;position:static!important;transform:none!important;
+    box-sizing:border-box!important;padding:7px 6px!important;
+    font-size:10px!important;line-height:1.25!important;text-align:center!important;vertical-align:middle!important;
+    white-space:nowrap!important;word-break:normal!important;overflow-wrap:normal!important;
+    border-right:1px solid #e8edf3!important;border-bottom:1px solid #e8edf3!important;
+    min-height:0!important;height:auto!important;overflow:visible!important;
+  }
+  /* Ghim STT và Huyện theo đúng hai cột đầu, các cột còn lại nằm bên phải và cuộn ngang. */
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table th:first-child,
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table td:first-child{
+    position:sticky!important;left:0!important;width:44px!important;min-width:44px!important;max-width:44px!important;
+    z-index:5!important;background:#f1f5f9!important;padding-left:3px!important;padding-right:3px!important;
+  }
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table th:nth-child(2),
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table td:nth-child(2){
+    position:sticky!important;left:44px!important;width:112px!important;min-width:112px!important;max-width:112px!important;
+    z-index:4!important;background:#fff!important;box-shadow:2px 0 3px rgba(15,23,42,.10)!important;
+  }
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table thead th{position:sticky!important;top:0!important;z-index:7!important;background:#eaf0f7!important;}
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table thead th:first-child{left:0!important;z-index:10!important;background:#e2e8f0!important;}
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table thead th:nth-child(2){left:44px!important;z-index:9!important;background:#eaf0f7!important;}
+  #overdueAlertReport #overdueAlertTableWrap .overdue-alert-table td::before{display:none!important;content:none!important;}
+}
+</style>
+
 </body>
   
 
@@ -37409,3 +37700,253 @@ section[id*="cdbr" i]{
   #dseDistrictEmployeeDetailModal .dse-da-detail-table-wrap td{padding:7px 8px !important;}
 }
 </style>
+
+<style id="PREV_MONTH_TABLE_VISUAL_MATCH_V4">
+/* Bảng TỔNG QUAN TỒN THÁNG N-1: dùng cùng kích thước ô, font, đường kẻ và bố cục với SỐ LIỆU TỒN THEO MỨC TỔ */
+#evaluationNotebook .prev-month-team-stock-wrap{
+  display:block!important;position:relative!important;width:100%!important;max-width:100%!important;
+  max-height:70vh!important;overflow:auto!important;overflow-x:auto!important;overflow-y:auto!important;
+  border:1px solid #dbe3ef!important;border-radius:8px!important;background:#fff!important;
+  -webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important;isolation:isolate!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table{
+  display:table!important;width:max-content!important;min-width:100%!important;max-width:none!important;
+  table-layout:auto!important;border-collapse:separate!important;border-spacing:0!important;
+  font-size:10px!important;background:#fff!important;
+}
+#evaluationNotebook .prev-month-team-stock-table th,
+#evaluationNotebook .prev-month-team-stock-table td{
+  display:table-cell!important;box-sizing:border-box!important;width:auto!important;max-width:none!important;
+  min-width:55px!important;height:auto!important;min-height:0!important;
+  padding:6px 7px!important;font-family:Arial,sans-serif!important;font-size:10px!important;
+  line-height:1.25!important;white-space:nowrap!important;overflow:visible!important;
+  text-overflow:clip!important;word-break:normal!important;overflow-wrap:normal!important;
+  vertical-align:middle!important;text-align:center!important;
+  border-right:1px solid #e2e8f0!important;border-bottom:1px solid #e2e8f0!important;
+}
+#evaluationNotebook .prev-month-team-stock-table thead th{
+  position:sticky!important;top:0!important;z-index:8!important;
+  min-height:0!important;background:#eaf1fb!important;color:#172554!important;
+  font-weight:800!important;line-height:1.25!important;text-align:center!important;
+}
+#evaluationNotebook .prev-month-team-stock-table th:first-child,
+#evaluationNotebook .prev-month-team-stock-table td:first-child{
+  position:sticky!important;left:0!important;width:44px!important;min-width:44px!important;max-width:44px!important;
+  z-index:12!important;background:#f1f5f9!important;text-align:center!important;
+}
+#evaluationNotebook .prev-month-team-stock-table th:nth-child(2),
+#evaluationNotebook .prev-month-team-stock-table td:nth-child(2){
+  position:sticky!important;left:44px!important;width:125px!important;min-width:125px!important;max-width:125px!important;
+  z-index:10!important;background:#fff!important;text-align:center!important;
+  box-shadow:2px 0 3px rgba(15,23,42,.10)!important;
+}
+#evaluationNotebook .prev-month-team-stock-table thead th:first-child,
+#evaluationNotebook .prev-month-team-stock-table thead th:nth-child(2){z-index:15!important;background:#eaf1fb!important;}
+#evaluationNotebook .prev-month-team-stock-table tbody tr:nth-child(even) td{background:#f8fafc!important;}
+#evaluationNotebook .prev-month-team-stock-table tbody tr:hover td{background:#edf5ff!important;}
+#evaluationNotebook .prev-month-team-stock-table tbody td:first-child{font-weight:800!important;color:#64748b!important;}
+#evaluationNotebook .prev-month-team-stock-table tbody td:nth-child(2),
+#evaluationNotebook .prev-month-team-stock-table tbody td:nth-child(2) *{font-weight:400!important;font-family:Arial,sans-serif!important;}
+#evaluationNotebook .prev-month-team-stock-table .district-metric-main{
+  display:block!important;width:100%!important;margin:0!important;padding:0!important;
+  font-family:Arial,sans-serif!important;font-size:10px!important;line-height:1.25!important;
+  font-weight:800!important;font-variant-numeric:tabular-nums!important;text-align:center!important;
+}
+#evaluationNotebook .prev-month-team-stock-table .metric-positive .district-metric-main{color:#dc2626!important;font-weight:900!important;}
+#evaluationNotebook .prev-month-team-stock-table .district-metric-cell{cursor:pointer!important;}
+#evaluationNotebook .prev-month-team-stock-table .metric-locked{background:#f1f5f9!important;font-weight:800!important;}
+@media(max-width:768px){
+  #evaluationNotebook .prev-month-team-stock-wrap{max-height:70vh!important;}
+  #evaluationNotebook table.prev-month-team-stock-table{width:max-content!important;min-width:1050px!important;max-width:none!important;table-layout:auto!important;}
+  #evaluationNotebook .prev-month-team-stock-table th,
+  #evaluationNotebook .prev-month-team-stock-table td{padding:6px 7px!important;font-size:10px!important;line-height:1.25!important;}
+  #evaluationNotebook .prev-month-team-stock-table th:first-child,
+  #evaluationNotebook .prev-month-team-stock-table td:first-child{width:44px!important;min-width:44px!important;max-width:44px!important;}
+  #evaluationNotebook .prev-month-team-stock-table th:nth-child(2),
+  #evaluationNotebook .prev-month-team-stock-table td:nth-child(2){left:44px!important;width:125px!important;min-width:125px!important;max-width:125px!important;}
+}
+</style>
+
+
+<style id="PREV_MONTH_TOTAL_COLUMNS_FORCE_COLOR_V2">
+/* Ép màu dọc cho 3 cột tổng trong TỔNG QUAN TỒN THÁNG N-1.
+   Selector ưu tiên cao hơn màu nền dòng chẵn/lẻ và hover. */
+#evaluationNotebook table.prev-month-team-stock-table thead tr th:nth-child(3),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr td:nth-child(3),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:nth-child(odd) td:nth-child(3),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:nth-child(even) td:nth-child(3),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:hover td:nth-child(3),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:hover td:nth-child(3) .district-metric-main{
+  background-color:#e8f2ff!important;
+  background-image:none!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead tr th:nth-child(3){
+  background-color:#cfe3fb!important;color:#173f69!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead tr th:nth-child(8),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr td:nth-child(8),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:nth-child(odd) td:nth-child(8),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:nth-child(even) td:nth-child(8),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:hover td:nth-child(8),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:hover td:nth-child(8) .district-metric-main{
+  background-color:#fff1e5!important;
+  background-image:none!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead tr th:nth-child(8){
+  background-color:#ffdfc2!important;color:#78421d!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead tr th:nth-child(17),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr td:nth-child(17),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:nth-child(odd) td:nth-child(17),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:nth-child(even) td:nth-child(17),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:hover td:nth-child(17),
+#evaluationNotebook table.prev-month-team-stock-table tbody tr:hover td:nth-child(17) .district-metric-main{
+  background-color:#f1eaff!important;
+  background-image:none!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead tr th:nth-child(17){
+  background-color:#e4d5ff!important;color:#55318b!important;
+}
+/* Giữ đường phân cách dọc rõ ràng khi cuộn ngang. */
+#evaluationNotebook table.prev-month-team-stock-table th:nth-child(3),
+#evaluationNotebook table.prev-month-team-stock-table td:nth-child(3),
+#evaluationNotebook table.prev-month-team-stock-table th:nth-child(8),
+#evaluationNotebook table.prev-month-team-stock-table td:nth-child(8),
+#evaluationNotebook table.prev-month-team-stock-table th:nth-child(17),
+#evaluationNotebook table.prev-month-team-stock-table td:nth-child(17){
+  box-shadow:inset 1px 0 0 rgba(100,116,139,.22),inset -1px 0 0 rgba(100,116,139,.22)!important;
+}
+</style>
+
+
+<style id="PREV_MONTH_TABLE_HEADER_WRAP_V1">
+/* Cho tiêu đề chỉ tiêu của bảng N-1 tự xuống dòng, không tràn sang cột kế bên. */
+#evaluationNotebook table.prev-month-team-stock-table thead th{
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+  text-overflow:clip!important;
+  overflow:hidden!important;
+  vertical-align:middle!important;
+  height:auto!important;
+  min-height:42px!important;
+  padding:7px 5px!important;
+  line-height:1.25!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead th:nth-child(n+3){
+  width:84px!important;
+  min-width:84px!important;
+  max-width:84px!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead th:first-child{
+  width:44px!important;min-width:44px!important;max-width:44px!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead th:nth-child(2){
+  width:125px!important;min-width:125px!important;max-width:125px!important;
+}
+</style>
+
+
+<style id="PREV_MONTH_TEAM_COLUMN_READABILITY_V2">
+/* Cột Tổ: đậm vừa phải, tăng không gian và cho tên dài tự xuống dòng. */
+#evaluationNotebook table.prev-month-team-stock-table th:nth-child(2),
+#evaluationNotebook table.prev-month-team-stock-table td:nth-child(2){
+  width:180px!important;min-width:180px!important;max-width:180px!important;
+  text-align:center!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+  box-sizing:border-box!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table tbody td:nth-child(2),
+#evaluationNotebook table.prev-month-team-stock-table tbody td:nth-child(2) *{
+  font-family:Arial,sans-serif!important;
+  font-size:11px!important;
+  font-weight:600!important;
+  line-height:1.25!important;
+  letter-spacing:0!important;
+  text-shadow:none!important;
+  white-space:normal!important;
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+}
+#evaluationNotebook table.prev-month-team-stock-table thead th:nth-child(2){
+  font-weight:700!important;white-space:normal!important;
+}
+@media(max-width:768px){
+  #evaluationNotebook table.prev-month-team-stock-table th:nth-child(2),
+  #evaluationNotebook table.prev-month-team-stock-table td:nth-child(2){
+    left:44px!important;width:165px!important;min-width:165px!important;max-width:165px!important;
+  }
+  #evaluationNotebook table.prev-month-team-stock-table tbody td:nth-child(2),
+  #evaluationNotebook table.prev-month-team-stock-table tbody td:nth-child(2) *{
+    font-size:10px!important;font-weight:600!important;line-height:1.25!important;
+  }
+}
+</style>
+
+
+<style id="PREV_MONTH_DESKTOP_MATCH_PERIOD_TABLE_FINAL_V3">
+/* Desktop: đồng bộ wrapper và bảng N-1 với SỐ LIỆU TỒN THEO MỨC TỔ.
+   Chỉ áp dụng từ 769px; không thay đổi giao diện mobile. */
+@media (min-width:769px){
+  #evaluationNotebook,
+  #evaluationNotebook #evaluationNotebookContent,
+  #evaluationNotebook .prev-month-team-stock-wrap{
+    box-sizing:border-box!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+    overflow-x:visible!important;
+    overflow-y:visible!important;
+    overscroll-behavior:auto!important;
+    -webkit-overflow-scrolling:auto!important;
+  }
+  #evaluationNotebook .prev-month-team-stock-wrap{
+    display:block!important;
+    position:static!important;
+  }
+  #evaluationNotebook table.prev-month-team-stock-table{
+    display:table!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    table-layout:fixed!important;
+    border-collapse:collapse!important;
+  }
+  #evaluationNotebook table.prev-month-team-stock-table th,
+  #evaluationNotebook table.prev-month-team-stock-table td{
+    box-sizing:border-box!important;
+    min-width:0!important;
+    max-width:none!important;
+    white-space:normal!important;
+    overflow-wrap:anywhere!important;
+    word-break:normal!important;
+  }
+  #evaluationNotebook table.prev-month-team-stock-table thead th{
+    position:static!important;
+    top:auto!important;
+  }
+  #evaluationNotebook table.prev-month-team-stock-table th:first-child,
+  #evaluationNotebook table.prev-month-team-stock-table td:first-child,
+  #evaluationNotebook table.prev-month-team-stock-table th:nth-child(2),
+  #evaluationNotebook table.prev-month-team-stock-table td:nth-child(2){
+    position:static!important;
+    left:auto!important;
+  }
+}
+</style>
+
+
+
+
+
+
+
+
