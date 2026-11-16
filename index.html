@@ -3429,8 +3429,8 @@ window.salaryNameLink = window.salaryNameLink || function(r){
   const idx = rows.indexOf(r);
   const name = (typeof salaryGetName === 'function' ? salaryGetName(r) : (r && (r.nhan_vien || r.ho_ten || r.ten_nv || r.nhanvien))) || 'Không rõ tên';
   const safeName = typeof salaryEsc === 'function' ? salaryEsc(name) : String(name).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  if (idx < 0) return safeName;
-  return `<span class="salary-click-name" role="button" tabindex="0" onclick="event.stopPropagation();openSalaryEmployeeModal(${idx})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();openSalaryEmployeeModal(${idx})}" title="Bấm để xem bảng lương">${safeName}</span>`;
+  // Tạm ẩn tính năng xem bảng lương trên giao diện; giữ nguyên dữ liệu và logic phía dưới.
+  return safeName;
 };
 </script>
 
@@ -6881,12 +6881,18 @@ function exportSalaryTableExcel(){
 function closeSalaryEmployeeModal(){const m=document.getElementById('salaryEmployeeModal');if(!m)return;m.classList.remove('open');m.setAttribute('aria-hidden','true');document.body.style.overflow='';}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSalaryEmployeeModal();});
 function salaryNameLink(r){
- const idx=(window.allData||[]).indexOf(r);const name=salaryGetName(r)||'Không rõ tên';
- if(idx<0)return salaryEsc(name);
- return `<span class="salary-click-name" role="button" tabindex="0" onclick="event.stopPropagation();openSalaryEmployeeModal(${idx})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();openSalaryEmployeeModal(${idx})}" title="Bấm để xem bảng lương">${salaryEsc(name)}</span>`;
+ // Hiển thị tên nhân viên dạng văn bản thường, không mở popup lương.
+ const name=salaryGetName(r)||'Không rõ tên';
+ return salaryEsc(name);
 }
 </script>
 
+<style id="salary-ui-hidden-149">
+/* Tạm ẩn toàn bộ popup bảng lương trên giao diện; không xóa mã tính lương. */
+#salaryEmployeeModal,
+#salaryEmployeeModal.open,
+#salaryEmployeeModal[aria-hidden="false"]{display:none!important;visibility:hidden!important;pointer-events:none!important}
+</style>
 </body>
 </html>
 
