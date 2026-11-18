@@ -28,7 +28,7 @@
 <div class="modalbg" id="detailModal"><div class="modal"><div class="modalhead"><div class="modaltitle">Chi tiết cài đặt</div><button class="close" id="closeDetail">×</button></div><div id="detailContent"></div></div></div>
 <script>
 const API_URL_CURRENT="https://script.google.com/macros/s/AKfycby5vwaqgAdPDte353-QSaQpRcmWovYQpvGo9lh3qKuNClZ8ywOAA2T15jPqDEu1GkD1/exec";const API_URL_HISTORY="https://script.google.com/macros/s/AKfycbzI7GEjgUYPCP76w5QUelkzgvxX6JcM04FpM9AEH_1hYfFmVZzl6wKDfhBpVoUPLqo9/exec";let dataSource="current";function activeApiUrl(){return dataSource==="history"?API_URL_HISTORY:API_URL_CURRENT}const PAGE_SIZE=20;let page=1,totalPages=1,search="",data=[];let searchTimer=null,requestController=null,requestId=0;let notInstalledOnly=false;let notInstalledCache=[],notInstalledScanPage=1,notInstalledScanTotalPages=1,notInstalledScanDone=false,notInstalledServerTotal=null,notInstalledServerDone=null,notInstalledScanTotalRecords=0;const $=id=>document.getElementById(id);
-function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function installed(v){return String(v??"").trim()==="1"}function field(x,...keys){for(const k of keys){if(x&&x[k]!==undefined&&x[k]!==null&&String(x[k]).trim()!=="")return x[k]}return ""}function tinhCaiValue(x){/* API có thể trả trường gốc tinh_cai_ft hoặc tên chuẩn hóa Đã cài (được ánh xạ từ tinh_cai_ft); tuyệt đối không đọc trang_thai_cai_dat_tammi */return field(x,"tinh_cai_ft","tinhCaiFt","Đã cài")}function isInstalledRow(x){return installed(tinhCaiValue(x))}
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function installed(v){return String(v??"").trim()==="1"}function field(x,...keys){for(const k of keys){if(x&&x[k]!==undefined&&x[k]!==null&&String(x[k]).trim()!=="")return x[k]}return ""}function tinhCaiValue(x){/* API hiện tại: chỉ đọc tinh_cai_ft */return field(x,"tinh_cai_ft","tinhCaiFt","Đã cài")}function historyStatusValue(x){/* API tra cứu nhiều tháng: quy tắc riêng dùng trang_thai_cai_dat_tammi */return field(x,"trang_thai_cai_dat_tammi","trang thai cai dat tammi","Trạng thái cài đặt Tammi")}function isInstalledRow(x){return dataSource==="history"?installed(historyStatusValue(x)):installed(tinhCaiValue(x))}
 function isHeaderRow(x){if(!x||typeof x!=="object")return false;const vals=Object.values(x).map(v=>String(v??"").trim().toLowerCase());const words=["ho_ten_nv","ma_nhan_vien","ten_trung_tam_moi","account","task_type_name","ft_cai_dat_tammi","thoi_gian_cai_dat_tammi","ngay_ht","tinh_cai_ft"];return words.filter(w=>vals.includes(w)).length>=3}function url(){const u=new URL(activeApiUrl());u.searchParams.set("page",page);u.searchParams.set("pageSize",PAGE_SIZE);if(search)u.searchParams.set("search",search);return u}function getServerStats(j, pageRows){
   // Đọc thống kê tổng hợp do API trả về, tránh gọi tuần tự từng trang mỗi lần tải.
   const totalRaw = j.total ?? j.totalRecords ?? j.totalCount;
@@ -232,9 +232,11 @@ async function exportExcel(){
       const pageRows=(Array.isArray(j.data)?j.data:[]).filter(x=>!isHeaderRow(x));
       allRows.push(...pageRows.map(x=>{
         const copy={...x};
-        // Quy tắc trạng thái chỉ dựa trên tinh_cai_ft; giữ nguyên
-        // trang_thai_cai_dat_tammi để người dùng xem trong file Excel.
-        copy.tinh_cai_ft = tinhCaiValue(x);
+        // Giữ nguyên cả hai trường nguồn. Cột trạng thái tính toán phụ thuộc tab đang chọn:
+        // hiện tại dùng tinh_cai_ft; tra cứu nhiều tháng dùng trang_thai_cai_dat_tammi.
+        copy.trang_thai_cai_dat_tammi = field(x,"trang_thai_cai_dat_tammi","trang thai cai dat tammi","Trạng thái cài đặt Tammi");
+        if(dataSource==="history") copy.trang_thai_tinh_toan = historyStatusValue(x);
+        else copy.tinh_cai_ft = tinhCaiValue(x);
         return copy;
       }));
 
